@@ -1,0 +1,13 @@
+{
+  "extends": "./tsconfig.json",
+  "include": [
+    "src/**/*",
+    "astro.config.ts",
+    "commitlint.config.js",
+    "cypress.config.ts",
+    "eslint.config.js",
+    "lint-staged.config.js",
+    "stylelint.config.js",
+    "vitest.config.ts"
+  ]
+}

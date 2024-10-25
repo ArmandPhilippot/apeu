@@ -1,0 +1,50 @@
+name: Lint
+
+on:
+  push:
+    branches:
+      - main
+      - next
+  pull_request:
+
+defaults:
+  run:
+    shell: bash
+
+env:
+  CI: true
+  FORCE_COLOR: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: Lint
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Install Tools & Dependencies
+        uses: ./.github/actions/ci-setup
+
+      - name: Run Lint Types
+        run: pnpm lint:types
+
+      - name: Run Lint Scripts
+        run: pnpm run lint:scripts
+
+      - name: Run Lint Styles
+        run: pnpm run lint:styles
+
+      - name: Run Lint Spelling
+        run: pnpm run lint:spelling
+
+      - name: Run Lint Formatting
+        run: pnpm run lint:formatting

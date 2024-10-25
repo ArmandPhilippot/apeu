@@ -1,47 +1,119 @@
-# Astro Starter Kit: Minimal
+# Armand.Philippot.eu
 
-```sh
-npm create astro@latest -- --template minimal
-```
+The source code of [my personal website](https://armand.philippot.eu).
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/minimal)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/minimal)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/minimal/devcontainer.json)
+## Setup
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+1. Clone the repository.
+2. Install the dependencies.
 
-## 🚀 Project Structure
+## Development
 
-Inside of your Astro project, you'll see the following folders and files:
+Before starting, please follow the instructions in [Setup](#setup).
+
+### Project structure
 
 ```text
 /
 ├── public/
 ├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+│   ├── assets/
+│   ├── components/
+│   ├── content/
+│   │   └── config.ts
+│   ├── lib/
+│   │   └── astro/
+│   │       └── integrations/
+│   ├── pages/
+│   │   └── index.astro
+│   ├── styles/
+│   ├── types/
+│   └── utils/
+├── package.json
+└── config files
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+In details:
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+- `public/`: any static assets, like fonts, can be placed in this directory,
+- `src/assets/`: any assets that must be processed by Astro (like images) can be placed in this directory,
+- `src/components/`: the project components,
+- `src/lib/`: the features based on dependencies (e.g. Astro integration),
+- `src/pages/`: the special components used to create pages and API routes,
+- `src/styles/`: global styles, variables and helpers should be placed in this directory,
+- `src/types/`: the Typescript types shared across the application,
+- `src/utils/`: all the utilities (constants, helpers, etc.) to build the project.
 
-Any static assets, like images, can be placed in the `public/` directory.
+### Components
 
-## 🧞 Commands
+The components are located in the `src/components` directory and should be organized using the [Atomic Design Methodology](https://atomicdesign.bradfrost.com/chapter-2/):
 
-All commands are run from the root of the project, from a terminal:
+```text
+/src/components/
+├── atoms/
+├── molecules/
+├── organisms/
+└── templates/
+```
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+### Workflow
 
-## 👀 Want to learn more?
+The versioning of this repository is managed with [changesets](https://github.com/changesets/changesets). This helps automate updating package versions, and changelogs.
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+So if you decide to submit a pull request keep that in mind:
+
+- you have to decide if your changes are worth to be added in the changelog (patch, minor or major update) or not.
+- if you think those changes are important enough, then you need to include a changeset in your PR with some details about what changed.
+
+Then, when I think it's time, I'll published a new version of the website based on those changesets.
+
+### CLI
+
+#### Develop with Astro
+
+All commands are run from the root of the project, from a terminal.
+
+| Command                | Action                                       |
+| :--------------------- | :------------------------------------------- |
+| `pnpm i`               | Installs dependencies                        |
+| `pnpm dev`             | Starts local dev server at `localhost:4321`  |
+| `pnpm build`           | Build your production site to `./dist/`      |
+| `pnpm preview`         | Preview your build locally, before deploying |
+| `pnpm astro ...`       | Run Astro CLI commands like `add`            |
+| `pnpm astro -- --help` | Get help using the Astro CLI                 |
+
+#### Lint/Fix source code
+
+| Command                | Action                                      |
+| :--------------------- | :------------------------------------------ |
+| `pnpm lint`            | Run all linters                             |
+| `pnpm lint:formatting` | Run Prettier to check files                 |
+| `pnpm lint:scripts`    | Lint astro and scripts files using ESlint   |
+| `pnpm lint:spelling`   | Lint spelling errors in all files           |
+| `pnpm lint:styles`     | Lint astro and styles files using Stylelint |
+| `pnpm lint:types`      | Run type-checking with Astro                |
+| `pnpm fix`             | Run all fixers                              |
+| `pnpm lint:formatting` | Run Prettier to format files                |
+| `pnpm fix:scripts`     | Fix astro and scripts files using ESlint    |
+| `pnpm fix:styles`      | Fix astro and styles files using Stylelint  |
+
+#### Testing
+
+| Command                   | Action                                    |
+| :------------------------ | :---------------------------------------- |
+| `pnpm test:e2e`           | Run end-to-end tests using Cypress        |
+| `pnpm test:e2e:ui`        | Run end-to-end tests using the Cypress UI |
+| `pnpm test:unit`          | Run unit tests using Vitest               |
+| `pnpm test:unit:coverage` | Run unit tests using Vitest and coverage  |
+| `pnpm test:unit:watch`    | Run unit tests using Vitest and watch     |
+
+#### Github actions and/or maintainer only
+
+| Command           | Action                                |
+| :---------------- | :------------------------------------ |
+| `pnpm ci:version` | Bump version and generate a changelog |
+| `pnpm ci:release` | Create a new release                  |
+
+## License
+
+The source code is licensed under the [MIT license](./LICENSE).

@@ -2,6 +2,7 @@
 import type { GetStaticPaths } from "astro";
 import { globby } from "globby";
 import { join } from "path";
+import Layout from "../../../components/templates/layout/layout.astro";
 import { COMPONENT_KINDS, STORIES_EXT } from "../../../utils/constants";
 import { getStoryNameFromSlug, getStoryRoute } from "../../../utils/stories";
 import { capitalizeFirstLetter } from "../../../utils/strings";
@@ -16,7 +17,7 @@ export const getStaticPaths = (() => {
         },
       });
       const stories = storiesPaths.map((path) => {
-        const slug = getStoryRoute(path);
+        const slug = getStoryRoute(path).replace(componentDir, "");
 
         return {
           label: getStoryNameFromSlug(slug),
@@ -35,28 +36,18 @@ export const getStaticPaths = (() => {
 const { stories, title } = Astro.props;
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
-    <title>{title}</title>
-  </head>
-  <body>
-    <h1>{title}</h1>
-    {
-      stories.length ? (
-        <ul>
-          {stories.map((story) => (
-            <li>
-              <a href={story.slug}>{story.label}</a>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p>No stories available in {title}</p>
-      )
-    }
-  </body>
-</html>
+<Layout title={title}>
+  {
+    stories.length ? (
+      <ul>
+        {stories.map((story) => (
+          <li>
+            <a href={story.slug}>{story.label}</a>
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <p>No stories available in {title}</p>
+    )
+  }
+</Layout>

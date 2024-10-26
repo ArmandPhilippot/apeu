@@ -1,30 +1,21 @@
 ---
+import Layout from "../../../components/templates/layout/layout.astro";
 import { COMPONENT_KINDS } from "../../../utils/constants";
 import { capitalizeFirstLetter } from "../../../utils/strings";
 
 const title = "Components";
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
-    <title>{title}</title>
-  </head>
-  <body>
-    <h1>{title}</h1>
-    <ul>
-      {
-        COMPONENT_KINDS.map((kind) => (
-          <li>
-            <a href={`/design-system/components/${kind}`}>
-              {capitalizeFirstLetter(kind)}
-            </a>
-          </li>
-        ))
-      }
-    </ul>
-  </body>
-</html>
+<Layout title={title}>
+  <ul>
+    {
+      COMPONENT_KINDS.map((kind) => (
+        <li>
+          <a href={`/design-system/components/${kind}`}>
+            {capitalizeFirstLetter(kind)}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</Layout>

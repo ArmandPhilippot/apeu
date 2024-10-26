@@ -9,7 +9,6 @@ export default defineConfig({
     componentsStories({
       baseSlug: "/design-system/components",
       components: "./src/components",
-      logStories: true,
     }),
     devOnlyPages({ prefix: "_dev_" }),
   ],

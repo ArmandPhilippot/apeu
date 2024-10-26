@@ -1,3 +1,10 @@
+export const COMPONENT_KINDS = [
+  "atoms",
+  "molecules",
+  "organisms",
+  "templates",
+] as const;
+
 export const STORIES_SUFFIX = "stories";
 
 /** The extension used for components stories.

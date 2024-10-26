@@ -7,6 +7,31 @@ The source code of [my personal website](https://armand.philippot.eu).
 1. Clone the repository.
 2. Install the dependencies.
 
+## Features
+
+### Dev-only pages
+
+This project supports and uses dev-only pages. Those pages are accessible in your browser in dev mode but they won't be built (so they are not available in preview mode). You can find them thanks to their `_dev_` prefix.
+
+Why `_dev_` ? Because [Astro already uses a single underscore](https://docs.astro.build/en/guides/routing/#excluding-pages) to exclude the pages from being built so we need a different prefix and a double underscore could be confusing.
+
+> [!Note]
+> This integration only supports directories or pages with Astro extension (e.g. `_dev_tokens.astro`). You won't be able to build dev-only pages from Markdown files.
+> The following patterns are supported:
+
+- a dev-only page anywhere inside the pages directory
+- a dev-only folder containing regular pages anywhere inside the pages directory.
+
+The following pattern is not supported because it does not make sense:
+
+- a dev-only page inside a dev-only folder (eg. `src/pages/_dev_design-system/_dev_non-accessible-page.astro` is not accessible in your browser but `src/pages/_dev_design-system/accessible-page.astro`) is accessible.
+
+> [!IMPORTANT]
+> The pages are injected right after reading the configuration file. So if you create a new dev-only page (or rename an existing one), the page will not be recognized. You'll need to reload the Astro dev server.
+> Also, it seems the Astro Dev Toolbar can't be displayed in injected routes so you do not have access to the Audit app for example.
+
+Then to access the page in your browser, you need to remove the prefix from the slug. For example, the existing `src/pages/_dev_design-system` folder can be accessed in your browser with the following url `http://localhost:4321/design-system`.
+
 ## Development
 
 Before starting, please follow the instructions in [Setup](#setup).

@@ -32,6 +32,60 @@ The following pattern is not supported because it does not make sense:
 
 Then to access the page in your browser, you need to remove the prefix from the slug. For example, the existing `src/pages/_dev_design-system` folder can be accessed in your browser with the following url `http://localhost:4321/design-system`.
 
+### Component stories
+
+Currently, it is not possible to use [Storybook with Astro](https://github.com/storybookjs/storybook/issues/18356). So I added an Astro integration to be able to test the components in isolation. This is not Storybook replacement: you can't play with props, dynamically generate a table of available props, etc.
+
+To create stories for your components, use the following structure:
+
+```text
+/src/components
+├── button/
+│   ├── button.astro
+│   └── button.stories.astro
+└── link/
+    ├── link.astro
+    └── link.stories.astro
+```
+
+About this structure:
+
+- `button.astro`: your Astro component
+- `button.stories.astro`: your stories about the component
+
+The `button.stories.astro` file is a regular Astro page: import the component, use a layout if needed, and use HTML markup to write about the component.
+
+> [!NOTE]
+> The VS Code extension will infer the file name as `Button`, so to import your component you'll need to rename the import (e.g. `ButtonComponent`) to avoid conflicts.
+
+Using that structure, you can access your stories in a browser using the following slugs:
+
+- `/design-system/components/button`
+- `/design-system/components/link`
+
+If you need to divide your stories in multiple files, you can use a `stories` directory in your component directory. For example, both the following structures are supported:
+
+```text
+/src/components
+├── button/
+│   ├── stories/
+│   │   ├── primary-button.stories.astro
+│   │   └── secondary-button.stories.astro
+│   ├── button.astro
+│   └── button.stories.astro
+└── link/
+    ├── stories/
+    │   ├── link.stories.astro
+    │   ├── nav-link.stories.astro
+    │   └── index.stories.astro
+    └── link.astro
+```
+
+> [!IMPORTANT]
+> If you create a new story file (ie. `.stories.astro`), you'll need to restart the dev server to be able to access it in your browser.
+
+Only `.astro` extension is supported for stories. I'd like to use `.mdx` but Astro integrations can only inject routes for `.astro`, `.js` and `.ts` files.
+
 ## Development
 
 Before starting, please follow the instructions in [Setup](#setup).
@@ -80,6 +134,22 @@ The components are located in the `src/components` directory and should be organ
 ├── organisms/
 └── templates/
 ```
+
+When creating a new component you should also create stories for it and use the following structure:
+
+```text
+/src/components/atoms
+├── button/
+│   ├── button.astro
+│   ├── button.stories.astro
+│   ├── button.test.ts
+│   └── index.ts
+└── other components
+```
+
+The component stories will be collected when your start the dev server and will be available in the design system (accessible under `/design-system` in your browser).
+
+This way you can test them in isolation both visually through stories and with Vitest tests.
 
 ### Workflow
 

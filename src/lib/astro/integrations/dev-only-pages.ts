@@ -3,17 +3,7 @@ import { globbySync } from "globby";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import slash from "slash";
-
-/**
- * Retrieve a path with forward slashes from a list of paths to join.
- *
- * This is a wrapper around the `join` function from `node:path`. It handles
- * Windows paths as well by converting them to a path with forward slashes.
- *
- * @param {...string[]} paths - The paths to join.
- * @returns {string} The result path.
- */
-const joinPaths = (...paths: string[]): string => slash(join(...paths));
+import { joinPaths } from "../../../utils/paths";
 
 /**
  * Check if the given prefix is valid.

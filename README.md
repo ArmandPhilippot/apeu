@@ -104,6 +104,10 @@ Before starting, please follow the instructions in [Setup](#setup).
 │   │   └── astro/
 │   │       └── integrations/
 │   ├── pages/
+│   │   ├── _dev_design-system/
+│   │   │   ├── components/
+│   │   │   ├── tokens/
+│   │   │   └── index.astro
 │   │   └── index.astro
 │   ├── styles/
 │   ├── types/
@@ -123,7 +127,11 @@ In details:
 - `src/types/`: the Typescript types shared across the application,
 - `src/utils/`: all the utilities (constants, helpers, etc.) to build the project.
 
-### Components
+### Design system
+
+You can access the Design system only in dev mode with the following slug: `/design-system`.
+
+#### Components
 
 The components are located in the `src/components` directory and should be organized using the [Atomic Design Methodology](https://atomicdesign.bradfrost.com/chapter-2/):
 
@@ -138,7 +146,7 @@ The components are located in the `src/components` directory and should be organ
 When creating a new component you should also create stories for it and use the following structure:
 
 ```text
-/src/components/atoms
+/src/components/atoms/
 ├── button/
 │   ├── button.astro
 │   ├── button.stories.astro
@@ -150,6 +158,27 @@ When creating a new component you should also create stories for it and use the 
 The component stories will be collected when your start the dev server and will be available in the design system (accessible under `/design-system` in your browser).
 
 This way you can test them in isolation both visually through stories and with Vitest tests.
+
+#### Tokens
+
+This project use CSS variables to define colors, borders, fonts, shadows and spacings. This ensures design harmonization across the components and pages.
+
+When creating new design elements, you should use them. For example:
+
+```diff
+.some-element {
+-    padding: 1rem;
+-    background: #fff;
+-    border: 1px solid #ccc;
+-    font-size: 16px;
++    padding: var(--spacing-md);
++    background: var(--color-regular);
++    border: var(--border-size-sm) solid var(--color-border);
++    font-size: var(--font-size-md);
+}
+```
+
+You can find all available tokens in the design system (accessible under `/design-system` in your browser).
 
 ### Workflow
 

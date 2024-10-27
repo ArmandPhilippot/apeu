@@ -1,4 +1,6 @@
 ---
+import "../../../styles/global.css";
+
 type Props = {
   title: string;
 };
@@ -13,9 +15,32 @@ const { title } = Astro.props;
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
+    <link
+      rel="preload"
+      href="/fonts/Inter/Inter.woff2?v=3.18"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
   </head>
   <body>
     <h1>{title}</h1>
     <slot />
   </body>
 </html>
+
+<style>
+  body {
+    accent-color: var(--color-primary);
+    background: var(--color-regular);
+    color: var(--color-on-regular);
+    font-family: var(--font-family-regular);
+    font-size: var(--font-size-md);
+    line-height: var(--line-height);
+
+    ::selection {
+      background: var(--color-primary);
+      color: var(--color-on-primary);
+    }
+  }
+</style>

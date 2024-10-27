@@ -1,0 +1,53 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+type Props = HTMLAttributes<"figure"> & {
+  isInline?: boolean | undefined;
+  token: string;
+};
+
+const { class: className, isInline = false, token, ...attrs } = Astro.props;
+---
+
+<figure
+  {...attrs}
+  class:list={[
+    "token-preview",
+    { "token-preview--inlined": isInline },
+    className,
+  ]}
+>
+  <slot />
+  <figcaption>
+    <code class="token">{token}</code>
+  </figcaption>
+</figure>
+
+<style>
+  .token-preview {
+    display: flex;
+    flex-flow: column wrap;
+    place-items: center;
+    gap: var(--spacing-xs) var(--spacing-sm);
+    margin: 0;
+
+    &:global(> *) {
+      margin: 0;
+    }
+  }
+
+  .token-preview--inlined {
+    flex-flow: row wrap;
+  }
+
+  .token {
+    display: inline-block;
+    padding: var(--spacing-3xs) var(--spacing-2xs);
+    border: var(--border-size-sm) solid var(--color-border);
+    border-radius: var(--border-radii-md);
+    font-family: var(--font-family-mono);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height);
+  }
+</style>

@@ -22,9 +22,12 @@ describe("Layout", () => {
       props,
     });
 
-    expect.assertions(2);
+    expect.assertions(5);
 
     expect(result).toContain("</head>");
+    expect(result).toContain("</header>");
+    expect(result).toContain(props.title);
+    expect(result).toContain("</footer>");
     expect(result).toContain("</body>");
   });
 

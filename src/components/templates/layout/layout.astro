@@ -22,10 +22,71 @@ const { title } = Astro.props;
       type="font/woff2"
       crossorigin
     />
+    <slot name="head" />
+    <noscript>
+      <style>
+        .js-only {
+          display: none !important;
+        }
+      </style>
+    </noscript>
   </head>
-  <body>
-    <h1>{title}</h1>
-    <slot />
+  <body class="site">
+    <header class="site-header">
+      <div class="site-branding"><a href="/">Branding</a></div>
+      <div class="site-navbar">
+        <div class="site-navbar-item">Main nav</div>
+        <div class:list={["site-navbar-item", "js-only"]}>Search</div>
+        <div class:list={["site-navbar-item", "js-only"]}>Settings</div>
+      </div>
+    </header>
+    <div class="site-body">
+      <h1>{title}</h1>
+      <slot />
+    </div>
+    <footer class="site-footer">Copyright</footer>
+    <svg
+      aria-hidden="true"
+      width="0"
+      height="0"
+      viewBox="0 0 100 100"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <defs>
+        <filter color-interpolation-filters="sRGB" id="paper-filter">
+          <feTurbulence
+            baseFrequency="0.020"
+            numOctaves="7"
+            result="noise"
+            seed="3"
+            type="fractalNoise"></feTurbulence>
+          <feDiffuseLighting
+            diffuseConstant="1.1"
+            lighting-color="var(--color-regular)"
+            in="noise"
+            surfaceScale="0.600"
+          >
+            <feDistantLight azimuth="60" elevation="65"></feDistantLight>
+          </feDiffuseLighting>
+        </filter>
+        <filter color-interpolation-filters="sRGB" id="dark-paper-filter">
+          <feTurbulence
+            baseFrequency="0.020"
+            numOctaves="7"
+            result="noise"
+            seed="3"
+            type="fractalNoise"></feTurbulence>
+          <feDiffuseLighting
+            diffuseConstant="1.2"
+            lighting-color="var(--color-regular)"
+            in="noise"
+            surfaceScale="1.1"
+          >
+            <feDistantLight azimuth="40" elevation="57"></feDistantLight>
+          </feDiffuseLighting>
+        </filter>
+      </defs>
+    </svg>
   </body>
 </html>
 
@@ -41,6 +102,170 @@ const { title } = Astro.props;
     ::selection {
       background: var(--color-primary);
       color: var(--color-on-primary);
+    }
+  }
+
+  .site {
+    display: flex;
+    flex-flow: column;
+    min-height: 100dvh;
+
+    @media (width >= 1024px) {
+      display: grid;
+      grid-template-columns: minmax(0, 20dvw) minmax(0, 1fr);
+      grid-template-rows: minmax(0, 1fr) minmax(0, auto);
+    }
+
+    &::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      clip-path: inset(0);
+      pointer-events: none;
+      user-select: none;
+
+      /* Fixes a Chromium bug where the SVG filter wasn't updated when
+       * switching the theme... */
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  .site-header {
+    display: contents;
+
+    @media (width >= 640px) {
+      display: flex;
+      flex-flow: row wrap;
+      gap: var(--spacing-md);
+      justify-content: space-between;
+      border-block-end: var(--border-size-sm) solid var(--color-border);
+      box-shadow: var(--shadow-raised-to-top-center);
+    }
+
+    @media (width >= 1024px) {
+      grid-column: 1;
+      grid-row: 1;
+      flex-flow: column;
+      justify-content: start;
+      border-block-end: none;
+      box-shadow: none;
+    }
+  }
+
+  .site-branding,
+  .site-footer {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+  }
+
+  .site-branding,
+  .site-footer {
+    justify-content: center;
+    padding: var(--spacing-md);
+  }
+
+  .site-branding {
+    border-block-end: var(--border-size-sm) solid var(--color-border);
+    box-shadow: var(--shadow-raised-to-top-center);
+
+    @media (width >= 640px) {
+      border-block: 0;
+      box-shadow: none;
+    }
+  }
+
+  .site-navbar {
+    order: 1;
+    display: grid;
+    grid-auto-columns: minmax(0, 1fr);
+    grid-auto-flow: column dense;
+    position: sticky;
+    bottom: 0;
+    border-block-start: var(--border-size-sm) solid var(--color-border);
+    box-shadow: var(--shadow-raised-to-bottom-center);
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      clip-path: inset(0);
+      pointer-events: none;
+      user-select: none;
+    }
+
+    @media (width >= 640px) {
+      order: unset;
+      position: relative;
+      bottom: unset;
+      border-block: 0;
+      box-shadow: none;
+    }
+
+    @media (width >= 1024px) {
+      flex: 1;
+      display: flex;
+      flex-flow: column;
+    }
+  }
+
+  .site-navbar-item {
+    display: flex;
+    flex-flow: row wrap;
+    place-content: center;
+    min-height: calc(var(--one-px-in-rem) * 54);
+    padding: var(--spacing-xs);
+
+    &:where(:not(:last-child)) {
+      border-inline-end: var(--border-size-sm) solid var(--color-border);
+
+      @media (width >= 1024px) {
+        border-inline-end: none;
+      }
+    }
+
+    @media (width >= 640px) {
+      &:where(:first-child) {
+        border-inline-start: var(--border-size-sm) solid var(--color-border);
+
+        @media (width >= 1024px) {
+          border-inline-start: none;
+        }
+      }
+    }
+  }
+
+  .site-body {
+    flex: 1;
+
+    @media (width >= 1024px) {
+      grid-column: 2;
+      grid-row: 1;
+    }
+  }
+
+  .site-footer {
+    padding: var(--spacing-md);
+
+    @media (width >= 1024px) {
+      grid-column: 1 / -1;
+      grid-row: 2;
+    }
+  }
+
+  :global(:where([data-theme="light"])) {
+    .site::before,
+    .site-navbar::before {
+      filter: url("#paper-filter");
+    }
+  }
+
+  :global(:where([data-theme="dark"])) {
+    .site::before,
+    .site-navbar::before {
+      filter: url("#dark-paper-filter");
     }
   }
 </style>

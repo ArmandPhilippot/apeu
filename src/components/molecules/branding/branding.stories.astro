@@ -1,0 +1,12 @@
+---
+import Layout from "../../templates/layout/layout.astro";
+import BrandingComponent from "./branding.astro";
+
+const title = "Branding";
+---
+
+<Layout title={title}>
+  <h2>Usage</h2>
+  <p>This component is used to a logo alongside the brand.</p>
+  <BrandingComponent brand="Brand" url="#homepage" />
+</Layout>

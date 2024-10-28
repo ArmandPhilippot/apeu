@@ -1,0 +1,15 @@
+---
+import Layout from "../../templates/layout/layout.astro";
+import LogoComponent from "./logo.astro";
+
+const title = "Logo";
+---
+
+<Layout title={title}>
+  <h2>Usage</h2>
+  <p>
+    This is the website logo. You should use this component instead of importing
+    the logo to update the logo color when switching theme.
+  </p>
+  <LogoComponent />
+</Layout>

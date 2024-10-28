@@ -1,11 +1,24 @@
 ---
+import type { ComponentProps } from "astro/types";
 import "../../../styles/global.css";
+import { CONFIG } from "../../../utils/constants";
+import Copyright from "../../atoms/copyright/copyright.astro";
+import Heading from "../../atoms/heading/heading.astro";
+import License from "../../atoms/license/license.astro";
+import Branding from "../../molecules/branding/branding.astro";
+import NavLink from "../../molecules/nav-link/nav-link.astro";
+import NavList from "../../molecules/nav-list/nav-list.astro";
 
 type Props = {
   title: string;
 };
 
 const { title } = Astro.props;
+const footerLinks = [
+  ...(import.meta.env.DEV
+    ? [{ label: "Design system", url: "/design-system" }]
+    : []),
+] satisfies ComponentProps<typeof NavList>["items"];
 ---
 
 <html data-theme="light" lang="en" style="color-scheme: light;">
@@ -33,7 +46,9 @@ const { title } = Astro.props;
   </head>
   <body class="site">
     <header class="site-header">
-      <div class="site-branding"><a href="/">Branding</a></div>
+      <div class="site-branding">
+        <Branding brand={CONFIG.BRAND} url="/" />
+      </div>
       <div class="site-navbar">
         <div class="site-navbar-item">Main nav</div>
         <div class:list={["site-navbar-item", "js-only"]}>Search</div>
@@ -41,10 +56,22 @@ const { title } = Astro.props;
       </div>
     </header>
     <div class="site-body">
-      <h1>{title}</h1>
+      <Heading as="h1">{title}</Heading>
       <slot />
     </div>
-    <footer class="site-footer">Copyright</footer>
+    <footer class="site-footer">
+      <Copyright creationYear={CONFIG.CREATION_YEAR} owner={CONFIG.BRAND} />
+      <License />
+      <NavList items={footerLinks}>
+        {
+          ({ label, url, ...item }) => (
+            <NavLink {...item} href={url}>
+              {label}
+            </NavLink>
+          )
+        }
+      </NavList>
+    </footer>
     <svg
       aria-hidden="true"
       width="0"
@@ -160,13 +187,8 @@ const { title } = Astro.props;
     align-items: center;
   }
 
-  .site-branding,
-  .site-footer {
-    justify-content: center;
-    padding: var(--spacing-md);
-  }
-
   .site-branding {
+    justify-content: center;
     border-block-end: var(--border-size-sm) solid var(--color-border);
     box-shadow: var(--shadow-raised-to-top-center);
 
@@ -247,7 +269,10 @@ const { title } = Astro.props;
   }
 
   .site-footer {
+    justify-content: center;
+    gap: var(--spacing-4xs);
     padding: var(--spacing-md);
+    font-size: var(--font-size-sm);
 
     @media (width >= 1024px) {
       grid-column: 1 / -1;

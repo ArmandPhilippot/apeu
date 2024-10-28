@@ -21,10 +21,12 @@ const { brand, class: className, url, ...attrs } = Astro.props;
     display: flex;
     flex-flow: row wrap;
     align-items: center;
+    place-content: center;
     gap: var(--spacing-sm);
     width: fit-content;
     padding: var(--spacing-xs);
     border-radius: var(--border-radii-lg);
+    text-align: center;
     text-decoration: none;
 
     &:where(:focus-visible) {

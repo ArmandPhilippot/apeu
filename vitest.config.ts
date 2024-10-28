@@ -5,7 +5,12 @@ export default getViteConfig({
   test: {
     coverage: {
       include: ["src"],
-      exclude: ["src/env.d.ts", "src/pages", "src/**/*.test.ts"],
+      exclude: [
+        "src/env.d.ts",
+        "src/pages",
+        "src/**/*.stories.astro",
+        "src/**/*.test.ts",
+      ],
       extension: [
         ".js",
         ".cjs",

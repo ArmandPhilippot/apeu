@@ -2,6 +2,7 @@ apeu
 astro
 astrojs
 commitlint
+globby
 stylelint
 tsconfigs
 tseslint

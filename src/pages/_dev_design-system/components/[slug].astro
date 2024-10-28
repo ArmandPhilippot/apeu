@@ -1,0 +1,53 @@
+---
+import type { GetStaticPaths } from "astro";
+import { globby } from "globby";
+import { join } from "path";
+import Layout from "../../../components/templates/layout/layout.astro";
+import { COMPONENT_KINDS, STORIES_EXT } from "../../../utils/constants";
+import { getStoryNameFromSlug, getStoryRoute } from "../../../utils/stories";
+import { capitalizeFirstLetter } from "../../../utils/strings";
+
+export const getStaticPaths = (() => {
+  return Promise.all(
+    COMPONENT_KINDS.map(async (kind) => {
+      const componentDir = "src/components/";
+      const storiesPaths = await globby(join(componentDir, kind), {
+        expandDirectories: {
+          extensions: [STORIES_EXT],
+        },
+      });
+      const stories = storiesPaths.map((path) => {
+        const slug = getStoryRoute(path).replace(componentDir, "");
+
+        return {
+          label: getStoryNameFromSlug(slug),
+          slug,
+        };
+      });
+
+      return {
+        params: { slug: kind },
+        props: { stories, title: capitalizeFirstLetter(kind) },
+      };
+    }),
+  );
+}) satisfies GetStaticPaths;
+
+const { stories, title } = Astro.props;
+---
+
+<Layout title={title}>
+  {
+    stories.length ? (
+      <ul>
+        {stories.map((story) => (
+          <li>
+            <a href={story.slug}>{story.label}</a>
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <p>No stories available in {title}</p>
+    )
+  }
+</Layout>

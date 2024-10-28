@@ -170,28 +170,30 @@ const title = "Tokens";
     {
       colors.contexts.map((context) => (
         <div class="wrapper flex">
-          {colors.variants.map((variant) => {
-            const token =
-              variant === "default"
-                ? {
-                    surface: `--color-${context}`,
-                    text: `--color-on-${context}`,
-                  }
-                : {
-                    surface: `--color-${context}-${variant}`,
-                    text: `--color-on-${context}-${variant}`,
-                  };
-            return (
-              <TokenPreview token={token.text}>
-                <div
-                  class="box"
-                  style={`background: var(${token.surface});color: var(${token.text});`}
-                >
-                  Preview
-                </div>
-              </TokenPreview>
-            );
-          })}
+          <TokenPreview token={`--color-on-${context}`}>
+            <div
+              class="box"
+              style={`background: var(--color-${context});color: var(--color-on-${context});`}
+            >
+              Preview
+            </div>
+          </TokenPreview>
+          <TokenPreview token={`--color-on-${context}-faded`}>
+            <div
+              class="box"
+              style={`background: var(--color-${context}-faded);color: var(--color-on-${context}-faded);`}
+            >
+              Preview
+            </div>
+          </TokenPreview>
+          <TokenPreview token={`--color-on-${context}-subtle`}>
+            <div
+              class="box"
+              style={`background: var(--color-${context}-subtle);color: var(--color-on-${context}-subtle);`}
+            >
+              Preview
+            </div>
+          </TokenPreview>
         </div>
       ))
     }

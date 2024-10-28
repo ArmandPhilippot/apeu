@@ -1,0 +1,189 @@
+---
+import { Icon } from "astro-icon/components";
+import type { ComponentProps } from "astro/types";
+import type { IconName } from "../../../types/tokens";
+import Link from "../../atoms/link/link.astro";
+
+type Props = ComponentProps<typeof Link> & {
+  /**
+   * The nav link icon.
+   */
+  icon?: IconName | null | undefined;
+  /**
+   * The icon size if defined.
+   *
+   * @default 20
+   */
+  iconSize?: ComponentProps<typeof Icon>["size"] | undefined;
+  /**
+   * Should we use the block variant?
+   *
+   * @default false
+   */
+  isBlock?: boolean | null | undefined;
+  /**
+   * Should the nav link be bordered?
+   *
+   * @default false
+   */
+  isBordered?: boolean | null | undefined;
+};
+
+const {
+  class: className,
+  icon,
+  iconSize = 28,
+  isBlock = false,
+  isBordered = false,
+  ...attrs
+} = Astro.props;
+---
+
+<Link
+  {...attrs}
+  class:list={["nav-link", { block: isBlock, bordered: isBordered }, className]}
+>
+  {
+    icon ? (
+      <Icon
+        aria-hidden="true"
+        class="nav-link-icon"
+        name={icon}
+        size={iconSize}
+      />
+    ) : null
+  }
+  <slot />
+</Link>
+
+<style>
+  .nav-link {
+    border: var(--border-size-sm) solid transparent;
+
+    &:where(.block) {
+      display: flex;
+      flex-flow: column wrap;
+      align-items: center;
+      justify-content: center;
+      gap: var(--spacing-2xs);
+      min-width: var(--one-px-in-rem) * 54;
+      padding: var(--spacing-2xs);
+      font-size: var(--font-size-xs);
+      font-weight: var(--font-weight-bold);
+      hyphens: auto;
+      overflow-wrap: anywhere;
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: all 0.15s linear 0s;
+
+      @media screen and (any-pointer: fine) {
+        min-height: var(--one-px-in-rem) * 48;
+      }
+
+      &:where(:hover) {
+        background-image: linear-gradient(
+            to right,
+            var(--color-primary-lighter),
+            var(--color-primary)
+          ),
+          linear-gradient(
+            to bottom,
+            var(--color-primary),
+            var(--color-primary-lighter)
+          ),
+          linear-gradient(
+            to left,
+            var(--color-primary-lighter),
+            var(--color-primary)
+          ),
+          linear-gradient(
+            to top,
+            var(--color-primary),
+            var(--color-primary-lighter)
+          );
+        background-position:
+          top left,
+          top right,
+          bottom right,
+          bottom left;
+        background-repeat: no-repeat;
+        background-size:
+          100% var(--border-size-lg),
+          var(--border-size-lg) 100%,
+          100% var(--border-size-lg),
+          var(--border-size-lg) 100%;
+        animation: draw-borders 0.7s linear 1 0s;
+      }
+
+      &:where(:focus-visible) {
+        outline: var(--border-size-lg) solid var(--color-primary-lighter);
+        outline-offset: calc(var(--border-size-lg) * -1);
+      }
+    }
+
+    &:where(.bordered) {
+      border-color: var(--color-primary);
+    }
+
+    &:where(.block.bordered) {
+      outline-offset: calc(var(--border-size-md) * -1);
+    }
+  }
+
+  :global(:where(.nav-link:not(.block))) .nav-link-icon {
+    margin-right: var(--spacing-4xs);
+    vertical-align: middle;
+  }
+
+  @keyframes draw-borders {
+    0% {
+      background-position:
+        top left,
+        top right,
+        bottom right,
+        bottom left;
+      background-size:
+        0% var(--border-size-lg),
+        var(--border-size-lg) 0%,
+        0% var(--border-size-lg),
+        var(--border-size-lg) 0%;
+    }
+
+    25% {
+      background-size:
+        0% var(--border-size-lg),
+        var(--border-size-lg) 0%,
+        100% var(--border-size-lg),
+        var(--border-size-lg) 0%;
+    }
+
+    50% {
+      background-size:
+        0% var(--border-size-lg),
+        var(--border-size-lg) 0%,
+        100% var(--border-size-lg),
+        var(--border-size-lg) 100%;
+    }
+
+    75% {
+      background-size:
+        100% var(--border-size-lg),
+        var(--border-size-lg) 0%,
+        100% var(--border-size-lg),
+        var(--border-size-lg) 100%;
+    }
+
+    100% {
+      background-position:
+        top left,
+        top right,
+        bottom right,
+        bottom left;
+      background-size:
+        100% var(--border-size-lg),
+        var(--border-size-lg) 100%,
+        100% var(--border-size-lg),
+        var(--border-size-lg) 100%;
+    }
+  }
+</style>

@@ -1,0 +1,30 @@
+---
+import Layout from "../../templates/layout/layout.astro";
+import HeadingComponent from "./heading.astro";
+
+const title = "Heading";
+---
+
+<Layout title={title}>
+  <h2>Usage</h2>
+  <p>This component is used to display a heading.</p>
+  <h2>Levels from h1 to h6</h2>
+  <HeadingComponent as="h1">
+    The quick brown fox jumps over the lazy dog
+  </HeadingComponent>
+  <HeadingComponent as="h2">
+    The quick brown fox jumps over the lazy dog
+  </HeadingComponent>
+  <HeadingComponent as="h3">
+    The quick brown fox jumps over the lazy dog
+  </HeadingComponent>
+  <HeadingComponent as="h4">
+    The quick brown fox jumps over the lazy dog
+  </HeadingComponent>
+  <HeadingComponent as="h5">
+    The quick brown fox jumps over the lazy dog
+  </HeadingComponent>
+  <HeadingComponent as="h6">
+    The quick brown fox jumps over the lazy dog
+  </HeadingComponent>
+</Layout>

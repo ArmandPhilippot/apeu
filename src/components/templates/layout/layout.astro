@@ -5,6 +5,7 @@ import { CONFIG } from "../../../utils/constants";
 import Copyright from "../../atoms/copyright/copyright.astro";
 import Heading from "../../atoms/heading/heading.astro";
 import License from "../../atoms/license/license.astro";
+import BackTo from "../../molecules/back-to/back-to.astro";
 import Branding from "../../molecules/branding/branding.astro";
 import NavLink from "../../molecules/nav-link/nav-link.astro";
 import NavList from "../../molecules/nav-list/nav-list.astro";
@@ -45,35 +46,38 @@ const footerLinks = [
       </style>
     </noscript>
   </head>
-  <body class="site">
-    <SkipTo anchor="#contents">Skip to contents</SkipTo>
-    <header class="site-header">
-      <div class="site-branding">
-        <Branding brand={CONFIG.BRAND} url="/" />
+  <body>
+    <ap-website class="site" id="#top">
+      <SkipTo anchor="#contents">Skip to contents</SkipTo>
+      <header class="site-header">
+        <div class="site-branding">
+          <Branding brand={CONFIG.BRAND} url="/" />
+        </div>
+        <div class="site-navbar">
+          <div class="site-navbar-item">Main nav</div>
+          <div class:list={["site-navbar-item", "js-only"]}>Search</div>
+          <div class:list={["site-navbar-item", "js-only"]}>Settings</div>
+        </div>
+      </header>
+      <div class="site-body" id="contents">
+        <Heading as="h1">{title}</Heading>
+        <slot />
       </div>
-      <div class="site-navbar">
-        <div class="site-navbar-item">Main nav</div>
-        <div class:list={["site-navbar-item", "js-only"]}>Search</div>
-        <div class:list={["site-navbar-item", "js-only"]}>Settings</div>
-      </div>
-    </header>
-    <div class="site-body" id="contents">
-      <Heading as="h1">{title}</Heading>
-      <slot />
-    </div>
-    <footer class="site-footer">
-      <Copyright creationYear={CONFIG.CREATION_YEAR} owner={CONFIG.BRAND} />
-      <License />
-      <NavList items={footerLinks}>
-        {
-          ({ label, url, ...item }) => (
-            <NavLink {...item} href={url}>
-              {label}
-            </NavLink>
-          )
-        }
-      </NavList>
-    </footer>
+      <footer class="site-footer">
+        <Copyright creationYear={CONFIG.CREATION_YEAR} owner={CONFIG.BRAND} />
+        <License />
+        <NavList items={footerLinks}>
+          {
+            ({ label, url, ...item }) => (
+              <NavLink {...item} href={url}>
+                {label}
+              </NavLink>
+            )
+          }
+        </NavList>
+        <BackTo anchor="#top" class="site-back-to-top" label="Back to top" />
+      </footer>
+    </ap-website>
     <svg
       aria-hidden="true"
       width="0"
@@ -282,6 +286,25 @@ const footerLinks = [
     }
   }
 
+  .site-back-to-top {
+    position: fixed;
+
+    /* This not ideal because the navbar height could change but setting a
+       * fix height to the navbar is not ideal neither so I prefer to use a
+       * "magic" number here. */
+    bottom: 6.5rem;
+    right: calc(1dvw + var(--spacing-sm));
+    z-index: 2;
+
+    @media (width >= 640px) {
+      bottom: calc(1dvw + var(--spacing-md));
+    }
+
+    @media (width >= 640px) {
+      right: calc(1dvw + var(--spacing-md));
+    }
+  }
+
   :global(:where([data-theme="light"])) {
     .site::before,
     .site-navbar::before {
@@ -296,3 +319,47 @@ const footerLinks = [
     }
   }
 </style>
+
+<script>
+  class APWebsite extends HTMLElement {
+    #backToTopBtn: HTMLAnchorElement | null = null;
+
+    constructor() {
+      super();
+      this.updateBackToTopBtnVisibility =
+        this.updateBackToTopBtnVisibility.bind(this);
+    }
+
+    connectedCallback() {
+      this.#backToTopBtn = this.querySelector("a.site-back-to-top");
+
+      this.updateBackToTopBtnVisibility();
+      window.addEventListener("scroll", this.updateBackToTopBtnVisibility);
+    }
+
+    disconnectedCallback() {
+      window.removeEventListener("scroll", this.updateBackToTopBtnVisibility);
+    }
+
+    hideEl(el: HTMLElement) {
+      el.style.opacity = "0";
+      el.style.visibility = "hidden";
+    }
+
+    showEl(el: HTMLElement) {
+      el.style.opacity = "1";
+      el.style.visibility = "visible";
+    }
+
+    updateBackToTopBtnVisibility() {
+      if (!this.#backToTopBtn) return;
+
+      const breakpoint = 300;
+
+      if (window.scrollY >= breakpoint) this.showEl(this.#backToTopBtn);
+      else this.hideEl(this.#backToTopBtn);
+    }
+  }
+
+  customElements.define("ap-website", APWebsite);
+</script>

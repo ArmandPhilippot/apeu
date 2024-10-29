@@ -163,12 +163,4 @@ if (isExternal && kind === "primary")
       content: var(--external-icon);
     }
   }
-
-  :global(:where([data-theme="dark"])) .button:where(.external) {
-    --external-icon: url('data:image/svg+xml,<svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" width="14"><path fill="hsl(208, 65%, 75%)" d="m 45,3 -16.99194,2.47254 8.736,2.73966 -21.47628,21.47628 3.04458,3.04416 21.47544,-21.47544 2.73924,8.73516 z"/><path fill="hsl(208, 65%, 75%)" d="M 4.68,7.2 A 1.68,1.68 0 0 0 3,8.88 V 43.32 A 1.68,1.68 0 0 0 4.68,45 H 39.12 A 1.68,1.68 0 0 0 40.8,43.32 V 29.17188 H 37.44 V 41.64 H 6.36 V 10.56 H 18.82812 V 7.2 Z"/></svg>');
-  }
-
-  :global(:where([data-theme="light"])) .button:where(.external) {
-    --external-icon: url('data:image/svg+xml,<svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" width="14"><path fill="hsl(208, 52%, 27%)" d="m 45,3 -16.99194,2.47254 8.736,2.73966 -21.47628,21.47628 3.04458,3.04416 21.47544,-21.47544 2.73924,8.73516 z"/><path fill="hsl(208, 52%, 27%)" d="M 4.68,7.2 A 1.68,1.68 0 0 0 3,8.88 V 43.32 A 1.68,1.68 0 0 0 4.68,45 H 39.12 A 1.68,1.68 0 0 0 40.8,43.32 V 29.17188 H 37.44 V 41.64 H 6.36 V 10.56 H 18.82812 V 7.2 Z"/></svg>');
-  }
 </style>

@@ -8,6 +8,7 @@ import License from "../../atoms/license/license.astro";
 import Branding from "../../molecules/branding/branding.astro";
 import NavLink from "../../molecules/nav-link/nav-link.astro";
 import NavList from "../../molecules/nav-list/nav-list.astro";
+import SkipTo from "../../molecules/skip-to/skip-to.astro";
 
 type Props = {
   title: string;
@@ -45,6 +46,7 @@ const footerLinks = [
     </noscript>
   </head>
   <body class="site">
+    <SkipTo anchor="#contents">Skip to contents</SkipTo>
     <header class="site-header">
       <div class="site-branding">
         <Branding brand={CONFIG.BRAND} url="/" />
@@ -55,7 +57,7 @@ const footerLinks = [
         <div class:list={["site-navbar-item", "js-only"]}>Settings</div>
       </div>
     </header>
-    <div class="site-body">
+    <div class="site-body" id="contents">
       <Heading as="h1">{title}</Heading>
       <slot />
     </div>

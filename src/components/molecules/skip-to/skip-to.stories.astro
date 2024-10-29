@@ -1,0 +1,22 @@
+---
+import Heading from "../../atoms/heading/heading.astro";
+import Layout from "../../templates/layout/layout.astro";
+import SkipToComponent from "./skip-to.astro";
+
+const title = "SkipTo";
+---
+
+<Layout title={title}>
+  <Heading>Usage</Heading>
+  <p>
+    A SkipLink component is special. It is used to navigate through a page using
+    anchors.
+  </p>
+  <p>
+    Click here then use <kbd>Tab</kbd> key to focus the skip link below. It should
+    then appears on the top left of your screen.
+  </p>
+  <SkipToComponent anchor="#some-id">
+    Skip to some anchor on the page
+  </SkipToComponent>
+</Layout>

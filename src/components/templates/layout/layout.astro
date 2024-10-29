@@ -77,49 +77,49 @@ const footerLinks = [
         </NavList>
         <BackTo anchor="#top" class="site-back-to-top" label="Back to top" />
       </footer>
+      <svg
+        aria-hidden="true"
+        width="0"
+        height="0"
+        viewBox="0 0 100 100"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <defs>
+          <filter color-interpolation-filters="sRGB" id="paper-filter">
+            <feTurbulence
+              baseFrequency="0.020"
+              numOctaves="7"
+              result="noise"
+              seed="3"
+              type="fractalNoise"></feTurbulence>
+            <feDiffuseLighting
+              diffuseConstant="1.1"
+              lighting-color="var(--color-regular)"
+              in="noise"
+              surfaceScale="0.600"
+            >
+              <feDistantLight azimuth="60" elevation="65"></feDistantLight>
+            </feDiffuseLighting>
+          </filter>
+          <filter color-interpolation-filters="sRGB" id="dark-paper-filter">
+            <feTurbulence
+              baseFrequency="0.020"
+              numOctaves="7"
+              result="noise"
+              seed="3"
+              type="fractalNoise"></feTurbulence>
+            <feDiffuseLighting
+              diffuseConstant="1.2"
+              lighting-color="var(--color-regular)"
+              in="noise"
+              surfaceScale="1.1"
+            >
+              <feDistantLight azimuth="40" elevation="57"></feDistantLight>
+            </feDiffuseLighting>
+          </filter>
+        </defs>
+      </svg>
     </ap-website>
-    <svg
-      aria-hidden="true"
-      width="0"
-      height="0"
-      viewBox="0 0 100 100"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <defs>
-        <filter color-interpolation-filters="sRGB" id="paper-filter">
-          <feTurbulence
-            baseFrequency="0.020"
-            numOctaves="7"
-            result="noise"
-            seed="3"
-            type="fractalNoise"></feTurbulence>
-          <feDiffuseLighting
-            diffuseConstant="1.1"
-            lighting-color="var(--color-regular)"
-            in="noise"
-            surfaceScale="0.600"
-          >
-            <feDistantLight azimuth="60" elevation="65"></feDistantLight>
-          </feDiffuseLighting>
-        </filter>
-        <filter color-interpolation-filters="sRGB" id="dark-paper-filter">
-          <feTurbulence
-            baseFrequency="0.020"
-            numOctaves="7"
-            result="noise"
-            seed="3"
-            type="fractalNoise"></feTurbulence>
-          <feDiffuseLighting
-            diffuseConstant="1.2"
-            lighting-color="var(--color-regular)"
-            in="noise"
-            surfaceScale="1.1"
-          >
-            <feDistantLight azimuth="40" elevation="57"></feDistantLight>
-          </feDiffuseLighting>
-        </filter>
-      </defs>
-    </svg>
   </body>
 </html>
 

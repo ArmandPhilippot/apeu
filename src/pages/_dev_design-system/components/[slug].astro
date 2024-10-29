@@ -2,6 +2,9 @@
 import type { GetStaticPaths } from "astro";
 import { globby } from "globby";
 import { join } from "path";
+import Link from "../../../components/atoms/link/link.astro";
+import ListItem from "../../../components/atoms/list/list-item.astro";
+import List from "../../../components/atoms/list/list.astro";
 import Layout from "../../../components/templates/layout/layout.astro";
 import { COMPONENT_KINDS, STORIES_EXT } from "../../../utils/constants";
 import { getStoryNameFromSlug, getStoryRoute } from "../../../utils/stories";
@@ -39,13 +42,13 @@ const { stories, title } = Astro.props;
 <Layout title={title}>
   {
     stories.length ? (
-      <ul>
+      <List>
         {stories.map((story) => (
-          <li>
-            <a href={story.slug}>{story.label}</a>
-          </li>
+          <ListItem>
+            <Link href={story.slug}>{story.label}</Link>
+          </ListItem>
         ))}
-      </ul>
+      </List>
     ) : (
       <p>No stories available in {title}</p>
     )

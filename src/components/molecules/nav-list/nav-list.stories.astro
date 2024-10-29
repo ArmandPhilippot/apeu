@@ -1,5 +1,6 @@
 ---
 import type { ComponentProps } from "astro/types";
+import Heading from "../../atoms/heading/heading.astro";
 import ListItem from "../../atoms/list/list-item.astro";
 import List from "../../atoms/list/list.astro";
 import Layout from "../../templates/layout/layout.astro";
@@ -15,7 +16,7 @@ const items = [
 ---
 
 <Layout title={title}>
-  <h2>Usage</h2>
+  <Heading>Usage</Heading>
   <p>
     This component is used to define a navigation list. It accepts an <code
       >items</code

@@ -1,5 +1,6 @@
 ---
 import Layout from "../../templates/layout/layout.astro";
+import Heading from "../heading/heading.astro";
 import ListItem from "./list-item.astro";
 import ListComponent from "./list.astro";
 
@@ -7,25 +8,25 @@ const title = "List";
 ---
 
 <Layout title={title}>
-  <h2>Usage</h2>
+  <Heading as="h2">Usage</Heading>
   <p>
     This component is usually used to define a list of related items, either
     ordered or unordered.
   </p>
-  <h2>Kind</h2>
-  <h3>Unordered</h3>
+  <Heading as="h2">Kind</Heading>
+  <Heading as="h3">Unordered</Heading>
   <ListComponent>
     <ListItem>Item 1</ListItem>
     <ListItem>Item 2</ListItem>
     <ListItem>Item 3</ListItem>
   </ListComponent>
-  <h3>Ordered</h3>
+  <Heading as="h3">Ordered</Heading>
   <ListComponent as="ol">
     <ListItem>Item 1</ListItem>
     <ListItem>Item 2</ListItem>
     <ListItem>Item 3</ListItem>
   </ListComponent>
-  <h3>Nesting and mixing</h3>
+  <Heading as="h3">Nesting and mixing</Heading>
   <ListComponent>
     <ListItem>Item 1</ListItem>
     <ListItem>
@@ -39,20 +40,20 @@ const title = "List";
     <ListItem>Item 3</ListItem>
     <ListItem>Item 4</ListItem>
   </ListComponent>
-  <h2>Options</h2>
-  <h3><code>isInline</code></h3>
+  <Heading as="h2">Options</Heading>
+  <Heading as="h3"><code>isInline</code></Heading>
   <ListComponent isInline>
     <ListItem>Item 1</ListItem>
     <ListItem>Item 2</ListItem>
     <ListItem>Item 3</ListItem>
   </ListComponent>
-  <h3><code>hideMarker</code></h3>
+  <Heading as="h3"><code>hideMarker</code></Heading>
   <ListComponent hideMarker>
     <ListItem>Item 1</ListItem>
     <ListItem>Item 2</ListItem>
     <ListItem>Item 3</ListItem>
   </ListComponent>
-  <h3><code>hideMarker</code> on a specific item</h3>
+  <Heading as="h3"><code>hideMarker</code> on a specific item</Heading>
   <ListComponent>
     <ListItem>Item 1</ListItem>
     <ListItem hideMarker>Item 2</ListItem>

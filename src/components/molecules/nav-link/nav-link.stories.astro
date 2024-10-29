@@ -1,4 +1,5 @@
 ---
+import Heading from "../../atoms/heading/heading.astro";
 import Layout from "../../templates/layout/layout.astro";
 import NavLinkComponent from "./nav-link.astro";
 
@@ -6,25 +7,25 @@ const title = "NavLink";
 ---
 
 <Layout title={title}>
-  <h2>Usage</h2>
+  <Heading as="h2">Usage</Heading>
   <p>
     This component is used to define a navigation item inside a navigation list.
   </p>
-  <h2>Variant: <code>isBlock: false</code> (default)</h2>
+  <Heading as="h2">Variant: <code>isBlock: false</code> (default)</Heading>
   <NavLinkComponent href="#destination">Nav Item</NavLinkComponent>
-  <h3><code>isBordered</code></h3>
+  <Heading as="h3"><code>isBordered</code></Heading>
   <NavLinkComponent href="#destination" isBordered>Nav Item</NavLinkComponent>
-  <h3>With icon</h3>
+  <Heading as="h3">With icon</Heading>
   <NavLinkComponent href="#destination" icon="cc-by-sa" iconSize={40}>
     Nav Item
   </NavLinkComponent>
-  <h2>Variant: <code>isBlock: true</code></h2>
+  <Heading as="h2">Variant: <code>isBlock: true</code></Heading>
   <NavLinkComponent href="#destination" isBlock>Nav Item</NavLinkComponent>
-  <h3><code>isBordered</code></h3>
+  <Heading as="h3"><code>isBordered</code></Heading>
   <NavLinkComponent href="#destination" isBlock isBordered>
     Nav Item
   </NavLinkComponent>
-  <h3>With icon</h3>
+  <Heading as="h3">With icon</Heading>
   <NavLinkComponent href="#destination" icon="cc-by-sa" iconSize={40} isBlock>
     Nav Item
   </NavLinkComponent>

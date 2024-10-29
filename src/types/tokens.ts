@@ -3,4 +3,4 @@
  *
  * These tokens are meant to be used with `astro-icon`.
  */
-export type IconName = "cc-by-sa";
+export type IconName = "caret" | "cc-by-sa";

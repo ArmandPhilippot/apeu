@@ -7,7 +7,11 @@ import Link from "../../../components/atoms/link/link.astro";
 import ListItem from "../../../components/atoms/list/list-item.astro";
 import List from "../../../components/atoms/list/list.astro";
 import Layout from "../../../components/templates/layout/layout.astro";
-import { COMPONENT_KINDS, STORIES_EXT } from "../../../utils/constants";
+import {
+  COMPONENT_KINDS,
+  STORIES_EXT,
+  STORIES_SUFFIX,
+} from "../../../utils/constants";
 import { getStoryNameFromSlug, getStoryRoute } from "../../../utils/stories";
 import { capitalizeFirstLetter } from "../../../utils/strings";
 
@@ -20,14 +24,21 @@ export const getStaticPaths = (() => {
           extensions: [STORIES_EXT],
         },
       });
-      const stories = storiesPaths.map((path) => {
-        const slug = getStoryRoute(path).replace(componentDir, "");
+      const stories = storiesPaths
+        .filter(
+          (path) =>
+            !path.includes(`/${STORIES_SUFFIX}/`) ||
+            (path.includes(`/${STORIES_SUFFIX}/`) &&
+              path.endsWith(`index.${STORIES_EXT}`)),
+        )
+        .map((path) => {
+          const slug = getStoryRoute(path).replace(componentDir, "");
 
-        return {
-          label: getStoryNameFromSlug(slug),
-          slug,
-        };
-      });
+          return {
+            label: getStoryNameFromSlug(slug),
+            slug,
+          };
+        });
 
       return {
         params: { slug: kind },

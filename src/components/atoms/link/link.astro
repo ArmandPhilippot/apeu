@@ -1,0 +1,112 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+type Props = Omit<HTMLAttributes<"a">, "href"> & {
+  href: string | URL;
+  isDownload?: boolean | null | undefined;
+  isExternal?: boolean | null | undefined;
+};
+
+const {
+  class: className,
+  isDownload = false,
+  isExternal = false,
+  rel,
+  ...attrs
+} = Astro.props;
+const linkRel =
+  isExternal && !rel?.includes("external") ? `external ${rel}` : rel;
+---
+
+{
+  /* Unfortunately the `<style />` tag has to be on the same line as the link
+   * to avoid an extra space after the link when rendered. */
+}
+<a
+  {...attrs}
+  class:list={["link", { download: isDownload }, className]}
+  rel={linkRel}><slot /></a
+><style>
+  .link {
+    color: var(--color-primary);
+    text-decoration-thickness: 0.2ex;
+    text-underline-offset: 0.4ex;
+    transition: all 0.18s linear 0s;
+
+    &:where(:hover, :focus) {
+      color: var(--color-primary-light);
+    }
+
+    &:where(:hover) {
+      text-decoration-thickness: 0.4ex;
+    }
+
+    &:where(:focus-visible) {
+      border-radius: var(--border-radii-sm);
+      text-decoration-color: transparent;
+      outline: var(--border-size-md) solid var(--color-primary-lighter);
+      outline-offset: 0.11ex;
+      transition: all 0.1s ease-in-out 0s;
+    }
+
+    &:where(:active) {
+      color: var(--color-primary-dark);
+      text-decoration-thickness: 0.1ex;
+    }
+
+    &:where(.download, [hreflang], [rel~="external"]) {
+      &::after {
+        display: inline-block;
+        content: var(--is-lang-hidden, "\0000a0" var(--lang-icon, ""))
+          var(--is-icon-hidden, "\0000a0" var(--link-icon, ""));
+        font-size: var(--font-size-xs);
+      }
+    }
+
+    &:where([hreflang]) {
+      --lang-icon: "[" attr(hreflang) "]";
+    }
+
+    &:where(:not([hreflang])) {
+      --is-lang-hidden: "";
+    }
+
+    &:where([rel~="external"]:not(.download)) {
+      --link-icon: var(--external-icon);
+    }
+
+    &:where(.download[rel~="external"]) {
+      --link-icon: var(--download-icon) "\0000a0" var(--external-icon);
+    }
+
+    &:where(.download:not([rel~="external"])) {
+      --link-icon: var(--download-icon);
+    }
+
+    &:where(:not(.download):not([rel~="external"])) {
+      --is-icon-hidden: "";
+    }
+
+    &:has(img) {
+      display: block;
+      width: fit-content;
+      height: fit-content;
+
+      & > :global(img) {
+        display: block;
+        max-width: 100%;
+        height: auto;
+      }
+
+      &:where(:hover) {
+        border-radius: var(--border-radii-sm);
+        outline: var(--border-size-sm) solid var(--color-primary);
+
+        & > :global(img) {
+          opacity: 0.95;
+          transition: all 0.18s linear 0s;
+        }
+      }
+    }
+  }
+</style>

@@ -1,0 +1,39 @@
+---
+import type { ComponentProps } from "astro/types";
+import type { IconName } from "../../../types/tokens";
+import ListItem from "../../atoms/list/list-item.astro";
+import List from "../../atoms/list/list.astro";
+
+type NavItem = {
+  icon?: IconName | null | undefined;
+  iconSize?: number | undefined;
+  label: string;
+  url: string;
+};
+
+type Props = Omit<ComponentProps<typeof List>, "as"> & {
+  children: (item: NavItem) => unknown;
+  isOrdered?: boolean | null | undefined;
+  items: NavItem[];
+};
+
+const { class: className, isOrdered = false, items, ...attrs } = Astro.props;
+const as = isOrdered ? "ol" : "ul";
+---
+
+<List {...attrs} as={as} class:list={["nav-list", className]}>
+  {
+    items.map((item, index, list) => (
+      <ListItem
+        class="nav-list-item"
+        set:html={Astro.slots.render("default", [item, index, list])}
+      />
+    ))
+  }
+</List>
+
+<style>
+  .nav-list {
+    margin: 0;
+  }
+</style>

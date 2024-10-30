@@ -1,4 +1,6 @@
 ---
+import type { ComponentProps } from "astro/types";
+import Heading from "../../../components/atoms/heading/heading.astro";
 import Layout from "../../../components/templates/layout/layout.astro";
 import TokenPreview from "./_token-preview.astro";
 
@@ -62,11 +64,16 @@ const spacings = [
 ] as const;
 
 const title = "Tokens";
+const seo: ComponentProps<typeof Layout>["seo"] = {
+  nofollow: true,
+  noindex: true,
+  title: `${title} | Design system`,
+};
 ---
 
-<Layout title={title}>
-  <h2>Fonts</h2>
-  <h3>Family</h3>
+<Layout seo={seo} title={title}>
+  <Heading as="h2">Fonts</Heading>
+  <Heading as="h3">Family</Heading>
   <div class="wrapper flex">
     {
       fonts.families.map((family) => (
@@ -78,7 +85,7 @@ const title = "Tokens";
       ))
     }
   </div>
-  <h3>Size</h3>
+  <Heading as="h3">Size</Heading>
   <div class="wrapper flex">
     {
       fonts.sizes.map((size) => (
@@ -90,7 +97,7 @@ const title = "Tokens";
       ))
     }
   </div>
-  <h3>Weights</h3>
+  <Heading as="h3">Weights</Heading>
   <div class="wrapper flex">
     {
       fonts.weights.map((weight) => (
@@ -102,7 +109,7 @@ const title = "Tokens";
       ))
     }
   </div>
-  <h2>Spacings</h2>
+  <Heading as="h2">Spacings</Heading>
   <div class="wrapper flex">
     {
       spacings.map((spacing) => (
@@ -117,8 +124,8 @@ const title = "Tokens";
       ))
     }
   </div>
-  <h2>Borders</h2>
-  <h3>Size</h3>
+  <Heading as="h2">Borders</Heading>
+  <Heading as="h3">Size</Heading>
   <div class="wrapper flex">
     {
       borders.sizes.map((size) => (
@@ -131,7 +138,7 @@ const title = "Tokens";
       ))
     }
   </div>
-  <h3>Radius</h3>
+  <Heading as="h3">Radius</Heading>
   <div class="wrapper flex">
     {
       borders.radius.map((radii) => (
@@ -144,8 +151,8 @@ const title = "Tokens";
       ))
     }
   </div>
-  <h2>Colors</h2>
-  <h3>Surfaces</h3>
+  <Heading as="h2">Colors</Heading>
+  <Heading as="h3">Surfaces</Heading>
   <div class="wrapper grid">
     {
       colors.contexts.map((context) => (
@@ -165,7 +172,7 @@ const title = "Tokens";
       ))
     }
   </div>
-  <h3>Texts on surfaces</h3>
+  <Heading as="h3">Texts on surfaces</Heading>
   <div class="wrapper grid">
     {
       colors.contexts.map((context) => (
@@ -198,8 +205,8 @@ const title = "Tokens";
       ))
     }
   </div>
-  <h2>Shadows</h2>
-  <h3>Elevation</h3>
+  <Heading as="h2">Shadows</Heading>
+  <Heading as="h3">Elevation</Heading>
   <div class="wrapper flex">
     {
       shadows.elevations.map((elevation) => (
@@ -217,7 +224,7 @@ const title = "Tokens";
       ))
     }
   </div>
-  <h3>Direction</h3>
+  <Heading as="h3">Direction</Heading>
   {
     shadows.directions.y.map((y) => (
       <div class="wrapper grid">
@@ -234,7 +241,7 @@ const title = "Tokens";
       </div>
     ))
   }
-  <h3>Colors</h3>
+  <Heading as="h3">Colors</Heading>
   <p>
     Ideally, I should adapt the shadow color according to the surface but I
     don't think I'll use them elsewhere than on regular background.

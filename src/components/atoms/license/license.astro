@@ -1,0 +1,21 @@
+---
+import { Icon } from "astro-icon/components";
+import type { ComponentProps } from "astro/types";
+
+type Props = Omit<ComponentProps<typeof Icon>, "name" | "title">;
+
+const { class: className, ...attrs } = Astro.props;
+---
+
+<Icon
+  {...attrs}
+  class:list={["license", className]}
+  name="cc-by-sa"
+  title="Contents are under CC BY SA license."
+/>
+
+<style>
+  .license {
+    font-size: 1.15em;
+  }
+</style>

@@ -1,0 +1,50 @@
+---
+import type { HTMLTag, Polymorphic } from "astro/types";
+
+type Props<T extends Extract<HTMLTag, "ol" | "ul"> = "ul"> = Polymorphic<{
+  as: T;
+}> & {
+  hideMarker?: boolean | null | undefined;
+  isInline?: boolean | null | undefined;
+};
+
+const {
+  as: Tag = "ul",
+  class: className,
+  hideMarker = false,
+  isInline = false,
+  ...attrs
+} = Astro.props;
+---
+
+<Tag
+  {...attrs}
+  class:list={[
+    "list",
+    { inline: isInline, "no-marker": hideMarker },
+    className,
+  ]}><slot /></Tag
+>
+
+<style>
+  .list {
+    &:where(.inline, .no-marker) {
+      padding-inline-start: 0;
+    }
+
+    &:where(.inline) {
+      display: flex;
+      flex-flow: row wrap;
+      align-items: center;
+      list-style-position: inside;
+    }
+
+    &:where(.no-marker) {
+      list-style-type: none;
+    }
+
+    &:where(:not(.inline, .no-marker)) {
+      padding-inline: var(--spacing-md);
+    }
+  }
+</style>

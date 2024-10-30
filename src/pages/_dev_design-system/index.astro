@@ -1,12 +1,25 @@
 ---
+import type { ComponentProps } from "astro/types";
+import Link from "../../components/atoms/link/link.astro";
+import ListItem from "../../components/atoms/list/list-item.astro";
+import List from "../../components/atoms/list/list.astro";
 import Layout from "../../components/templates/layout/layout.astro";
 
 const title = "Design system";
+const seo: ComponentProps<typeof Layout>["seo"] = {
+  nofollow: true,
+  noindex: true,
+  title,
+};
 ---
 
-<Layout title={title}>
-  <ul>
-    <li><a href="/design-system/components">Components</a></li>
-    <li><a href="/design-system/tokens">Tokens</a></li>
-  </ul>
+<Layout seo={seo} title={title}>
+  <List>
+    <ListItem>
+      <Link href="/design-system/components">Components</Link>
+    </ListItem>
+    <ListItem>
+      <Link href="/design-system/tokens">Tokens</Link>
+    </ListItem>
+  </List>
 </Layout>

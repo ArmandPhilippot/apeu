@@ -4,12 +4,14 @@
 @import "modern-normalize/modern-normalize.css";
 
 /* Base */
+@import "base/accessibility.css";
 @import "base/fonts.css";
 
 /* Variables */
 @import "variables/borders.css";
 @import "variables/colors.css";
 @import "variables/fonts.css";
+@import "variables/icons.css";
 @import "variables/shadows.css";
 @import "variables/spacings.css";
 @import "variables/utilities.css";

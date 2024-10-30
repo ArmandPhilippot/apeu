@@ -1,0 +1,34 @@
+---
+import type { ComponentProps } from "astro/types";
+import Layout from "../../templates/layout/layout.astro";
+import Heading from "../heading/heading.astro";
+import CopyrightComponent from "./copyright.astro";
+
+const title = "Copyright";
+const seo: ComponentProps<typeof Layout>["seo"] = {
+  nofollow: true,
+  noindex: true,
+  title: `${title} | Atoms | Components | Design system`,
+};
+---
+
+<Layout seo={seo} title={title}>
+  <Heading>Usage</Heading>
+  <p>
+    This component is usually used in the website's footer to display the
+    copyright.
+  </p>
+  <p>
+    <CopyrightComponent
+      creationYear={new Date().getFullYear()}
+      owner="John Doe"
+    />
+  </p>
+  <p>
+    When the <code>creationYear</code> is different from the current year, then the
+    output will look like this:
+  </p>
+  <p>
+    <CopyrightComponent creationYear={2010} owner="John Doe" />
+  </p>
+</Layout>

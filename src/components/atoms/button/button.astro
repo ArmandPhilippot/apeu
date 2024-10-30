@@ -1,0 +1,166 @@
+---
+import type { HTMLTag, Polymorphic } from "astro/types";
+
+type ButtonKind = "primary" | "secondary";
+
+type Props<T extends Extract<HTMLTag, "a" | "button"> = "button"> =
+  Polymorphic<{ as: T }> & {
+    isExternal?: boolean | null | undefined;
+    kind?: ButtonKind | null | undefined;
+  };
+
+const {
+  as: Tag = "button",
+  class: className,
+  isExternal = false,
+  kind = "secondary",
+  ...attrs
+} = Astro.props;
+
+if (isExternal && kind === "primary")
+  throw new Error("A button must not use primary kind for external resources!");
+---
+
+<Tag
+  {...attrs}
+  class:list={["button", kind, { external: isExternal }, className]}
+  ><slot /></Tag
+>
+
+<style>
+  .button {
+    display: flex;
+    flex-flow: row wrap;
+    place-content: center;
+    place-items: center;
+    gap: var(--spacing-2xs);
+    width: fit-content;
+    min-width: calc(var(--one-px-in-rem) * 54);
+    min-height: calc(var(--one-px-in-rem) * 54);
+    padding: var(--spacing-2xs) var(--spacing-xs);
+    cursor: pointer;
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height);
+    text-decoration: none;
+    transition:
+      all 0.25s ease-in-out 0s,
+      outline 0.1s linear 0s;
+
+    @media (any-pointer: fine) {
+      min-width: unset;
+      min-height: unset;
+    }
+
+    &[aria-busy="true"] {
+      cursor: wait;
+    }
+
+    &[aria-disabled="true"],
+    &:disabled {
+      background: var(--color-muted-light);
+      color: var(--color-on-muted);
+      cursor: not-allowed;
+    }
+
+    &:where(.primary) {
+      background: var(--color-primary);
+      border: var(--border-size-md) solid var(--color-primary);
+      border-radius: var(--border-radii-md);
+      box-shadow:
+        inset 0 0 0 var(--border-size-md) var(--color-primary-subtle),
+        var(--border-size-lg) var(--border-size-lg) 0 0
+          var(--color-primary-darker);
+      color: var(--color-on-primary);
+      outline-color: var(--color-primary-subtle);
+
+      &:where([aria-disabled="true"], :disabled) {
+        border-color: var(--color-muted-light);
+        box-shadow:
+          inset 0 0 0 var(--border-size-md) var(--color-muted-subtle),
+          var(--border-size-lg) var(--border-size-lg) 0 0
+            var(--color-muted-dark);
+      }
+
+      &:where(:focus-visible) {
+        outline-style: solid;
+        outline-offset: calc(var(--border-size-md) * -4);
+        outline-width: var(--border-size-md);
+      }
+
+      &:where(:hover, :focus):where(
+          :not([aria-busy="true"], [aria-disabled="true"], :disabled)
+        ) {
+        border-color: var(--color-primary-light);
+        box-shadow:
+          inset 0 0 0 var(--border-size-md) var(--color-primary-subtle),
+          calc(var(--border-size-lg) * 2) calc(var(--border-size-lg) * 2) 0 0
+            var(--color-primary-dark);
+        transform: translateX(calc(var(--border-size-lg) * -1))
+          translateY(calc(var(--border-size-lg) * -1));
+      }
+
+      &:active:where(
+          :not([aria-busy="true"], [aria-disabled="true"], :disabled)
+        ) {
+        background: var(--color-primary-dark);
+        border-color: var(--color-primary-dark);
+        box-shadow:
+          inset 0 0 0 var(--border-size-md) var(--color-primary-subtle),
+          var(--border-size-sm) var(--border-size-sm) 0 0
+            var(--color-primary-subtle);
+        transform: translateX(var(--border-size-lg))
+          translateY(var(--border-size-lg));
+      }
+    }
+
+    &:where(.secondary) {
+      background: var(--color-regular-light);
+      border: var(--border-size-sm) solid var(--color-primary-dark);
+      border-radius: var(--border-radii-md);
+      box-shadow: var(--border-size-lg) var(--border-size-lg) 0 0
+        var(--color-primary-darker);
+      color: var(--color-primary);
+      outline-color: var(--color-primary-light);
+      outline-width: var(--border-size-lg);
+
+      &:where([aria-disabled="true"], :disabled) {
+        border-color: var(--color-muted-dark);
+        box-shadow: var(--border-size-lg) var(--border-size-lg) 0 0
+          var(--color-muted-dark);
+      }
+
+      &:where(:focus-visible) {
+        outline-offset: calc(var(--border-size-lg) * -2);
+        outline-style: solid;
+      }
+
+      &:where(:hover, :focus):where(
+          :not([aria-busy="true"], [aria-disabled="true"], :disabled)
+        ) {
+        background: var(--color-regular-lighter);
+        border-color: var(--color-primary);
+        box-shadow: calc(var(--border-size-lg) * 2)
+          calc(var(--border-size-lg) * 2) 0 0 var(--color-primary-dark);
+        color: var(--color-primary);
+        transform: translateX(calc(var(--border-size-lg) * -1))
+          translateY(calc(var(--border-size-lg) * -1));
+      }
+
+      &:where(:active):where(
+          :not([aria-busy="true"], [aria-disabled="true"], :disabled)
+        ) {
+        box-shadow: var(--border-size-sm) var(--border-size-sm) 0 0
+          var(--color-primary-subtle);
+        color: var(--color-primary-dark);
+        transform: translateX(var(--border-size-lg))
+          translateY(var(--border-size-lg));
+      }
+    }
+
+    &:where(.external)::after {
+      display: inline-block;
+      content: var(--external-icon);
+    }
+  }
+</style>

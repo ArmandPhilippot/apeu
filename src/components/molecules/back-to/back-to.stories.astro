@@ -1,0 +1,26 @@
+---
+import type { ComponentProps } from "astro/types";
+import Heading from "../../atoms/heading/heading.astro";
+import Layout from "../../templates/layout/layout.astro";
+import BackToComponent from "./back-to.astro";
+
+const title = "BackTo";
+const seo: ComponentProps<typeof Layout>["seo"] = {
+  nofollow: true,
+  noindex: true,
+  title: `${title} | Molecules | Components | Design system`,
+};
+---
+
+<Layout seo={seo} title={title}>
+  <Heading>Usage</Heading>
+  <p>
+    A BackTo component is special. It is used to navigate through a page using
+    anchors. His purpose is to let the user go back to a previous anchor.
+  </p>
+  <p>
+    <strong>Note:</strong> The button is currently designed to be used a "back to
+    top" button but I choose to name it BackTo to support possible future variants.
+  </p>
+  <BackToComponent anchor="#some-anchor" label="Back to some anchor" />
+</Layout>

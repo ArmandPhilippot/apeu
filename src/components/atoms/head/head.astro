@@ -1,0 +1,91 @@
+---
+type AltLanguage = {
+  locale: string;
+  url: string;
+};
+
+type Author = {
+  name: string;
+  url?: string | null | undefined;
+};
+
+type ColorScheme =
+  | "normal"
+  | "light"
+  | "dark"
+  | "only light"
+  | "light dark"
+  | "dark light";
+
+type SEO = {
+  author?: Author | null | undefined;
+  canonical?: string | null | undefined;
+  description?: string | undefined;
+  languages?: AltLanguage[] | null | undefined;
+  nofollow?: boolean | null | undefined;
+  noindex?: boolean | null | undefined;
+  title: string;
+};
+
+type Props = {
+  addBrandToTitle?: boolean | null | undefined;
+  brand: string;
+  colorScheme?: ColorScheme | null | undefined;
+  generator?: string | null | undefined;
+  seo: SEO;
+  themeColor?: string | null | undefined;
+};
+
+const {
+  addBrandToTitle = false,
+  brand,
+  colorScheme,
+  generator,
+  seo,
+  themeColor,
+} = Astro.props;
+---
+
+<head>
+  <meta charset="utf-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+  />
+  <title>{seo.title}{addBrandToTitle ? ` | ${brand}` : ""}</title>
+  {
+    seo.description ? (
+      <meta name="description" content={seo.description} />
+    ) : null
+  }
+  <meta
+    name="robots"
+    content={`${seo.noindex ? "noindex" : "index"}, ${
+      seo.nofollow ? "nofollow" : "follow"
+    }`}
+  />
+  <link rel="canonical" href={seo.canonical ?? Astro.url.href} />
+  {
+    seo.languages?.map((language) => (
+      <link rel="alternate" href={language.url} hreflang={language.locale} />
+    ))
+  }
+  {
+    seo.author ? (
+      <>
+        <meta name="author" content={seo.author.name} />
+        <link rel="author" href={seo.author.url} />
+      </>
+    ) : (
+      <>
+        <meta name="author" content={brand} />
+        {Astro.site ? <link rel="author" href={Astro.site.href} /> : null}
+      </>
+    )
+  }
+  {colorScheme ? <meta name="color-scheme" content={colorScheme} /> : null}
+  {themeColor ? <meta name="theme-color" content={themeColor} /> : null}
+  {generator ? <meta name="generator" content={generator} /> : null}
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <slot />
+</head>

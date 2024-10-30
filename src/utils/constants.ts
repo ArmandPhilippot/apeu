@@ -5,6 +5,11 @@ export const COMPONENT_KINDS = [
   "templates",
 ] as const;
 
+export const CONFIG = {
+  BRAND: "Armand Philippot",
+  CREATION_YEAR: 2024,
+} as const;
+
 export const STORIES_SUFFIX = "stories";
 
 /** The extension used for components stories.

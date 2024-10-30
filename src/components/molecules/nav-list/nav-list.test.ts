@@ -1,0 +1,53 @@
+import { experimental_AstroContainer as AstroContainer } from "astro/container";
+import type { ComponentProps } from "astro/types";
+import { beforeEach, describe, expect, it } from "vitest";
+import NavList from "./nav-list.astro";
+
+type LocalTestContext = {
+  container: AstroContainer;
+};
+
+describe("NavList", () => {
+  beforeEach<LocalTestContext>(async (context) => {
+    context.container = await AstroContainer.create();
+  });
+
+  it<LocalTestContext>("renders its children", async ({ container }) => {
+    const props = {
+      items: [
+        { label: "Item 1", url: "#item-1" },
+        { label: "Item 2", url: "#item-2" },
+      ],
+    } satisfies Omit<ComponentProps<typeof NavList>, "children">;
+    const body = "id quibusdam eius";
+    const result = await container.renderToString(NavList, {
+      props,
+      slots: { default: body },
+    });
+
+    expect.assertions(1);
+
+    expect(result).toContain(body);
+  });
+
+  it<LocalTestContext>("can render an ordered nav list", async ({
+    container,
+  }) => {
+    const props = {
+      isOrdered: true,
+      items: [
+        { label: "Item 1", url: "#item-1" },
+        { label: "Item 2", url: "#item-2" },
+      ],
+    } satisfies Omit<ComponentProps<typeof NavList>, "children">;
+    const body = "id quibusdam eius";
+    const result = await container.renderToString(NavList, {
+      props,
+      slots: { default: body },
+    });
+
+    expect.assertions(1);
+
+    expect(result).toContain("</ol>");
+  });
+});

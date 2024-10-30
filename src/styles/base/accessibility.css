@@ -1,0 +1,14 @@
+.sr-only {
+  &:where(:not(:focus, :focus-within)) {
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    position: absolute !important;
+    overflow: hidden;
+    border: 0;
+    clip: rect(1px, 1px, 1px, 1px);
+    opacity: 0;
+    word-break: normal;
+    word-wrap: normal !important; /* Many screen reader and browser combinations announce broken words as they would appear visually. */
+  }
+}

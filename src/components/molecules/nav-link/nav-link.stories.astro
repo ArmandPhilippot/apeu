@@ -1,0 +1,38 @@
+---
+import type { ComponentProps } from "astro/types";
+import Heading from "../../atoms/heading/heading.astro";
+import Layout from "../../templates/layout/layout.astro";
+import NavLinkComponent from "./nav-link.astro";
+
+const title = "NavLink";
+const seo: ComponentProps<typeof Layout>["seo"] = {
+  nofollow: true,
+  noindex: true,
+  title: `${title} | Molecules | Components | Design system`,
+};
+---
+
+<Layout seo={seo} title={title}>
+  <Heading as="h2">Usage</Heading>
+  <p>
+    This component is used to define a navigation item inside a navigation list.
+  </p>
+  <Heading as="h2">Variant: <code>isBlock: false</code> (default)</Heading>
+  <NavLinkComponent href="#destination">Nav Item</NavLinkComponent>
+  <Heading as="h3"><code>isBordered</code></Heading>
+  <NavLinkComponent href="#destination" isBordered>Nav Item</NavLinkComponent>
+  <Heading as="h3">With icon</Heading>
+  <NavLinkComponent href="#destination" icon="cc-by-sa" iconSize={40}>
+    Nav Item
+  </NavLinkComponent>
+  <Heading as="h2">Variant: <code>isBlock: true</code></Heading>
+  <NavLinkComponent href="#destination" isBlock>Nav Item</NavLinkComponent>
+  <Heading as="h3"><code>isBordered</code></Heading>
+  <NavLinkComponent href="#destination" isBlock isBordered>
+    Nav Item
+  </NavLinkComponent>
+  <Heading as="h3">With icon</Heading>
+  <NavLinkComponent href="#destination" icon="cc-by-sa" iconSize={40} isBlock>
+    Nav Item
+  </NavLinkComponent>
+</Layout>

@@ -1,0 +1,19 @@
+---
+import type { ComponentProps } from "astro/types";
+import Layout from "../../templates/layout/layout.astro";
+import Heading from "../heading/heading.astro";
+import LicenseComponent from "./license.astro";
+
+const title = "License";
+const seo: ComponentProps<typeof Layout>["seo"] = {
+  nofollow: true,
+  noindex: true,
+  title: `${title} | Atoms | Components | Design system`,
+};
+---
+
+<Layout seo={seo} title={title}>
+  <Heading>Usage</Heading>
+  <p>This component is used to display an icon of the website license.</p>
+  <LicenseComponent />
+</Layout>

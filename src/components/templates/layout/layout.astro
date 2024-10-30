@@ -1,20 +1,38 @@
 ---
+import type { ComponentProps } from "astro/types";
 import "../../../styles/global.css";
+import { CONFIG } from "../../../utils/constants";
+import Copyright from "../../atoms/copyright/copyright.astro";
+import Heading from "../../atoms/heading/heading.astro";
+import License from "../../atoms/license/license.astro";
+import BackTo from "../../molecules/back-to/back-to.astro";
+import Branding from "../../molecules/branding/branding.astro";
+import NavLink from "../../molecules/nav-link/nav-link.astro";
+import NavList from "../../molecules/nav-list/nav-list.astro";
+import SkipTo from "../../molecules/skip-to/skip-to.astro";
+import Head from "../../atoms/head/head.astro";
 
-type Props = {
+type Props = Pick<ComponentProps<typeof Head>, "seo"> & {
   title: string;
 };
 
-const { title } = Astro.props;
+const { seo, title } = Astro.props;
+const isHome = Astro.url.pathname === "/";
+const footerLinks = [
+  ...(import.meta.env.DEV
+    ? [{ label: "Design system", url: "/design-system" }]
+    : []),
+] satisfies ComponentProps<typeof NavList>["items"];
 ---
 
 <html data-theme="light" lang="en" style="color-scheme: light;">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
-    <title>{title}</title>
+  <Head
+    addBrandToTitle={!isHome}
+    brand={CONFIG.BRAND}
+    colorScheme="light dark"
+    seo={seo}
+    themeColor="#214769"
+  >
     <link
       rel="preload"
       href="/fonts/Inter/Inter.woff2?v=3.18"
@@ -22,10 +40,89 @@ const { title } = Astro.props;
       type="font/woff2"
       crossorigin
     />
-  </head>
+    <slot name="head" />
+    <noscript>
+      <style>
+        .js-only {
+          display: none !important;
+        }
+      </style>
+    </noscript>
+  </Head>
   <body>
-    <h1>{title}</h1>
-    <slot />
+    <ap-website class="site" id="#top">
+      <SkipTo anchor="#contents">Skip to contents</SkipTo>
+      <header class="site-header">
+        <div class="site-branding">
+          <Branding brand={CONFIG.BRAND} url="/" />
+        </div>
+        <div class="site-navbar">
+          <div class="site-navbar-item">Main nav</div>
+          <div class:list={["site-navbar-item", "js-only"]}>Search</div>
+          <div class:list={["site-navbar-item", "js-only"]}>Settings</div>
+        </div>
+      </header>
+      <div class="site-body" id="contents">
+        <Heading as="h1">{title}</Heading>
+        <slot />
+      </div>
+      <footer class="site-footer">
+        <Copyright creationYear={CONFIG.CREATION_YEAR} owner={CONFIG.BRAND} />
+        <License />
+        <NavList items={footerLinks}>
+          {
+            ({ label, url, ...item }) => (
+              <NavLink {...item} href={url}>
+                {label}
+              </NavLink>
+            )
+          }
+        </NavList>
+        <BackTo anchor="#top" class="site-back-to-top" label="Back to top" />
+      </footer>
+      <svg
+        aria-hidden="true"
+        width="0"
+        height="0"
+        viewBox="0 0 100 100"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <defs>
+          <filter color-interpolation-filters="sRGB" id="paper-filter">
+            <feTurbulence
+              baseFrequency="0.020"
+              numOctaves="7"
+              result="noise"
+              seed="3"
+              type="fractalNoise"></feTurbulence>
+            <feDiffuseLighting
+              diffuseConstant="1.1"
+              lighting-color="var(--color-regular)"
+              in="noise"
+              surfaceScale="0.600"
+            >
+              <feDistantLight azimuth="60" elevation="65"></feDistantLight>
+            </feDiffuseLighting>
+          </filter>
+          <filter color-interpolation-filters="sRGB" id="dark-paper-filter">
+            <feTurbulence
+              baseFrequency="0.020"
+              numOctaves="7"
+              result="noise"
+              seed="3"
+              type="fractalNoise"></feTurbulence>
+            <feDiffuseLighting
+              diffuseConstant="1.2"
+              lighting-color="var(--color-regular)"
+              in="noise"
+              surfaceScale="1.1"
+            >
+              <feDistantLight azimuth="40" elevation="57"></feDistantLight>
+            </feDiffuseLighting>
+          </filter>
+        </defs>
+      </svg>
+    </ap-website>
   </body>
 </html>
 
@@ -43,4 +140,229 @@ const { title } = Astro.props;
       color: var(--color-on-primary);
     }
   }
+
+  .site {
+    display: flex;
+    flex-flow: column;
+    min-height: 100dvh;
+
+    @media (width >= 1024px) {
+      display: grid;
+      grid-template-columns: minmax(0, 20dvw) minmax(0, 1fr);
+      grid-template-rows: minmax(0, 1fr) minmax(0, auto);
+    }
+
+    &::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      clip-path: inset(0);
+      pointer-events: none;
+      user-select: none;
+
+      /* Fixes a Chromium bug where the SVG filter wasn't updated when
+       * switching the theme... */
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  .site-header {
+    display: contents;
+
+    @media (width >= 640px) {
+      display: flex;
+      flex-flow: row wrap;
+      gap: var(--spacing-md);
+      justify-content: space-between;
+      border-block-end: var(--border-size-sm) solid var(--color-border);
+      box-shadow: var(--shadow-raised-to-top-center);
+    }
+
+    @media (width >= 1024px) {
+      grid-column: 1;
+      grid-row: 1;
+      flex-flow: column;
+      justify-content: start;
+      border-block-end: none;
+      box-shadow: none;
+    }
+  }
+
+  .site-branding,
+  .site-footer {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+  }
+
+  .site-branding {
+    justify-content: center;
+    border-block-end: var(--border-size-sm) solid var(--color-border);
+    box-shadow: var(--shadow-raised-to-top-center);
+
+    @media (width >= 640px) {
+      border-block: 0;
+      box-shadow: none;
+    }
+  }
+
+  .site-navbar {
+    order: 1;
+    display: grid;
+    grid-auto-columns: minmax(0, 1fr);
+    grid-auto-flow: column dense;
+    position: sticky;
+    bottom: 0;
+    border-block-start: var(--border-size-sm) solid var(--color-border);
+    box-shadow: var(--shadow-raised-to-bottom-center);
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      clip-path: inset(0);
+      pointer-events: none;
+      user-select: none;
+    }
+
+    @media (width >= 640px) {
+      order: unset;
+      position: relative;
+      bottom: unset;
+      border-block: 0;
+      box-shadow: none;
+    }
+
+    @media (width >= 1024px) {
+      flex: 1;
+      display: flex;
+      flex-flow: column;
+    }
+  }
+
+  .site-navbar-item {
+    display: flex;
+    flex-flow: row wrap;
+    place-content: center;
+    min-height: calc(var(--one-px-in-rem) * 54);
+    padding: var(--spacing-xs);
+
+    &:where(:not(:last-child)) {
+      border-inline-end: var(--border-size-sm) solid var(--color-border);
+
+      @media (width >= 1024px) {
+        border-inline-end: none;
+      }
+    }
+
+    @media (width >= 640px) {
+      &:where(:first-child) {
+        border-inline-start: var(--border-size-sm) solid var(--color-border);
+
+        @media (width >= 1024px) {
+          border-inline-start: none;
+        }
+      }
+    }
+  }
+
+  .site-body {
+    flex: 1;
+
+    @media (width >= 1024px) {
+      grid-column: 2;
+      grid-row: 1;
+    }
+  }
+
+  .site-footer {
+    justify-content: center;
+    gap: var(--spacing-4xs);
+    padding: var(--spacing-md);
+    font-size: var(--font-size-sm);
+
+    @media (width >= 1024px) {
+      grid-column: 1 / -1;
+      grid-row: 2;
+    }
+  }
+
+  .site-back-to-top {
+    position: fixed;
+
+    /* This not ideal because the navbar height could change but setting a
+       * fix height to the navbar is not ideal neither so I prefer to use a
+       * "magic" number here. */
+    bottom: 6.5rem;
+    right: calc(1dvw + var(--spacing-sm));
+    z-index: 2;
+
+    @media (width >= 640px) {
+      bottom: calc(1dvw + var(--spacing-md));
+    }
+
+    @media (width >= 640px) {
+      right: calc(1dvw + var(--spacing-md));
+    }
+  }
+
+  :global(:where([data-theme="light"])) {
+    .site::before,
+    .site-navbar::before {
+      filter: url("#paper-filter");
+    }
+  }
+
+  :global(:where([data-theme="dark"])) {
+    .site::before,
+    .site-navbar::before {
+      filter: url("#dark-paper-filter");
+    }
+  }
 </style>
+
+<script>
+  class APWebsite extends HTMLElement {
+    #backToTopBtn: HTMLAnchorElement | null = null;
+
+    constructor() {
+      super();
+      this.updateBackToTopBtnVisibility =
+        this.updateBackToTopBtnVisibility.bind(this);
+    }
+
+    connectedCallback() {
+      this.#backToTopBtn = this.querySelector("a.site-back-to-top");
+
+      this.updateBackToTopBtnVisibility();
+      window.addEventListener("scroll", this.updateBackToTopBtnVisibility);
+    }
+
+    disconnectedCallback() {
+      window.removeEventListener("scroll", this.updateBackToTopBtnVisibility);
+    }
+
+    hideEl(el: HTMLElement) {
+      el.style.opacity = "0";
+      el.style.visibility = "hidden";
+    }
+
+    showEl(el: HTMLElement) {
+      el.style.opacity = "1";
+      el.style.visibility = "visible";
+    }
+
+    updateBackToTopBtnVisibility() {
+      if (!this.#backToTopBtn) return;
+
+      const breakpoint = 300;
+
+      if (window.scrollY >= breakpoint) this.showEl(this.#backToTopBtn);
+      else this.hideEl(this.#backToTopBtn);
+    }
+  }
+
+  customElements.define("ap-website", APWebsite);
+</script>

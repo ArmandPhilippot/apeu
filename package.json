@@ -46,6 +46,7 @@
   "dependencies": {
     "@astrojs/check": "^0.9.4",
     "astro": "^4.16.7",
+    "astro-icon": "^1.1.1",
     "globby": "^14.0.2",
     "modern-normalize": "^3.0.1",
     "slash": "^5.1.0",

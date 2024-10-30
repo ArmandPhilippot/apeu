@@ -20,6 +20,9 @@ describe("Layout", () => {
     container,
   }) => {
     const props = {
+      seo: {
+        title: "est et fugiat",
+      },
       title: "et ratione dolor",
     } satisfies ComponentProps<typeof Layout>;
     const result = await container.renderToString(Layout, {
@@ -39,6 +42,9 @@ describe("Layout", () => {
     container,
   }) => {
     const props = {
+      seo: {
+        title: "est et fugiat",
+      },
       title: "et ratione dolor",
     } satisfies ComponentProps<typeof Layout>;
     const body = "id quibusdam eius";
@@ -58,6 +64,9 @@ describe("Layout", () => {
     vi.stubEnv("MODE", "development");
 
     const props = {
+      seo: {
+        title: "est et fugiat",
+      },
       title: "et ratione dolor",
     } satisfies ComponentProps<typeof Layout>;
     const result = await container.renderToString(Layout, {
@@ -76,6 +85,9 @@ describe("Layout", () => {
     vi.stubEnv("DEV", false);
 
     const props = {
+      seo: {
+        title: "est et fugiat",
+      },
       title: "et ratione dolor",
     } satisfies ComponentProps<typeof Layout>;
     const result = await container.renderToString(Layout, {

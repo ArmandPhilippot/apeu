@@ -7,6 +7,11 @@ import Layout from "../../templates/layout/layout.astro";
 import NavListComponent from "./nav-list.astro";
 
 const title = "NavList";
+const seo: ComponentProps<typeof Layout>["seo"] = {
+  nofollow: true,
+  noindex: true,
+  title: `${title} | Molecules | Components | Design system`,
+};
 
 const items = [
   { label: "Item 1", url: "#item-1" },
@@ -15,7 +20,7 @@ const items = [
 ] satisfies ComponentProps<typeof NavListComponent>["items"];
 ---
 
-<Layout title={title}>
+<Layout seo={seo} title={title}>
   <Heading>Usage</Heading>
   <p>
     This component is used to define a navigation list. It accepts an <code

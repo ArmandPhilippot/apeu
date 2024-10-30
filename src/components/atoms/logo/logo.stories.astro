@@ -1,12 +1,18 @@
 ---
+import type { ComponentProps } from "astro/types";
 import Layout from "../../templates/layout/layout.astro";
 import Heading from "../heading/heading.astro";
 import LogoComponent from "./logo.astro";
 
 const title = "Logo";
+const seo: ComponentProps<typeof Layout>["seo"] = {
+  nofollow: true,
+  noindex: true,
+  title: `${title} | Atoms | Components | Design system`,
+};
 ---
 
-<Layout title={title}>
+<Layout seo={seo} title={title}>
   <Heading>Usage</Heading>
   <p>
     This is the website logo. You should use this component instead of importing

@@ -1,12 +1,18 @@
 ---
+import type { ComponentProps } from "astro/types";
 import Layout from "../../templates/layout/layout.astro";
 import Heading from "../heading/heading.astro";
 import ButtonComponent from "./button.astro";
 
 const title = "Button";
+const seo: ComponentProps<typeof Layout>["seo"] = {
+  nofollow: true,
+  noindex: true,
+  title: `${title} | Atoms | Components | Design system`,
+};
 ---
 
-<Layout title={title}>
+<Layout seo={seo} title={title}>
   <Heading as="h2">Usage</Heading>
   <p>A button is usually used to encourage a user to take action.</p>
   <Heading as="h2">Primary buttons</Heading>

@@ -1,4 +1,5 @@
 ---
+import type { ComponentProps } from "astro/types";
 import Link from "../../../components/atoms/link/link.astro";
 import ListItem from "../../../components/atoms/list/list-item.astro";
 import List from "../../../components/atoms/list/list.astro";
@@ -7,9 +8,14 @@ import { COMPONENT_KINDS } from "../../../utils/constants";
 import { capitalizeFirstLetter } from "../../../utils/strings";
 
 const title = "Components";
+const seo: ComponentProps<typeof Layout>["seo"] = {
+  nofollow: true,
+  noindex: true,
+  title: `${title} | Design system`,
+};
 ---
 
-<Layout title={title}>
+<Layout seo={seo} title={title}>
   <List>
     {
       COMPONENT_KINDS.map((kind) => (

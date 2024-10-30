@@ -1,5 +1,11 @@
 ---
+import type { ComponentProps } from "astro/types";
 import Layout from "../components/templates/layout/layout.astro";
+
+const title = "Homepage";
+const seo: ComponentProps<typeof Layout>["seo"] = {
+  title,
+};
 ---
 
-<Layout title="Homepage" />
+<Layout seo={seo} title={title} />

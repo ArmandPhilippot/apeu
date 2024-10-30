@@ -10,12 +10,14 @@ import Branding from "../../molecules/branding/branding.astro";
 import NavLink from "../../molecules/nav-link/nav-link.astro";
 import NavList from "../../molecules/nav-list/nav-list.astro";
 import SkipTo from "../../molecules/skip-to/skip-to.astro";
+import Head from "../../atoms/head/head.astro";
 
-type Props = {
+type Props = Pick<ComponentProps<typeof Head>, "seo"> & {
   title: string;
 };
 
-const { title } = Astro.props;
+const { seo, title } = Astro.props;
+const isHome = Astro.url.pathname === "/";
 const footerLinks = [
   ...(import.meta.env.DEV
     ? [{ label: "Design system", url: "/design-system" }]
@@ -24,12 +26,13 @@ const footerLinks = [
 ---
 
 <html data-theme="light" lang="en" style="color-scheme: light;">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
-    <title>{title}</title>
+  <Head
+    addBrandToTitle={!isHome}
+    brand={CONFIG.BRAND}
+    colorScheme="light dark"
+    seo={seo}
+    themeColor="#154c65"
+  >
     <link
       rel="preload"
       href="/fonts/Inter/Inter.woff2?v=3.18"
@@ -45,7 +48,7 @@ const footerLinks = [
         }
       </style>
     </noscript>
-  </head>
+  </Head>
   <body>
     <ap-website class="site" id="#top">
       <SkipTo anchor="#contents">Skip to contents</SkipTo>

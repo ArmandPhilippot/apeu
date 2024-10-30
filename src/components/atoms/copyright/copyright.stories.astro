@@ -1,12 +1,18 @@
 ---
+import type { ComponentProps } from "astro/types";
 import Layout from "../../templates/layout/layout.astro";
 import Heading from "../heading/heading.astro";
 import CopyrightComponent from "./copyright.astro";
 
 const title = "Copyright";
+const seo: ComponentProps<typeof Layout>["seo"] = {
+  nofollow: true,
+  noindex: true,
+  title: `${title} | Atoms | Components | Design system`,
+};
 ---
 
-<Layout title={title}>
+<Layout seo={seo} title={title}>
   <Heading>Usage</Heading>
   <p>
     This component is usually used in the website's footer to display the

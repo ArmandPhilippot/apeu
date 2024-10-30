@@ -1,5 +1,6 @@
 ---
 import type { GetStaticPaths } from "astro";
+import type { ComponentProps } from "astro/types";
 import { globby } from "globby";
 import { join } from "path";
 import Link from "../../../components/atoms/link/link.astro";
@@ -37,9 +38,15 @@ export const getStaticPaths = (() => {
 }) satisfies GetStaticPaths;
 
 const { stories, title } = Astro.props;
+
+const seo: ComponentProps<typeof Layout>["seo"] = {
+  nofollow: true,
+  noindex: true,
+  title: `${title} | Components | Design system`,
+};
 ---
 
-<Layout title={title}>
+<Layout seo={seo} title={title}>
   {
     stories.length ? (
       <List>

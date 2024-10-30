@@ -1,4 +1,5 @@
 ---
+import type { ComponentProps } from "astro/types";
 import Layout from "../../templates/layout/layout.astro";
 import Heading from "../heading/heading.astro";
 import ListItem from "../list/list-item.astro";
@@ -6,9 +7,14 @@ import List from "../list/list.astro";
 import LinkComponent from "./link.astro";
 
 const title = "Link";
+const seo: ComponentProps<typeof Layout>["seo"] = {
+  nofollow: true,
+  noindex: true,
+  title: `${title} | Atoms | Components | Design system`,
+};
 ---
 
-<Layout title={title}>
+<Layout seo={seo} title={title}>
   <Heading as="h2">Usage</Heading>
   <p>
     When used at the beginning or at the end of a sentence, a link should not

@@ -1,4 +1,5 @@
 ---
+import type { ComponentProps } from "astro/types";
 import Heading from "../../../components/atoms/heading/heading.astro";
 import Layout from "../../../components/templates/layout/layout.astro";
 import TokenPreview from "./_token-preview.astro";
@@ -63,9 +64,14 @@ const spacings = [
 ] as const;
 
 const title = "Tokens";
+const seo: ComponentProps<typeof Layout>["seo"] = {
+  nofollow: true,
+  noindex: true,
+  title: `${title} | Design system`,
+};
 ---
 
-<Layout title={title}>
+<Layout seo={seo} title={title}>
   <Heading as="h2">Fonts</Heading>
   <Heading as="h3">Family</Heading>
   <div class="wrapper flex">

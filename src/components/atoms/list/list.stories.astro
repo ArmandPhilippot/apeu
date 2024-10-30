@@ -1,13 +1,19 @@
 ---
+import type { ComponentProps } from "astro/types";
 import Layout from "../../templates/layout/layout.astro";
 import Heading from "../heading/heading.astro";
 import ListItem from "./list-item.astro";
 import ListComponent from "./list.astro";
 
 const title = "List";
+const seo: ComponentProps<typeof Layout>["seo"] = {
+  nofollow: true,
+  noindex: true,
+  title: `${title} | Atoms | Components | Design system`,
+};
 ---
 
-<Layout title={title}>
+<Layout seo={seo} title={title}>
   <Heading as="h2">Usage</Heading>
   <p>
     This component is usually used to define a list of related items, either

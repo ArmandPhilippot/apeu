@@ -1,0 +1,213 @@
+---
+import type { MarkdownHeading } from "astro";
+import { Icon } from "astro-icon/components";
+import type { ComponentProps, HTMLAttributes } from "astro/types";
+import { Image as AstroImg } from "astro:assets";
+import Button from "../../atoms/button/button.astro";
+import Heading from "../../atoms/heading/heading.astro";
+import Link from "../../atoms/link/link.astro";
+import ListItem from "../../atoms/list/list-item.astro";
+import List from "../../atoms/list/list.astro";
+import Prose from "../../atoms/prose/prose.astro";
+
+type Props = HTMLAttributes<"article"> & {
+  cover?: ComponentProps<typeof AstroImg> | null | undefined;
+  feed?: string | URL | null | undefined;
+  heading: string;
+  toc?: MarkdownHeading[] | null | undefined;
+};
+
+const { class: className, cover, feed, heading, toc, ...attrs } = Astro.props;
+---
+
+<article {...attrs} class:list={["page", className]}>
+  <header class="page-header">
+    <div class="page-heading">
+      <Heading as="h1" class="page-title">{heading}</Heading>
+      {
+        feed ? (
+          <Button aria-label={`Subscribe to ${heading}`} as="a" href={feed}>
+            <Icon aria-hidden="true" name="feed" />
+            Subscribe
+          </Button>
+        ) : null
+      }
+    </div>
+    {cover ? <AstroImg {...cover} class="page-cover" loading="eager" /> : null}
+    {
+      Astro.slots.has("meta") ? (
+        <div class="page-meta">
+          <slot name="meta" />
+        </div>
+      ) : null
+    }
+  </header>
+  {
+    !!toc ? (
+      <div class="page-sidebar">
+        <div class="page-toc">
+          <List as="ol">
+            {toc.map((heading) => (
+              <ListItem>
+                <Link href={heading.slug}>{heading.text}</Link>
+              </ListItem>
+            ))}
+          </List>
+        </div>
+      </div>
+    ) : null
+  }
+  <Prose class="page-body">
+    <slot />
+  </Prose>
+  {
+    Astro.slots.has("footer") ? (
+      <footer class="page-footer">
+        <slot name="footer" />
+      </footer>
+    ) : null
+  }
+</article>
+
+<style>
+  .page {
+    &:has(.page-toc) {
+      /* Uses grid only when the size matches prose + 1/3 of prose */
+      @media (width > calc(55em * 4 / 3)) {
+        display: grid;
+        grid-template-columns:
+          minmax(calc(var(--size-prose) / 2), var(--size-prose))
+          minmax(0, calc(var(--size-prose) / 2));
+        grid-template-rows: minmax(0, auto);
+        column-gap: var(--spacing-md);
+      }
+    }
+  }
+
+  .page-header,
+  .page-toc,
+  .page-body,
+  .page-footer {
+    background: var(--color-regular);
+    border-block-end: var(--border-size-sm) solid var(--color-border);
+    box-shadow: var(--shadow-raised-to-top-center);
+
+    @media (width > 55em) {
+      margin-inline: auto;
+      width: 100%;
+      max-width: var(--size-prose);
+      border-inline: var(--border-size-sm) solid var(--color-border);
+      box-shadow: var(--shadow-raised-to-top-left);
+
+      &:is(:first-child) {
+        border-block-start: var(--border-size-sm) solid var(--color-border);
+        border-start-start-radius: var(--border-radii-md);
+        border-start-end-radius: var(--border-radii-md);
+      }
+
+      &:is(:last-child) {
+        border-end-start-radius: var(--border-radii-md);
+        border-end-end-radius: var(--border-radii-md);
+      }
+    }
+  }
+
+  .page-header,
+  .page-body,
+  .page-footer {
+    @media (width > calc(55em * 4 / 3)) {
+      grid-column: 1;
+    }
+  }
+
+  .page-header {
+    @media (width >= calc(55em / 1.5)) {
+      display: grid;
+      grid-auto-columns: minmax(0, 1fr);
+    }
+  }
+
+  .page-heading {
+    display: flex;
+    flex-flow: column wrap;
+    align-items: center;
+    place-content: center;
+    gap: var(--spacing-sm) var(--spacing-md);
+    padding: clamp(var(--spacing-sm), 3dvw, var(--spacing-md))
+      clamp(var(--spacing-md), 4dvw, var(--spacing-lg));
+    text-align: center;
+
+    @media (width >= calc(55em / 1.25)) {
+      flex-flow: row wrap;
+    }
+  }
+
+  .page-title {
+    text-wrap: balance;
+  }
+
+  :where(.page:has(.page-cover, .page-meta)) .page-heading {
+    border-block-end: var(--border-size-sm) solid var(--color-border);
+  }
+
+  :where(.page:has(.page-cover):has(.page-meta)) .page-heading {
+    @media (width >= calc(55em / 1.5)) {
+      grid-column: 1 / span 2;
+    }
+  }
+
+  .page-cover {
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    max-height: calc(var(--one-px-in-rem) * 250);
+    object-fit: cover;
+  }
+
+  :where(.page:has(.page-meta)) .page-cover {
+    @media (width >= calc(55em / 1.5)) {
+      grid-column: 1;
+      border-inline-end: var(--border-size-sm) solid var(--color-border);
+    }
+  }
+
+  .page-meta {
+    padding: var(--spacing-md);
+    text-align: center;
+  }
+
+  :where(.page:has(.page-cover)) .page-meta {
+    @media (width >= calc(55em / 1.5)) {
+      grid-column: 2;
+      text-align: start;
+    }
+  }
+
+  .page-sidebar {
+    @media (width > calc(55em * 4 / 3)) {
+      grid-column: 2;
+      grid-row: 1 / span 3;
+    }
+  }
+
+  .page-toc {
+    @media (width > calc(55em * 4 / 3)) {
+      position: sticky;
+      top: var(--spacing-md);
+      border-block-start: var(--border-size-sm) solid var(--color-border);
+      border-radius: var(--border-radii-md);
+    }
+  }
+
+  .page-body {
+    padding: clamp(var(--spacing-md), 2dvw, var(--spacing-lg))
+      clamp(var(--spacing-md), 3dvw, var(--spacing-xl));
+  }
+
+  .page-footer {
+    padding: clamp(var(--spacing-sm), 1dvh, var(--spacing-lg))
+      clamp(var(--spacing-md), 3dvw, var(--spacing-xl))
+      clamp(var(--spacing-md), 2dvw, var(--spacing-lg));
+  }
+</style>

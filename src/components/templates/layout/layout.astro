@@ -3,7 +3,6 @@ import type { ComponentProps } from "astro/types";
 import "../../../styles/global.css";
 import { CONFIG } from "../../../utils/constants";
 import Copyright from "../../atoms/copyright/copyright.astro";
-import Heading from "../../atoms/heading/heading.astro";
 import License from "../../atoms/license/license.astro";
 import BackTo from "../../molecules/back-to/back-to.astro";
 import Branding from "../../molecules/branding/branding.astro";
@@ -12,11 +11,9 @@ import NavList from "../../molecules/nav-list/nav-list.astro";
 import SkipTo from "../../molecules/skip-to/skip-to.astro";
 import Head from "../../atoms/head/head.astro";
 
-type Props = Pick<ComponentProps<typeof Head>, "seo"> & {
-  title: string;
-};
+type Props = Pick<ComponentProps<typeof Head>, "seo">;
 
-const { seo, title } = Astro.props;
+const { seo } = Astro.props;
 const isHome = Astro.url.pathname === "/";
 const footerLinks = [
   ...(import.meta.env.DEV
@@ -63,7 +60,6 @@ const footerLinks = [
         </div>
       </header>
       <div class="site-body" id="contents">
-        <Heading as="h1">{title}</Heading>
         <slot />
       </div>
       <footer class="site-footer">

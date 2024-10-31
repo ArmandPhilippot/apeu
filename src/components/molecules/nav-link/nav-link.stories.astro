@@ -12,7 +12,8 @@ const seo: ComponentProps<typeof Layout>["seo"] = {
 };
 ---
 
-<Layout seo={seo} title={title}>
+<Layout seo={seo}>
+  <Heading as="h1">{title}</Heading>
   <Heading as="h2">Usage</Heading>
   <p>
     This component is used to define a navigation item inside a navigation list.

@@ -14,7 +14,8 @@ const seo: ComponentProps<typeof Layout>["seo"] = {
 };
 ---
 
-<Layout seo={seo} title={title}>
+<Layout seo={seo}>
+  <Heading as="h1">{title}</Heading>
   <Heading as="h2">Usage</Heading>
   <p>
     When used at the beginning or at the end of a sentence, a link should not

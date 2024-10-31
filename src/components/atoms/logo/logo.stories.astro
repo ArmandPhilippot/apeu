@@ -12,8 +12,9 @@ const seo: ComponentProps<typeof Layout>["seo"] = {
 };
 ---
 
-<Layout seo={seo} title={title}>
-  <Heading>Usage</Heading>
+<Layout seo={seo}>
+  <Heading as="h1">{title}</Heading>
+  <Heading as="h2">Usage</Heading>
   <p>
     This is the website logo. You should use this component instead of importing
     the logo to update the logo color when switching theme.

@@ -11,10 +11,11 @@ const seo: ComponentProps<typeof Layout>["seo"] = {
 };
 ---
 
-<Layout seo={seo} title={title}>
-  <HeadingComponent>Usage</HeadingComponent>
+<Layout seo={seo}>
+  <HeadingComponent as="h1">{title}</HeadingComponent>
+  <HeadingComponent as="h2">Usage</HeadingComponent>
   <p>This component is used to display a heading.</p>
-  <HeadingComponent>Levels from h1 to h6</HeadingComponent>
+  <HeadingComponent as="h2">Levels from h1 to h6</HeadingComponent>
   <HeadingComponent as="h1">
     The quick brown fox jumps over the lazy dog
   </HeadingComponent>

@@ -1,5 +1,6 @@
 ---
 import type { ComponentProps } from "astro/types";
+import Heading from "../components/atoms/heading/heading.astro";
 import Layout from "../components/templates/layout/layout.astro";
 
 const title = "Homepage";
@@ -8,4 +9,6 @@ const seo: ComponentProps<typeof Layout>["seo"] = {
 };
 ---
 
-<Layout seo={seo} title={title} />
+<Layout seo={seo}>
+  <Heading as="h1">{title}</Heading>
+</Layout>

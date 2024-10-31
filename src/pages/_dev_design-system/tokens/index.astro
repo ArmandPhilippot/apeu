@@ -71,7 +71,8 @@ const seo: ComponentProps<typeof Layout>["seo"] = {
 };
 ---
 
-<Layout seo={seo} title={title}>
+<Layout seo={seo}>
+  <Heading as="h1">{title}</Heading>
   <Heading as="h2">Fonts</Heading>
   <Heading as="h3">Family</Heading>
   <div class="wrapper flex">

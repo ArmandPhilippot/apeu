@@ -3,6 +3,7 @@ import type { GetStaticPaths } from "astro";
 import type { ComponentProps } from "astro/types";
 import { globby } from "globby";
 import { join } from "path";
+import Heading from "../../../components/atoms/heading/heading.astro";
 import Link from "../../../components/atoms/link/link.astro";
 import ListItem from "../../../components/atoms/list/list-item.astro";
 import List from "../../../components/atoms/list/list.astro";
@@ -57,7 +58,8 @@ const seo: ComponentProps<typeof Layout>["seo"] = {
 };
 ---
 
-<Layout seo={seo} title={title}>
+<Layout seo={seo}>
+  <Heading as="h1">{title}</Heading>
   {
     stories.length ? (
       <List>

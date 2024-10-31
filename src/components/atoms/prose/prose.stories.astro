@@ -1,0 +1,24 @@
+---
+import type { ComponentProps } from "astro/types";
+import Layout from "../../templates/layout/layout.astro";
+import Heading from "../heading/heading.astro";
+import ProseComponent from "./prose.astro";
+
+const title = "Prose";
+
+const seo: ComponentProps<typeof Layout>["seo"] = {
+  nofollow: true,
+  noindex: true,
+  title: `${title} | Atoms | Components | Design system`,
+};
+---
+
+<Layout seo={seo}>
+  <Heading as="h1">{title}</Heading>
+  <ProseComponent>
+    <p>The first child should not have a top margin.</p>
+    <p>In between you can use whatever you want.</p>
+    <p>Each children will have both top and bottom margins.</p>
+    <p>The last child should not have a bottom margin.</p>
+  </ProseComponent>
+</Layout>

@@ -1,18 +1,27 @@
 ---
 import type { HTMLTag, Polymorphic } from "astro/types";
+import type { Elevation } from "../../../types/tokens";
 
 type Props<T extends HTMLTag = "div"> = Polymorphic<{ as: T }> & {
+  elevation?: Elevation | null | undefined;
   isBordered?: boolean | null | undefined;
   isCentered?: boolean | null | undefined;
+  isPadded?: boolean | null | undefined;
   isProse?: boolean | null | undefined;
+  isRounded?: boolean | null | undefined;
+  isSpaced?: boolean | null | undefined;
 };
 
 const {
   as: Tag = "div",
   class: className,
+  elevation,
   isBordered = false,
   isCentered = false,
+  isPadded = false,
   isProse = false,
+  isRounded = false,
+  isSpaced = false,
   ...attrs
 } = Astro.props;
 ---
@@ -21,7 +30,17 @@ const {
   {...attrs}
   class:list={[
     "box",
-    { bordered: isBordered, centered: isCentered, prose: isProse },
+    {
+      bordered: isBordered,
+      centered: isCentered,
+      elevated: elevation === "elevated",
+      floating: elevation === "floating",
+      padded: isPadded,
+      prose: isProse,
+      raised: elevation === "raised",
+      rounded: isRounded,
+      spaced: isSpaced,
+    },
     className,
   ]}><slot /></Tag
 >
@@ -32,6 +51,14 @@ const {
 
     &:where(.prose) {
       max-width: var(--size-prose);
+
+      & > :global(*:first-child) {
+        margin-block-start: 0;
+      }
+
+      & > :global(*:last-child) {
+        margin-block-end: 0;
+      }
     }
 
     &:where(.bordered.prose) {
@@ -52,6 +79,37 @@ const {
 
     &:where(.prose.centered) {
       width: 100%;
+    }
+
+    &:where(.elevated) {
+      box-shadow: var(--shadow-elevated-to-top-left);
+    }
+
+    &:where(.floating) {
+      box-shadow: var(--shadow-floating-to-top-left);
+    }
+
+    &:where(.padded) {
+      padding: clamp(var(--spacing-md), 2dvw, var(--spacing-lg))
+        clamp(var(--spacing-md), 3dvw, var(--spacing-xl));
+    }
+
+    &:where(.rounded.prose) {
+      @container (width > 55em) {
+        border-radius: var(--border-radii-md);
+      }
+    }
+
+    &:where(.rounded:not(.prose)) {
+      border-radius: var(--border-radii-md);
+    }
+
+    &:where(.raised) {
+      box-shadow: var(--shadow-raised-to-top-left);
+    }
+
+    &:where(.spaced) {
+      margin-block: var(--spacing-md);
     }
   }
 </style>

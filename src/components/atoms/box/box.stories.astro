@@ -1,5 +1,6 @@
 ---
 import type { ComponentProps } from "astro/types";
+import Page from "../../organisms/page/page.astro";
 import Layout from "../../templates/layout/layout.astro";
 import Heading from "../heading/heading.astro";
 import BoxComponent from "./box.astro";
@@ -13,30 +14,160 @@ const seo: ComponentProps<typeof Layout>["seo"] = {
 ---
 
 <Layout seo={seo}>
-  <Heading as="h1">{title}</Heading>
-  <Heading as="h2">Usage</Heading>
-  <p>
-    This component is usually used in the website's footer to display the
-    copyright.
-  </p>
-  <BoxComponent>The box contents.</BoxComponent>
-  <Heading as="h2">Options</Heading>
-  <Heading as="h3"><code>isBordered</code></Heading>
-  <BoxComponent isBordered>The box contents.</BoxComponent>
-  <Heading as="h3"><code>isCentered</code></Heading>
-  <BoxComponent isCentered>The box contents.</BoxComponent>
-  <Heading as="h3"><code>isProse</code></Heading>
-  <BoxComponent isProse>The box contents.</BoxComponent>
-  <Heading as="h2">Using <code>isProse</code></Heading>
-  <BoxComponent isProse>
-    <p>The first child should not have a top margin.</p>
-    <p>In between you can use whatever you want.</p>
-    <p>Each "not-inlined" children will have both top and bottom margins.</p>
-    <p>The last child should not have a bottom margin.</p>
-  </BoxComponent>
-  <Heading as="h3">With <code>isBordered</code></Heading>
-  <BoxComponent isBordered isProse>The box contents.</BoxComponent>
-  <Heading as="h3">With <code>isCentered</code></Heading>
-  <p>And <code>isBordered</code> to see the box limits.</p>
-  <BoxComponent isBordered isCentered isProse>The box contents.</BoxComponent>
+  <Page heading={title}>
+    <Fragment slot="body">
+      <Heading as="h2">Usage</Heading>
+      <p>
+        This component can be used to create a box that reuse the same styles
+        across multiple components.
+      </p>
+    </Fragment>
+    <Fragment slot="disconnected-body">
+      <BoxComponent>The box contents.</BoxComponent>
+      <BoxComponent
+        elevation="raised"
+        isBordered
+        isCentered
+        isPadded
+        isProse
+        isRounded
+        isSpaced
+      >
+        <Heading as="h2">Options</Heading>
+        <Heading as="h3"><code>elevation</code></Heading>
+        <Heading as="h4"><code>raised</code></Heading>
+      </BoxComponent>
+      <BoxComponent elevation="raised">The box contents.</BoxComponent>
+      <BoxComponent
+        elevation="raised"
+        isBordered
+        isCentered
+        isPadded
+        isProse
+        isRounded
+        isSpaced
+      >
+        <Heading as="h4"><code>elevated</code></Heading>
+      </BoxComponent>
+      <BoxComponent elevation="elevated">The box contents.</BoxComponent>
+      <BoxComponent
+        elevation="raised"
+        isBordered
+        isCentered
+        isPadded
+        isProse
+        isRounded
+        isSpaced
+      >
+        <Heading as="h4"><code>floating</code></Heading>
+      </BoxComponent>
+      <BoxComponent elevation="floating">The box contents.</BoxComponent>
+      <BoxComponent
+        elevation="raised"
+        isBordered
+        isCentered
+        isPadded
+        isProse
+        isRounded
+        isSpaced
+      >
+        <Heading as="h3"><code>isBordered</code></Heading>
+      </BoxComponent>
+      <BoxComponent isBordered>The box contents.</BoxComponent>
+      <BoxComponent
+        elevation="raised"
+        isBordered
+        isCentered
+        isPadded
+        isProse
+        isRounded
+        isSpaced
+      >
+        <Heading as="h3"><code>isCentered</code></Heading>
+      </BoxComponent>
+      <BoxComponent isCentered>The box contents.</BoxComponent>
+      <BoxComponent
+        elevation="raised"
+        isBordered
+        isCentered
+        isPadded
+        isProse
+        isRounded
+        isSpaced
+      >
+        <Heading as="h3"><code>isPadded</code></Heading>
+      </BoxComponent>
+      <BoxComponent isPadded>The box contents.</BoxComponent>
+      <BoxComponent
+        elevation="raised"
+        isBordered
+        isCentered
+        isPadded
+        isProse
+        isRounded
+        isSpaced
+      >
+        <Heading as="h3"><code>isProse</code></Heading>
+      </BoxComponent>
+      <BoxComponent isProse>The box contents.</BoxComponent>
+      <BoxComponent
+        elevation="raised"
+        isBordered
+        isCentered
+        isPadded
+        isProse
+        isRounded
+        isSpaced
+      >
+        <Heading as="h3"><code>isRounded</code></Heading>
+      </BoxComponent>
+      <BoxComponent isBordered isRounded>The box contents.</BoxComponent>
+      <BoxComponent
+        elevation="raised"
+        isBordered
+        isCentered
+        isPadded
+        isProse
+        isRounded
+        isSpaced
+      >
+        <Heading as="h2">Using <code>isProse</code></Heading>
+      </BoxComponent>
+      <BoxComponent isProse>
+        <p>The first child should not have a top margin.</p>
+        <p>In between you can use whatever you want.</p>
+        <p>
+          Each "not-inlined" children will have both top and bottom margins.
+        </p>
+        <p>The last child should not have a bottom margin.</p>
+      </BoxComponent>
+      <BoxComponent
+        elevation="raised"
+        isBordered
+        isCentered
+        isPadded
+        isProse
+        isRounded
+        isSpaced
+      >
+        <Heading as="h3">With <code>isBordered</code></Heading>
+      </BoxComponent>
+      <BoxComponent isBordered isProse>The box contents.</BoxComponent>
+      <BoxComponent
+        elevation="raised"
+        isBordered
+        isCentered
+        isPadded
+        isProse
+        isRounded
+        isSpaced
+      >
+        <Heading as="h3">With <code>isCentered</code></Heading>
+        <p>And <code>isBordered</code> to see the box limits.</p>
+      </BoxComponent>
+      <BoxComponent isBordered isCentered isProse
+        >The box contents.</BoxComponent
+      >
+    </Fragment>
+  </Page>
 </Layout>

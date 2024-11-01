@@ -14,6 +14,6 @@ const seo: ComponentProps<typeof Layout>["seo"] = {
 
 <Layout seo={seo}>
   <PageComponent heading={title}>
-    <p>This is the main content of the page.</p>
+    <p slot="body">This is the main content of the page.</p>
   </PageComponent>
 </Layout>

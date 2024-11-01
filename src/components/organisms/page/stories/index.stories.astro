@@ -1,5 +1,6 @@
 ---
 import type { ComponentProps } from "astro/types";
+import Heading from "../../../atoms/heading/heading.astro";
 import Link from "../../../atoms/link/link.astro";
 import ListItem from "../../../atoms/list/list-item.astro";
 import List from "../../../atoms/list/list.astro";
@@ -17,33 +18,73 @@ const seo: ComponentProps<typeof Layout>["seo"] = {
 
 <Layout seo={seo}>
   <PageComponent heading={title}>
-    <List>
-      <ListItem>
-        <Link href="./page/page-with-title-body">Page with title and body</Link>
-      </ListItem>
-      <ListItem>
-        <Link href="./page/page-with-title-cover-body">
-          Page with title, cover and body
-        </Link>
-      </ListItem>
-      <ListItem>
-        <Link href="./page/page-with-title-meta-body">
-          Page with title, meta and body
-        </Link>
-      </ListItem>
-      <ListItem>
-        <Link href="./page/page-with-title-cover-meta-body">
-          Page with title, cover, meta and body
-        </Link>
-      </ListItem>
-      <ListItem>
-        <Link href="./page/page-with-title-toc-body">
-          Page with title, toc and body
-        </Link>
-      </ListItem>
-      <ListItem>
-        <Link href="./page/page-with-everything">Page with everything</Link>
-      </ListItem>
-    </List>
+    <Fragment slot="body">
+      <Heading>Usage</Heading>
+      <p>
+        A <code>Page</code> component should be used in a <code>Layout</code> component.
+        It provides the structure and the styles of any page of the website.
+      </p>
+      <p>In addition to its properties, it can receive several named slots:</p>
+      <List>
+        <ListItem
+          ><code>meta</code>: to display some meta about the page</ListItem
+        >
+        <ListItem
+          ><code>body</code>: to display the main content of the page</ListItem
+        >
+        <ListItem
+          ><code>disconnected-body</code>: to display some unstyled content
+          disconnected from the page. This can be useful for a cards list in
+          addition to or instead of the body for example.</ListItem
+        >
+        <ListItem><code>footer</code>: to add a footer to the page</ListItem>
+      </List>
+      <Heading>Stories</Heading>
+      <List>
+        <ListItem>
+          <Link href="./page/page-with-title-body"
+            >Page with title and body</Link
+          >
+        </ListItem>
+        <ListItem>
+          <Link href="./page/page-with-title-disconnected-body">
+            Page with title and disconnected body
+          </Link>
+        </ListItem>
+        <ListItem>
+          <Link href="./page/page-with-title-body-disconnected-body">
+            Page with title, body and disconnected body
+          </Link>
+        </ListItem>
+        <ListItem>
+          <Link href="./page/page-with-title-cover-body">
+            Page with title, cover and body
+          </Link>
+        </ListItem>
+        <ListItem>
+          <Link href="./page/page-with-title-meta-body">
+            Page with title, meta and body
+          </Link>
+        </ListItem>
+        <ListItem>
+          <Link href="./page/page-with-title-cover-meta-body">
+            Page with title, cover, meta and body
+          </Link>
+        </ListItem>
+        <ListItem>
+          <Link href="./page/page-with-title-toc-body">
+            Page with title, toc and body
+          </Link>
+        </ListItem>
+        <ListItem>
+          <Link href="./page/page-with-everything-except-disconnected-body">
+            Page with everything except disconnected body
+          </Link>
+        </ListItem>
+        <ListItem>
+          <Link href="./page/page-with-everything">Page with everything</Link>
+        </ListItem>
+      </List>
+    </Fragment>
   </PageComponent>
 </Layout>

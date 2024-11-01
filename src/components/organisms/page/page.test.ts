@@ -21,7 +21,7 @@ describe("Page", () => {
     const body = "consequatur placeat explicabo";
     const result = await container.renderToString(Page, {
       props,
-      slots: { default: body },
+      slots: { body },
     });
 
     expect.assertions(3);
@@ -29,6 +29,23 @@ describe("Page", () => {
     expect(result).toContain("</h1>");
     expect(result).toContain(props.heading);
     expect(result).toContain(body);
+  });
+
+  it<LocalTestContext>("can render a disconnected body", async ({
+    container,
+  }) => {
+    const props = {
+      heading: "unde non eum",
+    } satisfies ComponentProps<typeof Page>;
+    const disconnectedBody = "consequatur placeat explicabo";
+    const result = await container.renderToString(Page, {
+      props,
+      slots: { "disconnected-body": disconnectedBody },
+    });
+
+    expect.assertions(1);
+
+    expect(result).toContain(disconnectedBody);
   });
 
   it<LocalTestContext>("can render a cover", async ({ container }) => {
@@ -41,10 +58,8 @@ describe("Page", () => {
       },
       heading: "unde non eum",
     } satisfies ComponentProps<typeof Page>;
-    const body = "consequatur placeat explicabo";
     const result = await container.renderToString(Page, {
       props,
-      slots: { default: body },
     });
 
     expect.assertions(2);
@@ -60,10 +75,8 @@ describe("Page", () => {
       feed: "#perspiciatis-excepturi-repellendus",
       heading: "unde non eum",
     } satisfies ComponentProps<typeof Page>;
-    const body = "consequatur placeat explicabo";
     const result = await container.renderToString(Page, {
       props,
-      slots: { default: body },
     });
 
     expect.assertions(1);
@@ -75,11 +88,10 @@ describe("Page", () => {
     const props = {
       heading: "unde non eum",
     } satisfies ComponentProps<typeof Page>;
-    const body = "consequatur placeat explicabo";
     const meta = "quasi numquam explicabo";
     const result = await container.renderToString(Page, {
       props,
-      slots: { default: body, meta },
+      slots: { meta },
     });
 
     expect.assertions(1);
@@ -91,11 +103,10 @@ describe("Page", () => {
     const props = {
       heading: "unde non eum",
     } satisfies ComponentProps<typeof Page>;
-    const body = "consequatur placeat explicabo";
     const footer = "quasi numquam explicabo";
     const result = await container.renderToString(Page, {
       props,
-      slots: { default: body, footer },
+      slots: { footer },
     });
 
     expect.assertions(1);
@@ -113,10 +124,8 @@ describe("Page", () => {
         { depth: 1, slug: "#heading2", text: "Heading 2" },
       ] as const,
     } satisfies ComponentProps<typeof Page>;
-    const body = "consequatur placeat explicabo";
     const result = await container.renderToString(Page, {
       props,
-      slots: { default: body },
     });
 
     expect.assertions(4);

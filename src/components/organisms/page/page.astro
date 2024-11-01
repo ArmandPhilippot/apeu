@@ -20,7 +20,14 @@ type Props = HTMLAttributes<"article"> & {
 const { class: className, cover, feed, heading, toc, ...attrs } = Astro.props;
 ---
 
-<article {...attrs} class:list={["page", className]}>
+<article
+  {...attrs}
+  class:list={[
+    "page",
+    { "has-disconnected-body": Astro.slots.has("disconnected-body") },
+    className,
+  ]}
+>
   <Box as="header" class="page-header" isBordered isCentered isProse>
     <div class="page-heading">
       <Heading as="h1" class="page-title">{heading}</Heading>
@@ -57,9 +64,14 @@ const { class: className, cover, feed, heading, toc, ...attrs } = Astro.props;
       </div>
     ) : null
   }
-  <Box class="page-body" isBordered isCentered isProse>
-    <slot />
-  </Box>
+  {
+    Astro.slots.has("body") ? (
+      <Box class="page-body" isBordered isCentered isProse>
+        <slot name="body" />
+      </Box>
+    ) : null
+  }
+  <slot name="disconnected-body" />
   {
     Astro.slots.has("footer") ? (
       <Box as="footer" class="page-footer" isBordered isCentered isProse>
@@ -225,6 +237,11 @@ const { class: className, cover, feed, heading, toc, ...attrs } = Astro.props;
     & > :global(*:where(:last-child)) {
       margin-block-end: 0;
     }
+  }
+
+  :where(.page.has-disconnected-body:not(:has(.page-body))) .page-header,
+  :where(.page.has-disconnected-body) .page-body {
+    border-block-end: var(--border-size-sm) solid var(--color-border);
   }
 
   .page-footer {

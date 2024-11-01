@@ -1,5 +1,6 @@
 ---
 import type { ComponentProps } from "astro/types";
+import Page from "../../organisms/page/page.astro";
 import Layout from "../../templates/layout/layout.astro";
 import Heading from "../heading/heading.astro";
 import LogoComponent from "./logo.astro";
@@ -13,11 +14,14 @@ const seo: ComponentProps<typeof Layout>["seo"] = {
 ---
 
 <Layout seo={seo}>
-  <Heading as="h1">{title}</Heading>
-  <Heading as="h2">Usage</Heading>
-  <p>
-    This is the website logo. You should use this component instead of importing
-    the logo to update the logo color when switching theme.
-  </p>
-  <LogoComponent />
+  <Page heading={title}>
+    <Fragment slot="body">
+      <Heading as="h2">Usage</Heading>
+      <p>
+        This is the website logo. You should use this component instead of
+        importing the logo to update the logo color when switching theme.
+      </p>
+      <LogoComponent />
+    </Fragment>
+  </Page>
 </Layout>

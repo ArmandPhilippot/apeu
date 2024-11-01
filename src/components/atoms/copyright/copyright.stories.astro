@@ -1,5 +1,6 @@
 ---
 import type { ComponentProps } from "astro/types";
+import Page from "../../organisms/page/page.astro";
 import Layout from "../../templates/layout/layout.astro";
 import Heading from "../heading/heading.astro";
 import CopyrightComponent from "./copyright.astro";
@@ -13,23 +14,26 @@ const seo: ComponentProps<typeof Layout>["seo"] = {
 ---
 
 <Layout seo={seo}>
-  <Heading as="h1">{title}</Heading>
-  <Heading as="h2">Usage</Heading>
-  <p>
-    This component is usually used in the website's footer to display the
-    copyright.
-  </p>
-  <p>
-    <CopyrightComponent
-      creationYear={new Date().getFullYear()}
-      owner="John Doe"
-    />
-  </p>
-  <p>
-    When the <code>creationYear</code> is different from the current year, then the
-    output will look like this:
-  </p>
-  <p>
-    <CopyrightComponent creationYear={2010} owner="John Doe" />
-  </p>
+  <Page heading={title}>
+    <Fragment slot="body">
+      <Heading as="h2">Usage</Heading>
+      <p>
+        This component is usually used in the website's footer to display the
+        copyright.
+      </p>
+      <p>
+        <CopyrightComponent
+          creationYear={new Date().getFullYear()}
+          owner="John Doe"
+        />
+      </p>
+      <p>
+        When the <code>creationYear</code> is different from the current year, then
+        the output will look like this:
+      </p>
+      <p>
+        <CopyrightComponent creationYear={2010} owner="John Doe" />
+      </p>
+    </Fragment>
+  </Page>
 </Layout>

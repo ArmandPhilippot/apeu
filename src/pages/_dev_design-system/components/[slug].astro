@@ -3,10 +3,10 @@ import type { GetStaticPaths } from "astro";
 import type { ComponentProps } from "astro/types";
 import { globby } from "globby";
 import { join } from "path";
-import Heading from "../../../components/atoms/heading/heading.astro";
 import Link from "../../../components/atoms/link/link.astro";
 import ListItem from "../../../components/atoms/list/list-item.astro";
 import List from "../../../components/atoms/list/list.astro";
+import Page from "../../../components/organisms/page/page.astro";
 import Layout from "../../../components/templates/layout/layout.astro";
 import {
   COMPONENT_KINDS,
@@ -59,18 +59,21 @@ const seo: ComponentProps<typeof Layout>["seo"] = {
 ---
 
 <Layout seo={seo}>
-  <Heading as="h1">{title}</Heading>
-  {
-    stories.length ? (
-      <List>
-        {stories.map((story) => (
-          <ListItem>
-            <Link href={story.slug}>{story.label}</Link>
-          </ListItem>
-        ))}
-      </List>
-    ) : (
-      <p>No stories available in {title}</p>
-    )
-  }
+  <Page heading={title}>
+    <Fragment slot="body">
+      {
+        stories.length ? (
+          <List>
+            {stories.map((story) => (
+              <ListItem>
+                <Link href={story.slug}>{story.label}</Link>
+              </ListItem>
+            ))}
+          </List>
+        ) : (
+          <p>No stories available in {title}</p>
+        )
+      }
+    </Fragment>
+  </Page>
 </Layout>

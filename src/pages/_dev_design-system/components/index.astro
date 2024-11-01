@@ -1,9 +1,9 @@
 ---
 import type { ComponentProps } from "astro/types";
-import Heading from "../../../components/atoms/heading/heading.astro";
 import Link from "../../../components/atoms/link/link.astro";
 import ListItem from "../../../components/atoms/list/list-item.astro";
 import List from "../../../components/atoms/list/list.astro";
+import Page from "../../../components/organisms/page/page.astro";
 import Layout from "../../../components/templates/layout/layout.astro";
 import { COMPONENT_KINDS } from "../../../utils/constants";
 import { capitalizeFirstLetter } from "../../../utils/strings";
@@ -17,16 +17,17 @@ const seo: ComponentProps<typeof Layout>["seo"] = {
 ---
 
 <Layout seo={seo}>
-  <Heading as="h1">{title}</Heading>
-  <List>
-    {
-      COMPONENT_KINDS.map((kind) => (
-        <ListItem>
-          <Link href={`/design-system/components/${kind}`}>
-            {capitalizeFirstLetter(kind)}
-          </Link>
-        </ListItem>
-      ))
-    }
-  </List>
+  <Page heading={title}>
+    <List slot="body">
+      {
+        COMPONENT_KINDS.map((kind) => (
+          <ListItem>
+            <Link href={`/design-system/components/${kind}`}>
+              {capitalizeFirstLetter(kind)}
+            </Link>
+          </ListItem>
+        ))
+      }
+    </List>
+  </Page>
 </Layout>

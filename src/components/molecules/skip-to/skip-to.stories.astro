@@ -1,6 +1,7 @@
 ---
 import type { ComponentProps } from "astro/types";
 import Heading from "../../atoms/heading/heading.astro";
+import Page from "../../organisms/page/page.astro";
 import Layout from "../../templates/layout/layout.astro";
 import SkipToComponent from "./skip-to.astro";
 
@@ -13,17 +14,20 @@ const seo: ComponentProps<typeof Layout>["seo"] = {
 ---
 
 <Layout seo={seo}>
-  <Heading as="h1">{title}</Heading>
-  <Heading as="h2">Usage</Heading>
-  <p>
-    A SkipLink component is special. It is used to navigate through a page using
-    anchors.
-  </p>
-  <p>
-    Click here then use <kbd>Tab</kbd> key to focus the skip link below. It should
-    then appears on the top left of your screen.
-  </p>
-  <SkipToComponent anchor="#some-id">
-    Skip to some anchor on the page
-  </SkipToComponent>
+  <Page heading={title}>
+    <Fragment slot="body">
+      <Heading as="h2">Usage</Heading>
+      <p>
+        A SkipLink component is special. It is used to navigate through a page
+        using anchors.
+      </p>
+      <p>
+        Click here then use <kbd>Tab</kbd> key to focus the skip link below. It should
+        then appears on the top left of your screen.
+      </p>
+      <SkipToComponent anchor="#some-id">
+        Skip to some anchor on the page
+      </SkipToComponent>
+    </Fragment>
+  </Page>
 </Layout>

@@ -1,5 +1,6 @@
 ---
 import type { ComponentProps } from "astro/types";
+import Page from "../../organisms/page/page.astro";
 import Layout from "../../templates/layout/layout.astro";
 import Heading from "../heading/heading.astro";
 import LicenseComponent from "./license.astro";
@@ -13,8 +14,11 @@ const seo: ComponentProps<typeof Layout>["seo"] = {
 ---
 
 <Layout seo={seo}>
-  <Heading as="h1">{title}</Heading>
-  <Heading as="h2">Usage</Heading>
-  <p>This component is used to display an icon of the website license.</p>
-  <LicenseComponent />
+  <Page heading={title}>
+    <Fragment slot="body">
+      <Heading as="h2">Usage</Heading>
+      <p>This component is used to display an icon of the website license.</p>
+      <LicenseComponent />
+    </Fragment>
+  </Page>
 </Layout>

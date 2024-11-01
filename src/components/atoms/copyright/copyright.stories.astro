@@ -1,39 +1,36 @@
 ---
 import type { ComponentProps } from "astro/types";
-import Page from "../../organisms/page/page.astro";
-import Layout from "../../templates/layout/layout.astro";
+import PageLayout from "../../templates/page-layout/page-layout.astro";
 import Heading from "../heading/heading.astro";
 import CopyrightComponent from "./copyright.astro";
 
 const title = "Copyright";
-const seo: ComponentProps<typeof Layout>["seo"] = {
+const seo: ComponentProps<typeof PageLayout>["seo"] = {
   nofollow: true,
   noindex: true,
   title: `${title} | Atoms | Components | Design system`,
 };
 ---
 
-<Layout seo={seo}>
-  <Page heading={title}>
-    <Fragment slot="body">
-      <Heading as="h2">Usage</Heading>
-      <p>
-        This component is usually used in the website's footer to display the
-        copyright.
-      </p>
-      <p>
-        <CopyrightComponent
-          creationYear={new Date().getFullYear()}
-          owner="John Doe"
-        />
-      </p>
-      <p>
-        When the <code>creationYear</code> is different from the current year, then
-        the output will look like this:
-      </p>
-      <p>
-        <CopyrightComponent creationYear={2010} owner="John Doe" />
-      </p>
-    </Fragment>
-  </Page>
-</Layout>
+<PageLayout heading={title} seo={seo}>
+  <Fragment slot="body">
+    <Heading as="h2">Usage</Heading>
+    <p>
+      This component is usually used in the website's footer to display the
+      copyright.
+    </p>
+    <p>
+      <CopyrightComponent
+        creationYear={new Date().getFullYear()}
+        owner="John Doe"
+      />
+    </p>
+    <p>
+      When the <code>creationYear</code> is different from the current year, then
+      the output will look like this:
+    </p>
+    <p>
+      <CopyrightComponent creationYear={2010} owner="John Doe" />
+    </p>
+  </Fragment>
+</PageLayout>

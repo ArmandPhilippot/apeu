@@ -1,27 +1,24 @@
 ---
 import type { ComponentProps } from "astro/types";
-import Page from "../../organisms/page/page.astro";
-import Layout from "../../templates/layout/layout.astro";
+import PageLayout from "../../templates/page-layout/page-layout.astro";
 import Heading from "../heading/heading.astro";
 import LogoComponent from "./logo.astro";
 
 const title = "Logo";
-const seo: ComponentProps<typeof Layout>["seo"] = {
+const seo: ComponentProps<typeof PageLayout>["seo"] = {
   nofollow: true,
   noindex: true,
   title: `${title} | Atoms | Components | Design system`,
 };
 ---
 
-<Layout seo={seo}>
-  <Page heading={title}>
-    <Fragment slot="body">
-      <Heading as="h2">Usage</Heading>
-      <p>
-        This is the website logo. You should use this component instead of
-        importing the logo to update the logo color when switching theme.
-      </p>
-      <LogoComponent />
-    </Fragment>
-  </Page>
-</Layout>
+<PageLayout heading={title} seo={seo}>
+  <Fragment slot="body">
+    <Heading as="h2">Usage</Heading>
+    <p>
+      This is the website logo. You should use this component instead of
+      importing the logo to update the logo color when switching theme.
+    </p>
+    <LogoComponent />
+  </Fragment>
+</PageLayout>

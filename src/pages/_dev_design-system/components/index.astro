@@ -3,31 +3,28 @@ import type { ComponentProps } from "astro/types";
 import Link from "../../../components/atoms/link/link.astro";
 import ListItem from "../../../components/atoms/list/list-item.astro";
 import List from "../../../components/atoms/list/list.astro";
-import Page from "../../../components/organisms/page/page.astro";
-import Layout from "../../../components/templates/layout/layout.astro";
+import PageLayout from "../../../components/templates/page-layout/page-layout.astro";
 import { COMPONENT_KINDS } from "../../../utils/constants";
 import { capitalizeFirstLetter } from "../../../utils/strings";
 
 const title = "Components";
-const seo: ComponentProps<typeof Layout>["seo"] = {
+const seo: ComponentProps<typeof PageLayout>["seo"] = {
   nofollow: true,
   noindex: true,
   title: `${title} | Design system`,
 };
 ---
 
-<Layout seo={seo}>
-  <Page heading={title}>
-    <List slot="body">
-      {
-        COMPONENT_KINDS.map((kind) => (
-          <ListItem>
-            <Link href={`/design-system/components/${kind}`}>
-              {capitalizeFirstLetter(kind)}
-            </Link>
-          </ListItem>
-        ))
-      }
-    </List>
-  </Page>
-</Layout>
+<PageLayout heading={title} seo={seo}>
+  <List slot="body">
+    {
+      COMPONENT_KINDS.map((kind) => (
+        <ListItem>
+          <Link href={`/design-system/components/${kind}`}>
+            {capitalizeFirstLetter(kind)}
+          </Link>
+        </ListItem>
+      ))
+    }
+  </List>
+</PageLayout>

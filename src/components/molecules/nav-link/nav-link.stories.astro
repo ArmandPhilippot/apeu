@@ -1,51 +1,41 @@
 ---
 import type { ComponentProps } from "astro/types";
 import Heading from "../../atoms/heading/heading.astro";
-import Page from "../../organisms/page/page.astro";
-import Layout from "../../templates/layout/layout.astro";
+import PageLayout from "../../templates/page-layout/page-layout.astro";
 import NavLinkComponent from "./nav-link.astro";
 
 const title = "NavLink";
-const seo: ComponentProps<typeof Layout>["seo"] = {
+const seo: ComponentProps<typeof PageLayout>["seo"] = {
   nofollow: true,
   noindex: true,
   title: `${title} | Molecules | Components | Design system`,
 };
 ---
 
-<Layout seo={seo}>
-  <Page heading={title}>
-    <Fragment slot="body">
-      <Heading as="h2">Usage</Heading>
-      <p>
-        This component is used to define a navigation item inside a navigation
-        list.
-      </p>
-      <Heading as="h2">Variant: <code>isBlock: false</code> (default)</Heading>
-      <NavLinkComponent href="#destination">Nav Item</NavLinkComponent>
-      <Heading as="h3"><code>isBordered</code></Heading>
-      <NavLinkComponent href="#destination" isBordered
-        >Nav Item</NavLinkComponent
-      >
-      <Heading as="h3">With icon</Heading>
-      <NavLinkComponent href="#destination" icon="cc-by-sa" iconSize={40}>
-        Nav Item
-      </NavLinkComponent>
-      <Heading as="h2">Variant: <code>isBlock: true</code></Heading>
-      <NavLinkComponent href="#destination" isBlock>Nav Item</NavLinkComponent>
-      <Heading as="h3"><code>isBordered</code></Heading>
-      <NavLinkComponent href="#destination" isBlock isBordered>
-        Nav Item
-      </NavLinkComponent>
-      <Heading as="h3">With icon</Heading>
-      <NavLinkComponent
-        href="#destination"
-        icon="cc-by-sa"
-        iconSize={40}
-        isBlock
-      >
-        Nav Item
-      </NavLinkComponent>
-    </Fragment>
-  </Page>
-</Layout>
+<PageLayout heading={title} seo={seo}>
+  <Fragment slot="body">
+    <Heading as="h2">Usage</Heading>
+    <p>
+      This component is used to define a navigation item inside a navigation
+      list.
+    </p>
+    <Heading as="h2">Variant: <code>isBlock: false</code> (default)</Heading>
+    <NavLinkComponent href="#destination">Nav Item</NavLinkComponent>
+    <Heading as="h3"><code>isBordered</code></Heading>
+    <NavLinkComponent href="#destination" isBordered>Nav Item</NavLinkComponent>
+    <Heading as="h3">With icon</Heading>
+    <NavLinkComponent href="#destination" icon="cc-by-sa" iconSize={40}>
+      Nav Item
+    </NavLinkComponent>
+    <Heading as="h2">Variant: <code>isBlock: true</code></Heading>
+    <NavLinkComponent href="#destination" isBlock>Nav Item</NavLinkComponent>
+    <Heading as="h3"><code>isBordered</code></Heading>
+    <NavLinkComponent href="#destination" isBlock isBordered>
+      Nav Item
+    </NavLinkComponent>
+    <Heading as="h3">With icon</Heading>
+    <NavLinkComponent href="#destination" icon="cc-by-sa" iconSize={40} isBlock>
+      Nav Item
+    </NavLinkComponent>
+  </Fragment>
+</PageLayout>

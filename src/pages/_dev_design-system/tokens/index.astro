@@ -1,8 +1,7 @@
 ---
 import type { ComponentProps } from "astro/types";
 import Heading from "../../../components/atoms/heading/heading.astro";
-import Page from "../../../components/organisms/page/page.astro";
-import Layout from "../../../components/templates/layout/layout.astro";
+import PageLayout from "../../../components/templates/page-layout/page-layout.astro";
 import TokenPreview from "./_token-preview.astro";
 
 // See `src/styles/variables/borders.css` for the available tokens.
@@ -65,193 +64,191 @@ const spacings = [
 ] as const;
 
 const title = "Tokens";
-const seo: ComponentProps<typeof Layout>["seo"] = {
+const seo: ComponentProps<typeof PageLayout>["seo"] = {
   nofollow: true,
   noindex: true,
   title: `${title} | Design system`,
 };
 ---
 
-<Layout seo={seo}>
-  <Page heading={title}>
-    <Fragment slot="body">
-      <Heading as="h2">Fonts</Heading>
-      <Heading as="h3">Family</Heading>
-      <div class="wrapper flex">
-        {
-          fonts.families.map((family) => (
-            <TokenPreview isInline token={`--font-family-${family}`}>
-              <p style={`font-family: var(--font-family-${family});`}>
-                The quick brown fox jumps over the lazy dog
-              </p>
-            </TokenPreview>
-          ))
-        }
-      </div>
-      <Heading as="h3">Size</Heading>
-      <div class="wrapper flex">
-        {
-          fonts.sizes.map((size) => (
-            <TokenPreview isInline token={`--font-size-${size}`}>
-              <p style={`font-size: var(--font-size-${size});`}>
-                The quick brown fox jumps over the lazy dog
-              </p>
-            </TokenPreview>
-          ))
-        }
-      </div>
-      <Heading as="h3">Weights</Heading>
-      <div class="wrapper flex">
-        {
-          fonts.weights.map((weight) => (
-            <TokenPreview isInline token={`--font-weight-${weight}`}>
-              <p style={`font-weight: var(--font-weight-${weight});`}>
-                The quick brown fox jumps over the lazy dog
-              </p>
-            </TokenPreview>
-          ))
-        }
-      </div>
-      <Heading as="h2">Spacings</Heading>
-      <div class="wrapper flex">
-        {
-          spacings.map((spacing) => (
-            <TokenPreview isInline token={`--spacing-${spacing}`}>
-              <div
-                style={`display:flex;flex-flow:row nowrap;gap: var(--spacing-${spacing});`}
-              >
-                <div class="box" style="border-color: var(--color-border);" />
-                <div class="box" style="border-color: var(--color-border);" />
-              </div>
-            </TokenPreview>
-          ))
-        }
-      </div>
-      <Heading as="h2">Borders</Heading>
-      <Heading as="h3">Size</Heading>
-      <div class="wrapper flex">
-        {
-          borders.sizes.map((size) => (
-            <TokenPreview isInline token={`--border-size-${size}`}>
-              <div
-                class="box"
-                style={`border-color: var(--color-border);border-width: var(--border-size-${size});`}
-              />
-            </TokenPreview>
-          ))
-        }
-      </div>
-      <Heading as="h3">Radius</Heading>
-      <div class="wrapper flex">
-        {
-          borders.radius.map((radii) => (
-            <TokenPreview isInline token={`--border-radii-${radii}`}>
-              <div
-                class="box"
-                style={`border-color: var(--color-border);border-radius: var(--border-radii-${radii});`}
-              />
-            </TokenPreview>
-          ))
-        }
-      </div>
-      <Heading as="h2">Colors</Heading>
-      <Heading as="h3">Surfaces</Heading>
-      <div class="wrapper grid">
-        {
-          colors.contexts.map((context) => (
-            <div class="wrapper flex">
-              {colors.variants.map((variant) => {
-                const token =
-                  variant === "default"
-                    ? `--color-${context}`
-                    : `--color-${context}-${variant}`;
-                return (
-                  <TokenPreview token={token}>
-                    <div class="box" style={`background: var(${token});`} />
-                  </TokenPreview>
-                );
-              })}
-            </div>
-          ))
-        }
-      </div>
-      <Heading as="h3">Texts on surfaces</Heading>
-      <div class="wrapper grid">
-        {
-          colors.contexts.map((context) => (
-            <div class="wrapper flex">
-              <TokenPreview token={`--color-on-${context}`}>
-                <div
-                  class="box"
-                  style={`background: var(--color-${context});color: var(--color-on-${context});`}
-                >
-                  Preview
-                </div>
-              </TokenPreview>
-              <TokenPreview token={`--color-on-${context}-faded`}>
-                <div
-                  class="box"
-                  style={`background: var(--color-${context}-faded);color: var(--color-on-${context}-faded);`}
-                >
-                  Preview
-                </div>
-              </TokenPreview>
-              <TokenPreview token={`--color-on-${context}-subtle`}>
-                <div
-                  class="box"
-                  style={`background: var(--color-${context}-subtle);color: var(--color-on-${context}-subtle);`}
-                >
-                  Preview
-                </div>
-              </TokenPreview>
-            </div>
-          ))
-        }
-      </div>
-      <Heading as="h2">Shadows</Heading>
-      <Heading as="h3">Elevation</Heading>
-      <div class="wrapper flex">
-        {
-          shadows.elevations.map((elevation) => (
-            <TokenPreview isInline token={`--shadow-${elevation}-to-top-left`}>
-              <div
-                class="box"
-                style={`background: var(--color-regular);padding: var(--spacing-md);`}
-              >
-                <div
-                  class="box"
-                  style={`background: var(--color-regular);border-color: var(--color-border);box-shadow: var(--shadow-${elevation}-to-top-left);`}
-                />
-              </div>
-            </TokenPreview>
-          ))
-        }
-      </div>
-      <Heading as="h3">Direction</Heading>
+<PageLayout heading={title} seo={seo}>
+  <Fragment slot="body">
+    <Heading as="h2">Fonts</Heading>
+    <Heading as="h3">Family</Heading>
+    <div class="wrapper flex">
       {
-        shadows.directions.y.map((y) => (
-          <div class="wrapper grid">
-            {shadows.directions.x.map((x) => (
-              <TokenPreview token={`--shadow-elevated-to-${y}-${x}`}>
-                <div class="box" style={`padding: var(--spacing-md);`}>
-                  <div
-                    class="box"
-                    style={`--shadow-color: var(--color-black);background: var(--color-regular);border-color: var(--color-border);box-shadow: var(--shadow-elevated-to-${y}-${x});`}
-                  />
-                </div>
-              </TokenPreview>
-            ))}
+        fonts.families.map((family) => (
+          <TokenPreview isInline token={`--font-family-${family}`}>
+            <p style={`font-family: var(--font-family-${family});`}>
+              The quick brown fox jumps over the lazy dog
+            </p>
+          </TokenPreview>
+        ))
+      }
+    </div>
+    <Heading as="h3">Size</Heading>
+    <div class="wrapper flex">
+      {
+        fonts.sizes.map((size) => (
+          <TokenPreview isInline token={`--font-size-${size}`}>
+            <p style={`font-size: var(--font-size-${size});`}>
+              The quick brown fox jumps over the lazy dog
+            </p>
+          </TokenPreview>
+        ))
+      }
+    </div>
+    <Heading as="h3">Weights</Heading>
+    <div class="wrapper flex">
+      {
+        fonts.weights.map((weight) => (
+          <TokenPreview isInline token={`--font-weight-${weight}`}>
+            <p style={`font-weight: var(--font-weight-${weight});`}>
+              The quick brown fox jumps over the lazy dog
+            </p>
+          </TokenPreview>
+        ))
+      }
+    </div>
+    <Heading as="h2">Spacings</Heading>
+    <div class="wrapper flex">
+      {
+        spacings.map((spacing) => (
+          <TokenPreview isInline token={`--spacing-${spacing}`}>
+            <div
+              style={`display:flex;flex-flow:row nowrap;gap: var(--spacing-${spacing});`}
+            >
+              <div class="box" style="border-color: var(--color-border);" />
+              <div class="box" style="border-color: var(--color-border);" />
+            </div>
+          </TokenPreview>
+        ))
+      }
+    </div>
+    <Heading as="h2">Borders</Heading>
+    <Heading as="h3">Size</Heading>
+    <div class="wrapper flex">
+      {
+        borders.sizes.map((size) => (
+          <TokenPreview isInline token={`--border-size-${size}`}>
+            <div
+              class="box"
+              style={`border-color: var(--color-border);border-width: var(--border-size-${size});`}
+            />
+          </TokenPreview>
+        ))
+      }
+    </div>
+    <Heading as="h3">Radius</Heading>
+    <div class="wrapper flex">
+      {
+        borders.radius.map((radii) => (
+          <TokenPreview isInline token={`--border-radii-${radii}`}>
+            <div
+              class="box"
+              style={`border-color: var(--color-border);border-radius: var(--border-radii-${radii});`}
+            />
+          </TokenPreview>
+        ))
+      }
+    </div>
+    <Heading as="h2">Colors</Heading>
+    <Heading as="h3">Surfaces</Heading>
+    <div class="wrapper grid">
+      {
+        colors.contexts.map((context) => (
+          <div class="wrapper flex">
+            {colors.variants.map((variant) => {
+              const token =
+                variant === "default"
+                  ? `--color-${context}`
+                  : `--color-${context}-${variant}`;
+              return (
+                <TokenPreview token={token}>
+                  <div class="box" style={`background: var(${token});`} />
+                </TokenPreview>
+              );
+            })}
           </div>
         ))
       }
-      <Heading as="h3">Colors</Heading>
-      <p>
-        Ideally, I should adapt the shadow color according to the surface but I
-        don't think I'll use them elsewhere than on regular background.
-      </p>
-    </Fragment>
-  </Page>
-</Layout>
+    </div>
+    <Heading as="h3">Texts on surfaces</Heading>
+    <div class="wrapper grid">
+      {
+        colors.contexts.map((context) => (
+          <div class="wrapper flex">
+            <TokenPreview token={`--color-on-${context}`}>
+              <div
+                class="box"
+                style={`background: var(--color-${context});color: var(--color-on-${context});`}
+              >
+                Preview
+              </div>
+            </TokenPreview>
+            <TokenPreview token={`--color-on-${context}-faded`}>
+              <div
+                class="box"
+                style={`background: var(--color-${context}-faded);color: var(--color-on-${context}-faded);`}
+              >
+                Preview
+              </div>
+            </TokenPreview>
+            <TokenPreview token={`--color-on-${context}-subtle`}>
+              <div
+                class="box"
+                style={`background: var(--color-${context}-subtle);color: var(--color-on-${context}-subtle);`}
+              >
+                Preview
+              </div>
+            </TokenPreview>
+          </div>
+        ))
+      }
+    </div>
+    <Heading as="h2">Shadows</Heading>
+    <Heading as="h3">Elevation</Heading>
+    <div class="wrapper flex">
+      {
+        shadows.elevations.map((elevation) => (
+          <TokenPreview isInline token={`--shadow-${elevation}-to-top-left`}>
+            <div
+              class="box"
+              style={`background: var(--color-regular);padding: var(--spacing-md);`}
+            >
+              <div
+                class="box"
+                style={`background: var(--color-regular);border-color: var(--color-border);box-shadow: var(--shadow-${elevation}-to-top-left);`}
+              />
+            </div>
+          </TokenPreview>
+        ))
+      }
+    </div>
+    <Heading as="h3">Direction</Heading>
+    {
+      shadows.directions.y.map((y) => (
+        <div class="wrapper grid">
+          {shadows.directions.x.map((x) => (
+            <TokenPreview token={`--shadow-elevated-to-${y}-${x}`}>
+              <div class="box" style={`padding: var(--spacing-md);`}>
+                <div
+                  class="box"
+                  style={`--shadow-color: var(--color-black);background: var(--color-regular);border-color: var(--color-border);box-shadow: var(--shadow-elevated-to-${y}-${x});`}
+                />
+              </div>
+            </TokenPreview>
+          ))}
+        </div>
+      ))
+    }
+    <Heading as="h3">Colors</Heading>
+    <p>
+      Ideally, I should adapt the shadow color according to the surface but I
+      don't think I'll use them elsewhere than on regular background.
+    </p>
+  </Fragment>
+</PageLayout>
 
 <style>
   .wrapper {

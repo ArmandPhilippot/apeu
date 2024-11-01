@@ -3,12 +3,12 @@ import type { MarkdownHeading } from "astro";
 import { Icon } from "astro-icon/components";
 import type { ComponentProps, HTMLAttributes } from "astro/types";
 import { Image as AstroImg } from "astro:assets";
+import Box from "../../atoms/box/box.astro";
 import Button from "../../atoms/button/button.astro";
 import Heading from "../../atoms/heading/heading.astro";
 import Link from "../../atoms/link/link.astro";
 import ListItem from "../../atoms/list/list-item.astro";
 import List from "../../atoms/list/list.astro";
-import Prose from "../../atoms/prose/prose.astro";
 
 type Props = HTMLAttributes<"article"> & {
   cover?: ComponentProps<typeof AstroImg> | null | undefined;
@@ -21,7 +21,7 @@ const { class: className, cover, feed, heading, toc, ...attrs } = Astro.props;
 ---
 
 <article {...attrs} class:list={["page", className]}>
-  <header class="page-header">
+  <Box as="header" class="page-header" isBordered isCentered isProse>
     <div class="page-heading">
       <Heading as="h1" class="page-title">{heading}</Heading>
       {
@@ -41,11 +41,11 @@ const { class: className, cover, feed, heading, toc, ...attrs } = Astro.props;
         </div>
       ) : null
     }
-  </header>
+  </Box>
   {
     !!toc ? (
       <div class="page-sidebar">
-        <div class="page-toc">
+        <Box class="page-toc" isBordered isCentered isProse>
           <List as="ol">
             {toc.map((heading) => (
               <ListItem>
@@ -53,18 +53,18 @@ const { class: className, cover, feed, heading, toc, ...attrs } = Astro.props;
               </ListItem>
             ))}
           </List>
-        </div>
+        </Box>
       </div>
     ) : null
   }
-  <Prose class="page-body">
+  <Box class="page-body" isBordered isCentered isProse>
     <slot />
-  </Prose>
+  </Box>
   {
     Astro.slots.has("footer") ? (
-      <footer class="page-footer">
+      <Box as="footer" class="page-footer" isBordered isCentered isProse>
         <slot name="footer" />
-      </footer>
+      </Box>
     ) : null
   }
 </article>
@@ -73,7 +73,7 @@ const { class: className, cover, feed, heading, toc, ...attrs } = Astro.props;
   .page {
     &:has(.page-toc) {
       /* Uses grid only when the size matches prose + 1/3 of prose */
-      @media (width > calc(55em * 4 / 3)) {
+      @container (width > calc(55em * 4 / 3)) {
         display: grid;
         grid-template-columns:
           minmax(calc(var(--size-prose) / 2), var(--size-prose))
@@ -88,40 +88,39 @@ const { class: className, cover, feed, heading, toc, ...attrs } = Astro.props;
   .page-toc,
   .page-body,
   .page-footer {
-    background: var(--color-regular);
-    border-block-end: var(--border-size-sm) solid var(--color-border);
     box-shadow: var(--shadow-raised-to-top-center);
 
-    @media (width > 55em) {
-      margin-inline: auto;
-      width: 100%;
-      max-width: var(--size-prose);
-      border-inline: var(--border-size-sm) solid var(--color-border);
+    &:where(:not(:last-child)) {
+      border-block-end: none;
+    }
+
+    @container (width > 55em) {
       box-shadow: var(--shadow-raised-to-top-left);
-
-      &:is(:first-child) {
-        border-block-start: var(--border-size-sm) solid var(--color-border);
-        border-start-start-radius: var(--border-radii-md);
-        border-start-end-radius: var(--border-radii-md);
-      }
-
-      &:is(:last-child) {
-        border-end-start-radius: var(--border-radii-md);
-        border-end-end-radius: var(--border-radii-md);
-      }
     }
   }
 
   .page-header,
   .page-body,
   .page-footer {
-    @media (width > calc(55em * 4 / 3)) {
+    @container (width > 55em) {
+      &:is(:last-child) {
+        border-end-start-radius: var(--border-radii-md);
+        border-end-end-radius: var(--border-radii-md);
+      }
+    }
+
+    @container (width > calc(55em * 4 / 3)) {
       grid-column: 1;
     }
   }
 
   .page-header {
-    @media (width >= calc(55em / 1.5)) {
+    @container (width > 55em) {
+      border-start-start-radius: var(--border-radii-md);
+      border-start-end-radius: var(--border-radii-md);
+    }
+
+    @container (width >= calc(55em / 1.5)) {
       display: grid;
       grid-auto-columns: minmax(0, 1fr);
     }
@@ -137,7 +136,7 @@ const { class: className, cover, feed, heading, toc, ...attrs } = Astro.props;
       clamp(var(--spacing-md), 4dvw, var(--spacing-lg));
     text-align: center;
 
-    @media (width >= calc(55em / 1.25)) {
+    @container (width >= calc(55em / 1.25)) {
       flex-flow: row wrap;
     }
   }
@@ -151,7 +150,7 @@ const { class: className, cover, feed, heading, toc, ...attrs } = Astro.props;
   }
 
   :where(.page:has(.page-cover):has(.page-meta)) .page-heading {
-    @media (width >= calc(55em / 1.5)) {
+    @container (width >= calc(55em / 1.5)) {
       grid-column: 1 / span 2;
     }
   }
@@ -166,7 +165,7 @@ const { class: className, cover, feed, heading, toc, ...attrs } = Astro.props;
   }
 
   :where(.page:has(.page-meta)) .page-cover {
-    @media (width >= calc(55em / 1.5)) {
+    @container (width >= calc(55em / 1.5)) {
       grid-column: 1;
       border-inline-end: var(--border-size-sm) solid var(--color-border);
     }
@@ -178,24 +177,26 @@ const { class: className, cover, feed, heading, toc, ...attrs } = Astro.props;
   }
 
   :where(.page:has(.page-cover)) .page-meta {
-    @media (width >= calc(55em / 1.5)) {
+    @container (width >= calc(55em / 1.5)) {
       grid-column: 2;
       text-align: start;
     }
   }
 
   .page-sidebar {
-    @media (width > calc(55em * 4 / 3)) {
+    @container (width > calc(55em * 4 / 3)) {
       grid-column: 2;
       grid-row: 1 / span 3;
     }
   }
 
   .page-toc {
-    @media (width > calc(55em * 4 / 3)) {
+    border-block-end: none;
+
+    @container (width > calc(55em * 4 / 3)) {
       position: sticky;
       top: var(--spacing-md);
-      border-block-start: var(--border-size-sm) solid var(--color-border);
+      border-block: var(--border-size-sm) solid var(--color-border);
       border-radius: var(--border-radii-md);
     }
   }
@@ -203,6 +204,27 @@ const { class: className, cover, feed, heading, toc, ...attrs } = Astro.props;
   .page-body {
     padding: clamp(var(--spacing-md), 2dvw, var(--spacing-lg))
       clamp(var(--spacing-md), 3dvw, var(--spacing-xl));
+
+    @container (width > 55em) {
+      border-inline: var(--border-size-sm) solid var(--color-border);
+    }
+
+    & > :global(*:where(:first-child)) {
+      margin-block-start: 0;
+    }
+
+    &
+      > :global(
+        /* The list might not be complete... */
+        *:where(:not(a, code, em, input, img, span, strong))
+          + *:where(:not(a, code, em, img, input, span, strong))
+      ) {
+      margin-block: var(--spacing-md);
+    }
+
+    & > :global(*:where(:last-child)) {
+      margin-block-end: 0;
+    }
   }
 
   .page-footer {

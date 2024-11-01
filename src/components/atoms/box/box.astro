@@ -1,0 +1,57 @@
+---
+import type { HTMLTag, Polymorphic } from "astro/types";
+
+type Props<T extends HTMLTag = "div"> = Polymorphic<{ as: T }> & {
+  isBordered?: boolean | null | undefined;
+  isCentered?: boolean | null | undefined;
+  isProse?: boolean | null | undefined;
+};
+
+const {
+  as: Tag = "div",
+  class: className,
+  isBordered = false,
+  isCentered = false,
+  isProse = false,
+  ...attrs
+} = Astro.props;
+---
+
+<Tag
+  {...attrs}
+  class:list={[
+    "box",
+    { bordered: isBordered, centered: isCentered, prose: isProse },
+    className,
+  ]}><slot /></Tag
+>
+
+<style>
+  .box {
+    background: var(--color-regular);
+
+    &:where(.prose) {
+      max-width: var(--size-prose);
+    }
+
+    &:where(.bordered.prose) {
+      border-block: var(--border-size-sm) solid var(--color-border);
+
+      @container (width > 55em) {
+        border-inline: var(--border-size-sm) solid var(--color-border);
+      }
+    }
+
+    &:where(.bordered:not(.prose)) {
+      border: var(--border-size-sm) solid var(--color-border);
+    }
+
+    &:where(.centered) {
+      margin-inline: auto;
+    }
+
+    &:where(.prose.centered) {
+      width: 100%;
+    }
+  }
+</style>

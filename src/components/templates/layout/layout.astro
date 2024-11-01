@@ -1,5 +1,5 @@
 ---
-import type { ComponentProps } from "astro/types";
+import type { ComponentProps, HTMLAttributes } from "astro/types";
 import "../../../styles/global.css";
 import { CONFIG } from "../../../utils/constants";
 import Copyright from "../../atoms/copyright/copyright.astro";
@@ -11,9 +11,10 @@ import NavList from "../../molecules/nav-list/nav-list.astro";
 import SkipTo from "../../molecules/skip-to/skip-to.astro";
 import Head from "../../atoms/head/head.astro";
 
-type Props = Pick<ComponentProps<typeof Head>, "seo">;
+type Props = Pick<ComponentProps<typeof Head>, "seo"> &
+  Omit<HTMLAttributes<"div">, "id">;
 
-const { seo } = Astro.props;
+const { class: className, seo, ...attrs } = Astro.props;
 const isHome = Astro.url.pathname === "/";
 const footerLinks = [
   ...(import.meta.env.DEV
@@ -59,7 +60,7 @@ const footerLinks = [
           <div class:list={["site-navbar-item", "js-only"]}>Settings</div>
         </div>
       </header>
-      <div class="site-body" id="contents">
+      <div {...attrs} class:list={["site-body", className]} id="contents">
         <slot />
       </div>
       <footer class="site-footer">

@@ -1,0 +1,21 @@
+---
+import type { ComponentProps } from "astro/types";
+import PageLayoutComponent from "../page-layout.astro";
+
+const title = "Page with breadcrumb";
+
+const breadcrumb: ComponentProps<typeof PageLayoutComponent>["breadcrumb"] = [
+  "Home",
+  "Any page",
+];
+
+const seo: ComponentProps<typeof PageLayoutComponent>["seo"] = {
+  nofollow: true,
+  noindex: true,
+  title: `${title} | Templates | Components | Design system`,
+};
+---
+
+<PageLayoutComponent breadcrumb={breadcrumb} heading={title} seo={seo}>
+  <p slot="body">This is the main content of the page.</p>
+</PageLayoutComponent>

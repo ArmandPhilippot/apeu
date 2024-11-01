@@ -1,0 +1,47 @@
+---
+import type { ComponentProps } from "astro/types";
+import Heading from "../../../atoms/heading/heading.astro";
+import Link from "../../../atoms/link/link.astro";
+import ListItem from "../../../atoms/list/list-item.astro";
+import List from "../../../atoms/list/list.astro";
+import Page from "../../../organisms/page/page.astro";
+import Layout from "../../../templates/layout/layout.astro";
+
+const title = "Page";
+
+const seo: ComponentProps<typeof Layout>["seo"] = {
+  nofollow: true,
+  noindex: true,
+  title: `${title} | Organisms | Components | Design system`,
+};
+---
+
+<Layout seo={seo}>
+  <Page heading={title}>
+    <Fragment slot="body">
+      <Heading>Usage</Heading>
+      <p>
+        The <code>PageLayout</code> component should be used with most of your pages.
+      </p>
+      <Heading>Stories</Heading>
+      <List>
+        <ListItem>
+          <Link href="./page-layout/only-page">Only page</Link>
+        </ListItem>
+        <ListItem>
+          <Link href="./page-layout/page-with-breadcrumb">
+            Page with breadcrumb
+          </Link>
+        </ListItem>
+        <ListItem>
+          <Link href="./page-layout/page-with-aside">Page with aside</Link>
+        </ListItem>
+        <ListItem>
+          <Link href="./page-layout/page-with-breadcrumb-and-aside">
+            Page with breadcrumb and aside
+          </Link>
+        </ListItem>
+      </List>
+    </Fragment>
+  </Page>
+</Layout>

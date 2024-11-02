@@ -111,7 +111,8 @@ const { breadcrumb, seo, ...attrs } = Astro.props;
   }
 
   :global(:where([data-theme="light"])) .page-layout-content::before {
-    filter: url("#paper-filter") brightness(0.98) contrast(98%) saturate(105%);
+    filter: url("#paper-filter") brightness(0.985) contrast(98.5%)
+      saturate(103%);
   }
 
   :global(:where([data-theme="dark"])) .page-layout-content::before {

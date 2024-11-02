@@ -118,7 +118,8 @@ Before starting, please follow the instructions in [Setup](#setup).
 │   │   │   ├── components/
 │   │   │   ├── tokens/
 │   │   │   └── index.astro
-│   │   └── index.astro
+│   │   ├── index.astro
+│   │   └── search.astro
 │   ├── styles/
 │   ├── types/
 │   └── utils/

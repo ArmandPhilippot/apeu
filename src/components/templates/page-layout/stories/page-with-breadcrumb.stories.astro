@@ -5,8 +5,10 @@ import PageLayoutComponent from "../page-layout.astro";
 const title = "Page with breadcrumb";
 
 const breadcrumb: ComponentProps<typeof PageLayoutComponent>["breadcrumb"] = [
-  "Home",
-  "Any page",
+  { label: "Home", url: "#home" },
+  { label: "Blog", url: "#blog" },
+  { label: "Posts", url: "#posts" },
+  { label: title, url: Astro.url.href },
 ];
 
 const seo: ComponentProps<typeof PageLayoutComponent>["seo"] = {

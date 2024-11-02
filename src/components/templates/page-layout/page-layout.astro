@@ -1,18 +1,27 @@
 ---
 import type { ComponentProps } from "astro/types";
+import Breadcrumb from "../../molecules/breadcrumb/breadcrumb.astro";
 import Page from "../../organisms/page/page.astro";
 import Layout from "../layout/layout.astro";
 
 type Props = Pick<ComponentProps<typeof Layout>, "seo"> &
   ComponentProps<typeof Page> & {
-    breadcrumb?: string[] | null | undefined;
+    breadcrumb?: ComponentProps<typeof Breadcrumb>["items"] | null | undefined;
   };
 
 const { breadcrumb, seo, ...attrs } = Astro.props;
 ---
 
 <Layout class="page-layout" seo={seo}>
-  {breadcrumb ? <div class="page-layout-breadcrumb">Breadcrumb</div> : null}
+  {
+    breadcrumb?.length ? (
+      <Breadcrumb
+        class="page-layout-breadcrumb"
+        isCentered
+        items={breadcrumb}
+      />
+    ) : null
+  }
   <div class="page-layout-content">
     <main class="page-layout-main">
       <Page {...attrs}>
@@ -42,7 +51,7 @@ const { breadcrumb, seo, ...attrs } = Astro.props;
   }
 
   .page-layout-breadcrumb {
-    padding: var(--spacing-sm) var(--spacing-md);
+    padding: var(--spacing-2xs) 0;
     font-size: var(--font-size-sm);
   }
 

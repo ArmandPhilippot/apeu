@@ -33,7 +33,11 @@ describe("PageLayout", () => {
 
   it<LocalTestContext>("can render a breadcrumb", async ({ container }) => {
     const props = {
-      breadcrumb: ["quod", "doloribus"] as const,
+      breadcrumb: [
+        { label: "omnis assumenda aut", url: "#voluptate-est-sed" },
+        { label: "voluptas odio voluptatem", url: "#est-ducimus-sit" },
+        { label: "sunt ratione quis", url: "#sunt-illo-iusto" },
+      ] as const,
       heading: "sunt quos molestiae",
       seo: {
         title: "est et fugiat",
@@ -43,9 +47,11 @@ describe("PageLayout", () => {
       props,
     });
 
-    expect.assertions(1);
+    expect.assertions(3);
 
-    expect(result).toContain("Breadcrumb");
+    expect(result).toContain(props.breadcrumb[0].label);
+    expect(result).toContain(props.breadcrumb[1].label);
+    expect(result).toContain(props.breadcrumb[2].label);
   });
 
   it<LocalTestContext>("can render an aside", async ({ container }) => {

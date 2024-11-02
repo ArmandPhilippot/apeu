@@ -1,0 +1,88 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import NavLink from "../nav-link/nav-link.astro";
+import NavList from "../nav-list/nav-list.astro";
+
+type Crumb = {
+  label: string;
+  url: string;
+};
+
+type Props = HTMLAttributes<"nav"> & {
+  isCentered?: boolean | null | undefined;
+  items: Crumb[];
+};
+
+const { class: className, isCentered = false, items, ...attrs } = Astro.props;
+---
+
+<nav
+  {...attrs}
+  class:list={["breadcrumb", { centered: isCentered }, className]}
+>
+  <NavList class="breadcrumb-list" hideMarker isInline isOrdered items={items}>
+    {
+      ({ label, url, ...item }, index, crumbs) => {
+        const isLastItem = index + 1 === crumbs.length;
+
+        return isLastItem ? (
+          <span aria-current="page" class="breadcrumb-item">
+            {label}
+          </span>
+        ) : (
+          <Fragment>
+            <NavLink {...item} class="breadcrumb-item" href={url}>
+              {label}
+            </NavLink>
+            <span aria-hidden="true">&gt;</span>
+          </Fragment>
+        );
+      }
+    }
+  </NavList>
+</nav>
+
+<style>
+  .breadcrumb {
+    overflow-x: auto;
+  }
+
+  .breadcrumb-list {
+    flex-wrap: nowrap;
+    white-space: nowrap;
+
+    & > :global(li) {
+      display: flex;
+      flex-flow: row;
+      align-items: center;
+    }
+  }
+
+  :where(.breadcrumb.centered) .breadcrumb-list {
+    & > :global(li:first-child) {
+      margin-inline-start: auto;
+    }
+
+    & > :global(li:last-child) {
+      margin-inline-end: auto;
+    }
+  }
+
+  .breadcrumb-item {
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+    padding: var(--spacing-xs) var(--spacing-2xs);
+    font-size: var(--font-size-sm);
+
+    &:where(:not(:is(span))) {
+      border-radius: var(--border-radii-md);
+      outline-offset: calc(var(--spacing-3xs) * -1);
+    }
+
+    &:where(:is(span)) {
+      color: var(--color-muted-faded);
+      font-weight: var(--font-weight-bold);
+    }
+  }
+</style>

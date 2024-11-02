@@ -12,7 +12,7 @@ type NavItem = {
 };
 
 type Props = Omit<ComponentProps<typeof List>, "as"> & {
-  children: (item: NavItem) => unknown;
+  children: (item: NavItem, index: number, list: NavItem[]) => unknown;
   isOrdered?: boolean | null | undefined;
   items: NavItem[];
 };

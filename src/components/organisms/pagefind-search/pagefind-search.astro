@@ -1,0 +1,179 @@
+---
+import "@pagefind/default-ui/css/ui.css";
+import type { JSX } from "astro/jsx-runtime";
+
+type Props = JSX.HTMLAttributes & {
+  queryParam?: string;
+};
+
+const { class: className, queryParam, ...attrs } = Astro.props;
+---
+
+<ap-pagefind-search
+  {...attrs}
+  class:list={["pagefind-search", className]}
+  data-query-param={queryParam}
+>
+  <div class="pagefind-ui" id="pagefind"></div>
+</ap-pagefind-search>
+
+<style>
+  .pagefind-search {
+    --pagefind-ui-scale: 1.05;
+    --pagefind-ui-primary: var(--color-primary);
+    --pagefind-ui-text: var(--color-on-regular);
+    --pagefind-ui-tag: var(--color-regular-dark);
+    --pagefind-ui-background: var(--color-regular);
+    --pagefind-ui-border: var(--color-border);
+    --pagefind-ui-border-width: var(--border-size-sm);
+    --pagefind-ui-border-radius: var(--border-radii-md);
+    --pagefind-ui-font: inherit;
+
+    & :global(mark) {
+      background: var(--color-info);
+      color: var(--color-on-info);
+    }
+
+    & :global(.pagefind-ui__search-input) {
+      --pagefind-ui-background: var(--color-regular-dark);
+
+      &::placeholder {
+        color: var(--color-muted-faded);
+        opacity: 1 !important;
+      }
+
+      &:focus-visible {
+        background: var(--color-regular);
+        border-color: var(--color-primary);
+        box-shadow: none;
+        outline: var(--color-primary-lighter) solid var(--border-size-sm);
+      }
+    }
+
+    & :global(.pagefind-ui__button) {
+      --pagefind-ui-background: var(--color-regular-light);
+
+      transition: all 0.18s ease-in-out 0s;
+
+      &:hover,
+      &:focus {
+        --pagefind-ui-background: var(--color-regular-lighter);
+      }
+
+      &:focus,
+      &:focus-visible {
+        outline: var(--color-primary-lighter) solid var(--border-size-md);
+      }
+    }
+
+    & :global(.pagefind-ui__search-clear) {
+      --pagefind-ui-background: var(--color-regular-light);
+
+      display: flex;
+      place-items: center;
+      padding-inline: var(--spacing-sm);
+      border: var(--border-size-sm) solid var(--color-border);
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      transition: all 0.18s ease-in-out 0s;
+
+      &:hover,
+      &:focus {
+        --pagefind-ui-background: var(--color-regular-lighter);
+      }
+
+      &:focus {
+        outline: var(--color-primary-lighter) solid var(--border-size-md);
+      }
+    }
+
+    & :global(.pagefind-ui__result-link) {
+      --pagefind-ui-text: var(--color-primary);
+
+      text-underline-offset: 0.4ex;
+      transition: all 0.18s linear 0s;
+
+      &:focus-visible {
+        border-radius: var(--border-radii-sm);
+        outline: var(--color-primary-lighter) solid var(--border-size-md);
+        outline-offset: var(--border-size-md);
+      }
+    }
+  }
+</style>
+
+<script>
+  class APPagefindSearch extends HTMLElement {
+    #queryParam: string | undefined;
+
+    constructor() {
+      super();
+      this.initSearch = this.initSearch.bind(this);
+    }
+
+    connectedCallback() {
+      this.#queryParam = this.dataset.queryParam;
+
+      window.addEventListener("DOMContentLoaded", this.initSearch);
+    }
+
+    disconnectedCallback() {
+      window.removeEventListener("DOMContentLoaded", this.initSearch);
+    }
+
+    #addEllipsisToExcerpt(
+      excerpt: string,
+      location: number | undefined,
+    ): string {
+      return `${location === 0 ? "" : "&hellip; "}${excerpt}&hellip;`;
+    }
+
+    async #initPagefindUI(): Promise<
+      Record<"triggerSearch", (query: string) => void>
+    > {
+      // @ts-expect-error — Missing types for @pagefind/default-ui package.
+      const { PagefindUI } = await import("@pagefind/default-ui");
+
+      return new PagefindUI({
+        debounceTimeoutMs: 200,
+        element: "#pagefind",
+        excerptLength: 100,
+        pageSize: 10,
+        processResult: (result: { excerpt: string; locations: number[] }) => {
+          return {
+            ...result,
+            excerpt: result.excerpt
+              ? this.#addEllipsisToExcerpt(result.excerpt, result.locations[0])
+              : result.excerpt,
+          };
+        },
+        resetStyles: true,
+        showEmptyFilters: false,
+        showImages: false,
+        showSubResults: false,
+      });
+    }
+
+    #getSearchQuery(): string | null {
+      if (
+        !this.#queryParam ||
+        !window.location.search.includes(`?${this.#queryParam}=`)
+      )
+        return null;
+
+      return window.location.search.replace(
+        new RegExp(`.*\?${this.#queryParam}=`),
+        "",
+      );
+    }
+
+    async initSearch(): Promise<void> {
+      const search = await this.#initPagefindUI();
+      const query = this.#getSearchQuery();
+
+      if (query) search.triggerSearch(query);
+    }
+  }
+
+  customElements.define("ap-pagefind-search", APPagefindSearch);
+</script>

@@ -3,6 +3,7 @@ astro
 astrojs
 commitlint
 globby
+pagefind
 stylelint
 tsconfigs
 tseslint

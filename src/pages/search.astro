@@ -1,0 +1,15 @@
+---
+import type { ComponentProps } from "astro/types";
+import PagefindSearch from "../components/organisms/pagefind-search/pagefind-search.astro";
+import PageLayout from "../components/templates/page-layout/page-layout.astro";
+import { CONFIG } from "../utils/constants";
+
+const title = "Search";
+const seo: ComponentProps<typeof PageLayout>["seo"] = {
+  title,
+};
+---
+
+<PageLayout heading={title} seo={seo}>
+  <PagefindSearch queryParam={CONFIG.SEARCH.QUERY_PARAM} slot="body" />
+</PageLayout>

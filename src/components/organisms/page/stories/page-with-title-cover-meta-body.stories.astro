@@ -1,0 +1,27 @@
+---
+import type { ComponentProps } from "astro/types";
+import Layout from "../../../templates/layout/layout.astro";
+import PageComponent from "../page.astro";
+
+const title = "Page with title, cover, meta, and body";
+
+const cover: ComponentProps<typeof PageComponent>["cover"] = {
+  alt: "A cover example",
+  height: 480,
+  src: "https://picsum.photos/640/480",
+  width: 640,
+};
+
+const seo: ComponentProps<typeof Layout>["seo"] = {
+  nofollow: true,
+  noindex: true,
+  title: `${title} | Organisms | Components | Design system`,
+};
+---
+
+<Layout seo={seo}>
+  <PageComponent cover={cover} heading={title}>
+    <div slot="meta">Some meta</div>
+    <p slot="body">This is the main content of the page.</p>
+  </PageComponent>
+</Layout>

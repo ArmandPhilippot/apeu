@@ -1,36 +1,49 @@
 ---
 import type { ComponentProps } from "astro/types";
-import Layout from "../../templates/layout/layout.astro";
+import PageLayout from "../../templates/page-layout/page-layout.astro";
 import HeadingComponent from "./heading.astro";
 
 const title = "Heading";
-const seo: ComponentProps<typeof Layout>["seo"] = {
+const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
+  { label: "Home", url: "/" },
+  { label: "Design system", url: "/design-system" },
+  { label: "Components", url: "/design-system/components" },
+  { label: "Atoms", url: "/design-system/components/atoms" },
+  { label: title, url: Astro.url.href },
+];
+const seo: ComponentProps<typeof PageLayout>["seo"] = {
   nofollow: true,
   noindex: true,
-  title: `${title} | Atoms | Components | Design system`,
+  title: breadcrumb
+    .slice(1)
+    .reverse()
+    .map((crumb) => crumb.label)
+    .join(" | "),
 };
 ---
 
-<Layout seo={seo} title={title}>
-  <HeadingComponent>Usage</HeadingComponent>
-  <p>This component is used to display a heading.</p>
-  <HeadingComponent>Levels from h1 to h6</HeadingComponent>
-  <HeadingComponent as="h1">
-    The quick brown fox jumps over the lazy dog
-  </HeadingComponent>
-  <HeadingComponent as="h2">
-    The quick brown fox jumps over the lazy dog
-  </HeadingComponent>
-  <HeadingComponent as="h3">
-    The quick brown fox jumps over the lazy dog
-  </HeadingComponent>
-  <HeadingComponent as="h4">
-    The quick brown fox jumps over the lazy dog
-  </HeadingComponent>
-  <HeadingComponent as="h5">
-    The quick brown fox jumps over the lazy dog
-  </HeadingComponent>
-  <HeadingComponent as="h6">
-    The quick brown fox jumps over the lazy dog
-  </HeadingComponent>
-</Layout>
+<PageLayout breadcrumb={breadcrumb} heading={title} seo={seo}>
+  <Fragment slot="body">
+    <HeadingComponent as="h2">Usage</HeadingComponent>
+    <p>This component is used to display a heading.</p>
+    <HeadingComponent as="h2">Levels from h1 to h6</HeadingComponent>
+    <HeadingComponent as="h1">
+      The quick brown fox jumps over the lazy dog
+    </HeadingComponent>
+    <HeadingComponent as="h2">
+      The quick brown fox jumps over the lazy dog
+    </HeadingComponent>
+    <HeadingComponent as="h3">
+      The quick brown fox jumps over the lazy dog
+    </HeadingComponent>
+    <HeadingComponent as="h4">
+      The quick brown fox jumps over the lazy dog
+    </HeadingComponent>
+    <HeadingComponent as="h5">
+      The quick brown fox jumps over the lazy dog
+    </HeadingComponent>
+    <HeadingComponent as="h6">
+      The quick brown fox jumps over the lazy dog
+    </HeadingComponent>
+  </Fragment>
+</PageLayout>

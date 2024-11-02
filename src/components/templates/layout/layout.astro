@@ -1,9 +1,8 @@
 ---
-import type { ComponentProps } from "astro/types";
+import type { ComponentProps, HTMLAttributes } from "astro/types";
 import "../../../styles/global.css";
 import { CONFIG } from "../../../utils/constants";
 import Copyright from "../../atoms/copyright/copyright.astro";
-import Heading from "../../atoms/heading/heading.astro";
 import License from "../../atoms/license/license.astro";
 import BackTo from "../../molecules/back-to/back-to.astro";
 import Branding from "../../molecules/branding/branding.astro";
@@ -12,11 +11,10 @@ import NavList from "../../molecules/nav-list/nav-list.astro";
 import SkipTo from "../../molecules/skip-to/skip-to.astro";
 import Head from "../../atoms/head/head.astro";
 
-type Props = Pick<ComponentProps<typeof Head>, "seo"> & {
-  title: string;
-};
+type Props = Pick<ComponentProps<typeof Head>, "seo"> &
+  Omit<HTMLAttributes<"div">, "id">;
 
-const { seo, title } = Astro.props;
+const { class: className, seo, ...attrs } = Astro.props;
 const isHome = Astro.url.pathname === "/";
 const footerLinks = [
   ...(import.meta.env.DEV
@@ -62,8 +60,7 @@ const footerLinks = [
           <div class:list={["site-navbar-item", "js-only"]}>Settings</div>
         </div>
       </header>
-      <div class="site-body" id="contents">
-        <Heading as="h1">{title}</Heading>
+      <div {...attrs} class:list={["site-body", className]} id="contents">
         <slot />
       </div>
       <footer class="site-footer">
@@ -198,12 +195,11 @@ const footerLinks = [
 
   .site-branding {
     justify-content: center;
+    padding: var(--spacing-4xs) var(--spacing-2xs);
     border-block-end: var(--border-size-sm) solid var(--color-border);
-    box-shadow: var(--shadow-raised-to-top-center);
 
     @media (width >= 640px) {
       border-block: 0;
-      box-shadow: none;
     }
   }
 
@@ -269,6 +265,7 @@ const footerLinks = [
   }
 
   .site-body {
+    container: body / inline-size;
     flex: 1;
 
     @media (width >= 1024px) {

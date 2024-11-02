@@ -6,7 +6,7 @@ import { join } from "path";
 import Link from "../../../components/atoms/link/link.astro";
 import ListItem from "../../../components/atoms/list/list-item.astro";
 import List from "../../../components/atoms/list/list.astro";
-import Layout from "../../../components/templates/layout/layout.astro";
+import PageLayout from "../../../components/templates/page-layout/page-layout.astro";
 import {
   COMPONENT_KINDS,
   STORIES_EXT,
@@ -50,25 +50,37 @@ export const getStaticPaths = (() => {
 
 const { stories, title } = Astro.props;
 
-const seo: ComponentProps<typeof Layout>["seo"] = {
+const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
+  { label: "Home", url: "/" },
+  { label: "Design system", url: "/design-system" },
+  { label: "Components", url: "/design-system/components" },
+  { label: title, url: Astro.url.href },
+];
+const seo: ComponentProps<typeof PageLayout>["seo"] = {
   nofollow: true,
   noindex: true,
-  title: `${title} | Components | Design system`,
+  title: breadcrumb
+    .slice(1)
+    .reverse()
+    .map((crumb) => crumb.label)
+    .join(" | "),
 };
 ---
 
-<Layout seo={seo} title={title}>
-  {
-    stories.length ? (
-      <List>
-        {stories.map((story) => (
-          <ListItem>
-            <Link href={story.slug}>{story.label}</Link>
-          </ListItem>
-        ))}
-      </List>
-    ) : (
-      <p>No stories available in {title}</p>
-    )
-  }
-</Layout>
+<PageLayout breadcrumb={breadcrumb} heading={title} seo={seo}>
+  <Fragment slot="body">
+    {
+      stories.length ? (
+        <List>
+          {stories.map((story) => (
+            <ListItem>
+              <Link href={story.slug}>{story.label}</Link>
+            </ListItem>
+          ))}
+        </List>
+      ) : (
+        <p>No stories available in {title}</p>
+      )
+    }
+  </Fragment>
+</PageLayout>

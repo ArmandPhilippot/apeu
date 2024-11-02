@@ -1,0 +1,4 @@
+:root {
+  /* I'd like to use ch unit but this causes CLS with custom font so... */
+  --size-prose: 55em;
+}

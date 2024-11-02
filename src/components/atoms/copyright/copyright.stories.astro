@@ -1,34 +1,47 @@
 ---
 import type { ComponentProps } from "astro/types";
-import Layout from "../../templates/layout/layout.astro";
+import PageLayout from "../../templates/page-layout/page-layout.astro";
 import Heading from "../heading/heading.astro";
 import CopyrightComponent from "./copyright.astro";
 
 const title = "Copyright";
-const seo: ComponentProps<typeof Layout>["seo"] = {
+const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
+  { label: "Home", url: "/" },
+  { label: "Design system", url: "/design-system" },
+  { label: "Components", url: "/design-system/components" },
+  { label: "Atoms", url: "/design-system/components/atoms" },
+  { label: title, url: Astro.url.href },
+];
+const seo: ComponentProps<typeof PageLayout>["seo"] = {
   nofollow: true,
   noindex: true,
-  title: `${title} | Atoms | Components | Design system`,
+  title: breadcrumb
+    .slice(1)
+    .reverse()
+    .map((crumb) => crumb.label)
+    .join(" | "),
 };
 ---
 
-<Layout seo={seo} title={title}>
-  <Heading>Usage</Heading>
-  <p>
-    This component is usually used in the website's footer to display the
-    copyright.
-  </p>
-  <p>
-    <CopyrightComponent
-      creationYear={new Date().getFullYear()}
-      owner="John Doe"
-    />
-  </p>
-  <p>
-    When the <code>creationYear</code> is different from the current year, then the
-    output will look like this:
-  </p>
-  <p>
-    <CopyrightComponent creationYear={2010} owner="John Doe" />
-  </p>
-</Layout>
+<PageLayout breadcrumb={breadcrumb} heading={title} seo={seo}>
+  <Fragment slot="body">
+    <Heading as="h2">Usage</Heading>
+    <p>
+      This component is usually used in the website's footer to display the
+      copyright.
+    </p>
+    <p>
+      <CopyrightComponent
+        creationYear={new Date().getFullYear()}
+        owner="John Doe"
+      />
+    </p>
+    <p>
+      When the <code>creationYear</code> is different from the current year, then
+      the output will look like this:
+    </p>
+    <p>
+      <CopyrightComponent creationYear={2010} owner="John Doe" />
+    </p>
+  </Fragment>
+</PageLayout>

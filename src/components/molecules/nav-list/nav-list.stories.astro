@@ -3,14 +3,25 @@ import type { ComponentProps } from "astro/types";
 import Heading from "../../atoms/heading/heading.astro";
 import ListItem from "../../atoms/list/list-item.astro";
 import List from "../../atoms/list/list.astro";
-import Layout from "../../templates/layout/layout.astro";
+import PageLayout from "../../templates/page-layout/page-layout.astro";
 import NavListComponent from "./nav-list.astro";
 
 const title = "NavList";
-const seo: ComponentProps<typeof Layout>["seo"] = {
+const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
+  { label: "Home", url: "/" },
+  { label: "Design system", url: "/design-system" },
+  { label: "Components", url: "/design-system/components" },
+  { label: "Molecules", url: "/design-system/components/molecules" },
+  { label: title, url: Astro.url.href },
+];
+const seo: ComponentProps<typeof PageLayout>["seo"] = {
   nofollow: true,
   noindex: true,
-  title: `${title} | Molecules | Components | Design system`,
+  title: breadcrumb
+    .slice(1)
+    .reverse()
+    .map((crumb) => crumb.label)
+    .join(" | "),
 };
 
 const items = [
@@ -20,36 +31,38 @@ const items = [
 ] satisfies ComponentProps<typeof NavListComponent>["items"];
 ---
 
-<Layout seo={seo} title={title}>
-  <Heading>Usage</Heading>
-  <p>
-    This component is used to define a navigation list. It accepts an <code
-      >items</code
-    > property and expect a function as child to render these items. You can choose
-    the way to render the children but it is recommended to use the <code
-      >NavLink</code
-    > component.
-  </p>
-  <NavListComponent items={items}>
-    {
-      (item) => {
-        return (
-          <List>
-            <ListItem>
-              <code>icon:</code> {item.icon ?? "undefined"}
-            </ListItem>
-            <ListItem>
-              <code>iconSize:</code> {item.iconSize ?? "undefined"}
-            </ListItem>
-            <ListItem>
-              <code>label:</code> {item.label}
-            </ListItem>
-            <ListItem>
-              <code>url:</code> {item.url}
-            </ListItem>
-          </List>
-        );
+<PageLayout breadcrumb={breadcrumb} heading={title} seo={seo}>
+  <Fragment slot="body">
+    <Heading as="h2">Usage</Heading>
+    <p>
+      This component is used to define a navigation list. It accepts an <code
+        >items</code
+      > property and expect a function as child to render these items. You can choose
+      the way to render the children but it is recommended to use the <code
+        >NavLink</code
+      > component.
+    </p>
+    <NavListComponent items={items}>
+      {
+        (item) => {
+          return (
+            <List>
+              <ListItem>
+                <code>icon:</code> {item.icon ?? "undefined"}
+              </ListItem>
+              <ListItem>
+                <code>iconSize:</code> {item.iconSize ?? "undefined"}
+              </ListItem>
+              <ListItem>
+                <code>label:</code> {item.label}
+              </ListItem>
+              <ListItem>
+                <code>url:</code> {item.url}
+              </ListItem>
+            </List>
+          );
+        }
       }
-    }
-  </NavListComponent>
-</Layout>
+    </NavListComponent>
+  </Fragment>
+</PageLayout>

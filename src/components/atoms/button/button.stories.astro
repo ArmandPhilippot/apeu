@@ -1,44 +1,57 @@
 ---
 import type { ComponentProps } from "astro/types";
-import Layout from "../../templates/layout/layout.astro";
+import PageLayout from "../../templates/page-layout/page-layout.astro";
 import Heading from "../heading/heading.astro";
 import ButtonComponent from "./button.astro";
 
 const title = "Button";
-const seo: ComponentProps<typeof Layout>["seo"] = {
+const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
+  { label: "Home", url: "/" },
+  { label: "Design system", url: "/design-system" },
+  { label: "Components", url: "/design-system/components" },
+  { label: "Atoms", url: "/design-system/components/atoms" },
+  { label: title, url: Astro.url.href },
+];
+const seo: ComponentProps<typeof PageLayout>["seo"] = {
   nofollow: true,
   noindex: true,
-  title: `${title} | Atoms | Components | Design system`,
+  title: breadcrumb
+    .slice(1)
+    .reverse()
+    .map((crumb) => crumb.label)
+    .join(" | "),
 };
 ---
 
-<Layout seo={seo} title={title}>
-  <Heading as="h2">Usage</Heading>
-  <p>A button is usually used to encourage a user to take action.</p>
-  <Heading as="h2">Primary buttons</Heading>
-  <Heading as="h3">States</Heading>
-  <Heading as="h4">Default</Heading>
-  <ButtonComponent kind="primary">Call to action</ButtonComponent>
-  <Heading as="h4">Busy</Heading>
-  <ButtonComponent aria-busy="true" kind="primary">
-    Call to action
-  </ButtonComponent>
-  <Heading as="h4">Disabled</Heading>
-  <ButtonComponent disabled="true" kind="primary">
-    Call to action
-  </ButtonComponent>
-  <Heading as="h2">Secondary buttons</Heading>
-  <p>
-    When using the <code>secondary</code> kind (default), you can choose to use either
-    a button or a link with the <code>as</code> property.
-  </p>
-  <Heading as="h3">States</Heading>
-  <Heading as="h4">Default</Heading>
-  <ButtonComponent>Call to action</ButtonComponent>
-  <Heading as="h4">Busy</Heading>
-  <ButtonComponent aria-busy="true">Call to action</ButtonComponent>
-  <Heading as="h4">Disabled</Heading>
-  <ButtonComponent disabled="true">Call to action</ButtonComponent>
-  <Heading as="h3"><code>isExternal</code></Heading>
-  <ButtonComponent isExternal>Call to action</ButtonComponent>
-</Layout>
+<PageLayout breadcrumb={breadcrumb} heading={title} seo={seo}>
+  <Fragment slot="body">
+    <Heading as="h2">Usage</Heading>
+    <p>A button is usually used to encourage a user to take action.</p>
+    <Heading as="h2">Primary buttons</Heading>
+    <Heading as="h3">States</Heading>
+    <Heading as="h4">Default</Heading>
+    <ButtonComponent kind="primary">Call to action</ButtonComponent>
+    <Heading as="h4">Busy</Heading>
+    <ButtonComponent aria-busy="true" kind="primary">
+      Call to action
+    </ButtonComponent>
+    <Heading as="h4">Disabled</Heading>
+    <ButtonComponent disabled="true" kind="primary">
+      Call to action
+    </ButtonComponent>
+    <Heading as="h2">Secondary buttons</Heading>
+    <p>
+      When using the <code>secondary</code> kind (default), you can choose to use
+      either a button or a link with the <code>as</code> property.
+    </p>
+    <Heading as="h3">States</Heading>
+    <Heading as="h4">Default</Heading>
+    <ButtonComponent>Call to action</ButtonComponent>
+    <Heading as="h4">Busy</Heading>
+    <ButtonComponent aria-busy="true">Call to action</ButtonComponent>
+    <Heading as="h4">Disabled</Heading>
+    <ButtonComponent disabled="true">Call to action</ButtonComponent>
+    <Heading as="h3"><code>isExternal</code></Heading>
+    <ButtonComponent isExternal>Call to action</ButtonComponent>
+  </Fragment>
+</PageLayout>

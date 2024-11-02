@@ -1,26 +1,39 @@
 ---
 import type { ComponentProps } from "astro/types";
 import Heading from "../../atoms/heading/heading.astro";
-import Layout from "../../templates/layout/layout.astro";
+import PageLayout from "../../templates/page-layout/page-layout.astro";
 import BackToComponent from "./back-to.astro";
 
 const title = "BackTo";
-const seo: ComponentProps<typeof Layout>["seo"] = {
+const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
+  { label: "Home", url: "/" },
+  { label: "Design system", url: "/design-system" },
+  { label: "Components", url: "/design-system/components" },
+  { label: "Molecules", url: "/design-system/components/molecules" },
+  { label: title, url: Astro.url.href },
+];
+const seo: ComponentProps<typeof PageLayout>["seo"] = {
   nofollow: true,
   noindex: true,
-  title: `${title} | Molecules | Components | Design system`,
+  title: breadcrumb
+    .slice(1)
+    .reverse()
+    .map((crumb) => crumb.label)
+    .join(" | "),
 };
 ---
 
-<Layout seo={seo} title={title}>
-  <Heading>Usage</Heading>
-  <p>
-    A BackTo component is special. It is used to navigate through a page using
-    anchors. His purpose is to let the user go back to a previous anchor.
-  </p>
-  <p>
-    <strong>Note:</strong> The button is currently designed to be used a "back to
-    top" button but I choose to name it BackTo to support possible future variants.
-  </p>
-  <BackToComponent anchor="#some-anchor" label="Back to some anchor" />
-</Layout>
+<PageLayout breadcrumb={breadcrumb} heading={title} seo={seo}>
+  <Fragment slot="body">
+    <Heading as="h2">Usage</Heading>
+    <p>
+      A BackTo component is special. It is used to navigate through a page using
+      anchors. His purpose is to let the user go back to a previous anchor.
+    </p>
+    <p>
+      <strong>Note:</strong> The button is currently designed to be used a "back
+      to top" button but I choose to name it BackTo to support possible future variants.
+    </p>
+    <BackToComponent anchor="#some-anchor" label="Back to some anchor" />
+  </Fragment>
+</PageLayout>

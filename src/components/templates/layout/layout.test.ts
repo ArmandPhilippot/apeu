@@ -23,17 +23,15 @@ describe("Layout", () => {
       seo: {
         title: "est et fugiat",
       },
-      title: "et ratione dolor",
     } satisfies ComponentProps<typeof Layout>;
     const result = await container.renderToString(Layout, {
       props,
     });
 
-    expect.assertions(5);
+    expect.assertions(4);
 
     expect(result).toContain("</head>");
     expect(result).toContain("</header>");
-    expect(result).toContain(props.title);
     expect(result).toContain("</footer>");
     expect(result).toContain("</body>");
   });
@@ -45,7 +43,6 @@ describe("Layout", () => {
       seo: {
         title: "est et fugiat",
       },
-      title: "et ratione dolor",
     } satisfies ComponentProps<typeof Layout>;
     const body = "id quibusdam eius";
     const result = await container.renderToString(Layout, {
@@ -67,7 +64,6 @@ describe("Layout", () => {
       seo: {
         title: "est et fugiat",
       },
-      title: "et ratione dolor",
     } satisfies ComponentProps<typeof Layout>;
     const result = await container.renderToString(Layout, {
       props,
@@ -88,7 +84,6 @@ describe("Layout", () => {
       seo: {
         title: "est et fugiat",
       },
-      title: "et ratione dolor",
     } satisfies ComponentProps<typeof Layout>;
     const result = await container.renderToString(Layout, {
       props,

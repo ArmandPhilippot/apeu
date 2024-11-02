@@ -1,5 +1,6 @@
 ---
 import type { ComponentProps } from "astro/types";
+import Heading from "../../atoms/heading/heading.astro";
 import LayoutComponent from "./layout.astro";
 
 const title = "Layout";
@@ -11,6 +12,7 @@ const seo: ComponentProps<typeof LayoutComponent>["seo"] = {
 };
 ---
 
-<LayoutComponent seo={seo} title={title}>
+<LayoutComponent seo={seo}>
+  <Heading as="h1">{title}</Heading>
   <p>This is the main content of the page.</p>
 </LayoutComponent>

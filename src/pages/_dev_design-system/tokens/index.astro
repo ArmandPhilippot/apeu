@@ -64,14 +64,23 @@ const spacings = [
 ] as const;
 
 const title = "Tokens";
+const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
+  { label: "Home", url: "/" },
+  { label: "Design system", url: "/design-system" },
+  { label: title, url: Astro.url.href },
+];
 const seo: ComponentProps<typeof PageLayout>["seo"] = {
   nofollow: true,
   noindex: true,
-  title: `${title} | Design system`,
+  title: breadcrumb
+    .slice(1)
+    .reverse()
+    .map((crumb) => crumb.label)
+    .join(" | "),
 };
 ---
 
-<PageLayout heading={title} seo={seo}>
+<PageLayout breadcrumb={breadcrumb} heading={title} seo={seo}>
   <Fragment slot="body">
     <Heading as="h2">Fonts</Heading>
     <Heading as="h3">Family</Heading>

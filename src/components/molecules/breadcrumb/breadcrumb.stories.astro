@@ -15,7 +15,11 @@ const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
 const seo: ComponentProps<typeof PageLayout>["seo"] = {
   nofollow: true,
   noindex: true,
-  title: `${title} | Molecules | Components | Design system`,
+  title: breadcrumb
+    .slice(1)
+    .reverse()
+    .map((crumb) => crumb.label)
+    .join(" | "),
 };
 
 const items: ComponentProps<typeof BreadcrumbComponent>["items"] = [

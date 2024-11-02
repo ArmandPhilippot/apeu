@@ -5,14 +5,25 @@ import Heading from "../heading/heading.astro";
 import CopyrightComponent from "./copyright.astro";
 
 const title = "Copyright";
+const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
+  { label: "Home", url: "/" },
+  { label: "Design system", url: "/design-system" },
+  { label: "Components", url: "/design-system/components" },
+  { label: "Atoms", url: "/design-system/components/atoms" },
+  { label: title, url: Astro.url.href },
+];
 const seo: ComponentProps<typeof PageLayout>["seo"] = {
   nofollow: true,
   noindex: true,
-  title: `${title} | Atoms | Components | Design system`,
+  title: breadcrumb
+    .slice(1)
+    .reverse()
+    .map((crumb) => crumb.label)
+    .join(" | "),
 };
 ---
 
-<PageLayout heading={title} seo={seo}>
+<PageLayout breadcrumb={breadcrumb} heading={title} seo={seo}>
   <Fragment slot="body">
     <Heading as="h2">Usage</Heading>
     <p>

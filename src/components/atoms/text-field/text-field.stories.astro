@@ -1,0 +1,63 @@
+---
+import type { ComponentProps } from "astro/types";
+import PageLayout from "../../templates/page-layout/page-layout.astro";
+import Heading from "../heading/heading.astro";
+import TextFieldComponent from "./text-field.astro";
+
+const title = "TextField";
+const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
+  { label: "Home", url: "/" },
+  { label: "Design system", url: "/design-system" },
+  { label: "Components", url: "/design-system/components" },
+  { label: "Atoms", url: "/design-system/components/atoms" },
+  { label: title, url: Astro.url.href },
+];
+const seo: ComponentProps<typeof PageLayout>["seo"] = {
+  nofollow: true,
+  noindex: true,
+  title: breadcrumb
+    .slice(1)
+    .reverse()
+    .map((crumb) => crumb.label)
+    .join(" | "),
+};
+---
+
+<PageLayout breadcrumb={breadcrumb} heading={title} seo={seo}>
+  <Fragment slot="body">
+    <Heading as="h2">Type</Heading>
+    <Heading as="h3">Date</Heading>
+    <TextFieldComponent type="date" />
+    <Heading as="h3">Datetime</Heading>
+    <TextFieldComponent type="datetime-local" />
+    <Heading as="h3">Email</Heading>
+    <TextFieldComponent type="email" />
+    <Heading as="h3">Month</Heading>
+    <TextFieldComponent type="month" />
+    <Heading as="h3">Password</Heading>
+    <TextFieldComponent type="password" />
+    <Heading as="h3">Search</Heading>
+    <TextFieldComponent type="search" />
+    <Heading as="h3">Tel</Heading>
+    <TextFieldComponent type="tel" />
+    <Heading as="h3">Text</Heading>
+    <TextFieldComponent type="text" />
+    <Heading as="h3">Textarea</Heading>
+    <TextFieldComponent type="textarea" />
+    <Heading as="h3">Time</Heading>
+    <TextFieldComponent type="time" />
+    <Heading as="h3">URL</Heading>
+    <TextFieldComponent type="url" />
+    <Heading as="h3">Week</Heading>
+    <TextFieldComponent type="week" />
+    <Heading as="h2">State</Heading>
+    <Heading as="h3">Editable</Heading>
+    <TextFieldComponent type="text" />
+    <Heading as="h3">Read-only</Heading>
+    <TextFieldComponent readonly="true" type="text" />
+    <Heading as="h3">Disabled</Heading>
+    <TextFieldComponent disabled="true" type="text" />
+    <Heading as="h3">With placeholder</Heading>
+    <TextFieldComponent placeholder="Some placeholder..." type="text" />
+  </Fragment>
+</PageLayout>

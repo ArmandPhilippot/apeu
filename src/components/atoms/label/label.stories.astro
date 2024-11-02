@@ -1,0 +1,35 @@
+---
+import type { ComponentProps } from "astro/types";
+import PageLayout from "../../templates/page-layout/page-layout.astro";
+import Heading from "../heading/heading.astro";
+import LabelComponent from "./label.astro";
+
+const title = "Label";
+const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
+  { label: "Home", url: "/" },
+  { label: "Design system", url: "/design-system" },
+  { label: "Components", url: "/design-system/components" },
+  { label: "Atoms", url: "/design-system/components/atoms" },
+  { label: title, url: Astro.url.href },
+];
+const seo: ComponentProps<typeof PageLayout>["seo"] = {
+  nofollow: true,
+  noindex: true,
+  title: breadcrumb
+    .slice(1)
+    .reverse()
+    .map((crumb) => crumb.label)
+    .join(" | "),
+};
+---
+
+<PageLayout breadcrumb={breadcrumb} heading={title} seo={seo}>
+  <Fragment slot="body">
+    <Heading as="h2">Usage</Heading>
+    <p>This component is used to display a label for a form input.</p>
+    <LabelComponent>A label</LabelComponent>
+    <Heading as="h2">Options</Heading>
+    <Heading as="h3"><code>isRequired</code></Heading>
+    <LabelComponent isRequired>A label</LabelComponent>
+  </Fragment>
+</PageLayout>

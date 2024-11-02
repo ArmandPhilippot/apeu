@@ -23,7 +23,7 @@ const { breadcrumb, seo, ...attrs } = Astro.props;
     ) : null
   }
   <div class="page-layout-content">
-    <main class="page-layout-main">
+    <main class="page-layout-main" data-pagefind-body>
       <Page {...attrs}>
         <slot name="meta" slot={Astro.slots.has("meta") ? "meta" : ""} />
         <slot name="body" slot={Astro.slots.has("body") ? "body" : ""} />

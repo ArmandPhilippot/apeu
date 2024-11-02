@@ -86,6 +86,16 @@ If you need to divide your stories in multiple files, you can use a `stories` di
 
 Only `.astro` extension is supported for stories. I'd like to use `.mdx` but Astro integrations can only inject routes for `.astro`, `.js` and `.ts` files.
 
+### Search
+
+The search is powered by [Pagefind](https://pagefind.app/), a fully static search library. It needs to index the contents in advance to be able to work.
+
+There are some caveats in dev mode:
+
+- You need to run `pnpm build` once before executing `pnpm dev` to build the search index and to be able to use the search form.
+- If you change the Pagefind config (like adding data attributes to filter the contents), the index will not be automatically rebuilt. You need to perform another build and to execute `pnpm dev` again.
+- The indexed images use the built URLs (the ones processed by Astro) so they can't be displayed in dev environment (so for now, I decided to deactivated them).
+
 ## Development
 
 Before starting, please follow the instructions in [Setup](#setup).

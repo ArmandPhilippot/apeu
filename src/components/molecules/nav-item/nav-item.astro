@@ -1,12 +1,15 @@
 ---
 import { Icon } from "astro-icon/components";
-import type { ComponentProps } from "astro/types";
+import type { ComponentProps, HTMLTag, Polymorphic } from "astro/types";
 import type { IconName } from "../../../types/tokens";
+import Label from "../../atoms/label/label.astro";
 import Link from "../../atoms/link/link.astro";
 
-type Props = ComponentProps<typeof Link> & {
+type Props<T extends Extract<HTMLTag, "a" | "label"> = "a"> = Polymorphic<{
+  as: T;
+}> & {
   /**
-   * The nav link icon.
+   * The nav item icon.
    */
   icon?: IconName | null | undefined;
   /**
@@ -22,7 +25,7 @@ type Props = ComponentProps<typeof Link> & {
    */
   isBlock?: boolean | null | undefined;
   /**
-   * Should the nav link be bordered?
+   * Should the nav item be bordered?
    *
    * @default false
    */
@@ -30,35 +33,38 @@ type Props = ComponentProps<typeof Link> & {
 };
 
 const {
+  as = "a",
   class: className,
   icon,
-  iconSize = 28,
+  iconSize = 20,
   isBlock = false,
   isBordered = false,
   ...attrs
 } = Astro.props;
+const Tag = as === "a" ? Link : Label;
 ---
 
-<Link
+<Tag
   {...attrs}
-  class:list={["nav-link", { block: isBlock, bordered: isBordered }, className]}
+  class:list={["nav-item", { block: isBlock, bordered: isBordered }, className]}
 >
   {
     icon ? (
       <Icon
         aria-hidden="true"
-        class="nav-link-icon"
+        class="nav-item-icon"
         name={icon}
         size={iconSize}
       />
     ) : null
   }
   <slot />
-</Link>
+</Tag>
 
 <style>
-  .nav-link {
+  .nav-item {
     border: var(--border-size-sm) solid transparent;
+    color: var(--color-primary);
 
     &:where(.block) {
       display: flex;
@@ -130,7 +136,7 @@ const {
     }
   }
 
-  :global(:where(.nav-link:not(.block))) .nav-link-icon {
+  :global(:where(.nav-item:not(.block))) .nav-item-icon {
     margin-right: var(--spacing-4xs);
     vertical-align: middle;
   }

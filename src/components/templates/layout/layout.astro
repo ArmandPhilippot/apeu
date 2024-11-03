@@ -3,13 +3,13 @@ import type { ComponentProps, HTMLAttributes } from "astro/types";
 import "../../../styles/global.css";
 import { CONFIG } from "../../../utils/constants";
 import Copyright from "../../atoms/copyright/copyright.astro";
+import Head from "../../atoms/head/head.astro";
 import License from "../../atoms/license/license.astro";
 import BackTo from "../../molecules/back-to/back-to.astro";
 import Branding from "../../molecules/branding/branding.astro";
-import NavLink from "../../molecules/nav-link/nav-link.astro";
+import NavItem from "../../molecules/nav-item/nav-item.astro";
 import NavList from "../../molecules/nav-list/nav-list.astro";
 import SkipTo from "../../molecules/skip-to/skip-to.astro";
-import Head from "../../atoms/head/head.astro";
 
 type Props = Pick<ComponentProps<typeof Head>, "seo"> &
   Omit<HTMLAttributes<"div">, "id">;
@@ -69,9 +69,9 @@ const footerLinks = [
         <NavList items={footerLinks}>
           {
             ({ label, url, ...item }) => (
-              <NavLink {...item} href={url}>
+              <NavItem {...item} href={url}>
                 {label}
-              </NavLink>
+              </NavItem>
             )
           }
         </NavList>

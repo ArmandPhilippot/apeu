@@ -2,9 +2,9 @@
 import type { ComponentProps } from "astro/types";
 import Heading from "../../atoms/heading/heading.astro";
 import PageLayout from "../../templates/page-layout/page-layout.astro";
-import NavLinkComponent from "./nav-link.astro";
+import NavItemComponent from "./nav-item.astro";
 
-const title = "NavLink";
+const title = "NavItem";
 const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
   { label: "Home", url: "/" },
   { label: "Design system", url: "/design-system" },
@@ -31,22 +31,39 @@ const seo: ComponentProps<typeof PageLayout>["seo"] = {
       list.
     </p>
     <Heading as="h2">Variant: <code>isBlock: false</code> (default)</Heading>
-    <NavLinkComponent href="#destination">Nav Item</NavLinkComponent>
+    <NavItemComponent href="#destination">Nav Item</NavItemComponent>
     <Heading as="h3"><code>isBordered</code></Heading>
-    <NavLinkComponent href="#destination" isBordered>Nav Item</NavLinkComponent>
+    <NavItemComponent href="#destination" isBordered>Nav Item</NavItemComponent>
     <Heading as="h3">With icon</Heading>
-    <NavLinkComponent href="#destination" icon="cc-by-sa" iconSize={40}>
+    <NavItemComponent href="#destination" icon="cc-by-sa" iconSize={40}>
       Nav Item
-    </NavLinkComponent>
+    </NavItemComponent>
+    <Heading as="h3">Tag</Heading>
+    <Heading as="h4"><code>a</code></Heading>
+    <NavItemComponent as="a" href="#destination">A nav link</NavItemComponent>
+    <Heading as="h4"><code>label</code></Heading>
+    <p>
+      When you are not using the block variant, please consider using a regular <code
+        >Label</code
+      > component instead.
+    </p>
+    <NavItemComponent as="label">A nav label</NavItemComponent>
     <Heading as="h2">Variant: <code>isBlock: true</code></Heading>
-    <NavLinkComponent href="#destination" isBlock>Nav Item</NavLinkComponent>
+    <NavItemComponent href="#destination" isBlock>Nav Item</NavItemComponent>
     <Heading as="h3"><code>isBordered</code></Heading>
-    <NavLinkComponent href="#destination" isBlock isBordered>
+    <NavItemComponent href="#destination" isBlock isBordered>
       Nav Item
-    </NavLinkComponent>
+    </NavItemComponent>
     <Heading as="h3">With icon</Heading>
-    <NavLinkComponent href="#destination" icon="cc-by-sa" iconSize={40} isBlock>
+    <NavItemComponent href="#destination" icon="cc-by-sa" iconSize={40} isBlock>
       Nav Item
-    </NavLinkComponent>
+    </NavItemComponent>
+    <Heading as="h3">Tag</Heading>
+    <Heading as="h4"><code>a</code></Heading>
+    <NavItemComponent as="a" href="#destination" isBlock
+      >A nav link</NavItemComponent
+    >
+    <Heading as="h4"><code>label</code></Heading>
+    <NavItemComponent as="label" isBlock>A nav label</NavItemComponent>
   </Fragment>
 </PageLayout>

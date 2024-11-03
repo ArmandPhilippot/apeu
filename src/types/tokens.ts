@@ -1,3 +1,5 @@
+export type Direction = "bottom" | "left" | "right" | "top";
+
 /**
  * The elevations defined in `src/styles/variables/shadows.css`.
  */

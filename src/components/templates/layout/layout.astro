@@ -11,6 +11,7 @@ import NavItem from "../../molecules/nav-item/nav-item.astro";
 import NavList from "../../molecules/nav-list/nav-list.astro";
 import SkipTo from "../../molecules/skip-to/skip-to.astro";
 import Navbar from "../../organisms/navbar/navbar.astro";
+import SearchForm from "../../organisms/search-form/search-form.astro";
 
 type Props = Pick<ComponentProps<typeof Head>, "seo"> &
   Omit<HTMLAttributes<"div">, "id">;
@@ -55,7 +56,17 @@ const footerLinks = [
         <div class="site-branding">
           <Branding brand={CONFIG.BRAND} url="/" />
         </div>
-        <Navbar aria-label="Primary" class="site-navbar" id="site-navbar" />
+        <Navbar aria-label="Primary" class="site-navbar" id="site-navbar">
+          <div slot="nav">Main nav</div>
+          <SearchForm
+            id="site-search"
+            isInline
+            queryParam={CONFIG.SEARCH.QUERY_PARAM}
+            resultsPage="/search"
+            slot="search"
+          />
+          <div slot="settings">Settings form</div>
+        </Navbar>
       </header>
       <div {...attrs} class:list={["site-body", className]} id="contents">
         <slot />

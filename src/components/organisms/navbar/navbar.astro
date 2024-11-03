@@ -1,5 +1,6 @@
 ---
 import type { HTMLAttributes } from "astro/types";
+import { MissingSlotError } from "../../../utils/exceptions";
 import Box from "../../atoms/box/box.astro";
 import NavItem from "../../molecules/nav-item/nav-item.astro";
 import Popover from "../../molecules/popover/popover.astro";
@@ -9,6 +10,10 @@ type Props = HTMLAttributes<"nav"> & {
 };
 
 const { class: className, id, ...attrs } = Astro.props;
+
+if (!Astro.slots.has("nav")) throw new MissingSlotError("nav");
+if (!Astro.slots.has("search")) throw new MissingSlotError("search");
+if (!Astro.slots.has("settings")) throw new MissingSlotError("settings");
 ---
 
 <nav {...attrs} class:list={["navbar", className]} id={id}>
@@ -39,7 +44,7 @@ const { class: className, id, ...attrs } = Astro.props;
       {
         (modalId: string) => (
           <Box class="navbar-item-modal" id={modalId} isPadded>
-            Main nav
+            <slot name="nav" />
           </Box>
         )
       }
@@ -72,7 +77,7 @@ const { class: className, id, ...attrs } = Astro.props;
       {
         (modalId: string) => (
           <Box class="navbar-item-modal" id={modalId} isPadded>
-            Search form
+            <slot name="search" />
           </Box>
         )
       }
@@ -105,7 +110,7 @@ const { class: className, id, ...attrs } = Astro.props;
       {
         (modalId: string) => (
           <Box class="navbar-item-modal" id={modalId} isPadded>
-            Settings form
+            <slot name="settings" />
           </Box>
         )
       }

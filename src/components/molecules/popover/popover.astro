@@ -61,30 +61,6 @@ const modal = await Astro.slots.render("modal", [modalId]);
       --y: -50%;
     }
 
-    &:where(.to-bottom) > :global(*:last-child) {
-      top: 100%;
-      left: 50%;
-      transform-origin: 0% 0%;
-    }
-
-    &:where(.to-left) > :global(*:last-child) {
-      top: 50%;
-      right: 100%;
-      transform-origin: 100% 0%;
-    }
-
-    &:where(.to-right) > :global(*:last-child) {
-      top: 50%;
-      left: 100%;
-      transform-origin: 0% 0%;
-    }
-
-    &:where(.to-top) > :global(*:last-child) {
-      bottom: 100%;
-      left: 50%;
-      transform-origin: 0% 100%;
-    }
-
     & > :global(*) {
       grid-area: 1 / 1;
 
@@ -102,6 +78,30 @@ const modal = await Astro.slots.render("modal", [modalId]);
         transition: all 0.35s ease-in-out 0s;
       }
     }
+  }
+
+  :where(.popover.to-bottom) > :global(*:last-child) {
+    top: 100%;
+    left: 50%;
+    transform-origin: 0% 0%;
+  }
+
+  :where(.popover.to-left) > :global(*:last-child) {
+    top: 50%;
+    right: 100%;
+    transform-origin: 100% 0%;
+  }
+
+  :where(.popover.to-right) > :global(*:last-child) {
+    top: 50%;
+    left: 100%;
+    transform-origin: 0% 0%;
+  }
+
+  :where(.popover.to-top) > :global(*:last-child) {
+    bottom: 100%;
+    left: 50%;
+    transform-origin: 0% 100%;
   }
 
   .popover-controller {

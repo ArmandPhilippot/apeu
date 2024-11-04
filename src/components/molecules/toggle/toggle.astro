@@ -1,0 +1,97 @@
+---
+import { Icon } from "astro-icon/components";
+import type { ComponentProps } from "astro/types";
+import type { IconName } from "../../../types/tokens";
+import RadioGroup from "../radio-group/radio-group.astro";
+import RadioItem from "../radio-group/radio-item.astro";
+
+type ToggleItem = {
+  icon?: IconName | null | undefined;
+  id: string;
+  label: string;
+  value: string;
+};
+
+type Props = Omit<
+  ComponentProps<typeof RadioGroup>,
+  "isBordered" | "isInline"
+> & {
+  groupName: string;
+  isInline?: boolean | null | undefined;
+  items: ToggleItem[];
+  value?: string | null | undefined;
+};
+
+const {
+  class: className,
+  isInline = false,
+  items,
+  groupName,
+  value,
+  ...attrs
+} = Astro.props;
+---
+
+<RadioGroup
+  {...attrs}
+  class:list={["toggle", { inlined: isInline }, className]}
+  isInline
+>
+  <div class="toggle-items">
+    {
+      items.map((item) => (
+        <RadioItem
+          class="toggle-item"
+          fieldId={item.id}
+          hideRadio
+          isChecked={item.value === value}
+          name={groupName}
+          value={item.value}
+        >
+          {item.icon ? <Icon name={item.icon} /> : null}
+          {item.label}
+        </RadioItem>
+      ))
+    }
+  </div>
+</RadioGroup>
+
+<style>
+  .toggle {
+    gap: var(--spacing-xs) var(--spacing-md);
+
+    &:where(.inlined) :global(legend) {
+      display: contents;
+    }
+  }
+
+  .toggle-items {
+    display: flex;
+    flex-flow: row wrap;
+    border-radius: var(--border-radii-md);
+    box-shadow: var(--shadow-raised-to-top-left);
+  }
+
+  .toggle-item {
+    border: var(--border-size-sm) solid var(--color-border);
+
+    &:where(:has(input:checked)) {
+      border: var(--border-size-sm) solid var(--color-primary-darker);
+      z-index: 1;
+    }
+
+    &:where(:first-of-type) {
+      border-start-start-radius: var(--border-radii-md);
+      border-end-start-radius: var(--border-radii-md);
+    }
+
+    &:where(:last-of-type) {
+      border-start-end-radius: var(--border-radii-md);
+      border-end-end-radius: var(--border-radii-md);
+    }
+
+    &:where(:not(:first-of-type)) {
+      margin-inline-start: calc(var(--border-size-sm) * -1);
+    }
+  }
+</style>

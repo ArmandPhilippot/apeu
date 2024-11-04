@@ -1,0 +1,35 @@
+---
+import type { ComponentProps, HTMLAttributes } from "astro/types";
+import Toggle from "../../molecules/toggle/toggle.astro";
+
+type Props = HTMLAttributes<"form">;
+
+const { class: className, id, ...attrs } = Astro.props;
+const idPrefix = id ? `${id}-` : "";
+const themes = [
+  {
+    id: `${idPrefix}auto`,
+    label: "Auto",
+    value: "auto",
+  },
+  {
+    id: `${idPrefix}dark`,
+    label: "Dark",
+    value: "dark",
+  },
+  {
+    id: `${idPrefix}light`,
+    label: "Light",
+    value: "light",
+  },
+] satisfies ComponentProps<typeof Toggle>["items"];
+---
+
+<form {...attrs} class:list={["settings-form", className]} id={id}>
+  <Toggle
+    groupName={`${idPrefix}theme`}
+    items={themes}
+    label="Theme:"
+    value="auto"
+  />
+</form>

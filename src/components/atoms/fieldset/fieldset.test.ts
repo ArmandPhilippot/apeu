@@ -43,7 +43,9 @@ describe("Fieldset", () => {
         props,
         slots: { default: body },
       }),
-    ).rejects.toThrowErrorMatchingInlineSnapshot(`[Error: A legend slot is required.]`);
+    ).rejects.toThrowErrorMatchingInlineSnapshot(
+      `[Error: A legend slot is required.]`,
+    );
   });
 
   it<LocalTestContext>("can render a bordered fieldset", async ({

@@ -50,6 +50,8 @@ describe("RadioItem", () => {
       container.renderToString(RadioItem, {
         props,
       }),
-    ).rejects.toThrowErrorMatchingInlineSnapshot(`[Error: A default slot is required.]`);
+    ).rejects.toThrowErrorMatchingInlineSnapshot(
+      `[Error: A default slot is required.]`,
+    );
   });
 });

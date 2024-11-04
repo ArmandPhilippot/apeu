@@ -4,6 +4,7 @@ import Button from "../../atoms/button/button.astro";
 import Label from "../../atoms/label/label.astro";
 import TextField from "../../atoms/text-field/text-field.astro";
 import type { JSX } from "astro/jsx-runtime";
+import { useI18n } from "../../../utils/i18n";
 
 type Props = JSX.HTMLAttributes & {
   id: string;
@@ -35,6 +36,8 @@ const fieldId = `${id}-field`;
 
 if (!resultsPage.startsWith("/"))
   throw new Error("`resultsPage` must be a valid route starting with `/`.");
+
+const { translate } = useI18n(Astro.currentLocale);
 ---
 
 <ap-search-form
@@ -46,7 +49,7 @@ if (!resultsPage.startsWith("/"))
 >
   <form class:list={["search-form", { inlined: isInline }]}>
     <Label class:list={[{ "sr-only": isInline }]} for={fieldId} slot="label">
-      Search
+      {translate("form.search.label")}
     </Label>
     <TextField
       class="search-form-field"
@@ -62,7 +65,9 @@ if (!resultsPage.startsWith("/"))
       type="submit"
     >
       <Icon aria-hidden="true" name="search" size={isInline ? 30 : 25} />
-      <span class:list={[{ "sr-only": isInline }]}>Search</span>
+      <span class:list={[{ "sr-only": isInline }]}
+        >{translate("form.search.btn")}</span
+      >
     </Button>
   </form>
 </ap-search-form>

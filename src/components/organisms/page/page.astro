@@ -3,6 +3,7 @@ import type { MarkdownHeading } from "astro";
 import { Icon } from "astro-icon/components";
 import type { ComponentProps, HTMLAttributes } from "astro/types";
 import { Image as AstroImg } from "astro:assets";
+import { useI18n } from "../../../utils/i18n";
 import Box from "../../atoms/box/box.astro";
 import Button from "../../atoms/button/button.astro";
 import Heading from "../../atoms/heading/heading.astro";
@@ -18,6 +19,7 @@ type Props = HTMLAttributes<"article"> & {
 };
 
 const { class: className, cover, feed, heading, toc, ...attrs } = Astro.props;
+const { translate } = useI18n(Astro.currentLocale);
 ---
 
 <article
@@ -41,9 +43,13 @@ const { class: className, cover, feed, heading, toc, ...attrs } = Astro.props;
       <Heading as="h1" class="page-title">{heading}</Heading>
       {
         feed ? (
-          <Button aria-label={`Subscribe to ${heading}`} as="a" href={feed}>
+          <Button
+            aria-label={translate("cta.subscribe.a11y", { title: heading })}
+            as="a"
+            href={feed}
+          >
             <Icon aria-hidden="true" name="feed" />
-            Subscribe
+            {translate("cta.subscribe")}
           </Button>
         ) : null
       }

@@ -1,6 +1,7 @@
 ---
 import type { HTMLAttributes } from "astro/types";
 import { MissingSlotError } from "../../../utils/exceptions";
+import { useI18n } from "../../../utils/i18n";
 import Box from "../../atoms/box/box.astro";
 import NavItem from "../../molecules/nav-item/nav-item.astro";
 import Popover from "../../molecules/popover/popover.astro";
@@ -14,6 +15,8 @@ const { class: className, id, ...attrs } = Astro.props;
 if (!Astro.slots.has("nav")) throw new MissingSlotError("nav");
 if (!Astro.slots.has("search")) throw new MissingSlotError("search");
 if (!Astro.slots.has("settings")) throw new MissingSlotError("settings");
+
+const { translate } = useI18n(Astro.currentLocale);
 ---
 
 <nav {...attrs} class:list={["navbar", className]} id={id}>
@@ -36,7 +39,7 @@ if (!Astro.slots.has("settings")) throw new MissingSlotError("settings");
             isBlock
             isRounded
           >
-            Menu
+            {translate("navbar.main.nav.label")}
           </NavItem>
         )
       }
@@ -70,7 +73,7 @@ if (!Astro.slots.has("settings")) throw new MissingSlotError("settings");
             isBlock
             isRounded
           >
-            Search
+            {translate("navbar.search.label")}
           </NavItem>
         )
       }
@@ -104,7 +107,7 @@ if (!Astro.slots.has("settings")) throw new MissingSlotError("settings");
             isBlock
             isRounded
           >
-            Settings
+            {translate("navbar.settings.label")}
           </NavItem>
         )
       }

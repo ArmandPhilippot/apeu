@@ -1,0 +1,40 @@
+---
+import type { ComponentProps } from "astro/types";
+import Heading from "../../atoms/heading/heading.astro";
+import PageLayout from "../../templates/page-layout/page-layout.astro";
+import LanguagePickerComponent from "./language-picker.astro";
+
+const title = "LanguagePicker";
+const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
+  { label: "Home", url: "/" },
+  { label: "Design system", url: "/design-system" },
+  { label: "Components", url: "/design-system/components" },
+  { label: "Molecules", url: "/design-system/components/molecules" },
+  { label: title, url: Astro.url.href },
+];
+const seo: ComponentProps<typeof PageLayout>["seo"] = {
+  nofollow: true,
+  noindex: true,
+  title: breadcrumb
+    .slice(1)
+    .reverse()
+    .map((crumb) => crumb.label)
+    .join(" | "),
+};
+---
+
+<PageLayout breadcrumb={breadcrumb} heading={title} seo={seo}>
+  <Fragment slot="body">
+    <Heading>Usage</Heading>
+    <p>
+      This component is used to let an user choose the current language of the
+      website.
+    </p>
+    <LanguagePickerComponent
+      current="es"
+      id="usage-example"
+      label="Choose a language:"
+      languages={{ en: "English", es: "Español", fr: "Français" }}
+    />
+  </Fragment>
+</PageLayout>

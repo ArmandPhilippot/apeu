@@ -14,20 +14,29 @@ import Navbar from "../../organisms/navbar/navbar.astro";
 import SearchForm from "../../organisms/search-form/search-form.astro";
 import MainNav from "../../organisms/main-nav/main-nav.astro";
 import SettingsForm from "../../organisms/settings-form/settings-form.astro";
+import { useI18n } from "../../../utils/i18n";
 
 type Props = Pick<ComponentProps<typeof Head>, "seo"> &
   Omit<HTMLAttributes<"div">, "id">;
 
 const { class: className, seo, ...attrs } = Astro.props;
-const isHome = Astro.url.pathname === "/";
+const { route, translate } = useI18n(Astro.currentLocale);
+const isHome = Astro.url.pathname === route("home");
 const mainNav = [
-  { icon: "home", iconSize: 28, label: "Home", url: "/" },
+  {
+    icon: "home",
+    iconSize: 28,
+    label: translate("page.home.title"),
+    url: route("home"),
+  },
 ] satisfies ComponentProps<typeof NavList>["items"];
 const footerLinks = [
   ...(import.meta.env.DEV
     ? [{ label: "Design system", url: "/design-system" }]
     : []),
 ] satisfies ComponentProps<typeof NavList>["items"];
+const contentsId = translate("anchor.site.content");
+const topId = translate("anchor.site.top");
 ---
 
 <html data-theme="light" lang="en" style="color-scheme: light;">
@@ -55,25 +64,31 @@ const footerLinks = [
     </noscript>
   </Head>
   <body>
-    <ap-website class="site" id="#top">
-      <SkipTo anchor="#contents">Skip to contents</SkipTo>
+    <ap-website class="site" id={topId}>
+      <SkipTo anchor={`#${contentsId}`}>
+        {translate("cta.skip.to.content")}
+      </SkipTo>
       <header class="site-header">
         <div class="site-branding">
           <Branding brand={CONFIG.BRAND} url="/" />
         </div>
-        <Navbar aria-label="Primary" class="site-navbar" id="site-navbar">
+        <Navbar
+          aria-label={translate("nav.label.primary")}
+          class="site-navbar"
+          id="site-navbar"
+        >
           <MainNav items={mainNav} slot="nav" />
           <SearchForm
             id="site-search"
             isInline
             queryParam={CONFIG.SEARCH.QUERY_PARAM}
-            resultsPage="/search"
+            resultsPage={route("search")}
             slot="search"
           />
           <SettingsForm id="site-settings" slot="settings" />
         </Navbar>
       </header>
-      <div {...attrs} class:list={["site-body", className]} id="contents">
+      <div {...attrs} class:list={["site-body", className]} id={contentsId}>
         <slot />
       </div>
       <footer class="site-footer">
@@ -88,7 +103,11 @@ const footerLinks = [
             )
           }
         </NavList>
-        <BackTo anchor="#top" class="site-back-to-top" label="Back to top" />
+        <BackTo
+          anchor={`#${topId}`}
+          class="site-back-to-top"
+          label={translate("cta.back.to.top")}
+        />
       </footer>
       <svg
         aria-hidden="true"

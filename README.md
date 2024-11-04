@@ -86,6 +86,14 @@ If you need to divide your stories in multiple files, you can use a `stories` di
 
 Only `.astro` extension is supported for stories. I'd like to use `.mdx` but Astro integrations can only inject routes for `.astro`, `.js` and `.ts` files.
 
+### i18n
+
+This project is i18n-ready but only available in English right now.
+
+All UI strings are stored as a key/value pair in a JSON file located in `src/translations`. Note that for routes, except for the homepage, the translations should match the names used in `src/pages`.
+
+Then each templates use some methods to translate those messages in the current locale. It also supports pluralization and route localization.
+
 ### Search
 
 The search is powered by [Pagefind](https://pagefind.app/), a fully static search library. It needs to index the contents in advance to be able to work.
@@ -121,6 +129,8 @@ Before starting, please follow the instructions in [Setup](#setup).
 │   │   ├── index.astro
 │   │   └── search.astro
 │   ├── styles/
+│   ├── translations/
+│   │   └── en.json
 │   ├── types/
 │   └── utils/
 ├── package.json
@@ -135,6 +145,7 @@ In details:
 - `src/lib/`: the features based on dependencies (e.g. Astro integration),
 - `src/pages/`: the special components used to create pages and API routes,
 - `src/styles/`: global styles, variables and helpers should be placed in this directory,
+- `src/translations/`: the JSON files used to store all UI strings and routes for one language,
 - `src/types/`: the Typescript types shared across the application,
 - `src/utils/`: all the utilities (constants, helpers, etc.) to build the project.
 
@@ -190,6 +201,45 @@ When creating new design elements, you should use them. For example:
 ```
 
 You can find all available tokens in the design system (accessible under `/design-system` in your browser).
+
+### Add a new language
+
+To add a new language for this website, you need to create a new JSON file in `src/translations` using the locale as filename. Here are the required steps:
+
+1. `cp /src/translations/en.json /src/translations/fr.json`
+2. `nano /src/translations/fr.json`, translate all the keys in your language then save the file,
+3. `nano /src/translations/index.ts`: in that file, import then reexport your new language.
+4. The new language is now available!
+
+### Use localized UI strings in templates
+
+If you need to use UI strings or routes in your templates:
+
+1. Make sure the key exist in the translations files or add a new key,
+2. Import the `useI18n()` helper
+3. Use one the provided methods to display your UI string or route.
+
+**DO:**
+
+```astro
+---
+import { useI18n } from "src/utils/helpers/i18n";
+
+const { translate } = useI18n(Astro.currentLocale);
+---
+
+<div>{translate("some.key.available.in.translations")}</div>
+```
+
+**DON'T:**
+
+```astro
+---
+
+---
+
+<div>Some hardcoded string.</div>
+```
 
 ### Workflow
 

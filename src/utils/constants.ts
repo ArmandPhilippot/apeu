@@ -8,6 +8,10 @@ export const COMPONENT_KINDS = [
 export const CONFIG = {
   BRAND: "Armand Philippot",
   CREATION_YEAR: 2024,
+  LANGUAGES: {
+    AVAILABLE: ["en"],
+    DEFAULT: "en",
+  },
   SEARCH: {
     QUERY_PARAM: "q",
   },

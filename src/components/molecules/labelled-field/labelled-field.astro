@@ -1,0 +1,123 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import { MissingSlotError } from "../../../utils/exceptions";
+
+type LabelledFieldVariant = "inline" | "inline-reversed" | "vertical";
+
+type Props = HTMLAttributes<"div"> & {
+  /**
+   * Determine the order of the field and its label.
+   *
+   * @default "vertical"
+   */
+  variant?: LabelledFieldVariant | null | undefined;
+};
+
+const { class: className, variant = "vertical", ...attrs } = Astro.props;
+const isReverseOrder = variant === "inline-reversed";
+
+if (!Astro.slots.has("label")) throw new MissingSlotError("label");
+if (!Astro.slots.has("field")) throw new MissingSlotError("field");
+---
+
+<div
+  {...attrs}
+  class:list={[
+    "labelled-field",
+    {
+      inlined: variant !== "vertical",
+      reversed: isReverseOrder,
+    },
+    className,
+  ]}
+>
+  {
+    isReverseOrder ? (
+      <Fragment>
+        <slot name="field" />
+        <slot name="label" />
+      </Fragment>
+    ) : (
+      <Fragment>
+        <slot name="label" />
+        <slot name="field" />
+      </Fragment>
+    )
+  }
+  {
+    Astro.slots.has("hint") ? (
+      <div class="labelled-field-hint">
+        <slot name="hint" />
+      </div>
+    ) : null
+  }
+  {
+    Astro.slots.has("errors") ? (
+      <div class="labelled-field-errors">
+        <slot name="errors" />
+      </div>
+    ) : null
+  }
+</div>
+
+<style>
+  .labelled-field {
+    display: grid;
+
+    &:has(input[type="checkbox"], input[type="radio"]) {
+      justify-items: start;
+    }
+
+    &:where(.inlined) {
+      grid-template-columns: auto minmax(0, 1fr);
+      align-items: center;
+      row-gap: var(--spacing-xs);
+
+      & > :global(:is(label, input, textarea)) {
+        grid-row: 1;
+      }
+    }
+
+    &:where(.inlined:not(.reversed)) {
+      column-gap: var(--spacing-sm);
+    }
+
+    &:where(.inlined.reversed) {
+      column-gap: var(--spacing-xs);
+    }
+
+    &:where(:not(.inlined)) {
+      gap: var(--spacing-xs);
+    }
+  }
+
+  .labelled-field-hint {
+    font-size: var(--font-size-xs);
+  }
+
+  .labelled-field-errors {
+    color: var(--color-critical);
+    font-size: var(--font-size-sm);
+
+    & > :global(*) {
+      margin: 0;
+    }
+  }
+
+  :where(.labelled-field.inlined:not(.reversed)) :global(label),
+  :where(.labelled-field.inlined.reversed) :global(:is(input, textarea)) {
+    grid-column: 1;
+  }
+
+  :where(.labelled-field.inlined.reversed) :global(label),
+  :where(.labelled-field.inlined:not(.reversed)) :global(:is(input, textarea)),
+  :where(.labelled-field.inlined:not(.reversed))
+    :is(.labelled-field-errors, .labelled-field-hint) {
+    grid-column: 2;
+  }
+
+  :where(.labelled-field.inlined.reversed)
+    :is(.labelled-field-errors, .labelled-field-hint) {
+    grid-column: 1 / -1;
+  }
+</style>

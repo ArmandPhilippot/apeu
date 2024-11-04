@@ -7,6 +7,10 @@ import { pagefind } from "./src/lib/astro/integrations/pagefind";
 
 // https://astro.build/config
 export default defineConfig({
+  i18n: {
+    defaultLocale: "en",
+    locales: ["en"],
+  },
   integrations: [
     componentsStories({
       baseSlug: "/design-system/components",

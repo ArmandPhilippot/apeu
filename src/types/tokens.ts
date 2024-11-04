@@ -16,4 +16,5 @@ export type IconName =
   | "feed"
   | "gear"
   | "hamburger"
+  | "home"
   | "search";

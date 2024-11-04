@@ -12,12 +12,16 @@ import NavList from "../../molecules/nav-list/nav-list.astro";
 import SkipTo from "../../molecules/skip-to/skip-to.astro";
 import Navbar from "../../organisms/navbar/navbar.astro";
 import SearchForm from "../../organisms/search-form/search-form.astro";
+import MainNav from "../../organisms/main-nav/main-nav.astro";
 
 type Props = Pick<ComponentProps<typeof Head>, "seo"> &
   Omit<HTMLAttributes<"div">, "id">;
 
 const { class: className, seo, ...attrs } = Astro.props;
 const isHome = Astro.url.pathname === "/";
+const mainNav = [
+  { icon: "home", iconSize: 28, label: "Home", url: "/" },
+] satisfies ComponentProps<typeof NavList>["items"];
 const footerLinks = [
   ...(import.meta.env.DEV
     ? [{ label: "Design system", url: "/design-system" }]
@@ -57,7 +61,7 @@ const footerLinks = [
           <Branding brand={CONFIG.BRAND} url="/" />
         </div>
         <Navbar aria-label="Primary" class="site-navbar" id="site-navbar">
-          <div slot="nav">Main nav</div>
+          <MainNav items={mainNav} slot="nav" />
           <SearchForm
             id="site-search"
             isInline

@@ -43,7 +43,7 @@ if (!Astro.slots.has("settings")) throw new MissingSlotError("settings");
     <fragment slot="modal">
       {
         (modalId: string) => (
-          <Box class="navbar-item-modal" id={modalId} isPadded>
+          <Box class="navbar-item-modal" id={modalId}>
             <slot name="nav" />
           </Box>
         )
@@ -133,7 +133,6 @@ if (!Astro.slots.has("settings")) throw new MissingSlotError("settings");
 
   .navbar-item {
     min-height: calc(var(--one-px-in-rem) * 54);
-    padding: var(--spacing-4xs) var(--spacing-3xs);
     position: unset;
 
     @media (width >= 1024px) {
@@ -159,13 +158,19 @@ if (!Astro.slots.has("settings")) throw new MissingSlotError("settings");
   }
 
   .navbar-item-label {
+    border-radius: var(--border-radii-lg);
     font-size: var(--font-size-xs);
+
+    @media (width >= 640px) {
+      padding-inline: var(--spacing-sm);
+    }
 
     @media (width >= 1024px) {
       flex-flow: row wrap;
       justify-content: start;
       padding-inline: 1dvw;
       font-size: var(--font-size-sm);
+      outline-width: var(--border-size-lg);
     }
   }
 

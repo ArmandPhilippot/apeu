@@ -133,9 +133,8 @@ const modal = await Astro.slots.render("modal", [modalId]);
     transform: translate3d(var(--x, 0), var(--y, 0), 0) scale(1);
   }
 
-  :where(.popover:focus-within .popover-controller:not(:focus))
-    ~ :global(label) {
-    outline: var(--border-size-lg) solid var(--color-primary-darker);
+  :where(.popover-controller:checked:not(:focus)) ~ :global(label) {
+    outline: var(--border-size-md) solid var(--color-primary-darker);
     outline-offset: calc(var(--border-size-xl) * -1);
   }
 </style>

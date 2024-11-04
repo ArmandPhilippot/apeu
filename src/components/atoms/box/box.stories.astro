@@ -173,5 +173,18 @@ const seo: ComponentProps<typeof PageLayout>["seo"] = {
       <p>And <code>isBordered</code> to see the box limits.</p>
     </BoxComponent>
     <BoxComponent isBordered isCentered isProse>The box contents.</BoxComponent>
+    <BoxComponent
+      elevation="raised"
+      isBordered
+      isCentered
+      isPadded
+      isProse
+      isRounded
+      isSpaced
+    >
+      <Heading as="h3">With <code>isPadded</code></Heading>
+      <p>And <code>isBordered</code> to see the box limits.</p>
+    </BoxComponent>
+    <BoxComponent isBordered isPadded isProse>The box contents.</BoxComponent>
   </Fragment>
 </PageLayout>

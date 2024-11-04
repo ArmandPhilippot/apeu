@@ -34,6 +34,11 @@ const seo: ComponentProps<typeof PageLayout>["seo"] = {
     <NavItemComponent href="#destination">Nav Item</NavItemComponent>
     <Heading as="h3"><code>isBordered</code></Heading>
     <NavItemComponent href="#destination" isBordered>Nav Item</NavItemComponent>
+    <Heading as="h3"><code>isRounded</code></Heading>
+    <p>And with <code>isBordered</code> to highlight the difference.</p>
+    <NavItemComponent href="#destination" isBordered isRounded>
+      Nav Item
+    </NavItemComponent>
     <Heading as="h3">With icon</Heading>
     <NavItemComponent href="#destination" icon="cc-by-sa" iconSize={40}>
       Nav Item
@@ -52,6 +57,11 @@ const seo: ComponentProps<typeof PageLayout>["seo"] = {
     <NavItemComponent href="#destination" isBlock>Nav Item</NavItemComponent>
     <Heading as="h3"><code>isBordered</code></Heading>
     <NavItemComponent href="#destination" isBlock isBordered>
+      Nav Item
+    </NavItemComponent>
+    <Heading as="h3"><code>isRounded</code></Heading>
+    <p>And with <code>isBordered</code> to highlight the difference.</p>
+    <NavItemComponent href="#destination" isBlock isBordered isRounded>
       Nav Item
     </NavItemComponent>
     <Heading as="h3">With icon</Heading>

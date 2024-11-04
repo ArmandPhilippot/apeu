@@ -67,6 +67,8 @@ const modal = await Astro.slots.render("modal", [modalId]);
       &:is(label) {
         color: var(--color-primary);
         cursor: pointer;
+        outline-width: var(--border-size-md);
+        transition: all 0.15s linear 0s;
       }
 
       &:last-child {
@@ -119,8 +121,8 @@ const modal = await Astro.slots.render("modal", [modalId]);
   }
 
   :where(.popover-controller:focus) ~ :global(label) {
-    border-radius: var(--border-radii-md);
-    outline: var(--border-size-md) solid var(--color-primary-lighter);
+    outline-color: var(--color-primary-lighter);
+    outline-style: solid;
   }
 
   :where(.popover-controller:not(:checked)) ~ :global(*:last-child) {
@@ -134,8 +136,9 @@ const modal = await Astro.slots.render("modal", [modalId]);
   }
 
   :where(.popover-controller:checked:not(:focus)) ~ :global(label) {
-    outline: var(--border-size-md) solid var(--color-primary-darker);
-    outline-offset: calc(var(--border-size-xl) * -1);
+    outline-color: var(--color-primary-darker);
+    outline-offset: var(--border-size-md);
+    outline-style: solid;
   }
 </style>
 

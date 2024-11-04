@@ -34,6 +34,7 @@ if (!Astro.slots.has("settings")) throw new MissingSlotError("settings");
             icon="hamburger"
             iconSize={28}
             isBlock
+            isRounded
           >
             Menu
           </NavItem>
@@ -67,6 +68,7 @@ if (!Astro.slots.has("settings")) throw new MissingSlotError("settings");
             icon="search"
             iconSize={28}
             isBlock
+            isRounded
           >
             Search
           </NavItem>
@@ -100,6 +102,7 @@ if (!Astro.slots.has("settings")) throw new MissingSlotError("settings");
             icon="gear"
             iconSize={28}
             isBlock
+            isRounded
           >
             Settings
           </NavItem>
@@ -133,10 +136,15 @@ if (!Astro.slots.has("settings")) throw new MissingSlotError("settings");
 
   .navbar-item {
     min-height: calc(var(--one-px-in-rem) * 54);
+    padding: var(--spacing-3xs);
     position: unset;
 
+    @media (any-pointer: fine) {
+      min-height: var(--one-px-in-rem) * 48;
+    }
+
     @media (width >= 1024px) {
-      padding-inline: clamp(var(--spacing-xs), 1dvw, var(--spacing-md));
+      padding-inline: clamp(var(--spacing-xs), 1.5dvw, var(--spacing-lg));
       position: relative;
     }
 
@@ -158,24 +166,23 @@ if (!Astro.slots.has("settings")) throw new MissingSlotError("settings");
   }
 
   .navbar-item-label {
-    border-radius: var(--border-radii-lg);
     font-size: var(--font-size-xs);
 
     @media (width >= 640px) {
-      padding-inline: var(--spacing-sm);
+      padding-inline: var(--spacing-2xs);
     }
 
     @media (width >= 1024px) {
       flex-flow: row wrap;
       justify-content: start;
-      padding-inline: 1dvw;
-      font-size: var(--font-size-sm);
-      outline-width: var(--border-size-lg);
+      padding: var(--spacing-xs)
+        clamp(var(--spacing-2xs), 1.25dvw, var(--spacing-lg));
     }
   }
 
-  :where(.navbar-item:focus-within) .navbar-item-label {
-    outline-offset: calc(var(--border-size-xl) * -1);
+  :where(.navbar-item:has(> input:checked:not(:focus))) .navbar-item-label {
+    outline: none;
+    border-color: var(--color-primary);
   }
 
   .navbar-item-modal {
@@ -184,12 +191,14 @@ if (!Astro.slots.has("settings")) throw new MissingSlotError("settings");
     left: 0;
     right: 0;
     bottom: calc(100% + var(--spacing-4xs) - var(--border-size-sm));
+    z-index: 10;
     background: var(--color-regular-lighter);
     border-block: var(--border-size-sm) solid var(--color-border);
     box-shadow: var(--shadow-elevated-to-bottom-center);
 
     @media (width >= 640px) {
       bottom: unset;
+      left: calc(var(--spacing-lg) * -1);
       top: 100%;
       border-inline: var(--border-size-sm) solid var(--color-border);
       box-shadow: var(--shadow-elevated-to-top-center);

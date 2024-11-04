@@ -183,8 +183,7 @@ const footerLinks = [
     @media (width >= 640px) {
       display: flex;
       flex-flow: row wrap;
-      gap: var(--spacing-md);
-      justify-content: space-between;
+      gap: var(--spacing-sm);
       border-block-end: var(--border-size-sm) solid var(--color-border);
       box-shadow: var(--shadow-raised-to-top-center);
     }
@@ -193,8 +192,8 @@ const footerLinks = [
       grid-column: 1;
       grid-row: 1;
       flex-flow: column;
-      justify-content: start;
-      padding-block-start: clamp(var(--spacing-4xs), 1.5dvh, var(--spacing-sm));
+      gap: var(--spacing-sm);
+      padding-block-start: clamp(var(--spacing-4xs), 1.5dvh, var(--spacing-md));
       border-block-end: none;
       box-shadow: none;
     }
@@ -235,6 +234,7 @@ const footerLinks = [
     }
 
     @media (width >= 640px) {
+      flex: 1;
       order: unset;
       position: relative;
       bottom: unset;

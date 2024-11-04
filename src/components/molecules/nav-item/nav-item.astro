@@ -30,6 +30,12 @@ type Props<T extends Extract<HTMLTag, "a" | "label"> = "a"> = Polymorphic<{
    * @default false
    */
   isBordered?: boolean | null | undefined;
+  /**
+   * Should the nav item be rounded?
+   *
+   * @default false
+   */
+  isRounded?: boolean | null | undefined;
 };
 
 const {
@@ -39,6 +45,7 @@ const {
   iconSize = 20,
   isBlock = false,
   isBordered = false,
+  isRounded = false,
   ...attrs
 } = Astro.props;
 const Tag = as === "a" ? Link : Label;
@@ -46,7 +53,11 @@ const Tag = as === "a" ? Link : Label;
 
 <Tag
   {...attrs}
-  class:list={["nav-item", { block: isBlock, bordered: isBordered }, className]}
+  class:list={[
+    "nav-item",
+    { block: isBlock, bordered: isBordered, rounded: isRounded },
+    className,
+  ]}
 >
   {
     icon ? (
@@ -72,17 +83,19 @@ const Tag = as === "a" ? Link : Label;
       align-items: center;
       justify-content: center;
       gap: var(--spacing-2xs);
+      min-height: var(--one-px-in-rem) * 54;
       min-width: var(--one-px-in-rem) * 54;
       padding: var(--spacing-2xs);
       font-size: var(--font-size-sm);
       font-weight: var(--font-weight-bold);
       hyphens: auto;
+      outline-width: var(--border-size-md);
       overflow-wrap: anywhere;
       text-decoration: none;
       text-transform: uppercase;
       transition: all 0.15s linear 0s;
 
-      @media screen and (any-pointer: fine) {
+      @media (any-pointer: fine) {
         min-height: var(--one-px-in-rem) * 48;
       }
 
@@ -114,25 +127,26 @@ const Tag = as === "a" ? Link : Label;
           bottom left;
         background-repeat: no-repeat;
         background-size:
-          100% var(--border-size-lg),
-          var(--border-size-lg) 100%,
-          100% var(--border-size-lg),
-          var(--border-size-lg) 100%;
+          100% var(--border-size-md),
+          var(--border-size-md) 100%,
+          100% var(--border-size-md),
+          var(--border-size-md) 100%;
         animation: draw-borders 0.7s linear 1 0s;
       }
 
       &:where(:focus-visible) {
-        outline: var(--border-size-lg) solid var(--color-primary-lighter);
-        outline-offset: calc(var(--border-size-lg) * -1);
+        outline-color: var(--color-primary-lighter);
+        outline-style: solid;
       }
     }
 
     &:where(.bordered) {
       border-color: var(--color-primary);
+      outline-offset: calc(var(--border-size-lg) * -1);
     }
 
-    &:where(.block.bordered) {
-      outline-offset: calc(var(--border-size-md) * -1);
+    &:where(.rounded) {
+      border-radius: var(--border-radii-md);
     }
   }
 
@@ -149,34 +163,34 @@ const Tag = as === "a" ? Link : Label;
         bottom right,
         bottom left;
       background-size:
-        0% var(--border-size-lg),
-        var(--border-size-lg) 0%,
-        0% var(--border-size-lg),
-        var(--border-size-lg) 0%;
+        0% var(--border-size-md),
+        var(--border-size-md) 0%,
+        0% var(--border-size-md),
+        var(--border-size-md) 0%;
     }
 
     25% {
       background-size:
-        0% var(--border-size-lg),
-        var(--border-size-lg) 0%,
-        100% var(--border-size-lg),
-        var(--border-size-lg) 0%;
+        0% var(--border-size-md),
+        var(--border-size-md) 0%,
+        100% var(--border-size-md),
+        var(--border-size-md) 0%;
     }
 
     50% {
       background-size:
-        0% var(--border-size-lg),
-        var(--border-size-lg) 0%,
-        100% var(--border-size-lg),
-        var(--border-size-lg) 100%;
+        0% var(--border-size-md),
+        var(--border-size-md) 0%,
+        100% var(--border-size-md),
+        var(--border-size-md) 100%;
     }
 
     75% {
       background-size:
-        100% var(--border-size-lg),
-        var(--border-size-lg) 0%,
-        100% var(--border-size-lg),
-        var(--border-size-lg) 100%;
+        100% var(--border-size-md),
+        var(--border-size-md) 0%,
+        100% var(--border-size-md),
+        var(--border-size-md) 100%;
     }
 
     100% {
@@ -186,10 +200,10 @@ const Tag = as === "a" ? Link : Label;
         bottom right,
         bottom left;
       background-size:
-        100% var(--border-size-lg),
-        var(--border-size-lg) 100%,
-        100% var(--border-size-lg),
-        var(--border-size-lg) 100%;
+        100% var(--border-size-md),
+        var(--border-size-md) 100%,
+        100% var(--border-size-md),
+        var(--border-size-md) 100%;
     }
   }
 </style>

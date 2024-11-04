@@ -8,20 +8,21 @@
     "anchor.site.top": "top",
     "cta.back.to.top": "Back to top",
     "cta.skip.to.content": "Skip to content",
-    "footer.license.title": "Contents are under CC BY SA license.",
+    "cta.subscribe": "Subscribe",
+    "cta.subscribe.a11y": "Subscribe to {title}",
     "form.search.label": "Search:",
     "form.search.btn": "Search",
     "form.settings.label.theme.website": "Website theme:",
-    "license.cc.by.sa.url": "https://creativecommons.org/licenses/by-sa/4.0/deed",
+    "license.title": "Contents are under CC BY SA license.",
     "nav.label.breadcrumb": "Breadcrumb",
     "nav.label.primary": "Primary",
     "navbar.main.nav.label": "Menu",
     "navbar.search.label": "Search",
     "navbar.settings.label": "Settings",
     "page.home.title": "Home",
+    "page.search.title": "Search",
     "theme.label.auto": "Auto",
     "theme.label.dark": "Dark",
-    "theme.label.light": "Light",
-    "toc.title": "Table of contents"
+    "theme.label.light": "Light"
   }
 }

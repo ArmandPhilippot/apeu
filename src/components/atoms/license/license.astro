@@ -1,17 +1,19 @@
 ---
 import { Icon } from "astro-icon/components";
 import type { ComponentProps } from "astro/types";
+import { useI18n } from "../../../utils/i18n";
 
 type Props = Omit<ComponentProps<typeof Icon>, "name" | "title">;
 
 const { class: className, ...attrs } = Astro.props;
+const { translate } = useI18n(Astro.currentLocale);
 ---
 
 <Icon
   {...attrs}
   class:list={["license", className]}
   name="cc-by-sa"
-  title="Contents are under CC BY SA license."
+  title={translate("license.title")}
 />
 
 <style>

@@ -1,7 +1,24 @@
 import { experimental_AstroContainer as AstroContainer } from "astro/container";
 import type { ComponentProps } from "astro/types";
-import { beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { CONFIG } from "../../../utils/constants";
+import { useI18n } from "../../../utils/i18n";
 import SettingsForm from "./settings-form.astro";
+
+vi.mock("../../../utils/constants", async (importOriginal) => {
+  const mod =
+    // eslint-disable-next-line @typescript-eslint/consistent-type-imports
+    await importOriginal<typeof import("../../../utils/constants")>();
+  return {
+    ...mod,
+    CONFIG: {
+      ...mod.CONFIG,
+      LANGUAGES: {
+        DEFAULT: "en",
+      },
+    },
+  };
+});
 
 type LocalTestContext = {
   container: AstroContainer;
@@ -10,6 +27,10 @@ type LocalTestContext = {
 describe("SettingsForm", () => {
   beforeEach<LocalTestContext>(async (context) => {
     context.container = await AstroContainer.create();
+  });
+
+  afterEach(() => {
+    vi.resetAllMocks();
   });
 
   it<LocalTestContext>("renders a settings form", async ({ container }) => {
@@ -21,7 +42,11 @@ describe("SettingsForm", () => {
     expect.assertions(2);
 
     expect(result).toContain("</form>");
-    expect(result).toContain("Theme:");
+    expect(result).toContain(
+      useI18n(CONFIG.LANGUAGES.DEFAULT).translate(
+        "form.settings.label.theme.website",
+      ),
+    );
   });
 
   it<LocalTestContext>("can use an id", async ({ container }) => {

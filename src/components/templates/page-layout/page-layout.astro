@@ -1,5 +1,6 @@
 ---
 import type { ComponentProps } from "astro/types";
+import { useI18n } from "../../../utils/i18n";
 import Breadcrumb from "../../molecules/breadcrumb/breadcrumb.astro";
 import Page from "../../organisms/page/page.astro";
 import Layout from "../layout/layout.astro";
@@ -10,12 +11,14 @@ type Props = Pick<ComponentProps<typeof Layout>, "seo"> &
   };
 
 const { breadcrumb, seo, ...attrs } = Astro.props;
+const { translate } = useI18n(Astro.currentLocale);
 ---
 
 <Layout class="page-layout" seo={seo}>
   {
     breadcrumb?.length ? (
       <Breadcrumb
+        aria-label={translate("nav.label.breadcrumb")}
         class="page-layout-breadcrumb"
         isCentered
         items={breadcrumb}

@@ -1,0 +1,40 @@
+---
+import type { ComponentProps } from "astro/types";
+import Heading from "../../atoms/heading/heading.astro";
+import PageLayout from "../../templates/page-layout/page-layout.astro";
+import MainNavComponent from "./main-nav.astro";
+
+const title = "MainNav";
+const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
+  { label: "Home", url: "/" },
+  { label: "Design system", url: "/design-system" },
+  { label: "Components", url: "/design-system/components" },
+  { label: "Organisms", url: "/design-system/components/organisms" },
+  { label: title, url: Astro.url.href },
+];
+const seo: ComponentProps<typeof PageLayout>["seo"] = {
+  nofollow: true,
+  noindex: true,
+  title: breadcrumb
+    .slice(1)
+    .reverse()
+    .map((crumb) => crumb.label)
+    .join(" | "),
+};
+
+const items = [
+  { label: "Item 1", url: "#item-1" },
+  { label: "Item 2", url: "#item-2" },
+  { label: "Item 3", url: "#item-3" },
+  { label: "Item 4", url: "#item-4" },
+  { label: "Item 5", url: "#item-5" },
+] satisfies ComponentProps<typeof MainNavComponent>["items"];
+---
+
+<PageLayout breadcrumb={breadcrumb} heading={title} seo={seo}>
+  <Fragment slot="body">
+    <Heading as="h2">Usage</Heading>
+    <p>This component is used to display the main navigation.</p>
+    <MainNavComponent items={items} />
+  </Fragment>
+</PageLayout>

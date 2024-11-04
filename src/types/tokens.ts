@@ -1,3 +1,5 @@
+export type Direction = "bottom" | "left" | "right" | "top";
+
 /**
  * The elevations defined in `src/styles/variables/shadows.css`.
  */
@@ -8,4 +10,11 @@ export type Elevation = "raised" | "elevated" | "floating";
  *
  * These tokens are meant to be used with `astro-icon`.
  */
-export type IconName = "caret" | "cc-by-sa" | "feed";
+export type IconName =
+  | "caret"
+  | "cc-by-sa"
+  | "feed"
+  | "gear"
+  | "hamburger"
+  | "home"
+  | "search";

@@ -1,6 +1,6 @@
 ---
 import type { HTMLAttributes } from "astro/types";
-import NavLink from "../nav-link/nav-link.astro";
+import NavItem from "../nav-item/nav-item.astro";
 import NavList from "../nav-list/nav-list.astro";
 
 type Crumb = {
@@ -31,9 +31,9 @@ const { class: className, isCentered = false, items, ...attrs } = Astro.props;
           </span>
         ) : (
           <Fragment>
-            <NavLink {...item} class="breadcrumb-item" href={url}>
+            <NavItem {...item} class="breadcrumb-item" href={url}>
               {label}
-            </NavLink>
+            </NavItem>
             <span aria-hidden="true">&gt;</span>
           </Fragment>
         );

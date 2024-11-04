@@ -1,0 +1,59 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import { MissingSlotError } from "../../../utils/exceptions";
+
+type Props = HTMLAttributes<"fieldset"> & {
+  isBordered?: boolean | null | undefined;
+  isInline?: boolean | null | undefined;
+};
+
+const {
+  class: className,
+  isBordered = false,
+  isInline = false,
+  ...attrs
+} = Astro.props;
+
+if (!Astro.slots.has("legend")) throw new MissingSlotError("legend");
+---
+
+<fieldset
+  {...attrs}
+  class:list={[
+    "fieldset",
+    {
+      bordered: isBordered,
+      inlined: isInline,
+    },
+    className,
+  ]}
+>
+  <slot name="legend" />
+  <slot />
+</fieldset>
+
+<style>
+  .fieldset {
+    &:where(.bordered) {
+      padding: var(--spacing-xs) var(--spacing-sm) var(--spacing-sm);
+      border: var(--border-size-sm) solid var(--color-border);
+      border-radius: var(--border-radii-md);
+
+      :global(legend) {
+        padding-inline: var(--spacing-xs);
+      }
+    }
+
+    &:where(:not(.bordered)) {
+      margin-inline: 0;
+      padding-inline: 0;
+      border: none;
+    }
+
+    &:where(.inlined) {
+      display: flex;
+      flex-flow: row wrap;
+      align-items: center;
+    }
+  }
+</style>

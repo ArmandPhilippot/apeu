@@ -1,0 +1,24 @@
+<svg
+   class="hamburger"
+   viewBox="0 0 48 48"
+   xmlns="http://www.w3.org/2000/svg">
+   <path
+      class="hamburger__line"
+      d="M 6.7483961,8.9671519 H 41.251604 c 1.437633,0 1.437633,3.4999101 0,3.4999101 H 6.7483961 c -1.4376336,0 -1.4376336,-3.4999101 0,-3.4999101 z"
+      fill="currentColor"
+      stroke="currentColor"
+      stroke-width="1.5" />
+   <path
+      class="hamburger__line"
+      d="M 6.7483962,22.250045 H 41.251605 c 1.437632,0 1.437632,3.49991 0,3.49991 H 6.7483962 c -1.4376336,0 -1.4376336,-3.49991 0,-3.49991 z"
+      fill="currentColor"
+      stroke="currentColor"
+      stroke-width="1.5" />
+   <path
+      class="hamburger__line"
+      d="M 6.7483962,35.532938 H 41.251605 c 1.437632,0 1.437632,3.49991 0,3.49991 H 6.7483962 c -1.4376336,0 -1.4376336,-3.49991 0,-3.49991 z"
+      fill="currentColor"
+      stroke="currentColor"
+      stroke-width="1.5"
+      id="path1-6" />
+</svg>

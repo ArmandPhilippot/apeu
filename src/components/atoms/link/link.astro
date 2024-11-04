@@ -1,8 +1,7 @@
 ---
 import type { HTMLAttributes } from "astro/types";
 
-type Props = Omit<HTMLAttributes<"a">, "href"> & {
-  href: string | URL;
+type Props = HTMLAttributes<"a"> & {
   isDownload?: boolean | null | undefined;
   isExternal?: boolean | null | undefined;
 };

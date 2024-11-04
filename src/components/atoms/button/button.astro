@@ -1,11 +1,21 @@
 ---
 import type { HTMLTag, Polymorphic } from "astro/types";
 
-type ButtonKind = "primary" | "secondary";
+type ButtonKind = "neutral" | "primary" | "secondary";
 
 type Props<T extends Extract<HTMLTag, "a" | "button"> = "button"> =
   Polymorphic<{ as: T }> & {
+    /**
+     * Is the button targeting an external resource?
+     *
+     * @default false
+     */
     isExternal?: boolean | null | undefined;
+    /**
+     * The button kind.
+     *
+     * @default "secondary"
+     */
     kind?: ButtonKind | null | undefined;
   };
 
@@ -61,6 +71,12 @@ if (isExternal && kind === "primary")
       background: var(--color-muted-light);
       color: var(--color-on-muted);
       cursor: not-allowed;
+    }
+
+    &:where(.neutral) {
+      background: transparent;
+      border: none;
+      color: inherit;
     }
 
     &:where(.primary) {

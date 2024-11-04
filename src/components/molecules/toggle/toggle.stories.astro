@@ -1,0 +1,73 @@
+---
+import type { ComponentProps } from "astro/types";
+import Heading from "../../atoms/heading/heading.astro";
+import PageLayout from "../../templates/page-layout/page-layout.astro";
+import ToggleComponent from "./toggle.astro";
+
+const title = "Toggle";
+const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
+  { label: "Home", url: "/" },
+  { label: "Design system", url: "/design-system" },
+  { label: "Components", url: "/design-system/components" },
+  { label: "Molecules", url: "/design-system/components/molecules" },
+  { label: title, url: Astro.url.href },
+];
+const seo: ComponentProps<typeof PageLayout>["seo"] = {
+  nofollow: true,
+  noindex: true,
+  title: breadcrumb
+    .slice(1)
+    .reverse()
+    .map((crumb) => crumb.label)
+    .join(" | "),
+};
+
+const getItems = (
+  name: string,
+): ComponentProps<typeof ToggleComponent>["items"] => [
+  { id: `${name}-item-1`, label: "Item 1", value: "item-1" },
+  { id: `${name}-item-2`, label: "Item 2", value: "item-2" },
+  { id: `${name}-item-3`, label: "Item 3", value: "item-3" },
+];
+
+const getItemsWithIcon = (
+  name: string,
+): ComponentProps<typeof ToggleComponent>["items"] => [
+  { icon: "caret", id: `${name}-item-1`, label: "Item 1", value: "item-1" },
+  { icon: "gear", id: `${name}-item-2`, label: "Item 2", value: "item-2" },
+  { icon: "search", id: `${name}-item-3`, label: "Item 3", value: "item-3" },
+];
+---
+
+<PageLayout breadcrumb={breadcrumb} heading={title} seo={seo}>
+  <Fragment slot="body">
+    <Heading>Default</Heading>
+    <ToggleComponent
+      groupName="default"
+      items={getItems("default")}
+      label="The legend"
+    />
+    <Heading>With default value</Heading>
+    <ToggleComponent
+      groupName="default-value"
+      items={getItems("default-value")}
+      label="The legend"
+      value={getItems("default-value")[0]?.value}
+    />
+    <Heading>With icons</Heading>
+    <ToggleComponent
+      groupName="with-icons"
+      items={getItemsWithIcon("with-icons")}
+      label="The legend"
+      value={getItemsWithIcon("with-icons")[0]?.value}
+    />
+    <Heading>Inline</Heading>
+    <ToggleComponent
+      groupName="inline"
+      isInline
+      items={getItems("inline")}
+      label="The legend"
+      value={getItems("inline")[0]?.value}
+    />
+  </Fragment>
+</PageLayout>

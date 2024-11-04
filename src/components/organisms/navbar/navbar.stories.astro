@@ -1,0 +1,41 @@
+---
+import type { ComponentProps } from "astro/types";
+import Heading from "../../atoms/heading/heading.astro";
+import PageLayout from "../../templates/page-layout/page-layout.astro";
+import NavbarComponent from "./navbar.astro";
+
+const title = "Navbar";
+
+const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
+  { label: "Home", url: "/" },
+  { label: "Design system", url: "/design-system" },
+  { label: "Components", url: "/design-system/components" },
+  { label: "Organisms", url: "/design-system/components/organisms" },
+  { label: title, url: Astro.url.href },
+];
+
+const seo: ComponentProps<typeof PageLayout>["seo"] = {
+  nofollow: true,
+  noindex: true,
+  title: breadcrumb
+    .slice(1)
+    .reverse()
+    .map((crumb) => crumb.label)
+    .join(" | "),
+};
+---
+
+<PageLayout breadcrumb={breadcrumb} heading={title} seo={seo}>
+  <Fragment slot="body">
+    <Heading as="h2">Usage</Heading>
+    <p>
+      A <code>Navbar</code> component should be used in the website layout to provide
+      navigation items to the user.
+    </p>
+    <NavbarComponent id="usage-example">
+      <div slot="nav">Nav</div>
+      <div slot="search">Search</div>
+      <div slot="settings">Settings</div>
+    </NavbarComponent>
+  </Fragment>
+</PageLayout>

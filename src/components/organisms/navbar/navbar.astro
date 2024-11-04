@@ -1,0 +1,255 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import { MissingSlotError } from "../../../utils/exceptions";
+import Box from "../../atoms/box/box.astro";
+import NavItem from "../../molecules/nav-item/nav-item.astro";
+import Popover from "../../molecules/popover/popover.astro";
+
+type Props = HTMLAttributes<"nav"> & {
+  id: string;
+};
+
+const { class: className, id, ...attrs } = Astro.props;
+
+if (!Astro.slots.has("nav")) throw new MissingSlotError("nav");
+if (!Astro.slots.has("search")) throw new MissingSlotError("search");
+if (!Astro.slots.has("settings")) throw new MissingSlotError("settings");
+---
+
+<nav {...attrs} class:list={["navbar", className]} id={id}>
+  <Popover
+    {...attrs}
+    class:list={["navbar-item", "menu"]}
+    controllerId={`${id}-menu-controller`}
+    modalId={`${id}-menu-modal`}
+    openTo="top"
+  >
+    <fragment slot="label">
+      {
+        (controllerId: string) => (
+          <NavItem
+            as="label"
+            class="navbar-item-label"
+            for={controllerId}
+            icon="hamburger"
+            iconSize={28}
+            isBlock
+            isRounded
+          >
+            Menu
+          </NavItem>
+        )
+      }
+    </fragment>
+    <fragment slot="modal">
+      {
+        (modalId: string) => (
+          <Box class="navbar-item-modal" id={modalId}>
+            <slot name="nav" />
+          </Box>
+        )
+      }
+    </fragment>
+  </Popover>
+  <Popover
+    {...attrs}
+    class:list={["navbar-item", "search"]}
+    controllerId={`${id}-search-controller`}
+    modalId={`${id}-search-modal`}
+    openTo="top"
+  >
+    <fragment slot="label">
+      {
+        (controllerId: string) => (
+          <NavItem
+            as="label"
+            class="navbar-item-label"
+            for={controllerId}
+            icon="search"
+            iconSize={28}
+            isBlock
+            isRounded
+          >
+            Search
+          </NavItem>
+        )
+      }
+    </fragment>
+    <fragment slot="modal">
+      {
+        (modalId: string) => (
+          <Box class="navbar-item-modal" id={modalId} isPadded>
+            <slot name="search" />
+          </Box>
+        )
+      }
+    </fragment>
+  </Popover>
+  <Popover
+    {...attrs}
+    class:list={["navbar-item", "settings"]}
+    controllerId={`${id}-settings-controller`}
+    modalId={`${id}-settings-modal`}
+    openTo="top"
+  >
+    <fragment slot="label">
+      {
+        (controllerId: string) => (
+          <NavItem
+            as="label"
+            class="navbar-item-label"
+            for={controllerId}
+            icon="gear"
+            iconSize={28}
+            isBlock
+            isRounded
+          >
+            Settings
+          </NavItem>
+        )
+      }
+    </fragment>
+    <fragment slot="modal">
+      {
+        (modalId: string) => (
+          <Box class="navbar-item-modal" id={modalId} isPadded>
+            <slot name="settings" />
+          </Box>
+        )
+      }
+    </fragment>
+  </Popover>
+</nav>
+
+<style>
+  .navbar {
+    display: grid;
+    grid-auto-columns: minmax(0, 1fr);
+    grid-auto-flow: column dense;
+    position: relative;
+
+    @media (width >= 1024px) {
+      display: flex;
+      flex-flow: column;
+    }
+  }
+
+  .navbar-item {
+    min-height: calc(var(--one-px-in-rem) * 54);
+    padding: var(--spacing-3xs);
+    position: unset;
+
+    @media (any-pointer: fine) {
+      min-height: var(--one-px-in-rem) * 48;
+    }
+
+    @media (width >= 1024px) {
+      padding-inline: clamp(var(--spacing-xs), 1.5dvw, var(--spacing-lg));
+      position: relative;
+    }
+
+    &:where(:not(:last-child)) {
+      border-inline-end: var(--border-size-sm) solid var(--color-border);
+
+      @media (width >= 1024px) {
+        border-inline-end: none;
+      }
+    }
+
+    @media (width >= 1024px) {
+      &:where(.menu) {
+        & > :global(:is(input, label)) {
+          display: none;
+        }
+      }
+    }
+  }
+
+  .navbar-item-label {
+    font-size: var(--font-size-xs);
+
+    @media (width >= 640px) {
+      padding-inline: var(--spacing-2xs);
+    }
+
+    @media (width >= 1024px) {
+      flex-flow: row wrap;
+      justify-content: start;
+      padding: var(--spacing-xs)
+        clamp(var(--spacing-2xs), 1.25dvw, var(--spacing-lg));
+    }
+  }
+
+  :where(.navbar-item:has(> input:checked:not(:focus))) .navbar-item-label {
+    outline: none;
+    border-color: var(--color-primary);
+  }
+
+  .navbar-item-modal {
+    --x: 0;
+
+    left: 0;
+    right: 0;
+    bottom: calc(100% + var(--spacing-4xs) - var(--border-size-sm));
+    z-index: 10;
+    background: var(--color-regular-lighter);
+    border-block: var(--border-size-sm) solid var(--color-border);
+    box-shadow: var(--shadow-elevated-to-bottom-center);
+
+    @media (width >= 640px) {
+      bottom: unset;
+      left: calc(var(--spacing-lg) * -1);
+      top: 100%;
+      border-inline: var(--border-size-sm) solid var(--color-border);
+      box-shadow: var(--shadow-elevated-to-top-center);
+    }
+
+    @media (width >= 1024px) {
+      min-width: max-content;
+      box-shadow: var(--shadow-elevated-to-top-left);
+    }
+  }
+
+  :where(.navbar-item.menu) .navbar-item-modal {
+    transform-origin: 20% 100%;
+
+    @media (width >= 640px) {
+      transform-origin: 30% -25%;
+    }
+
+    @media (width >= 1024px) {
+      display: contents;
+      position: relative;
+      inset: unset;
+      visibility: visible;
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  :where(.navbar-item.search) .navbar-item-modal {
+    transform-origin: 50% 100%;
+
+    @media (width >= 640px) {
+      transform-origin: 65% -50%;
+    }
+  }
+
+  :where(.navbar-item.settings) .navbar-item-modal {
+    transform-origin: 80% 100%;
+
+    @media (width >= 640px) {
+      transform-origin: 85% -15%;
+    }
+  }
+
+  :where(.navbar-item:where(.search, .settings)) .navbar-item-modal {
+    @media (width >= 1024px) {
+      --y: -50%;
+
+      top: 50%;
+      left: 100%;
+      transform-origin: -20% 10%;
+    }
+  }
+</style>

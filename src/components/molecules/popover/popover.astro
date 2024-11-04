@@ -1,0 +1,195 @@
+---
+import type { JSX } from "astro/jsx-runtime";
+import type { Direction } from "../../../types/tokens";
+import { MissingSlotError } from "../../../utils/exceptions";
+
+type Props = JSX.HTMLAttributes & {
+  /**
+   * The id to use to associate the controller to your label.
+   */
+  controllerId: string;
+  /**
+   * The id used on your modal.
+   */
+  modalId: string;
+  /**
+   * Controls the opening direction of the modal.
+   *
+   * @default "bottom"
+   */
+  openTo?: Direction | undefined;
+};
+
+const {
+  class: className,
+  controllerId,
+  modalId,
+  openTo = "bottom",
+  ...attrs
+} = Astro.props;
+
+if (!Astro.slots.has("label")) throw new MissingSlotError("label");
+if (!Astro.slots.has("modal")) throw new MissingSlotError("modal");
+
+const label = await Astro.slots.render("label", [controllerId]);
+const modal = await Astro.slots.render("modal", [modalId]);
+---
+
+<ap-popover {...attrs} class:list={["popover", `to-${openTo}`, className]}>
+  <input
+    aria-controls={modalId}
+    class="popover-controller"
+    id={controllerId}
+    type="checkbox"
+  />
+  <Fragment set:html={label} />
+  <Fragment set:html={modal} />
+</ap-popover>
+
+<style>
+  .popover {
+    display: grid;
+    position: relative;
+
+    &:where(.to-bottom, .to-top) {
+      --x: -50%;
+      --y: 0;
+    }
+
+    &:where(.to-left, .to-right) {
+      --x: 0;
+      --y: -50%;
+    }
+
+    & > :global(*) {
+      grid-area: 1 / 1;
+
+      &:is(label) {
+        color: var(--color-primary);
+        cursor: pointer;
+        outline-width: var(--border-size-md);
+        transition: all 0.15s linear 0s;
+      }
+
+      &:last-child {
+        contain: layout;
+        position: absolute;
+        overflow-y: auto;
+        z-index: 10;
+        content-visibility: auto;
+        transition: all 0.35s ease-in-out 0s;
+      }
+    }
+  }
+
+  :where(.popover.to-bottom) > :global(*:last-child) {
+    top: 100%;
+    left: 50%;
+    transform-origin: 0% 0%;
+  }
+
+  :where(.popover.to-left) > :global(*:last-child) {
+    top: 50%;
+    right: 100%;
+    transform-origin: 100% 0%;
+  }
+
+  :where(.popover.to-right) > :global(*:last-child) {
+    top: 50%;
+    left: 100%;
+    transform-origin: 0% 0%;
+  }
+
+  :where(.popover.to-top) > :global(*:last-child) {
+    bottom: 100%;
+    left: 50%;
+    transform-origin: 0% 100%;
+  }
+
+  .popover-controller {
+    opacity: 0;
+    cursor: pointer;
+    z-index: -1;
+  }
+
+  :where(.popover-controller:is(:hover, :focus)) + :global(label) {
+    color: var(--color-primary-light);
+  }
+
+  :where(.popover-controller:active) + :global(label) {
+    color: var(--color-primary-dark);
+  }
+
+  :where(.popover-controller:focus) ~ :global(label) {
+    outline-color: var(--color-primary-lighter);
+    outline-style: solid;
+  }
+
+  :where(.popover-controller:not(:checked)) ~ :global(*:last-child) {
+    visibility: hidden;
+    opacity: 0;
+    transform: translate3d(0, 0, 100px) scale(0);
+  }
+
+  :where(.popover-controller:checked) ~ :global(*:last-child) {
+    transform: translate3d(var(--x, 0), var(--y, 0), 0) scale(1);
+  }
+
+  :where(.popover-controller:checked:not(:focus)) ~ :global(label) {
+    outline-color: var(--color-primary-darker);
+    outline-offset: var(--border-size-md);
+    outline-style: solid;
+  }
+</style>
+
+<script>
+  class APPopover extends HTMLElement {
+    #controller: HTMLInputElement | null;
+
+    constructor() {
+      super();
+      this.handleClickOrFocusOutside =
+        this.handleClickOrFocusOutside.bind(this);
+      this.#controller = this.querySelector('input[type="checkbox"]');
+    }
+
+    connectedCallback() {
+      this.ownerDocument.addEventListener(
+        "click",
+        this.handleClickOrFocusOutside,
+      );
+      this.ownerDocument.addEventListener(
+        "focusin",
+        this.handleClickOrFocusOutside,
+      );
+    }
+
+    disconnectedCallback() {
+      this.ownerDocument.removeEventListener(
+        "click",
+        this.handleClickOrFocusOutside,
+      );
+      this.ownerDocument.removeEventListener(
+        "focusin",
+        this.handleClickOrFocusOutside,
+      );
+    }
+
+    #closeModal() {
+      if (this.#controller) this.#controller.checked = false;
+    }
+
+    /**
+     * Handle a click or a focus outside the component.
+     *
+     * @param {FocusEvent | MouseEvent} e - The click/focus event.
+     */
+    handleClickOrFocusOutside(e: FocusEvent | MouseEvent) {
+      if (this.#controller?.checked && !e.composedPath().includes(this)) {
+        this.#closeModal();
+      }
+    }
+  }
+
+  customElements.define("ap-popover", APPopover);
+</script>

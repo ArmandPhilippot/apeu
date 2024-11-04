@@ -1,0 +1,21 @@
+<svg
+   width="48"
+   height="48"
+   viewBox="0 0 48 48"
+   xmlns="http://www.w3.org/2000/svg">
+   <path
+      d="M 24.000736,12.7039 8.74871,23.590494 V 41.66433 H 39.252763 V 23.590494 Z"
+      style="fill:none;stroke:#000000;stroke-width:1.96604;stroke-linecap:round;stroke-linejoin:round;" />
+   <path
+      d="m 19.145431,29.179209 c 0,-3.23687 9.710609,-3.23687 9.710609,0 V 41.66433 h -9.710609 z"
+      style="fill:none;stroke:#000000;stroke-width:1.96604;stroke-linecap:round;stroke-linejoin:round;" />
+   <path
+      d="m 23.363867,34.207943 a 0.64498121,0.6449765 0 0 1 -0.644982,0.644976 0.64498121,0.6449765 0 0 1 -0.644981,-0.644976 0.64498121,0.6449765 0 0 1 0.644981,-0.644977 0.64498121,0.6449765 0 0 1 0.644982,0.644977 z"
+      style="fill:none;stroke:#000000;stroke-width:1.27374;stroke-linecap:round;stroke-linejoin:round" />
+   <path
+      d="m 31.952768,8.7075889 v 3.1953871 l 5.697546,4.711294 V 8.7075889 Z"
+      style="fill:none;stroke:#000000;stroke-width:1.47453;stroke-linecap:round;stroke-linejoin:round" />
+   <path
+      d="M 3.9829956,21.018784 5.946326,25.590109 24.000736,12.7039 42.053675,25.590109 44.017004,21.018784 24.000924,6.3356461 Z"
+      style="fill:none;stroke:#000000;stroke-width:1.96604;stroke-linecap:round;stroke-linejoin:round;" />
+</svg>

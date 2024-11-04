@@ -1,12 +1,15 @@
 ---
 import { Icon } from "astro-icon/components";
-import type { ComponentProps } from "astro/types";
+import type { ComponentProps, HTMLTag, Polymorphic } from "astro/types";
 import type { IconName } from "../../../types/tokens";
+import Label from "../../atoms/label/label.astro";
 import Link from "../../atoms/link/link.astro";
 
-type Props = ComponentProps<typeof Link> & {
+type Props<T extends Extract<HTMLTag, "a" | "label"> = "a"> = Polymorphic<{
+  as: T;
+}> & {
   /**
-   * The nav link icon.
+   * The nav item icon.
    */
   icon?: IconName | null | undefined;
   /**
@@ -22,43 +25,57 @@ type Props = ComponentProps<typeof Link> & {
    */
   isBlock?: boolean | null | undefined;
   /**
-   * Should the nav link be bordered?
+   * Should the nav item be bordered?
    *
    * @default false
    */
   isBordered?: boolean | null | undefined;
+  /**
+   * Should the nav item be rounded?
+   *
+   * @default false
+   */
+  isRounded?: boolean | null | undefined;
 };
 
 const {
+  as = "a",
   class: className,
   icon,
-  iconSize = 28,
+  iconSize = 20,
   isBlock = false,
   isBordered = false,
+  isRounded = false,
   ...attrs
 } = Astro.props;
+const Tag = as === "a" ? Link : Label;
 ---
 
-<Link
+<Tag
   {...attrs}
-  class:list={["nav-link", { block: isBlock, bordered: isBordered }, className]}
+  class:list={[
+    "nav-item",
+    { block: isBlock, bordered: isBordered, rounded: isRounded },
+    className,
+  ]}
 >
   {
     icon ? (
       <Icon
         aria-hidden="true"
-        class="nav-link-icon"
+        class="nav-item-icon"
         name={icon}
         size={iconSize}
       />
     ) : null
   }
   <slot />
-</Link>
+</Tag>
 
 <style>
-  .nav-link {
+  .nav-item {
     border: var(--border-size-sm) solid transparent;
+    color: var(--color-primary);
 
     &:where(.block) {
       display: flex;
@@ -66,17 +83,19 @@ const {
       align-items: center;
       justify-content: center;
       gap: var(--spacing-2xs);
+      min-height: var(--one-px-in-rem) * 54;
       min-width: var(--one-px-in-rem) * 54;
       padding: var(--spacing-2xs);
       font-size: var(--font-size-sm);
       font-weight: var(--font-weight-bold);
       hyphens: auto;
+      outline-width: var(--border-size-md);
       overflow-wrap: anywhere;
       text-decoration: none;
       text-transform: uppercase;
       transition: all 0.15s linear 0s;
 
-      @media screen and (any-pointer: fine) {
+      @media (any-pointer: fine) {
         min-height: var(--one-px-in-rem) * 48;
       }
 
@@ -108,29 +127,30 @@ const {
           bottom left;
         background-repeat: no-repeat;
         background-size:
-          100% var(--border-size-lg),
-          var(--border-size-lg) 100%,
-          100% var(--border-size-lg),
-          var(--border-size-lg) 100%;
+          100% var(--border-size-md),
+          var(--border-size-md) 100%,
+          100% var(--border-size-md),
+          var(--border-size-md) 100%;
         animation: draw-borders 0.7s linear 1 0s;
       }
 
       &:where(:focus-visible) {
-        outline: var(--border-size-lg) solid var(--color-primary-lighter);
-        outline-offset: calc(var(--border-size-lg) * -1);
+        outline-color: var(--color-primary-lighter);
+        outline-style: solid;
       }
     }
 
     &:where(.bordered) {
       border-color: var(--color-primary);
+      outline-offset: calc(var(--border-size-lg) * -1);
     }
 
-    &:where(.block.bordered) {
-      outline-offset: calc(var(--border-size-md) * -1);
+    &:where(.rounded) {
+      border-radius: var(--border-radii-md);
     }
   }
 
-  :global(:where(.nav-link:not(.block))) .nav-link-icon {
+  :global(:where(.nav-item:not(.block))) .nav-item-icon {
     margin-right: var(--spacing-4xs);
     vertical-align: middle;
   }
@@ -143,34 +163,34 @@ const {
         bottom right,
         bottom left;
       background-size:
-        0% var(--border-size-lg),
-        var(--border-size-lg) 0%,
-        0% var(--border-size-lg),
-        var(--border-size-lg) 0%;
+        0% var(--border-size-md),
+        var(--border-size-md) 0%,
+        0% var(--border-size-md),
+        var(--border-size-md) 0%;
     }
 
     25% {
       background-size:
-        0% var(--border-size-lg),
-        var(--border-size-lg) 0%,
-        100% var(--border-size-lg),
-        var(--border-size-lg) 0%;
+        0% var(--border-size-md),
+        var(--border-size-md) 0%,
+        100% var(--border-size-md),
+        var(--border-size-md) 0%;
     }
 
     50% {
       background-size:
-        0% var(--border-size-lg),
-        var(--border-size-lg) 0%,
-        100% var(--border-size-lg),
-        var(--border-size-lg) 100%;
+        0% var(--border-size-md),
+        var(--border-size-md) 0%,
+        100% var(--border-size-md),
+        var(--border-size-md) 100%;
     }
 
     75% {
       background-size:
-        100% var(--border-size-lg),
-        var(--border-size-lg) 0%,
-        100% var(--border-size-lg),
-        var(--border-size-lg) 100%;
+        100% var(--border-size-md),
+        var(--border-size-md) 0%,
+        100% var(--border-size-md),
+        var(--border-size-md) 100%;
     }
 
     100% {
@@ -180,10 +200,10 @@ const {
         bottom right,
         bottom left;
       background-size:
-        100% var(--border-size-lg),
-        var(--border-size-lg) 100%,
-        100% var(--border-size-lg),
-        var(--border-size-lg) 100%;
+        100% var(--border-size-md),
+        var(--border-size-md) 100%,
+        100% var(--border-size-md),
+        var(--border-size-md) 100%;
     }
   }
 </style>

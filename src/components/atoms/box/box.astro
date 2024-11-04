@@ -105,9 +105,13 @@ const {
       box-shadow: var(--shadow-floating-to-top-left);
     }
 
-    &:where(.padded) {
+    &:where(.prose.padded) {
       padding: clamp(var(--spacing-md), 2dvw, var(--spacing-lg))
         clamp(var(--spacing-md), 3dvw, var(--spacing-xl));
+    }
+
+    &:where(.padded:not(.prose)) {
+      padding: clamp(var(--spacing-sm), 1.5dvw, var(--spacing-md));
     }
 
     &:where(.rounded.prose) {

@@ -1,0 +1,201 @@
+---
+import { Icon } from "astro-icon/components";
+import Button from "../../atoms/button/button.astro";
+import Label from "../../atoms/label/label.astro";
+import TextField from "../../atoms/text-field/text-field.astro";
+import type { JSX } from "astro/jsx-runtime";
+
+type Props = JSX.HTMLAttributes & {
+  id: string;
+  /**
+   * Should the form be inlined?
+   *
+   * @default false
+   */
+  isInline?: boolean | null | undefined;
+  /**
+   * The parameter used to define the query in the URL.
+   */
+  queryParam: string;
+  /**
+   * The search results page route.
+   */
+  resultsPage: string;
+};
+
+const {
+  class: className,
+  id,
+  isInline = false,
+  queryParam,
+  resultsPage,
+  ...attrs
+} = Astro.props;
+const fieldId = `${id}-field`;
+
+if (!resultsPage.startsWith("/"))
+  throw new Error("`resultsPage` must be a valid route starting with `/`.");
+---
+
+<ap-search-form
+  {...attrs}
+  class:list={["search-form-wrapper", className]}
+  data-query-param={queryParam}
+  data-results-page={resultsPage}
+  id={id}
+>
+  <form class:list={["search-form", { inlined: isInline }]}>
+    <Label class:list={[{ "sr-only": isInline }]} for={fieldId} slot="label">
+      Search
+    </Label>
+    <TextField
+      class="search-form-field"
+      id={fieldId}
+      required="true"
+      name={fieldId}
+      slot="field"
+      type="search"
+    />
+    <Button
+      class="search-form-btn"
+      kind={isInline ? "neutral" : "primary"}
+      type="submit"
+    >
+      <Icon aria-hidden="true" name="search" size={isInline ? 30 : 25} />
+      <span class:list={[{ "sr-only": isInline }]}>Search</span>
+    </Button>
+  </form>
+</ap-search-form>
+
+<style>
+  .search-form {
+    display: flex;
+    position: relative;
+
+    &:where(:not(.inlined)) {
+      flex-flow: column wrap;
+      gap: var(--spacing-sm);
+    }
+
+    &:where(.inlined) {
+      --btn-size: calc(var(--one-px-in-rem) * 54);
+
+      flex-flow: row wrap;
+    }
+  }
+
+  :where(.search-form.inlined) .search-form-field {
+    flex: 1;
+    min-height: var(--btn-size);
+    padding-inline-end: calc(var(--btn-size) + var(--spacing-2xs));
+  }
+
+  :where(.search-form:not(.inlined)) .search-form-btn {
+    align-self: center;
+  }
+
+  :where(.search-form.inlined) .search-form-btn {
+    width: var(--btn-size);
+    aspect-ratio: 1 / 1;
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-end: 0;
+    border-inline-start: var(--border-size-sm) solid var(--color-border);
+    border-start-end-radius: var(--border-radii-md);
+    border-end-end-radius: var(--border-radii-md);
+    color: var(--color-primary);
+
+    &:focus {
+      outline: var(--border-size-md) solid var(--color-primary-lighter);
+      outline-offset: calc(var(--border-size-sm) * -2);
+    }
+
+    & > :global(svg) {
+      transition: all 0.3s ease-in-out 0s;
+    }
+
+    &:focus,
+    &:hover {
+      & > :global(svg) {
+        transform: rotate(-12deg);
+      }
+    }
+
+    &:active {
+      & > :global(svg) {
+        transform: scale(0.9);
+      }
+    }
+  }
+
+  :where(.search-form.inlined .search-form-field:focus-within)
+    ~ .search-form-btn {
+    border-inline-start-color: var(--color-primary);
+    transform: translateX(calc(var(--one-px-in-rem) * 3))
+      translateY(calc(var(--one-px-in-rem) * 3));
+  }
+</style>
+
+<script>
+  class APSearchForm extends HTMLElement {
+    #query: string | null = null;
+    #queryParam: string | null | undefined = null;
+    #resultsPage: string | null | undefined = null;
+
+    constructor() {
+      super();
+      this.handleChange = this.handleChange.bind(this);
+      this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    connectedCallback() {
+      this.#queryParam = this.dataset.queryParam;
+      this.#resultsPage = this.dataset.resultsPage;
+      this.#query = this.getQueryFromInput();
+
+      this.addEventListener("change", this.handleChange);
+      this.addEventListener("submit", this.handleSubmit);
+    }
+
+    disconnectedCallback() {
+      this.removeEventListener("change", this.handleChange);
+      this.removeEventListener("submit", this.handleSubmit);
+    }
+
+    getQueryFromInput(): string {
+      const input = this.querySelector("input");
+
+      return input ? input.value : "";
+    }
+
+    /**
+     * Handle an update in the input.
+     *
+     * @param {Event} e - The change event.
+     */
+    handleChange(e: Event) {
+      if (!(e.target instanceof HTMLInputElement)) return;
+
+      this.#query = e.target.value;
+    }
+
+    #getResultsRoute(query: string) {
+      return `${location.origin}${this.#resultsPage}?${this.#queryParam}=${query}`;
+    }
+
+    /**
+     * Handle form submit.
+     *
+     * @param {SubmitEvent} e - The submit event
+     */
+    handleSubmit(e: SubmitEvent) {
+      e.preventDefault();
+
+      if (!this.#query) return;
+
+      window.location.assign(this.#getResultsRoute(this.#query));
+    }
+  }
+
+  customElements.define("ap-search-form", APSearchForm);
+</script>

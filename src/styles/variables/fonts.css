@@ -6,6 +6,7 @@
   --font-weight-bold: 600;
   --line-height: 1.618;
   --font-size-ratio: 1.125;
+  --font-size-xs: calc(var(--font-size-md) / pow(var(--font-size-ratio), 2));
   --font-size-sm: calc(var(--font-size-md) / var(--font-size-ratio));
   --font-size-md: clamp(
     calc(var(--one-px-in-rem) * 16),

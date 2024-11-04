@@ -13,6 +13,7 @@ import SkipTo from "../../molecules/skip-to/skip-to.astro";
 import Navbar from "../../organisms/navbar/navbar.astro";
 import SearchForm from "../../organisms/search-form/search-form.astro";
 import MainNav from "../../organisms/main-nav/main-nav.astro";
+import SettingsForm from "../../organisms/settings-form/settings-form.astro";
 
 type Props = Pick<ComponentProps<typeof Head>, "seo"> &
   Omit<HTMLAttributes<"div">, "id">;
@@ -69,7 +70,7 @@ const footerLinks = [
             resultsPage="/search"
             slot="search"
           />
-          <div slot="settings">Settings form</div>
+          <SettingsForm id="site-settings" slot="settings" />
         </Navbar>
       </header>
       <div {...attrs} class:list={["site-body", className]} id="contents">

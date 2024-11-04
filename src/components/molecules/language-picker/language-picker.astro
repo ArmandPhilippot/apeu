@@ -1,0 +1,235 @@
+---
+import { Icon } from "astro-icon/components";
+import type { ComponentProps } from "astro/types";
+import { useI18n } from "../../../utils/i18n";
+import Fieldset from "../../atoms/fieldset/fieldset.astro";
+import Legend from "../../atoms/fieldset/legend.astro";
+import Label from "../../atoms/label/label.astro";
+import Link from "../../atoms/link/link.astro";
+import ListItem from "../../atoms/list/list-item.astro";
+import List from "../../atoms/list/list.astro";
+
+type Props = ComponentProps<typeof Fieldset> & {
+  /**
+   * A locale key defined in `languages`
+   */
+  current: string;
+  /**
+   * The language picker id.
+   */
+  id: string;
+  /**
+   * A legend to display before the language picker.
+   */
+  label: string;
+  /**
+   * An object with the locale as key and a readable name as value.
+   */
+  languages: Record<string, string>;
+};
+
+const {
+  class: className,
+  current,
+  id,
+  label,
+  languages,
+  ...attrs
+} = Astro.props;
+const currentLanguage = languages[current];
+
+if (!currentLanguage)
+  throw new Error(
+    "The value for `current` does not match any key in `languages`.",
+  );
+
+const { route, translate } = useI18n(Astro.currentLocale);
+const controllerId = `${id}-controller`;
+---
+
+<Fieldset {...attrs} class:list={["language-picker", className]} id={id}>
+  <Legend slot="legend">{label}</Legend>
+  <ap-language-picker class="language-picker-dropdown">
+    <input
+      class="language-picker-controller"
+      id={controllerId}
+      type="checkbox"
+    />
+    <Label
+      aria-label={translate("language.picker.a11y", {
+        language: currentLanguage,
+      })}
+      class="language-picker-label"
+      for={controllerId}
+    >
+      <Icon aria-hidden name="locale" size={28} />
+      {currentLanguage}
+    </Label>
+    <List class="language-picker-list" hideMarker>
+      {
+        Object.entries(languages).map(([locale, label]) => (
+          <ListItem class="language-picker-item">
+            <Link
+              class="language-picker-link"
+              href={route("home", locale)}
+              lang={locale}
+            >
+              {label}
+            </Link>
+          </ListItem>
+        ))
+      }
+    </List>
+  </ap-language-picker>
+</Fieldset>
+
+<style>
+  .language-picker {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    gap: var(--spacing-2xs);
+
+    & > :global(legend) {
+      display: contents;
+    }
+  }
+
+  .language-picker-dropdown {
+    display: block;
+    width: fit-content;
+    position: relative;
+  }
+
+  .language-picker-controller {
+    opacity: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    cursor: pointer;
+    transform: translateX(-50%) translateY(-50%);
+    z-index: -1;
+  }
+
+  .language-picker-label {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    gap: var(--spacing-3xs);
+    padding: var(--spacing-xs);
+    background: var(--color-regular-dark);
+    border: var(--border-size-sm) solid var(--color-border);
+    border-radius: var(--border-radii-md);
+    box-shadow: var(--shadow-raised-to-top-left);
+
+    @media (any-pointer: fine) {
+      padding: var(--spacing-3xs) var(--spacing-xs);
+    }
+  }
+
+  :global(:where(.language-picker-controller:focus)) ~ .language-picker-label,
+  .language-picker-label:hover {
+    outline: var(--color-primary-lighter) solid var(--border-size-md);
+  }
+
+  .language-picker-list {
+    min-width: 100%;
+    margin: 0;
+    position: absolute;
+    top: calc(100% + (var(--spacing-4xs) / 2));
+    left: 50%;
+    border: var(--border-size-sm) solid var(--color-border);
+    border-radius: var(--border-radii-md);
+    box-shadow: var(--shadow-elevated-to-top-center);
+    transition: all 0.3s ease-out 0s;
+  }
+
+  :global(:where(.language-picker-controller:not(:checked)))
+    ~ .language-picker-list {
+    transform: rotateX(-90deg) translate3d(-50%, 0, 0);
+    transform-origin: top center;
+    content-visibility: hidden;
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  :global(:where(.language-picker-controller:checked)) ~ .language-picker-list {
+    opacity: 1;
+    visibility: visible;
+    content-visibility: visible;
+    z-index: 10;
+    background: var(--color-regular-light);
+    transform: rotateX(0) translate3d(-50%, 0, 0);
+  }
+
+  .language-picker-link {
+    display: flex;
+    place-items: center;
+    place-content: center;
+    min-height: calc(var(--one-px-in-rem) * 54);
+    padding: var(--spacing-3xs) var(--spacing-sm);
+    white-space: nowrap;
+
+    &:focus-visible {
+      border-radius: var(--border-radii-md);
+      outline-offset: calc(var(--border-size-sm) * -1);
+    }
+  }
+</style>
+
+<script>
+  class APLanguagePicker extends HTMLElement {
+    #controller: HTMLInputElement | null | undefined = undefined;
+
+    constructor() {
+      super();
+      this.handleClickOrFocusOutside =
+        this.handleClickOrFocusOutside.bind(this);
+    }
+
+    connectedCallback() {
+      this.#controller = this.querySelector<HTMLInputElement>(
+        'input[type="checkbox"]',
+      );
+
+      this.ownerDocument.addEventListener(
+        "click",
+        this.handleClickOrFocusOutside,
+      );
+      this.ownerDocument.addEventListener(
+        "focusin",
+        this.handleClickOrFocusOutside,
+      );
+    }
+
+    disconnectedCallback() {
+      this.ownerDocument.removeEventListener(
+        "click",
+        this.handleClickOrFocusOutside,
+      );
+      this.ownerDocument.removeEventListener(
+        "focusin",
+        this.handleClickOrFocusOutside,
+      );
+    }
+
+    #closeMenu() {
+      if (!this.#controller?.checked) return;
+
+      this.#controller.checked = false;
+    }
+
+    /**
+     * Handle a click or a focus outside the component.
+     *
+     * @param {FocusEvent | MouseEvent} e - The event triggered on click/focus.
+     */
+    handleClickOrFocusOutside(e: FocusEvent | MouseEvent) {
+      if (this.#controller?.checked && !e.composedPath().includes(this)) {
+        this.#closeMenu();
+      }
+    }
+  }
+
+  customElements.define("ap-language-picker", APLanguagePicker);
+</script>

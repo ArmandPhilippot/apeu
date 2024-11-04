@@ -13,6 +13,7 @@
     "form.search.label": "Search:",
     "form.search.btn": "Search",
     "form.settings.label.theme.website": "Website theme:",
+    "language.picker.a11y": "Select a language, current: {language}",
     "license.title": "Contents are under CC BY SA license.",
     "nav.label.breadcrumb": "Breadcrumb",
     "nav.label.primary": "Primary",

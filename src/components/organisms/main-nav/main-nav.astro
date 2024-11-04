@@ -1,0 +1,67 @@
+---
+import type { ComponentProps } from "astro/types";
+import NavItem from "../../molecules/nav-item/nav-item.astro";
+import NavList from "../../molecules/nav-list/nav-list.astro";
+
+type Props = Omit<ComponentProps<typeof NavList>, "children" | "hideMarker">;
+
+const { class: className, items, ...attrs } = Astro.props;
+---
+
+<NavList
+  {...attrs}
+  class:list={["main-nav", className]}
+  hideMarker
+  items={items}
+>
+  {
+    ({ label, url, ...item }) => (
+      <NavItem
+        {...item}
+        aria-current={url === Astro.url.pathname ? "page" : undefined}
+        class="main-nav-item"
+        href={url}
+        isBlock
+      >
+        {label}
+      </NavItem>
+    )
+  }
+</NavList>
+
+<style>
+  .main-nav {
+    &:where(:not(:has(> :only-child))) {
+      column-count: 2;
+      column-gap: 0;
+      column-rule: var(--border-size-sm) solid var(--color-border-darker);
+
+      @media (width >= 1024px) {
+        column-count: unset;
+      }
+    }
+
+    & > :global(*:nth-child(odd):last-child) {
+      border-block-end: var(--border-size-sm) solid var(--color-border-darker);
+
+      @media (width >= 1024px) {
+        border-block-end: none;
+      }
+    }
+  }
+
+  .main-nav-item {
+    flex-flow: row wrap;
+    justify-content: start;
+    min-height: calc(var(--one-px-in-rem) * 54);
+    padding: var(--spacing-xs) var(--spacing-2xs);
+    border-block-start: var(--border-size-sm) solid var(--color-border-darker);
+    break-inside: avoid;
+
+    @media (width >= 1024px) {
+      padding-inline: clamp(var(--spacing-xs), 1dvw, var(--spacing-md));
+      border-block: none;
+      border-radius: var(--border-radii-lg);
+    }
+  }
+</style>

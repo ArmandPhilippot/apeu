@@ -1,12 +1,13 @@
 ---
 import type { ComponentProps, HTMLAttributes } from "astro/types";
-import { useI18n } from "../../../utils/i18n";
+import { availableNamedLanguages, useI18n } from "../../../utils/i18n";
+import LanguagePicker from "../../molecules/language-picker/language-picker.astro";
 import Toggle from "../../molecules/toggle/toggle.astro";
 
 type Props = HTMLAttributes<"form">;
 
 const { class: className, id, ...attrs } = Astro.props;
-const { translate } = useI18n(Astro.currentLocale);
+const { locale, translate } = useI18n(Astro.currentLocale);
 const idPrefix = id ? `${id}-` : "";
 const themes = [
   {
@@ -28,10 +29,47 @@ const themes = [
 ---
 
 <form {...attrs} class:list={["settings-form", className]} id={id}>
+  {
+    Object.keys(availableNamedLanguages).length > 1 ? (
+      <LanguagePicker
+        class="settings-form-language"
+        current={locale}
+        id={`${id}-language-picker`}
+        label={translate("form.settings.label.language")}
+        languages={availableNamedLanguages}
+      />
+    ) : null
+  }
   <Toggle
+    class="settings-form-theme"
     groupName={`${idPrefix}theme`}
     items={themes}
     label={translate("form.settings.label.theme.website")}
     value="auto"
   />
 </form>
+
+<style>
+  .settings-form {
+    display: flex;
+    flex-flow: column;
+
+    @media (width > 480px) {
+      display: grid;
+      grid-template-columns: max-content minmax(0, 1fr);
+      grid-template-rows: auto;
+      gap: var(--spacing-md) clamp(var(--spacing-xs), 1dvw, var(--spacing-md));
+      align-items: center;
+      align-content: start;
+      white-space: nowrap;
+
+      & > :global(*) {
+        display: contents;
+      }
+    }
+  }
+
+  .settings-form-theme {
+    column-gap: var(--spacing-2xs);
+  }
+</style>

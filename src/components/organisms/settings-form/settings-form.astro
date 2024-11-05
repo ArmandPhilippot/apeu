@@ -1,31 +1,13 @@
 ---
-import type { ComponentProps, HTMLAttributes } from "astro/types";
+import type { HTMLAttributes } from "astro/types";
 import { availableNamedLanguages, useI18n } from "../../../utils/i18n";
 import LanguagePicker from "../../molecules/language-picker/language-picker.astro";
-import Toggle from "../../molecules/toggle/toggle.astro";
+import ThemeSetting from "../../molecules/theme-setting/theme-setting.astro";
 
 type Props = HTMLAttributes<"form">;
 
 const { class: className, id, ...attrs } = Astro.props;
 const { locale, translate } = useI18n(Astro.currentLocale);
-const idPrefix = id ? `${id}-` : "";
-const themes = [
-  {
-    id: `${idPrefix}auto`,
-    label: translate("theme.label.auto"),
-    value: "auto",
-  },
-  {
-    id: `${idPrefix}dark`,
-    label: translate("theme.label.dark"),
-    value: "dark",
-  },
-  {
-    id: `${idPrefix}light`,
-    label: translate("theme.label.light"),
-    value: "light",
-  },
-] satisfies ComponentProps<typeof Toggle>["items"];
 ---
 
 <form {...attrs} class:list={["settings-form", className]} id={id}>
@@ -40,12 +22,11 @@ const themes = [
       />
     ) : null
   }
-  <Toggle
+  <ThemeSetting
     class="settings-form-theme"
-    groupName={`${idPrefix}theme`}
-    items={themes}
+    isInline
     label={translate("form.settings.label.theme.website")}
-    value="auto"
+    setting="theme"
   />
 </form>
 

@@ -3,6 +3,7 @@ astro
 astrojs
 commitlint
 globby
+nanostores
 pagefind
 stylelint
 tsconfigs

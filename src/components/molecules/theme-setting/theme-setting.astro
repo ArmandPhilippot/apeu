@@ -1,0 +1,175 @@
+---
+import type { JSX } from "astro/jsx-runtime";
+import type { ComponentProps } from "astro/types";
+import {
+  THEME_DEFAULT,
+  type Settings,
+} from "../../../services/stores/settings";
+import type { Theme } from "../../../types/tokens";
+import { useI18n } from "../../../utils/i18n";
+import Toggle from "../toggle/toggle.astro";
+
+type Props = JSX.HTMLAttributes & {
+  /**
+   * Should the legend be inlined with the options?
+   *
+   * @default false
+   */
+  isInline?: boolean | null | undefined;
+  /**
+   * The options legend.
+   */
+  label: string;
+  /**
+   * The controlled setting key.
+   */
+  setting: keyof Settings;
+};
+
+const {
+  class: className,
+  id,
+  isInline = false,
+  label,
+  setting,
+  ...attrs
+} = Astro.props;
+const { translate } = useI18n(Astro.currentLocale);
+const idPrefix = id ? `${id}-` : "";
+const toggleThemes = [
+  {
+    id: `${idPrefix}auto`,
+    label: translate("theme.label.auto"),
+    value: "auto" satisfies Theme,
+  },
+  {
+    id: `${idPrefix}dark`,
+    label: translate("theme.label.dark"),
+    value: "dark" satisfies Theme,
+  },
+  {
+    id: `${idPrefix}light`,
+    label: translate("theme.label.light"),
+    value: "light" satisfies Theme,
+  },
+] satisfies ComponentProps<typeof Toggle>["items"];
+---
+
+<ap-theme-setting
+  {...attrs}
+  class:list={["theme-setting", className]}
+  data-setting={setting}
+  id={id}
+>
+  <Toggle
+    groupName={`${idPrefix}${setting}`}
+    isInline={isInline}
+    items={toggleThemes}
+    label={label}
+    value={THEME_DEFAULT}
+  />
+</ap-theme-setting>
+
+<style>
+  .theme-setting {
+    display: block;
+  }
+</style>
+
+<script>
+  import {
+    isValidSettingsKey,
+    settings,
+    THEME_DEFAULT,
+    THEME_SETTING_KEY,
+    type Settings,
+  } from "../../../services/stores/settings";
+  import type { Theme } from "../../../types/tokens";
+  import { isValidTheme } from "../../../utils/themes";
+
+  class APThemeSetting extends HTMLElement {
+    #isSwitch = false;
+    #settingKey: keyof Settings = THEME_SETTING_KEY;
+    #switchBtn: HTMLButtonElement | null = null;
+    #theme: Theme = THEME_DEFAULT;
+
+    constructor() {
+      super();
+      this.handleUpdate = this.handleUpdate.bind(this);
+      this.listenSettings = this.listenSettings.bind(this);
+    }
+
+    connectedCallback() {
+      this.#isSwitch = this.dataset.variant === "switch";
+      this.#switchBtn = this.querySelector("button");
+      this.#theme = settings.get().theme;
+
+      if (isValidSettingsKey(this.dataset.setting))
+        this.#settingKey = this.dataset.setting;
+
+      settings.subscribe(this.listenSettings);
+
+      if (this.#isSwitch) {
+        this.#switchBtn?.addEventListener("click", this.handleUpdate);
+      } else {
+        this.addEventListener("change", this.handleUpdate);
+      }
+    }
+
+    disconnectedCallback() {
+      if (this.#isSwitch) {
+        this.#switchBtn?.removeEventListener("click", this.handleUpdate);
+      } else {
+        this.removeEventListener("change", this.handleUpdate);
+      }
+    }
+
+    #isCurrentTheme(theme: Theme): boolean {
+      return theme === this.#theme;
+    }
+
+    #updateSelectedTheme(settings: Readonly<Settings>) {
+      const newOption = this.querySelector<HTMLInputElement>(
+        `input[value="${settings[this.#settingKey]}"]`,
+      );
+
+      if (newOption) newOption.checked = true;
+    }
+
+    listenSettings(
+      newSettings: Readonly<Settings>,
+      _oldSettings: Readonly<Settings> | undefined,
+      changedKey: keyof Settings | undefined,
+    ) {
+      const newTheme = newSettings[this.#settingKey];
+      const isCurrentSetting = changedKey === this.#settingKey;
+
+      if (isCurrentSetting && this.#isCurrentTheme(newTheme)) return;
+
+      this.#theme = newTheme;
+      this.#updateSelectedTheme(newSettings);
+    }
+
+    #getSelectedToggleTheme(option: HTMLInputElement): Theme | null {
+      if (isValidTheme(option.value)) return option.value;
+      return null;
+    }
+
+    #getNewThemeFromEvent(e: Event): Theme | null {
+      if (e.target instanceof HTMLInputElement) {
+        return this.#getSelectedToggleTheme(e.target);
+      }
+      return null;
+    }
+
+    handleUpdate(e: Event) {
+      e.stopImmediatePropagation();
+      const newTheme = this.#getNewThemeFromEvent(e);
+
+      if (newTheme && !this.#isCurrentTheme(newTheme))
+        settings.setKey(this.#settingKey, newTheme);
+    }
+  }
+
+  customElements.define("ap-theme-setting", APThemeSetting);
+</script>

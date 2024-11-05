@@ -8,6 +8,7 @@ export const COMPONENT_KINDS = [
 export const CONFIG = {
   BRAND: "Armand Philippot",
   CREATION_YEAR: 2024,
+  HOST: "armand.philippot.eu",
   LANGUAGES: {
     AVAILABLE: ["en"],
     DEFAULT: "en",

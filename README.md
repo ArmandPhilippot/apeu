@@ -104,6 +104,10 @@ There are some caveats in dev mode:
 - If you change the Pagefind config (like adding data attributes to filter the contents), the index will not be automatically rebuilt. You need to perform another build and to execute `pnpm dev` again.
 - The indexed images use the built URLs (the ones processed by Astro) so they can't be displayed in dev environment (so for now, I decided to deactivated them).
 
+### Dark and Light themes
+
+You can choose to use a dark theme or light theme while browsing the website. You can also choose to set the theme as `auto`. In this case, the website theme will be updated according to your operating system preferences. This is especially useful when you want to change the theme depending on the time of day.
+
 ## Development
 
 Before starting, please follow the instructions in [Setup](#setup).

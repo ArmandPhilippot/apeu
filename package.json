@@ -45,11 +45,13 @@
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
+    "@nanostores/persistent": "^0.10.2",
     "@pagefind/default-ui": "^1.1.1",
     "astro": "^4.16.7",
     "astro-icon": "^1.1.1",
     "globby": "^14.0.2",
     "modern-normalize": "^3.0.1",
+    "nanostores": "^0.11.3",
     "pagefind": "^1.1.1",
     "sirv": "^3.0.0",
     "slash": "^5.1.0",

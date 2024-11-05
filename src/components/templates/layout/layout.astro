@@ -55,6 +55,18 @@ const topId = translate("anchor.site.top");
       crossorigin
     />
     <slot name="head" />
+    <script is:inline>
+      !(function () {
+        const e = localStorage.getItem("settings:theme"),
+          t = "string" == typeof e ? JSON.parse(e) : void 0,
+          o = window.matchMedia("(prefers-color-scheme: dark)").matches
+            ? "dark"
+            : "light",
+          c = e && ["dark", "light"].includes(t) ? t : o;
+        document.documentElement.setAttribute("data-theme", c),
+          (document.documentElement.style.colorScheme = c);
+      })();
+    </script>
     <noscript>
       <style>
         .js-only {
@@ -326,11 +338,22 @@ const topId = translate("anchor.site.top");
 </style>
 
 <script>
+  import {
+    settings,
+    THEME_SETTING_KEY,
+    type Settings,
+  } from "../../../services/stores/settings";
+  import type { Theme } from "../../../types/tokens";
+  import { resolveCurrentColorScheme } from "../../../utils/themes";
+
   class APWebsite extends HTMLElement {
     #backToTopBtn: HTMLAnchorElement | null = null;
 
     constructor() {
       super();
+      this.handlePreferDarkSchemeChange =
+        this.handlePreferDarkSchemeChange.bind(this);
+      this.listenSettings = this.listenSettings.bind(this);
       this.updateBackToTopBtnVisibility =
         this.updateBackToTopBtnVisibility.bind(this);
     }
@@ -340,10 +363,18 @@ const topId = translate("anchor.site.top");
 
       this.updateBackToTopBtnVisibility();
       window.addEventListener("scroll", this.updateBackToTopBtnVisibility);
+      window
+        .matchMedia("(prefers-color-scheme: dark)")
+        .addEventListener("change", this.handlePreferDarkSchemeChange);
+
+      settings.subscribe(this.listenSettings);
     }
 
     disconnectedCallback() {
       window.removeEventListener("scroll", this.updateBackToTopBtnVisibility);
+      window
+        .matchMedia("(prefers-color-scheme: dark)")
+        .removeEventListener("change", this.handlePreferDarkSchemeChange);
     }
 
     hideEl(el: HTMLElement) {
@@ -363,6 +394,33 @@ const topId = translate("anchor.site.top");
 
       if (window.scrollY >= breakpoint) this.showEl(this.#backToTopBtn);
       else this.hideEl(this.#backToTopBtn);
+    }
+
+    #updateThemeAttrsOnDocument(theme: Theme, key: keyof Settings) {
+      const colorScheme = resolveCurrentColorScheme(theme);
+
+      window.document.documentElement.setAttribute(`data-${key}`, colorScheme);
+
+      if (key === THEME_SETTING_KEY)
+        window.document.documentElement.style.colorScheme = colorScheme;
+    }
+
+    listenSettings(
+      newSettings: Readonly<Settings>,
+      _oldSettings: Readonly<Settings> | undefined,
+      changedKey: keyof Settings | undefined,
+    ): void {
+      if (!changedKey || typeof window === "undefined") return;
+
+      this.#updateThemeAttrsOnDocument(newSettings[changedKey], changedKey);
+    }
+
+    handlePreferDarkSchemeChange(e: MediaQueryListEvent) {
+      const currentSettings = settings.get();
+      const resolvedTheme = e.matches ? "dark" : "light";
+
+      if (currentSettings.theme === "auto")
+        this.#updateThemeAttrsOnDocument(resolvedTheme, THEME_SETTING_KEY);
     }
   }
 

@@ -19,3 +19,5 @@ export type IconName =
   | "home"
   | "locale"
   | "search";
+
+export type Theme = "auto" | "dark" | "light";

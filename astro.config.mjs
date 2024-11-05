@@ -1,15 +1,20 @@
 // @ts-check
+import node from "@astrojs/node";
 import icon from "astro-icon";
 import { defineConfig } from "astro/config";
 import { componentsStories } from "./src/lib/astro/integrations/components-stories";
 import { devOnlyPages } from "./src/lib/astro/integrations/dev-only-pages";
 import { pagefind } from "./src/lib/astro/integrations/pagefind";
+import { CONFIG } from "./src/utils/constants";
 
 // https://astro.build/config
 export default defineConfig({
+  adapter: node({
+    mode: "standalone",
+  }),
   i18n: {
-    defaultLocale: "en",
-    locales: ["en"],
+    defaultLocale: CONFIG.LANGUAGES.DEFAULT,
+    locales: [...CONFIG.LANGUAGES.AVAILABLE],
   },
   integrations: [
     componentsStories({
@@ -22,6 +27,8 @@ export default defineConfig({
     }),
     pagefind(),
   ],
+  output: "hybrid",
+  site: `https://${CONFIG.HOST}`,
   vite: {
     server: {
       watch: {

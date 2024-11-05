@@ -36,19 +36,20 @@ const {
 } = Astro.props;
 const { translate } = useI18n(Astro.currentLocale);
 const idPrefix = id ? `${id}-` : "";
+const settingPrefix = `${setting}-`;
 const toggleThemes = [
   {
-    id: `${idPrefix}auto`,
+    id: `${idPrefix}${settingPrefix}auto`,
     label: translate("theme.label.auto"),
     value: "auto" satisfies Theme,
   },
   {
-    id: `${idPrefix}dark`,
+    id: `${idPrefix}${settingPrefix}dark`,
     label: translate("theme.label.dark"),
     value: "dark" satisfies Theme,
   },
   {
-    id: `${idPrefix}light`,
+    id: `${idPrefix}${settingPrefix}light`,
     label: translate("theme.label.light"),
     value: "light" satisfies Theme,
   },

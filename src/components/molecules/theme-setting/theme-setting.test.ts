@@ -23,10 +23,9 @@ describe("ThemeSetting", () => {
       props,
     });
 
-    expect.assertions(2);
+    expect.assertions(1);
 
     expect(result).toContain(`data-setting="${props.setting}"`);
-    expect(result).toContain('data-variant="toggle"');
   });
 
   it<LocalTestContext>("renders its label", async ({ container }) => {

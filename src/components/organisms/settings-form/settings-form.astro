@@ -24,6 +24,7 @@ const { locale, translate } = useI18n(Astro.currentLocale);
   }
   <ThemeSetting
     class="settings-form-theme"
+    id={`${id}-theme`}
     isInline
     label={translate("form.settings.label.theme.website")}
     setting="theme"

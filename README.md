@@ -6,6 +6,8 @@ The source code of [my personal website](https://armand.philippot.eu).
 
 1. Clone the repository.
 2. Install the dependencies.
+3. Create an `.env` file and fill it with your own configuration based on `.env.example` placeholders
+4. (Recommended) To enable search feature you'll need to perform a first build of the website, so run `pnpm run build`.
 
 ## Features
 
@@ -94,6 +96,18 @@ All UI strings are stored as a key/value pair in a JSON file located in `src/tra
 
 Then each templates use some methods to translate those messages in the current locale. It also supports pluralization and route localization.
 
+### Mailer
+
+This project uses [Nodemailer](https://nodemailer.com/) to allow sending emails with the contact form (through an API route). Make sure to configure your SMTP options using a `.env` file.
+
+The easiest way to get started is:
+
+1. `cp .env.example .env`
+2. Replace the placeholders in `.env` with your own configuration
+
+> [!NOTE]
+> If you want to test sending emails from `localhost` using your own mail server, you might need to add some permissions in your firewall.
+
 ### Search
 
 The search is powered by [Pagefind](https://pagefind.app/), a fully static search library. It needs to index the contents in advance to be able to work.
@@ -130,6 +144,7 @@ Before starting, please follow the instructions in [Setup](#setup).
 │   │   │   ├── components/
 │   │   │   ├── tokens/
 │   │   │   └── index.astro
+│   │   ├── api/
 │   │   ├── index.astro
 │   │   └── search.astro
 │   ├── styles/

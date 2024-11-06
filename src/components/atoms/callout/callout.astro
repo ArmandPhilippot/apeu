@@ -3,19 +3,21 @@ import { Icon } from "astro-icon/components";
 import type { HTMLAttributes } from "astro/types";
 import type { CalloutType } from "../../../types/tokens";
 import { useI18n } from "../../../utils/i18n";
+import { isString } from "../../../utils/type-checks";
 
 type Props = HTMLAttributes<"div"> & {
   label?: string | null | undefined;
   role?: "alert" | "note" | "status" | undefined;
-  type: CalloutType;
+  type?: CalloutType;
 };
 
 const {
   "aria-label": ariaLabel,
   class: className,
+  "data-type": dataType,
   label,
   role = "note",
-  type,
+  type = "info",
   ...attrs
 } = Astro.props;
 const { translate } = useI18n(Astro.currentLocale);
@@ -28,12 +30,19 @@ const defaultLabel = {
   warning: translate("callout.label.warning"),
 } satisfies Record<CalloutType, string>;
 const heading = label || defaultLabel[type];
+
+const isValidCalloutType = (value: unknown) => {
+  if (!isString(value)) return false;
+
+  return Object.keys(defaultLabel).includes(value);
+};
 ---
 
 <div
   {...attrs}
   aria-label={ariaLabel ?? heading}
-  class:list={["callout", type, className]}
+  class:list={["callout", className]}
+  data-type={dataType && isValidCalloutType(dataType) ? dataType : type}
   role={role}
 >
   <div aria-hidden={!ariaLabel ? "true" : "false"} class="callout-heading">
@@ -50,37 +59,37 @@ const heading = label || defaultLabel[type];
     border-inline-start-width: var(--border-size-xl);
     border-radius: var(--border-radii-md);
 
-    &:where(.critical) {
+    &:where([data-type="critical"]) {
       background-color: var(--color-critical-subtle);
       border-color: var(--color-critical);
       color: var(--color-critical-faded);
     }
 
-    &:where(.discovery) {
+    &:where([data-type="discovery"]) {
       background-color: var(--color-discovery-subtle);
       border-color: var(--color-discovery);
       color: var(--color-discovery-faded);
     }
 
-    &:where(.idea) {
+    &:where([data-type="idea"]) {
       background-color: var(--color-idea-subtle);
       border-color: var(--color-idea);
       color: var(--color-idea-faded);
     }
 
-    &:where(.info) {
+    &:where([data-type="info"]) {
       background-color: var(--color-info-subtle);
       border-color: var(--color-info);
       color: var(--color-info-faded);
     }
 
-    &:where(.success) {
+    &:where([data-type="success"]) {
       background-color: var(--color-success-subtle);
       border-color: var(--color-success);
       color: var(--color-success-faded);
     }
 
-    &:where(.warning) {
+    &:where([data-type="warning"]) {
       background-color: var(--color-warning-subtle);
       border-color: var(--color-warning);
       color: var(--color-warning-faded);

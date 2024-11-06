@@ -12,6 +12,22 @@ describe("Callout", () => {
     context.container = await AstroContainer.create();
   });
 
+  it<LocalTestContext>("can render a callout of type info by default", async ({
+    container,
+  }) => {
+    const props = {} satisfies ComponentProps<typeof Callout>;
+    const body = "pariatur omnis adipisci";
+    const result = await container.renderToString(Callout, {
+      props,
+      slots: { default: body },
+    });
+
+    expect.assertions(2);
+
+    expect(result).toContain(`data-type="info"`);
+    expect(result).toContain(body);
+  });
+
   it<LocalTestContext>("can render a critical callout", async ({
     container,
   }) => {
@@ -26,7 +42,7 @@ describe("Callout", () => {
 
     expect.assertions(2);
 
-    expect(result).toContain(props.type);
+    expect(result).toContain(`data-type="${props.type}"`);
     expect(result).toContain(body);
   });
 
@@ -44,7 +60,7 @@ describe("Callout", () => {
 
     expect.assertions(2);
 
-    expect(result).toContain(props.type);
+    expect(result).toContain(`data-type="${props.type}"`);
     expect(result).toContain(body);
   });
 
@@ -60,7 +76,7 @@ describe("Callout", () => {
 
     expect.assertions(2);
 
-    expect(result).toContain(props.type);
+    expect(result).toContain(`data-type="${props.type}"`);
     expect(result).toContain(body);
   });
 
@@ -76,7 +92,7 @@ describe("Callout", () => {
 
     expect.assertions(2);
 
-    expect(result).toContain(props.type);
+    expect(result).toContain(`data-type="${props.type}"`);
     expect(result).toContain(body);
   });
 
@@ -94,7 +110,7 @@ describe("Callout", () => {
 
     expect.assertions(2);
 
-    expect(result).toContain(props.type);
+    expect(result).toContain(`data-type="${props.type}"`);
     expect(result).toContain(body);
   });
 
@@ -112,7 +128,61 @@ describe("Callout", () => {
 
     expect.assertions(2);
 
-    expect(result).toContain(props.type);
+    expect(result).toContain(`data-type="${props.type}"`);
+    expect(result).toContain(body);
+  });
+
+  it<LocalTestContext>("can render a critical callout using a data attribute", async ({
+    container,
+  }) => {
+    const props = {
+      "data-type": "critical",
+    } satisfies ComponentProps<typeof Callout>;
+    const body = "pariatur omnis adipisci";
+    const result = await container.renderToString(Callout, {
+      props,
+      slots: { default: body },
+    });
+
+    expect.assertions(2);
+
+    expect(result).toContain(`data-type="${props["data-type"]}"`);
+    expect(result).toContain(body);
+  });
+
+  it<LocalTestContext>("uses the default type when the data attribute is not a string", async ({
+    container,
+  }) => {
+    const props = {
+      "data-type": 42,
+    } satisfies ComponentProps<typeof Callout>;
+    const body = "pariatur omnis adipisci";
+    const result = await container.renderToString(Callout, {
+      props,
+      slots: { default: body },
+    });
+
+    expect.assertions(2);
+
+    expect(result).toContain(`data-type="info"`);
+    expect(result).toContain(body);
+  });
+
+  it<LocalTestContext>("uses the default type when the data attribute is an invalid string", async ({
+    container,
+  }) => {
+    const props = {
+      "data-type": "foo",
+    } satisfies ComponentProps<typeof Callout>;
+    const body = "pariatur omnis adipisci";
+    const result = await container.renderToString(Callout, {
+      props,
+      slots: { default: body },
+    });
+
+    expect.assertions(2);
+
+    expect(result).toContain(`data-type="info"`);
     expect(result).toContain(body);
   });
 
@@ -134,7 +204,7 @@ describe("Callout", () => {
     expect(result).toContain('<div aria-hidden="true"');
   });
 
-  it<LocalTestContext>("can use a aria label", async ({ container }) => {
+  it<LocalTestContext>("can use an aria label", async ({ container }) => {
     const props = {
       "aria-label": "officiis cum adipisci",
       label: "vel minus iste",

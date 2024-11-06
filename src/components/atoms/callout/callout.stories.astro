@@ -1,0 +1,48 @@
+---
+import type { ComponentProps } from "astro/types";
+import PageLayout from "../../templates/page-layout/page-layout.astro";
+import Heading from "../heading/heading.astro";
+import CalloutComponent from "./callout.astro";
+
+const title = "Callout";
+const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
+  { label: "Home", url: "/" },
+  { label: "Design system", url: "/design-system" },
+  { label: "Components", url: "/design-system/components" },
+  { label: "Atoms", url: "/design-system/components/atoms" },
+  { label: title, url: Astro.url.href },
+];
+const seo: ComponentProps<typeof PageLayout>["seo"] = {
+  nofollow: true,
+  noindex: true,
+  title: breadcrumb
+    .slice(1)
+    .reverse()
+    .map((crumb) => crumb.label)
+    .join(" | "),
+};
+---
+
+<PageLayout breadcrumb={breadcrumb} heading={title} seo={seo}>
+  <Fragment slot="body">
+    <Heading as="h2">Usage</Heading>
+    <p>This component is used to show important information to the reader.</p>
+    <Heading as="h2">Type</Heading>
+    <Heading as="h3">Critical</Heading>
+    <CalloutComponent type="critical"> The contents. </CalloutComponent>
+    <Heading as="h3">Discovery</Heading>
+    <CalloutComponent type="discovery"> The contents. </CalloutComponent>
+    <Heading as="h3">Idea</Heading>
+    <CalloutComponent type="idea"> The contents. </CalloutComponent>
+    <Heading as="h3">Info</Heading>
+    <CalloutComponent type="info"> The contents. </CalloutComponent>
+    <Heading as="h3">Success</Heading>
+    <CalloutComponent type="success"> The contents. </CalloutComponent>
+    <Heading as="h3">Warning</Heading>
+    <CalloutComponent type="warning"> The contents. </CalloutComponent>
+    <Heading as="h2">With a custom label</Heading>
+    <CalloutComponent label="The custom label" type="critical">
+      The contents.
+    </CalloutComponent>
+  </Fragment>
+</PageLayout>

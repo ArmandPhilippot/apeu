@@ -1,3 +1,11 @@
+export type CalloutType =
+  | "critical"
+  | "discovery"
+  | "idea"
+  | "info"
+  | "success"
+  | "warning";
+
 export type Direction = "bottom" | "left" | "right" | "top";
 
 /**
@@ -11,6 +19,7 @@ export type Elevation = "raised" | "elevated" | "floating";
  * These tokens are meant to be used with `astro-icon`.
  */
 export type IconName =
+  | CalloutType
   | "caret"
   | "cc-by-sa"
   | "feed"

@@ -1,0 +1,27 @@
+<svg
+   width="48"
+   height="48"
+   viewBox="0 0 48 48"
+   xmlns="http://www.w3.org/2000/svg">
+   <path
+      d="M 43.5,24 A 19.5,19.5 0 0 1 24,43.5 19.5,19.5 0 0 1 4.5,24 19.5,19.5 0 0 1 24,4.5 19.5,19.5 0 0 1 43.5,24 Z"
+      style="fill:none;stroke:#000000;stroke-width:3;stroke-linecap:round;stroke-linejoin:round" />
+   <path
+      d="m 24,13.91804 c -3.313827,0 -6.000214,2.686387 -6.000214,6.000214 0.004,1.461864 0.539323,2.846825 1.469512,3.91834 0.718303,0.827433 1.530595,2.154668 1.530595,3.255444 v 0.493577 a 0.52902469,0.52902469 0 0 0 0.529022,0.529025 h 4.942169 a 0.52902469,0.52902469 0 0 0 0.529022,-0.529025 v -0.492797 c 0,-1.100774 0.812289,-2.428008 1.530588,-3.255435 0.930364,-1.071713 1.465883,-2.456984 1.469519,-3.919129 0,-3.313827 -2.686387,-6.000214 -6.000213,-6.000214 z"
+      style="fill:none;stroke:#000000;stroke-width:1.83608;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1" />
+   <path
+      d="m 25.817683,16.360174 v 0 c -2.429583,-0.651005 -4.926898,0.79082 -5.577904,3.220402"
+      style="fill:none;stroke:#000000;stroke-width:0.91804;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1" />
+   <path
+      d="m 21.27261,29.491761 h 5.454772 c 0.363636,0 0.363636,0.91804 0,0.91804 H 21.27261 c -0.363627,0 -0.363627,-0.91804 0,-0.91804 z"
+      style="stroke-width:0.983423;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none" />
+   <path
+      d="m 21.454437,30.868821 h 5.091118 c 0.33939,0 0.33939,0.91804 0,0.91804 h -5.091118 c -0.339381,0 -0.339381,-0.91804 0,-0.91804 z"
+      style="stroke-width:0.428502;stroke-linecap:round;stroke-linejoin:round" />
+   <path
+      d="m 21.636264,32.245881 h 4.727464 c 0.315154,0 0.315154,0.918039 0,0.918039 h -4.727464 c -0.315145,0 -0.315145,-0.918039 0,-0.918039 z"
+      style="stroke-width:0.428502;stroke-linecap:round;stroke-linejoin:round" />
+   <path
+      d="m 22.181746,33.62294 h 3.636506 c 0.07121,0 0.121503,0.118818 0.150879,0.286652 C 26.073964,34.508548 25.295248,35 24.65009,35 h -1.30018 c -0.645158,0 -1.423913,-0.491516 -1.319021,-1.090527 0.02938,-0.16777 0.07967,-0.286533 0.150857,-0.286533 z"
+      style="stroke-width:0.428502;stroke-linecap:round;stroke-linejoin:round" />
+</svg>

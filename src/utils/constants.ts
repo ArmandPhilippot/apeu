@@ -1,5 +1,9 @@
 import type { HTTPStatus } from "../types/data";
 
+export const API_ROUTES = {
+  SEND_EMAIL: "/api/send-email",
+} as const;
+
 export const COMPONENT_KINDS = [
   "atoms",
   "molecules",

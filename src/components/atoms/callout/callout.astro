@@ -1,0 +1,101 @@
+---
+import { Icon } from "astro-icon/components";
+import type { HTMLAttributes } from "astro/types";
+import type { CalloutType } from "../../../types/tokens";
+import { useI18n } from "../../../utils/i18n";
+
+type Props = HTMLAttributes<"div"> & {
+  label?: string | null | undefined;
+  role?: "alert" | "note" | "status" | undefined;
+  type: CalloutType;
+};
+
+const {
+  "aria-label": ariaLabel,
+  class: className,
+  label,
+  role = "note",
+  type,
+  ...attrs
+} = Astro.props;
+const { translate } = useI18n(Astro.currentLocale);
+const defaultLabel = {
+  critical: translate("callout.label.critical"),
+  discovery: translate("callout.label.discovery"),
+  idea: translate("callout.label.idea"),
+  info: translate("callout.label.info"),
+  success: translate("callout.label.success"),
+  warning: translate("callout.label.warning"),
+} satisfies Record<CalloutType, string>;
+const heading = label || defaultLabel[type];
+---
+
+<div
+  {...attrs}
+  aria-label={ariaLabel ?? heading}
+  class:list={["callout", type, className]}
+  role={role}
+>
+  <div aria-hidden={!ariaLabel ? "true" : "false"} class="callout-heading">
+    <Icon aria-hidden="true" name={type} size={26} />
+    {heading}
+  </div>
+  <slot />
+</div>
+
+<style>
+  .callout {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border: var(--border-size-md) solid;
+    border-inline-start-width: var(--border-size-xl);
+    border-radius: var(--border-radii-md);
+
+    &:where(.critical) {
+      background-color: var(--color-critical-subtle);
+      border-color: var(--color-critical);
+      color: var(--color-critical-faded);
+    }
+
+    &:where(.discovery) {
+      background-color: var(--color-discovery-subtle);
+      border-color: var(--color-discovery);
+      color: var(--color-discovery-faded);
+    }
+
+    &:where(.idea) {
+      background-color: var(--color-idea-subtle);
+      border-color: var(--color-idea);
+      color: var(--color-idea-faded);
+    }
+
+    &:where(.info) {
+      background-color: var(--color-info-subtle);
+      border-color: var(--color-info);
+      color: var(--color-info-faded);
+    }
+
+    &:where(.success) {
+      background-color: var(--color-success-subtle);
+      border-color: var(--color-success);
+      color: var(--color-success-faded);
+    }
+
+    &:where(.warning) {
+      background-color: var(--color-warning-subtle);
+      border-color: var(--color-warning);
+      color: var(--color-warning-faded);
+    }
+  }
+
+  .callout-heading {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    gap: var(--spacing-2xs);
+    margin: 0 0 var(--spacing-sm);
+    padding: 0 0 var(--spacing-2xs);
+    border-block-end: var(--border-size-sm) solid currentcolor;
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-bold);
+  }
+</style>

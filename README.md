@@ -147,6 +147,8 @@ Before starting, please follow the instructions in [Setup](#setup).
 │   │   ├── api/
 │   │   ├── index.astro
 │   │   └── search.astro
+│   ├── services/
+│   │   └── mailer/
 │   ├── styles/
 │   ├── translations/
 │   │   └── en.json
@@ -163,6 +165,7 @@ In details:
 - `src/components/`: the project components,
 - `src/lib/`: the features based on dependencies (e.g. Astro integration),
 - `src/pages/`: the special components used to create pages and API routes,
+- `src/services/`: the website services (e.g. mailer),
 - `src/styles/`: global styles, variables and helpers should be placed in this directory,
 - `src/translations/`: the JSON files used to store all UI strings and routes for one language,
 - `src/types/`: the Typescript types shared across the application,

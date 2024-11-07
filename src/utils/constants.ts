@@ -14,6 +14,7 @@ export const COMPONENT_KINDS = [
 export const CONFIG = {
   BRAND: "Armand Philippot",
   CREATION_YEAR: 2024,
+  DESCRIPTION: "The personal website of Armand Philippot.",
   HOST: "armand.philippot.eu",
   LANGUAGES: {
     AVAILABLE: ["en"],

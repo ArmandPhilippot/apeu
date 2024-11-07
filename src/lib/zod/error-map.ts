@@ -7,7 +7,7 @@ import {
   type ZodInvalidTypeIssue,
   type ZodTooBigIssue,
   type ZodTooSmallIssue,
-} from "astro:schema";
+} from "zod";
 import { useI18n, type TranslateSingularKeys } from "../../utils/i18n";
 
 const atLeastOrMoreThan = (

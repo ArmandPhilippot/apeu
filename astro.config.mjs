@@ -1,5 +1,6 @@
 // @ts-check
 import node from "@astrojs/node";
+import sitemap from "@astrojs/sitemap";
 import icon from "astro-icon";
 import { defineConfig } from "astro/config";
 import { componentsStories } from "./src/lib/astro/integrations/components-stories";
@@ -26,6 +27,14 @@ export default defineConfig({
       iconDir: "src/assets/icons",
     }),
     pagefind(),
+    sitemap({
+      i18n: {
+        defaultLocale: CONFIG.LANGUAGES.DEFAULT,
+        locales: {
+          en: "en-US",
+        },
+      },
+    }),
   ],
   output: "hybrid",
   site: `https://${CONFIG.HOST}`,

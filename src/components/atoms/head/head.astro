@@ -1,4 +1,8 @@
 ---
+import { getImage } from "astro:assets";
+import faviconPng from "../../../assets/favicon.png";
+import faviconSvg from "../../../assets/logo.svg";
+
 type AltLanguage = {
   locale: string;
   url: string;
@@ -44,6 +48,13 @@ const {
   seo,
   themeColor,
 } = Astro.props;
+const appleTouchIcon = await getImage({
+  src: faviconPng,
+  width: 180,
+  height: 180,
+  format: "png",
+});
+const icon = await getImage({ src: faviconSvg, format: "svg" });
 ---
 
 <head>
@@ -86,6 +97,9 @@ const {
   {colorScheme ? <meta name="color-scheme" content={colorScheme} /> : null}
   {themeColor ? <meta name="theme-color" content={themeColor} /> : null}
   {generator ? <meta name="generator" content={generator} /> : null}
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" href="/favicon.ico" sizes="32x32" />
+  <link rel="icon" type="image/svg+xml" href={icon.src} />
+  <link rel="apple-touch-icon" href={appleTouchIcon.src} />
+  <link rel="manifest" href="/manifest.json" />
   <slot />
 </head>

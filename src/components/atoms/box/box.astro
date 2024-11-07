@@ -111,7 +111,8 @@ const {
     }
 
     &:where(.padded:not(.prose)) {
-      padding: clamp(var(--spacing-sm), 1.5dvw, var(--spacing-md));
+      padding: var(--spacing-sm)
+        clamp(var(--spacing-sm), 1.5dvw, var(--spacing-md));
     }
 
     &:where(.rounded.prose) {

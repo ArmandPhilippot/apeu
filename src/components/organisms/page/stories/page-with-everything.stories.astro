@@ -1,5 +1,6 @@
 ---
 import type { ComponentProps } from "astro/types";
+import Heading from "../../../atoms/heading/heading.astro";
 import Layout from "../../../templates/layout/layout.astro";
 import PageComponent from "../page.astro";
 
@@ -27,7 +28,30 @@ const seo: ComponentProps<typeof Layout>["seo"] = {
 <Layout seo={seo}>
   <PageComponent cover={cover} feed="#feed" heading={title} toc={toc}>
     <div slot="meta">Some meta</div>
-    <p slot="body">This is the main content of the page.</p>
+    <Fragment slot="body">
+      <p>This is the main content of the page.</p>
+      <Heading>cumque recusandae dolorem</Heading>
+      <p>
+        Voluptates et eos alias quae quis rerum est quo consectetur. Eos ea est.
+        Voluptatem nulla sint et porro in ullam mollitia quibusdam.
+      </p>
+      <p>
+        Odit velit in nemo autem tempore provident voluptas sapiente. Veniam
+        dolor et ullam in suscipit ipsum odio. Non aut voluptates aspernatur
+        reprehenderit velit minima. Incidunt ut et.
+      </p>
+      <Heading>impedit distinctio autem</Heading>
+      <p>
+        Molestiae pariatur id earum facilis quaerat reiciendis adipisci ut
+        maiores. Quod quis ut dolor omnis ad est fuga eos natus. Nulla accusamus
+        molestias.
+      </p>
+      <p>
+        Doloribus nostrum voluptatem error aut dolor omnis aut. At quidem
+        quaerat nisi nihil modi et. Perferendis et mollitia odio voluptatem
+        repellat error accusantium amet cumque.
+      </p>
+    </Fragment>
     <div slot="disconnected-body">
       This is the content of a disconnected body.
     </div>

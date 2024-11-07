@@ -4,13 +4,12 @@ import { Icon } from "astro-icon/components";
 import type { ComponentProps, HTMLAttributes } from "astro/types";
 import { Image as AstroImg } from "astro:assets";
 import { useI18n } from "../../../utils/i18n";
+import { buildToc } from "../../../utils/toc";
 import Box from "../../atoms/box/box.astro";
 import Button from "../../atoms/button/button.astro";
 import Heading from "../../atoms/heading/heading.astro";
-import Link from "../../atoms/link/link.astro";
-import ListItem from "../../atoms/list/list-item.astro";
-import List from "../../atoms/list/list.astro";
 import Collapsible from "../../molecules/collapsible/collapsible.astro";
+import TableOfContents from "../table-of-contents/table-of-contents.astro";
 
 type Props = HTMLAttributes<"article"> & {
   cover?: ComponentProps<typeof AstroImg> | null | undefined;
@@ -73,18 +72,13 @@ const { translate } = useI18n(Astro.currentLocale);
           isCentered
           isProse
           isRounded
+          open
         >
           <Heading as="h2" class="page-toc-title" slot="label">
             {translate("collapsible.toc.title")}
           </Heading>
           <Box isPadded>
-            <List as="ol" class="page-toc-list">
-              {toc.map((heading) => (
-                <ListItem>
-                  <Link href={heading.slug}>{heading.text}</Link>
-                </ListItem>
-              ))}
-            </List>
+            <TableOfContents headings={buildToc(toc)} />
           </Box>
         </Collapsible>
       </div>
@@ -250,10 +244,6 @@ const { translate } = useI18n(Astro.currentLocale);
 
   .page-toc-title {
     font-size: var(--font-size-xl);
-  }
-
-  .page-toc-list {
-    margin: 0;
   }
 
   .page-body {

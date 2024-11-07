@@ -8,9 +8,7 @@ type Props<
 const { as: Tag = "h2", class: className, ...attrs } = Astro.props;
 ---
 
-<Tag {...attrs} class:list={["heading", `heading--${Tag}`, className]}
-  ><slot /></Tag
->
+<Tag {...attrs} class:list={["heading", className]}><slot /></Tag>
 
 <style>
   .heading {
@@ -18,27 +16,27 @@ const { as: Tag = "h2", class: className, ...attrs } = Astro.props;
     color: var(--color-primary-faded);
     font-weight: var(--font-weight-bold);
 
-    &:is(h1) {
+    &:where(:is(h1)) {
       font-size: var(--font-size-5xl);
     }
 
-    &:is(h2) {
+    &:where(:is(h2)) {
       font-size: var(--font-size-4xl);
     }
 
-    &:is(h3) {
+    &:where(:is(h3)) {
       font-size: var(--font-size-3xl);
     }
 
-    &:is(h4) {
+    &:where(:is(h4)) {
       font-size: var(--font-size-2xl);
     }
 
-    &:is(h5) {
+    &:where(:is(h5)) {
       font-size: var(--font-size-xl);
     }
 
-    &:is(h6) {
+    &:where(:is(h6)) {
       font-size: var(--font-size-lg);
     }
   }

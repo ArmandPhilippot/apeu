@@ -10,6 +10,7 @@ import Heading from "../../atoms/heading/heading.astro";
 import Link from "../../atoms/link/link.astro";
 import ListItem from "../../atoms/list/list-item.astro";
 import List from "../../atoms/list/list.astro";
+import Collapsible from "../../molecules/collapsible/collapsible.astro";
 
 type Props = HTMLAttributes<"article"> & {
   cover?: ComponentProps<typeof AstroImg> | null | undefined;
@@ -66,22 +67,26 @@ const { translate } = useI18n(Astro.currentLocale);
   {
     !!toc ? (
       <div class="page-sidebar">
-        <Box
+        <Collapsible
           class="page-toc"
           elevation="raised"
-          isBordered
           isCentered
           isProse
           isRounded
         >
-          <List as="ol">
-            {toc.map((heading) => (
-              <ListItem>
-                <Link href={heading.slug}>{heading.text}</Link>
-              </ListItem>
-            ))}
-          </List>
-        </Box>
+          <Heading as="h2" class="page-toc-title" slot="label">
+            {translate("collapsible.toc.title")}
+          </Heading>
+          <Box isPadded>
+            <List as="ol" class="page-toc-list">
+              {toc.map((heading) => (
+                <ListItem>
+                  <Link href={heading.slug}>{heading.text}</Link>
+                </ListItem>
+              ))}
+            </List>
+          </Box>
+        </Collapsible>
       </div>
     ) : null
   }
@@ -232,7 +237,23 @@ const { translate } = useI18n(Astro.currentLocale);
     @container (width > calc(55em * 4 / 3)) {
       position: sticky;
       top: var(--spacing-md);
+
+      & > :global(:is(summary)) {
+        padding-inline-start: clamp(
+          var(--spacing-sm),
+          1.5dvw,
+          var(--spacing-md)
+        );
+      }
     }
+  }
+
+  .page-toc-title {
+    font-size: var(--font-size-xl);
+  }
+
+  .page-toc-list {
+    margin: 0;
   }
 
   .page-body {

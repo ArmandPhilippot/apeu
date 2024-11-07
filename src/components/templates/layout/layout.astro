@@ -20,7 +20,7 @@ type Props = Pick<ComponentProps<typeof Head>, "seo"> &
   Omit<HTMLAttributes<"div">, "id">;
 
 const { class: className, seo, ...attrs } = Astro.props;
-const { route, translate } = useI18n(Astro.currentLocale);
+const { locale, route, translate } = useI18n(Astro.currentLocale);
 const isHome = Astro.url.pathname === route("home");
 const mainNav = [
   {
@@ -39,7 +39,7 @@ const contentsId = translate("anchor.site.content");
 const topId = translate("anchor.site.top");
 ---
 
-<html data-theme="light" lang="en" style="color-scheme: light;">
+<html data-theme="light" lang={locale} style="color-scheme: light;">
   <Head
     addBrandToTitle={!isHome}
     brand={CONFIG.BRAND}

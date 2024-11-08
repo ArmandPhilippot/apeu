@@ -13,6 +13,10 @@ export default defineConfig({
   adapter: node({
     mode: "standalone",
   }),
+  experimental: {
+    contentIntellisense: true,
+    contentLayer: true,
+  },
   i18n: {
     defaultLocale: CONFIG.LANGUAGES.DEFAULT,
     locales: [...CONFIG.LANGUAGES.AVAILABLE],

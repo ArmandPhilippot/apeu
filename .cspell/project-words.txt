@@ -5,6 +5,7 @@ commitlint
 globby
 nanostores
 pagefind
+stackoverflow
 stylelint
 tsconfigs
 tseslint

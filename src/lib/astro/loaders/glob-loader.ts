@@ -24,6 +24,7 @@ const collectionsPattern = {
   guides: getLocalizedPattern("/guides/**/!(index).md"),
   notes: getLocalizedPattern("/notes/**/!(index).md"),
   pages: getLocalizedPattern("/pages/**/*.md"),
+  projects: getLocalizedPattern("/projects/**/!(index).md"),
 };
 
 type Collection = keyof typeof collectionsPattern;

@@ -3,6 +3,7 @@
     "home": "/",
     "guides": "/guides",
     "notes": "/notes",
+    "projects": "/projects",
     "search": "/search"
   },
   "ui": {

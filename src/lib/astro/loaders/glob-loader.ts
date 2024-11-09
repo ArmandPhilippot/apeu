@@ -21,6 +21,7 @@ export const getLocalizedPattern = (pattern: string) => {
 };
 
 const collectionsPattern = {
+  guides: getLocalizedPattern("/guides/**/!(index).md"),
   notes: getLocalizedPattern("/notes/**/!(index).md"),
   pages: getLocalizedPattern("/pages/**/*.md"),
 };

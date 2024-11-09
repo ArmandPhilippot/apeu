@@ -1,6 +1,7 @@
 {
   "routes": {
     "home": "/",
+    "guides": "/guides",
     "notes": "/notes",
     "search": "/search"
   },

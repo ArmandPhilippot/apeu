@@ -1,6 +1,7 @@
 {
   "routes": {
     "home": "/",
+    "notes": "/notes",
     "search": "/search"
   },
   "ui": {

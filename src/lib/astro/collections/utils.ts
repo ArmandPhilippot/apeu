@@ -2,19 +2,6 @@ import { z } from "astro:content";
 import { CONFIG } from "../../../utils/constants";
 import { isAvailableLanguage } from "../../../utils/i18n";
 
-const getLocalesPattern = () => {
-  if (CONFIG.LANGUAGES.AVAILABLE.length > 1)
-    return `(${CONFIG.LANGUAGES.AVAILABLE.join("|")})`;
-
-  return CONFIG.LANGUAGES.DEFAULT;
-};
-
-export const getLocalizedPattern = (pattern: string) => {
-  const locales = getLocalesPattern();
-
-  return `${locales}${pattern}`;
-};
-
 export const locale = z
   .string()
   .refine(isAvailableLanguage)
@@ -36,5 +23,6 @@ export const contentsBaseSchema = z.object({
   updatedOn: z.coerce.date().optional(),
   seo,
   locale,
-  slug: z.string().optional(),
+  slug: z.string().default(""),
+  route: z.string().default(""),
 });

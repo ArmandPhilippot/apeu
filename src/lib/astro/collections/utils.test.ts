@@ -63,8 +63,9 @@ describe("contentsBaseSchema", () => {
     if (result.success) {
       expect(result.data.locale).toBe(CONFIG.LANGUAGES.DEFAULT);
       expect(result.data.isDraft).toBe(false);
+      expect(result.data.route).toBe("");
+      expect(result.data.slug).toBe("");
       expect(result.data.updatedOn).toBeUndefined();
-      expect(result.data.slug).toBeUndefined();
     }
   });
 });

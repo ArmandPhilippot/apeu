@@ -22,6 +22,7 @@ export const getLocalizedPattern = (pattern: string) => {
 
 const collectionsPattern = {
   "blog.categories": getLocalizedPattern("/blog/categories/**/!(index).md"),
+  "blog.posts": getLocalizedPattern("/blog/posts/**/!(index).md"),
   guides: getLocalizedPattern("/guides/**/!(index).md"),
   notes: getLocalizedPattern("/notes/**/!(index).md"),
   pages: getLocalizedPattern("/pages/**/*.md"),
@@ -89,7 +90,7 @@ export const globLoader = (collection: Collection): Loader => {
             route,
             slug,
           },
-          id: entry.id.replace(`${collection}/`, ""),
+          id: entry.id.replace(`${collection.replace(".", "/")}/`, ""),
         });
       }
     },

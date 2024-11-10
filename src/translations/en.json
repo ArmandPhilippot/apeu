@@ -2,6 +2,7 @@
   "routes": {
     "blog": "/blog",
     "blog.categories": "/blog/categories",
+    "blog.posts": "/blog/posts",
     "home": "/",
     "guides": "/guides",
     "notes": "/notes",

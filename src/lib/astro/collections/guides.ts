@@ -15,9 +15,9 @@ export const guides = defineCollection({
           })
           .optional(),
       })
-      .transform(({ authors, isDraft, publishedOn, updatedOn, ...note }) => {
+      .transform(({ authors, isDraft, publishedOn, updatedOn, ...guide }) => {
         return {
-          ...note,
+          ...guide,
           meta: {
             authors,
             isDraft,

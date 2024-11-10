@@ -21,6 +21,7 @@ export const getLocalizedPattern = (pattern: string) => {
 };
 
 const collectionsPattern = {
+  "blog.categories": getLocalizedPattern("/blog/categories/**/!(index).md"),
   guides: getLocalizedPattern("/guides/**/!(index).md"),
   notes: getLocalizedPattern("/notes/**/!(index).md"),
   pages: getLocalizedPattern("/pages/**/*.md"),
@@ -54,7 +55,9 @@ const getLocaleAndSlugFromId = (collection: Collection, id: string) => {
     maybeLocale && isAvailableLanguage(maybeLocale)
       ? maybeLocale
       : CONFIG.LANGUAGES.DEFAULT;
-  const slug = slugParts.join("/").replace(`${collection}/`, "");
+  const slug = slugParts
+    .join("/")
+    .replace(`${collection.replace(".", "/")}/`, "");
 
   return { locale, slug };
 };

@@ -1,5 +1,7 @@
 {
   "routes": {
+    "blog": "/blog",
+    "blog.categories": "/blog/categories",
     "home": "/",
     "guides": "/guides",
     "notes": "/notes",

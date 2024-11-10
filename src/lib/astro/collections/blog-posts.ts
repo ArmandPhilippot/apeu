@@ -15,9 +15,18 @@ export const blogPosts = defineCollection({
             src: image(),
           })
           .optional(),
+        tags: z.array(reference("tags")).optional(),
       })
       .transform(
-        ({ authors, category, isDraft, publishedOn, updatedOn, ...post }) => {
+        ({
+          authors,
+          category,
+          isDraft,
+          publishedOn,
+          tags,
+          updatedOn,
+          ...post
+        }) => {
           return {
             ...post,
             meta: {
@@ -25,6 +34,7 @@ export const blogPosts = defineCollection({
               category,
               isDraft,
               publishedOn,
+              tags,
               updatedOn: updatedOn ?? publishedOn,
             },
           };

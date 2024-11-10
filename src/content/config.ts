@@ -5,6 +5,7 @@ import { guides } from "../lib/astro/collections/guides";
 import { notes } from "../lib/astro/collections/notes";
 import { pages } from "../lib/astro/collections/pages";
 import { projects } from "../lib/astro/collections/projects";
+import { tags } from "../lib/astro/collections/tags";
 
 export const collections = {
   authors,
@@ -14,4 +15,5 @@ export const collections = {
   notes,
   pages,
   projects,
+  tags,
 };

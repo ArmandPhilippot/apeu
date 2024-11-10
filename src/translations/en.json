@@ -7,7 +7,8 @@
     "guides": "/guides",
     "notes": "/notes",
     "projects": "/projects",
-    "search": "/search"
+    "search": "/search",
+    "tags": "/tags"
   },
   "ui": {
     "anchor.site.content": "contents",

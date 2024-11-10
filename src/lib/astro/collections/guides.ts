@@ -14,16 +14,20 @@ export const guides = defineCollection({
             src: image(),
           })
           .optional(),
+        tags: z.array(reference("tags")).optional(),
       })
-      .transform(({ authors, isDraft, publishedOn, updatedOn, ...guide }) => {
-        return {
-          ...guide,
-          meta: {
-            authors,
-            isDraft,
-            publishedOn,
-            updatedOn: updatedOn ?? publishedOn,
-          },
-        };
-      }),
+      .transform(
+        ({ authors, isDraft, publishedOn, tags, updatedOn, ...guide }) => {
+          return {
+            ...guide,
+            meta: {
+              authors,
+              isDraft,
+              publishedOn,
+              tags,
+              updatedOn: updatedOn ?? publishedOn,
+            },
+          };
+        },
+      ),
 });

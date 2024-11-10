@@ -5,6 +5,8 @@ publishedOn: "2024-11-10T17:32"
 category: "en/category1"
 authors:
   - "armand-philippot"
+tags:
+  - "en/tag1"
 seo:
   title: "Post 1"
   description: "This is a description used by search engines."

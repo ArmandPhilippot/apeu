@@ -1,4 +1,4 @@
-import { defineCollection, z } from "astro:content";
+import { defineCollection, reference, z } from "astro:content";
 import { globLoader } from "../loaders/glob-loader";
 import { contentsBaseSchema } from "./utils";
 
@@ -19,9 +19,18 @@ export const projects = defineCollection({
           z.literal("theme"),
         ]),
         repository: z.string().url().optional(),
+        tags: z.array(reference("tags")).optional(),
       })
       .transform(
-        ({ isDraft, kind, publishedOn, repository, updatedOn, ...project }) => {
+        ({
+          isDraft,
+          kind,
+          publishedOn,
+          repository,
+          tags,
+          updatedOn,
+          ...project
+        }) => {
           return {
             ...project,
             meta: {
@@ -29,6 +38,7 @@ export const projects = defineCollection({
               kind,
               publishedOn,
               repository,
+              tags,
               updatedOn: updatedOn ?? publishedOn,
             },
           };

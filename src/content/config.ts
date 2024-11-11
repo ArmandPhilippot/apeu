@@ -1,6 +1,7 @@
 import { authors } from "../lib/astro/collections/authors";
 import { blogCategories } from "../lib/astro/collections/blog-categories";
 import { blogPosts } from "../lib/astro/collections/blog-posts";
+import { bookmarks } from "../lib/astro/collections/bookmarks";
 import { guides } from "../lib/astro/collections/guides";
 import { notes } from "../lib/astro/collections/notes";
 import { pages } from "../lib/astro/collections/pages";
@@ -11,6 +12,7 @@ export const collections = {
   authors,
   blogCategories,
   blogPosts,
+  bookmarks,
   guides,
   notes,
   pages,

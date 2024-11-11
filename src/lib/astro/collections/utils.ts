@@ -1,10 +1,10 @@
 import { z } from "astro:content";
 import { CONFIG } from "../../../utils/constants";
-import { isAvailableLanguage } from "../../../utils/i18n";
+import { isValidLanguageCode } from "../../../utils/locales";
 
 export const locale = z
   .string()
-  .refine(isAvailableLanguage)
+  .refine(isValidLanguageCode)
   .optional()
   .default(CONFIG.LANGUAGES.DEFAULT);
 

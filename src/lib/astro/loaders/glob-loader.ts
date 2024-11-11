@@ -23,6 +23,7 @@ export const getLocalizedPattern = (pattern: string) => {
 const collectionsPattern = {
   "blog.categories": getLocalizedPattern("/blog/categories/**/!(index).md"),
   "blog.posts": getLocalizedPattern("/blog/posts/**/!(index).md"),
+  bookmarks: "bookmarks/*.json",
   guides: getLocalizedPattern("/guides/**/!(index).md"),
   notes: getLocalizedPattern("/notes/**/!(index).md"),
   pages: getLocalizedPattern("/pages/**/*.md"),
@@ -78,21 +79,34 @@ export const globLoader = (collection: Collection): Loader => {
       const originalEntries = Array.from(ctx.store.entries());
       ctx.store.clear();
 
-      for (const [id, entry] of originalEntries) {
+      for (const [originalId, entry] of originalEntries) {
         if (!entry.filePath) continue;
 
-        const { locale, slug } = getLocaleAndSlugFromId(collection, id);
-        const route = getCollectionEntryRoute({ collection, locale, slug });
-        ctx.store.set({
-          ...entry,
-          data: {
-            ...entry.data,
-            locale,
-            route,
-            slug,
-          },
-          id: entry.id.replace(`${collection.replace(".", "/")}/`, ""),
-        });
+        const id = entry.id.replace(`${collection.replace(".", "/")}/`, "");
+        const isLocalized = collection !== "bookmarks";
+
+        if (isLocalized) {
+          const { locale, slug } = getLocaleAndSlugFromId(
+            collection,
+            originalId,
+          );
+          const route = getCollectionEntryRoute({ collection, locale, slug });
+          ctx.store.set({
+            ...entry,
+            data: {
+              ...entry.data,
+              locale,
+              route,
+              slug,
+            },
+            id,
+          });
+        } else {
+          ctx.store.set({
+            ...entry,
+            id,
+          });
+        }
       }
     },
   };

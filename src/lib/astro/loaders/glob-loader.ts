@@ -27,7 +27,7 @@ const collectionsPattern = {
   bookmarks: "bookmarks/*.json",
   guides: getLocalizedPattern("/guides/**/!(index).md"),
   notes: getLocalizedPattern("/notes/**/!(index).md"),
-  pages: getLocalizedPattern("/pages/**/*.md"),
+  pages: `{${getLocalizedPattern("/pages/**/*.md")},${getLocalizedPattern("/!(pages)/**/index.md")}}`,
   projects: getLocalizedPattern("/projects/**/!(index).md"),
   tags: getLocalizedPattern("/tags/**/!(index).md"),
 };

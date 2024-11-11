@@ -3,6 +3,7 @@
     "blog": "/blog",
     "blog.categories": "/blog/categories",
     "blog.posts": "/blog/posts",
+    "blogroll": "/blogroll",
     "bookmarks": "/bookmarks",
     "home": "/",
     "guides": "/guides",

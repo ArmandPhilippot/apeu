@@ -1,6 +1,7 @@
 apeu
 astro
 astrojs
+blogroll
 commitlint
 globby
 nanostores

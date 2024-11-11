@@ -23,6 +23,7 @@ export const getLocalizedPattern = (pattern: string) => {
 const collectionsPattern = {
   "blog.categories": getLocalizedPattern("/blog/categories/**/!(index).md"),
   "blog.posts": getLocalizedPattern("/blog/posts/**/!(index).md"),
+  blogroll: "blogroll/*.json",
   bookmarks: "bookmarks/*.json",
   guides: getLocalizedPattern("/guides/**/!(index).md"),
   notes: getLocalizedPattern("/notes/**/!(index).md"),
@@ -83,7 +84,7 @@ export const globLoader = (collection: Collection): Loader => {
         if (!entry.filePath) continue;
 
         const id = entry.id.replace(`${collection.replace(".", "/")}/`, "");
-        const isLocalized = collection !== "bookmarks";
+        const isLocalized = !["blogroll", "bookmarks"].includes(collection);
 
         if (isLocalized) {
           const { locale, slug } = getLocaleAndSlugFromId(

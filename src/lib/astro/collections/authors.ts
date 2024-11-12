@@ -1,15 +1,12 @@
-import { glob } from "astro/loaders";
 import { defineCollection, z } from "astro:content";
 import {
   isValidCountryCode,
   isValidLanguageCode,
 } from "../../../utils/locales";
+import { globLoader } from "../loaders/glob-loader";
 
 export const authors = defineCollection({
-  loader: glob({
-    pattern: "*.json",
-    base: `./content/authors`,
-  }),
+  loader: globLoader("authors"),
   schema: ({ image }) =>
     z
       .object({

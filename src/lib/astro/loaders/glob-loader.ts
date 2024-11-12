@@ -7,6 +7,8 @@ import {
   type AvailableLanguage,
 } from "../../../utils/i18n";
 
+const CONTENT_DIR: string = import.meta.env.CONTENT_PATH ?? "./content";
+
 const getLocalesPattern = () => {
   if (CONFIG.LANGUAGES.AVAILABLE.length > 1)
     return `(${CONFIG.LANGUAGES.AVAILABLE.join("|")})`;
@@ -21,6 +23,7 @@ export const getLocalizedPattern = (pattern: string) => {
 };
 
 const collectionsPattern = {
+  authors: "authors/*.json",
   "blog.categories": getLocalizedPattern("/blog/categories/**/!(index).md"),
   "blog.posts": getLocalizedPattern("/blog/posts/**/!(index).md"),
   blogroll: "blogroll/*.json",
@@ -35,7 +38,7 @@ const collectionsPattern = {
 type Collection = keyof typeof collectionsPattern;
 
 type GetCollectionEntrySlugConfig = {
-  collection: Collection;
+  collection: Exclude<Collection, "authors">;
   locale: AvailableLanguage;
   slug: string;
 };
@@ -66,9 +69,14 @@ const getLocaleAndSlugFromId = (collection: Collection, id: string) => {
   return { locale, slug };
 };
 
+const isLocalizedCollection = (
+  collection: Collection,
+): collection is Exclude<Collection, "authors" | "blogroll" | "bookmarks"> =>
+  !["authors", "blogroll", "bookmarks"].includes(collection);
+
 export const globLoader = (collection: Collection): Loader => {
   const originalGlob = glob({
-    base: "./content",
+    base: CONTENT_DIR,
     pattern: collectionsPattern[collection],
   });
 
@@ -84,9 +92,8 @@ export const globLoader = (collection: Collection): Loader => {
         if (!entry.filePath) continue;
 
         const id = entry.id.replace(`${collection.replace(".", "/")}/`, "");
-        const isLocalized = !["blogroll", "bookmarks"].includes(collection);
 
-        if (isLocalized) {
+        if (isLocalizedCollection(collection)) {
           const { locale, slug } = getLocaleAndSlugFromId(
             collection,
             originalId,

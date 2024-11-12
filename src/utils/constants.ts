@@ -26,6 +26,18 @@ export const CONFIG = {
 } as const;
 
 /**
+ * A partial list of country codes using the ISO 3166-1 alpha-2 codes
+ *
+ * I don't plan to support all the countries so this list will be updated only
+ * when needed.
+ * Note: the alpha-3 version is more readable but using alpha-2 we could reuse
+ * these codes to check locales (e.g. `en-US`, `en_US`) if needed.
+ *
+ * @see https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
+ */
+export const COUNTRY_CODES = ["FR"] as const;
+
+/**
  * The HTTP status codes
  *
  * @see https://www.rfc-editor.org/rfc/rfc9110#name-status-codes
@@ -64,6 +76,16 @@ export const HTTP_STATUS = {
     TEXT: "Moved Permanently",
   },
 } as const satisfies Record<Uppercase<string>, HTTPStatus>;
+
+/**
+ * A partial list of language codes using the ISO 639-1 codes
+ *
+ * I don't plan to support all the languages so this list will be updated only
+ * when needed.
+ *
+ * @see https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
+ */
+export const LANGUAGE_CODES = ["en", "es", "fr"] as const;
 
 export const STORIES_SUFFIX = "stories";
 

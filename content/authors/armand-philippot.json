@@ -1,0 +1,8 @@
+{
+  "avatar": "./avatars/astro.svg",
+  "firstName": "Armand",
+  "lastName": "Philippot",
+  "isWebsiteOwner": true,
+  "spokenLanguages": ["fr", "en"],
+  "website": "https://armand.philippot.eu"
+}

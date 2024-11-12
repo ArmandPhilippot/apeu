@@ -1,10 +1,13 @@
 apeu
 astro
 astrojs
+blogroll
 commitlint
+frontmatter
 globby
 nanostores
 pagefind
+stackoverflow
 stylelint
 tsconfigs
 tseslint

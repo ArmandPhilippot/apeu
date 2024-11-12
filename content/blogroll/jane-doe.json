@@ -1,0 +1,10 @@
+{
+  "title": "Jane Doe",
+  "url": "https://astro.build",
+  "feed": "https://astro.build/rss.xml",
+  "inLanguages": ["en", "fr"],
+  "publishedOn": "2024-11-10T17:26",
+  "description": {
+    "en": "A description in English of this blog."
+  }
+}

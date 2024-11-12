@@ -1,7 +1,16 @@
 {
   "routes": {
+    "blog": "/blog",
+    "blog.categories": "/blog/categories",
+    "blog.posts": "/blog/posts",
+    "blogroll": "/blogroll",
+    "bookmarks": "/bookmarks",
     "home": "/",
-    "search": "/search"
+    "guides": "/guides",
+    "notes": "/notes",
+    "projects": "/projects",
+    "search": "/search",
+    "tags": "/tags"
   },
   "ui": {
     "anchor.site.content": "contents",

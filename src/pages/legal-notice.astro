@@ -1,14 +1,12 @@
 ---
 import type { ComponentProps } from "astro/types";
 import { getEntry, render } from "astro:content";
-import PagefindSearch from "../components/organisms/pagefind-search/pagefind-search.astro";
 import PageLayout from "../components/templates/page-layout/page-layout.astro";
-import { CONFIG } from "../utils/constants";
 import { useI18n } from "../utils/i18n";
 
 const { locale, route, translate } = useI18n(Astro.currentLocale);
-const page = await getEntry("pages", `${locale}/search`);
-const { Content } = await render(page);
+const page = await getEntry("pages", `${locale}/legal-notice`);
+const { Content, headings } = await render(page);
 const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
   { label: translate("page.home.title"), url: route("home") },
   { label: page.data.title, url: Astro.url.href },
@@ -19,9 +17,7 @@ const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
   breadcrumb={breadcrumb}
   heading={page.data.title}
   seo={page.data.seo}
+  toc={headings}
 >
-  <Fragment slot="body">
-    <Content />
-    <PagefindSearch queryParam={CONFIG.SEARCH.QUERY_PARAM} />
-  </Fragment>
+  <Content slot="body" />
 </PageLayout>

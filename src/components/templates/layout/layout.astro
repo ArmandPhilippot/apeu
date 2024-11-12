@@ -29,8 +29,51 @@ const mainNav = [
     label: translate("page.home.title"),
     url: route("home"),
   },
+  {
+    icon: "blog",
+    iconSize: 28,
+    label: translate("page.blog.title"),
+    url: route("blog"),
+  },
+  {
+    icon: "guide",
+    iconSize: 28,
+    label: translate("page.guides.title"),
+    url: route("guides"),
+  },
+  {
+    icon: "notepad",
+    iconSize: 28,
+    label: translate("page.notes.title"),
+    url: route("notes"),
+  },
+  {
+    icon: "project",
+    iconSize: 28,
+    label: translate("page.projects.title"),
+    url: route("projects"),
+  },
+  {
+    icon: "bookmark",
+    iconSize: 28,
+    label: translate("page.bookmarks.title"),
+    url: route("bookmarks"),
+  },
+  {
+    icon: "globe",
+    iconSize: 28,
+    label: translate("page.blogroll.title"),
+    url: route("blogroll"),
+  },
+  {
+    icon: "contact",
+    iconSize: 28,
+    label: translate("page.contact.title"),
+    url: route("contact"),
+  },
 ] satisfies ComponentProps<typeof NavList>["items"];
 const footerLinks = [
+  { label: translate("page.legal.notice.title"), url: route("legal.notice") },
   ...(import.meta.env.DEV
     ? [{ label: "Design system", url: "/design-system" }]
     : []),
@@ -106,7 +149,7 @@ const topId = translate("anchor.site.top");
       <footer class="site-footer">
         <Copyright creationYear={CONFIG.CREATION_YEAR} owner={CONFIG.BRAND} />
         <License />
-        <NavList items={footerLinks}>
+        <NavList class="site-footer-nav" isInline items={footerLinks}>
           {
             ({ label, url, ...item }) => (
               <NavItem {...item} href={url}>
@@ -301,6 +344,11 @@ const topId = translate("anchor.site.top");
       grid-column: 1 / -1;
       grid-row: 2;
     }
+  }
+
+  .site-footer-nav {
+    gap: var(--spacing-xs);
+    margin-inline-start: var(--spacing-xs);
   }
 
   .site-back-to-top {

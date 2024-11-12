@@ -61,6 +61,12 @@ const isCurrentRouteOrNested = (url: string) => {
         border-block-end: none;
       }
     }
+
+    & > :global(*:not(:first-child)) {
+      @media (width >= 1024px) {
+        margin-block-start: var(--spacing-2xs);
+      }
+    }
   }
 
   .main-nav-item {

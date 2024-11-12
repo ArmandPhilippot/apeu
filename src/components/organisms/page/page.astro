@@ -64,7 +64,7 @@ const { translate } = useI18n(Astro.currentLocale);
     }
   </Box>
   {
-    !!toc ? (
+    !!toc?.length ? (
       <div class="page-sidebar">
         <Collapsible
           class="page-toc"

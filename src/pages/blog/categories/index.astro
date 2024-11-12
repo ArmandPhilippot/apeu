@@ -1,0 +1,31 @@
+---
+import type { ComponentProps } from "astro/types";
+import { getCollection, getEntry, render } from "astro:content";
+import ListItem from "../../../components/atoms/list/list-item.astro";
+import List from "../../../components/atoms/list/list.astro";
+import PageLayout from "../../../components/templates/page-layout/page-layout.astro";
+import { useI18n } from "../../../utils/i18n";
+
+const { locale, route, translate } = useI18n(Astro.currentLocale);
+const page = await getEntry("pages", `${locale}/blog/categories`);
+const { Content } = await render(page);
+const categories = await getCollection("blogCategories");
+const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
+  { label: translate("page.home.title"), url: route("home") },
+  { label: translate("page.blog.title"), url: route("blog") },
+  { label: page.data.title, url: Astro.url.href },
+];
+---
+
+<PageLayout
+  breadcrumb={breadcrumb}
+  heading={page.data.title}
+  seo={page.data.seo}
+>
+  <Fragment slot="body">
+    <Content />
+    <List>
+      {categories.map((category) => <ListItem>{category.data.title}</ListItem>)}
+    </List>
+  </Fragment>
+</PageLayout>

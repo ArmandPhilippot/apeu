@@ -1,6 +1,7 @@
 ---
 import type { ComponentProps } from "astro/types";
 import { getCollection, getEntry, render } from "astro:content";
+import Link from "../../../components/atoms/link/link.astro";
 import ListItem from "../../../components/atoms/list/list-item.astro";
 import List from "../../../components/atoms/list/list.astro";
 import PageLayout from "../../../components/templates/page-layout/page-layout.astro";
@@ -25,7 +26,13 @@ const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
   <Fragment slot="body">
     <Content />
     <List>
-      {posts.map((post) => <ListItem>{post.data.title}</ListItem>)}
+      {
+        posts.map((post) => (
+          <ListItem>
+            <Link href={post.data.route}>{post.data.title}</Link>
+          </ListItem>
+        ))
+      }
     </List>
   </Fragment>
 </PageLayout>

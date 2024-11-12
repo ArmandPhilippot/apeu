@@ -1,0 +1,40 @@
+---
+import type { GetStaticPaths } from "astro";
+import type { ComponentProps } from "astro/types";
+import { getCollection, render } from "astro:content";
+import PageLayout from "../../components/templates/page-layout/page-layout.astro";
+import { useI18n } from "../../utils/i18n";
+
+export const getStaticPaths = (async () => {
+  const guides = await getCollection("guides");
+
+  return guides
+    .filter((guide) => guide.data.locale === "en")
+    .map((guide) => {
+      return {
+        params: {
+          slug: guide.data.slug,
+        },
+        props: { page: guide },
+      };
+    });
+}) satisfies GetStaticPaths;
+
+const { page } = Astro.props;
+const { Content, headings } = await render(page);
+const { route, translate } = useI18n(Astro.currentLocale);
+const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
+  { label: translate("page.home.title"), url: route("home") },
+  { label: translate("page.guides.title"), url: route("guides") },
+  { label: page.data.title, url: Astro.url.href },
+];
+---
+
+<PageLayout
+  breadcrumb={breadcrumb}
+  heading={page.data.title}
+  seo={page.data.seo}
+  toc={headings}
+>
+  <Content slot="body" />
+</PageLayout>

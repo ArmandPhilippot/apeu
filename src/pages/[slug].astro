@@ -1,0 +1,47 @@
+---
+import type { GetStaticPaths } from "astro";
+import type { ComponentProps } from "astro/types";
+import { getCollection, render } from "astro:content";
+import PageLayout from "../components/templates/page-layout/page-layout.astro";
+import { isAvailableRoute, useI18n } from "../utils/i18n";
+
+export const getStaticPaths = (async () => {
+  const pages = await getCollection("pages");
+
+  return pages
+    .filter((page) => {
+      const isCurrentLocale = page.data.locale === "en";
+      const maybeStaticRoute = page.id
+        .replace(`${page.data.locale}/`, "")
+        .replaceAll("/", ".")
+        .replaceAll("-", ".");
+
+      return !isAvailableRoute(maybeStaticRoute) && isCurrentLocale;
+    })
+    .map((page) => {
+      return {
+        params: {
+          slug: page.data.slug,
+        },
+        props: { page },
+      };
+    });
+}) satisfies GetStaticPaths;
+
+const { page } = Astro.props;
+const { Content, headings } = await render(page);
+const { route, translate } = useI18n(Astro.currentLocale);
+const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
+  { label: translate("page.home.title"), url: route("home") },
+  { label: page.data.title, url: Astro.url.href },
+];
+---
+
+<PageLayout
+  breadcrumb={breadcrumb}
+  heading={page.data.title}
+  seo={page.data.seo}
+  toc={headings}
+>
+  <Content slot="body" />
+</PageLayout>

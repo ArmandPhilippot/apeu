@@ -122,6 +122,27 @@ There are some caveats in dev mode:
 
 You can choose to use a dark theme or light theme while browsing the website. You can also choose to set the theme as `auto`. In this case, the website theme will be updated according to your operating system preferences. This is especially useful when you want to change the theme depending on the time of day.
 
+## Authoring
+
+The content directory located at the root of the project is used to store all the website contents. You can provide a custom relative path using an environment variable named `CONTENT_PATH`.
+
+The available content types are:
+
+- authors
+- blog categories
+- blog posts
+- blogroll
+- bookmarks
+- guides
+- notes
+- pages
+- projects
+- tags
+
+To check the expected fields in the frontmatter, please consult the files in `src/lib/astro/collections`.
+
+To add a new language, you'll need to duplicate the `content/en` directory.
+
 ## Development
 
 Before starting, please follow the instructions in [Setup](#setup).
@@ -130,6 +151,38 @@ Before starting, please follow the instructions in [Setup](#setup).
 
 ```text
 /
+├── content/
+│   ├── authors/
+│   │   └── armand-philippot.json
+│   ├── blogroll/
+│   │   ├── blog1.json
+│   │   └── blog2.json
+│   ├── bookmarks/
+│   │   └── a-bookmark.json
+│   └── en/
+│       ├── blog/
+│       │   ├── categories/
+│       │   │   ├── index.md
+│       │   │   └── category1.md
+│       │   ├── posts/
+│       │   │   ├── index.md
+│       │   │   └── post1.md
+│       │   └── index.md
+│       ├── guides/
+│       │   ├── index.md
+│       │   └── guide1.md
+│       ├── notes/
+│       │   ├── index.md
+│       │   └── note1.md
+│       ├── pages/
+│       │   ├── home.md
+│       │   └── search.md
+│       ├── projects/
+│       │   ├── index.md
+│       │   └── project1.md
+│       └── tags/
+│           ├── index.md
+│           └── tag1.md
 ├── public/
 ├── src/
 │   ├── assets/
@@ -160,6 +213,7 @@ Before starting, please follow the instructions in [Setup](#setup).
 
 In details:
 
+- `content/`: the website contents (pages, posts...),
 - `public/`: any static assets, like fonts, can be placed in this directory,
 - `src/assets/`: any assets that must be processed by Astro (like images) can be placed in this directory,
 - `src/components/`: the project components,

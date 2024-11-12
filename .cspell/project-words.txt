@@ -3,6 +3,7 @@ astro
 astrojs
 blogroll
 commitlint
+frontmatter
 globby
 nanostores
 pagefind

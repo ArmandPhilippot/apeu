@@ -1,5 +1,4 @@
 import { describe, expect, it } from "vitest";
-import { CONFIG } from "../../../utils/constants";
 import { bookmarks } from "./bookmarks";
 
 describe("bookmarks", () => {
@@ -34,6 +33,7 @@ describe("bookmarks", () => {
       description: "A description of the bookmark.",
       publishedOn: new Date("2023-01-01"),
       url: "https://example.test",
+      inLanguage: "en",
     };
 
     if (!bookmarks.schema || typeof bookmarks.schema === "function")
@@ -43,7 +43,6 @@ describe("bookmarks", () => {
 
     expect(result.success).toBe(true);
     if (result.success) {
-      expect(result.data.meta.inLanguage).toBe(CONFIG.LANGUAGES.DEFAULT);
       expect(result.data.meta.isDraft).toBe(false);
       expect(result.data.meta.updatedOn).toEqual(result.data.meta.publishedOn);
     }

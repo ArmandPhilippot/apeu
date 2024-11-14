@@ -1,0 +1,201 @@
+---
+import type { ComponentProps } from "astro/types";
+import Box from "../../atoms/box/box.astro";
+
+type Props = Omit<
+  ComponentProps<typeof Box<"article">>,
+  "as" | "isBordered" | "isProse" | "isRounded"
+>;
+
+const { class: className, ...attrs } = Astro.props;
+---
+
+<Box
+  {...attrs}
+  as="article"
+  class:list={["card", className]}
+  isBordered
+  isProse
+  isRounded
+>
+  {
+    Astro.slots.has("frontmatter") ||
+    Astro.slots.has("cover") ||
+    Astro.slots.has("heading") ? (
+      <header class="card-header">
+        {Astro.slots.has("frontmatter") ? (
+          <Box as="div" class="card-frontmatter" isPadded isProse>
+            <slot name="frontmatter" />
+          </Box>
+        ) : null}
+        {Astro.slots.has("cover") ? (
+          <Box as="div" class="card-cover" isBordered isRounded>
+            <slot name="cover" />
+          </Box>
+        ) : null}
+        <Box class="card-heading" isPadded isProse>
+          <slot name="heading" />
+        </Box>
+      </header>
+    ) : null
+  }
+  <Box as="div" class="card-body" isPadded isProse isSpaced><slot /></Box>
+  {
+    Astro.slots.has("meta") || Astro.slots.has("cta") ? (
+      <Box
+        as="footer"
+        class:list={["card-footer", { "has-meta": Astro.slots.has("meta") }]}
+        isPadded
+        isProse
+      >
+        <slot name="meta" />
+        <slot name="cta" />
+      </Box>
+    ) : null
+  }
+</Box>
+
+<style>
+  .card {
+    display: flex;
+    flex-flow: column wrap;
+
+    @container (width > 55em) {
+      display: grid;
+      grid-template-columns: minmax(0, 35%) minmax(0, 1fr);
+      grid-auto-rows: max-content;
+    }
+
+    & > :global(*:last-child) {
+      padding-block-end: var(--spacing-md);
+    }
+  }
+
+  :where(.card:not(:has(.card-cover))) {
+    @container (width > 55em) {
+      & > :global(*),
+      .card-header > :global(*) {
+        grid-column: 1 / -1;
+      }
+    }
+  }
+
+  .card-header {
+    border-start-start-radius: inherit;
+    border-start-end-radius: inherit;
+
+    @container (width > 55em) {
+      display: contents;
+    }
+  }
+
+  .card-frontmatter,
+  .card-footer {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+  }
+
+  .card-frontmatter {
+    gap: var(--spacing-xs);
+    max-width: unset;
+    padding-block: clamp(var(--spacing-xs), 0.75dvw, var(--spacing-sm));
+    border-block-end: var(--border-size-sm) solid var(--color-border);
+    border-radius: inherit;
+    color: var(--color-primary-faded);
+    font-weight: var(--font-weight-bold);
+    text-transform: uppercase;
+
+    @container (width > 55em) {
+      grid-column: 1 / span 2;
+      grid-row: 1;
+    }
+
+    & > :global(*) {
+      font-size: var(--font-size-xs);
+    }
+  }
+
+  .card-footer {
+    justify-content: space-between;
+    gap: var(--spacing-md);
+    margin-block-start: auto;
+    padding-block-start: var(--spacing-md);
+    border-block-start: var(--border-size-sm) solid var(--color-border);
+
+    @container (width > 55em) {
+      padding-inline: 0;
+      margin-inline: clamp(var(--spacing-md), 3dvw, var(--spacing-xl));
+    }
+
+    &:where(:not(.has-meta)) {
+      justify-content: end;
+    }
+  }
+
+  .card-heading {
+    padding-block-end: 0;
+  }
+
+  .card-body {
+    padding-block-start: 0;
+
+    &:where(:not(:last-child)) {
+      margin-block-end: var(--spacing-sm);
+    }
+
+    &:is(:last-child) {
+      margin-block-end: clamp(var(--spacing-md), 2dvw, var(--spacing-lg));
+    }
+  }
+
+  :where(.card:has(.card-cover)) {
+    @container (width > 55em) {
+      .card-frontmatter {
+        grid-column: 1 / -1;
+      }
+
+      .card-heading,
+      .card-body,
+      .card-footer {
+        grid-column: 2;
+      }
+    }
+  }
+
+  .card-cover {
+    margin: var(--spacing-sm) var(--spacing-sm) 0;
+    padding: var(--spacing-3xs);
+
+    @container (width > 55em) {
+      grid-column: 1;
+      grid-row: 1 / span 3;
+      margin: var(--spacing-sm);
+      position: relative;
+    }
+
+    & > :global(img) {
+      display: block;
+      max-width: 100%;
+      max-height: calc(var(--one-px-in-rem) * 200);
+      margin-inline: auto;
+      object-fit: cover;
+      border-radius: var(--border-radii-md);
+
+      @container (width > 55em) {
+        max-width: calc(100% - var(--spacing-3xs) * 2);
+        max-height: calc(100% - var(--spacing-3xs) * 2);
+        /* Prevent the grid to grow because of the cover size. */
+        position: absolute;
+      }
+    }
+  }
+
+  :where(.card:has(.card-frontmatter)) {
+    .card-cover {
+      @container (width > 55em) {
+        grid-row-start: 2;
+      }
+    }
+  }
+</style>

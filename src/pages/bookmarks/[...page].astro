@@ -1,0 +1,80 @@
+---
+import type { GetStaticPaths } from "astro";
+import type { ComponentProps } from "astro/types";
+import { getCollection, getEntry, render } from "astro:content";
+import ListItem from "../../components/atoms/list/list-item.astro";
+import List from "../../components/atoms/list/list.astro";
+import Pagination from "../../components/organisms/pagination/pagination.astro";
+import PageLayout from "../../components/templates/page-layout/page-layout.astro";
+import { CONFIG } from "../../utils/constants";
+import { useI18n } from "../../utils/i18n";
+import { renderPaginationLink } from "../../utils/pagination";
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const page = await getEntry("pages", "en/bookmarks");
+  const bookmarks = await getCollection("bookmarks");
+
+  return paginate(bookmarks, { pageSize: CONFIG.ITEMS_PER_PAGE }).map(
+    (paginatedBookmarks) => {
+      const { data, url, ...pagination } = paginatedBookmarks.props.page;
+      return {
+        ...paginatedBookmarks,
+        params: {
+          page: paginatedBookmarks.params.page
+            ? `/page/${paginatedBookmarks.params.page}`
+            : undefined,
+        },
+        props: {
+          bookmarks: data,
+          page,
+          pagination,
+        },
+      };
+    },
+  );
+}) satisfies GetStaticPaths;
+
+const { bookmarks, page, pagination } = Astro.props;
+const { Content } = await render(page);
+const { route, translate } = useI18n(Astro.currentLocale);
+const isFirstPage = pagination.currentPage === 1;
+const pageLabel = translate("page.paginated.label", {
+  number: pagination.currentPage,
+});
+
+const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
+  { label: translate("page.home.title"), url: route("home") },
+  { label: page.data.title, url: Astro.url.href },
+  ...[isFirstPage ? null : { label: pageLabel, url: Astro.url.href }],
+].filter((crumb) => !!crumb);
+
+const heading: ComponentProps<typeof PageLayout>["heading"] = isFirstPage
+  ? page.data.title
+  : `${page.data.title} - ${pageLabel}`;
+
+const seo: ComponentProps<typeof PageLayout>["seo"] = {
+  ...page.data.seo,
+  title: isFirstPage
+    ? page.data.seo.title
+    : `${page.data.seo.title} - ${pageLabel}`,
+};
+---
+
+<PageLayout breadcrumb={breadcrumb} heading={heading} seo={seo}>
+  <Fragment slot="body">
+    <Content />
+    <List>
+      {bookmarks.map((bookmark) => <ListItem>{bookmark.data.title}</ListItem>)}
+    </List>
+    {
+      pagination.lastPage > 1 ? (
+        <Pagination
+          aria-label={translate("pagination.a11y")}
+          current={pagination.currentPage}
+          last={pagination.lastPage}
+          renderLink={renderPaginationLink(route("bookmarks"))}
+        />
+      ) : null
+    }
+  </Fragment>
+</PageLayout>

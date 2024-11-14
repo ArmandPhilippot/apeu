@@ -1,14 +1,14 @@
 import { defineCollection, reference, z } from "astro:content";
-import { CONFIG } from "../../../utils/constants";
+import { isValidLanguageCode } from "../../../utils/locales";
 import { globLoader } from "../loaders/glob-loader";
-import { contentsBaseSchema, locale } from "./utils";
+import { contentsBaseSchema } from "./utils";
 
 export const bookmarks = defineCollection({
   loader: globLoader("bookmarks"),
   schema: contentsBaseSchema
     .omit({ route: true, seo: true, slug: true })
     .extend({
-      inLanguage: locale.optional().default(CONFIG.LANGUAGES.DEFAULT),
+      inLanguage: z.string().refine(isValidLanguageCode),
       tags: z.array(reference("tags")).optional(),
       url: z.string().url(),
     })
@@ -16,7 +16,7 @@ export const bookmarks = defineCollection({
       ({
         inLanguage,
         isDraft,
-        locale: _locale,
+        locale,
         publishedOn,
         tags,
         updatedOn,

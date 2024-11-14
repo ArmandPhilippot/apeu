@@ -1,0 +1,36 @@
+<svg
+   width="48"
+   height="48"
+   viewBox="0 0 48 48"
+   xmlns="http://www.w3.org/2000/svg">
+   <path
+      d="m 8.7596734,18.015417 -4.9979668,4.01556 h 4.9979668 z"
+      style="fill:none;stroke:#000000;stroke-width:1.52409;stroke-linecap:round;stroke-linejoin:round" />
+   <path
+      d="m 8.7589668,13.28304 v 13.300988 l 9.5937522,4.773264 -1.725508,1.034948 h 0.105404 l 7.267049,-4.357673 7.267049,4.357673 h 0.105404 l -1.725508,-1.034948 9.593752,-4.773264 V 13.28304 Z"
+      style="fill:none;stroke:#000000;stroke-width:1.52427;stroke-linecap:round;stroke-linejoin:round;" />
+   <path
+      d="m 3.7617066,22.030977 v 2.066373 l 4.9979668,2.486289 v -4.552662 z m 35.4779474,0 v 4.552662 l 4.997967,-2.486289 v -2.066373 h -4.966717 z"
+      style="fill:none;stroke:#000000;stroke-width:1.52409;stroke-linecap:round;stroke-linejoin:round" />
+   <path
+      d="m 39.271593,18.038152 v 3.992515 h 4.965718 z"
+      style="fill:none;stroke:#000000;stroke-width:1.52409;stroke-linecap:round;stroke-linejoin:round" />
+   <path
+      d="M 23.999664,5.7620207 14.644047,13.28304 h 18.711234 z"
+      style="fill:none;stroke:#000000;stroke-width:1.52409;stroke-linecap:round;stroke-linejoin:round" />
+   <path
+      d="M 44.237311,24.09569 29.646609,31.35646 44.237311,40.1061 Z"
+      style="fill:none;stroke:#000000;stroke-width:1.52409;stroke-linecap:round;stroke-linejoin:round" />
+   <path
+      d="M 3.7620166,24.09569 V 40.1061 L 18.352719,31.35646 Z"
+      style="fill:none;stroke:#000000;stroke-width:1.52409;stroke-linecap:round;stroke-linejoin:round" />
+   <path
+      d="M 23.999664,28.034567 3.7620166,40.171491 V 42.23735 H 44.237311 v -2.065859 z"
+      style="fill:none;stroke:#000000;stroke-width:1.52409;stroke-linecap:round;stroke-linejoin:round" />
+   <path
+      d="m 13.578584,19.269057 h 20.842158 v 0.03143 H 13.578584 Z"
+      style="fill:none;stroke:#000000;stroke-width:1.16855;stroke-linecap:round;stroke-linejoin:round" />
+   <path
+      d="m 13.578584,23.46899 h 20.842158 v 0.03143 H 13.578584 Z"
+      style="fill:none;stroke:#000000;stroke-width:1.16855;stroke-linecap:round;stroke-linejoin:round" />
+</svg>

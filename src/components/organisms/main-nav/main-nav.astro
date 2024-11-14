@@ -61,6 +61,12 @@ const isCurrentRouteOrNested = (url: string) => {
         border-block-end: none;
       }
     }
+
+    & > :global(*:not(:first-child)) {
+      @media (width >= 1024px) {
+        margin-block-start: var(--spacing-2xs);
+      }
+    }
   }
 
   .main-nav-item {
@@ -83,7 +89,7 @@ const isCurrentRouteOrNested = (url: string) => {
       outline-offset: 0;
 
       &:where(:not(.selected)) {
-        border-block: none;
+        border-block-color: transparent;
       }
     }
   }

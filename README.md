@@ -141,8 +141,6 @@ The available content types are:
 
 To check the expected fields in the frontmatter, please consult the files in `src/lib/astro/collections`.
 
-To add a new language, you'll need to duplicate the `content/en` directory.
-
 ## Development
 
 Before starting, please follow the instructions in [Setup](#setup).
@@ -175,7 +173,11 @@ Before starting, please follow the instructions in [Setup](#setup).
 │       │   ├── index.md
 │       │   └── note1.md
 │       ├── pages/
+│       │   ├── blogroll.md
+│       │   ├── bookmarks.md
+│       │   ├── contact.md
 │       │   ├── home.md
+│       │   ├── legal-notice.md
 │       │   └── search.md
 │       ├── projects/
 │       │   ├── index.md
@@ -198,7 +200,27 @@ Before starting, please follow the instructions in [Setup](#setup).
 │   │   │   ├── tokens/
 │   │   │   └── index.astro
 │   │   ├── api/
+│   │   ├── blog/
+│   │   │   ├── categories/
+│   │   │   │   └── index.astro
+│   │   │   ├── posts/
+│   │   │   │   └── index.astro
+│   │   │   └── index.astro
+│   │   ├── blogroll/
+│   │   │   └── index.astro
+│   │   ├── bookmarks/
+│   │   │   └── index.astro
+│   │   ├── guides/
+│   │   │   └── index.astro
+│   │   ├── notes/
+│   │   │   └── index.astro
+│   │   ├── projects/
+│   │   │   └── index.astro
+│   │   ├── tags/
+│   │   │   └── index.astro
+│   │   ├── contact.astro
 │   │   ├── index.astro
+│   │   ├── legal-notice.astro
 │   │   └── search.astro
 │   ├── services/
 │   │   └── mailer/
@@ -224,6 +246,9 @@ In details:
 - `src/translations/`: the JSON files used to store all UI strings and routes for one language,
 - `src/types/`: the Typescript types shared across the application,
 - `src/utils/`: all the utilities (constants, helpers, etc.) to build the project.
+
+> [!IMPORTANT]
+> All the `index.md` files in the `content` directory are required. These files are used in `src/pages` to add metadata and optional content to the index pages of your collections. Pages created in `content/pages` can use any filename but some pages are required: `blogroll.md`, `bookmarks.md`, `contact.md`, `home.md`, `legal-notice.md` and `search.md`.
 
 ### Design system
 
@@ -282,17 +307,19 @@ You can find all available tokens in the design system (accessible under `/desig
 
 To add a new language for this website, you need to create a new JSON file in `src/translations` using the locale as filename. Here are the required steps:
 
-1. `cp /src/translations/en.json /src/translations/fr.json`
-2. `nano /src/translations/fr.json`, translate all the keys in your language then save the file,
-3. `nano /src/translations/index.ts`: in that file, import then reexport your new language.
-4. The new language is now available!
+1. `cp content/en content/fr` and keep the filenames of the `pages` untranslated,
+2. `cp src/translations/en.json src/translations/fr.json`,
+3. `nano src/translations/fr.json`, translate all the keys in your language then save the file,
+4. `nano src/translations/index.ts`: in that file, import then reexport your new language,
+5. Copy the pages in `src/pages` in a new directory matching the locale you're adding (e.g. `src/pages/fr`) and translates the filename so that they match your translations in `src/translations`,
+6. The new language is now available!
 
 ### Use localized UI strings in templates
 
 If you need to use UI strings or routes in your templates:
 
 1. Make sure the key exist in the translations files or add a new key,
-2. Import the `useI18n()` helper
+2. Import the `useI18n()` helper,
 3. Use one the provided methods to display your UI string or route.
 
 **DO:**

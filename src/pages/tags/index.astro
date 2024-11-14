@@ -1,14 +1,15 @@
 ---
 import type { ComponentProps } from "astro/types";
-import { getEntry, render } from "astro:content";
-import PagefindSearch from "../components/organisms/pagefind-search/pagefind-search.astro";
-import PageLayout from "../components/templates/page-layout/page-layout.astro";
-import { CONFIG } from "../utils/constants";
-import { useI18n } from "../utils/i18n";
+import { getCollection, getEntry, render } from "astro:content";
+import ListItem from "../../components/atoms/list/list-item.astro";
+import List from "../../components/atoms/list/list.astro";
+import PageLayout from "../../components/templates/page-layout/page-layout.astro";
+import { useI18n } from "../../utils/i18n";
 
 const { locale, route, translate } = useI18n(Astro.currentLocale);
-const page = await getEntry("pages", `${locale}/search`);
+const page = await getEntry("pages", `${locale}/tags`);
 const { Content } = await render(page);
+const tags = await getCollection("tags");
 const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
   { label: translate("page.home.title"), url: route("home") },
   { label: page.data.title, url: Astro.url.href },
@@ -22,6 +23,8 @@ const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
 >
   <Fragment slot="body">
     <Content />
-    <PagefindSearch queryParam={CONFIG.SEARCH.QUERY_PARAM} />
+    <List>
+      {tags.map((tag) => <ListItem>{tag.data.title}</ListItem>)}
+    </List>
   </Fragment>
 </PageLayout>

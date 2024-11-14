@@ -20,13 +20,22 @@ export type Elevation = "raised" | "elevated" | "floating";
  */
 export type IconName =
   | CalloutType
+  | "arrow-right"
+  | "blog"
+  | "bookmark"
   | "caret"
   | "cc-by-sa"
+  | "contact"
   | "feed"
   | "gear"
+  | "globe"
+  | "guide"
   | "hamburger"
   | "home"
   | "locale"
-  | "search";
+  | "notepad"
+  | "project"
+  | "search"
+  | "tag";
 
 export type Theme = "auto" | "dark" | "light";

@@ -1,13 +1,11 @@
 ---
-import type { ComponentProps } from "astro/types";
+import { getEntry, render } from "astro:content";
 import PageLayout from "../components/templates/page-layout/page-layout.astro";
-import { useI18n } from "../utils/i18n";
 
-const { translate } = useI18n(Astro.currentLocale);
-const title = translate("page.home.title");
-const seo: ComponentProps<typeof PageLayout>["seo"] = {
-  title,
-};
+const page = await getEntry("pages", "en/home");
+const { Content } = await render(page);
 ---
 
-<PageLayout heading={title} seo={seo} />
+<PageLayout heading={page.data.title} seo={page.data.seo}>
+  <Content slot="body" />
+</PageLayout>

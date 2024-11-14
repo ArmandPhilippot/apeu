@@ -16,6 +16,7 @@ export const CONFIG = {
   CREATION_YEAR: 2024,
   DESCRIPTION: "The personal website of Armand Philippot.",
   HOST: "armand.philippot.eu",
+  ITEMS_PER_PAGE: 10,
   LANGUAGES: {
     AVAILABLE: ["en"],
     DEFAULT: "en",

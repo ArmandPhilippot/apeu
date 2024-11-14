@@ -20,6 +20,7 @@ export type Elevation = "raised" | "elevated" | "floating";
  */
 export type IconName =
   | CalloutType
+  | "arrow-right"
   | "blog"
   | "bookmark"
   | "caret"

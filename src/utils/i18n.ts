@@ -51,14 +51,16 @@ export const getCurrentLocale = (
   return CONFIG.LANGUAGES.DEFAULT;
 };
 
+type Interpolations = Record<string, number | string>;
+
 const replaceInterpolationsInMsg = (
   message: string,
-  interpolations: Record<string, string>,
+  interpolations: Interpolations,
 ) => {
   let updatedMsg = message;
 
   for (const [placeholder, value] of Object.entries(interpolations)) {
-    updatedMsg = updatedMsg.replace(`{${placeholder}}`, value);
+    updatedMsg = updatedMsg.replace(`{${placeholder}}`, `${value}`);
   }
 
   return updatedMsg;
@@ -66,7 +68,7 @@ const replaceInterpolationsInMsg = (
 
 type AvailableRoute = keyof I18nMessages["routes"];
 type UIKey = I18nMessages["ui"];
-type PluralUIKey = KeyOfType<UIKey, Record<string, string>>;
+type PluralUIKey = KeyOfType<UIKey, Interpolations>;
 type QuantifierKeys = keyof UIKey[PluralUIKey];
 type SingularUIKey = KeyOfType<UIKey, string>;
 
@@ -99,7 +101,7 @@ export type TranslateRoute = (
 
 export type TranslateSingularKeys = (
   key: SingularUIKey,
-  interpolations?: Record<string, string>,
+  interpolations?: Interpolations,
 ) => string;
 
 type UseI18n = (

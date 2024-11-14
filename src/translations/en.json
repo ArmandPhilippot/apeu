@@ -57,6 +57,7 @@
     "page.home.title": "Home",
     "page.legal.notice.title": "Legal notice",
     "page.notes.title": "Notes",
+    "page.paginated.label": "Page {number}",
     "page.projects.title": "Projects",
     "page.search.title": "Search",
     "page.tags.title": "Tags",

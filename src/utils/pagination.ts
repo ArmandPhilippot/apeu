@@ -63,3 +63,8 @@ export const getPagination = (config: PaginationConfig): number[] => {
     ...getEndingPages({ endPage, totalPages }),
   ];
 };
+
+export const renderPaginationLink = (route: string) => (pageNumber: number) => {
+  if (pageNumber === 1) return route;
+  return `${route}/page/${pageNumber}`;
+};

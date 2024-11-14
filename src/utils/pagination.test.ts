@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { getPagination } from "./pagination";
+import { getPagination, renderPaginationLink } from "./pagination";
 
 describe("get-pagination", () => {
   it("should return pages around the current page with the first and last pages included", () => {
@@ -42,5 +42,19 @@ describe("get-pagination", () => {
     const config = { currentPage: 1, totalPages: 1, siblings: 2 };
     const result = getPagination(config);
     expect(result).toEqual([1]);
+  });
+});
+
+describe("render-pagination-link", () => {
+  it("should return the given route for the first page", () => {
+    const basePath = "/base-path";
+
+    expect(renderPaginationLink(basePath)(1)).toBe(basePath);
+  });
+
+  it("should return the given route suffixed with the page number of other pages", () => {
+    const basePath = "/base-path";
+
+    expect(renderPaginationLink(basePath)(10)).toBe(`${basePath}/page/10`);
   });
 });

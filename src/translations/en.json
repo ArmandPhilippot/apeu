@@ -30,6 +30,7 @@
     "cta.skip.to.content": "Skip to content",
     "cta.subscribe": "Subscribe",
     "cta.subscribe.a11y": "Subscribe to {title}",
+    "date.at.time": "{date} at {time}",
     "form.contact.btn": "Send email",
     "form.contact.label.email": "Email",
     "form.contact.label.message": "Message",

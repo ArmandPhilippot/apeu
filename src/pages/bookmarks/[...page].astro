@@ -1,18 +1,22 @@
 ---
 import type { GetStaticPaths } from "astro";
 import type { ComponentProps } from "astro/types";
-import { getCollection, getEntry, render } from "astro:content";
+import { getEntry, render } from "astro:content";
 import ListItem from "../../components/atoms/list/list-item.astro";
 import List from "../../components/atoms/list/list.astro";
 import Pagination from "../../components/organisms/pagination/pagination.astro";
 import PageLayout from "../../components/templates/page-layout/page-layout.astro";
+import { queryCollection } from "../../lib/astro/collections/query-collection";
 import { CONFIG } from "../../utils/constants";
 import { useI18n } from "../../utils/i18n";
 import { renderPaginationLink } from "../../utils/pagination";
 
 export const getStaticPaths = (async ({ paginate }) => {
   const page = await getEntry("pages", "en/bookmarks");
-  const bookmarks = await getCollection("bookmarks");
+  const { entries: bookmarks } = await queryCollection("bookmarks", {
+    format: "preview",
+    orderBy: { key: "publishedOn", order: "DESC" },
+  });
 
   return paginate(bookmarks, { pageSize: CONFIG.ITEMS_PER_PAGE }).map(
     (paginatedBookmarks) => {
@@ -64,7 +68,7 @@ const seo: ComponentProps<typeof PageLayout>["seo"] = {
   <Fragment slot="body">
     <Content />
     <List>
-      {bookmarks.map((bookmark) => <ListItem>{bookmark.data.title}</ListItem>)}
+      {bookmarks.map((bookmark) => <ListItem>{bookmark.title}</ListItem>)}
     </List>
     {
       pagination.lastPage > 1 ? (

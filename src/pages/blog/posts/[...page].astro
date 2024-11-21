@@ -1,19 +1,24 @@
 ---
 import type { GetStaticPaths } from "astro";
 import type { ComponentProps } from "astro/types";
-import { getCollection, getEntry, render } from "astro:content";
+import { getEntry, render } from "astro:content";
 import Link from "../../../components/atoms/link/link.astro";
 import ListItem from "../../../components/atoms/list/list-item.astro";
 import List from "../../../components/atoms/list/list.astro";
 import Pagination from "../../../components/organisms/pagination/pagination.astro";
 import PageLayout from "../../../components/templates/page-layout/page-layout.astro";
+import { queryCollection } from "../../../lib/astro/collections/query-collection";
 import { CONFIG } from "../../../utils/constants";
 import { useI18n } from "../../../utils/i18n";
 import { renderPaginationLink } from "../../../utils/pagination";
 
 export const getStaticPaths = (async ({ paginate }) => {
   const page = await getEntry("pages", "en/blog/posts");
-  const posts = await getCollection("blogPosts");
+  const { entries: posts } = await queryCollection("blogPosts", {
+    format: "preview",
+    orderBy: { key: "publishedOn", order: "DESC" },
+    where: { locale: "en" },
+  });
 
   return paginate(posts, { pageSize: CONFIG.ITEMS_PER_PAGE }).map(
     (paginatedPosts) => {
@@ -69,7 +74,7 @@ const seo: ComponentProps<typeof PageLayout>["seo"] = {
       {
         posts.map((post) => (
           <ListItem>
-            <Link href={post.data.route}>{post.data.title}</Link>
+            <Link href={post.route}>{post.title}</Link>
           </ListItem>
         ))
       }

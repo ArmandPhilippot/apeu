@@ -13,6 +13,17 @@ export type CollectionReference<C extends DataCollectionKey> = {
   id: ValidDataEntryId<C>;
 };
 
+export type HasKey<T, K extends PropertyKey> = T extends { [P in K]: unknown }
+  ? T
+  : never;
+
+export type HasNestedKey<U, K1 extends PropertyKey, K2 extends PropertyKey> =
+  U extends HasKey<U, K1>
+    ? U[K1] extends HasKey<U[K1], K2>
+      ? U
+      : never
+    : never;
+
 /**
  * Create an union of object keys where the value matches the given type.
  */
@@ -26,3 +37,9 @@ type AnyString = string & Record<never, never>;
  * Provide autocompletion from a string literal type while allowing any string.
  */
 export type LooseAutocomplete<T extends string> = T | AnyString;
+
+type OmitNever<T extends Record<string, unknown>> = {
+  [K in keyof T as T[K] extends never ? never : K]: T[K];
+};
+
+export type SharedShape<T1, T2> = OmitNever<Pick<T1 & T2, keyof T1 & keyof T2>>;

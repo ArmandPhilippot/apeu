@@ -38,4 +38,6 @@ export type IconName =
   | "search"
   | "tag";
 
+export type Order = "ASC" | "DESC";
+
 export type Theme = "auto" | "dark" | "light";

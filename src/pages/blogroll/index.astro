@@ -1,15 +1,18 @@
 ---
 import type { ComponentProps } from "astro/types";
-import { getCollection, getEntry, render } from "astro:content";
+import { getEntry, render } from "astro:content";
 import ListItem from "../../components/atoms/list/list-item.astro";
 import List from "../../components/atoms/list/list.astro";
 import PageLayout from "../../components/templates/page-layout/page-layout.astro";
+import { queryCollection } from "../../lib/astro/collections/query-collection";
 import { useI18n } from "../../utils/i18n";
 
 const { locale, route, translate } = useI18n(Astro.currentLocale);
 const page = await getEntry("pages", `${locale}/blogroll`);
 const { Content } = await render(page);
-const blogroll = await getCollection("blogroll");
+const { entries: blogroll } = await queryCollection("blogroll", {
+  orderBy: { key: "title", order: "ASC" },
+});
 const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
   { label: translate("page.home.title"), url: route("home") },
   { label: page.data.title, url: Astro.url.href },
@@ -24,7 +27,7 @@ const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
   <Fragment slot="body">
     <Content />
     <List>
-      {blogroll.map((blog) => <ListItem>{blog.data.title}</ListItem>)}
+      {blogroll.map((blog) => <ListItem>{blog.title}</ListItem>)}
     </List>
   </Fragment>
 </PageLayout>

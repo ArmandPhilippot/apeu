@@ -1,15 +1,20 @@
 ---
 import type { ComponentProps } from "astro/types";
-import { getCollection, getEntry, render } from "astro:content";
+import { getEntry, render } from "astro:content";
 import ListItem from "../../components/atoms/list/list-item.astro";
 import List from "../../components/atoms/list/list.astro";
 import PageLayout from "../../components/templates/page-layout/page-layout.astro";
+import { queryCollection } from "../../lib/astro/collections/query-collection";
 import { useI18n } from "../../utils/i18n";
 
 const { locale, route, translate } = useI18n(Astro.currentLocale);
 const page = await getEntry("pages", `${locale}/notes`);
 const { Content } = await render(page);
-const notes = await getCollection("notes");
+const { entries: notes } = await queryCollection("notes", {
+  format: "preview",
+  orderBy: { key: "publishedOn", order: "DESC" },
+  where: { locale: "en" },
+});
 const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
   { label: translate("page.home.title"), url: route("home") },
   { label: page.data.title, url: Astro.url.href },
@@ -24,7 +29,7 @@ const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
   <Fragment slot="body">
     <Content />
     <List>
-      {notes.map((note) => <ListItem>{note.data.title}</ListItem>)}
+      {notes.map((note) => <ListItem>{note.title}</ListItem>)}
     </List>
   </Fragment>
 </PageLayout>

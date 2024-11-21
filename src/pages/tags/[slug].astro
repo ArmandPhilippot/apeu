@@ -1,40 +1,37 @@
 ---
 import type { GetStaticPaths } from "astro";
 import type { ComponentProps } from "astro/types";
-import { getCollection, render } from "astro:content";
 import PageLayout from "../../components/templates/page-layout/page-layout.astro";
+import { queryCollection } from "../../lib/astro/collections/query-collection";
 import { useI18n } from "../../utils/i18n";
 
 export const getStaticPaths = (async () => {
-  const tags = await getCollection("tags");
+  const { entries: tags } = await queryCollection("tags", {
+    where: { locale: "en" },
+  });
 
-  return tags
-    .filter((tag) => tag.data.locale === "en")
-    .map((tag) => {
-      return {
-        params: {
-          slug: tag.data.slug,
-        },
-        props: { page: tag },
-      };
-    });
+  return tags.map(({ slug, ...tag }) => {
+    return {
+      params: { slug },
+      props: { ...tag },
+    };
+  });
 }) satisfies GetStaticPaths;
 
-const { page } = Astro.props;
-const { Content, headings } = await render(page);
+const { Content, ...page } = Astro.props;
 const { route, translate } = useI18n(Astro.currentLocale);
 const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
   { label: translate("page.home.title"), url: route("home") },
   { label: translate("page.tags.title"), url: route("tags") },
-  { label: page.data.title, url: Astro.url.href },
+  { label: page.title, url: Astro.url.href },
 ];
 ---
 
 <PageLayout
   breadcrumb={breadcrumb}
-  heading={page.data.title}
-  seo={page.data.seo}
-  toc={headings}
+  heading={page.title}
+  seo={page.seo}
+  toc={page.headings}
 >
   <Content slot="body" />
 </PageLayout>

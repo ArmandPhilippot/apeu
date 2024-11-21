@@ -1,7 +1,7 @@
 import { defineCollection, reference, z } from "astro:content";
-import { isValidLanguageCode } from "../../../utils/locales";
-import { globLoader } from "../loaders/glob-loader";
-import { contentsBaseSchema } from "./utils";
+import { isValidLanguageCode } from "../../../../utils/locales";
+import { globLoader } from "../../loaders/glob-loader";
+import { contentsBaseSchema } from "./partials";
 
 export const bookmarks = defineCollection({
   loader: globLoader("bookmarks"),

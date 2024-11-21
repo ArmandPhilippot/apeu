@@ -1,14 +1,16 @@
 import { describe, expect, it, vi } from "vitest";
-import { CONFIG } from "../../../utils/constants";
-import { blogCategories } from "./blog-categories";
+import { CONFIG } from "../../../../utils/constants";
+import { blogPosts } from "./blog-posts";
 
-describe("blogCategories", () => {
+describe("blogPosts", () => {
   it("should include the meta in the transformed output", async () => {
-    const category = {
-      title: "The title of the category",
-      description: "A description of the category.",
+    const post = {
+      title: "The title of the post",
+      description: "A description of the post.",
       isDraft: true,
       publishedOn: new Date("2023-01-01"),
+      authors: ["john-doe"],
+      category: "foo-bar",
       seo: {
         title: "qui sit vero",
         description: "Vel voluptatem laboriosam.",
@@ -16,11 +18,11 @@ describe("blogCategories", () => {
       updatedOn: new Date("2023-01-02"),
     };
 
-    if (typeof blogCategories.schema !== "function")
+    if (typeof blogPosts.schema !== "function")
       throw new Error("The schema is not callable");
 
-    const parsedSchema = blogCategories.schema({ image: vi.fn() });
-    const result = await parsedSchema.safeParseAsync(category);
+    const parsedSchema = blogPosts.schema({ image: vi.fn() });
+    const result = await parsedSchema.safeParseAsync(post);
 
     expect.assertions(4);
 
@@ -33,21 +35,23 @@ describe("blogCategories", () => {
   });
 
   it("should apply default values as expected", async () => {
-    const category = {
-      title: "The title of the category",
-      description: "A description of the category.",
+    const post = {
+      title: "The title of the post",
+      description: "A description of the post.",
       publishedOn: new Date("2023-01-01"),
+      authors: ["john-doe"],
+      category: "foo-bar",
       seo: {
         title: "qui sit vero",
         description: "Vel voluptatem laboriosam.",
       },
     };
 
-    if (typeof blogCategories.schema !== "function")
+    if (typeof blogPosts.schema !== "function")
       throw new Error("The schema is not callable");
 
-    const parsedSchema = blogCategories.schema({ image: vi.fn() });
-    const result = await parsedSchema.safeParseAsync(category);
+    const parsedSchema = blogPosts.schema({ image: vi.fn() });
+    const result = await parsedSchema.safeParseAsync(post);
 
     expect.assertions(4);
 

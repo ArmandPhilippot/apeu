@@ -1,43 +1,39 @@
 import { defineCollection, reference, z } from "astro:content";
-import { globLoader } from "../loaders/glob-loader";
-import { contentsBaseSchema } from "./utils";
+import { globLoader } from "../../loaders/glob-loader";
+import { contentsBaseSchema } from "./partials";
 
-export const projects = defineCollection({
-  loader: globLoader("projects"),
+export const blogPosts = defineCollection({
+  loader: globLoader("blog.posts"),
   schema: ({ image }) =>
     contentsBaseSchema
       .extend({
+        authors: z.array(reference("authors")),
+        category: reference("blogCategories"),
         cover: z
           .object({
             alt: z.string(),
             src: image(),
           })
           .optional(),
-        kind: z.union([
-          z.literal("app"),
-          z.literal("site"),
-          z.literal("theme"),
-        ]),
-        repository: z.string().url().optional(),
         tags: z.array(reference("tags")).optional(),
       })
       .transform(
         ({
+          authors,
+          category,
           isDraft,
-          kind,
           publishedOn,
-          repository,
           tags,
           updatedOn,
-          ...project
+          ...post
         }) => {
           return {
-            ...project,
+            ...post,
             meta: {
+              authors,
+              category,
               isDraft,
-              kind,
               publishedOn,
-              repository,
               tags,
               updatedOn: updatedOn ?? publishedOn,
             },

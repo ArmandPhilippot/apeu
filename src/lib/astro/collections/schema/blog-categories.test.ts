@@ -1,12 +1,12 @@
 import { describe, expect, it, vi } from "vitest";
-import { CONFIG } from "../../../utils/constants";
-import { tags } from "./tags";
+import { CONFIG } from "../../../../utils/constants";
+import { blogCategories } from "./blog-categories";
 
-describe("tags", () => {
+describe("blogCategories", () => {
   it("should include the meta in the transformed output", async () => {
-    const tag = {
-      title: "The title of the tag",
-      description: "A description of the tag.",
+    const category = {
+      title: "The title of the category",
+      description: "A description of the category.",
       isDraft: true,
       publishedOn: new Date("2023-01-01"),
       seo: {
@@ -16,11 +16,11 @@ describe("tags", () => {
       updatedOn: new Date("2023-01-02"),
     };
 
-    if (typeof tags.schema !== "function")
+    if (typeof blogCategories.schema !== "function")
       throw new Error("The schema is not callable");
 
-    const parsedSchema = tags.schema({ image: vi.fn() });
-    const result = await parsedSchema.safeParseAsync(tag);
+    const parsedSchema = blogCategories.schema({ image: vi.fn() });
+    const result = await parsedSchema.safeParseAsync(category);
 
     expect.assertions(4);
 
@@ -33,9 +33,9 @@ describe("tags", () => {
   });
 
   it("should apply default values as expected", async () => {
-    const tag = {
-      title: "The title of the tag",
-      description: "A description of the tag.",
+    const category = {
+      title: "The title of the category",
+      description: "A description of the category.",
       publishedOn: new Date("2023-01-01"),
       seo: {
         title: "qui sit vero",
@@ -43,11 +43,11 @@ describe("tags", () => {
       },
     };
 
-    if (typeof tags.schema !== "function")
+    if (typeof blogCategories.schema !== "function")
       throw new Error("The schema is not callable");
 
-    const parsedSchema = tags.schema({ image: vi.fn() });
-    const result = await parsedSchema.safeParseAsync(tag);
+    const parsedSchema = blogCategories.schema({ image: vi.fn() });
+    const result = await parsedSchema.safeParseAsync(category);
 
     expect.assertions(4);
 

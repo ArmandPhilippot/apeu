@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { CONFIG } from "../../../utils/constants";
+import { CONFIG } from "../../../../utils/constants";
 import { notes } from "./notes";
 
 describe("notes", () => {

@@ -1,16 +1,14 @@
 import { describe, expect, it, vi } from "vitest";
-import { CONFIG } from "../../../utils/constants";
-import { blogPosts } from "./blog-posts";
+import { CONFIG } from "../../../../utils/constants";
+import { pages } from "./pages";
 
-describe("blogPosts", () => {
-  it("should include the meta in the transformed output", async () => {
-    const post = {
-      title: "The title of the post",
-      description: "A description of the post.",
+describe("pages", () => {
+  it("should include the meta in the transformed output", () => {
+    const page = {
+      title: "The title of the page",
+      description: "A description of the page.",
       isDraft: true,
       publishedOn: new Date("2023-01-01"),
-      authors: ["john-doe"],
-      category: "foo-bar",
       seo: {
         title: "qui sit vero",
         description: "Vel voluptatem laboriosam.",
@@ -18,13 +16,11 @@ describe("blogPosts", () => {
       updatedOn: new Date("2023-01-02"),
     };
 
-    if (typeof blogPosts.schema !== "function")
+    if (typeof pages.schema !== "function")
       throw new Error("The schema is not callable");
 
-    const parsedSchema = blogPosts.schema({ image: vi.fn() });
-    const result = await parsedSchema.safeParseAsync(post);
-
-    expect.assertions(4);
+    const parsedSchema = pages.schema({ image: vi.fn() });
+    const result = parsedSchema.safeParse(page);
 
     expect(result.success).toBe(true);
     if (result.success) {
@@ -34,26 +30,22 @@ describe("blogPosts", () => {
     }
   });
 
-  it("should apply default values as expected", async () => {
-    const post = {
-      title: "The title of the post",
-      description: "A description of the post.",
+  it("should apply default values as expected", () => {
+    const page = {
+      title: "The title of the page",
+      description: "A description of the page.",
       publishedOn: new Date("2023-01-01"),
-      authors: ["john-doe"],
-      category: "foo-bar",
       seo: {
         title: "qui sit vero",
         description: "Vel voluptatem laboriosam.",
       },
     };
 
-    if (typeof blogPosts.schema !== "function")
+    if (typeof pages.schema !== "function")
       throw new Error("The schema is not callable");
 
-    const parsedSchema = blogPosts.schema({ image: vi.fn() });
-    const result = await parsedSchema.safeParseAsync(post);
-
-    expect.assertions(4);
+    const parsedSchema = pages.schema({ image: vi.fn() });
+    const result = parsedSchema.safeParse(page);
 
     expect(result.success).toBe(true);
     if (result.success) {

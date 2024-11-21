@@ -1,13 +1,14 @@
 import { describe, expect, it, vi } from "vitest";
-import { CONFIG } from "../../../utils/constants";
-import { pages } from "./pages";
+import { CONFIG } from "../../../../utils/constants";
+import { projects } from "./projects";
 
-describe("pages", () => {
-  it("should include the meta in the transformed output", () => {
-    const page = {
-      title: "The title of the page",
-      description: "A description of the page.",
+describe("projects", () => {
+  it("should include the meta in the transformed output", async () => {
+    const project = {
+      title: "The title of the project",
+      description: "A description of the project.",
       isDraft: true,
+      kind: "app",
       publishedOn: new Date("2023-01-01"),
       seo: {
         title: "qui sit vero",
@@ -16,11 +17,13 @@ describe("pages", () => {
       updatedOn: new Date("2023-01-02"),
     };
 
-    if (typeof pages.schema !== "function")
+    if (typeof projects.schema !== "function")
       throw new Error("The schema is not callable");
 
-    const parsedSchema = pages.schema({ image: vi.fn() });
-    const result = parsedSchema.safeParse(page);
+    const parsedSchema = projects.schema({ image: vi.fn() });
+    const result = await parsedSchema.safeParseAsync(project);
+
+    expect.assertions(4);
 
     expect(result.success).toBe(true);
     if (result.success) {
@@ -30,22 +33,25 @@ describe("pages", () => {
     }
   });
 
-  it("should apply default values as expected", () => {
-    const page = {
-      title: "The title of the page",
-      description: "A description of the page.",
+  it("should apply default values as expected", async () => {
+    const project = {
+      title: "The title of the project",
+      description: "A description of the project.",
       publishedOn: new Date("2023-01-01"),
+      kind: "app",
       seo: {
         title: "qui sit vero",
         description: "Vel voluptatem laboriosam.",
       },
     };
 
-    if (typeof pages.schema !== "function")
+    if (typeof projects.schema !== "function")
       throw new Error("The schema is not callable");
 
-    const parsedSchema = pages.schema({ image: vi.fn() });
-    const result = parsedSchema.safeParse(page);
+    const parsedSchema = projects.schema({ image: vi.fn() });
+    const result = await parsedSchema.safeParseAsync(project);
+
+    expect.assertions(4);
 
     expect(result.success).toBe(true);
     if (result.success) {

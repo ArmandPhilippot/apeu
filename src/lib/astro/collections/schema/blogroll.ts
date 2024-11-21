@@ -1,8 +1,8 @@
 import { defineCollection, reference, z } from "astro:content";
-import { isAvailableLanguage } from "../../../utils/i18n";
-import { isValidLanguageCode } from "../../../utils/locales";
-import { globLoader } from "../loaders/glob-loader";
-import { contentsBaseSchema } from "./utils";
+import { isAvailableLanguage } from "../../../../utils/i18n";
+import { isValidLanguageCode } from "../../../../utils/locales";
+import { globLoader } from "../../loaders/glob-loader";
+import { contentsBaseSchema } from "./partials";
 
 export const blogroll = defineCollection({
   loader: globLoader("blogroll"),

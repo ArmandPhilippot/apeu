@@ -1,9 +1,9 @@
 import { defineCollection, z } from "astro:content";
-import { globLoader } from "../loaders/glob-loader";
-import { contentsBaseSchema } from "./utils";
+import { globLoader } from "../../loaders/glob-loader";
+import { contentsBaseSchema } from "./partials";
 
-export const blogCategories = defineCollection({
-  loader: globLoader("blog.categories"),
+export const pages = defineCollection({
+  loader: globLoader("pages"),
   schema: ({ image }) =>
     contentsBaseSchema
       .extend({
@@ -14,9 +14,9 @@ export const blogCategories = defineCollection({
           })
           .optional(),
       })
-      .transform(({ isDraft, publishedOn, updatedOn, ...category }) => {
+      .transform(({ isDraft, publishedOn, updatedOn, ...page }) => {
         return {
-          ...category,
+          ...page,
           meta: {
             isDraft,
             publishedOn,

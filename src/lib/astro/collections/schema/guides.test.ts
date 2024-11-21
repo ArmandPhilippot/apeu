@@ -1,15 +1,15 @@
 import { describe, expect, it, vi } from "vitest";
-import { CONFIG } from "../../../utils/constants";
-import { projects } from "./projects";
+import { CONFIG } from "../../../../utils/constants";
+import { guides } from "./guides";
 
-describe("projects", () => {
+describe("guides", () => {
   it("should include the meta in the transformed output", async () => {
-    const project = {
-      title: "The title of the project",
-      description: "A description of the project.",
+    const guide = {
+      title: "The title of the guide",
+      description: "A description of the guide.",
       isDraft: true,
-      kind: "app",
       publishedOn: new Date("2023-01-01"),
+      authors: ["john-doe"],
       seo: {
         title: "qui sit vero",
         description: "Vel voluptatem laboriosam.",
@@ -17,11 +17,11 @@ describe("projects", () => {
       updatedOn: new Date("2023-01-02"),
     };
 
-    if (typeof projects.schema !== "function")
+    if (typeof guides.schema !== "function")
       throw new Error("The schema is not callable");
 
-    const parsedSchema = projects.schema({ image: vi.fn() });
-    const result = await parsedSchema.safeParseAsync(project);
+    const parsedSchema = guides.schema({ image: vi.fn() });
+    const result = await parsedSchema.safeParseAsync(guide);
 
     expect.assertions(4);
 
@@ -34,22 +34,22 @@ describe("projects", () => {
   });
 
   it("should apply default values as expected", async () => {
-    const project = {
-      title: "The title of the project",
-      description: "A description of the project.",
+    const guide = {
+      title: "The title of the guide",
+      description: "A description of the guide.",
       publishedOn: new Date("2023-01-01"),
-      kind: "app",
+      authors: ["john-doe"],
       seo: {
         title: "qui sit vero",
         description: "Vel voluptatem laboriosam.",
       },
     };
 
-    if (typeof projects.schema !== "function")
+    if (typeof guides.schema !== "function")
       throw new Error("The schema is not callable");
 
-    const parsedSchema = projects.schema({ image: vi.fn() });
-    const result = await parsedSchema.safeParseAsync(project);
+    const parsedSchema = guides.schema({ image: vi.fn() });
+    const result = await parsedSchema.safeParseAsync(guide);
 
     expect.assertions(4);
 

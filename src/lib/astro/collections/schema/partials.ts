@@ -1,6 +1,6 @@
-import { z } from "astro:content";
-import { CONFIG } from "../../../utils/constants";
-import { isAvailableLanguage } from "../../../utils/i18n";
+import { z } from "astro:schema";
+import { CONFIG } from "../../../../utils/constants";
+import { isAvailableLanguage } from "../../../../utils/i18n";
 
 export const locale = z
   .string()

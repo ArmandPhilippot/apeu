@@ -2,8 +2,8 @@ import { defineCollection, z } from "astro:content";
 import {
   isValidCountryCode,
   isValidLanguageCode,
-} from "../../../utils/locales";
-import { globLoader } from "../loaders/glob-loader";
+} from "../../../../utils/locales";
+import { globLoader } from "../../loaders/glob-loader";
 
 export const authors = defineCollection({
   loader: globLoader("authors"),

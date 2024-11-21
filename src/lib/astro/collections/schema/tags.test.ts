@@ -1,15 +1,14 @@
 import { describe, expect, it, vi } from "vitest";
-import { CONFIG } from "../../../utils/constants";
-import { guides } from "./guides";
+import { CONFIG } from "../../../../utils/constants";
+import { tags } from "./tags";
 
-describe("guides", () => {
+describe("tags", () => {
   it("should include the meta in the transformed output", async () => {
-    const guide = {
-      title: "The title of the guide",
-      description: "A description of the guide.",
+    const tag = {
+      title: "The title of the tag",
+      description: "A description of the tag.",
       isDraft: true,
       publishedOn: new Date("2023-01-01"),
-      authors: ["john-doe"],
       seo: {
         title: "qui sit vero",
         description: "Vel voluptatem laboriosam.",
@@ -17,11 +16,11 @@ describe("guides", () => {
       updatedOn: new Date("2023-01-02"),
     };
 
-    if (typeof guides.schema !== "function")
+    if (typeof tags.schema !== "function")
       throw new Error("The schema is not callable");
 
-    const parsedSchema = guides.schema({ image: vi.fn() });
-    const result = await parsedSchema.safeParseAsync(guide);
+    const parsedSchema = tags.schema({ image: vi.fn() });
+    const result = await parsedSchema.safeParseAsync(tag);
 
     expect.assertions(4);
 
@@ -34,22 +33,21 @@ describe("guides", () => {
   });
 
   it("should apply default values as expected", async () => {
-    const guide = {
-      title: "The title of the guide",
-      description: "A description of the guide.",
+    const tag = {
+      title: "The title of the tag",
+      description: "A description of the tag.",
       publishedOn: new Date("2023-01-01"),
-      authors: ["john-doe"],
       seo: {
         title: "qui sit vero",
         description: "Vel voluptatem laboriosam.",
       },
     };
 
-    if (typeof guides.schema !== "function")
+    if (typeof tags.schema !== "function")
       throw new Error("The schema is not callable");
 
-    const parsedSchema = guides.schema({ image: vi.fn() });
-    const result = await parsedSchema.safeParseAsync(guide);
+    const parsedSchema = tags.schema({ image: vi.fn() });
+    const result = await parsedSchema.safeParseAsync(tag);
 
     expect.assertions(4);
 

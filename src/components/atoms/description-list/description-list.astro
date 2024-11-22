@@ -1,0 +1,89 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import type { Spacing } from "../../../types/tokens";
+import { getCSSVars, getSpacingVarValue } from "../../../utils/attributes";
+
+type Props = HTMLAttributes<"dl"> & {
+  /**
+   * The spacing between the last term and the first description or between
+   * Items components when used on X-axis.
+   *
+   * @default undefined
+   */
+  colSpacing?: Spacing | null | undefined;
+  /**
+   * Should the items be inlined?
+   *
+   * @default false
+   */
+  isInline?: boolean | null | undefined;
+  /**
+   * The spacing between the last term and the first description or between
+   * Items components when used on Y-axis.
+   *
+   * @default undefined
+   */
+  rowSpacing?: Spacing | null | undefined;
+};
+
+const {
+  class: className,
+  colSpacing,
+  isInline = false,
+  rowSpacing,
+  style = "",
+  ...attrs
+} = Astro.props;
+const listVars = getCSSVars({
+  "col-spacing": getSpacingVarValue(colSpacing),
+  "row-spacing": getSpacingVarValue(rowSpacing),
+});
+---
+
+<dl
+  {...attrs}
+  class:list={["description-list", { inline: isInline }, className]}
+  style={`${listVars}${style}`}
+>
+  <slot />
+</dl>
+
+<style>
+  .description-list {
+    margin: 0;
+
+    &:where(.inline) > :global(dd + dt) {
+      margin-inline-start: var(--col-spacing, 0);
+    }
+
+    &:where(.inline:has(> div)) {
+      display: flex;
+      flex-flow: row wrap;
+      gap: var(--row-spacing, 0) var(--col-spacing, 0);
+    }
+
+    &:where(:not(.inline)) > :global(:is(dd + dt, dt + dd)) {
+      &::before {
+        display: block;
+        content: "";
+      }
+    }
+
+    &:where(:not(.inline)) > :global(:is(dd + dt)) {
+      &::before {
+        margin-block-start: var(--row-spacing, 0);
+      }
+    }
+
+    &:where(:not(.inline)) > :global(div + div) {
+      margin-block-start: var(--row-spacing, 0);
+    }
+
+    & :global(:is(dt + dt, dd + dd)) {
+      &::before {
+        content: ", ";
+        margin-inline-start: -0.5ex;
+      }
+    }
+  }
+</style>

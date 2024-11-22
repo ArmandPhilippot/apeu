@@ -1,15 +1,18 @@
 ---
 import type { ComponentProps } from "astro/types";
-import { getEntry, render } from "astro:content";
 import ListItem from "../../components/atoms/list/list-item.astro";
 import List from "../../components/atoms/list/list.astro";
 import PageLayout from "../../components/templates/page-layout/page-layout.astro";
 import { queryCollection } from "../../lib/astro/collections/query-collection";
+import { queryEntry } from "../../lib/astro/collections/query-entry";
 import { useI18n } from "../../utils/i18n";
 
 const { locale, route, translate } = useI18n(Astro.currentLocale);
-const page = await getEntry("pages", `${locale}/tags`);
-const { Content } = await render(page);
+const { Content, ...page } = await queryEntry({
+  collection: "pages",
+  id: "tags",
+  locale,
+});
 const { entries: tags } = await queryCollection("tags", {
   format: "preview",
   orderBy: { key: "title", order: "ASC" },
@@ -17,15 +20,11 @@ const { entries: tags } = await queryCollection("tags", {
 });
 const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
   { label: translate("page.home.title"), url: route("home") },
-  { label: page.data.title, url: Astro.url.href },
+  { label: page.title, url: Astro.url.href },
 ];
 ---
 
-<PageLayout
-  breadcrumb={breadcrumb}
-  heading={page.data.title}
-  seo={page.data.seo}
->
+<PageLayout breadcrumb={breadcrumb} heading={page.title} seo={page.seo}>
   <Fragment slot="body">
     <Content />
     <List>

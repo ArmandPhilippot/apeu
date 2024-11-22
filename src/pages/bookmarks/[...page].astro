@@ -1,18 +1,22 @@
 ---
 import type { GetStaticPaths } from "astro";
 import type { ComponentProps } from "astro/types";
-import { getEntry, render } from "astro:content";
 import ListItem from "../../components/atoms/list/list-item.astro";
 import List from "../../components/atoms/list/list.astro";
 import Pagination from "../../components/organisms/pagination/pagination.astro";
 import PageLayout from "../../components/templates/page-layout/page-layout.astro";
 import { queryCollection } from "../../lib/astro/collections/query-collection";
+import { queryEntry } from "../../lib/astro/collections/query-entry";
 import { CONFIG } from "../../utils/constants";
 import { useI18n } from "../../utils/i18n";
 import { renderPaginationLink } from "../../utils/pagination";
 
 export const getStaticPaths = (async ({ paginate }) => {
-  const page = await getEntry("pages", "en/bookmarks");
+  const page = await queryEntry({
+    collection: "pages",
+    id: "bookmarks",
+    locale: "en",
+  });
   const { entries: bookmarks } = await queryCollection("bookmarks", {
     format: "preview",
     orderBy: { key: "publishedOn", order: "DESC" },
@@ -29,8 +33,8 @@ export const getStaticPaths = (async ({ paginate }) => {
             : undefined,
         },
         props: {
+          ...page,
           bookmarks: data,
-          page,
           pagination,
         },
       };
@@ -38,8 +42,7 @@ export const getStaticPaths = (async ({ paginate }) => {
   );
 }) satisfies GetStaticPaths;
 
-const { bookmarks, page, pagination } = Astro.props;
-const { Content } = await render(page);
+const { Content, bookmarks, pagination, ...page } = Astro.props;
 const { route, translate } = useI18n(Astro.currentLocale);
 const isFirstPage = pagination.currentPage === 1;
 const pageLabel = translate("page.paginated.label", {
@@ -48,19 +51,17 @@ const pageLabel = translate("page.paginated.label", {
 
 const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
   { label: translate("page.home.title"), url: route("home") },
-  { label: page.data.title, url: Astro.url.href },
+  { label: page.title, url: Astro.url.href },
   ...[isFirstPage ? null : { label: pageLabel, url: Astro.url.href }],
 ].filter((crumb) => !!crumb);
 
 const heading: ComponentProps<typeof PageLayout>["heading"] = isFirstPage
-  ? page.data.title
-  : `${page.data.title} - ${pageLabel}`;
+  ? page.title
+  : `${page.title} - ${pageLabel}`;
 
 const seo: ComponentProps<typeof PageLayout>["seo"] = {
-  ...page.data.seo,
-  title: isFirstPage
-    ? page.data.seo.title
-    : `${page.data.seo.title} - ${pageLabel}`,
+  ...page.seo,
+  title: isFirstPage ? page.seo.title : `${page.seo.title} - ${pageLabel}`,
 };
 ---
 

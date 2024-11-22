@@ -1,47 +1,45 @@
 ---
 import type { GetStaticPaths } from "astro";
 import type { ComponentProps } from "astro/types";
-import { getCollection, render } from "astro:content";
 import PageLayout from "../components/templates/page-layout/page-layout.astro";
+import { queryCollection } from "../lib/astro/collections/query-collection";
 import { isAvailableRoute, useI18n } from "../utils/i18n";
 
 export const getStaticPaths = (async () => {
-  const pages = await getCollection("pages");
+  const { entries: pages } = await queryCollection("pages", {
+    where: { locale: "en" },
+  });
 
   return pages
     .filter((page) => {
-      const isCurrentLocale = page.data.locale === "en";
       const maybeStaticRoute = page.id
-        .replace(`${page.data.locale}/`, "")
+        .replace(`${page.locale}/`, "")
         .replaceAll("/", ".")
         .replaceAll("-", ".");
 
-      return !isAvailableRoute(maybeStaticRoute) && isCurrentLocale;
+      return !isAvailableRoute(maybeStaticRoute);
     })
-    .map((page) => {
+    .map(({ slug, ...page }) => {
       return {
-        params: {
-          slug: page.data.slug,
-        },
-        props: { page },
+        params: { slug },
+        props: { ...page },
       };
     });
 }) satisfies GetStaticPaths;
 
-const { page } = Astro.props;
-const { Content, headings } = await render(page);
+const { Content, ...page } = Astro.props;
 const { route, translate } = useI18n(Astro.currentLocale);
 const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
   { label: translate("page.home.title"), url: route("home") },
-  { label: page.data.title, url: Astro.url.href },
+  { label: page.title, url: Astro.url.href },
 ];
 ---
 
 <PageLayout
   breadcrumb={breadcrumb}
-  heading={page.data.title}
-  seo={page.data.seo}
-  toc={headings}
+  heading={page.title}
+  seo={page.seo}
+  toc={page.headings}
 >
   <Content slot="body" />
 </PageLayout>

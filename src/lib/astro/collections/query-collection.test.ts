@@ -146,6 +146,8 @@ describe("queryCollection", () => {
       where: { authors: ["author1"] },
     });
 
+    expect.assertions(2);
+
     expect(result.entries).toHaveLength(1);
     expect(result.entries[0]?.id).toBe("post-1");
   });
@@ -154,6 +156,8 @@ describe("queryCollection", () => {
     const result = await queryCollection("blogPosts", {
       where: { categories: ["category1"] },
     });
+
+    expect.assertions(2);
 
     expect(result.entries).toHaveLength(1);
     expect(result.entries[0]?.id).toBe("post-1");
@@ -164,6 +168,8 @@ describe("queryCollection", () => {
       where: { tags: ["tag1"] },
     });
 
+    expect.assertions(2);
+
     expect(result.entries).toHaveLength(1);
     expect(result.entries[0]?.id).toBe("post-1");
   });
@@ -173,6 +179,8 @@ describe("queryCollection", () => {
       where: { locale: "en" },
     });
 
+    expect.assertions(1);
+
     expect(result.entries).toHaveLength(2);
   });
 
@@ -180,6 +188,8 @@ describe("queryCollection", () => {
     const result = await queryCollection("blogPosts", {
       orderBy: { key: "publishedOn", order: "DESC" },
     });
+
+    expect.assertions(1);
 
     expect(result.entries).toEqual([
       expect.objectContaining({ id: "post-2" }),
@@ -193,6 +203,8 @@ describe("queryCollection", () => {
       after: 1,
     });
 
+    expect.assertions(1);
+
     expect(result.entries).toHaveLength(1);
   });
 
@@ -200,6 +212,8 @@ describe("queryCollection", () => {
     vi.stubEnv("PROD", true);
 
     const result = await queryCollection("guides");
+
+    expect.assertions(1);
 
     expect(result.entries).toHaveLength(
       mockEntries.filter(
@@ -218,6 +232,8 @@ describe("queryCollections", () => {
   it("can query multiple collections", async () => {
     const result = await queryCollections(["blogPosts", "guides", "projects"]);
 
+    expect.assertions(1);
+
     expect(result.entries).toHaveLength(mockEntries.length);
   });
 
@@ -225,6 +241,8 @@ describe("queryCollections", () => {
     const result = await queryCollections(["blogPosts", "guides"], {
       where: { authors: ["author2"] },
     });
+
+    expect.assertions(2);
 
     expect(result.entries).toHaveLength(
       mockEntries.filter((entry) =>

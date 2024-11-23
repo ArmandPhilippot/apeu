@@ -4,6 +4,8 @@ import type {
   DataEntryMap,
 } from "astro:content";
 
+export type AllKeysOf<T> = T extends unknown ? keyof T : never;
+
 type ValidDataEntryId<C extends keyof DataEntryMap> = AllValuesOf<
   DataEntryMap[C]
 >["id"];
@@ -37,6 +39,14 @@ type AnyString = string & Record<never, never>;
  * Provide autocompletion from a string literal type while allowing any string.
  */
 export type LooseAutocomplete<T extends string> = T | AnyString;
+
+type UnionToIntersection<U> = (
+  U extends unknown ? (k: U) => void : never
+) extends (k: infer I) => void
+  ? I
+  : never;
+
+export type Blend<T> = Partial<UnionToIntersection<T>>;
 
 type OmitNever<T extends Record<string, unknown>> = {
   [K in keyof T as T[K] extends never ? never : K]: T[K];

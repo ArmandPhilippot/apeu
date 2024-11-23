@@ -68,9 +68,9 @@ const replaceInterpolationsInMsg = (
 
 type AvailableRoute = keyof I18nMessages["routes"];
 type UIKey = I18nMessages["ui"];
-type PluralUIKey = KeyOfType<UIKey, Interpolations>;
+export type PluralUIKey = KeyOfType<UIKey, Interpolations>;
 type QuantifierKeys = keyof UIKey[PluralUIKey];
-type SingularUIKey = KeyOfType<UIKey, string>;
+export type SingularUIKey = KeyOfType<UIKey, string>;
 
 export const isAvailableRoute = (id: string): id is AvailableRoute => {
   const availableRoutes = translations[CONFIG.LANGUAGES.DEFAULT].routes;

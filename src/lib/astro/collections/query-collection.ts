@@ -158,7 +158,8 @@ const matchesLocale = (
   entry: CollectionEntry<CollectionKey>,
   locale?: string,
 ): boolean => {
-  return !locale || ("locale" in entry.data && entry.data.locale === locale);
+  if (!locale || !("locale" in entry.data)) return true;
+  return entry.data.locale === locale;
 };
 
 const matchesTags = (

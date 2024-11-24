@@ -1,8 +1,8 @@
 ---
 import type { GetStaticPaths } from "astro";
 import type { ComponentProps } from "astro/types";
-import ListItem from "../../components/atoms/list/list-item.astro";
-import List from "../../components/atoms/list/list.astro";
+import Grid from "../../components/molecules/grid/grid.astro";
+import CollectionCard from "../../components/organisms/collection-card/collection-card.astro";
 import Pagination from "../../components/organisms/pagination/pagination.astro";
 import PageLayout from "../../components/templates/page-layout/page-layout.astro";
 import { queryCollection } from "../../lib/astro/collections/query-collection";
@@ -64,14 +64,31 @@ const seo: ComponentProps<typeof PageLayout>["seo"] = {
   ...page.seo,
   title: isFirstPage ? page.seo.title : `${page.seo.title} - ${pageLabel}`,
 };
+const getCTA = (
+  title: string,
+): ComponentProps<typeof CollectionCard>["cta"] => {
+  return {
+    ariaLabel: translate("cta.read.more.a11y", { title }),
+    label: translate("cta.read.more"),
+  };
+};
 ---
 
 <PageLayout breadcrumb={breadcrumb} heading={heading} seo={seo}>
-  <Fragment slot="body">
-    <Content />
-    <List>
-      {guides.map((guide) => <ListItem>{guide.title}</ListItem>)}
-    </List>
+  <Content slot="body" />
+  <Fragment slot="disconnected-body">
+    <Grid class="guides-list" isCentered items={guides}>
+      {
+        (guide: (typeof guides)[number]) => (
+          <CollectionCard
+            cta={getCTA(guide.title)}
+            elevation="raised"
+            entry={guide}
+            featuredMeta={{ icon: "guide", key: "publishedOn" }}
+          />
+        )
+      }
+    </Grid>
     {
       pagination.lastPage > 1 ? (
         <Pagination

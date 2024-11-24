@@ -1,7 +1,7 @@
 ---
 import type { ComponentProps } from "astro/types";
-import ListItem from "../../components/atoms/list/list-item.astro";
-import List from "../../components/atoms/list/list.astro";
+import Grid from "../../components/molecules/grid/grid.astro";
+import CollectionCard from "../../components/organisms/collection-card/collection-card.astro";
 import PageLayout from "../../components/templates/page-layout/page-layout.astro";
 import { queryCollection } from "../../lib/astro/collections/query-collection";
 import { queryEntry } from "../../lib/astro/collections/query-entry";
@@ -20,13 +20,34 @@ const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
   { label: translate("page.home.title"), url: route("home") },
   { label: page.title, url: Astro.url.href },
 ];
+const cta: ComponentProps<typeof CollectionCard>["cta"] = {
+  ariaLabel: translate("cta.open.website.a11y"),
+  icon: "globe",
+  isExternal: true,
+  label: translate("cta.open.website"),
+};
 ---
 
 <PageLayout breadcrumb={breadcrumb} heading={page.title} seo={page.seo}>
-  <Fragment slot="body">
-    <Content />
-    <List>
-      {blogroll.map((blog) => <ListItem>{blog.title}</ListItem>)}
-    </List>
-  </Fragment>
+  <Content slot="body" />
+  <Grid class="blogs-list" isCentered items={blogroll} slot="disconnected-body">
+    {
+      (blog: (typeof blogroll)[number]) => (
+        <CollectionCard
+          cta={cta}
+          elevation="raised"
+          entry={blog}
+          featuredMeta={{ icon: "locale", key: "inLanguages" }}
+        />
+      )
+    }
+  </Grid>
 </PageLayout>
+
+<style>
+  .blogs-list {
+    @container (width > 55em) {
+      --cols: repeat(auto-fit, minmax(clamp(34rem, 18dvw, 50rem), 1fr));
+    }
+  }
+</style>

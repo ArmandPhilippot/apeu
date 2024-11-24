@@ -1,7 +1,7 @@
 ---
 import type { ComponentProps } from "astro/types";
-import ListItem from "../../components/atoms/list/list-item.astro";
-import List from "../../components/atoms/list/list.astro";
+import Grid from "../../components/molecules/grid/grid.astro";
+import CollectionCard from "../../components/organisms/collection-card/collection-card.astro";
 import PageLayout from "../../components/templates/page-layout/page-layout.astro";
 import { queryCollection } from "../../lib/astro/collections/query-collection";
 import { queryEntry } from "../../lib/astro/collections/query-entry";
@@ -22,13 +22,41 @@ const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
   { label: translate("page.home.title"), url: route("home") },
   { label: page.title, url: Astro.url.href },
 ];
+const getCTA = (
+  title: string,
+): ComponentProps<typeof CollectionCard>["cta"] => {
+  return {
+    ariaLabel: translate("cta.discover.a11y", { title }),
+    label: translate("cta.discover"),
+  };
+};
 ---
 
 <PageLayout breadcrumb={breadcrumb} heading={page.title} seo={page.seo}>
-  <Fragment slot="body">
-    <Content />
-    <List>
-      {projects.map((project) => <ListItem>{project.title}</ListItem>)}
-    </List>
-  </Fragment>
+  <Content slot="body" />
+  <Grid
+    class="projects-list"
+    isCentered
+    items={projects}
+    slot="disconnected-body"
+  >
+    {
+      (project: (typeof projects)[number]) => (
+        <CollectionCard
+          cta={getCTA(project.title)}
+          elevation="raised"
+          entry={project}
+          featuredMeta={{ icon: "project", key: "kind" }}
+        />
+      )
+    }
+  </Grid>
 </PageLayout>
+
+<style>
+  .projects-list {
+    @container (width > 55em) {
+      --cols: repeat(auto-fit, minmax(clamp(34rem, 18dvw, 50rem), 1fr));
+    }
+  }
+</style>

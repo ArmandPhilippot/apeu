@@ -1,9 +1,8 @@
 ---
 import type { GetStaticPaths } from "astro";
 import type { ComponentProps } from "astro/types";
-import Link from "../../../components/atoms/link/link.astro";
-import ListItem from "../../../components/atoms/list/list-item.astro";
-import List from "../../../components/atoms/list/list.astro";
+import Grid from "../../../components/molecules/grid/grid.astro";
+import CollectionCard from "../../../components/organisms/collection-card/collection-card.astro";
 import Pagination from "../../../components/organisms/pagination/pagination.astro";
 import PageLayout from "../../../components/templates/page-layout/page-layout.astro";
 import { queryCollection } from "../../../lib/astro/collections/query-collection";
@@ -66,27 +65,38 @@ const seo: ComponentProps<typeof PageLayout>["seo"] = {
   ...page.seo,
   title: isFirstPage ? page.seo.title : `${page.seo.title} - ${pageLabel}`,
 };
+const getCTA = (
+  title: string,
+): ComponentProps<typeof CollectionCard>["cta"] => {
+  return {
+    ariaLabel: translate("cta.read.more.a11y", { title }),
+    label: translate("cta.read.more"),
+  };
+};
 ---
 
 <PageLayout breadcrumb={breadcrumb} heading={heading} seo={seo}>
-  <Fragment slot="body">
-    <Content />
-    <List>
+  <Content slot="body" />
+  <Fragment slot="disconnected-body">
+    <Grid class="posts-list" isCentered items={posts}>
       {
-        posts.map((post) => (
-          <ListItem>
-            <Link href={post.route}>{post.title}</Link>
-          </ListItem>
-        ))
+        (post: (typeof posts)[number]) => (
+          <CollectionCard
+            cta={getCTA(post.title)}
+            elevation="raised"
+            entry={post}
+            featuredMeta={{ icon: "blog", key: "publishedOn" }}
+          />
+        )
       }
-    </List>
+    </Grid>
     {
       pagination.lastPage > 1 ? (
         <Pagination
           aria-label={translate("pagination.a11y")}
           current={pagination.currentPage}
           last={pagination.lastPage}
-          renderLink={renderPaginationLink(route("blog.posts"))}
+          renderLink={renderPaginationLink(route("guides"))}
         />
       ) : null
     }

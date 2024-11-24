@@ -232,7 +232,7 @@ const topId = translate("anchor.site.top");
 
     @media (width >= 1024px) {
       display: grid;
-      grid-template-columns: minmax(0, 20dvw) minmax(0, 1fr);
+      grid-template-columns: minmax(13em, 21dvw) minmax(0, 1fr);
       grid-template-rows: minmax(0, 1fr) minmax(0, auto);
     }
 
@@ -268,6 +268,7 @@ const topId = translate("anchor.site.top");
       flex-flow: column;
       gap: var(--spacing-sm);
       padding-block-start: clamp(var(--spacing-4xs), 1.5dvh, var(--spacing-md));
+      padding-inline: var(--spacing-xs);
       border-block-end: none;
       box-shadow: none;
     }
@@ -337,7 +338,7 @@ const topId = translate("anchor.site.top");
   .site-footer {
     justify-content: center;
     gap: var(--spacing-4xs);
-    padding: var(--spacing-md);
+    padding: clamp(var(--spacing-md), 3dvh, var(--spacing-lg));
     font-size: var(--font-size-sm);
 
     @media (width >= 1024px) {

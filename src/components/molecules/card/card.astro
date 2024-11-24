@@ -64,10 +64,18 @@ const { class: className, ...attrs } = Astro.props;
       display: grid;
       grid-template-columns: minmax(0, 35%) minmax(0, 1fr);
       grid-auto-rows: max-content;
+
+      &:where(:has(.card-frontmatter, .card-heading, .card-body)) {
+        grid-auto-rows: max-content max-content 1fr max-content;
+      }
+
+      &:where(:has(.card-heading, .card-body):not(:has(.card-frontmatter))) {
+        grid-auto-rows: max-content 1fr max-content;
+      }
     }
 
-    & > :global(*:last-child) {
-      padding-block-end: var(--spacing-md);
+    & > :global(*:not(.card-footer):last-child) {
+      padding-block-end: clamp(var(--spacing-md), 3.5dvh, var(--spacing-xl));
     }
   }
 
@@ -120,12 +128,19 @@ const { class: className, ...attrs } = Astro.props;
     justify-content: space-between;
     gap: var(--spacing-md);
     margin-block-start: auto;
-    padding-block-start: var(--spacing-md);
+    padding-block: var(--spacing-md)
+      clamp(var(--spacing-md), 1.5dvh, var(--spacing-lg));
     border-block-start: var(--border-size-sm) solid var(--color-border);
 
     @container (width > 55em) {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
       padding-inline: 0;
-      margin-inline: clamp(var(--spacing-md), 3dvw, var(--spacing-xl));
+      margin-inline: clamp(var(--spacing-md), 2dvw, var(--spacing-lg));
+
+      &:where(.has-meta) > :global(*:first-child) {
+        margin-block-end: clamp(var(--spacing-xs), 1dvh, var(--spacing-sm));
+      }
     }
 
     &:where(:not(.has-meta)) {
@@ -137,15 +152,24 @@ const { class: className, ...attrs } = Astro.props;
     padding-block-end: 0;
   }
 
+  :global(:where(.card:has(.card-frontmatter))) .card-heading {
+    padding-block-start: clamp(var(--spacing-md), 2.5dvh, var(--spacing-lg));
+  }
+
+  :global(:where(.card:not(:has(.card-frontmatter)))) .card-heading {
+    margin-block-start: clamp(var(--spacing-xs), 1dvh, var(--spacing-sm));
+  }
+
   .card-body {
     padding-block-start: 0;
 
     &:where(:not(:last-child)) {
       margin-block-end: var(--spacing-sm);
+      padding-block-end: clamp(var(--spacing-md), 2dvh, var(--spacing-lg));
     }
 
     &:is(:last-child) {
-      margin-block-end: clamp(var(--spacing-sm), 1.5dvw, var(--spacing-md));
+      margin-block-end: clamp(var(--spacing-sm), 1.5dvh, var(--spacing-md));
     }
   }
 

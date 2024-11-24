@@ -1,8 +1,8 @@
 ---
 import type { GetStaticPaths } from "astro";
 import type { ComponentProps } from "astro/types";
-import ListItem from "../../components/atoms/list/list-item.astro";
-import List from "../../components/atoms/list/list.astro";
+import Grid from "../../components/molecules/grid/grid.astro";
+import CollectionCard from "../../components/organisms/collection-card/collection-card.astro";
 import Pagination from "../../components/organisms/pagination/pagination.astro";
 import PageLayout from "../../components/templates/page-layout/page-layout.astro";
 import { queryCollection } from "../../lib/astro/collections/query-collection";
@@ -63,14 +63,32 @@ const seo: ComponentProps<typeof PageLayout>["seo"] = {
   ...page.seo,
   title: isFirstPage ? page.seo.title : `${page.seo.title} - ${pageLabel}`,
 };
+const getCTA = (
+  title: string,
+): ComponentProps<typeof CollectionCard>["cta"] => {
+  return {
+    ariaLabel: translate("cta.read.more.a11y", { title }),
+    isExternal: true,
+    label: translate("cta.read.more"),
+  };
+};
 ---
 
 <PageLayout breadcrumb={breadcrumb} heading={heading} seo={seo}>
-  <Fragment slot="body">
-    <Content />
-    <List>
-      {bookmarks.map((bookmark) => <ListItem>{bookmark.title}</ListItem>)}
-    </List>
+  <Content slot="body" />
+  <Fragment slot="disconnected-body">
+    <Grid class="bookmarks-list" isCentered items={bookmarks}>
+      {
+        (bookmark: (typeof bookmarks)[number]) => (
+          <CollectionCard
+            cta={getCTA(bookmark.title)}
+            elevation="raised"
+            entry={bookmark}
+            featuredMeta={{ icon: "bookmark", key: "publishedOn" }}
+          />
+        )
+      }
+    </Grid>
     {
       pagination.lastPage > 1 ? (
         <Pagination
@@ -83,3 +101,11 @@ const seo: ComponentProps<typeof PageLayout>["seo"] = {
     }
   </Fragment>
 </PageLayout>
+
+<style>
+  .bookmarks-list {
+    @container (width > 55em) {
+      --cols: repeat(auto-fit, minmax(clamp(34rem, 18dvw, 50rem), 1fr));
+    }
+  }
+</style>

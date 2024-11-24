@@ -6,7 +6,7 @@ import { queryCollection } from "../../lib/astro/collections/query-collection";
 import { useI18n } from "../../utils/i18n";
 
 export const getStaticPaths = (async () => {
-  const { entries: notes } = await queryCollection("blogPosts", {
+  const { entries: notes } = await queryCollection("notes", {
     where: { locale: "en" },
   });
 

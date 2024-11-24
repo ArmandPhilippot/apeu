@@ -35,14 +35,14 @@ type CollectionCardCTA = {
 };
 
 type CollectionCardEntry =
-  | WithOptionalKey<Blog, 'meta'>
-  | WithOptionalKey<BlogPostPreview, 'meta'>
-  | WithOptionalKey<Bookmark, 'meta'>
-  | WithOptionalKey<GuidePreview, 'meta'>
-  | WithOptionalKey<NotePreview, 'meta'>
-  | WithOptionalKey<PagePreview, 'meta'>
-  | WithOptionalKey<ProjectPreview, 'meta'>
-  | WithOptionalKey<TaxonomyPreview, 'meta'>;
+  | WithOptionalKey<Blog, "meta">
+  | WithOptionalKey<BlogPostPreview, "meta">
+  | WithOptionalKey<Bookmark, "meta">
+  | WithOptionalKey<GuidePreview, "meta">
+  | WithOptionalKey<NotePreview, "meta">
+  | WithOptionalKey<PagePreview, "meta">
+  | WithOptionalKey<ProjectPreview, "meta">
+  | WithOptionalKey<TaxonomyPreview, "meta">;
 
 type CollectionCardFeaturedMeta = {
   icon?: IconName | null | undefined;

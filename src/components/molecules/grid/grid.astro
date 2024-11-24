@@ -1,0 +1,66 @@
+---
+import type { ComponentProps } from "astro/types";
+import ListItem from "../../atoms/list/list-item.astro";
+import List from "../../atoms/list/list.astro";
+
+type Props = Omit<
+  ComponentProps<typeof List>,
+  "colSpacing" | "hideMarker" | "rowSpacing"
+> & {
+  isCentered?: boolean | null | undefined;
+  isContainer?: boolean | null | undefined;
+  items: unknown[];
+};
+
+const {
+  as: Tag = "ul",
+  class: className,
+  isCentered = false,
+  isContainer = false,
+  items,
+  ...attrs
+} = Astro.props;
+
+if (!Astro.slots.has("default"))
+  throw new Error(
+    "Grid requires a function that describes how to render a single item as child.",
+  );
+---
+
+<List
+  {...attrs}
+  class:list={["grid", { centered: isCentered }, className]}
+  hideMarker
+>
+  {
+    items.map((item, index, list) => (
+      <ListItem
+        class:list={["grid-item", { container: isContainer }]}
+        set:html={Astro.slots.render("default", [item, index, list])}
+      />
+    ))
+  }
+</List>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: var(--cols, minmax(0, 1fr));
+    gap: var(--spacing-md);
+
+    &:where(.centered) {
+      justify-content: center;
+    }
+  }
+
+  .grid-item {
+    & > :global(*) {
+      height: 100%;
+      margin-inline: auto;
+    }
+
+    &:where(.container) {
+      container: item / inline-size;
+    }
+  }
+</style>

@@ -1,0 +1,124 @@
+---
+import type { ComponentProps } from "astro/types";
+import Box from "../../atoms/box/box.astro";
+import Heading from "../../atoms/heading/heading.astro";
+import Link from "../../atoms/link/link.astro";
+import ListItem from "../../atoms/list/list-item.astro";
+import List from "../../atoms/list/list.astro";
+import PageLayout from "../../templates/page-layout/page-layout.astro";
+import GridComponent from "./grid.astro";
+
+const title = "Grid";
+const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
+  { label: "Home", url: "/" },
+  { label: "Design system", url: "/design-system" },
+  { label: "Components", url: "/design-system/components" },
+  { label: "Molecules", url: "/design-system/components/molecules" },
+  { label: title, url: Astro.url.href },
+];
+const seo: ComponentProps<typeof PageLayout>["seo"] = {
+  nofollow: true,
+  noindex: true,
+  title: breadcrumb
+    .slice(1)
+    .reverse()
+    .map((crumb) => crumb.label)
+    .join(" | "),
+};
+
+const items = [
+  {
+    body: "Inventore ex magnam sequi illo qui expedita reprehenderit. Sint optio magni accusamus. Omnis voluptas provident. Aut esse at enim qui molestias dolorem nihil.",
+    heading: "illum similique ut",
+    url: "#fuga-sunt-dicta",
+  },
+  {
+    body: "Nihil ad est doloribus. Aspernatur et est sit assumenda alias deleniti quia labore aut. Eaque itaque eius et error deserunt. Eos qui qui autem ut amet libero sit magni maxime. Illum laudantium repudiandae id et. Ut nostrum deleniti expedita velit.",
+    heading: "cumque id voluptatibus",
+    url: "#ex-corrupti-illum",
+  },
+  {
+    body: "Possimus eveniet et consectetur assumenda beatae officiis nobis. Nihil aut sit nemo deserunt veniam nihil doloremque. Quod cupiditate sit quaerat mollitia minima quia sequi maxime aut. Est reprehenderit facilis ducimus nisi sint recusandae qui provident sit.",
+    heading: "sapiente cum temporibus",
+    url: "#cupiditate-maiores-quia",
+  },
+  {
+    body: "Deleniti deleniti consectetur debitis aperiam aspernatur. Praesentium eligendi natus. Ipsam aliquid aut iusto aut recusandae dolorem omnis ab quo. Rerum iusto est sit rem commodi quam rem. Odit qui aut non quasi quia voluptatibus rerum iste facilis. Molestias quasi velit consequatur eveniet ea sed pariatur voluptatem est.",
+    heading: "non sequi autem",
+    url: "#est-qui-qui",
+  },
+];
+---
+
+<PageLayout breadcrumb={breadcrumb} heading={title} seo={seo}>
+  <Fragment slot="body">
+    <Heading as="h2">Usage</Heading>
+    <p>
+      When using a <code>Grid</code> component, you'll need to provide a function
+      as child that describes how to render the given items. See the example at the
+      end of the <Link
+        href="https://docs.astro.build/en/reference/api-reference/#astroslotsrender"
+        >Astro.slots.render()</Link
+      > section in Astro documentation. If you want to specify the columns, you can
+      use the <code>--cols</code> CSS variable.
+    </p>
+  </Fragment>
+  <Fragment slot="disconnected-body">
+    <Box
+      elevation="raised"
+      isBordered
+      isCentered
+      isPadded
+      isProse
+      isRounded
+      isSpaced
+    >
+      <Heading as="h2">Default</Heading>
+    </Box>
+    <GridComponent items={items}>
+      {
+        (item: (typeof items)[number]) => (
+          <Box isPadded>
+            <p>Received:</p>
+            <List>
+              <ListItem>Body: {item.body}</ListItem>
+              <ListItem>Heading: {item.heading}</ListItem>
+              <ListItem>Url: {item.url}</ListItem>
+            </List>
+          </Box>
+        )
+      }
+    </GridComponent>
+    <Box
+      elevation="raised"
+      isBordered
+      isCentered
+      isPadded
+      isProse
+      isRounded
+      isSpaced
+    >
+      <Heading as="h2"
+        ><code>isCentered</code> with a custom <code>--cols</code> variable</Heading
+      >
+    </Box>
+    <GridComponent
+      isCentered
+      items={items}
+      style="--cols: repeat(auto-fit, minmax(auto, 33em));"
+    >
+      {
+        (item: (typeof items)[number]) => (
+          <Box isPadded>
+            <p>Received:</p>
+            <List>
+              <ListItem>Body: {item.body}</ListItem>
+              <ListItem>Heading: {item.heading}</ListItem>
+              <ListItem>Url: {item.url}</ListItem>
+            </List>
+          </Box>
+        )
+      }
+    </GridComponent>
+  </Fragment>
+</PageLayout>

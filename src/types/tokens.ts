@@ -13,6 +13,8 @@ export type Direction = "bottom" | "left" | "right" | "top";
  */
 export type Elevation = "raised" | "elevated" | "floating";
 
+export type HeadingLvl = "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
+
 /**
  * The filenames available in `src/assets/icons` directory.
  *
@@ -27,12 +29,14 @@ export type IconName =
   | "cc-by-sa"
   | "contact"
   | "feed"
+  | "folder"
   | "gear"
   | "globe"
   | "guide"
   | "hamburger"
   | "home"
   | "locale"
+  | "page"
   | "notepad"
   | "project"
   | "search"

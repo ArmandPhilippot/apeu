@@ -6,6 +6,11 @@ import type {
 
 export type AllKeysOf<T> = T extends unknown ? keyof T : never;
 
+export type AllowOnly<T, K extends keyof T> = Pick<T, K> & {
+  [P in keyof Omit<T, K>]?: never;
+};
+export type OneOf<T, K = keyof T> = K extends keyof T ? AllowOnly<T, K> : never;
+
 type ValidDataEntryId<C extends keyof DataEntryMap> = AllValuesOf<
   DataEntryMap[C]
 >["id"];
@@ -53,3 +58,7 @@ type OmitNever<T extends Record<string, unknown>> = {
 };
 
 export type SharedShape<T1, T2> = OmitNever<Pick<T1 & T2, keyof T1 & keyof T2>>;
+
+export type WithOptionalKey<T, K extends keyof T> = Omit<T, K> & {
+  [P in K]?: Partial<T[P]>;
+};

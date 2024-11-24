@@ -139,7 +139,7 @@ The available content types are:
 - projects
 - tags
 
-To check the expected fields in the frontmatter, please consult the files in `src/lib/astro/collections`.
+To check the expected fields in the frontmatter, please consult the files in `src/lib/astro/collections/schema`.
 
 ## Development
 
@@ -343,6 +343,62 @@ const { translate } = useI18n(Astro.currentLocale);
 
 <div>Some hardcoded string.</div>
 ```
+
+### Writing templates for collection pages
+
+Instead of using directly the `getCollection` helper from Astro, you should use the `queryCollection` helper declared in this project. This function helps you query a collection with filters, offset and ordering. `queryCollection` will also resolves every references!
+
+**DO:**
+
+```astro
+---
+import { queryCollection } from "src/lib/astro/collections/query-collection";
+
+const { entries, total } = await queryCollection("blogPosts", {
+  first: 10,
+  orderBy: { key: "publishedOn", order: "DESC" },
+});
+---
+
+// Your template here
+```
+
+**DON'T:**
+
+```astro
+---
+import { getCollection, getEntries, getEntry } from "astro:content";
+
+const rawBlogPosts = await getCollection("blogPosts");
+const blogPosts = await Promise.all(
+  rawBlogPosts.map(async (blogPost) => {
+    const category = blogPost.data.category
+      ? await getEntry(blogPost.data.category)
+      : null;
+    const tags = blogPost.data.tags
+      ? await getEntries(blogPost.data.tags)
+      : null;
+
+    return {
+      ...blogPost,
+      data: {
+        ...blogPost.data,
+        category,
+        tags,
+      },
+    };
+  }),
+);
+const orderedBlogPosts = blogPosts.sort(/* some method to sort posts */);
+const firstTenBlogPosts = orderedBlogPosts.slice(0, 10);
+---
+
+// Your template here
+```
+
+As you can see, `queryCollection` helps reduce a lot of boilerplate code!
+
+If you need to resolve multiple collections, you should use `queryCollections` and if you only need to resolve one entry, you can use `queryEntry`.
 
 ### Workflow
 

@@ -2,6 +2,7 @@ apeu
 astro
 astrojs
 blogroll
+bluesky
 commitlint
 frontmatter
 globby

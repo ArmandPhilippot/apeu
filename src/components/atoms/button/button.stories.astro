@@ -53,5 +53,43 @@ const seo: ComponentProps<typeof PageLayout>["seo"] = {
     <ButtonComponent disabled="true">Call to action</ButtonComponent>
     <Heading as="h3"><code>isExternal</code></Heading>
     <ButtonComponent isExternal>Call to action</ButtonComponent>
+    <Heading as="h2">Discreet buttons</Heading>
+    <p>
+      When using the <code>discreet</code> kind, you can choose to use either a button
+      or a link with the <code>as</code> property. This is a variant of the secondary
+      kind.
+    </p>
+    <Heading as="h3">States</Heading>
+    <Heading as="h4">Default</Heading>
+    <ButtonComponent kind="discreet">Call to action</ButtonComponent>
+    <Heading as="h4">Busy</Heading>
+    <ButtonComponent aria-busy="true" kind="discreet">
+      Call to action
+    </ButtonComponent>
+    <Heading as="h4">Disabled</Heading>
+    <ButtonComponent disabled="true" kind="discreet">
+      Call to action
+    </ButtonComponent>
+    <Heading as="h3"><code>isExternal</code></Heading>
+    <ButtonComponent isExternal kind="discreet">Call to action</ButtonComponent>
+    <Heading as="h2">Neutral buttons</Heading>
+    <p>
+      When using the <code>neutral</code> kind, you can choose to use either a button
+      or a link with the <code>as</code> property and you are free the style as you'd
+      like.
+    </p>
+    <Heading as="h3">States</Heading>
+    <Heading as="h4">Default</Heading>
+    <ButtonComponent kind="neutral">Call to action</ButtonComponent>
+    <Heading as="h4">Busy</Heading>
+    <ButtonComponent aria-busy="true" kind="neutral">
+      Call to action
+    </ButtonComponent>
+    <Heading as="h4">Disabled</Heading>
+    <ButtonComponent disabled="true" kind="neutral">
+      Call to action
+    </ButtonComponent>
+    <Heading as="h3"><code>isExternal</code></Heading>
+    <ButtonComponent isExternal kind="neutral">Call to action</ButtonComponent>
   </Fragment>
 </PageLayout>

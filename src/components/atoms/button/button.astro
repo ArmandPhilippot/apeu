@@ -1,7 +1,7 @@
 ---
 import type { HTMLTag, Polymorphic } from "astro/types";
 
-type ButtonKind = "neutral" | "primary" | "secondary";
+type ButtonKind = "discreet" | "neutral" | "primary" | "secondary";
 
 type Props<T extends Extract<HTMLTag, "a" | "button"> = "button"> =
   Polymorphic<{ as: T }> & {
@@ -130,15 +130,16 @@ if (isExternal && kind === "primary")
       }
     }
 
-    &:where(.secondary) {
+    &:where(.secondary, .discreet) {
       background: var(--color-regular-light);
-      border: var(--border-size-sm) solid var(--color-primary-dark);
+      border: var(--border-size-sm) solid;
       border-radius: var(--border-radii-md);
-      box-shadow: var(--border-size-lg) var(--border-size-lg) 0 0
-        var(--color-primary-darker);
-      color: var(--color-primary);
-      outline-color: var(--color-primary-light);
       outline-width: var(--border-size-lg);
+
+      &:where(:focus-visible) {
+        outline-offset: calc(var(--border-size-lg) * -2);
+        outline-style: solid;
+      }
 
       &:where([aria-disabled="true"], :disabled) {
         border-color: var(--color-muted-dark);
@@ -146,21 +147,36 @@ if (isExternal && kind === "primary")
           var(--color-muted-dark);
       }
 
-      &:where(:focus-visible) {
-        outline-offset: calc(var(--border-size-lg) * -2);
-        outline-style: solid;
-      }
-
       &:where(:hover, :focus):where(
           :not([aria-busy="true"], [aria-disabled="true"], :disabled)
         ) {
         background: var(--color-regular-lighter);
+        transform: translateX(calc(var(--border-size-lg) * -1))
+          translateY(calc(var(--border-size-lg) * -1));
+      }
+
+      &:where(:active):where(
+          :not([aria-busy="true"], [aria-disabled="true"], :disabled)
+        ) {
+        transform: translateX(var(--border-size-lg))
+          translateY(var(--border-size-lg));
+      }
+    }
+
+    &:where(.secondary) {
+      border-color: var(--color-primary-dark);
+      box-shadow: var(--border-size-lg) var(--border-size-lg) 0 0
+        var(--color-primary-darker);
+      color: var(--color-primary);
+      outline-color: var(--color-primary-light);
+
+      &:where(:hover, :focus):where(
+          :not([aria-busy="true"], [aria-disabled="true"], :disabled)
+        ) {
         border-color: var(--color-primary);
         box-shadow: calc(var(--border-size-lg) * 2)
           calc(var(--border-size-lg) * 2) 0 0 var(--color-primary-dark);
         color: var(--color-primary);
-        transform: translateX(calc(var(--border-size-lg) * -1))
-          translateY(calc(var(--border-size-lg) * -1));
       }
 
       &:where(:active):where(
@@ -169,8 +185,29 @@ if (isExternal && kind === "primary")
         box-shadow: var(--border-size-sm) var(--border-size-sm) 0 0
           var(--color-primary-subtle);
         color: var(--color-primary-dark);
-        transform: translateX(var(--border-size-lg))
-          translateY(var(--border-size-lg));
+      }
+    }
+
+    &:where(.discreet) {
+      border-color: var(--color-border-light);
+      box-shadow: var(--border-size-lg) var(--border-size-lg) 0 0
+        var(--color-muted-dark);
+      color: var(--color-on-regular);
+      outline-color: var(--color-regular-faded);
+
+      &:where(:hover, :focus):where(
+          :not([aria-busy="true"], [aria-disabled="true"], :disabled)
+        ) {
+        background: var(--color-regular-lighter);
+        box-shadow: calc(var(--border-size-lg) * 2)
+          calc(var(--border-size-lg) * 2) 0 0 var(--color-muted-dark);
+      }
+
+      &:where(:active):where(
+          :not([aria-busy="true"], [aria-disabled="true"], :disabled)
+        ) {
+        box-shadow: var(--border-size-sm) var(--border-size-sm) 0 0
+          var(--color-muted);
       }
     }
 

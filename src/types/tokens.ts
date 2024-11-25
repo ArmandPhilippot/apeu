@@ -22,6 +22,7 @@ export type HeadingLvl = "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
  */
 export type IconName =
   | CalloutType
+  | `social/${SocialMedium}`
   | "arrow-right"
   | "blog"
   | "bookmark"
@@ -43,6 +44,20 @@ export type IconName =
   | "tag";
 
 export type Order = "ASC" | "DESC";
+
+export type SocialMedium =
+  | "bluesky"
+  | "diaspora"
+  | "email"
+  | "facebook"
+  | "github"
+  | "gitlab"
+  | "linkedin"
+  | "mastodon"
+  | "reddit"
+  | "stackoverflow"
+  | "whatsapp"
+  | "x";
 
 /**
  * Those tokens should match the ones defined in `spacing_levels` in

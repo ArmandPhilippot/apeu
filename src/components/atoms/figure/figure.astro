@@ -1,0 +1,107 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+type Props = HTMLAttributes<"figure"> & {
+  isCentered?: boolean | null | undefined;
+  isFullWidth?: boolean | null | undefined;
+};
+
+const {
+  class: className,
+  isCentered = false,
+  isFullWidth = false,
+  ...attrs
+} = Astro.props;
+---
+
+<figure
+  {...attrs}
+  class:list={[
+    "figure",
+    {
+      centered: isCentered,
+      "full-width": isFullWidth,
+    },
+    className,
+  ]}
+>
+  <slot />
+</figure>
+
+<style>
+  .figure {
+    display: flex;
+    flex-flow: column wrap;
+    place-content: center;
+    max-width: 100%;
+    padding: var(--spacing-xs);
+    position: relative;
+    z-index: 1;
+    border: var(--border-size-sm) solid var(--color-border-dark);
+    border-radius: var(--border-radii-lg);
+
+    &:where(.centered) {
+      margin: 0 auto;
+    }
+
+    &:where(:not(.centered)) {
+      margin: 0;
+    }
+
+    &:where(:not(.full-width)) {
+      width: fit-content;
+    }
+
+    &::before,
+    &::after {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      pointer-events: none;
+      user-select: none;
+      border-radius: var(--border-radii-lg);
+    }
+
+    &::before {
+      inset: 0;
+      background: var(--color-regular-dark);
+      mask: linear-gradient(var(--color-regular) 0 0);
+    }
+
+    &::after {
+      inset: calc(var(--spacing-xs) - var(--border-size-sm));
+      background: var(--color-regular);
+      border: var(--border-size-sm) solid var(--color-border-dark);
+      box-shadow: var(--shadow-raised-to-top-left),
+        var(--shadow-raised-to-bottom-right);
+    }
+
+    & > :global(*:first-child) {
+      border-start-start-radius: inherit;
+      border-start-end-radius: inherit;
+
+      &:is(figcaption) {
+        border-block-end: var(--border-size-sm) solid var(--color-border);
+      }
+    }
+
+    & > :global(*:last-child) {
+      border-end-start-radius: inherit;
+      border-end-end-radius: inherit;
+
+      &:is(figcaption) {
+        border-block-start: var(--border-size-sm) solid var(--color-border);
+      }
+    }
+  }
+
+  :global(:where([data-theme="light"])) .figure::before {
+    filter: url("#paper-filter") brightness(0.985) contrast(98.5%)
+      saturate(103%);
+  }
+
+  :global(:where([data-theme="dark"])) .figure::before {
+    filter: url("#dark-paper-filter") brightness(0.85) contrast(103%)
+      saturate(120%);
+  }
+</style>

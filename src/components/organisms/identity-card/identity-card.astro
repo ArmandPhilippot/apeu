@@ -1,0 +1,114 @@
+---
+import type { ComponentProps } from "astro/types";
+import { Image as AstroImg } from "astro:assets";
+import type { AuthorPreview } from "../../../types/data";
+import { useI18n } from "../../../utils/i18n";
+import { toLowerCase } from "../../../utils/strings";
+import DescriptionList from "../../atoms/description-list/description-list.astro";
+import Description from "../../atoms/description-list/description.astro";
+import Item from "../../atoms/description-list/item.astro";
+import Term from "../../atoms/description-list/term.astro";
+import Figure from "../../atoms/figure/figure.astro";
+import Card from "../../molecules/card/card.astro";
+
+type Props = ComponentProps<typeof Card> & {
+  author: Omit<
+    AuthorPreview,
+    "collection" | "id" | "isWebsiteOwner" | "socialMedia"
+  >;
+};
+
+const { author, class: className, ...attrs } = Astro.props;
+const { translate } = useI18n(Astro.currentLocale);
+---
+
+<Card {...attrs} class:list={["identity-card", className]}>
+  <slot name="heading" slot={Astro.slots.has("heading") ? "heading" : ""} />
+  {
+    author.avatar ? (
+      <Figure
+        aria-label={translate("card.identity.avatar.a11y", {
+          name: author.name,
+        })}
+        class="identity-card-avatar"
+      >
+        {/* Can't figure out what is the issue... Typescript does not
+         * complain with Img but it does with Omit<Img, 'alt'>... so:
+         * @ts-expect-error */}
+        <AstroImg {...author.avatar} alt="" />
+      </Figure>
+    ) : null
+  }
+  <DescriptionList class="identity-card-meta" rowSpacing="4xs">
+    <Item colSpacing="4xs" isInline>
+      <Term>{translate("meta.label.name")}</Term>
+      <Description>{author.name}</Description>
+    </Item>
+    {
+      author.nameIPA ? (
+        <Item colSpacing="4xs" isInline>
+          <Term>{translate("meta.label.pronunciation")}</Term>
+          <Description>{author.nameIPA}</Description>
+        </Item>
+      ) : null
+    }
+    {
+      author.country ? (
+        <Item colSpacing="4xs" isInline>
+          <Term>{translate("meta.label.country")}</Term>
+          <Description>
+            {translate(
+              `meta.value.country.name.${toLowerCase(author.country)}`,
+            )}
+          </Description>
+        </Item>
+      ) : null
+    }
+    {
+      author.job ? (
+        <Item colSpacing="4xs" isInline>
+          <Term>{translate("meta.label.job")}</Term>
+          <Description>{author.job}</Description>
+        </Item>
+      ) : null
+    }
+    {
+      author.nationality ? (
+        <Item colSpacing="4xs" isInline>
+          <Term>{translate("meta.label.nationality")}</Term>
+          <Description>
+            {translate(
+              `meta.value.nationality.${toLowerCase(author.nationality)}`,
+            )}
+          </Description>
+        </Item>
+      ) : null
+    }
+    {
+      author.spokenLanguages ? (
+        <Item colSpacing="4xs" isInline>
+          <Term>{translate("meta.label.speak")}</Term>
+          {author.spokenLanguages.map((language) => (
+            <Description>{translate(`language.name.${language}`)}</Description>
+          ))}
+        </Item>
+      ) : null
+    }
+  </DescriptionList>
+</Card>
+
+<style>
+  .identity-card > :global(*:last-child) {
+    display: flex;
+    flex-flow: row wrap;
+    gap: var(--spacing-md);
+  }
+
+  .identity-card-avatar {
+    max-width: clamp(
+      calc(var(--one-px-in-rem * 140)),
+      10dvi,
+      calc(var(--one-px-in-rem * 200))
+    );
+  }
+</style>

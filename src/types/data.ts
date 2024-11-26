@@ -2,7 +2,9 @@ import type { LocalImageProps, RemoteImageProps } from "astro:assets";
 import type { CollectionEntry, RenderResult } from "astro:content";
 
 export type Author = Pick<CollectionEntry<"authors">, "collection" | "id"> &
-  CollectionEntry<"authors">["data"];
+  Omit<CollectionEntry<"authors">["data"], "avatar"> & {
+    avatar?: Omit<Img, "alt"> | null | undefined;
+  };
 
 export type AuthorLink = Pick<Author, "isWebsiteOwner" | "name" | "website">;
 

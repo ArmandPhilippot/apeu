@@ -1,18 +1,21 @@
 ---
-import type { ComponentProps } from "astro/types";
+import type { ComponentProps, HTMLTag, Polymorphic } from "astro/types";
 import Box from "../../atoms/box/box.astro";
 
-type Props = Omit<
-  ComponentProps<typeof Box<"article">>,
-  "as" | "isBordered" | "isProse" | "isRounded"
->;
+type Props<T extends Extract<HTMLTag, "article" | "section">> = Polymorphic<{
+  as: T;
+}> &
+  Omit<
+    ComponentProps<typeof Box<T>>,
+    "as" | "isBordered" | "isProse" | "isRounded"
+  >;
 
-const { class: className, ...attrs } = Astro.props;
+const { as = "article", class: className, ...attrs } = Astro.props;
 ---
 
 <Box
   {...attrs}
-  as="article"
+  as={as}
   class:list={["card", className]}
   isBordered
   isProse
@@ -166,6 +169,11 @@ const { class: className, ...attrs } = Astro.props;
     &:where(:not(:last-child)) {
       margin-block-end: var(--spacing-sm);
       padding-block-end: clamp(var(--spacing-md), 2dvh, var(--spacing-lg));
+    }
+
+    &:is(:first-child) {
+      margin-block-start: clamp(var(--spacing-sm), 1.5dvh, var(--spacing-md));
+      padding-block-start: clamp(var(--spacing-md), 3.5dvh, var(--spacing-xl));
     }
 
     &:is(:last-child) {

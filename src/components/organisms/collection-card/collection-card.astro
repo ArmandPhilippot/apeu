@@ -50,7 +50,7 @@ type CollectionCardFeaturedMeta = {
   key: AllKeysOf<CollectionMetaData>;
 };
 
-type Props = ComponentProps<typeof Card> & {
+type Props = Omit<ComponentProps<typeof Card<"article">>, "as"> & {
   /**
    * The CTA.
    */
@@ -139,7 +139,7 @@ const { extracted: frontmatter, remaining: meta } = splitObject(
 );
 ---
 
-<Card {...attrs} class:list={["collection-card", className]}>
+<Card {...attrs} as="article" class:list={["collection-card", className]}>
   {
     showCollection && !featuredMeta ? (
       <DescriptionList isInline slot={showCollection ? "frontmatter" : ""}>

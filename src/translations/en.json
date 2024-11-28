@@ -58,6 +58,8 @@
     "form.search.btn": "Search",
     "form.settings.label.language": "Language:",
     "form.settings.label.theme.website": "Website theme:",
+    "greetings.name.before": "Hi, I'm {name}",
+    "greetings.name.after": "Welcome!",
     "language.name.en": "English",
     "language.name.es": "Spanish",
     "language.name.fr": "French",

@@ -3,6 +3,8 @@ import type { ComponentProps } from "astro/types";
 import { beforeEach, describe, expect, it } from "vitest";
 import LanguagePicker from "./language-picker.astro";
 
+/* cSpell:ignore Español Français */
+
 type LocalTestContext = {
   container: AstroContainer;
 };

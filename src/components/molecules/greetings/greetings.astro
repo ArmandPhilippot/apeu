@@ -38,45 +38,41 @@ const { translate } = useI18n(Astro.currentLocale);
     text-align: center;
     animation: scale-up 0.75s forwards;
 
-    /* I can't figure out how to have corners only with a transparent
-     * background so this solution is a bit tricky with magical numbers... I
-     * might to find another solution if this is glitchy in other browsers... */
     &::after {
       content: "";
       position: absolute;
-      inset: calc(var(--border-size-xl) * -1);
+      inset: 0;
       z-index: -1;
       background:
-        linear-gradient(135deg, var(--color-primary) 15%, transparent 0) top,
-        linear-gradient(45deg, transparent 85%, var(--color-primary) 0) top,
-        linear-gradient(45deg, var(--color-primary) 15%, transparent 0) bottom,
-        linear-gradient(135deg, transparent 85%, var(--color-primary) 0) bottom;
+        linear-gradient(135deg, var(--color-primary) 2.5em, transparent 0) top,
+        linear-gradient(
+            45deg,
+            transparent calc(100% - 2.5em),
+            var(--color-primary) 0
+          )
+          top,
+        linear-gradient(45deg, var(--color-primary) 2.5em, transparent 0) bottom,
+        linear-gradient(
+            135deg,
+            transparent calc(100% - 2.5em),
+            var(--color-primary) 0
+          )
+          bottom;
       background-origin: border-box;
       background-repeat: no-repeat;
       border-radius: inherit;
-      mask-image: linear-gradient(
-          135deg,
-          var(--color-primary) 15%,
-          transparent 0
-        ),
-        linear-gradient(135deg, #000 15.2%, transparent 0),
-        linear-gradient(45deg, transparent 84%, var(--color-primary) 0),
-        linear-gradient(45deg, transparent 84%, #000 0),
-        linear-gradient(45deg, var(--color-primary) 15.2%, transparent 0),
-        linear-gradient(45deg, #000 15.2%, transparent 0),
-        linear-gradient(135deg, transparent 84%, var(--color-primary) 0),
-        linear-gradient(135deg, transparent 84%, #000 0);
-      mask-repeat: no-repeat;
-      mask-composite: exclude;
-      mask-position:
+      clip-path: polygon(
+        0% 0%,
+        0% 100%,
+        var(--border-size-xl) 100%,
         var(--border-size-xl) var(--border-size-xl),
-        0,
-        calc(var(--border-size-xl) * -1) var(--border-size-xl),
-        0,
-        var(--border-size-xl) calc(var(--border-size-xl) * -1),
-        0,
-        calc(var(--border-size-xl) * -1) calc(var(--border-size-xl) * -1),
-        0;
+        calc(100% - var(--border-size-xl)) var(--border-size-xl),
+        calc(100% - var(--border-size-xl)) calc(100% - var(--border-size-xl)),
+        var(--border-size-xl) calc(100% - var(--border-size-xl)),
+        var(--border-size-xl) 100%,
+        100% 100%,
+        100% 0%
+      );
     }
   }
 

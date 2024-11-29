@@ -14,7 +14,7 @@ import TableOfContents from "../table-of-contents/table-of-contents.astro";
 type Props = HTMLAttributes<"article"> & {
   cover?: ComponentProps<typeof AstroImg> | null | undefined;
   feed?: string | URL | null | undefined;
-  heading: string;
+  heading?: string;
   toc?: MarkdownHeading[] | null | undefined;
 };
 
@@ -30,39 +30,45 @@ const { translate } = useI18n(Astro.currentLocale);
     className,
   ]}
 >
-  <Box
-    as="header"
-    class="page-header"
-    elevation="raised"
-    isBordered
-    isCentered
-    isProse
-    isRounded
-  >
-    <div class="page-heading">
-      <Heading as="h1" class="page-title">{heading}</Heading>
-      {
-        feed ? (
-          <Button
-            aria-label={translate("cta.subscribe.a11y", { title: heading })}
-            as="a"
-            href={feed}
-          >
-            <Icon aria-hidden="true" name="feed" />
-            {translate("cta.subscribe")}
-          </Button>
-        ) : null
-      }
-    </div>
-    {cover ? <AstroImg {...cover} class="page-cover" loading="eager" /> : null}
-    {
-      Astro.slots.has("meta") ? (
-        <div class="page-meta">
-          <slot name="meta" />
-        </div>
-      ) : null
-    }
-  </Box>
+  {
+    heading || cover || Astro.slots.has("meta") ? (
+      <Box
+        as="header"
+        class="page-header"
+        elevation="raised"
+        isBordered
+        isCentered
+        isProse
+        isRounded
+      >
+        {heading ? (
+          <div class="page-heading">
+            <Heading as="h1" class="page-title">
+              {heading}
+            </Heading>
+            {feed ? (
+              <Button
+                aria-label={translate("cta.subscribe.a11y", { title: heading })}
+                as="a"
+                href={feed}
+              >
+                <Icon aria-hidden="true" name="feed" />
+                {translate("cta.subscribe")}
+              </Button>
+            ) : null}
+          </div>
+        ) : null}
+        {cover ? (
+          <AstroImg {...cover} class="page-cover" loading="eager" />
+        ) : null}
+        {Astro.slots.has("meta") ? (
+          <div class="page-meta">
+            <slot name="meta" />
+          </div>
+        ) : null}
+      </Box>
+    ) : null
+  }
   {
     !!toc?.length ? (
       <div class="page-sidebar">
@@ -247,6 +253,7 @@ const { translate } = useI18n(Astro.currentLocale);
   }
 
   .page-body {
+    padding-block: clamp(var(--spacing-md), 2.5dvw, var(--spacing-xl));
     border-start-start-radius: 0;
     border-start-end-radius: 0;
 

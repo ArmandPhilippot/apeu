@@ -1,8 +1,12 @@
 ---
 import Box from "../components/atoms/box/box.astro";
 import Heading from "../components/atoms/heading/heading.astro";
+import Card from "../components/molecules/card/card.astro";
+import Greetings from "../components/molecules/greetings/greetings.astro";
 import Grid from "../components/molecules/grid/grid.astro";
 import CollectionCard from "../components/organisms/collection-card/collection-card.astro";
+import ContactCard from "../components/organisms/contact-card/contact-card.astro";
+import IdentityCard from "../components/organisms/identity-card/identity-card.astro";
 import PageLayout from "../components/templates/page-layout/page-layout.astro";
 import { queryCollection } from "../lib/astro/collections/query-collection";
 import { queryEntry } from "../lib/astro/collections/query-entry";
@@ -13,6 +17,10 @@ const { Content, ...page } = await queryEntry({
   collection: "pages",
   id: "home",
   locale,
+});
+const author = await queryEntry({
+  collection: "authors",
+  id: "armand-philippot",
 });
 const { entries: collections } = await queryCollection("pages", {
   format: "preview",
@@ -33,12 +41,51 @@ const { entries: collections } = await queryCollection("pages", {
 });
 ---
 
-<PageLayout heading={page.title} seo={page.seo}>
-  <Content slot="body" />
+<PageLayout class="homepage" seo={page.seo}>
   <Fragment slot="disconnected-body">
+    <Greetings isCentered isSpaced name={author.name} />
+    {
+      author ? (
+        <Fragment>
+          <IdentityCard
+            as="section"
+            author={author}
+            class="homepage-about"
+            elevation="raised"
+            isSpaced
+          >
+            <Heading slot="heading">
+              {translate("page.home.section.about.heading")}
+            </Heading>
+          </IdentityCard>
+          <ContactCard
+            addRelMe
+            as="section"
+            class="homepage-contact"
+            elevation="raised"
+            isSpaced
+            socialMedia={author.socialMedia}
+          >
+            <Heading slot="heading">
+              {translate("page.home.section.contact.heading")}
+            </Heading>
+          </ContactCard>
+        </Fragment>
+      ) : null
+    }
+    <Card
+      as="section"
+      class="homepage-complementary"
+      elevation="raised"
+      isCentered
+      isSpaced
+    >
+      <Heading slot="heading">{page.title}</Heading>
+      <Content />
+    </Card>
     {
       collections?.length ? (
-        <section class="homepage__section">
+        <section class="homepage-collections">
           <Box
             elevation="raised"
             isBordered
@@ -68,6 +115,58 @@ const { entries: collections } = await queryCollection("pages", {
 </PageLayout>
 
 <style>
+  .homepage {
+    @container (width > 41em) {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    @container (width > 55em) {
+      column-gap: var(--spacing-md);
+    }
+
+    @container (width > 82em) {
+      grid-template-columns: repeat(2, minmax(0.5fr, 1fr)) minmax(
+          0,
+          var(--size-prose)
+        );
+    }
+
+    &
+      > :global(
+        *:where(
+            :not(.homepage-about, .homepage-contact, .homepage-complementary)
+          )
+      ) {
+      @container (width > 41em) {
+        grid-column: 1 / span 3;
+      }
+    }
+  }
+
+  .homepage-about {
+    @container (width > 41em) {
+      grid-column: 1;
+    }
+  }
+
+  .homepage-contact {
+    @container (width > 41em) {
+      border-inline-start: var(--border-size-sm) solid var(--color-border);
+      grid-column: 2;
+    }
+  }
+
+  .homepage-complementary {
+    @container (width > 41em) {
+      grid-column: 1 / -1;
+    }
+
+    @container (width > 82em) {
+      grid-column: 3;
+    }
+  }
+
   .collections-list {
     @container (width > 55em) {
       --cols: repeat(auto-fit, minmax(27rem, auto));

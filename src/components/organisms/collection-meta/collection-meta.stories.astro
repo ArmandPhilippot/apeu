@@ -1,0 +1,71 @@
+---
+import type { ComponentProps } from "astro/types";
+import Heading from "../../atoms/heading/heading.astro";
+import PageLayout from "../../templates/page-layout/page-layout.astro";
+import CollectionMetaComponent from "./collection-meta.astro";
+
+const title = "CollectionMeta";
+const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
+  { label: "Home", url: "/" },
+  { label: "Design system", url: "/design-system" },
+  { label: "Components", url: "/design-system/components" },
+  { label: "Organisms", url: "/design-system/components/organisms" },
+  { label: title, url: Astro.url.href },
+];
+const seo: ComponentProps<typeof PageLayout>["seo"] = {
+  nofollow: true,
+  noindex: true,
+  title: breadcrumb
+    .slice(1)
+    .reverse()
+    .map((crumb) => crumb.label)
+    .join(" | "),
+};
+
+const meta = {
+  publishedOn: new Date(),
+} satisfies ComponentProps<typeof CollectionMetaComponent>["data"];
+
+const icons = {
+  publishedOn: { name: "success", size: 24 },
+} satisfies ComponentProps<typeof CollectionMetaComponent>["icons"];
+
+const blogPostMeta = {
+  category: {
+    route: "#quisquam-itaque-provident",
+    title: "A category",
+  },
+  publishedOn: new Date("2024-09-16"),
+  updatedOn: new Date(),
+} satisfies ComponentProps<typeof CollectionMetaComponent>["data"];
+
+const projectMeta = {
+  kind: "site",
+  publishedOn: new Date("2024-09-16"),
+  updatedOn: new Date("2024-09-16"),
+} satisfies ComponentProps<typeof CollectionMetaComponent>["data"];
+---
+
+<PageLayout breadcrumb={breadcrumb} heading={title} seo={seo}>
+  <Fragment slot="body">
+    <Heading as="h2">Usage</Heading>
+    <p>
+      A <code>CollectionMeta</code> component should be used to display the meta
+      of any collection configured in Astro.
+    </p>
+    <CollectionMetaComponent data={meta} />
+    <Heading as="h2">With hidden label</Heading>
+    <CollectionMetaComponent data={meta} hideLabel />
+    <Heading as="h2">With icons</Heading>
+    <CollectionMetaComponent data={meta} icons={icons} />
+    <Heading as="h2">Specific to a collection</Heading>
+    <p>
+      The component also handles meta specific to some collections. Check out
+      the following examples.
+    </p>
+    <Heading as="h3">Blog post meta</Heading>
+    <CollectionMetaComponent data={blogPostMeta} />
+    <Heading as="h3">Project meta</Heading>
+    <CollectionMetaComponent data={projectMeta} />
+  </Fragment>
+</PageLayout>

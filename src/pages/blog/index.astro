@@ -1,33 +1,121 @@
 ---
 import type { ComponentProps } from "astro/types";
-import { getEntry, render } from "astro:content";
-import Link from "../../components/atoms/link/link.astro";
-import ListItem from "../../components/atoms/list/list-item.astro";
-import List from "../../components/atoms/list/list.astro";
+import Box from "../../components/atoms/box/box.astro";
+import Button from "../../components/atoms/button/button.astro";
+import Heading from "../../components/atoms/heading/heading.astro";
+import Grid from "../../components/molecules/grid/grid.astro";
+import CollectionCard from "../../components/organisms/collection-card/collection-card.astro";
 import PageLayout from "../../components/templates/page-layout/page-layout.astro";
+import { queryCollection } from "../../lib/astro/collections/query-collection";
+import { queryEntry } from "../../lib/astro/collections/query-entry";
 import { useI18n } from "../../utils/i18n";
 
-const { locale, route, translate } = useI18n(Astro.currentLocale);
-const page = await getEntry("pages", `${locale}/blog`);
-const { Content } = await render(page);
+const { locale, route, translate, translatePlural } = useI18n(
+  Astro.currentLocale,
+);
+const { Content, ...page } = await queryEntry({
+  collection: "pages",
+  id: "blog",
+  locale,
+});
 const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
   { label: translate("page.home.title"), url: route("home") },
-  { label: page.data.title, url: Astro.url.href },
+  { label: page.title, url: Astro.url.href },
 ];
+const { entries: categories } = await queryCollection("blogCategories", {
+  format: "preview",
+  orderBy: { key: "title", order: "ASC" },
+  where: { locale },
+});
+const { entries: recentPosts, total: totalPosts } = await queryCollection(
+  "blogPosts",
+  {
+    first: 2,
+    format: "preview",
+    orderBy: { key: "publishedOn", order: "DESC" },
+    where: { locale },
+  },
+);
+const getPostCTA = (
+  title: string,
+): ComponentProps<typeof CollectionCard>["cta"] => {
+  return {
+    ariaLabel: translate("cta.read.more.a11y", { title }),
+    label: translate("cta.read.more"),
+  };
+};
 ---
 
-<PageLayout
-  breadcrumb={breadcrumb}
-  heading={page.data.title}
-  seo={page.data.seo}
->
-  <Fragment slot="body">
-    <Content />
-    <List>
-      <ListItem><Link href={route("blog.posts")}>Posts</Link></ListItem>
-      <ListItem>
-        <Link href={route("blog.categories")}>Categories</Link>
-      </ListItem>
-    </List>
+<PageLayout breadcrumb={breadcrumb} heading={page.title} seo={page.seo}>
+  <Content slot={page.hasContent ? "body" : ""} />
+  <Fragment slot="disconnected-body">
+    <Box
+      class="blog-section-heading"
+      elevation="raised"
+      isBordered
+      isCentered
+      isPadded
+      isProse
+      isRounded
+      isSpaced
+    >
+      <Heading>{translate("page.blog.section.recent.posts.heading")}</Heading>
+      <Button as="a" href={route("blog.posts")}>
+        {translatePlural("cta.see.all.posts", { count: totalPosts })}
+      </Button>
+    </Box>
+    <Grid class="posts-list" isCentered items={recentPosts}>
+      {
+        (post: (typeof recentPosts)[number]) => (
+          <CollectionCard
+            cta={getPostCTA(post.title)}
+            elevation="raised"
+            entry={post}
+            featuredMeta={{ icon: "blog", key: "publishedOn" }}
+            headingLvl="h3"
+          />
+        )
+      }
+    </Grid>
+    <Box
+      class="blog-section-heading"
+      elevation="raised"
+      isBordered
+      isCentered
+      isPadded
+      isProse
+      isRounded
+      isSpaced
+    >
+      <Heading>{translate("page.blog.section.categories.heading")}</Heading>
+    </Box>
+    <Grid class="categories-list" isCentered items={categories}>
+      {
+        ({ meta, ...cat }: (typeof categories)[number]) => (
+          <CollectionCard elevation="raised" entry={cat} headingLvl="h3" />
+        )
+      }
+    </Grid>
   </Fragment>
 </PageLayout>
+
+<style>
+  .blog-section-heading {
+    display: flex;
+    flex-flow: row wrap;
+    gap: var(--spacing-sm) var(--spacing-md);
+    justify-content: space-between;
+  }
+
+  .posts-list {
+    @container (width > 55em) {
+      --cols: repeat(auto-fit, minmax(clamp(34rem, 18dvw, 50rem), 1fr));
+    }
+  }
+
+  .categories-list {
+    @container (width > 55em) {
+      --cols: repeat(auto-fit, minmax(27rem, auto));
+    }
+  }
+</style>

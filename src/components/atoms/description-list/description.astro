@@ -1,0 +1,16 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+type Props = HTMLAttributes<"dd">;
+
+const { class: className, ...attrs } = Astro.props;
+---
+
+<dd {...attrs} class:list={["description", className]}><slot /></dd>
+
+<style>
+  .description {
+    display: inline;
+    margin: 0;
+  }
+</style>

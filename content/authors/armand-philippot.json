@@ -3,6 +3,9 @@
   "firstName": "Armand",
   "lastName": "Philippot",
   "isWebsiteOwner": true,
+  "socialMedia": {
+    "github": "https://github.com/ArmandPhilippot"
+  },
   "spokenLanguages": ["fr", "en"],
   "website": "https://armand.philippot.eu"
 }

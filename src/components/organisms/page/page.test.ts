@@ -12,9 +12,21 @@ describe("Page", () => {
     context.container = await AstroContainer.create();
   });
 
-  it<LocalTestContext>("renders a heading and its body", async ({
-    container,
-  }) => {
+  it<LocalTestContext>("renders its body", async ({ container }) => {
+    const props = {} satisfies ComponentProps<typeof Page>;
+    const body = "consequatur placeat explicabo";
+    const result = await container.renderToString(Page, {
+      props,
+      slots: { body },
+    });
+
+    expect.assertions(2);
+
+    expect(result).not.toContain("</h1>");
+    expect(result).toContain(body);
+  });
+
+  it<LocalTestContext>("renders a heading", async ({ container }) => {
     const props = {
       heading: "unde non eum",
     } satisfies ComponentProps<typeof Page>;
@@ -24,11 +36,10 @@ describe("Page", () => {
       slots: { body },
     });
 
-    expect.assertions(3);
+    expect.assertions(2);
 
     expect(result).toContain("</h1>");
     expect(result).toContain(props.heading);
-    expect(result).toContain(body);
   });
 
   it<LocalTestContext>("can render a disconnected body", async ({

@@ -1,27 +1,26 @@
 ---
 import type { GetStaticPaths } from "astro";
 import type { ComponentProps } from "astro/types";
-import { getCollection, render } from "astro:content";
+import Grid from "../../../components/molecules/grid/grid.astro";
+import CollectionCard from "../../../components/organisms/collection-card/collection-card.astro";
 import PageLayout from "../../../components/templates/page-layout/page-layout.astro";
+import { queryCollection } from "../../../lib/astro/collections/query-collection";
 import { useI18n } from "../../../utils/i18n";
 
 export const getStaticPaths = (async () => {
-  const categories = await getCollection("blogCategories");
+  const { entries: categories } = await queryCollection("blogCategories", {
+    where: { locale: "en" },
+  });
 
-  return categories
-    .filter((cat) => cat.data.locale === "en")
-    .map((cat) => {
-      return {
-        params: {
-          slug: cat.data.slug,
-        },
-        props: { page: cat },
-      };
-    });
+  return categories.map(({ slug, ...cat }) => {
+    return {
+      params: { slug },
+      props: { ...cat },
+    };
+  });
 }) satisfies GetStaticPaths;
 
-const { page } = Astro.props;
-const { Content, headings } = await render(page);
+const { Content, ...page } = Astro.props;
 const { route, translate } = useI18n(Astro.currentLocale);
 const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
   { label: translate("page.home.title"), url: route("home") },
@@ -30,15 +29,52 @@ const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
     label: translate("page.blog.categories.title"),
     url: route("blog.categories"),
   },
-  { label: page.data.title, url: Astro.url.href },
+  { label: page.title, url: Astro.url.href },
 ];
+const { entries: relatedPosts } = await queryCollection("blogPosts", {
+  orderBy: { key: "publishedOn", order: "DESC" },
+  where: { categories: [page.id] },
+});
+const getCTA = (
+  title: string,
+): ComponentProps<typeof CollectionCard>["cta"] => {
+  return {
+    ariaLabel: translate("cta.read.more.a11y", { title }),
+    label: translate("cta.read.more"),
+  };
+};
 ---
 
 <PageLayout
   breadcrumb={breadcrumb}
-  heading={page.data.title}
-  seo={page.data.seo}
-  toc={headings}
+  heading={page.title}
+  seo={page.seo}
+  toc={page.headings}
 >
-  <Content slot="body" />
+  <Content slot={page.hasContent ? "body" : ""} />
+  <Grid
+    class="posts-list"
+    isCentered
+    items={relatedPosts}
+    slot="disconnected-body"
+  >
+    {
+      (post: (typeof relatedPosts)[number]) => (
+        <CollectionCard
+          cta={getCTA(post.title)}
+          elevation="raised"
+          entry={post}
+          featuredMeta={{ icon: "blog", key: "publishedOn" }}
+        />
+      )
+    }
+  </Grid>
 </PageLayout>
+
+<style>
+  .posts-list {
+    @container (width > 55em) {
+      --cols: repeat(auto-fit, minmax(clamp(34rem, 18dvw, 50rem), 1fr));
+    }
+  }
+</style>

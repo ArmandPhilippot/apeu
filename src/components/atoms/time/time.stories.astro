@@ -1,0 +1,47 @@
+---
+import type { ComponentProps } from "astro/types";
+import PageLayout from "../../templates/page-layout/page-layout.astro";
+import Heading from "../heading/heading.astro";
+import TimeComponent from "./time.astro";
+
+const title = "Time";
+const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
+  { label: "Home", url: "/" },
+  { label: "Design system", url: "/design-system" },
+  { label: "Components", url: "/design-system/components" },
+  { label: "Atoms", url: "/design-system/components/atoms" },
+  { label: title, url: Astro.url.href },
+];
+const seo: ComponentProps<typeof PageLayout>["seo"] = {
+  nofollow: true,
+  noindex: true,
+  title: breadcrumb
+    .slice(1)
+    .reverse()
+    .map((crumb) => crumb.label)
+    .join(" | "),
+};
+
+const date = new Date();
+---
+
+<PageLayout breadcrumb={breadcrumb} heading={title} seo={seo}>
+  <Fragment slot="body">
+    <Heading>Default</Heading>
+    <TimeComponent date={date} />
+    <Heading>With time</Heading>
+    <TimeComponent date={date} showTime />
+    <Heading>Without day</Heading>
+    <TimeComponent date={date} hideDay />
+    <Heading>Without month</Heading>
+    <p>
+      It does not make sense to use the day and the year without month, but you
+      can do it:
+    </p>
+    <TimeComponent date={date} hideMonth />
+    <Heading>Without year</Heading>
+    <TimeComponent date={date} hideYear />
+    <Heading>Without day and month</Heading>
+    <TimeComponent date={date} hideDay hideMonth />
+  </Fragment>
+</PageLayout>

@@ -1,0 +1,85 @@
+---
+import type { ComponentProps } from "astro/types";
+import { Image as AstroImg } from "astro:assets";
+import PageLayout from "../../templates/page-layout/page-layout.astro";
+import Heading from "../heading/heading.astro";
+import Figcaption from "./figcaption.astro";
+import FigureComponent from "./figure.astro";
+
+const title = "Figure";
+const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
+  { label: "Home", url: "/" },
+  { label: "Design system", url: "/design-system" },
+  { label: "Components", url: "/design-system/components" },
+  { label: "Atoms", url: "/design-system/components/atoms" },
+  { label: title, url: Astro.url.href },
+];
+const seo: ComponentProps<typeof PageLayout>["seo"] = {
+  nofollow: true,
+  noindex: true,
+  title: breadcrumb
+    .slice(1)
+    .reverse()
+    .map((crumb) => crumb.label)
+    .join(" | "),
+};
+---
+
+<PageLayout breadcrumb={breadcrumb} heading={title} seo={seo}>
+  <Fragment slot="body">
+    <Heading as="h2">Usage</Heading>
+    <p>
+      A figure can be an image, illustration, diagram, code snippet, etc. that
+      can be moved to another part of the document without affecting the main
+      flow.
+    </p>
+    <Heading as="h2">Without Figcaption</Heading>
+    <FigureComponent>
+      <AstroImg
+        alt="Any image"
+        src="https://picsum.photos/640/480"
+        width={640}
+        height={480}
+      />
+    </FigureComponent>
+    <Heading as="h2">With Figcaption</Heading>
+    <Heading as="h3">At the top</Heading>
+    <FigureComponent>
+      <Figcaption>An image used as example</Figcaption>
+      <AstroImg
+        alt="Any image"
+        src="https://picsum.photos/640/480"
+        width={640}
+        height={480}
+      />
+    </FigureComponent>
+    <Heading as="h3">At the bottom</Heading>
+    <FigureComponent>
+      <AstroImg
+        alt="Any image"
+        src="https://picsum.photos/640/480"
+        width={640}
+        height={480}
+      />
+      <Figcaption>An image used as example</Figcaption>
+    </FigureComponent>
+    <Heading as="h2">Horizontally centered</Heading>
+    <FigureComponent isCentered>
+      <AstroImg
+        alt="Any image"
+        src="https://picsum.photos/640/480"
+        width={640}
+        height={480}
+      />
+    </FigureComponent>
+    <Heading as="h2">Full width</Heading>
+    <FigureComponent isFullWidth>
+      <AstroImg
+        alt="Any image"
+        src="https://picsum.photos/640/480"
+        width={640}
+        height={480}
+      />
+    </FigureComponent>
+  </Fragment>
+</PageLayout>

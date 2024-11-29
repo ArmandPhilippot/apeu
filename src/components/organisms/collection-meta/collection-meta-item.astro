@@ -1,0 +1,64 @@
+---
+import { Icon } from "astro-icon/components";
+import type { ComponentProps } from "astro/types";
+import type { IconName } from "../../../types/tokens";
+import Item from "../../atoms/description-list/item.astro";
+import Term from "../../atoms/description-list/term.astro";
+
+type Props = Omit<ComponentProps<typeof Item>, "isInline"> & {
+  /**
+   * Should we visually hide the label? This can be useful when showing only
+   * one meta field. Otherwise, it is better to keep them.
+   *
+   * @default false
+   */
+  hideLabel?: boolean | null | undefined;
+  /**
+   * Provide an icon to display before the term for one or more provided meta.
+   */
+  icon?: IconName | null | undefined;
+  /**
+   * Define the icon size if an icon is provided.
+   */
+  iconSize?: number | string | undefined;
+  /**
+   * The item label.
+   */
+  label: string;
+};
+
+const {
+  class: className,
+  hideLabel = false,
+  icon,
+  iconSize = 22,
+  label,
+  ...attrs
+} = Astro.props;
+---
+
+<Item {...attrs} class:list={["collection-meta-item", className]} isInline>
+  <Term>
+    {
+      icon ? (
+        <Icon
+          aria-hidden="true"
+          class="collection-meta-item-icon"
+          name={icon}
+          size={iconSize}
+        />
+      ) : null
+    }
+    <span class:list={{ "sr-only": hideLabel }}>
+      {label}
+    </span>
+  </Term>
+  <slot />
+</Item>
+
+<style>
+  .collection-meta-item-icon {
+    margin-inline-end: var(--spacing-3xs);
+    vertical-align: middle;
+  }
+</style>

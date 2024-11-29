@@ -1,23 +1,26 @@
 ---
 import type { ComponentProps } from "astro/types";
-import { getEntry, render } from "astro:content";
 import PageLayout from "../components/templates/page-layout/page-layout.astro";
+import { queryEntry } from "../lib/astro/collections/query-entry";
 import { useI18n } from "../utils/i18n";
 
 const { locale, route, translate } = useI18n(Astro.currentLocale);
-const page = await getEntry("pages", `${locale}/legal-notice`);
-const { Content, headings } = await render(page);
+const { Content, ...page } = await queryEntry({
+  collection: "pages",
+  id: "legal-notice",
+  locale,
+});
 const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
   { label: translate("page.home.title"), url: route("home") },
-  { label: page.data.title, url: Astro.url.href },
+  { label: page.title, url: Astro.url.href },
 ];
 ---
 
 <PageLayout
   breadcrumb={breadcrumb}
-  heading={page.data.title}
-  seo={page.data.seo}
-  toc={headings}
+  heading={page.title}
+  seo={page.seo}
+  toc={page.headings}
 >
   <Content slot="body" />
 </PageLayout>

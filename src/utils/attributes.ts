@@ -1,3 +1,5 @@
+import type { Spacing } from "../types/tokens";
+
 /**
  * Stringify the given CSS variables.
  *
@@ -14,3 +16,9 @@ export const getCSSVars = (cssVars: Record<string, unknown>): string =>
     .filter(([_key, value]) => typeof value !== "undefined" && value !== null)
     .map(([key, value]) => `--${key}: ${value};`)
     .join(" ");
+
+export const getSpacingVarValue = (spacing: Spacing | null | undefined) => {
+  if (spacing) return `var(--spacing-${spacing})`;
+  if (typeof spacing === "undefined") return null;
+  return 0;
+};

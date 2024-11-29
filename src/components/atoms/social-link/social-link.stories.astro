@@ -1,0 +1,85 @@
+---
+import type { ComponentProps } from "astro/types";
+import Heading from "../../atoms/heading/heading.astro";
+import PageLayout from "../../templates/page-layout/page-layout.astro";
+import SocialLinkComponent from "./social-link.astro";
+
+const title = "SocialLink";
+const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
+  { label: "Home", url: "/" },
+  { label: "Design system", url: "/design-system" },
+  { label: "Components", url: "/design-system/components" },
+  { label: "Atoms", url: "/design-system/components/atoms" },
+  { label: title, url: Astro.url.href },
+];
+const seo: ComponentProps<typeof PageLayout>["seo"] = {
+  nofollow: true,
+  noindex: true,
+  title: breadcrumb
+    .slice(1)
+    .reverse()
+    .map((crumb) => crumb.label)
+    .join(" | "),
+};
+---
+
+<PageLayout breadcrumb={breadcrumb} heading={title} seo={seo}>
+  <Fragment slot="body">
+    <Heading as="h2">Usage</Heading>
+    <p>
+      A <code>SocialLink</code> is a link designed as a button that should redirect
+      the user to an external website.
+    </p>
+    <Heading as="h2">Supported media</Heading>
+    <p>
+      The following example show the social links in both variant: with and
+      without label.
+    </p>
+    <Heading as="h3">Bluesky</Heading>
+    <SocialLinkComponent medium="bluesky" url="#bluesky" /><br />
+    <SocialLinkComponent hideLabel medium="bluesky" url="#bluesky" />
+    <Heading as="h3">Diaspora</Heading>
+    <SocialLinkComponent medium="diaspora" url="#diaspora" /><br />
+    <SocialLinkComponent hideLabel medium="diaspora" url="#diaspora" />
+    <Heading as="h3">Email</Heading>
+    <SocialLinkComponent medium="email" url="#email" /><br />
+    <SocialLinkComponent hideLabel medium="email" url="#email" />
+    <Heading as="h3">Facebook</Heading>
+    <SocialLinkComponent medium="facebook" url="#facebook" /><br />
+    <SocialLinkComponent hideLabel medium="facebook" url="#facebook" />
+    <Heading as="h3">Github</Heading>
+    <SocialLinkComponent medium="github" url="#github" /><br />
+    <SocialLinkComponent hideLabel medium="github" url="#github" />
+    <Heading as="h3">Gitlab</Heading>
+    <SocialLinkComponent medium="gitlab" url="#gitlab" /><br />
+    <SocialLinkComponent hideLabel medium="gitlab" url="#gitlab" />
+    <Heading as="h3">LinkedIn</Heading>
+    <SocialLinkComponent medium="linkedin" url="#linkedin" /><br />
+    <SocialLinkComponent hideLabel medium="linkedin" url="#linkedin" />
+    <Heading as="h3">Mastodon</Heading>
+    <SocialLinkComponent medium="mastodon" url="#mastodon" /><br />
+    <SocialLinkComponent hideLabel medium="mastodon" url="#mastodon" />
+    <Heading as="h3">Reddit</Heading>
+    <SocialLinkComponent medium="reddit" url="#reddit" /><br />
+    <SocialLinkComponent hideLabel medium="reddit" url="#reddit" />
+    <Heading as="h3">StackOverflow</Heading>
+    <SocialLinkComponent medium="stackoverflow" url="#stackoverflow" /><br />
+    <SocialLinkComponent
+      hideLabel
+      medium="stackoverflow"
+      url="#stackoverflow"
+    />
+    <Heading as="h3">WhatsApp</Heading>
+    <SocialLinkComponent medium="whatsapp" url="#whatsapp" /><br />
+    <SocialLinkComponent hideLabel medium="whatsapp" url="#whatsapp" />
+    <Heading as="h3">X</Heading>
+    <SocialLinkComponent medium="x" url="#x" /><br />
+    <SocialLinkComponent hideLabel medium="x" url="#x" />
+    <Heading as="h3">Using a custom label</Heading>
+    <SocialLinkComponent
+      label="Share on Mastodon"
+      medium="mastodon"
+      url="#mastodon"
+    />
+  </Fragment>
+</PageLayout>

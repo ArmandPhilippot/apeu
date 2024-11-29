@@ -1,0 +1,207 @@
+---
+import type { JSX } from "astro/jsx-runtime";
+import type { ComponentProps } from "astro/types";
+import type { CollectionMetaData } from "../../../types/data";
+import type { IconName } from "../../../types/tokens";
+import type { AllKeysOf, Blend } from "../../../types/utilities";
+import {
+  useI18n,
+  type PluralUIKey,
+  type SingularUIKey,
+} from "../../../utils/i18n";
+import DescriptionList from "../../atoms/description-list/description-list.astro";
+import Description from "../../atoms/description-list/description.astro";
+import Link from "../../atoms/link/link.astro";
+import Time from "../../atoms/time/time.astro";
+import CollectionMetaItem from "./collection-meta-item.astro";
+
+type CollectionMetaIcon = Partial<
+  Record<
+    AllKeysOf<CollectionMetaData>,
+    { name: IconName; size?: number | string }
+  >
+>;
+
+type Props = ComponentProps<typeof DescriptionList> & {
+  data: Blend<CollectionMetaData>;
+  hideLabel?: boolean | null | undefined;
+  icons?: CollectionMetaIcon;
+};
+
+type LinkValue = {
+  href: string;
+  text: string;
+};
+
+type MetaValue = string | Date | LinkValue;
+
+type RenderConfig<K extends AllKeysOf<Blend<CollectionMetaData>>> = {
+  shouldRender: (
+    value: Blend<CollectionMetaData>[K],
+  ) => value is NonNullable<Blend<CollectionMetaData>[K]>;
+  renderLabel: () =>
+    | { token: SingularUIKey; isPlural?: false }
+    | { token: PluralUIKey; isPlural: true };
+  renderValue: (
+    value: NonNullable<Blend<CollectionMetaData>[K]>,
+  ) => MetaValue[];
+};
+
+type MetaDataConfigs = {
+  [K in AllKeysOf<Blend<CollectionMetaData>>]: RenderConfig<K>;
+};
+
+const configs: MetaDataConfigs = {
+  kind: {
+    shouldRender: (
+      value,
+    ): value is NonNullable<Blend<CollectionMetaData>["kind"]> => !!value,
+    renderLabel: () => ({
+      token: "meta.label.project.kind",
+    }),
+    renderValue: (value) => [`meta.value.project.kind.${value}`],
+  },
+  publishedOn: {
+    shouldRender: (
+      value,
+    ): value is NonNullable<Blend<CollectionMetaData>["publishedOn"]> =>
+      !!value,
+    renderLabel: () => ({
+      token: "meta.label.published.on",
+    }),
+    renderValue: (value) => [value],
+  },
+  updatedOn: {
+    shouldRender: (
+      value,
+    ): value is NonNullable<Blend<CollectionMetaData>["updatedOn"]> =>
+      !!value && value.toISOString() !== data.publishedOn?.toISOString(),
+    renderLabel: () => ({
+      token: "meta.label.last.update",
+    }),
+    renderValue: (value) => [value],
+  },
+  authors: {
+    shouldRender: (
+      value,
+    ): value is NonNullable<Blend<CollectionMetaData>["authors"]> =>
+      !!value?.length,
+    renderLabel: () => ({
+      token: "meta.label.authors",
+      isPlural: true,
+    }),
+    renderValue: (value) =>
+      value.map(({ isWebsiteOwner, name, website }) =>
+        website && !isWebsiteOwner ? { href: website, text: name } : name,
+      ),
+  },
+  inLanguage: {
+    shouldRender: (
+      value,
+    ): value is NonNullable<Blend<CollectionMetaData>["inLanguage"]> => !!value,
+    renderLabel: () => ({
+      token: "meta.label.language",
+    }),
+    renderValue: (value) => [translate(`language.name.${value}`)],
+  },
+  inLanguages: {
+    shouldRender: (
+      value,
+    ): value is NonNullable<Blend<CollectionMetaData>["inLanguages"]> =>
+      !!value?.length,
+    renderLabel: () => ({
+      token: "meta.label.languages",
+      isPlural: true,
+    }),
+    renderValue: (value) =>
+      value.map((lang) => translate(`language.name.${lang}`)),
+  },
+  repository: {
+    shouldRender: (
+      value,
+    ): value is NonNullable<Blend<CollectionMetaData>["repository"]> => !!value,
+    renderLabel: () => ({
+      token: "meta.label.repository",
+    }),
+    renderValue: (value) => [{ href: value, text: value }],
+  },
+  category: {
+    shouldRender: (
+      value,
+    ): value is NonNullable<Blend<CollectionMetaData>["category"]> => !!value,
+    renderLabel: () => ({
+      token: "meta.label.category",
+    }),
+    renderValue: (value) => [{ href: value.route, text: value.title }],
+  },
+  tags: {
+    shouldRender: (
+      value,
+    ): value is NonNullable<Blend<CollectionMetaData>["tags"]> =>
+      !!value?.length,
+    renderLabel: () => ({
+      token: "meta.label.tags",
+      isPlural: true,
+    }),
+    renderValue: (value) =>
+      value.map((tag) => ({
+        href: tag.route,
+        text: tag.title,
+      })),
+  },
+} as const;
+
+const iterateConfigs = <K extends keyof typeof configs>(
+  callback: (key: K, config: RenderConfig<K>) => JSX.Element | null,
+) => {
+  return (Object.keys(configs) as K[]).map((key) => {
+    const config = configs[key];
+    return callback(key, config);
+  });
+};
+
+const isMetaTranslationKey = (key: unknown): key is SingularUIKey =>
+  typeof key === "string" && key.startsWith("meta.");
+
+const { data, hideLabel = false, icons, ...attrs } = Astro.props;
+const { translate, translatePlural } = useI18n(Astro.currentLocale);
+---
+
+<DescriptionList {...attrs}>
+  {
+    iterateConfigs((key, { renderLabel, renderValue, shouldRender }) => {
+      const value = data[key];
+      if (!shouldRender(value)) return null;
+
+      const { token, isPlural } = renderLabel();
+      const contentItems = renderValue(value);
+
+      return (
+        <CollectionMetaItem
+          hideLabel={hideLabel}
+          icon={icons?.[key]?.name}
+          iconSize={icons?.[key]?.size}
+          label={
+            isPlural
+              ? translatePlural(token, { count: contentItems.length })
+              : translate(token)
+          }
+        >
+          {contentItems.map((item) => (
+            <Description>
+              {item instanceof Date ? (
+                <Time date={item} />
+              ) : typeof item === "object" ? (
+                <Link href={item.href}>{item.text}</Link>
+              ) : isMetaTranslationKey(item) ? (
+                translate(item)
+              ) : (
+                item
+              )}
+            </Description>
+          ))}
+        </CollectionMetaItem>
+      );
+    })
+  }
+</DescriptionList>

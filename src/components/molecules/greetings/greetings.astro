@@ -1,0 +1,168 @@
+---
+import type { ComponentProps } from "astro/types";
+import { useI18n } from "../../../utils/i18n";
+import Box from "../../atoms/box/box.astro";
+import Heading from "../../atoms/heading/heading.astro";
+
+type Props = Omit<ComponentProps<typeof Box<"header">>, "as" | "isPadded"> & {
+  name: string;
+};
+
+const { class: className, name, ...attrs } = Astro.props;
+const { translate } = useI18n(Astro.currentLocale);
+---
+
+<Box {...attrs} as="header" class:list={["greetings", className]} isPadded>
+  <p>{translate("greetings.name.before", { name: "" })}</p>
+  <Heading aria-label={name} as="h1">
+    {name}.
+  </Heading>
+  <p>{translate("greetings.name.after")}</p>
+</Box>
+
+<style>
+  .greetings {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    width: fit-content;
+    min-width: 35%;
+    max-width: calc(100% - var(--spacing-md));
+    padding: var(--spacing-lg);
+    position: relative;
+    background: transparent;
+    border-radius: var(--border-radii-md);
+    color: var(--color-primary-faded);
+    font-size: var(--font-size-4xl);
+    font-weight: var(--font-weight-bold);
+    text-align: center;
+    animation: scale-up 0.75s forwards;
+
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background:
+        linear-gradient(135deg, var(--color-primary) 2.5em, transparent 0) top,
+        linear-gradient(
+            45deg,
+            transparent calc(100% - 2.5em),
+            var(--color-primary) 0
+          )
+          top,
+        linear-gradient(45deg, var(--color-primary) 2.5em, transparent 0) bottom,
+        linear-gradient(
+            135deg,
+            transparent calc(100% - 2.5em),
+            var(--color-primary) 0
+          )
+          bottom;
+      background-origin: border-box;
+      background-repeat: no-repeat;
+      border-radius: inherit;
+      clip-path: polygon(
+        0% 0%,
+        0% 100%,
+        var(--border-size-xl) 100%,
+        var(--border-size-xl) var(--border-size-xl),
+        calc(100% - var(--border-size-xl)) var(--border-size-xl),
+        calc(100% - var(--border-size-xl)) calc(100% - var(--border-size-xl)),
+        var(--border-size-xl) calc(100% - var(--border-size-xl)),
+        var(--border-size-xl) 100%,
+        100% 100%,
+        100% 0%
+      );
+    }
+  }
+
+  :where(.greetings) :global(*) {
+    opacity: 0;
+
+    &:first-child {
+      --fromY: -100%;
+      --toY: 0;
+
+      margin: 0;
+      animation:
+        fade-in 0.7s forwards 0.7s,
+        slide-in 0.7s linear 0.7s;
+    }
+
+    &:nth-child(2) {
+      --fromX: -10%;
+      --toX: 0;
+      --filterFrom: grayscale(80%) brightness(100%) saturate(150%)
+        drop-shadow(0 0 0 var(--color-shadow));
+      --filterTo: grayscale(0%) brightness(120%) saturate(100%)
+        drop-shadow(
+          var(--border-size-sm) var(--border-size-sm) var(--border-size-sm)
+            var(--color-shadow)
+        );
+
+      margin-block: var(--spacing-md);
+      background: linear-gradient(
+        to right,
+        var(--color-primary),
+        var(--color-primary-darker),
+        var(--color-primary)
+      );
+      background-clip: text;
+      color: transparent;
+      animation:
+        fade-in 0.7s forwards 1.4s,
+        slide-in 0.7s linear 1.4s,
+        filter-anim 1.2s alternate infinite 1.6s;
+    }
+
+    &:last-child {
+      --fromY: 50%;
+      --toY: 0;
+
+      margin: 0;
+      animation:
+        fade-in 0.7s forwards 2.2s,
+        slide-in 0.7s linear 2.2s;
+    }
+  }
+
+  @keyframes scale-up {
+    from {
+      transform: scale(0);
+    }
+
+    to {
+      transform: scale(1);
+    }
+  }
+
+  @keyframes filter-anim {
+    from {
+      filter: var(--filterFrom);
+    }
+
+    to {
+      filter: var(--filterTo);
+    }
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes slide-in {
+    from {
+      transform: translate(var(--fromX, 0), var(--fromY, 0));
+    }
+
+    to {
+      transform: translate(var(--toX, 0), var(--toY, 0));
+    }
+  }
+</style>

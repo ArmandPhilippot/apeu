@@ -15,6 +15,7 @@ const { as: Tag = "h2", class: className, ...attrs } = Astro.props;
     margin: 0;
     color: var(--color-primary-faded);
     font-weight: var(--font-weight-bold);
+    text-wrap: balance;
 
     &:where(:is(h1)) {
       font-size: var(--font-size-5xl);

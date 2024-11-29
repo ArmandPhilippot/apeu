@@ -1,11 +1,192 @@
 ---
-import { getEntry, render } from "astro:content";
+import Box from "../components/atoms/box/box.astro";
+import Heading from "../components/atoms/heading/heading.astro";
+import Card from "../components/molecules/card/card.astro";
+import Greetings from "../components/molecules/greetings/greetings.astro";
+import Grid from "../components/molecules/grid/grid.astro";
+import CollectionCard from "../components/organisms/collection-card/collection-card.astro";
+import ContactCard from "../components/organisms/contact-card/contact-card.astro";
+import IdentityCard from "../components/organisms/identity-card/identity-card.astro";
 import PageLayout from "../components/templates/page-layout/page-layout.astro";
+import { queryCollection } from "../lib/astro/collections/query-collection";
+import { queryEntry } from "../lib/astro/collections/query-entry";
+import { useI18n } from "../utils/i18n";
 
-const page = await getEntry("pages", "en/home");
-const { Content } = await render(page);
+const { locale, translate } = useI18n(Astro.currentLocale);
+const { Content, ...page } = await queryEntry({
+  collection: "pages",
+  id: "home",
+  locale,
+});
+const author = await queryEntry({
+  collection: "authors",
+  id: "armand-philippot",
+});
+const { entries: collections } = await queryCollection("pages", {
+  format: "preview",
+  orderBy: { key: "title", order: "ASC" },
+  where: {
+    ids: [
+      `${locale}/blog`,
+      `${locale}/blogroll`,
+      `${locale}/bookmarks`,
+      `${locale}/contributions`,
+      `${locale}/guides`,
+      `${locale}/notes`,
+      `${locale}/projects`,
+      `${locale}/tags`,
+    ],
+    locale,
+  },
+});
 ---
 
-<PageLayout heading={page.data.title} seo={page.data.seo}>
-  <Content slot="body" />
+<PageLayout class="homepage" seo={page.seo}>
+  <Fragment slot="disconnected-body">
+    <Greetings isCentered isSpaced name={author.name} />
+    {
+      author ? (
+        <Fragment>
+          <IdentityCard
+            as="section"
+            author={author}
+            class="homepage-about"
+            elevation="raised"
+            isSpaced
+          >
+            <Heading slot="heading">
+              {translate("page.home.section.about.heading")}
+            </Heading>
+          </IdentityCard>
+          <ContactCard
+            addRelMe
+            as="section"
+            class="homepage-contact"
+            elevation="raised"
+            isSpaced
+            socialMedia={author.socialMedia}
+          >
+            <Heading slot="heading">
+              {translate("page.home.section.contact.heading")}
+            </Heading>
+          </ContactCard>
+        </Fragment>
+      ) : null
+    }
+    {
+      page.hasContent ? (
+        <Card
+          as="section"
+          class="homepage-content"
+          elevation="raised"
+          isCentered
+          isSpaced
+        >
+          <Heading slot="heading">{page.title}</Heading>
+          <Content />
+        </Card>
+      ) : null
+    }
+    {
+      collections?.length ? (
+        <section class="homepage-collections">
+          <Box
+            elevation="raised"
+            isBordered
+            isCentered
+            isPadded
+            isProse
+            isRounded
+            isSpaced
+          >
+            <Heading as="h2">
+              {translate("page.home.section.collections.heading")}
+            </Heading>
+          </Box>
+          <Grid class="collections-list" isCentered items={collections}>
+            {({ meta, ...collection }: (typeof collections)[number]) => (
+              <CollectionCard
+                elevation="raised"
+                entry={collection}
+                headingLvl="h3"
+              />
+            )}
+          </Grid>
+        </section>
+      ) : null
+    }
+  </Fragment>
 </PageLayout>
+
+<style>
+  .homepage {
+    @container (width > 41em) {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, auto));
+    }
+
+    @container (width > 55em) {
+      column-gap: var(--spacing-md);
+    }
+
+    @container (width > 82em) {
+      &:where(:has(.homepage-content)) {
+        grid-template-columns: repeat(2, minmax(0.5fr, 1fr)) minmax(
+            0,
+            var(--size-prose)
+          );
+      }
+    }
+
+    &:where(:not(:has(.homepage-content)))
+      > :global(
+        *:where(:not(.homepage-about, .homepage-contact, .homepage-content))
+      ) {
+      @container (width > 41em) {
+        grid-column: 1 / -1;
+      }
+    }
+
+    &:where(:has(.homepage-content))
+      > :global(
+        *:where(:not(.homepage-about, .homepage-contact, .homepage-content))
+      ) {
+      @container (width > 41em) {
+        grid-column: 1 / span 2;
+      }
+
+      @container (width > 82em) {
+        grid-column: 1 / span 3;
+      }
+    }
+  }
+
+  .homepage-about {
+    @container (width > 41em) {
+      grid-column: 1;
+    }
+  }
+
+  .homepage-contact {
+    @container (width > 41em) {
+      border-inline-start: var(--border-size-sm) solid var(--color-border);
+      grid-column: 2;
+    }
+  }
+
+  .homepage-content {
+    @container (width > 41em) {
+      grid-column: 1 / -1;
+    }
+
+    @container (width > 82em) {
+      grid-column: 3;
+    }
+  }
+
+  .collections-list {
+    @container (width > 55em) {
+      --cols: repeat(auto-fit, minmax(27rem, auto));
+    }
+  }
+</style>

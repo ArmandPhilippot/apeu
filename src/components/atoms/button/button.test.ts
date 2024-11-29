@@ -29,7 +29,7 @@ describe("Button", () => {
     expect(result).toContain(body);
   });
 
-  it<LocalTestContext>("can use the primary style", async ({ container }) => {
+  it<LocalTestContext>("can use the primary kind", async ({ container }) => {
     const props = {
       kind: "primary",
     } satisfies ComponentProps<typeof Button>;
@@ -42,6 +42,36 @@ describe("Button", () => {
     expect.assertions(1);
 
     expect(result).toContain("primary");
+  });
+
+  it<LocalTestContext>("can use the discreet kind", async ({ container }) => {
+    const props = {
+      kind: "discreet",
+    } satisfies ComponentProps<typeof Button>;
+    const body = "voluptas ratione saepe";
+    const result = await container.renderToString(Button, {
+      props,
+      slots: { default: body },
+    });
+
+    expect.assertions(1);
+
+    expect(result).toContain("discreet");
+  });
+
+  it<LocalTestContext>("can use the neutral kind", async ({ container }) => {
+    const props = {
+      kind: "neutral",
+    } satisfies ComponentProps<typeof Button>;
+    const body = "voluptas ratione saepe";
+    const result = await container.renderToString(Button, {
+      props,
+      slots: { default: body },
+    });
+
+    expect.assertions(1);
+
+    expect(result).toContain("neutral");
   });
 
   it<LocalTestContext>("can render an anchor tag", async ({ container }) => {

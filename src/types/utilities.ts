@@ -20,9 +20,8 @@ export type CollectionReference<C extends DataCollectionKey> = {
   id: ValidDataEntryId<C>;
 };
 
-export type HasKey<T, K extends PropertyKey> = T extends { [P in K]: unknown }
-  ? T
-  : never;
+export type HasKey<T, K extends PropertyKey> =
+  T extends Record<K, unknown> ? T : never;
 
 export type HasNestedKey<U, K1 extends PropertyKey, K2 extends PropertyKey> =
   U extends HasKey<U, K1>

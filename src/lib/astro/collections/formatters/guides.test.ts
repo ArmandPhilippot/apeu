@@ -37,6 +37,7 @@ describe("get-guide", () => {
         "Content": [Function],
         "collection": "guides",
         "description": "The guide description.",
+        "hasContent": false,
         "headings": [],
         "id": "en/in-depth-guide",
         "locale": "en",

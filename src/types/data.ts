@@ -1,6 +1,10 @@
 import type { LocalImageProps, RemoteImageProps } from "astro:assets";
 import type { CollectionEntry, RenderResult } from "astro:content";
 
+type RenderedContent = RenderResult & {
+  hasContent: boolean;
+};
+
 export type Author = Pick<CollectionEntry<"authors">, "collection" | "id"> &
   Omit<CollectionEntry<"authors">["data"], "avatar"> & {
     avatar?: Omit<Img, "alt"> | null | undefined;
@@ -48,14 +52,14 @@ export type BlogPostMetaData = Omit<
 };
 
 export type BlogPost = Pick<CollectionEntry<"blogPosts">, "collection" | "id"> &
-  Omit<RenderResult, "remarkPluginFrontmatter"> &
+  Omit<RenderedContent, "remarkPluginFrontmatter"> &
   Omit<CollectionEntry<"blogPosts">["data"], "meta"> & {
     meta: BlogPostMetaData;
   };
 
 export type BlogPostPreview = Omit<
   BlogPost,
-  keyof RenderResult | "meta" | "seo" | "slug"
+  keyof RenderedContent | "meta" | "seo" | "slug"
 > & {
   meta: Omit<BlogPostMetaData, "authors">;
 };
@@ -81,7 +85,7 @@ export type GuideMetaData = Omit<
 };
 
 export type Guide = Pick<CollectionEntry<"guides">, "collection" | "id"> &
-  Omit<RenderResult, "remarkPluginFrontmatter"> &
+  Omit<RenderedContent, "remarkPluginFrontmatter"> &
   Omit<CollectionEntry<"guides">["data"], "cover" | "meta"> & {
     cover?: Img | null | undefined;
     meta: GuideMetaData;
@@ -89,7 +93,7 @@ export type Guide = Pick<CollectionEntry<"guides">, "collection" | "id"> &
 
 export type GuidePreview = Omit<
   Guide,
-  keyof RenderResult | "meta" | "seo" | "slug"
+  keyof RenderedContent | "meta" | "seo" | "slug"
 > & {
   meta: Omit<GuideMetaData, "authors">;
 };
@@ -102,12 +106,12 @@ export type NoteMetaData = Omit<
 };
 
 export type Note = Pick<CollectionEntry<"notes">, "collection" | "id"> &
-  Omit<RenderResult, "remarkPluginFrontmatter"> &
+  Omit<RenderedContent, "remarkPluginFrontmatter"> &
   Omit<CollectionEntry<"notes">["data"], "meta"> & {
     meta: NoteMetaData;
   };
 
-export type NotePreview = Omit<Note, keyof RenderResult | "seo" | "slug">;
+export type NotePreview = Omit<Note, keyof RenderedContent | "seo" | "slug">;
 
 export type PageMetaData = Omit<
   CollectionEntry<"pages">["data"]["meta"],
@@ -115,13 +119,13 @@ export type PageMetaData = Omit<
 >;
 
 export type Page = Pick<CollectionEntry<"pages">, "collection" | "id"> &
-  Omit<RenderResult, "remarkPluginFrontmatter"> &
+  Omit<RenderedContent, "remarkPluginFrontmatter"> &
   Omit<CollectionEntry<"pages">["data"], "cover" | "meta"> & {
     cover?: Img | null | undefined;
     meta: PageMetaData;
   };
 
-export type PagePreview = Omit<Page, keyof RenderResult | "seo" | "slug">;
+export type PagePreview = Omit<Page, keyof RenderedContent | "seo" | "slug">;
 
 export type ProjectMetaData = Omit<
   CollectionEntry<"projects">["data"]["meta"],
@@ -131,13 +135,16 @@ export type ProjectMetaData = Omit<
 };
 
 export type Project = Pick<CollectionEntry<"projects">, "collection" | "id"> &
-  Omit<RenderResult, "remarkPluginFrontmatter"> &
+  Omit<RenderedContent, "remarkPluginFrontmatter"> &
   Omit<CollectionEntry<"projects">["data"], "cover" | "meta"> & {
     cover?: Img | null | undefined;
     meta: ProjectMetaData;
   };
 
-export type ProjectPreview = Omit<Project, keyof RenderResult | "seo" | "slug">;
+export type ProjectPreview = Omit<
+  Project,
+  keyof RenderedContent | "seo" | "slug"
+>;
 
 export type RawTaxonomyEntry = CollectionEntry<"blogCategories" | "tags">;
 
@@ -147,7 +154,7 @@ export type TaxonomyMetaData = Omit<
 >;
 
 export type Taxonomy = Pick<RawTaxonomyEntry, "collection" | "id"> &
-  Omit<RenderResult, "remarkPluginFrontmatter"> &
+  Omit<RenderedContent, "remarkPluginFrontmatter"> &
   Omit<RawTaxonomyEntry["data"], "cover" | "meta"> & {
     cover?: Img | null | undefined;
     meta: TaxonomyMetaData;
@@ -157,7 +164,7 @@ export type TaxonomyLink = Pick<Taxonomy, "route" | "title">;
 
 export type TaxonomyPreview = Omit<
   Taxonomy,
-  keyof RenderResult | "seo" | "slug"
+  keyof RenderedContent | "seo" | "slug"
 >;
 
 export type CollectionMetaData =

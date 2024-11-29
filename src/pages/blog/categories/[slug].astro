@@ -51,7 +51,7 @@ const getCTA = (
   seo={page.seo}
   toc={page.headings}
 >
-  <Content slot="body" />
+  <Content slot={page.hasContent ? "body" : ""} />
   <Grid
     class="posts-list"
     isCentered

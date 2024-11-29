@@ -31,6 +31,7 @@ export const getNote = async (
   return {
     ...preview,
     ...renderResult,
+    hasContent: !!note.body,
     seo: note.data.seo,
     slug: note.data.slug,
   };

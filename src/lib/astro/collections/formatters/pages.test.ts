@@ -37,6 +37,7 @@ describe("get-page", () => {
         "Content": [Function],
         "collection": "pages",
         "description": "The page description.",
+        "hasContent": false,
         "headings": [],
         "id": "en/generic-page",
         "locale": "en",

@@ -39,6 +39,7 @@ describe("get-project", () => {
         "Content": [Function],
         "collection": "projects",
         "description": "The project description.",
+        "hasContent": false,
         "headings": [],
         "id": "revolutionary-project",
         "locale": "en",

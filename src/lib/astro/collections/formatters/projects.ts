@@ -31,6 +31,7 @@ export const getProject = async (
   return {
     ...preview,
     ...renderResult,
+    hasContent: !!project.body,
     seo: project.data.seo,
     slug: project.data.slug,
   };

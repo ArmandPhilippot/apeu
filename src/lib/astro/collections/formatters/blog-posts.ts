@@ -39,6 +39,7 @@ export const getBlogPost = async (
   return {
     ...preview,
     ...renderResult,
+    hasContent: !!post.body,
     meta: {
       ...preview.meta,
       authors: resolvedAuthors?.map(getAuthorLink) ?? [],

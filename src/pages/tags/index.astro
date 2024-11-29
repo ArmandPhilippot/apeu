@@ -25,7 +25,7 @@ const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
 ---
 
 <PageLayout breadcrumb={breadcrumb} heading={page.title} seo={page.seo}>
-  <Content slot="body" />
+  <Content slot={page.hasContent ? "body" : ""} />
   <Grid class="tags-list" isCentered items={tags} slot="disconnected-body">
     {
       ({ meta, ...tag }: (typeof tags)[number]) => (

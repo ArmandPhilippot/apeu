@@ -37,6 +37,7 @@ describe("get-note", () => {
         "Content": [Function],
         "collection": "notes",
         "description": "The note description.",
+        "hasContent": false,
         "headings": [],
         "id": "temporary-note",
         "locale": "en",

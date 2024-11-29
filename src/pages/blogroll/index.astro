@@ -29,7 +29,7 @@ const cta: ComponentProps<typeof CollectionCard>["cta"] = {
 ---
 
 <PageLayout breadcrumb={breadcrumb} heading={page.title} seo={page.seo}>
-  <Content slot="body" />
+  <Content slot={page.hasContent ? "body" : ""} />
   <Grid class="blogs-list" isCentered items={blogroll} slot="disconnected-body">
     {
       (blog: (typeof blogroll)[number]) => (

@@ -25,6 +25,7 @@ export const getPage = async (
   return {
     ...preview,
     ...renderResult,
+    hasContent: !!page.body,
     seo: page.data.seo,
     slug: page.data.slug,
   };

@@ -38,6 +38,7 @@ describe("get-blog-post", () => {
         "Content": [Function],
         "collection": "blogPosts",
         "description": "The blog post description.",
+        "hasContent": false,
         "headings": [],
         "id": "en/my-awesome-post",
         "locale": "en",

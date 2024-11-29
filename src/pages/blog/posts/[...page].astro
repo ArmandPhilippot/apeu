@@ -76,7 +76,7 @@ const getCTA = (
 ---
 
 <PageLayout breadcrumb={breadcrumb} heading={heading} seo={seo}>
-  <Content slot="body" />
+  <Content slot={page.hasContent ? "body" : ""} />
   <Fragment slot="disconnected-body">
     <Grid class="posts-list" isCentered items={posts}>
       {

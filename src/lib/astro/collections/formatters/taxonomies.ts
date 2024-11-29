@@ -44,6 +44,7 @@ export const getTaxonomy = async (
   return {
     ...preview,
     ...renderResult,
+    hasContent: !!taxonomy.body,
     seo: taxonomy.data.seo,
     slug: taxonomy.data.slug,
   };

@@ -33,6 +33,7 @@ export const getGuide = async (
   return {
     ...preview,
     ...renderResult,
+    hasContent: !!guide.body,
     meta: {
       ...preview.meta,
       authors: resolvedAuthors?.map(getAuthorLink) ?? [],

@@ -16,7 +16,7 @@ const getLocalesPattern = () => {
   return CONFIG.LANGUAGES.DEFAULT;
 };
 
-export const getLocalizedPattern = (pattern: string) => {
+const getLocalizedPattern = (pattern: string) => {
   const locales = getLocalesPattern();
 
   return `${locales}${pattern}`;

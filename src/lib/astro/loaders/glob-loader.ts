@@ -7,7 +7,7 @@ import {
   type AvailableLanguage,
 } from "../../../utils/i18n";
 
-const CONTENT_DIR: string = import.meta.env.CONTENT_PATH ?? "./content";
+const CONTENT_DIR: string = import.meta.env?.CONTENT_PATH ?? "./content";
 
 const getLocalesPattern = () => {
   if (CONFIG.LANGUAGES.AVAILABLE.length > 1)
@@ -16,7 +16,7 @@ const getLocalesPattern = () => {
   return CONFIG.LANGUAGES.DEFAULT;
 };
 
-export const getLocalizedPattern = (pattern: string) => {
+const getLocalizedPattern = (pattern: string) => {
   const locales = getLocalesPattern();
 
   return `${locales}${pattern}`;

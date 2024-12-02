@@ -60,11 +60,11 @@ type ComponentsStoriesConfig = {
  * @param {ComponentsStoriesConfig} config - A configuration object.
  * @returns {AstroIntegration}
  */
-export const componentsStories = ({
+export const componentsStories = (({
   baseSlug,
   components,
   logStories = false,
-}: ComponentsStoriesConfig): AstroIntegration => {
+}: ComponentsStoriesConfig) => {
   return {
     name: "components-stories",
     hooks: {
@@ -95,4 +95,4 @@ export const componentsStories = ({
       },
     },
   };
-};
+}) satisfies (config: ComponentsStoriesConfig) => AstroIntegration;

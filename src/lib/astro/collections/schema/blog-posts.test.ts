@@ -1,6 +1,25 @@
 import { describe, expect, it, vi } from "vitest";
+import { z } from "zod";
 import { CONFIG } from "../../../../utils/constants";
 import { blogPosts } from "./blog-posts";
+
+function createReferenceMock(collection: string) {
+  return z.string().transform((slug) => ({
+    collection,
+    slug,
+    data: {
+      name: `Mock ${collection} ${slug}`,
+    },
+  }));
+}
+
+vi.mock("astro:content", async () => {
+  const actual = await vi.importActual("astro:content");
+  return {
+    ...actual,
+    reference: vi.fn((collection: string) => createReferenceMock(collection)),
+  };
+});
 
 describe("blogPosts", () => {
   it("should include the meta in the transformed output", async () => {

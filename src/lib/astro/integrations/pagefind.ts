@@ -8,7 +8,7 @@ import sirv from "sirv";
 // `sirv` will most likely only be used in this file so:
 // cSpell:ignore -- sirv
 
-export const pagefind = (): AstroIntegration => {
+export const pagefind = (() => {
   let outDir: string | null = null;
 
   return {
@@ -75,4 +75,4 @@ export const pagefind = (): AstroIntegration => {
       },
     },
   };
-};
+}) satisfies () => AstroIntegration;

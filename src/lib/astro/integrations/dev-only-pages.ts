@@ -44,7 +44,7 @@ const getDevOnlyPageRoute = (path: string, prefix: string): string => {
    * without `index` in the slug. */
   const fileRoute = removeTrailingIndex(remainingRoute);
 
-  return joinPaths(parentRoute, fileRoute);
+  return joinPaths(parentRoute, fileRoute).replace(/^\/?/, "/");
 };
 
 /**
@@ -91,10 +91,10 @@ type DevOnlyPagesConfig = {
  * @param {DevOnlyPagesConfig} config - A configuration object.
  * @returns {AstroIntegration}
  */
-export const devOnlyPages = ({
+export const devOnlyPages = (({
   logPages = false,
   prefix,
-}: DevOnlyPagesConfig): AstroIntegration => {
+}: DevOnlyPagesConfig) => {
   const devOnlyPagesPatterns = [
     `**/${prefix}*.astro`,
     `**/${prefix}*/**/*.astro`,
@@ -126,11 +126,11 @@ export const devOnlyPages = ({
 
           /* We append `- ` before the route to avoid looping again over the
            * routes when displaying the routes list. */
-          return `- /${route}`;
+          return `- ${route}`;
         });
 
         logger.info(getDevOnlyPagesResultMsg(devOnlyRoutes, logPages));
       },
     },
   };
-};
+}) satisfies (config: DevOnlyPagesConfig) => AstroIntegration;

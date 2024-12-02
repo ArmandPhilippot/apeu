@@ -104,11 +104,17 @@ const icon = await getImage({ src: faviconSvg, format: "svg" });
   <link rel="apple-touch-icon" href={appleTouchIcon.src} />
   <link rel="manifest" href="/manifest.json" />
   <link rel="sitemap" href="/sitemap-index.xml" />
-  <link
-    rel="alternate"
-    type="application/rss+xml"
-    title={translate("feed.website.link.title")}
-    href={new URL("feed.xml", Astro.site)}
-  />
+  {
+    Astro.site ? (
+      <Fragment>
+        <link
+          rel="alternate"
+          type="application/rss+xml"
+          title={translate("feed.website.link.title")}
+          href={new URL("feed.xml", Astro.site)}
+        />
+      </Fragment>
+    ) : null
+  }
   <slot />
 </head>

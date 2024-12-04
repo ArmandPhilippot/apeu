@@ -32,7 +32,12 @@ const getCTA = (
 };
 ---
 
-<PageLayout breadcrumb={breadcrumb} heading={page.title} seo={page.seo}>
+<PageLayout
+  breadcrumb={breadcrumb}
+  feed={`${route("projects")}/feed.xml`}
+  heading={page.title}
+  seo={page.seo}
+>
   <Content slot={page.hasContent ? "body" : ""} />
   <Grid
     class="projects-list"

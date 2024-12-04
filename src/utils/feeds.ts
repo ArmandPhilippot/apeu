@@ -2,6 +2,7 @@ import type { RSSFeedItem } from "@astrojs/rss";
 import { experimental_AstroContainer } from "astro/container";
 import type { CollectionKey } from "astro:content";
 import sanitizeHtml from "sanitize-html";
+import { queryCollection } from "../lib/astro/collections/query-collection";
 import type { FeedCompatibleEntry } from "../types/data";
 import { UnsupportedLocaleError } from "./exceptions";
 import { isAvailableLanguage, useI18n, type AvailableLanguage } from "./i18n";
@@ -112,4 +113,31 @@ export const getFeedLanguageFromLocale = (locale: string): string => {
   } as const satisfies Record<AvailableLanguage, string>;
 
   return availableLocales[locale];
+};
+
+export const getCollectionsFeeds = async (language: AvailableLanguage) => {
+  const { locale, translate } = useI18n(language);
+  const pagesWithFeed = [
+    `${locale}/blog/categories`,
+    `${locale}/blog/posts`,
+    `${locale}/blogroll`,
+    `${locale}/bookmarks`,
+    `${locale}/contributions`,
+    `${locale}/guides`,
+    `${locale}/notes`,
+    `${locale}/projects`,
+    `${locale}/tags`,
+  ];
+  const { entries } = await queryCollection("pages", {
+    format: "preview",
+    orderBy: { key: "title", order: "ASC" },
+    where: { ids: pagesWithFeed },
+  });
+
+  return entries.map((entry) => {
+    return {
+      label: translate("feed.link.title", { title: entry.title }),
+      slug: `${entry.route}/feed.xml`,
+    };
+  });
 };

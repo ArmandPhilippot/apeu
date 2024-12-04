@@ -25,7 +25,12 @@ const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
 ];
 ---
 
-<PageLayout breadcrumb={breadcrumb} heading={page.title} seo={page.seo}>
+<PageLayout
+  breadcrumb={breadcrumb}
+  feed={`${route("blog.categories")}/feed.xml`}
+  heading={page.title}
+  seo={page.seo}
+>
   <Content slot={page.hasContent ? "body" : ""} />
   <Grid
     class="categories-list"

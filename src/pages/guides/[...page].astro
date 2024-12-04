@@ -74,7 +74,12 @@ const getCTA = (
 };
 ---
 
-<PageLayout breadcrumb={breadcrumb} heading={heading} seo={seo}>
+<PageLayout
+  breadcrumb={breadcrumb}
+  feed={`${route("guides")}/feed.xml`}
+  heading={heading}
+  seo={seo}
+>
   <Content slot={page.hasContent ? "body" : ""} />
   <Fragment slot="disconnected-body">
     <Grid class="guides-list" isCentered items={guides}>

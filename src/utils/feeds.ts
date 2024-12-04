@@ -2,7 +2,10 @@ import type { RSSFeedItem } from "@astrojs/rss";
 import { experimental_AstroContainer } from "astro/container";
 import type { CollectionKey } from "astro:content";
 import sanitizeHtml from "sanitize-html";
-import { queryCollection } from "../lib/astro/collections/query-collection";
+import {
+  queryCollection,
+  queryCollections,
+} from "../lib/astro/collections/query-collection";
 import type { FeedCompatibleEntry } from "../types/data";
 import { UnsupportedLocaleError } from "./exceptions";
 import { isAvailableLanguage, useI18n, type AvailableLanguage } from "./i18n";
@@ -128,13 +131,22 @@ export const getCollectionsFeeds = async (language: AvailableLanguage) => {
     `${locale}/projects`,
     `${locale}/tags`,
   ];
-  const { entries } = await queryCollection("pages", {
+  const { entries: entriesWithStaticFeed } = await queryCollection("pages", {
     format: "preview",
     orderBy: { key: "title", order: "ASC" },
     where: { ids: pagesWithFeed },
   });
+  const { entries: entriesWithDynamicFeed } = await queryCollections(
+    ["blogCategories", "tags"],
+    {
+      format: "preview",
+      orderBy: { key: "title", order: "ASC" },
+      where: { locale },
+    },
+  );
+  const entriesWithFeed = [...entriesWithStaticFeed, ...entriesWithDynamicFeed];
 
-  return entries.map((entry) => {
+  return entriesWithFeed.map((entry) => {
     return {
       label: translate("feed.link.title", { title: entry.title }),
       slug: `${entry.route}/feed.xml`,

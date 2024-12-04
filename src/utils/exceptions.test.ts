@@ -1,5 +1,18 @@
 import { describe, expect, it } from "vitest";
-import { MissingSlotError } from "./exceptions";
+import {
+  MissingSiteConfigError,
+  MissingSlotError,
+  UnsupportedLocaleError,
+} from "./exceptions";
+
+describe("MissingSiteConfigError", () => {
+  it("returns an Error instance", () => {
+    const exception = new MissingSiteConfigError();
+
+    expect(exception instanceof Error).toBe(true);
+    expect(exception.message).toContain("`site`");
+  });
+});
 
 describe("MissingSlotError", () => {
   it("returns an Error instance", () => {
@@ -8,5 +21,15 @@ describe("MissingSlotError", () => {
 
     expect(exception instanceof Error).toBe(true);
     expect(exception.message).toContain(slot);
+  });
+});
+
+describe("UnsupportedLocaleError", () => {
+  it("returns an Error instance", () => {
+    const locale = "natus";
+    const exception = new UnsupportedLocaleError(locale);
+
+    expect(exception instanceof Error).toBe(true);
+    expect(exception.message).toContain(locale);
   });
 });

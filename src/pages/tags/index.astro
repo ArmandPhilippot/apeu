@@ -24,7 +24,12 @@ const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
 ];
 ---
 
-<PageLayout breadcrumb={breadcrumb} heading={page.title} seo={page.seo}>
+<PageLayout
+  breadcrumb={breadcrumb}
+  feed={`${route("tags")}/feed.xml`}
+  heading={page.title}
+  seo={page.seo}
+>
   <Content slot={page.hasContent ? "body" : ""} />
   <Grid class="tags-list" isCentered items={tags} slot="disconnected-body">
     {

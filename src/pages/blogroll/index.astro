@@ -28,7 +28,12 @@ const cta: ComponentProps<typeof CollectionCard>["cta"] = {
 };
 ---
 
-<PageLayout breadcrumb={breadcrumb} heading={page.title} seo={page.seo}>
+<PageLayout
+  breadcrumb={breadcrumb}
+  feed={`${route("blogroll")}/feed.xml`}
+  heading={page.title}
+  seo={page.seo}
+>
   <Content slot={page.hasContent ? "body" : ""} />
   <Grid class="blogs-list" isCentered items={blogroll} slot="disconnected-body">
     {

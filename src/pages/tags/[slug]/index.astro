@@ -1,14 +1,14 @@
 ---
 import type { GetStaticPaths } from "astro";
 import type { ComponentProps } from "astro/types";
-import Grid from "../../components/molecules/grid/grid.astro";
-import CollectionCard from "../../components/organisms/collection-card/collection-card.astro";
-import PageLayout from "../../components/templates/page-layout/page-layout.astro";
+import Grid from "../../../components/molecules/grid/grid.astro";
+import CollectionCard from "../../../components/organisms/collection-card/collection-card.astro";
+import PageLayout from "../../../components/templates/page-layout/page-layout.astro";
 import {
   queryCollection,
   queryCollections,
-} from "../../lib/astro/collections/query-collection";
-import { useI18n } from "../../utils/i18n";
+} from "../../../lib/astro/collections/query-collection";
+import { useI18n } from "../../../utils/i18n";
 
 export const getStaticPaths = (async () => {
   const { entries: tags } = await queryCollection("tags", {
@@ -73,6 +73,7 @@ const getCTA = (
 
 <PageLayout
   breadcrumb={breadcrumb}
+  feed={`${page.route}/feed.xml`}
   heading={page.title}
   seo={page.seo}
   toc={page.headings}

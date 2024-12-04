@@ -32,7 +32,12 @@ const getCTA = (
 };
 ---
 
-<PageLayout breadcrumb={breadcrumb} heading={page.title} seo={page.seo}>
+<PageLayout
+  breadcrumb={breadcrumb}
+  feed={`${route("notes")}/feed.xml`}
+  heading={page.title}
+  seo={page.seo}
+>
   <Content slot={page.hasContent ? "body" : ""} />
   <Grid class="notes-list" isCentered items={notes} slot="disconnected-body">
     {

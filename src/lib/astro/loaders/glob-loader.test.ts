@@ -1,6 +1,18 @@
-import type { LoaderContext } from "astro/loaders";
+import type { Loader, LoaderContext } from "astro/loaders";
 import { describe, expect, it, vi } from "vitest";
 import { globLoader } from "./glob-loader";
+
+vi.mock("astro/loaders", async (importOriginal) => {
+  const actual: Loader = await importOriginal();
+  return {
+    ...actual,
+    glob: vi.fn().mockReturnValue({
+      load: vi.fn().mockImplementation(async () => {
+        return Promise.resolve();
+      }),
+    }),
+  };
+});
 
 vi.mock("../../../utils/constants", () => ({
   CONFIG: {
@@ -11,66 +23,70 @@ vi.mock("../../../utils/constants", () => ({
   },
 }));
 
-describe("globLoader", () => {
-  const createMockContext = (): LoaderContext => ({
-    collection: "",
-    store: {
-      addModuleImport: vi.fn(),
-      set: vi.fn(),
-      clear: vi.fn(),
-      get: vi.fn(),
-      delete: vi.fn(),
-      has: vi.fn(),
-      keys: vi.fn().mockReturnValue([]),
-      values: vi.fn().mockReturnValue([]),
-      entries: vi.fn().mockReturnValue([]),
-    },
-    meta: {
-      set: vi.fn(),
-      get: vi.fn(),
-      delete: vi.fn(),
-      has: vi.fn(),
-    },
-    logger: {
-      debug: vi.fn(),
-      error: vi.fn(),
-      fork: vi.fn(),
-      info: vi.fn(),
-      label: "label",
-      options: {
-        dest: { write: vi.fn() },
-        level: "info",
-      },
-      warn: vi.fn(),
-    },
-    config: {
-      base: "/",
-      build: {
-        assets: "_astro",
-        format: "directory",
-        inlineStylesheets: "always",
-        redirects: false,
-      },
-      publicDir: new URL("file:///path/to/project/public/"),
-      root: new URL("file:///path/to/project/"),
-      server: {
-        host: false,
-        open: false,
-        port: 3000,
-      },
-      srcDir: new URL("file:///path/to/project/src/"),
-      trailingSlash: "ignore",
-    } as unknown as LoaderContext["config"],
-    parseData: vi.fn(),
-    generateDigest: vi.fn(),
-    entryTypes: new Map(),
-    refreshContextData: {},
-  });
+type CreateMockContextConfig = {
+  collection: string;
+};
 
+const createMockContext = ({
+  collection,
+}: CreateMockContextConfig): LoaderContext => ({
+  collection,
+  store: {
+    addModuleImport: vi.fn(),
+    set: vi.fn(),
+    clear: vi.fn(),
+    get: vi.fn(),
+    delete: vi.fn(),
+    has: vi.fn(),
+    keys: vi.fn().mockReturnValue([]),
+    values: vi.fn().mockReturnValue([]),
+    entries: vi.fn().mockReturnValue([]),
+  },
+  meta: {
+    set: vi.fn(),
+    get: vi.fn(),
+    delete: vi.fn(),
+    has: vi.fn(),
+  },
+  logger: {
+    debug: vi.fn(),
+    error: vi.fn(),
+    fork: vi.fn(),
+    info: vi.fn(),
+    label: "label",
+    options: {
+      dest: { write: vi.fn() },
+      level: "info",
+    },
+    warn: vi.fn(),
+  },
+  config: {
+    base: "/",
+    build: {
+      assets: "_astro",
+      format: "directory",
+      inlineStylesheets: "always",
+      redirects: false,
+    },
+    publicDir: new URL("file:///path/to/project/public/"),
+    root: new URL("file:///path/to/project/"),
+    server: {
+      host: false,
+      open: false,
+      port: 3000,
+    },
+    srcDir: new URL("file:///path/to/project/src/"),
+    trailingSlash: "ignore",
+  } as unknown as LoaderContext["config"],
+  parseData: vi.fn(),
+  generateDigest: vi.fn(),
+  refreshContextData: {},
+});
+
+describe("globLoader", () => {
   describe("Localized Collections", () => {
     it("should process localized collection entries correctly", async () => {
-      const ctx = createMockContext();
-      ctx.collection = "blog.posts";
+      const ctx = createMockContext({ collection: "blog.posts" });
       (ctx.store.entries as ReturnType<typeof vi.fn>).mockReturnValue([
         [
           "en/blog/posts/sample-post",
@@ -107,8 +123,7 @@ describe("globLoader", () => {
     });
 
     it("should handle non-localized collections", async () => {
-      const ctx = createMockContext();
-      ctx.collection = "authors";
+      const ctx = createMockContext({ collection: "authors" });
       (ctx.store.entries as ReturnType<typeof vi.fn>).mockReturnValue([
         [
           "author1",
@@ -136,8 +151,7 @@ describe("globLoader", () => {
     });
 
     it("should handle entries without filePath", async () => {
-      const ctx = createMockContext();
-      ctx.collection = "blog.posts";
+      const ctx = createMockContext({ collection: "blog.posts" });
       (ctx.store.entries as ReturnType<typeof vi.fn>).mockReturnValue([
         [
           "entry-without-filepath",

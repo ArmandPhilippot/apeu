@@ -20,7 +20,7 @@ export const pagefind = (() => {
         logger.info("Checking if search index is available...");
 
         outDir = fileURLToPath(
-          config.adapter?.name === "@astrojs/node" && config.output === "hybrid"
+          config.adapter?.name === "@astrojs/node" && config.output === "static"
             ? config.build.client
             : config.outDir,
         );

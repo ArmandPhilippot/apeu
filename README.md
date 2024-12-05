@@ -189,8 +189,6 @@ Before starting, please follow the instructions in [Setup](#setup).
 ├── src/
 │   ├── assets/
 │   ├── components/
-│   ├── content/
-│   │   └── config.ts
 │   ├── lib/
 │   │   └── astro/
 │   │       └── integrations/
@@ -228,7 +226,8 @@ Before starting, please follow the instructions in [Setup](#setup).
 │   ├── translations/
 │   │   └── en.json
 │   ├── types/
-│   └── utils/
+│   ├── utils/
+│   └── content.config.ts
 ├── package.json
 └── config files
 ```

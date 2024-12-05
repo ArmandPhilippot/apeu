@@ -45,12 +45,12 @@
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
-    "@astrojs/node": "^8.3.4",
+    "@astrojs/node": "^9.0.0",
     "@astrojs/rss": "^4.0.9",
     "@astrojs/sitemap": "^3.2.1",
     "@nanostores/persistent": "^0.10.2",
     "@pagefind/default-ui": "^1.2.0",
-    "astro": "^4.16.16",
+    "astro": "^5.0.2",
     "astro-icon": "^1.1.4",
     "globby": "^14.0.2",
     "modern-normalize": "^3.0.1",
@@ -91,5 +91,12 @@
     "stylelint-config-html": "^1.1.0",
     "typescript-eslint": "^8.17.0",
     "vitest": "^2.1.8"
+  },
+  "pnpm": {
+    "overrides": {
+      "@vitest/coverage-v8>vite": "6.0.2",
+      "@vitest/mocker>vite": "6.0.2",
+      "vitest>vite": "6.0.2"
+    }
   }
 }

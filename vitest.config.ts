@@ -6,6 +6,7 @@ export default getViteConfig({
     coverage: {
       include: ["src"],
       exclude: [
+        "src/content.config.ts",
         "src/env.d.ts",
         "src/pages",
         "src/**/*.stories.astro",

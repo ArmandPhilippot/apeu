@@ -46,6 +46,7 @@
   "dependencies": {
     "@astrojs/check": "^0.9.4",
     "@astrojs/node": "^8.3.4",
+    "@astrojs/rss": "^4.0.9",
     "@astrojs/sitemap": "^3.2.1",
     "@nanostores/persistent": "^0.10.2",
     "@pagefind/default-ui": "^1.2.0",
@@ -56,6 +57,7 @@
     "nanostores": "^0.11.3",
     "nodemailer": "^6.9.16",
     "pagefind": "^1.2.0",
+    "sanitize-html": "^2.13.1",
     "sharp": "^0.33.5",
     "sharp-ico": "^0.1.5",
     "sirv": "^3.0.0",
@@ -72,6 +74,7 @@
     "@types/eslint__js": "^8.42.3",
     "@types/node": "^22.10.1",
     "@types/nodemailer": "^6.4.17",
+    "@types/sanitize-html": "^2.13.0",
     "@types/web-app-manifest": "^1.0.8",
     "@typescript-eslint/parser": "^8.17.0",
     "@vitest/coverage-v8": "^2.1.8",

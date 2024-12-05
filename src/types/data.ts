@@ -176,3 +176,12 @@ export type CollectionMetaData =
   | PageMetaData
   | ProjectMetaData
   | TaxonomyMetaData;
+
+export type FeedCompatibleEntry =
+  | Blog
+  | BlogPost
+  | Bookmark
+  | Guide
+  | Note
+  | Project
+  | Taxonomy;

@@ -15,7 +15,6 @@ export default defineConfig({
   }),
   experimental: {
     contentIntellisense: true,
-    contentLayer: true,
   },
   i18n: {
     defaultLocale: CONFIG.LANGUAGES.DEFAULT,
@@ -40,7 +39,7 @@ export default defineConfig({
       },
     }),
   ],
-  output: "hybrid",
+  output: "static",
   site: `https://${CONFIG.HOST}`,
   vite: {
     server: {

@@ -4,7 +4,7 @@ import { isObject } from "../../src/utils/type-checks";
 export const createAstroBuildDoneMockContext = (
   overrides = {},
 ): Parameters<Astro.IntegrationHooks["astro:build:done"]>[0] => ({
-  cacheManifest: false,
+  assets: new Map(),
   dir: new URL("file:///mock/out"),
   logger: {
     info: vi.fn(),
@@ -17,11 +17,12 @@ export const createAstroBuildDoneMockContext = (
   ...overrides,
 });
 
+// cSpell:ignore Codegen
+
 export const createAstroConfigSetupMockContext = (
   overrides = {},
 ): Parameters<Astro.IntegrationHooks["astro:config:setup"]>[0] => ({
   addClientDirective: vi.fn(),
-  addDevOverlayPlugin: vi.fn(),
   addDevToolbarApp: vi.fn(),
   addMiddleware: vi.fn(),
   addRenderer: vi.fn(),
@@ -29,7 +30,7 @@ export const createAstroConfigSetupMockContext = (
   command: "dev",
   config: {
     adapter: { name: "@astrojs/node", hooks: {} },
-    output: "hybrid",
+    output: "static",
     build: {
       client: new URL("file:///mock/build/client"),
       assets: "assets",
@@ -46,6 +47,7 @@ export const createAstroConfigSetupMockContext = (
       : {}),
     root: new URL("file:///mock/build"),
   } as Parameters<Astro.IntegrationHooks["astro:config:setup"]>[0]["config"],
+  createCodegenDir: vi.fn(),
   injectRoute: vi.fn(),
   injectScript: vi.fn(),
   isRestart: false,

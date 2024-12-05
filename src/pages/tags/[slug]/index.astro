@@ -3,6 +3,7 @@ import type { GetStaticPaths } from "astro";
 import type { ComponentProps } from "astro/types";
 import Grid from "../../../components/molecules/grid/grid.astro";
 import CollectionCard from "../../../components/organisms/collection-card/collection-card.astro";
+import CollectionMeta from "../../../components/organisms/collection-meta/collection-meta.astro";
 import PageLayout from "../../../components/templates/page-layout/page-layout.astro";
 import {
   queryCollection,
@@ -23,13 +24,15 @@ export const getStaticPaths = (async () => {
 }) satisfies GetStaticPaths;
 
 const { Content, ...page } = Astro.props;
-const { locale, route, translate } = useI18n(Astro.currentLocale);
+const { locale, route, translate, translatePlural } = useI18n(
+  Astro.currentLocale,
+);
 const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
   { label: translate("page.home.title"), url: route("home") },
   { label: translate("page.tags.title"), url: route("tags") },
   { label: page.title, url: Astro.url.href },
 ];
-const { entries: relatedEntries } = await queryCollections(
+const { entries: relatedEntries, total } = await queryCollections(
   ["blogPosts", "blogroll", "bookmarks", "guides", "notes", "projects"],
   {
     format: "preview",
@@ -78,6 +81,14 @@ const getCTA = (
   seo={page.seo}
   toc={page.headings}
 >
+  <CollectionMeta
+    data={{
+      total: translatePlural("meta.value.total.entries", {
+        count: total,
+      }),
+    }}
+    slot="meta"
+  />
   <Content slot="body" />
   <Grid
     class="entries-list"

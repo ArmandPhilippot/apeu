@@ -257,4 +257,20 @@ describe("CollectionMeta", () => {
     expect(result).toContain(`href="${props.data.category.route}"`);
     expect(result).toContain(`>${props.data.category.title}<`);
   });
+
+  it<LocalTestContext>("renders total metadata correctly", async ({
+    container,
+  }) => {
+    const props = {
+      data: {
+        total: "nobis sint error",
+      },
+    } satisfies ComponentProps<typeof CollectionMeta>;
+    const result = await container.renderToString(CollectionMeta, {
+      props,
+    });
+
+    expect(result).toContain("translated_meta.label.total");
+    expect(result).toContain(props.data.total);
+  });
 });

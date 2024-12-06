@@ -1,5 +1,42 @@
-import { describe, expect, it } from "vitest";
-import { getParentDirPath, joinPaths, removeExtFromPath } from "./paths";
+import { afterAll, describe, expect, it, vi } from "vitest";
+import { CONFIG } from "./constants";
+import {
+  getLocaleFromPath,
+  getParentDirPath,
+  joinPaths,
+  removeExtFromPath,
+} from "./paths";
+
+vi.mock("./constants", async (importOriginal) => {
+  const mod =
+    // eslint-disable-next-line @typescript-eslint/consistent-type-imports
+    await importOriginal<typeof import("./constants")>();
+  return {
+    ...mod,
+    CONFIG: {
+      ...mod.CONFIG,
+      LANGUAGES: {
+        ...mod.CONFIG.LANGUAGES,
+        AVAILABLE: ["en", "fr", "es"],
+        DEFAULT: "en",
+      },
+    },
+  };
+});
+
+vi.mock("./i18n", async (importOriginal) => {
+  // eslint-disable-next-line @typescript-eslint/consistent-type-imports
+  const mod = await importOriginal<typeof import("./i18n")>();
+
+  return {
+    ...mod,
+    isAvailableLanguage: vi
+      .fn()
+      .mockImplementation((locale: string) =>
+        ["en", "es", "fr"].includes(locale),
+      ),
+  };
+});
 
 describe("join-paths", () => {
   it("returns a path from path fragments", () => {
@@ -45,5 +82,39 @@ describe("remove-ext-from-path", () => {
     const result = removeExtFromPath(filePath);
 
     expect(result).toBe(filePath);
+  });
+});
+
+describe("get-locale-from-path", () => {
+  afterAll(() => {
+    vi.resetAllMocks();
+  });
+
+  it("returns the locale from a path starting with the locale", () => {
+    const path = "/es/some/file.md";
+    const locale = getLocaleFromPath(path);
+
+    expect(locale).toBe("es");
+  });
+
+  it("returns the locale from a path containing the locale", () => {
+    const path = "/some/nested/es/file.md";
+    const locale = getLocaleFromPath(path);
+
+    expect(locale).toBe("es");
+  });
+
+  it("returns the default locale if no locale was found", () => {
+    const path = "/some/nested/file.md";
+    const locale = getLocaleFromPath(path);
+
+    expect(locale).toBe(CONFIG.LANGUAGES.DEFAULT);
+  });
+
+  it("returns the default locale if the locale was invalid", () => {
+    const path = "/ru/some/nested/file.md";
+    const locale = getLocaleFromPath(path);
+
+    expect(locale).toBe(CONFIG.LANGUAGES.DEFAULT);
   });
 });

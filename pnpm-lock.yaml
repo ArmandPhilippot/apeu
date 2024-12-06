@@ -40,6 +40,9 @@ importers:
       globby:
         specifier: ^14.0.2
         version: 14.0.2
+      mdast-util-to-nlcst:
+        specifier: ^7.0.1
+        version: 7.0.1
       modern-normalize:
         specifier: ^3.0.1
         version: 3.0.1
@@ -52,6 +55,15 @@ importers:
       pagefind:
         specifier: ^1.2.0
         version: 1.2.0
+      parse-english:
+        specifier: ^7.0.0
+        version: 7.0.0
+      parse-latin:
+        specifier: ^7.0.0
+        version: 7.0.0
+      remark:
+        specifier: ^15.0.1
+        version: 15.0.1
       sanitize-html:
         specifier: ^2.13.1
         version: 2.13.1
@@ -70,6 +82,12 @@ importers:
       typescript:
         specifier: ^5.7.2
         version: 5.7.2
+      unified:
+        specifier: ^11.0.5
+        version: 11.0.5
+      vfile:
+        specifier: ^6.0.3
+        version: 6.0.3
       zod:
         specifier: ^3.23.8
         version: 3.23.8
@@ -92,6 +110,12 @@ importers:
       '@types/eslint__js':
         specifier: ^8.42.3
         version: 8.42.3
+      '@types/mdast':
+        specifier: ^4.0.4
+        version: 4.0.4
+      '@types/nlcst':
+        specifier: ^2.0.3
+        version: 2.0.3
       '@types/node':
         specifier: ^22.10.1
         version: 22.10.1
@@ -3074,6 +3098,9 @@ packages:
   mdast-util-to-markdown@2.1.2:
     resolution: {integrity: sha512-xj68wMTvGXVOKonmog6LwyJKrYXZPvlwabaryTjLh9LuvovB/KAH+kvi8Gjj+7rJjsFi23nkUxRQv1KqSroMqA==}
 
+  mdast-util-to-nlcst@7.0.1:
+    resolution: {integrity: sha512-iMucBmaHxOpreaPPR87U9NrfGqzyoKXFY1zdbtFVsckLWOi/iIshu6bFLsax0mIm9fQI+MpYpu8pBhyN7rkIGA==}
+
   mdast-util-to-string@4.0.0:
     resolution: {integrity: sha512-0H44vDimn51F0YwvxSJSm0eCDOJTRlmN0R1yBh4HLj9wiV1Dn0QoXGbvFAWj2hSItVTlCmBF1hqKlIyUBVFLPg==}
 
@@ -3413,6 +3440,9 @@ packages:
     resolution: {integrity: sha512-uo0Z9JJeWzv8BG+tRcapBKNJ0dro9cLyczGzulS6EfeyAdeC9sbojtW6XwvYxJkEne9En+J2XEl4zyglVeIwFg==}
     engines: {node: '>=8'}
 
+  parse-english@7.0.0:
+    resolution: {integrity: sha512-mxxj3DyPdvOdiUl1okNub3wwoaaZI/Z++paDg3PH96RYvfVilS63WmQOnHlGm0S05y4g9GEjNP3pylyBsJrAwQ==}
+
   parse-json@5.2.0:
     resolution: {integrity: sha512-ayCKvm/phCGxOkYRSCM82iDwct8/EonSEgCSxWxD7ve6jHggsFl4fZVQBPRNgQoKiuV/odhFrGzQXZwbifC8Rg==}
     engines: {node: '>=8'}
@@ -3654,6 +3684,9 @@ packages:
 
   remark-stringify@11.0.0:
     resolution: {integrity: sha512-1OSmLd3awB/t8qdoEOMazZkNsfVTeY4fTsgzcQFdXNq8ToTN4ZGwrMnlda4K6smTFKD+GRV6O48i6Z4iKgPPpw==}
+
+  remark@15.0.1:
+    resolution: {integrity: sha512-Eht5w30ruCXgFmxVUSlNWQ9iiimq07URKeFS3hNc8cUWy1llX4KDWfyEDZRycMc+znsN9Ux5/tJ/BFdgdOwA3A==}
 
   repeat-string@1.6.1:
     resolution: {integrity: sha512-PV0dzCYDNfRi1jCDbJzpW7jNNDRuCOG/jI5ctQcGKt/clZD+YcPS3yIlWuTJMmESC8aevCFmWJy5wjAFgNqN6w==}
@@ -7837,6 +7870,16 @@ snapshots:
       unist-util-visit: 5.0.0
       zwitch: 2.0.4
 
+  mdast-util-to-nlcst@7.0.1:
+    dependencies:
+      '@types/mdast': 4.0.4
+      '@types/nlcst': 2.0.3
+      '@types/unist': 3.0.3
+      nlcst-to-string: 4.0.0
+      unist-util-position: 5.0.0
+      vfile: 6.0.3
+      vfile-location: 5.0.3
+
   mdast-util-to-string@4.0.0:
     dependencies:
       '@types/mdast': 4.0.4
@@ -8245,6 +8288,14 @@ snapshots:
     dependencies:
       callsites: 3.1.0
 
+  parse-english@7.0.0:
+    dependencies:
+      '@types/nlcst': 2.0.3
+      nlcst-to-string: 4.0.0
+      parse-latin: 7.0.0
+      unist-util-modify-children: 4.0.0
+      unist-util-visit-children: 3.0.0
+
   parse-json@5.2.0:
     dependencies:
       '@babel/code-frame': 7.26.2
@@ -8494,6 +8545,15 @@ snapshots:
       '@types/mdast': 4.0.4
       mdast-util-to-markdown: 2.1.2
       unified: 11.0.5
+
+  remark@15.0.1:
+    dependencies:
+      '@types/mdast': 4.0.4
+      remark-parse: 11.0.0
+      remark-stringify: 11.0.0
+      unified: 11.0.5
+    transitivePeerDependencies:
+      - supports-color
 
   repeat-string@1.6.1: {}
 

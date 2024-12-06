@@ -16,6 +16,7 @@ describe("get-guide-preview", () => {
         "locale": "en",
         "meta": {
           "publishedOn": 2024-09-22T21:00:40.799Z,
+          "readingTime": undefined,
           "tags": null,
           "updatedOn": 2024-09-22T21:00:40.799Z,
         },
@@ -44,6 +45,7 @@ describe("get-guide", () => {
         "meta": {
           "authors": [],
           "publishedOn": 2024-09-22T21:00:40.799Z,
+          "readingTime": undefined,
           "tags": null,
           "updatedOn": 2024-09-22T21:00:40.799Z,
         },

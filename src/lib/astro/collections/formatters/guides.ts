@@ -1,23 +1,29 @@
 import { render, type CollectionEntry } from "astro:content";
 import type { Guide, GuidePreview } from "../../../../types/data";
+import { getMetaFromRemarkPluginFrontmatter } from "../../../../utils/frontmatter";
 import { getAuthorLink } from "./authors";
 import { getTagsFromReferences, resolveReferences } from "./utils";
 
-export const getGuidePreview = async ({
-  collection,
-  data,
-  id,
-}: CollectionEntry<"guides">): Promise<GuidePreview> => {
-  const { meta, seo, slug, ...remainingData } = data;
+export const getGuidePreview = async (
+  guide: CollectionEntry<"guides">,
+): Promise<GuidePreview> => {
+  const { locale, meta, seo, slug, ...remainingData } = guide.data;
   const { authors, isDraft, tags, ...remainingMeta } = meta;
   const resolvedTags = await getTagsFromReferences(tags);
+  const { remarkPluginFrontmatter } = await render(guide);
+  const { readingTime } = getMetaFromRemarkPluginFrontmatter(
+    remarkPluginFrontmatter,
+    locale,
+  );
 
   return {
     ...remainingData,
-    collection,
-    id,
+    collection: guide.collection,
+    id: guide.id,
+    locale,
     meta: {
       ...remainingMeta,
+      readingTime,
       tags: resolvedTags,
     },
   };

@@ -1,22 +1,28 @@
 import { render, type CollectionEntry } from "astro:content";
 import type { Note, NotePreview } from "../../../../types/data";
+import { getMetaFromRemarkPluginFrontmatter } from "../../../../utils/frontmatter";
 import { getTagsFromReferences } from "./utils";
 
-export const getNotePreview = async ({
-  collection,
-  data,
-  id,
-}: CollectionEntry<"notes">): Promise<NotePreview> => {
-  const { meta, seo, slug, ...remainingData } = data;
+export const getNotePreview = async (
+  note: CollectionEntry<"notes">,
+): Promise<NotePreview> => {
+  const { locale, meta, seo, slug, ...remainingData } = note.data;
   const { isDraft, tags, ...remainingMeta } = meta;
   const resolvedTags = await getTagsFromReferences(tags);
+  const { remarkPluginFrontmatter } = await render(note);
+  const { readingTime } = getMetaFromRemarkPluginFrontmatter(
+    remarkPluginFrontmatter,
+    locale,
+  );
 
   return {
     ...remainingData,
-    collection,
-    id,
+    collection: note.collection,
+    id: note.id,
+    locale,
     meta: {
       ...remainingMeta,
+      readingTime,
       tags: resolvedTags,
     },
   };

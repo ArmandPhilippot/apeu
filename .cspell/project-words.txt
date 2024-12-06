@@ -6,7 +6,9 @@ bluesky
 commitlint
 frontmatter
 globby
+mdast
 nanostores
+nlcst
 pagefind
 stackoverflow
 stylelint

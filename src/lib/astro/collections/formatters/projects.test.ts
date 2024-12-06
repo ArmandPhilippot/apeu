@@ -17,6 +17,7 @@ describe("get-project-preview", () => {
         "meta": {
           "kind": "app",
           "publishedOn": 2024-09-22T21:00:40.804Z,
+          "readingTime": undefined,
           "repository": undefined,
           "tags": null,
           "updatedOn": 2024-09-22T21:00:40.804Z,
@@ -46,6 +47,7 @@ describe("get-project", () => {
         "meta": {
           "kind": "app",
           "publishedOn": 2024-09-22T21:00:40.804Z,
+          "readingTime": undefined,
           "repository": undefined,
           "tags": null,
           "updatedOn": 2024-09-22T21:00:40.804Z,

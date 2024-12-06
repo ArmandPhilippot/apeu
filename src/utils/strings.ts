@@ -9,3 +9,6 @@ export const capitalizeFirstLetter = (str: string): string =>
 
 export const toLowerCase = <T extends string>(str: T) =>
   str.toLowerCase() as Lowercase<T>;
+
+export const toUpperCase = <T extends string>(str: T) =>
+  str.toUpperCase() as Uppercase<T>;

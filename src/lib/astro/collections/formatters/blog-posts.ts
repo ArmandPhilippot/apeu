@@ -1,5 +1,6 @@
 import { render, type CollectionEntry } from "astro:content";
 import type { BlogPost, BlogPostPreview } from "../../../../types/data";
+import { getMetaFromRemarkPluginFrontmatter } from "../../../../utils/frontmatter";
 import { getAuthorLink } from "./authors";
 import {
   getCategoryFromReference,
@@ -7,23 +8,28 @@ import {
   resolveReferences,
 } from "./utils";
 
-export const getBlogPostPreview = async ({
-  collection,
-  data,
-  id,
-}: CollectionEntry<"blogPosts">): Promise<BlogPostPreview> => {
-  const { meta, seo, slug, ...postData } = data;
+export const getBlogPostPreview = async (
+  post: CollectionEntry<"blogPosts">,
+): Promise<BlogPostPreview> => {
+  const { locale, meta, seo, slug, ...postData } = post.data;
   const { authors, category, isDraft, tags, ...postMeta } = meta;
   const resolvedCategory = await getCategoryFromReference(category);
   const resolvedTags = await getTagsFromReferences(tags);
+  const { remarkPluginFrontmatter } = await render(post);
+  const { readingTime } = getMetaFromRemarkPluginFrontmatter(
+    remarkPluginFrontmatter,
+    locale,
+  );
 
   return {
     ...postData,
-    collection,
-    id,
+    collection: post.collection,
+    id: post.id,
+    locale,
     meta: {
       ...postMeta,
       category: resolvedCategory,
+      readingTime,
       tags: resolvedTags,
     },
   };

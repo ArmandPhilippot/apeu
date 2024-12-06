@@ -1,4 +1,6 @@
 ---
+import type { ComponentProps } from "astro/types";
+import logo from "../assets/logo.svg";
 import Box from "../components/atoms/box/box.astro";
 import Heading from "../components/atoms/heading/heading.astro";
 import Card from "../components/molecules/card/card.astro";
@@ -10,6 +12,9 @@ import IdentityCard from "../components/organisms/identity-card/identity-card.as
 import PageLayout from "../components/templates/page-layout/page-layout.astro";
 import { queryCollection } from "../lib/astro/collections/query-collection";
 import { queryEntry } from "../lib/astro/collections/query-entry";
+import { getPersonGraph } from "../lib/schema-dts/graphs/person-graph";
+import { getWebPageGraph } from "../lib/schema-dts/graphs/webpage-graph";
+import { getWebSiteGraph } from "../lib/schema-dts/graphs/website-graph";
 import { useI18n } from "../utils/i18n";
 
 const { locale, translate } = useI18n(Astro.currentLocale);
@@ -39,9 +44,18 @@ const { entries: collections } = await queryCollection("pages", {
     locale,
   },
 });
+const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
+  await getPersonGraph(author, locale),
+  getWebSiteGraph({
+    description: page.seo.description,
+    locale,
+    logo: logo.src,
+  }),
+  await getWebPageGraph({ ...page, title: page.seo.title }),
+];
 ---
 
-<PageLayout class="homepage" seo={page.seo}>
+<PageLayout class="homepage" graphs={graphs} seo={page.seo}>
   <Fragment slot="disconnected-body">
     <Greetings isCentered isSpaced name={author.name} />
     {

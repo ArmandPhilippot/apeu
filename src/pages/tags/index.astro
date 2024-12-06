@@ -6,6 +6,7 @@ import CollectionMeta from "../../components/organisms/collection-meta/collectio
 import PageLayout from "../../components/templates/page-layout/page-layout.astro";
 import { queryCollection } from "../../lib/astro/collections/query-collection";
 import { queryEntry } from "../../lib/astro/collections/query-entry";
+import { getWebPageGraph } from "../../lib/schema-dts/graphs/webpage-graph";
 import { useI18n } from "../../utils/i18n";
 
 const { locale, route, translate, translatePlural } = useI18n(
@@ -25,11 +26,15 @@ const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
   { label: translate("page.home.title"), url: route("home") },
   { label: page.title, url: Astro.url.href },
 ];
+const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
+  await getWebPageGraph({ ...page, breadcrumb }),
+];
 ---
 
 <PageLayout
   breadcrumb={breadcrumb}
   feed={`${route("tags")}/feed.xml`}
+  graphs={graphs}
   heading={page.title}
   seo={page.seo}
 >

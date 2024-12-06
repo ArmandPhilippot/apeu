@@ -273,4 +273,29 @@ describe("CollectionMeta", () => {
     expect(result).toContain("translated_meta.label.total");
     expect(result).toContain(props.data.total);
   });
+
+  it<LocalTestContext>("renders reading time metadata correctly", async ({
+    container,
+  }) => {
+    const props = {
+      data: {
+        readingTime: {
+          inMinutes: 1,
+          inMinutesAndSeconds: {
+            minutes: 1,
+            seconds: 23,
+          },
+          wordsCount: 114,
+          wordsPerMinute: 25,
+        },
+      },
+    } satisfies ComponentProps<typeof CollectionMeta>;
+    const result = await container.renderToString(CollectionMeta, {
+      props,
+    });
+
+    expect(result).toContain("translated_meta.label.reading.time");
+    expect(result).toContain("translated_meta.value.reading.time.in.minutes");
+    expect(result).toContain("translated_meta.description.reading.time");
+  });
 });

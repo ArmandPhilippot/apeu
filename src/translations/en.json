@@ -139,8 +139,8 @@
     "meta.value.project.kind.theme": "Theme",
     "meta.value.reading.time.in.minutes": {
       "zero": "Less than one minute",
-      "one": "{time} minute",
-      "more": "{time} minutes"
+      "one": "{count} minute",
+      "more": "{count} minutes"
     },
     "meta.value.total.blog.categories": {
       "zero": "{count} categories",

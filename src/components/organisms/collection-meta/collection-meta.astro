@@ -42,6 +42,7 @@ type MetaValue = string | Date | LinkValue;
 
 type RenderConfig<K extends AllKeysOf<MetaData>> = {
   shouldRender: (value: MetaData[K]) => value is NonNullable<MetaData[K]>;
+  renderDescription?: (value: NonNullable<MetaData[K]>) => string | undefined;
   renderLabel: () =>
     | { token: SingularUIKey; isPlural?: false }
     | { token: PluralUIKey; isPlural: true };
@@ -106,6 +107,22 @@ const configs: MetaDataConfigs = {
     renderValue: (value) =>
       value.map((lang) => translate(`language.name.${lang}`)),
   },
+  readingTime: {
+    shouldRender: (value): value is NonNullable<MetaData["readingTime"]> =>
+      !!value,
+    renderDescription: (value) =>
+      translate("meta.description.reading.time", {
+        ...value.inMinutesAndSeconds,
+        speed: value.wordsPerMinute,
+        words: value.wordsCount,
+      }),
+    renderLabel: () => ({ token: "meta.label.reading.time" }),
+    renderValue: (value) => [
+      translatePlural("meta.value.reading.time.in.minutes", {
+        count: value.inMinutes,
+      }),
+    ],
+  },
   repository: {
     shouldRender: (value): value is NonNullable<MetaData["repository"]> =>
       !!value,
@@ -162,39 +179,43 @@ const { translate, translatePlural } = useI18n(Astro.currentLocale);
 
 <DescriptionList {...attrs}>
   {
-    iterateConfigs((key, { renderLabel, renderValue, shouldRender }) => {
-      const value = data[key];
-      if (!shouldRender(value)) return null;
+    iterateConfigs(
+      (key, { renderDescription, renderLabel, renderValue, shouldRender }) => {
+        const value = data[key];
+        if (!shouldRender(value)) return null;
 
-      const { token, isPlural } = renderLabel();
-      const contentItems = renderValue(value);
+        const { token, isPlural } = renderLabel();
+        const contentItems = renderValue(value);
 
-      return (
-        <CollectionMetaItem
-          hideLabel={hideLabel}
-          icon={icons?.[key]?.name}
-          iconSize={icons?.[key]?.size}
-          label={
-            isPlural
-              ? translatePlural(token, { count: contentItems.length })
-              : translate(token)
-          }
-        >
-          {contentItems.map((item) => (
-            <Description>
-              {item instanceof Date ? (
-                <Time date={item} />
-              ) : typeof item === "object" ? (
-                <Link href={item.href}>{item.text}</Link>
-              ) : isMetaTranslationKey(item) ? (
-                translate(item)
-              ) : (
-                item
-              )}
-            </Description>
-          ))}
-        </CollectionMetaItem>
-      );
-    })
+        return (
+          <CollectionMetaItem
+            hideLabel={hideLabel}
+            icon={icons?.[key]?.name}
+            iconSize={icons?.[key]?.size}
+            label={
+              isPlural
+                ? translatePlural(token, { count: contentItems.length })
+                : translate(token)
+            }
+          >
+            {contentItems.map((item) => (
+              <Description
+                title={renderDescription ? renderDescription(value) : undefined}
+              >
+                {item instanceof Date ? (
+                  <Time date={item} />
+                ) : typeof item === "object" ? (
+                  <Link href={item.href}>{item.text}</Link>
+                ) : isMetaTranslationKey(item) ? (
+                  translate(item)
+                ) : (
+                  item
+                )}
+              </Description>
+            ))}
+          </CollectionMetaItem>
+        );
+      },
+    )
   }
 </DescriptionList>

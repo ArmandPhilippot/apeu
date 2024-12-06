@@ -52,6 +52,8 @@
     "@pagefind/default-ui": "^1.2.0",
     "astro": "^5.0.2",
     "astro-icon": "^1.1.4",
+    "astro-og-canvas": "^0.5.5",
+    "canvaskit-wasm": "^0.39.1",
     "globby": "^14.0.2",
     "mdast-util-to-nlcst": "^7.0.1",
     "modern-normalize": "^3.0.1",

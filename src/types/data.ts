@@ -43,6 +43,11 @@ export type AuthorPreview = Omit<
   "email" | "firstName" | "firstNameIPA" | "lastName" | "lastNameIPA"
 >;
 
+export type Crumb = {
+  label: string;
+  url: string;
+};
+
 export type HeadingNode = {
   children?: HeadingNode[] | null | undefined;
   label: string;

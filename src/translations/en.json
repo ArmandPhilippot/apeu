@@ -89,6 +89,7 @@
     "language.name.fr": "French",
     "language.picker.a11y": "Select a language, current: {language}",
     "license.title": "Contents are under CC BY SA license.",
+    "license.url": "https://creativecommons.org/licenses/by-sa/4.0/deed",
     "meta.description.reading.time": "Approximately {minutes} minutes and {seconds} seconds for {words} words read at a speed of {speed} words/minute.",
     "meta.label.authors": {
       "zero": "Authors:",

@@ -8,6 +8,7 @@ import Pagination from "../../../components/organisms/pagination/pagination.astr
 import PageLayout from "../../../components/templates/page-layout/page-layout.astro";
 import { queryCollection } from "../../../lib/astro/collections/query-collection";
 import { queryEntry } from "../../../lib/astro/collections/query-entry";
+import { getWebPageGraph } from "../../../lib/schema-dts/graphs/webpage-graph";
 import { CONFIG } from "../../../utils/constants";
 import { useI18n } from "../../../utils/i18n";
 import { renderPaginationLink } from "../../../utils/pagination";
@@ -58,7 +59,9 @@ const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
   { label: page.title, url: Astro.url.href },
   ...[isFirstPage ? null : { label: pageLabel, url: Astro.url.href }],
 ].filter((crumb) => !!crumb);
-
+const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
+  await getWebPageGraph({ ...page, breadcrumb }),
+];
 const heading: ComponentProps<typeof PageLayout>["heading"] = isFirstPage
   ? page.title
   : `${page.title} - ${pageLabel}`;
@@ -80,6 +83,7 @@ const getCTA = (
 <PageLayout
   breadcrumb={breadcrumb}
   feed={`${route("blog.posts")}/feed.xml`}
+  graphs={graphs}
   heading={heading}
   seo={seo}
 >

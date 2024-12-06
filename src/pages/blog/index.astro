@@ -9,6 +9,8 @@ import CollectionCard from "../../components/organisms/collection-card/collectio
 import PageLayout from "../../components/templates/page-layout/page-layout.astro";
 import { queryCollection } from "../../lib/astro/collections/query-collection";
 import { queryEntry } from "../../lib/astro/collections/query-entry";
+import { getBlogGraph } from "../../lib/schema-dts/graphs/blog-graph";
+import { getWebPageGraph } from "../../lib/schema-dts/graphs/webpage-graph";
 import { useI18n } from "../../utils/i18n";
 
 const { locale, route, translate, translatePlural } = useI18n(
@@ -22,6 +24,10 @@ const { Content, ...page } = await queryEntry({
 const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
   { label: translate("page.home.title"), url: route("home") },
   { label: page.title, url: Astro.url.href },
+];
+const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
+  await getWebPageGraph({ ...page, breadcrumb }),
+  await getBlogGraph(page),
 ];
 const { entries: categories } = await queryCollection("blogCategories", {
   format: "preview",
@@ -47,7 +53,12 @@ const getPostCTA = (
 };
 ---
 
-<PageLayout breadcrumb={breadcrumb} heading={page.title} seo={page.seo}>
+<PageLayout
+  breadcrumb={breadcrumb}
+  graphs={graphs}
+  heading={page.title}
+  seo={page.seo}
+>
   <Content slot={page.hasContent ? "body" : ""} />
   <Fragment slot="disconnected-body">
     <Box

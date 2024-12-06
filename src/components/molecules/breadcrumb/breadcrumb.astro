@@ -1,12 +1,8 @@
 ---
 import type { HTMLAttributes } from "astro/types";
+import type { Crumb } from "../../../types/data";
 import NavItem from "../nav-item/nav-item.astro";
 import NavList from "../nav-list/nav-list.astro";
-
-type Crumb = {
-  label: string;
-  url: string;
-};
 
 type Props = HTMLAttributes<"nav"> & {
   isCentered?: boolean | null | undefined;

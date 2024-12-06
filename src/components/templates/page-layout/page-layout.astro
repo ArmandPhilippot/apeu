@@ -1,5 +1,7 @@
 ---
 import type { ComponentProps } from "astro/types";
+import type { Graph } from "schema-dts";
+import { getJsonLdSchema } from "../../../lib/schema-dts/schema";
 import { useI18n } from "../../../utils/i18n";
 import Breadcrumb from "../../molecules/breadcrumb/breadcrumb.astro";
 import Page from "../../organisms/page/page.astro";
@@ -8,13 +10,25 @@ import Layout from "../layout/layout.astro";
 type Props = Pick<ComponentProps<typeof Layout>, "seo"> &
   ComponentProps<typeof Page> & {
     breadcrumb?: ComponentProps<typeof Breadcrumb>["items"] | null | undefined;
+    graphs?: Graph["@graph"] | null | undefined;
   };
 
-const { breadcrumb, seo, ...attrs } = Astro.props;
+const { breadcrumb, graphs, seo, ...attrs } = Astro.props;
 const { translate } = useI18n(Astro.currentLocale);
 ---
 
 <Layout class="page-layout" seo={seo}>
+  <Fragment slot="head">
+    {
+      graphs ? (
+        <script
+          is:inline
+          set:html={JSON.stringify(getJsonLdSchema(graphs))}
+          type="application/ld+json"
+        />
+      ) : null
+    }
+  </Fragment>
   {
     breadcrumb?.length ? (
       <Breadcrumb

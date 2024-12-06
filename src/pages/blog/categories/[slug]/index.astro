@@ -6,6 +6,7 @@ import CollectionCard from "../../../../components/organisms/collection-card/col
 import CollectionMeta from "../../../../components/organisms/collection-meta/collection-meta.astro";
 import PageLayout from "../../../../components/templates/page-layout/page-layout.astro";
 import { queryCollection } from "../../../../lib/astro/collections/query-collection";
+import { getWebPageGraph } from "../../../../lib/schema-dts/graphs/webpage-graph";
 import { useI18n } from "../../../../utils/i18n";
 
 export const getStaticPaths = (async () => {
@@ -35,6 +36,9 @@ const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
   },
   { label: page.title, url: Astro.url.href },
 ];
+const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
+  await getWebPageGraph({ ...page, breadcrumb }),
+];
 const { entries: relatedPosts } = await queryCollection("blogPosts", {
   orderBy: { key: "publishedOn", order: "DESC" },
   where: { categories: [page.id] },
@@ -52,6 +56,7 @@ const getCTA = (
 <PageLayout
   breadcrumb={breadcrumb}
   feed={`${page.route}/feed.xml`}
+  graphs={graphs}
   heading={page.title}
   seo={page.seo}
   toc={page.headings}

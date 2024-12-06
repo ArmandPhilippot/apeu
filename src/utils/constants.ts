@@ -21,6 +21,8 @@ export const CONFIG = {
     AVAILABLE: ["en"],
     DEFAULT: "en",
   },
+  // This is mainly used to avoid hardcoding while defining schema.org ids.
+  PROTOCOL: "https://",
   SEARCH: {
     QUERY_PARAM: "q",
   },

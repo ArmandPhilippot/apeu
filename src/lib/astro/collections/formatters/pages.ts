@@ -1,18 +1,26 @@
 import { render, type CollectionEntry } from "astro:content";
 import type { Page, PagePreview } from "../../../../types/data";
+import { getMetaFromRemarkPluginFrontmatter } from "../../../../utils/frontmatter";
 
-export const getPagePreview = async ({
-  collection,
-  data,
-  id,
-}: CollectionEntry<"pages">): Promise<PagePreview> => {
-  const { meta, seo, slug, ...remainingData } = data;
+export const getPagePreview = async (
+  page: CollectionEntry<"pages">,
+): Promise<PagePreview> => {
+  const { locale, meta, seo, slug, ...remainingData } = page.data;
+  const { remarkPluginFrontmatter } = await render(page);
+  const { readingTime } = getMetaFromRemarkPluginFrontmatter(
+    remarkPluginFrontmatter,
+    locale,
+  );
 
   return {
     ...remainingData,
-    collection,
-    id,
-    meta,
+    collection: page.collection,
+    id: page.id,
+    locale,
+    meta: {
+      ...meta,
+      readingTime,
+    },
   };
 };
 

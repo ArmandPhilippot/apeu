@@ -3,6 +3,7 @@ import type { GetStaticPaths } from "astro";
 import type { ComponentProps } from "astro/types";
 import Grid from "../../components/molecules/grid/grid.astro";
 import CollectionCard from "../../components/organisms/collection-card/collection-card.astro";
+import CollectionMeta from "../../components/organisms/collection-meta/collection-meta.astro";
 import Pagination from "../../components/organisms/pagination/pagination.astro";
 import PageLayout from "../../components/templates/page-layout/page-layout.astro";
 import { queryCollection } from "../../lib/astro/collections/query-collection";
@@ -17,7 +18,7 @@ export const getStaticPaths = (async ({ paginate }) => {
     id: "bookmarks",
     locale: "en",
   });
-  const { entries: bookmarks } = await queryCollection("bookmarks", {
+  const { entries: bookmarks, total } = await queryCollection("bookmarks", {
     format: "preview",
     orderBy: { key: "publishedOn", order: "DESC" },
   });
@@ -36,14 +37,15 @@ export const getStaticPaths = (async ({ paginate }) => {
           ...page,
           bookmarks: data,
           pagination,
+          total,
         },
       };
     },
   );
 }) satisfies GetStaticPaths;
 
-const { Content, bookmarks, pagination, ...page } = Astro.props;
-const { route, translate } = useI18n(Astro.currentLocale);
+const { Content, bookmarks, pagination, total, ...page } = Astro.props;
+const { route, translate, translatePlural } = useI18n(Astro.currentLocale);
 const isFirstPage = pagination.currentPage === 1;
 const pageLabel = translate("page.paginated.label", {
   number: pagination.currentPage,
@@ -80,6 +82,14 @@ const getCTA = (
   heading={heading}
   seo={seo}
 >
+  <CollectionMeta
+    data={{
+      total: translatePlural("meta.value.total.bookmarks", {
+        count: total,
+      }),
+    }}
+    slot="meta"
+  />
   <Content slot={page.hasContent ? "body" : ""} />
   <Fragment slot="disconnected-body">
     <Grid class="bookmarks-list" isCentered items={bookmarks}>

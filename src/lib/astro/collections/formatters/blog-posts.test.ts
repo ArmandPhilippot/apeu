@@ -17,6 +17,7 @@ describe("get-blog-post-preview", () => {
         "meta": {
           "category": null,
           "publishedOn": 2024-09-22T21:10:11.400Z,
+          "readingTime": undefined,
           "tags": null,
           "updatedOn": 2024-09-22T21:10:11.400Z,
         },
@@ -46,6 +47,7 @@ describe("get-blog-post", () => {
           "authors": [],
           "category": null,
           "publishedOn": 2024-09-22T21:10:11.400Z,
+          "readingTime": undefined,
           "tags": null,
           "updatedOn": 2024-09-22T21:10:11.400Z,
         },

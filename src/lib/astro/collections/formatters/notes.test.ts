@@ -16,6 +16,7 @@ describe("get-note-preview", () => {
         "locale": "en",
         "meta": {
           "publishedOn": 2024-09-22T21:00:40.802Z,
+          "readingTime": undefined,
           "tags": null,
           "updatedOn": 2024-09-22T21:00:40.802Z,
         },
@@ -43,6 +44,7 @@ describe("get-note", () => {
         "locale": "en",
         "meta": {
           "publishedOn": 2024-09-22T21:00:40.802Z,
+          "readingTime": undefined,
           "tags": null,
           "updatedOn": 2024-09-22T21:00:40.802Z,
         },

@@ -120,6 +120,7 @@
       "one": "Tag:",
       "more": "Tags:"
     },
+    "meta.label.total": "Total:",
     "meta.label.url": "URL:",
     "meta.label.version": "Version:",
     "meta.value.content.kind.blog.category": "Category",
@@ -138,8 +139,53 @@
     "meta.value.project.kind.theme": "Theme",
     "meta.value.reading.time.in.minutes": {
       "zero": "Less than one minute",
-      "one": "{time} minute",
-      "more": "{time} minutes"
+      "one": "{count} minute",
+      "more": "{count} minutes"
+    },
+    "meta.value.total.blog.categories": {
+      "zero": "{count} categories",
+      "one": "{count} category",
+      "more": "{count} categories"
+    },
+    "meta.value.total.blog.posts": {
+      "zero": "{count} posts",
+      "one": "{count} post",
+      "more": "{count} posts"
+    },
+    "meta.value.total.blogroll": {
+      "zero": "{count} blogs",
+      "one": "{count} blog",
+      "more": "{count} blogs"
+    },
+    "meta.value.total.bookmarks": {
+      "zero": "{count} bookmarks",
+      "one": "{count} bookmark",
+      "more": "{count} bookmarks"
+    },
+    "meta.value.total.entries": {
+      "zero": "{count} entries",
+      "one": "{count} entry",
+      "more": "{count} entries"
+    },
+    "meta.value.total.guides": {
+      "zero": "{count} guides",
+      "one": "{count} guide",
+      "more": "{count} guides"
+    },
+    "meta.value.total.notes": {
+      "zero": "{count} notes",
+      "one": "{count} note",
+      "more": "{count} notes"
+    },
+    "meta.value.total.projects": {
+      "zero": "{count} projects",
+      "one": "{count} project",
+      "more": "{count} projects"
+    },
+    "meta.value.total.tags": {
+      "zero": "{count} tags",
+      "one": "{count} tag",
+      "more": "{count} tags"
     },
     "nav.label.breadcrumb": "Breadcrumb",
     "nav.label.primary": "Primary",

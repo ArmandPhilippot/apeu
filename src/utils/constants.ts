@@ -97,3 +97,17 @@ export const STORIES_SUFFIX = "stories";
  * @see https://docs.astro.build/en/reference/integrations-reference/#injectroute-option
  */
 export const STORIES_EXT = `${STORIES_SUFFIX}.astro`;
+
+/**
+ * The number of words read per minute depending on the lang.
+ *
+ * I peek those numbers in the following link.I don't know if this is accurate
+ * but I didn't find another study as reference.
+ * @link https://iovs.arvojournals.org/article.aspx?articleid=2166061
+ */
+export const WORDS_PER_MINUTE = {
+  EN: 228,
+} satisfies Record<
+  Uppercase<(typeof CONFIG.LANGUAGES.AVAILABLE)[number]>,
+  number
+>;

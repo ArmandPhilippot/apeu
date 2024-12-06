@@ -28,6 +28,15 @@ export const isKeyExistIn = <O extends object, K extends string>(
 };
 
 /**
+ * Check if a value is a number.
+ *
+ * @param {unknown} value - The value to check.
+ * @returns {boolean} True if the value is a number.
+ */
+export const isNumber = (value: unknown): value is number =>
+  typeof value === "number";
+
+/**
  * Check if a value is a string.
  *
  * @param {unknown} value - The value to check.

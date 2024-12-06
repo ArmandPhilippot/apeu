@@ -17,6 +17,7 @@ describe("get-page-preview", () => {
         "meta": {
           "isDraft": false,
           "publishedOn": 2024-09-22T20:54:19.962Z,
+          "readingTime": undefined,
           "updatedOn": 2024-09-22T20:54:19.962Z,
         },
         "route": "/generic-page",
@@ -44,6 +45,7 @@ describe("get-page", () => {
         "meta": {
           "isDraft": false,
           "publishedOn": 2024-09-22T20:54:19.962Z,
+          "readingTime": undefined,
           "updatedOn": 2024-09-22T20:54:19.962Z,
         },
         "route": "/generic-page",

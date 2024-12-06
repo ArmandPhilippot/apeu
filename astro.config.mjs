@@ -6,6 +6,7 @@ import { defineConfig } from "astro/config";
 import { componentsStories } from "./src/lib/astro/integrations/components-stories";
 import { devOnlyPages } from "./src/lib/astro/integrations/dev-only-pages";
 import { pagefind } from "./src/lib/astro/integrations/pagefind";
+import { remarkWordsCount } from "./src/lib/remark/remark-words-count";
 import { CONFIG } from "./src/utils/constants";
 
 // https://astro.build/config
@@ -39,6 +40,9 @@ export default defineConfig({
       },
     }),
   ],
+  markdown: {
+    remarkPlugins: [remarkWordsCount],
+  },
   output: "static",
   site: `https://${CONFIG.HOST}`,
   vite: {

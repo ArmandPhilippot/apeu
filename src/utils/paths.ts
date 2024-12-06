@@ -1,5 +1,7 @@
 import { join, parse } from "node:path";
 import slash from "slash";
+import { CONFIG } from "./constants";
+import { isAvailableLanguage, type AvailableLanguage } from "./i18n";
 
 /**
  * Retrieve a path with forward slashes from a list of paths to join.
@@ -31,4 +33,25 @@ export const getParentDirPath = (filePath: string): string =>
 export const removeExtFromPath = (filePath: string): string => {
   const { dir, name } = parse(slash(filePath));
   return `${dir}/${name}`;
+};
+
+/**
+ * Retrieve a locale from a file path. This fallbacks to the default locale
+ * if no locale was found.
+ *
+ * @param {string} path - The file path.
+ * @returns {AvailableLanguage} The locale.
+ */
+export const getLocaleFromPath = (path: string): AvailableLanguage => {
+  // Get each `/[locale]/` directory encountered.
+  const regex = new RegExp(
+    `(?<=\\/)(?:${CONFIG.LANGUAGES.AVAILABLE.join("|")})(?=\\/|$)`,
+    "g",
+  );
+  const result = path.match(regex);
+  const currentLocale = result ? result[0] : null;
+
+  return currentLocale && isAvailableLanguage(currentLocale)
+    ? currentLocale
+    : CONFIG.LANGUAGES.DEFAULT;
 };

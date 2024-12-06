@@ -5,6 +5,32 @@ type RenderedContent = RenderResult & {
   hasContent: boolean;
 };
 
+export type ReadingTime = {
+  /**
+   * The reading time rounded to minutes only.
+   */
+  inMinutes: number;
+  /**
+   * The reading time in minutes and seconds.
+   */
+  inMinutesAndSeconds: {
+    minutes: number;
+    seconds: number;
+  };
+  /**
+   * The number of words.
+   */
+  wordsCount: number;
+  /**
+   * The number of words read per minute.
+   */
+  wordsPerMinute: number;
+};
+
+export type RemarkPluginFrontmatterMeta = {
+  readingTime?: ReadingTime | undefined;
+};
+
 export type Author = Pick<CollectionEntry<"authors">, "collection" | "id"> &
   Omit<CollectionEntry<"authors">["data"], "avatar"> & {
     avatar?: Omit<Img, "alt"> | null | undefined;
@@ -45,11 +71,12 @@ export type Blog = Pick<CollectionEntry<"blogroll">, "collection" | "id"> &
 export type BlogPostMetaData = Omit<
   CollectionEntry<"blogPosts">["data"]["meta"],
   "authors" | "category" | "isDraft" | "tags"
-> & {
-  authors: AuthorLink[];
-  category?: TaxonomyLink | null | undefined;
-  tags?: TaxonomyLink[] | null | undefined;
-};
+> &
+  RemarkPluginFrontmatterMeta & {
+    authors: AuthorLink[];
+    category?: TaxonomyLink | null | undefined;
+    tags?: TaxonomyLink[] | null | undefined;
+  };
 
 export type BlogPost = Pick<CollectionEntry<"blogPosts">, "collection" | "id"> &
   Omit<RenderedContent, "remarkPluginFrontmatter"> &
@@ -79,10 +106,11 @@ export type Bookmark = Pick<CollectionEntry<"bookmarks">, "collection" | "id"> &
 export type GuideMetaData = Omit<
   CollectionEntry<"guides">["data"]["meta"],
   "authors" | "isDraft" | "tags"
-> & {
-  authors: AuthorLink[];
-  tags?: TaxonomyLink[] | null | undefined;
-};
+> &
+  RemarkPluginFrontmatterMeta & {
+    authors: AuthorLink[];
+    tags?: TaxonomyLink[] | null | undefined;
+  };
 
 export type Guide = Pick<CollectionEntry<"guides">, "collection" | "id"> &
   Omit<RenderedContent, "remarkPluginFrontmatter"> &
@@ -101,9 +129,10 @@ export type GuidePreview = Omit<
 export type NoteMetaData = Omit<
   CollectionEntry<"notes">["data"]["meta"],
   "isDraft" | "tags"
-> & {
-  tags?: TaxonomyLink[] | null | undefined;
-};
+> &
+  RemarkPluginFrontmatterMeta & {
+    tags?: TaxonomyLink[] | null | undefined;
+  };
 
 export type Note = Pick<CollectionEntry<"notes">, "collection" | "id"> &
   Omit<RenderedContent, "remarkPluginFrontmatter"> &
@@ -116,7 +145,8 @@ export type NotePreview = Omit<Note, keyof RenderedContent | "seo" | "slug">;
 export type PageMetaData = Omit<
   CollectionEntry<"pages">["data"]["meta"],
   "isDraft"
->;
+> &
+  RemarkPluginFrontmatterMeta;
 
 export type Page = Pick<CollectionEntry<"pages">, "collection" | "id"> &
   Omit<RenderedContent, "remarkPluginFrontmatter"> &
@@ -130,9 +160,10 @@ export type PagePreview = Omit<Page, keyof RenderedContent | "seo" | "slug">;
 export type ProjectMetaData = Omit<
   CollectionEntry<"projects">["data"]["meta"],
   "isDraft" | "tags"
-> & {
-  tags?: TaxonomyLink[] | null | undefined;
-};
+> &
+  RemarkPluginFrontmatterMeta & {
+    tags?: TaxonomyLink[] | null | undefined;
+  };
 
 export type Project = Pick<CollectionEntry<"projects">, "collection" | "id"> &
   Omit<RenderedContent, "remarkPluginFrontmatter"> &

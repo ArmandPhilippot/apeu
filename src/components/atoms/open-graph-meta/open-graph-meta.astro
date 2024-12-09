@@ -1,0 +1,82 @@
+---
+import type { MimeTypeImage } from "../../../types/mime-type";
+import { getLanguageTerritory } from "../../../utils/i18n";
+
+type OpenGraphType =
+  | "article"
+  | "book"
+  | "music.album"
+  | "music.playlist"
+  | "music.radio_station"
+  | "music.song"
+  | "profile"
+  | "video.episode"
+  | "video.movie"
+  | "video.other"
+  | "video.tv_show"
+  | "website";
+
+type OpenGraphDeterminer = "" | "a" | "an" | "the" | "auto";
+
+type Props = {
+  description?: string | null | undefined;
+  determiner?: OpenGraphDeterminer | null | undefined;
+  image: {
+    height?: number | `${number}` | null | undefined;
+    type?: MimeTypeImage | null | undefined;
+    url: string;
+    width?: number | `${number}` | null | undefined;
+  };
+  locale?: string | null | undefined;
+  localesAlt?: string[] | null | undefined;
+  siteName?: string | null | undefined;
+  title: string;
+  type: OpenGraphType;
+  url: string;
+};
+
+const {
+  description,
+  determiner,
+  image,
+  locale,
+  localesAlt,
+  siteName,
+  title,
+  type,
+  url,
+} = Astro.props;
+---
+
+<meta property="og:title" content={title} />
+<meta property="og:type" content={type} />
+<meta property="og:image" content={image.url} />
+{image.type ? <meta property="og:image:type" content={image.type} /> : null}
+{
+  image.width ? (
+    <meta property="og:image:width" content={`${image.width}`} />
+  ) : null
+}
+{
+  image.height ? (
+    <meta property="og:image:height" content={`${image.height}`} />
+  ) : null
+}
+<meta property="og:url" content={url} />
+{description ? <meta property="og:description" content={description} /> : null}
+{determiner ? <meta property="og:determiner" content={determiner} /> : null}
+{
+  locale ? (
+    <meta
+      property="og:locale"
+      content={locale.includes("_") ? locale : getLanguageTerritory(locale)}
+    />
+  ) : null
+}
+{
+  localesAlt?.map((lang) => (
+    <meta property="og:locale:alternate" content={lang} />
+  ))
+}
+{siteName ? <meta property="og:site_name" content={siteName} /> : null}
+<slot />

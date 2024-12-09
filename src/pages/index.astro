@@ -3,6 +3,7 @@ import type { ComponentProps } from "astro/types";
 import logo from "../assets/logo.svg";
 import Box from "../components/atoms/box/box.astro";
 import Heading from "../components/atoms/heading/heading.astro";
+import { components } from "../components/mdx";
 import Card from "../components/molecules/card/card.astro";
 import Greetings from "../components/molecules/greetings/greetings.astro";
 import Grid from "../components/molecules/grid/grid.astro";
@@ -103,7 +104,7 @@ const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
           isSpaced
         >
           <Heading slot="heading">{page.title}</Heading>
-          <Content />
+          <Content components={components} />
         </Card>
       ) : null
     }

@@ -1,5 +1,6 @@
 ---
 import type { ComponentProps } from "astro/types";
+import { components } from "../../../components/mdx";
 import Grid from "../../../components/molecules/grid/grid.astro";
 import CollectionCard from "../../../components/organisms/collection-card/collection-card.astro";
 import CollectionMeta from "../../../components/organisms/collection-meta/collection-meta.astro";
@@ -48,7 +49,7 @@ const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
     }}
     slot="meta"
   />
-  <Content slot={page.hasContent ? "body" : ""} />
+  <Content components={components} slot={page.hasContent ? "body" : ""} />
   <Grid
     class="categories-list"
     isCentered

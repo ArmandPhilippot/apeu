@@ -1,4 +1,5 @@
 // @ts-check
+import mdx from "@astrojs/mdx";
 import node from "@astrojs/node";
 import sitemap from "@astrojs/sitemap";
 import icon from "astro-icon";
@@ -6,6 +7,7 @@ import { defineConfig } from "astro/config";
 import { componentsStories } from "./src/lib/astro/integrations/components-stories";
 import { devOnlyPages } from "./src/lib/astro/integrations/dev-only-pages";
 import { pagefind } from "./src/lib/astro/integrations/pagefind";
+import { rehypeDisableExplicitJsx } from "./src/lib/rehype/rehype-disable-explicit-jsx";
 import { remarkWordsCount } from "./src/lib/remark/remark-words-count";
 import { CONFIG } from "./src/utils/constants";
 
@@ -30,6 +32,7 @@ export default defineConfig({
     icon({
       iconDir: "src/assets/icons",
     }),
+    mdx(),
     pagefind(),
     sitemap({
       i18n: {
@@ -42,6 +45,7 @@ export default defineConfig({
   ],
   markdown: {
     remarkPlugins: [remarkWordsCount],
+    rehypePlugins: [rehypeDisableExplicitJsx],
   },
   output: "static",
   site: `https://${CONFIG.HOST}`,

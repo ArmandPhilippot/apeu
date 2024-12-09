@@ -4,6 +4,7 @@ import type { ComponentProps } from "astro/types";
 import Box from "../../components/atoms/box/box.astro";
 import Button from "../../components/atoms/button/button.astro";
 import Heading from "../../components/atoms/heading/heading.astro";
+import { components } from "../../components/mdx";
 import Grid from "../../components/molecules/grid/grid.astro";
 import CollectionCard from "../../components/organisms/collection-card/collection-card.astro";
 import PageLayout from "../../components/templates/page-layout/page-layout.astro";
@@ -60,7 +61,7 @@ const getPostCTA = (
   seo={page.seo}
   title={page.title}
 >
-  <Content slot={page.hasContent ? "body" : ""} />
+  <Content components={components} slot={page.hasContent ? "body" : ""} />
   <Fragment slot="disconnected-body">
     <Box
       class="blog-section-heading"

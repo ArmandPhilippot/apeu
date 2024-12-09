@@ -1,6 +1,7 @@
 ---
 import type { GetStaticPaths } from "astro";
 import type { ComponentProps } from "astro/types";
+import { components } from "../../../components/mdx";
 import Grid from "../../../components/molecules/grid/grid.astro";
 import CollectionCard from "../../../components/organisms/collection-card/collection-card.astro";
 import CollectionMeta from "../../../components/organisms/collection-meta/collection-meta.astro";
@@ -96,7 +97,7 @@ const getCTA = (
     }}
     slot="meta"
   />
-  <Content slot={page.hasContent ? "body" : ""} />
+  <Content components={components} slot={page.hasContent ? "body" : ""} />
   <Fragment slot="disconnected-body">
     <Grid class="posts-list" isCentered items={posts}>
       {

@@ -1,0 +1,102 @@
+---
+title: MDX
+description: "An MDX page to test the integration."
+publishedOn: "2024-10-11T12:32"
+seo:
+  title: "MDX"
+  description: "This is a description used by search engines."
+---
+
+This is an MDX page! Its purpose is to test the rendering of the associates HTML/Markdown elements. You can access it using `/mdx`.
+
+## A heading
+
+Mapping headings to our Astro component should be supported, as well as:
+
+- lists and list items
+- [link](/)
+- `inline code`
+- <kbd>keystrokes</kbd>
+- <q>inline quotations</q>
+
+Ordered lists should also be supported:
+
+1. item 1
+2. item 2
+3. item 3
+
+You can also use blockquote:
+
+> For you quotations
+
+## Images
+
+### With Markdown syntax
+
+You should also be able to use images with Markdown syntax:
+
+![an image](../../../src/assets/favicon.png)
+
+### With HTML syntax
+
+Or using an HTML tag:
+
+<img alt="an HTML img" src="../../../src/assets/favicon.png" />
+
+### Remote images
+
+<img alt="a remote img" src="https://picsum.photos/640/480" />
+
+### Clickable images
+
+You can also use clickable images with both syntax:
+
+[![a clickable image](../../../src/assets/favicon.png)](../../../src/assets/favicon.png)
+
+The link will not be updated if it does not target the img source:
+
+<a href="https://astro.build">
+  <img alt="an HTML img" src="../../../src/assets/favicon.png" />
+</a>
+
+## Complex structures
+
+Sometimes you may need more complex structures like:
+
+### Asides
+
+You can use the HTML tag `aside` for your contents:
+
+<aside>This is an example of an aside.</aside>
+
+If you use a class that matches a valid `Notice` kind (see `src/components/atoms/notice`), you can use different kind of asides:
+
+<aside class="warning">This is an example of an aside using `warning`.</aside>
+
+You can also provide a title using the `data-title` attribute:
+
+<aside class="idea" data-title="This is the title">
+  This is an example of an aside using the `idea` and a title.
+</aside>
+
+### Figure
+
+<figure>
+  <img alt="an image" src="../../../src/assets/favicon.png" />
+  <figcaption>The figure caption</figcaption>
+</figure>
+
+### Fenced code
+
+```js
+const a = 2;
+const b = 4;
+console.log(a + b);
+```
+
+### Tables
+
+| Col 1  | Col 2  | Col 3  |
+| ------ | ------ | ------ |
+| Item 1 | Item 2 | Item 3 |
+| Item 4 | Item 5 | Item 6 |

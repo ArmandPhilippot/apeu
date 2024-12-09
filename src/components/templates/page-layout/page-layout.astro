@@ -3,22 +3,44 @@ import type { ComponentProps } from "astro/types";
 import type { Graph } from "schema-dts";
 import { getJsonLdSchema } from "../../../lib/schema-dts/schema";
 import { useI18n } from "../../../utils/i18n";
+import { getOpenGraphImg } from "../../../utils/open-graph";
+import OpenGraphMeta from "../../atoms/open-graph-meta/open-graph-meta.astro";
+import TwitterMeta from "../../atoms/twitter-meta/twitter-meta.astro";
 import Breadcrumb from "../../molecules/breadcrumb/breadcrumb.astro";
 import Page from "../../organisms/page/page.astro";
 import Layout from "../layout/layout.astro";
 
 type Props = Pick<ComponentProps<typeof Layout>, "seo"> &
-  ComponentProps<typeof Page> & {
+  Omit<ComponentProps<typeof Page>, "heading"> & {
     breadcrumb?: ComponentProps<typeof Breadcrumb>["items"] | null | undefined;
+    description?: string | null | undefined;
     graphs?: Graph["@graph"] | null | undefined;
+    title: string;
   };
 
-const { breadcrumb, graphs, seo, ...attrs } = Astro.props;
-const { translate } = useI18n(Astro.currentLocale);
+const { breadcrumb, description, graphs, seo, title, ...attrs } = Astro.props;
+const { locale, route, translate } = useI18n(Astro.currentLocale);
+const isHome = Astro.url.pathname === route("home");
+const socialImg = getOpenGraphImg({ locale, slug: Astro.url.pathname });
 ---
 
 <Layout class="page-layout" seo={seo}>
   <Fragment slot="head">
+    <OpenGraphMeta
+      image={socialImg}
+      locale={locale}
+      title={title}
+      type="article"
+      url={Astro.url.href}
+    >
+      <slot name="open-graph" />
+    </OpenGraphMeta>
+    <TwitterMeta
+      card="summary_large_image"
+      description={description}
+      image={socialImg.url}
+      title={title}
+    />
     {
       graphs ? (
         <script
@@ -28,6 +50,7 @@ const { translate } = useI18n(Astro.currentLocale);
         />
       ) : null
     }
+    <slot name="head" />
   </Fragment>
   {
     breadcrumb?.length ? (
@@ -41,7 +64,7 @@ const { translate } = useI18n(Astro.currentLocale);
   }
   <div class="page-layout-content">
     <main class="page-layout-main" data-pagefind-body>
-      <Page {...attrs}>
+      <Page {...attrs} heading={isHome ? null : title}>
         <slot name="meta" slot={Astro.slots.has("meta") ? "meta" : ""} />
         <slot name="body" slot={Astro.slots.has("body") ? "body" : ""} />
         <slot

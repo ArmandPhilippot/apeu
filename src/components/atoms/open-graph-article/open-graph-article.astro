@@ -1,0 +1,51 @@
+---
+type Props = {
+  authorsProfilePage?: string[] | null | undefined;
+  expirationTime?: Date | null | undefined;
+  modifiedTime?: Date | null | undefined;
+  publishedTime?: Date | null | undefined;
+  section?: string | null | undefined;
+  tags?: string[] | null | undefined;
+};
+
+const {
+  authorsProfilePage,
+  expirationTime,
+  modifiedTime,
+  publishedTime,
+  section,
+  tags,
+} = Astro.props;
+---
+
+{
+  publishedTime ? (
+    <meta
+      property="article:published_time"
+      content={publishedTime.toISOString()}
+    />
+  ) : null
+}
+{
+  modifiedTime ? (
+    <meta
+      property="article:modified_time"
+      content={modifiedTime.toISOString()}
+    />
+  ) : null
+}
+{
+  expirationTime ? (
+    <meta
+      property="article:expiration_time"
+      content={expirationTime.toISOString()}
+    />
+  ) : null
+}
+{
+  authorsProfilePage?.map((author) => (
+    <meta property="article:author" content={author} />
+  ))
+}
+{section ? <meta property="article:section" content={section} /> : null}
+{tags?.map((tag) => <meta property="article:tag" content={tag} />)}

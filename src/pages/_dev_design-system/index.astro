@@ -17,7 +17,7 @@ const seo: ComponentProps<typeof PageLayout>["seo"] = {
 };
 ---
 
-<PageLayout breadcrumb={breadcrumb} heading={title} seo={seo}>
+<PageLayout breadcrumb={breadcrumb} seo={seo} title={title}>
   <List slot="body">
     <ListItem>
       <Link href="/design-system/components">Components</Link>

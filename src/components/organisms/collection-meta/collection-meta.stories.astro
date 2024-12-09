@@ -46,7 +46,7 @@ const projectMeta = {
 } satisfies ComponentProps<typeof CollectionMetaComponent>["data"];
 ---
 
-<PageLayout breadcrumb={breadcrumb} heading={title} seo={seo}>
+<PageLayout breadcrumb={breadcrumb} seo={seo} title={title}>
   <Fragment slot="body">
     <Heading as="h2">Usage</Heading>
     <p>

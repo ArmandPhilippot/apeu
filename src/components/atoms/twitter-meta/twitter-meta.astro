@@ -1,0 +1,47 @@
+---
+type TwitterCard = "app" | "player" | "summary" | "summary_large_image";
+
+type Props = {
+  card?: TwitterCard | null | undefined;
+  /**
+   * The username of the content creator.
+   */
+  creator?: string | null | undefined;
+  /**
+   * The description of the content: maximum 200 characters.
+   */
+  description?: string | null | undefined;
+  /**
+   * The image to use in the card. SVG is not supported.
+   */
+  image?: string | null | undefined;
+  /**
+   * The username of the website.
+   */
+  site?: string | null | undefined;
+  /**
+   * The title of the content: max 70 characters.
+   */
+  title?: string | null | undefined;
+};
+
+const { card, creator, description, image, site, title } = Astro.props;
+
+/**
+ * `twitter:description` is limited to 200 characters.
+ * @see https://developer.x.com/en/docs/x-for-websites/cards/overview/markup
+ */
+const descriptionMaxLength = 200;
+const ellipsis = "…";
+const twitterDesc =
+  description && description.length >= descriptionMaxLength
+    ? description.slice(0, descriptionMaxLength - 1) + ellipsis
+    : description;
+---
+
+{card ? <meta name="twitter:card" content={card} /> : null}
+{site ? <meta name="twitter:site" content={site} /> : null}
+{creator ? <meta name="twitter:creator" content={creator} /> : null}
+{title ? <meta name="twitter:title" content={title} /> : null}
+{twitterDesc ? <meta name="twitter:description" content={twitterDesc} /> : null}
+{image ? <meta name="twitter:image" content={image} /> : null}

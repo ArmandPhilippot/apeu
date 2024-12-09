@@ -14,7 +14,7 @@ import TableOfContents from "../table-of-contents/table-of-contents.astro";
 type Props = HTMLAttributes<"article"> & {
   cover?: ComponentProps<typeof AstroImg> | null | undefined;
   feed?: string | URL | null | undefined;
-  heading?: string;
+  heading?: string | null | undefined;
   toc?: MarkdownHeading[] | null | undefined;
 };
 

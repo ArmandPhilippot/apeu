@@ -55,7 +55,13 @@ const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
 ];
 ---
 
-<PageLayout class="homepage" graphs={graphs} seo={page.seo}>
+<PageLayout
+  class="homepage"
+  description={page.description}
+  graphs={graphs}
+  seo={page.seo}
+  title={translate("page.home.title")}
+>
   <Fragment slot="disconnected-body">
     <Greetings isCentered isSpaced name={author.name} />
     {

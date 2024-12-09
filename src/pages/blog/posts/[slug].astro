@@ -37,9 +37,10 @@ const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
 
 <PageLayout
   breadcrumb={breadcrumb}
-  heading={page.title}
+  description={page.description}
   graphs={graphs}
   seo={page.seo}
+  title={page.title}
   toc={page.headings}
 >
   <CollectionMeta data={page.meta} slot="meta" />

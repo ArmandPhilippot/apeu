@@ -41,10 +41,11 @@ const getCTA = (
 
 <PageLayout
   breadcrumb={breadcrumb}
+  description={page.description}
   feed={`${route("notes")}/feed.xml`}
   graphs={graphs}
-  heading={page.title}
   seo={page.seo}
+  title={page.title}
 >
   <CollectionMeta
     data={{

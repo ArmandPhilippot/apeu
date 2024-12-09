@@ -34,10 +34,11 @@ const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
 
 <PageLayout
   breadcrumb={breadcrumb}
+  description={page.description}
   feed={`${route("blog.categories")}/feed.xml`}
   graphs={graphs}
-  heading={page.title}
   seo={page.seo}
+  title={page.title}
 >
   <CollectionMeta
     data={{

@@ -55,9 +55,10 @@ const getPostCTA = (
 
 <PageLayout
   breadcrumb={breadcrumb}
+  description={page.description}
   graphs={graphs}
-  heading={page.title}
   seo={page.seo}
+  title={page.title}
 >
   <Content slot={page.hasContent ? "body" : ""} />
   <Fragment slot="disconnected-body">

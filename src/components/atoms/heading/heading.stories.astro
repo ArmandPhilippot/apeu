@@ -22,7 +22,7 @@ const seo: ComponentProps<typeof PageLayout>["seo"] = {
 };
 ---
 
-<PageLayout breadcrumb={breadcrumb} heading={title} seo={seo}>
+<PageLayout breadcrumb={breadcrumb} seo={seo} title={title}>
   <Fragment slot="body">
     <HeadingComponent as="h2">Usage</HeadingComponent>
     <p>This component is used to display a heading.</p>

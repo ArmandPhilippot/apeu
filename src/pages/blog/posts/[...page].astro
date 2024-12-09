@@ -62,7 +62,7 @@ const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
 const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
   await getWebPageGraph({ ...page, breadcrumb }),
 ];
-const heading: ComponentProps<typeof PageLayout>["heading"] = isFirstPage
+const title: ComponentProps<typeof PageLayout>["title"] = isFirstPage
   ? page.title
   : `${page.title} - ${pageLabel}`;
 
@@ -82,10 +82,11 @@ const getCTA = (
 
 <PageLayout
   breadcrumb={breadcrumb}
+  description={page.description}
   feed={`${route("blog.posts")}/feed.xml`}
   graphs={graphs}
-  heading={heading}
   seo={seo}
+  title={title}
 >
   <CollectionMeta
     data={{

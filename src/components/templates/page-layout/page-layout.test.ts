@@ -14,10 +14,11 @@ describe("PageLayout", () => {
 
   it<LocalTestContext>("renders the page", async ({ container }) => {
     const props = {
-      heading: "sunt quos molestiae",
+      description: "Porro iste voluptatem architecto iste pariatur atque non.",
       seo: {
         title: "est et fugiat",
       },
+      title: "sunt quos molestiae",
     } satisfies ComponentProps<typeof PageLayout>;
     const result = await container.renderToString(PageLayout, {
       props,
@@ -27,7 +28,7 @@ describe("PageLayout", () => {
 
     expect(result).toContain("</main>");
     expect(result).toContain("</article>");
-    expect(result).toContain(props.heading);
+    expect(result).toContain(props.title);
     expect(result).toContain(props.seo.title);
   });
 
@@ -38,10 +39,10 @@ describe("PageLayout", () => {
         { label: "voluptas odio voluptatem", url: "#est-ducimus-sit" },
         { label: "sunt ratione quis", url: "#sunt-illo-iusto" },
       ] as const,
-      heading: "sunt quos molestiae",
       seo: {
         title: "est et fugiat",
       },
+      title: "sunt quos molestiae",
     } satisfies ComponentProps<typeof PageLayout>;
     const result = await container.renderToString(PageLayout, {
       props,
@@ -56,10 +57,10 @@ describe("PageLayout", () => {
 
   it<LocalTestContext>("can render an aside", async ({ container }) => {
     const props = {
-      heading: "sunt quos molestiae",
       seo: {
         title: "est et fugiat",
       },
+      title: "sunt quos molestiae",
     } satisfies ComponentProps<typeof PageLayout>;
     const aside = "aut sed assumenda";
     const result = await container.renderToString(PageLayout, {
@@ -75,10 +76,10 @@ describe("PageLayout", () => {
 
   it<LocalTestContext>("can render the page meta", async ({ container }) => {
     const props = {
-      heading: "sunt quos molestiae",
       seo: {
         title: "est et fugiat",
       },
+      title: "sunt quos molestiae",
     } satisfies ComponentProps<typeof PageLayout>;
     const meta = "aut sed assumenda";
     const result = await container.renderToString(PageLayout, {
@@ -93,10 +94,10 @@ describe("PageLayout", () => {
 
   it<LocalTestContext>("can render the page body", async ({ container }) => {
     const props = {
-      heading: "sunt quos molestiae",
       seo: {
         title: "est et fugiat",
       },
+      title: "sunt quos molestiae",
     } satisfies ComponentProps<typeof PageLayout>;
     const body = "aut sed assumenda";
     const result = await container.renderToString(PageLayout, {
@@ -113,10 +114,10 @@ describe("PageLayout", () => {
     container,
   }) => {
     const props = {
-      heading: "sunt quos molestiae",
       seo: {
         title: "est et fugiat",
       },
+      title: "sunt quos molestiae",
     } satisfies ComponentProps<typeof PageLayout>;
     const disconnectedBody = "aut sed assumenda";
     const result = await container.renderToString(PageLayout, {
@@ -131,10 +132,10 @@ describe("PageLayout", () => {
 
   it<LocalTestContext>("can render the page footer", async ({ container }) => {
     const props = {
-      heading: "sunt quos molestiae",
       seo: {
         title: "est et fugiat",
       },
+      title: "sunt quos molestiae",
     } satisfies ComponentProps<typeof PageLayout>;
     const footer = "aut sed assumenda";
     const result = await container.renderToString(PageLayout, {

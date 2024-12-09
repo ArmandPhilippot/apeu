@@ -18,6 +18,6 @@ const seo: ComponentProps<typeof PageLayoutComponent>["seo"] = {
 };
 ---
 
-<PageLayoutComponent breadcrumb={breadcrumb} heading={title} seo={seo}>
+<PageLayoutComponent breadcrumb={breadcrumb} seo={seo} title={title}>
   <p slot="body">This is the main content of the page.</p>
 </PageLayoutComponent>

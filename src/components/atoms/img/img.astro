@@ -1,0 +1,81 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import { getImage } from "astro:assets";
+import type { Img as LocalOrRemoteImg } from "../../../types/data";
+import Link from "../link/link.astro";
+
+type Props = Omit<HTMLAttributes<"img">, "height" | "src" | "width"> &
+  Omit<LocalOrRemoteImg, "height" | "width"> & {
+    /**
+     * Should only be used with Remark/Rehype. It is an internal helper to wrap
+     * images with a link pointing to the same file.
+     *
+     * @see src/lib/rehype/rehype-images.ts
+     */
+    "data-clickable"?: `${boolean}` | null | undefined;
+    height?: number | undefined;
+    inferSize?: boolean | null | undefined;
+    width?: number | undefined;
+  };
+
+const {
+  alt,
+  "data-clickable": isClickable,
+  class: className,
+  densities,
+  format,
+  height,
+  inferSize,
+  quality,
+  src,
+  width,
+  widths,
+  ...attrs
+} = Astro.props;
+
+const img = await getImage({
+  densities,
+  format,
+  height,
+  ...(inferSize ? { inferSize } : {}),
+  quality,
+  src,
+  width,
+  widths,
+});
+const imgAttrs = { ...img.attributes, ...attrs };
+---
+
+{
+  isClickable === "true" ? (
+    <Link href={img.src}>
+      <img
+        {...imgAttrs}
+        alt={alt}
+        class:list={["img", className]}
+        src={img.src}
+      />
+    </Link>
+  ) : (
+    <img
+      {...imgAttrs}
+      alt={alt}
+      class:list={["img", className]}
+      src={img.src}
+    />
+  )
+}
+
+<style>
+  .img {
+    display: block;
+  }
+
+  :global(:where([data-theme="dark"])) .img {
+    filter: brightness(0.85) contrast(1.05);
+
+    &:active {
+      filter: none;
+    }
+  }
+</style>

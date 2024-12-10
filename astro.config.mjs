@@ -8,6 +8,7 @@ import { componentsStories } from "./src/lib/astro/integrations/components-stori
 import { devOnlyPages } from "./src/lib/astro/integrations/dev-only-pages";
 import { pagefind } from "./src/lib/astro/integrations/pagefind";
 import { rehypeDisableExplicitJsx } from "./src/lib/rehype/rehype-disable-explicit-jsx";
+import { rehypeImages } from "./src/lib/rehype/rehype-images";
 import { remarkWordsCount } from "./src/lib/remark/remark-words-count";
 import { CONFIG } from "./src/utils/constants";
 
@@ -45,7 +46,7 @@ export default defineConfig({
   ],
   markdown: {
     remarkPlugins: [remarkWordsCount],
-    rehypePlugins: [rehypeDisableExplicitJsx],
+    rehypePlugins: [rehypeDisableExplicitJsx, rehypeImages],
   },
   output: "static",
   site: `https://${CONFIG.HOST}`,

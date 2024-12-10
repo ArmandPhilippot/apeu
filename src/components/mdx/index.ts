@@ -1,5 +1,6 @@
 import Figcaption from "../atoms/figure/figcaption.astro";
 import Figure from "../atoms/figure/figure.astro";
+import Img from "../atoms/img/img.astro";
 import Link from "../atoms/link/link.astro";
 import ListItem from "../atoms/list/list-item.astro";
 import List from "../atoms/list/list.astro";
@@ -19,6 +20,7 @@ export const components = {
   h4: H4,
   h5: H5,
   h6: H6,
+  img: Img,
   li: ListItem,
   ol: Ol,
   ul: List,

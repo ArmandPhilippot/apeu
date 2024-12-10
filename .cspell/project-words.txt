@@ -8,9 +8,11 @@ commitlint
 frontmatter
 globby
 mdast
+Mdxjs
 nanostores
 nlcst
 pagefind
+rehype
 stackoverflow
 stylelint
 tsconfigs

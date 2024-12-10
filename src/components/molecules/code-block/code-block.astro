@@ -1,0 +1,194 @@
+---
+import type { ComponentProps } from "astro/types";
+import { Code } from "astro:components";
+import { getCSSVars } from "../../../utils/attributes";
+import { InvalidProps } from "../../../utils/exceptions";
+import Figcaption from "../../atoms/figure/figcaption.astro";
+import Figure from "../../atoms/figure/figure.astro";
+
+type Props = Omit<ComponentProps<typeof Figure>, "isFullWidth"> &
+  Pick<ComponentProps<typeof Code>, "code" | "lang" | "wrap"> & {
+    /**
+     * The showcased file path.
+     */
+    filePath?: string | null | undefined;
+    /**
+     * The starting line number.
+     *
+     * @default 1
+     */
+    lineStart?: number | null | undefined;
+    /**
+     * The database selected when using SQL server.
+     *
+     * @default none
+     */
+    promptDB?: string | null | undefined;
+    /**
+     * The machine name to display inside the prompt.
+     *
+     * @default localhost || mysql
+     */
+    promptHost?: string | null | undefined;
+    /**
+     * The username to display inside the prompt
+     *
+     * @default user
+     */
+    promptUser?: string | null | undefined;
+    /**
+     * Should we add line numbers in front of the code?
+     *
+     * @default false
+     */
+    showLineNumbers?: boolean | null | undefined;
+    /**
+     * Should we show prompt in front of command lines?
+     *
+     * @default false
+     */
+    showPrompt?: boolean | null | undefined;
+  };
+
+const {
+  class: className,
+  code,
+  filePath,
+  lang = "plaintext",
+  lineStart = 1,
+  promptDB = "none",
+  promptHost = lang === "sql" ? "SQL" : "localhost",
+  promptUser = "user",
+  showLineNumbers = false,
+  showPrompt = false,
+  style = "",
+  wrap = false,
+  ...attrs
+} = Astro.props;
+
+if (showLineNumbers && showPrompt)
+  throw new InvalidProps(
+    "`showLineNumbers` and `showPrompt` can't be used together.",
+  );
+
+const trimmedCode = code.replace(/^\n|\n$/g, "");
+const commandLineLanguages = [
+  "bash",
+  "console",
+  "sh",
+  "shell",
+  // cSpell:ignore shellsession
+  "shellsession",
+  "zsh",
+];
+const isCommandLine = commandLineLanguages.includes(lang);
+const isSQL = lang === "sql";
+const cssVars = getCSSVars({
+  "line-start": showLineNumbers ? lineStart : null,
+  "prompt-db": showPrompt && isSQL ? `"${promptDB}"` : null,
+  "prompt-host": showPrompt ? `"${promptHost}"` : null,
+  "prompt-user": showPrompt && !isSQL ? `"${promptUser}"` : null,
+});
+---
+
+<Figure
+  {...attrs}
+  class:list={[
+    "code-block",
+    {
+      "has-line-numbers": showLineNumbers,
+      "has-path": !!filePath,
+      "has-prompt": showPrompt,
+      "is-command-line": isCommandLine,
+      "is-sql-server": showPrompt && isSQL,
+    },
+    className,
+  ]}
+  data-root={isCommandLine && promptUser === "root" ? "" : null}
+  isFullWidth
+  style={`${cssVars}${style}`}
+>
+  <Figcaption class="code-block-caption">{filePath ?? lang}</Figcaption>
+  <Code class="code-block-sample" code={trimmedCode} lang={lang} wrap={wrap} />
+</Figure>
+
+<style>
+  .code-block-caption {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    background: var(--color-regular);
+    border-block-end: var(--border-size-sm) solid var(--color-border);
+  }
+
+  .code-block:where(:not(.has-path)) .code-block-caption {
+    text-transform: uppercase;
+  }
+
+  .code-block-sample {
+    width: 100%;
+    margin: 0;
+
+    & > :global(code) {
+      display: block;
+      font-family: var(--font-family-mono);
+    }
+  }
+
+  .code-block:not(.has-line-numbers, .has-prompt) {
+    & :global(code) {
+      padding: var(--spacing-xs) var(--spacing-sm);
+    }
+  }
+
+  .code-block:where(.has-line-numbers, .has-prompt) :global(.line::before) {
+    display: inline-block;
+    margin-inline: 0 var(--spacing-xs);
+    padding-inline: var(--spacing-xs);
+    position: sticky;
+    inset-inline-start: 0;
+    z-index: 5;
+    background: var(--color-muted);
+    color: var(--color-on-muted);
+    letter-spacing: -1px;
+    pointer-events: none;
+    text-align: right;
+    user-select: none;
+  }
+
+  .code-block:where(.has-line-numbers, .has-prompt)
+    :global(.line:first-of-type::before) {
+    padding-block-start: var(--spacing-xs);
+  }
+
+  .code-block:where(.has-line-numbers, .has-prompt)
+    :global(.line:last-of-type::before) {
+    padding-block-end: var(--spacing-xs);
+  }
+
+  .code-block:where(.has-line-numbers) {
+    & :global(code) {
+      counter-reset: line-number calc(var(--line-start, 1) - 1);
+    }
+
+    & :global(.line) {
+      counter-increment: line-number;
+
+      &::before {
+        content: counter(line-number);
+        /* This should be suitable for line numbers >100 and <1000 */
+        min-width: 3em;
+      }
+    }
+  }
+
+  .code-block:where(.has-prompt:not([data-root])) :global(.line::before) {
+    content: "[" var(--prompt-user) "@" var(--prompt-host) "] $";
+  }
+
+  .code-block:where(.has-prompt[data-root]) :global(.line::before) {
+    content: "[" var(--prompt-user) "@" var(--prompt-host) "] #";
+  }
+
+  .code-block:where(.is-sql-server) :global(.line::before) {
+    content: var(--prompt-host) " [(" var(--prompt-db) ")] >";
+  }
+</style>

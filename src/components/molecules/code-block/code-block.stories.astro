@@ -1,0 +1,100 @@
+---
+import type { ComponentProps } from "astro/types";
+import Heading from "../../atoms/heading/heading.astro";
+import PageLayout from "../../templates/page-layout/page-layout.astro";
+import CodeBlockComponent from "./code-block.astro";
+
+const title = "CodeBlock";
+const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
+  { label: "Home", url: "/" },
+  { label: "Design system", url: "/design-system" },
+  { label: "Components", url: "/design-system/components" },
+  { label: "Molecules", url: "/design-system/components/molecules" },
+  { label: title, url: Astro.url.href },
+];
+const seo: ComponentProps<typeof PageLayout>["seo"] = {
+  nofollow: true,
+  noindex: true,
+  title: breadcrumb
+    .slice(1)
+    .reverse()
+    .map((crumb) => crumb.label)
+    .join(" | "),
+};
+
+const jsCodeSample = `
+console.log("Hello world!");
+const foo = 42;
+`;
+
+const commandLineCodeSample = `
+git add README.md
+git commit -m "Added documentation"
+`;
+
+const sqlCodeSample = `
+ALTER USER 'root'@'localhost'
+`;
+---
+
+<PageLayout breadcrumb={breadcrumb} seo={seo} title={title}>
+  <Fragment slot="body">
+    <Heading as="h2">With lang</Heading>
+    <CodeBlockComponent code={jsCodeSample} lang="js" />
+    <Heading as="h2">With file path</Heading>
+    <CodeBlockComponent
+      code={jsCodeSample}
+      lang="js"
+      filePath="./hello-world.js"
+    />
+    <Heading as="h2">With line numbers</Heading>
+    <CodeBlockComponent code={jsCodeSample} lang="js" showLineNumbers />
+    <Heading as="h2">With line numbers and custom starting line</Heading>
+    <CodeBlockComponent
+      code={jsCodeSample}
+      lang="js"
+      lineStart={5}
+      showLineNumbers
+    />
+    <Heading as="h2">With prompt</Heading>
+    <CodeBlockComponent code={commandLineCodeSample} lang="shell" showPrompt />
+    <Heading as="h2">With prompt and custom username</Heading>
+    <CodeBlockComponent
+      code={commandLineCodeSample}
+      lang="shell"
+      promptUser="john"
+      showPrompt
+    />
+    <Heading as="h2">With prompt and custom host</Heading>
+    <CodeBlockComponent
+      code={commandLineCodeSample}
+      lang="shell"
+      promptHost="doe"
+      promptUser="john"
+      showPrompt
+    />
+    <Heading as="h2">With prompt as root</Heading>
+    <CodeBlockComponent
+      code="nano /etc/hosts"
+      lang="shell"
+      promptUser="root"
+      showPrompt
+    />
+    <Heading as="h2">With SQL prompt</Heading>
+    <CodeBlockComponent code={sqlCodeSample} lang="sql" showPrompt />
+    <Heading as="h2">With SQL prompt and custom prompt host</Heading>
+    <CodeBlockComponent
+      code={sqlCodeSample}
+      lang="sql"
+      promptHost="MariaDB"
+      showPrompt
+    />
+    <Heading as="h2">With SQL prompt and custom database name</Heading>
+    <CodeBlockComponent
+      code={sqlCodeSample}
+      lang="sql"
+      promptDB="recipes"
+      showPrompt
+    />
+  </Fragment>
+</PageLayout>

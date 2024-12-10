@@ -141,6 +141,21 @@ The available content types are:
 
 To check the expected fields in the frontmatter, please consult the files in `src/lib/astro/collections/schema`.
 
+Both `.md` and `.mdx` extensions are supported. However, because of technologies limitations, the `.mdx` format is recommended.
+
+This project is designed to avoid imports in `src/content`. Elements (even HTML tags) are automatically mapped to custom components when you use the `.mdx` extension.
+
+### Automatic meta: Words count / Reading time
+
+The words count will be automatically calculated from your Markdown files and added as metadata. From there, the reading time for each content can be calculated depending on the current language.
+
+### Images
+
+When using `.mdx` format:
+
+- you can use local image paths without the need to import them,
+- if you don't specify the images dimensions, they will be inferred for you even with remote images.
+
 ## Development
 
 Before starting, please follow the instructions in [Setup](#setup).
@@ -247,7 +262,7 @@ In details:
 - `src/utils/`: all the utilities (constants, helpers, etc.) to build the project.
 
 > [!IMPORTANT]
-> All the `index.md` files in the `content` directory are required. These files are used in `src/pages` to add metadata and optional content to the index pages of your collections. Pages created in `content/pages` can use any filename but some pages are required: `blogroll.md`, `bookmarks.md`, `contact.md`, `home.md`, `legal-notice.md` and `search.md`.
+> All the `index.md` files in the `content` directory are required. These files are used in `src/pages` to add metadata and optional content to the index pages of your collections. Pages created in `content/pages` can use any filename but some pages are required: `blogroll.md`, `bookmarks.md`, `contact.md`, `home.md`, `legal-notice.md` and `search.md`. You can also use the `.mdx` extension.
 
 ### Design system
 

@@ -1,5 +1,6 @@
 ---
 import type { ComponentProps } from "astro/types";
+import { components } from "../components/mdx";
 import ContactForm from "../components/organisms/contact-form/contact-form.astro";
 import PageLayout from "../components/templates/page-layout/page-layout.astro";
 import { queryEntry } from "../lib/astro/collections/query-entry";
@@ -29,7 +30,7 @@ const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
   title={page.title}
 >
   <Fragment slot="body">
-    <Content />
+    <Content components={components} />
     <ContactForm id="contact-page-form" />
   </Fragment>
 </PageLayout>

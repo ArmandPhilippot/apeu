@@ -24,15 +24,17 @@ const getLocalizedPattern = (pattern: string) => {
 
 const collectionsPattern = {
   authors: "authors/*.json",
-  "blog.categories": getLocalizedPattern("/blog/categories/**/!(index).md"),
-  "blog.posts": getLocalizedPattern("/blog/posts/**/!(index).md"),
+  "blog.categories": getLocalizedPattern(
+    "/blog/categories/**/!(index).{md,mdx}",
+  ),
+  "blog.posts": getLocalizedPattern("/blog/posts/**/!(index).{md,mdx}"),
   blogroll: "blogroll/*.json",
   bookmarks: "bookmarks/*.json",
-  guides: getLocalizedPattern("/guides/**/!(index).md"),
-  notes: getLocalizedPattern("/notes/**/!(index).md"),
-  pages: `{${getLocalizedPattern("/pages/**/*.md")},${getLocalizedPattern("/!(pages)/**/index.md")}}`,
-  projects: getLocalizedPattern("/projects/**/!(index).md"),
-  tags: getLocalizedPattern("/tags/**/!(index).md"),
+  guides: getLocalizedPattern("/guides/**/!(index).{md,mdx}"),
+  notes: getLocalizedPattern("/notes/**/!(index).{md,mdx}"),
+  pages: `{${getLocalizedPattern("/pages/**/*.{md,mdx}")},${getLocalizedPattern("/!(pages)/**/index.{md,mdx}")}}`,
+  projects: getLocalizedPattern("/projects/**/!(index).{md,mdx}"),
+  tags: getLocalizedPattern("/tags/**/!(index).{md,mdx}"),
 };
 
 type Collection = keyof typeof collectionsPattern;

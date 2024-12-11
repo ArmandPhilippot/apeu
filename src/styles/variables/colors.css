@@ -93,6 +93,27 @@
   --color-on-warning-subtle: var(--color-warning-faded);
 }
 
+[data-shiki] pre {
+  --color-shiki-gutter-border: var(--color-grey);
+  --color-shiki-token-attribute: var(--color-purple);
+  --color-shiki-token-comment: var(--color-grey-faded);
+  --color-shiki-token-constant: var(--color-yellow);
+  --color-shiki-token-function: var(--color-purple);
+  --color-shiki-token-invalid: var(--color-red);
+  --color-shiki-token-keyword: var(--color-orange);
+  --color-shiki-token-link: var(--color-yellow);
+  --color-shiki-token-numeric: var(--color-yellow);
+  --color-shiki-token-property: var(--color-cyan);
+  --color-shiki-token-property-vendored: var(--color-cyan-light);
+  --color-shiki-token-regex: var(--color-pink);
+  --color-shiki-token-string: var(--color-green);
+  --color-shiki-token-support: var(--color-pink);
+  --color-shiki-token-tag: var(--color-cyan);
+  --color-shiki-token-type: var(--color-yellow);
+  --color-shiki-token-variable: var(--color-blue);
+}
+
+[data-shiki="dark"] pre,
 [data-theme="dark"] {
   --color-black: hsl(200, 19%, 12%);
   --color-blue: hsl(205, 65%, 78%);
@@ -250,23 +271,9 @@
   --color-yellow-faded: oklch(
     from var(--color-yellow) calc(l * 1.05) calc(c * 0.6) h
   );
-
-  --color-on-muted: var(--color-white);
-
-  --color-regular: var(--color-black);
-  --color-regular-darker: var(--color-black-darker);
-  --color-regular-dark: var(--color-black-dark);
-  --color-regular-light: var(--color-black-light);
-  --color-regular-lighter: var(--color-black-lighter);
-  --color-on-regular: var(--color-white);
-  --color-regular-faded: var(--color-black-faded);
-  --color-on-regular-faded: var(--color-regular-subtle);
-  --color-regular-subtle: var(--color-black-subtle);
-  --color-on-regular-subtle: var(--color-regular-faded);
-
-  --color-shadow: oklch(from var(--color-black) 19% c h);
 }
 
+[data-shiki="light"] pre,
 [data-theme="light"] {
   --color-black: hsl(200, 22%, 12%);
   --color-blue: hsl(208, 52%, 27%);
@@ -408,9 +415,25 @@
   --color-yellow-subtle: oklch(
     from var(--color-yellow) calc(l * 2.4) calc(c * 0.25) h
   );
+}
 
+[data-theme="dark"] {
+  --color-on-muted: var(--color-white);
+  --color-regular: var(--color-black);
+  --color-regular-darker: var(--color-black-darker);
+  --color-regular-dark: var(--color-black-dark);
+  --color-regular-light: var(--color-black-light);
+  --color-regular-lighter: var(--color-black-lighter);
+  --color-on-regular: var(--color-white);
+  --color-regular-faded: var(--color-black-faded);
+  --color-on-regular-faded: var(--color-regular-subtle);
+  --color-regular-subtle: var(--color-black-subtle);
+  --color-on-regular-subtle: var(--color-regular-faded);
+  --color-shadow: oklch(from var(--color-black) 19% c h);
+}
+
+[data-theme="light"] {
   --color-on-muted: var(--color-black);
-
   --color-regular: var(--color-white);
   --color-regular-darker: var(--color-white-darker);
   --color-regular-dark: var(--color-white-dark);
@@ -421,6 +444,19 @@
   --color-on-regular-faded: var(--color-regular-subtle);
   --color-regular-subtle: var(--color-white-subtle);
   --color-on-regular-subtle: var(--color-regular-faded);
-
   --color-shadow: oklch(from var(--color-black) 72% c h);
+}
+
+[data-shiki="dark"] pre {
+  --color-shiki-background: var(--color-black);
+  --color-shiki-on-background: var(--color-white);
+  --color-shiki-gutter: var(--color-black-dark);
+  --color-shiki-on-gutter: var(--color-grey-faded);
+}
+
+[data-shiki="light"] pre {
+  --color-shiki-background: var(--color-white);
+  --color-shiki-on-background: var(--color-black);
+  --color-shiki-gutter: var(--color-white-dark);
+  --color-shiki-on-gutter: var(--color-grey-faded);
 }

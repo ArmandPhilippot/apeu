@@ -1,6 +1,7 @@
 ---
 import type { ComponentProps } from "astro/types";
 import { Code } from "astro:components";
+import { shikiTheme } from "../../../lib/shiki/theme";
 import { getCSSVars } from "../../../utils/attributes";
 import { InvalidProps } from "../../../utils/exceptions";
 import Figcaption from "../../atoms/figure/figcaption.astro";
@@ -109,7 +110,13 @@ const cssVars = getCSSVars({
   style={`${cssVars}${style}`}
 >
   <Figcaption class="code-block-caption">{filePath ?? lang}</Figcaption>
-  <Code class="code-block-sample" code={trimmedCode} lang={lang} wrap={wrap} />
+  <Code
+    class="code-block-sample"
+    code={trimmedCode}
+    lang={lang}
+    theme={shikiTheme}
+    wrap={wrap}
+  />
 </Figure>
 
 <style>
@@ -126,6 +133,7 @@ const cssVars = getCSSVars({
   .code-block-sample {
     width: 100%;
     margin: 0;
+    background: var(--color-shiki-background);
 
     & > :global(code) {
       display: block;
@@ -145,9 +153,9 @@ const cssVars = getCSSVars({
     padding-inline: var(--spacing-xs);
     position: sticky;
     inset-inline-start: 0;
-    z-index: 5;
-    background: var(--color-muted);
-    color: var(--color-on-muted);
+    background: var(--color-shiki-gutter);
+    box-shadow: var(--border-size-sm) 0 0 0 var(--color-shiki-gutter-border);
+    color: var(--color-shiki-on-gutter);
     letter-spacing: -1px;
     pointer-events: none;
     text-align: right;

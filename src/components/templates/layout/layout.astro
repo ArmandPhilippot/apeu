@@ -82,7 +82,12 @@ const contentsId = translate("anchor.site.content");
 const topId = translate("anchor.site.top");
 ---
 
-<html data-theme="light" lang={locale} style="color-scheme: light;">
+<html
+  data-shiki="light"
+  data-theme="light"
+  lang={locale}
+  style="color-scheme: light;"
+>
   <Head
     addBrandToTitle={!isHome}
     brand={CONFIG.BRAND}

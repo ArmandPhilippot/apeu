@@ -462,7 +462,8 @@ const topId = translate("anchor.site.top");
     }
 
     #resolveTheme(theme: Theme, key: keyof Settings) {
-      if (key === SHIKI_SETTING_KEY && theme === "auto") return settings.get().theme;
+      if (key === SHIKI_SETTING_KEY && theme === "auto")
+        return settings.get().theme;
 
       return theme;
     }

@@ -114,6 +114,16 @@ const topId = translate("anchor.site.top");
         document.documentElement.setAttribute("data-theme", c),
           (document.documentElement.style.colorScheme = c);
       })();
+      !(function () {
+        const e = localStorage.getItem("settings:shiki"),
+          t = "string" == typeof e ? JSON.parse(e) : void 0,
+          o = document.documentElement.getAttribute("data-theme"),
+          s = window.matchMedia("(prefers-color-scheme: dark)").matches
+            ? "dark"
+            : "light",
+          c = e && ["dark", "light"].includes(t) ? t : o === "auto" ? s : o;
+        document.documentElement.setAttribute("data-shiki", c);
+      })();
     </script>
     <noscript>
       <style>
@@ -394,6 +404,7 @@ const topId = translate("anchor.site.top");
 <script>
   import {
     settings,
+    SHIKI_SETTING_KEY,
     THEME_SETTING_KEY,
     type Settings,
   } from "../../../services/stores/settings";
@@ -450,8 +461,15 @@ const topId = translate("anchor.site.top");
       else this.hideEl(this.#backToTopBtn);
     }
 
+    #resolveTheme(theme: Theme, key: keyof Settings) {
+      if (key === SHIKI_SETTING_KEY && theme === "auto") return settings.get().theme;
+
+      return theme;
+    }
+
     #updateThemeAttrsOnDocument(theme: Theme, key: keyof Settings) {
-      const colorScheme = resolveCurrentColorScheme(theme);
+      const resolvedTheme = this.#resolveTheme(theme, key);
+      const colorScheme = resolveCurrentColorScheme(resolvedTheme);
 
       window.document.documentElement.setAttribute(`data-${key}`, colorScheme);
 
@@ -467,11 +485,17 @@ const topId = translate("anchor.site.top");
       if (!changedKey || typeof window === "undefined") return;
 
       this.#updateThemeAttrsOnDocument(newSettings[changedKey], changedKey);
+
+      if (changedKey === THEME_SETTING_KEY && newSettings.shiki === "auto")
+        this.#updateThemeAttrsOnDocument(newSettings.theme, SHIKI_SETTING_KEY);
     }
 
     handlePreferDarkSchemeChange(e: MediaQueryListEvent) {
       const currentSettings = settings.get();
       const resolvedTheme = e.matches ? "dark" : "light";
+
+      if (currentSettings.shiki === "auto")
+        this.#updateThemeAttrsOnDocument(resolvedTheme, SHIKI_SETTING_KEY);
 
       if (currentSettings.theme === "auto")
         this.#updateThemeAttrsOnDocument(resolvedTheme, THEME_SETTING_KEY);

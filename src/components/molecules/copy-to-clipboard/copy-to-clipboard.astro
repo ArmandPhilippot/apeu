@@ -1,0 +1,164 @@
+---
+import { Icon } from "astro-icon/components";
+import Button from "../../atoms/button/button.astro";
+import Box from "../../atoms/box/box.astro";
+import type { JSX } from "astro/jsx-runtime";
+
+type Props = JSX.HTMLAttributes & {
+  /**
+   * The feedback to display when the button is clicked.
+   */
+  feedback: string;
+  /**
+   * The button label.
+   */
+  label: string;
+  /**
+   * How many level should we go up in the DOM from the button's parent to look
+   * for the selector?
+   * * If no value is provided, the document element will be used as root for
+   *   your selector.
+   * * If the provided value is equal to `0` then the button's parent will be
+   *   used.
+   * * If the value is `1` it will be the grand parent.
+   * * And so on...
+   *
+   * @default undefined
+   */
+  lookUpNodeLvl?: number | null | undefined;
+  /**
+   * A selector to retrieve the element where to look for contents to copy.
+   */
+  selector: string;
+};
+
+const {
+  class: className,
+  feedback,
+  label,
+  lookUpNodeLvl,
+  selector,
+  ...attrs
+} = Astro.props;
+---
+
+<ap-copy-to-clipboard
+  {...attrs}
+  class:list={["copy-to-clipboard", className]}
+  data-parent-lvl={lookUpNodeLvl}
+  data-selector={selector}
+>
+  <Button class="copy-to-clipboard-btn" kind="secondary">
+    <span class="sr-only">{label}</span>
+    <Icon aria-hidden="true" name="copy" size={24} />
+  </Button>
+  <Box
+    class="copy-to-clipboard-feedback"
+    data-feedback
+    elevation="floating"
+    isBordered
+    isRounded
+  >
+    {feedback}
+  </Box>
+</ap-copy-to-clipboard>
+
+<style>
+  .copy-to-clipboard {
+    display: block;
+    position: relative;
+  }
+
+  .copy-to-clipboard-btn {
+    min-width: calc(var(--one-px-in-rem) * 48);
+    padding: var(--spacing-2xs);
+    aspect-ratio: 1 / 1;
+
+    @media screen and (any-pointer: fine) {
+      width: unset;
+    }
+  }
+
+  .copy-to-clipboard-feedback {
+    width: max-content;
+    padding: var(--spacing-2xs) var(--spacing-xs);
+    position: absolute;
+    bottom: calc(100% + var(--spacing-2xs));
+    left: calc(var(--spacing-3xs) * -1);
+    font-size: var(--font-size-sm);
+    opacity: 0;
+    transition: all 0.25s ease-in-out 0s;
+    user-select: none;
+    visibility: hidden;
+  }
+</style>
+
+<script>
+  class APCopyToClipboard extends HTMLElement {
+    #wrapper: Element | null | undefined = null;
+    #copyBtn: HTMLButtonElement | null | undefined = null;
+
+    constructor() {
+      super();
+      this.copy = this.copy.bind(this);
+    }
+
+    connectedCallback() {
+      const parentLvl = this.dataset.parentLvl;
+      const selector = this.dataset.selector;
+
+      if (!selector) return;
+
+      const parentNode =
+        typeof parentLvl === "undefined"
+          ? this.ownerDocument
+          : this.#getParentNode(Number(parentLvl));
+
+      this.#wrapper = parentNode?.querySelector(selector);
+      this.#copyBtn = this.querySelector<HTMLButtonElement>("button");
+
+      this.#copyBtn?.addEventListener("click", this.copy);
+    }
+
+    disconnectedCallback() {
+      this.#copyBtn?.removeEventListener("click", this.copy);
+    }
+
+    #getParentNode(goUpUntil: number) {
+      let parentNode: HTMLElement | Document | null | undefined = this;
+
+      for (let i = 0; i < goUpUntil; i++) {
+        parentNode = parentNode?.parentElement;
+      }
+
+      return parentNode;
+    }
+
+    #showFeedback() {
+      const feedback = this.querySelector("[data-feedback]");
+
+      if (!feedback || !(feedback instanceof HTMLElement)) return;
+
+      feedback.style.visibility = "visible";
+      feedback.style.opacity = "1";
+
+      setTimeout(() => {
+        feedback.style.opacity = "0";
+        feedback.style.visibility = "hidden";
+      }, 1200);
+    }
+
+    async copy() {
+      try {
+        if (this.#wrapper && this.#wrapper.textContent) {
+          await navigator.clipboard.writeText(this.#wrapper.textContent);
+          this.#showFeedback();
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  }
+
+  customElements.define("ap-copy-to-clipboard", APCopyToClipboard);
+</script>

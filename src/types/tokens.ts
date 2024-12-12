@@ -29,6 +29,7 @@ export type IconName =
   | "caret"
   | "cc-by-sa"
   | "contact"
+  | "copy"
   | "feed"
   | "folder"
   | "gear"

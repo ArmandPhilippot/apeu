@@ -37,10 +37,12 @@ export type IconName =
   | "hamburger"
   | "home"
   | "locale"
+  | "moon"
   | "page"
   | "notepad"
   | "project"
   | "search"
+  | "sun"
   | "tag";
 
 export type Order = "ASC" | "DESC";

@@ -114,6 +114,12 @@ const cssVars = getCSSVars({
   isFullWidth
   style={`${cssVars}${style}`}
 >
+  <Figcaption
+    aria-label={filePath
+      ? translate("code.block.caption.path.a11y").replace("{path}", filePath)
+      : translate("code.block.caption.lang.a11y").replace("{lang}", lang)}
+    class="code-block-caption">{filePath ?? lang}</Figcaption
+  >
   <div class:list={["code-block-toolbar", "js-only"]}>
     <ThemeSetting
       label={translate("code.block.toolbar.theme.switch.label")}
@@ -128,7 +134,6 @@ const cssVars = getCSSVars({
       selector="code"
     />
   </div>
-  <Figcaption class="code-block-caption">{filePath ?? lang}</Figcaption>
   <Code
     class="code-block-sample"
     code={trimmedCode}
@@ -152,16 +157,21 @@ const cssVars = getCSSVars({
     align-items: center;
     padding: var(--spacing-xs) var(--spacing-sm);
     background: var(--color-regular);
-    border-block-end: var(--border-size-sm) solid var(--color-border);
 
     @container (width >= 568px) {
       border-inline-end: var(--border-size-sm) solid var(--color-border);
-      border-start-start-radius: inherit;
     }
   }
 
   .code-block:where(:not(.has-path)) .code-block-caption {
     text-transform: uppercase;
+  }
+
+  .code-block .code-block-caption {
+    @container (width >= 568px) {
+      border-block-end: none;
+      border-start-end-radius: 0;
+    }
   }
 
   .code-block-toolbar {
@@ -171,7 +181,6 @@ const cssVars = getCSSVars({
     justify-content: space-between;
     gap: var(--spacing-sm);
     padding: var(--spacing-xs) var(--spacing-sm);
-    border-block-end: var(--border-size-sm) solid var(--color-border);
     border-start-start-radius: inherit;
     border-start-end-radius: inherit;
 
@@ -187,13 +196,14 @@ const cssVars = getCSSVars({
     width: 100%;
     margin: 0;
     background: var(--color-shiki-background);
+    border-block-start: var(--border-size-sm) solid var(--color-border);
 
     @container (width >= 568px) {
       grid-column: 1 / -1;
     }
 
     & > :global(code) {
-      display: block;
+      display: inline-block;
       font-family: var(--font-family-mono);
     }
   }
@@ -204,29 +214,31 @@ const cssVars = getCSSVars({
     }
   }
 
-  .code-block:where(.has-line-numbers, .has-prompt) :global(.line::before) {
-    display: inline-block;
-    margin-inline: 0 var(--spacing-xs);
-    padding-inline: var(--spacing-xs);
-    position: sticky;
-    inset-inline-start: 0;
-    background: var(--color-shiki-gutter);
-    box-shadow: var(--border-size-sm) 0 0 0 var(--color-shiki-gutter-border);
-    color: var(--color-shiki-on-gutter);
-    letter-spacing: -1px;
-    pointer-events: none;
-    text-align: right;
-    user-select: none;
-  }
+  .code-block:where(.has-line-numbers, .has-prompt) :global(.line) {
+    padding-inline-end: var(--spacing-sm);
 
-  .code-block:where(.has-line-numbers, .has-prompt)
-    :global(.line:first-of-type::before) {
-    padding-block-start: var(--spacing-xs);
-  }
+    &::before {
+      display: inline-block;
+      margin-inline: 0 var(--spacing-xs);
+      padding-inline: var(--spacing-xs);
+      position: sticky;
+      inset-inline-start: 0;
+      background: var(--color-shiki-gutter);
+      box-shadow: var(--border-size-sm) 0 0 0 var(--color-shiki-gutter-border);
+      color: var(--color-shiki-on-gutter);
+      letter-spacing: -1px;
+      pointer-events: none;
+      text-align: right;
+      user-select: none;
+    }
 
-  .code-block:where(.has-line-numbers, .has-prompt)
-    :global(.line:last-of-type::before) {
-    padding-block-end: var(--spacing-xs);
+    &:first-of-type::before {
+      padding-block-start: var(--spacing-xs);
+    }
+
+    &:last-of-type::before {
+      padding-block-end: var(--spacing-xs);
+    }
   }
 
   .code-block:where(.has-line-numbers) {

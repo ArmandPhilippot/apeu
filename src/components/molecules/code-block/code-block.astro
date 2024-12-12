@@ -2,10 +2,14 @@
 import type { ComponentProps } from "astro/types";
 import { Code } from "astro:components";
 import { shikiTheme } from "../../../lib/shiki/theme";
+import { SHIKI_SETTING_KEY } from "../../../services/stores/settings";
 import { getCSSVars } from "../../../utils/attributes";
 import { InvalidProps } from "../../../utils/exceptions";
+import { useI18n } from "../../../utils/i18n";
 import Figcaption from "../../atoms/figure/figcaption.astro";
 import Figure from "../../atoms/figure/figure.astro";
+import CopyToClipboard from "../copy-to-clipboard/copy-to-clipboard.astro";
+import ThemeSetting from "../theme-setting/theme-setting.astro";
 
 type Props = Omit<ComponentProps<typeof Figure>, "isFullWidth"> &
   Pick<ComponentProps<typeof Code>, "code" | "lang" | "wrap"> & {
@@ -72,6 +76,7 @@ if (showLineNumbers && showPrompt)
     "`showLineNumbers` and `showPrompt` can't be used together.",
   );
 
+const { translate } = useI18n(Astro.currentLocale);
 const trimmedCode = code.replace(/^\n|\n$/g, "");
 const commandLineLanguages = [
   "bash",
@@ -109,6 +114,20 @@ const cssVars = getCSSVars({
   isFullWidth
   style={`${cssVars}${style}`}
 >
+  <div class:list={["code-block-toolbar", "js-only"]}>
+    <ThemeSetting
+      label={translate("code.block.toolbar.theme.switch.label")}
+      setting={SHIKI_SETTING_KEY}
+      variant="switch"
+    />
+    <CopyToClipboard
+      aria-live="polite"
+      feedback={translate("code.block.toolbar.copy.feedback")}
+      label={translate("code.block.toolbar.copy.label")}
+      lookUpNodeLvl={2}
+      selector="code"
+    />
+  </div>
   <Figcaption class="code-block-caption">{filePath ?? lang}</Figcaption>
   <Code
     class="code-block-sample"
@@ -120,20 +139,58 @@ const cssVars = getCSSVars({
 </Figure>
 
 <style>
+  .code-block {
+    @container (width >= 568px) {
+      display: grid;
+      grid-template-columns: auto minmax(max-content, 1fr);
+      grid-template-rows: minmax(0, 1fr) auto;
+    }
+  }
+
   .code-block-caption {
+    display: flex;
+    align-items: center;
     padding: var(--spacing-xs) var(--spacing-sm);
     background: var(--color-regular);
     border-block-end: var(--border-size-sm) solid var(--color-border);
+
+    @container (width >= 568px) {
+      border-inline-end: var(--border-size-sm) solid var(--color-border);
+      border-start-start-radius: inherit;
+    }
   }
 
   .code-block:where(:not(.has-path)) .code-block-caption {
     text-transform: uppercase;
   }
 
+  .code-block-toolbar {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-block-end: var(--border-size-sm) solid var(--color-border);
+    border-start-start-radius: inherit;
+    border-start-end-radius: inherit;
+
+    @container (width >= 568px) {
+      grid-column: 2;
+      grid-row: 1;
+      justify-content: end;
+      border-start-start-radius: 0;
+    }
+  }
+
   .code-block-sample {
     width: 100%;
     margin: 0;
     background: var(--color-shiki-background);
+
+    @container (width >= 568px) {
+      grid-column: 1 / -1;
+    }
 
     & > :global(code) {
       display: block;

@@ -154,7 +154,9 @@ const defaultValue =
       settings.subscribe(this.listenSettings);
 
       if (this.#isSwitch) {
-        this.#switchBtn?.addEventListener("click", this.handleUpdate);
+        this.#switchBtn?.addEventListener("click", this.handleUpdate, {
+          capture: true,
+        });
       } else {
         this.addEventListener("change", this.handleUpdate);
       }
@@ -162,7 +164,9 @@ const defaultValue =
 
     disconnectedCallback() {
       if (this.#isSwitch) {
-        this.#switchBtn?.removeEventListener("click", this.handleUpdate);
+        this.#switchBtn?.removeEventListener("click", this.handleUpdate, {
+          capture: true,
+        });
       } else {
         this.removeEventListener("change", this.handleUpdate);
       }

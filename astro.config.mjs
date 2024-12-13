@@ -7,9 +7,11 @@ import { defineConfig } from "astro/config";
 import { componentsStories } from "./src/lib/astro/integrations/components-stories";
 import { devOnlyPages } from "./src/lib/astro/integrations/dev-only-pages";
 import { pagefind } from "./src/lib/astro/integrations/pagefind";
+import { rehypeCodeBlocks } from "./src/lib/rehype/rehype-code-blocks";
 import { rehypeDisableExplicitJsx } from "./src/lib/rehype/rehype-disable-explicit-jsx";
 import { rehypeImages } from "./src/lib/rehype/rehype-images";
 import { remarkWordsCount } from "./src/lib/remark/remark-words-count";
+import { shikiTheme } from "./src/lib/shiki/theme";
 import { CONFIG } from "./src/utils/constants";
 
 // https://astro.build/config
@@ -33,7 +35,7 @@ export default defineConfig({
     icon({
       iconDir: "src/assets/icons",
     }),
-    mdx(),
+    mdx({ syntaxHighlight: false }),
     pagefind(),
     sitemap({
       i18n: {
@@ -46,7 +48,10 @@ export default defineConfig({
   ],
   markdown: {
     remarkPlugins: [remarkWordsCount],
-    rehypePlugins: [rehypeDisableExplicitJsx, rehypeImages],
+    rehypePlugins: [rehypeDisableExplicitJsx, rehypeCodeBlocks, rehypeImages],
+    shikiConfig: {
+      theme: shikiTheme,
+    },
   },
   output: "static",
   site: `https://${CONFIG.HOST}`,

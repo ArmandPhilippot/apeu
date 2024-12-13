@@ -1,0 +1,16 @@
+<svg
+   width="48"
+   height="48"
+   viewBox="0 0 48 48"
+   xmlns="http://www.w3.org/2000/svg">
+   <path
+      d="m 27.4417,36.916714 v 5.228781 H 9.6820278 v -25.414719 0 h 5.2286672"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="3" />
+   <path
+      d="M 20.558301,5.8545051 H 38.317972 V 31.269222 H 20.558301 Z"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="3" />
+</svg>

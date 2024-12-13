@@ -72,6 +72,7 @@
     "sanitize-html": "^2.13.1",
     "sharp": "^0.33.5",
     "sharp-ico": "^0.1.5",
+    "shiki": "^1.24.2",
     "sirv": "^3.0.0",
     "slash": "^5.1.0",
     "typescript": "^5.7.2",

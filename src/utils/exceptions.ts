@@ -1,3 +1,9 @@
+export class InvalidProps extends Error {
+  constructor(err: string) {
+    super(`Invalid properties: ${err}`);
+  }
+}
+
 export class MissingSiteConfigError extends Error {
   constructor() {
     super(

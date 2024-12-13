@@ -13,6 +13,7 @@ nanostores
 nlcst
 pagefind
 rehype
+shiki
 stackoverflow
 stylelint
 tsconfigs

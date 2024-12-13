@@ -12,7 +12,7 @@ describe("ThemeSetting", () => {
     context.container = await AstroContainer.create();
   });
 
-  it<LocalTestContext>("renders a toggle component to change theme", async ({
+  it<LocalTestContext>("should render a toggle component to update the theme", async ({
     container,
   }) => {
     const props = {
@@ -23,23 +23,29 @@ describe("ThemeSetting", () => {
       props,
     });
 
-    expect.assertions(1);
+    expect.assertions(3);
 
     expect(result).toContain(`data-setting="${props.setting}"`);
+    expect(result).toContain('data-variant="toggle"');
+    expect(result).toContain(props.label);
   });
 
-  it<LocalTestContext>("renders its label", async ({ container }) => {
+  it<LocalTestContext>("should render a switch component to update the theme", async ({
+    container,
+  }) => {
     const props = {
       label: "fugiat animi sed",
       setting: "theme",
+      variant: "switch",
     } satisfies ComponentProps<typeof ThemeSetting>;
     const result = await container.renderToString(ThemeSetting, {
       props,
     });
 
-    expect.assertions(1);
+    expect.assertions(2);
 
-    expect(result).toContain(props.label);
+    expect(result).toContain(`data-setting="${props.setting}"`);
+    expect(result).toContain('data-variant="switch"');
   });
 
   it<LocalTestContext>("can use a prefix from an id", async ({ container }) => {

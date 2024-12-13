@@ -21,7 +21,8 @@ const seo: ComponentProps<typeof PageLayout>["seo"] = {
     .map((crumb) => crumb.label)
     .join(" | "),
 };
-const label = "Choose a theme:";
+const switchLabel = "Enable dark mode?";
+const toggleLabel = "Choose a theme:";
 ---
 
 <PageLayout breadcrumb={breadcrumb} seo={seo} title={title}>
@@ -31,6 +32,63 @@ const label = "Choose a theme:";
       A <code>ThemeSetting</code> component is used to let the user choose the he
       wants to use for the website.
     </p>
-    <ThemeSettingComponent label={label} setting="theme" />
+    <ThemeSettingComponent label={toggleLabel} setting="theme" />
+    <Heading as="h2">Options</Heading>
+    <Heading as="h3"><code>isInline</code></Heading>
+    <ThemeSettingComponent
+      id="inlined-example"
+      isInline
+      label={toggleLabel}
+      setting="theme"
+    />
+    <Heading as="h3"><code>variant="switch"</code></Heading>
+    <ThemeSettingComponent
+      label={switchLabel}
+      setting="theme"
+      variant="switch"
+    />
+    <Heading as="h2">With multiple toggles on the page</Heading>
+    <p>
+      If you need multiple toggles on the same page for the same setting key,
+      you must provide an <code>id</code>.
+    </p>
+    <ThemeSettingComponent
+      id="toggle1"
+      label={toggleLabel}
+      setting="shiki"
+      variant="toggle"
+    />
+    <ThemeSettingComponent
+      id="toggle2"
+      label={toggleLabel}
+      setting="shiki"
+      variant="toggle"
+    />
+    <ThemeSettingComponent
+      id="toggle3"
+      label={toggleLabel}
+      setting="shiki"
+      variant="toggle"
+    />
+    <Heading as="h2">With multiple switches on the page</Heading>
+    <p>
+      If you need multiple switches on the same page for the <code>id</code> is not
+      required.
+    </p>
+    <ThemeSettingComponent
+      label={switchLabel}
+      setting="shiki"
+      variant="switch"
+    />
+    <ThemeSettingComponent
+      label={switchLabel}
+      setting="shiki"
+      variant="switch"
+    />
+    <ThemeSettingComponent
+      label={switchLabel}
+      setting="shiki"
+      variant="switch"
+    />
   </Fragment>
 </PageLayout>

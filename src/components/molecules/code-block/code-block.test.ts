@@ -193,6 +193,25 @@ describe("CodeBlock", () => {
     });
   });
 
+  describe("Options: isDiff", () => {
+    it<LocalTestContext>("should handle diff code blocks", async ({
+      container,
+    }) => {
+      const props = {
+        code: `
+-console.log('Hello, world!');
++console.log('Hello, John!')`,
+        isDiff: true,
+        showLineNumbers: true,
+      } satisfies ComponentProps<typeof CodeBlock>;
+      const result = await container.renderToString(CodeBlock, { props });
+
+      expect.assertions(1);
+
+      expect(result).toContain("data-diff");
+    });
+  });
+
   describe("Invalid options", () => {
     it<LocalTestContext>("should throw an error when showLineNumbers and showPrompt are used together", async ({
       container,

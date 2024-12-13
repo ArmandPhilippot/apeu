@@ -94,6 +94,10 @@
 }
 
 [data-shiki] pre {
+  --color-shiki-line-added: var(--color-green-subtle);
+  --color-shiki-on-line-added: var(--color-green-darker);
+  --color-shiki-line-removed: var(--color-red-subtle);
+  --color-shiki-on-line-removed: var(--color-red-darker);
   --color-shiki-gutter-border: var(--color-grey);
   --color-shiki-token-attribute: var(--color-purple);
   --color-shiki-token-comment: var(--color-grey-faded);

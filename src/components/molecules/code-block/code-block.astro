@@ -2,6 +2,7 @@
 import type { ComponentProps } from "astro/types";
 import { Code } from "astro:components";
 import { shikiTheme } from "../../../lib/shiki/theme";
+import { shikiDiffNotation } from "../../../lib/shiki/transformers/diff-notation";
 import { SHIKI_SETTING_KEY } from "../../../services/stores/settings";
 import { getCSSVars } from "../../../utils/attributes";
 import { InvalidProps } from "../../../utils/exceptions";
@@ -17,6 +18,15 @@ type Props = Omit<ComponentProps<typeof Figure>, "isFullWidth"> &
      * The showcased file path.
      */
     filePath?: string | null | undefined;
+    /**
+     * Is it a diff code?
+     *
+     * Instead of using `lang="diff"`, you can use this option to support
+     * syntax highlighting in addition to diff notation.
+     *
+     * @default false
+     */
+    isDiff?: boolean | null | undefined;
     /**
      * The starting line number.
      *
@@ -59,6 +69,7 @@ const {
   class: className,
   code,
   filePath,
+  isDiff = false,
   lang = "plaintext",
   lineStart = 1,
   promptDB = "none",
@@ -110,6 +121,7 @@ const cssVars = getCSSVars({
     },
     className,
   ]}
+  data-diff={isDiff}
   data-root={isCommandLine && promptUser === "root" ? "" : null}
   isFullWidth
   style={`${cssVars}${style}`}
@@ -139,6 +151,7 @@ const cssVars = getCSSVars({
     code={trimmedCode}
     lang={lang}
     theme={shikiTheme}
+    transformers={[shikiDiffNotation()]}
     wrap={wrap}
   />
 </Figure>
@@ -204,7 +217,13 @@ const cssVars = getCSSVars({
 
     & > :global(code) {
       display: inline-block;
+      width: 100%;
       font-family: var(--font-family-mono);
+    }
+
+    & :global(.line) {
+      display: inline-block;
+      width: 100%;
     }
   }
 
@@ -249,6 +268,10 @@ const cssVars = getCSSVars({
     & :global(.line) {
       counter-increment: line-number;
 
+      &.diff.remove + :global(.line:not(.diff.remove)) {
+        counter-increment: none;
+      }
+
       &::before {
         content: counter(line-number);
         /* This should be suitable for line numbers >100 and <1000 */
@@ -267,5 +290,25 @@ const cssVars = getCSSVars({
 
   .code-block:where(.is-sql-server) :global(.line::before) {
     content: var(--prompt-host) " [(" var(--prompt-db) ")] >";
+  }
+
+  .code-block:where([data-diff]) :global(.line) {
+    &.add {
+      background: var(--color-shiki-line-added);
+
+      &::before {
+        content: "+" counter(line-number);
+        color: var(--color-shiki-on-line-added);
+      }
+    }
+
+    &.remove {
+      background: var(--color-shiki-line-removed);
+
+      &::before {
+        content: "-" counter(line-number);
+        color: var(--color-shiki-on-line-removed);
+      }
+    }
   }
 </style>

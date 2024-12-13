@@ -4,6 +4,15 @@ export const API_ROUTES = {
   SEND_EMAIL: "/api/send-email",
 } as const;
 
+export const CALLOUT_TYPES = [
+  "critical",
+  "discovery",
+  "idea",
+  "info",
+  "success",
+  "warning",
+] as const;
+
 export const COMPONENT_KINDS = [
   "atoms",
   "molecules",

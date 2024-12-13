@@ -1,10 +1,6 @@
-export type CalloutType =
-  | "critical"
-  | "discovery"
-  | "idea"
-  | "info"
-  | "success"
-  | "warning";
+import type { CALLOUT_TYPES } from "../utils/constants";
+
+export type CalloutType = (typeof CALLOUT_TYPES)[number];
 
 export type Direction = "bottom" | "left" | "right" | "top";
 

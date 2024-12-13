@@ -1,9 +1,20 @@
 import { describe, expect, it } from "vitest";
 import {
+  InvalidProps,
   MissingSiteConfigError,
   MissingSlotError,
   UnsupportedLocaleError,
 } from "./exceptions";
+
+describe("InvalidProps", () => {
+  it("returns an Error instance", () => {
+    const error = "natus";
+    const exception = new InvalidProps(error);
+
+    expect(exception instanceof Error).toBe(true);
+    expect(exception.message).toContain(error);
+  });
+});
 
 describe("MissingSiteConfigError", () => {
   it("returns an Error instance", () => {

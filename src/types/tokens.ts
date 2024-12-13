@@ -29,6 +29,7 @@ export type IconName =
   | "caret"
   | "cc-by-sa"
   | "contact"
+  | "copy"
   | "feed"
   | "folder"
   | "gear"
@@ -37,10 +38,12 @@ export type IconName =
   | "hamburger"
   | "home"
   | "locale"
+  | "moon"
   | "page"
   | "notepad"
   | "project"
   | "search"
+  | "sun"
   | "tag";
 
 export type Order = "ASC" | "DESC";

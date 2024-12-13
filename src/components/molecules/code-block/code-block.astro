@@ -1,0 +1,314 @@
+---
+import type { ComponentProps } from "astro/types";
+import { Code } from "astro:components";
+import { shikiTheme } from "../../../lib/shiki/theme";
+import { shikiDiffNotation } from "../../../lib/shiki/transformers/diff-notation";
+import { SHIKI_SETTING_KEY } from "../../../services/stores/settings";
+import { getCSSVars } from "../../../utils/attributes";
+import { InvalidProps } from "../../../utils/exceptions";
+import { useI18n } from "../../../utils/i18n";
+import Figcaption from "../../atoms/figure/figcaption.astro";
+import Figure from "../../atoms/figure/figure.astro";
+import CopyToClipboard from "../copy-to-clipboard/copy-to-clipboard.astro";
+import ThemeSetting from "../theme-setting/theme-setting.astro";
+
+type Props = Omit<ComponentProps<typeof Figure>, "isFullWidth"> &
+  Pick<ComponentProps<typeof Code>, "code" | "lang" | "wrap"> & {
+    /**
+     * The showcased file path.
+     */
+    filePath?: string | null | undefined;
+    /**
+     * Is it a diff code?
+     *
+     * Instead of using `lang="diff"`, you can use this option to support
+     * syntax highlighting in addition to diff notation.
+     *
+     * @default false
+     */
+    isDiff?: boolean | null | undefined;
+    /**
+     * The starting line number.
+     *
+     * @default 1
+     */
+    lineStart?: number | null | undefined;
+    /**
+     * The database selected when using SQL server.
+     *
+     * @default none
+     */
+    promptDB?: string | null | undefined;
+    /**
+     * The machine name to display inside the prompt.
+     *
+     * @default localhost || mysql
+     */
+    promptHost?: string | null | undefined;
+    /**
+     * The username to display inside the prompt
+     *
+     * @default user
+     */
+    promptUser?: string | null | undefined;
+    /**
+     * Should we add line numbers in front of the code?
+     *
+     * @default false
+     */
+    showLineNumbers?: boolean | null | undefined;
+    /**
+     * Should we show prompt in front of command lines?
+     *
+     * @default false
+     */
+    showPrompt?: boolean | null | undefined;
+  };
+
+const {
+  class: className,
+  code,
+  filePath,
+  isDiff = false,
+  lang = "plaintext",
+  lineStart = 1,
+  promptDB = "none",
+  promptHost = lang === "sql" ? "SQL" : "localhost",
+  promptUser = "user",
+  showLineNumbers = false,
+  showPrompt = false,
+  style = "",
+  wrap = false,
+  ...attrs
+} = Astro.props;
+
+if (showLineNumbers && showPrompt)
+  throw new InvalidProps(
+    "`showLineNumbers` and `showPrompt` can't be used together.",
+  );
+
+const { translate } = useI18n(Astro.currentLocale);
+const trimmedCode = code.replace(/^\n|\n$/g, "");
+const commandLineLanguages = [
+  "bash",
+  "console",
+  "sh",
+  "shell",
+  // cSpell:ignore shellsession
+  "shellsession",
+  "zsh",
+];
+const isCommandLine = commandLineLanguages.includes(lang);
+const isSQL = lang === "sql";
+const cssVars = getCSSVars({
+  "line-start": showLineNumbers ? lineStart : null,
+  "prompt-db": showPrompt && isSQL ? `"${promptDB}"` : null,
+  "prompt-host": showPrompt ? `"${promptHost}"` : null,
+  "prompt-user": showPrompt && !isSQL ? `"${promptUser}"` : null,
+});
+---
+
+<Figure
+  {...attrs}
+  class:list={[
+    "code-block",
+    {
+      "has-line-numbers": showLineNumbers,
+      "has-path": !!filePath,
+      "has-prompt": showPrompt,
+      "is-command-line": isCommandLine,
+      "is-sql-server": showPrompt && isSQL,
+    },
+    className,
+  ]}
+  data-diff={isDiff}
+  data-root={isCommandLine && promptUser === "root" ? "" : null}
+  isFullWidth
+  style={`${cssVars}${style}`}
+>
+  <Figcaption
+    aria-label={filePath
+      ? translate("code.block.caption.path.a11y").replace("{path}", filePath)
+      : translate("code.block.caption.lang.a11y").replace("{lang}", lang)}
+    class="code-block-caption">{filePath ?? lang}</Figcaption
+  >
+  <div class:list={["code-block-toolbar", "js-only"]}>
+    <ThemeSetting
+      label={translate("code.block.toolbar.theme.switch.label")}
+      setting={SHIKI_SETTING_KEY}
+      variant="switch"
+    />
+    <CopyToClipboard
+      aria-live="polite"
+      feedback={translate("code.block.toolbar.copy.feedback")}
+      label={translate("code.block.toolbar.copy.label")}
+      lookUpNodeLvl={2}
+      selector="code"
+    />
+  </div>
+  <Code
+    class="code-block-sample"
+    code={trimmedCode}
+    lang={lang}
+    theme={shikiTheme}
+    transformers={[shikiDiffNotation()]}
+    wrap={wrap}
+  />
+</Figure>
+
+<style>
+  .code-block {
+    @container (width >= 568px) {
+      display: grid;
+      grid-template-columns: auto minmax(max-content, 1fr);
+      grid-template-rows: minmax(0, 1fr) auto;
+    }
+  }
+
+  .code-block-caption {
+    display: flex;
+    align-items: center;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    background: var(--color-regular);
+
+    @container (width >= 568px) {
+      border-inline-end: var(--border-size-sm) solid var(--color-border);
+    }
+  }
+
+  .code-block:where(:not(.has-path)) .code-block-caption {
+    text-transform: uppercase;
+  }
+
+  .code-block .code-block-caption {
+    @container (width >= 568px) {
+      border-block-end: none;
+      border-start-end-radius: 0;
+    }
+  }
+
+  .code-block-toolbar {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-start-start-radius: inherit;
+    border-start-end-radius: inherit;
+
+    @container (width >= 568px) {
+      grid-column: 2;
+      grid-row: 1;
+      justify-content: end;
+      border-start-start-radius: 0;
+    }
+  }
+
+  .code-block-sample {
+    width: 100%;
+    margin: 0;
+    background: var(--color-shiki-background);
+    border-block-start: var(--border-size-sm) solid var(--color-border);
+
+    @container (width >= 568px) {
+      grid-column: 1 / -1;
+    }
+
+    & > :global(code) {
+      display: inline-block;
+      width: 100%;
+      font-family: var(--font-family-mono);
+    }
+
+    & :global(.line) {
+      display: inline-block;
+      width: 100%;
+    }
+  }
+
+  .code-block:not(.has-line-numbers, .has-prompt) {
+    & :global(code) {
+      padding: var(--spacing-xs) var(--spacing-sm);
+    }
+  }
+
+  .code-block:where(.has-line-numbers, .has-prompt) :global(.line) {
+    padding-inline-end: var(--spacing-sm);
+
+    &::before {
+      display: inline-block;
+      margin-inline: 0 var(--spacing-xs);
+      padding-inline: var(--spacing-xs);
+      position: sticky;
+      inset-inline-start: 0;
+      background: var(--color-shiki-gutter);
+      box-shadow: var(--border-size-sm) 0 0 0 var(--color-shiki-gutter-border);
+      color: var(--color-shiki-on-gutter);
+      letter-spacing: -1px;
+      pointer-events: none;
+      text-align: right;
+      user-select: none;
+    }
+
+    &:first-of-type::before {
+      padding-block-start: var(--spacing-xs);
+    }
+
+    &:last-of-type::before {
+      padding-block-end: var(--spacing-xs);
+    }
+  }
+
+  .code-block:where(.has-line-numbers) {
+    & :global(code) {
+      counter-reset: line-number calc(var(--line-start, 1) - 1);
+    }
+
+    & :global(.line) {
+      counter-increment: line-number;
+
+      &.diff.remove + :global(.line:not(.diff.remove)) {
+        counter-increment: none;
+      }
+
+      &::before {
+        content: counter(line-number);
+        /* This should be suitable for line numbers >100 and <1000 */
+        min-width: 3em;
+      }
+    }
+  }
+
+  .code-block:where(.has-prompt:not([data-root])) :global(.line::before) {
+    content: "[" var(--prompt-user) "@" var(--prompt-host) "] $";
+  }
+
+  .code-block:where(.has-prompt[data-root]) :global(.line::before) {
+    content: "[" var(--prompt-user) "@" var(--prompt-host) "] #";
+  }
+
+  .code-block:where(.is-sql-server) :global(.line::before) {
+    content: var(--prompt-host) " [(" var(--prompt-db) ")] >";
+  }
+
+  .code-block:where([data-diff]) :global(.line) {
+    &.add {
+      background: var(--color-shiki-line-added);
+
+      &::before {
+        content: "+" counter(line-number);
+        color: var(--color-shiki-on-line-added);
+      }
+    }
+
+    &.remove {
+      background: var(--color-shiki-line-removed);
+
+      &::before {
+        content: "-" counter(line-number);
+        color: var(--color-shiki-on-line-removed);
+      }
+    }
+  }
+</style>

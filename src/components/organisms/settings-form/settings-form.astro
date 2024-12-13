@@ -29,6 +29,13 @@ const { locale, translate } = useI18n(Astro.currentLocale);
     label={translate("form.settings.label.theme.website")}
     setting="theme"
   />
+  <ThemeSetting
+    class="settings-form-shiki"
+    id={`${id}-shiki`}
+    isInline
+    label={translate("form.settings.label.theme.shiki")}
+    setting="shiki"
+  />
 </form>
 
 <style>

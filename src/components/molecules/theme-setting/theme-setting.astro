@@ -2,12 +2,16 @@
 import type { JSX } from "astro/jsx-runtime";
 import type { ComponentProps } from "astro/types";
 import {
+  SHIKI_DEFAULT,
+  SHIKI_SETTING_KEY,
   THEME_DEFAULT,
   type Settings,
 } from "../../../services/stores/settings";
 import type { Theme } from "../../../types/tokens";
 import { useI18n } from "../../../utils/i18n";
 import Toggle from "../toggle/toggle.astro";
+import Switch from "../switch/switch.astro";
+import { resolveCurrentColorScheme } from "../../../utils/themes";
 
 type Props = JSX.HTMLAttributes & {
   /**
@@ -24,6 +28,12 @@ type Props = JSX.HTMLAttributes & {
    * The controlled setting key.
    */
   setting: keyof Settings;
+  /**
+   * The form control variant.
+   *
+   * @default "toggle"
+   */
+  variant?: "switch" | "toggle" | undefined;
 };
 
 const {
@@ -32,11 +42,24 @@ const {
   isInline = false,
   label,
   setting,
+  variant = "toggle",
   ...attrs
 } = Astro.props;
 const { translate } = useI18n(Astro.currentLocale);
 const idPrefix = id ? `${id}-` : "";
 const settingPrefix = `${setting}-`;
+const switchThemes = [
+  {
+    icon: "sun",
+    label: translate("theme.label.light"),
+    value: "light",
+  },
+  {
+    icon: "moon",
+    label: translate("theme.label.dark"),
+    value: "dark",
+  },
+] satisfies ComponentProps<typeof Switch>["items"];
 const toggleThemes = [
   {
     id: `${idPrefix}${settingPrefix}auto`,
@@ -54,21 +77,37 @@ const toggleThemes = [
     value: "light" satisfies Theme,
   },
 ] satisfies ComponentProps<typeof Toggle>["items"];
+const defaultValue =
+  setting === SHIKI_SETTING_KEY ? SHIKI_DEFAULT : THEME_DEFAULT;
 ---
 
 <ap-theme-setting
   {...attrs}
   class:list={["theme-setting", className]}
   data-setting={setting}
+  data-variant={variant}
   id={id}
 >
-  <Toggle
-    groupName={`${idPrefix}${setting}`}
-    isInline={isInline}
-    items={toggleThemes}
-    label={label}
-    value={THEME_DEFAULT}
-  />
+  {
+    variant === "switch" ? (
+      <Switch
+        hideItemsLabel
+        hideLabel
+        isInline={isInline}
+        items={switchThemes}
+        label={label}
+        value={resolveCurrentColorScheme(defaultValue)}
+      />
+    ) : (
+      <Toggle
+        groupName={`${idPrefix}${setting}`}
+        isInline={isInline}
+        items={toggleThemes}
+        label={label}
+        value={defaultValue}
+      />
+    )
+  }
 </ap-theme-setting>
 
 <style>
@@ -81,12 +120,16 @@ const toggleThemes = [
   import {
     isValidSettingsKey,
     settings,
+    SHIKI_SETTING_KEY,
     THEME_DEFAULT,
     THEME_SETTING_KEY,
     type Settings,
   } from "../../../services/stores/settings";
   import type { Theme } from "../../../types/tokens";
-  import { isValidTheme } from "../../../utils/themes";
+  import {
+    isValidTheme,
+    resolveCurrentColorScheme,
+  } from "../../../utils/themes";
 
   class APThemeSetting extends HTMLElement {
     #isSwitch = false;
@@ -111,7 +154,9 @@ const toggleThemes = [
       settings.subscribe(this.listenSettings);
 
       if (this.#isSwitch) {
-        this.#switchBtn?.addEventListener("click", this.handleUpdate);
+        this.#switchBtn?.addEventListener("click", this.handleUpdate, {
+          capture: true,
+        });
       } else {
         this.addEventListener("change", this.handleUpdate);
       }
@@ -119,7 +164,9 @@ const toggleThemes = [
 
     disconnectedCallback() {
       if (this.#isSwitch) {
-        this.#switchBtn?.removeEventListener("click", this.handleUpdate);
+        this.#switchBtn?.removeEventListener("click", this.handleUpdate, {
+          capture: true,
+        });
       } else {
         this.removeEventListener("change", this.handleUpdate);
       }
@@ -129,12 +176,30 @@ const toggleThemes = [
       return theme === this.#theme;
     }
 
-    #updateSelectedTheme(settings: Readonly<Settings>) {
+    #updateSwitchValue(settings: Readonly<Settings>) {
+      if (!this.#switchBtn) return;
+
+      const newTheme = settings[this.#settingKey];
+      const themeToResolve =
+        this.#settingKey === SHIKI_SETTING_KEY && newTheme === "auto"
+          ? settings.theme
+          : newTheme;
+      const theme = resolveCurrentColorScheme(themeToResolve);
+
+      this.#switchBtn.ariaChecked = String(theme === "dark");
+    }
+
+    #updateToggleValue(settings: Readonly<Settings>) {
       const newOption = this.querySelector<HTMLInputElement>(
         `input[value="${settings[this.#settingKey]}"]`,
       );
 
       if (newOption) newOption.checked = true;
+    }
+
+    #updateSelectedTheme(settings: Readonly<Settings>) {
+      if (this.#isSwitch) this.#updateSwitchValue(settings);
+      else this.#updateToggleValue(settings);
     }
 
     listenSettings(
@@ -156,7 +221,14 @@ const toggleThemes = [
       return null;
     }
 
+    #getUnselectedSwitchTheme(btn: HTMLButtonElement) {
+      return btn.ariaChecked === "true" ? "light" : "dark";
+    }
+
     #getNewThemeFromEvent(e: Event): Theme | null {
+      if (this.#isSwitch && e.currentTarget instanceof HTMLButtonElement) {
+        return this.#getUnselectedSwitchTheme(e.currentTarget);
+      }
       if (e.target instanceof HTMLInputElement) {
         return this.#getSelectedToggleTheme(e.target);
       }

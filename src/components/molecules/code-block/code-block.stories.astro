@@ -1,0 +1,150 @@
+---
+import type { ComponentProps } from "astro/types";
+import Heading from "../../atoms/heading/heading.astro";
+import PageLayout from "../../templates/page-layout/page-layout.astro";
+import CodeBlockComponent from "./code-block.astro";
+
+const title = "CodeBlock";
+const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
+  { label: "Home", url: "/" },
+  { label: "Design system", url: "/design-system" },
+  { label: "Components", url: "/design-system/components" },
+  { label: "Molecules", url: "/design-system/components/molecules" },
+  { label: title, url: Astro.url.href },
+];
+const seo: ComponentProps<typeof PageLayout>["seo"] = {
+  nofollow: true,
+  noindex: true,
+  title: breadcrumb
+    .slice(1)
+    .reverse()
+    .map((crumb) => crumb.label)
+    .join(" | "),
+};
+
+const jsCodeSample = `
+console.log("Hello world!");
+const foo = 42;
+`;
+
+const commandLineCodeSample = `
+git add README.md
+git commit -m "Added documentation"
+`;
+
+const sqlCodeSample = `
+ALTER USER 'root'@'localhost'
+`;
+
+const diffCodeSample = `
+const breadcrumb = [
+  { label: 'Home', slug: '/' },
+  { label: 'Design system', slug: '/design-system' },
+-  { label: 'Foo', slug: '/design-system/foo' },
++  { label: 'Components', slug: '/design-system/components' },
+  { label: 'Molecules', slug: '/design-system/components/molecules' },
+  {
+    label: title,
+    slug: '/design-system/components/molecules/code-blocks',
+  },
+];
+`;
+
+const complexDiffCodeSample = `
+.container {
+-  display: "block";
++  display: "flex";
++  flex-flow: row wrap;
++  align-items: "center";
+  margin: 0;
+-  padding: 1px;
+-  font-size: 10px;
++  padding: 5px;
+  position: relative;
+}
+`;
+---
+
+<PageLayout breadcrumb={breadcrumb} seo={seo} title={title}>
+  <Fragment slot="body">
+    <Heading as="h2">With lang</Heading>
+    <CodeBlockComponent code={jsCodeSample} lang="js" />
+    <Heading as="h2">With file path</Heading>
+    <CodeBlockComponent
+      code={jsCodeSample}
+      lang="js"
+      filePath="./hello-world.js"
+    />
+    <Heading as="h2">With line numbers</Heading>
+    <CodeBlockComponent code={jsCodeSample} lang="js" showLineNumbers />
+    <Heading as="h2">With line numbers and custom starting line</Heading>
+    <CodeBlockComponent
+      code={jsCodeSample}
+      lang="js"
+      lineStart={5}
+      showLineNumbers
+    />
+    <Heading as="h2">With prompt</Heading>
+    <CodeBlockComponent code={commandLineCodeSample} lang="shell" showPrompt />
+    <Heading as="h2">With prompt and custom username</Heading>
+    <CodeBlockComponent
+      code={commandLineCodeSample}
+      lang="shell"
+      promptUser="john"
+      showPrompt
+    />
+    <Heading as="h2">With prompt and custom host</Heading>
+    <CodeBlockComponent
+      code={commandLineCodeSample}
+      lang="shell"
+      promptHost="doe"
+      promptUser="john"
+      showPrompt
+    />
+    <Heading as="h2">With prompt as root</Heading>
+    <CodeBlockComponent
+      code="nano /etc/hosts"
+      lang="shell"
+      promptUser="root"
+      showPrompt
+    />
+    <Heading as="h2">With SQL prompt</Heading>
+    <CodeBlockComponent code={sqlCodeSample} lang="sql" showPrompt />
+    <Heading as="h2">With SQL prompt and custom prompt host</Heading>
+    <CodeBlockComponent
+      code={sqlCodeSample}
+      lang="sql"
+      promptHost="MariaDB"
+      showPrompt
+    />
+    <Heading as="h2">With SQL prompt and custom database name</Heading>
+    <CodeBlockComponent
+      code={sqlCodeSample}
+      lang="sql"
+      promptDB="recipes"
+      showPrompt
+    />
+    <Heading as="h2">Diff</Heading>
+    <CodeBlockComponent code={diffCodeSample} lang="diff" showLineNumbers />
+    <Heading as="h2">Diff with syntax highlighting</Heading>
+    <CodeBlockComponent
+      code={diffCodeSample}
+      isDiff
+      lang="ts"
+      showLineNumbers
+    />
+    <Heading as="h2">A complex diff example</Heading>
+    <p>
+      Ideally, I'd like that removed lines affects the line numbers for the next
+      lines but due to <code>counter</code> limitations, it seems impossible with
+      CSS only when having multiple removed lines at once. So this type of blocks
+      should be avoided.
+    </p>
+    <CodeBlockComponent
+      code={complexDiffCodeSample}
+      isDiff
+      lang="css"
+      showLineNumbers
+    />
+  </Fragment>
+</PageLayout>

@@ -149,6 +149,20 @@ This project is designed to avoid imports in `src/content`. Elements (even HTML 
 
 The words count will be automatically calculated from your Markdown files and added as metadata. From there, the reading time for each content can be calculated depending on the current language.
 
+### Code blocks
+
+When using MDX format, your code blocks will automatically use the `CodeBlock` component. To pass additional props, you can use the following syntax:
+
+````mdx
+```js showLineNumbers filePath=./hello-world.js
+console.log("Hello, world!");
+```
+````
+
+See `src/components/molecules/code-block/code-block.astro` for the supported props.
+
+> [!CAUTION] > `<pre><code></code></pre>` syntax is not supported. If fenced code blocks are not enough for you, then you will need to import the component in your file directly.
+
 ### Images
 
 When using `.mdx` format:

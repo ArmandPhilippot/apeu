@@ -1,3 +1,4 @@
+import Address from "../atoms/address/address.astro";
 import Blockquote from "../atoms/blockquote/blockquote.astro";
 import Callout from "../atoms/callout/callout.astro";
 import Cite from "../atoms/cite/cite.astro";
@@ -19,6 +20,7 @@ import Ol from "./from-generics/ol.astro";
 
 export const components = {
   a: Link,
+  address: Address,
   blockquote: Blockquote,
   callout: Callout,
   cite: Cite,

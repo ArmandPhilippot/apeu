@@ -3,6 +3,7 @@ import Code from "../atoms/code/code.astro";
 import Figcaption from "../atoms/figure/figcaption.astro";
 import Figure from "../atoms/figure/figure.astro";
 import Img from "../atoms/img/img.astro";
+import Keystroke from "../atoms/keystroke/keystroke.astro";
 import Link from "../atoms/link/link.astro";
 import ListItem from "../atoms/list/list-item.astro";
 import List from "../atoms/list/list.astro";
@@ -25,6 +26,7 @@ export const components = {
   h5: H5,
   h6: H6,
   img: Img,
+  kbd: Keystroke,
   li: ListItem,
   ol: Ol,
   ul: List,

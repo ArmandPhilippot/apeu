@@ -1,0 +1,42 @@
+---
+import type { ComponentProps } from "astro/types";
+import PageLayout from "../../templates/page-layout/page-layout.astro";
+import Heading from "../heading/heading.astro";
+import KeystrokeComponent from "./keystroke.astro";
+
+const title = "Keystroke";
+const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
+  { label: "Home", url: "/" },
+  { label: "Design system", url: "/design-system" },
+  { label: "Components", url: "/design-system/components" },
+  { label: "Atoms", url: "/design-system/components/atoms" },
+  { label: title, url: Astro.url.href },
+];
+const seo: ComponentProps<typeof PageLayout>["seo"] = {
+  nofollow: true,
+  noindex: true,
+  title: breadcrumb
+    .slice(1)
+    .reverse()
+    .map((crumb) => crumb.label)
+    .join(" | "),
+};
+---
+
+<PageLayout breadcrumb={breadcrumb} seo={seo} title={title}>
+  <Fragment slot="body">
+    <Heading as="h2">Usage</Heading>
+    <p>This component is used to display keystrokes in your contents.</p>
+    <Heading as="h2">Single keystroke</Heading>
+    <p>Please press <KeystrokeComponent>Enter</KeystrokeComponent>.</p>
+    <Heading as="h2">Nested keystrokes</Heading>
+    <p>Nested keystrokes can be used to represent a combination of keys.</p>
+    <p>
+      Please press <KeystrokeComponent
+        ><KeystrokeComponent>Ctrl</KeystrokeComponent> + <KeystrokeComponent
+          >Shift</KeystrokeComponent
+        > + <KeystrokeComponent>R</KeystrokeComponent></KeystrokeComponent
+      > to re-render the page.
+    </p>
+  </Fragment>
+</PageLayout>

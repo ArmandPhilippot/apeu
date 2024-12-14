@@ -10,6 +10,7 @@ import Keystroke from "../atoms/keystroke/keystroke.astro";
 import Link from "../atoms/link/link.astro";
 import ListItem from "../atoms/list/list-item.astro";
 import List from "../atoms/list/list.astro";
+import Mark from "../atoms/mark/mark.astro";
 import Quote from "../atoms/quote/quote.astro";
 import H2 from "./from-generics/h2.astro";
 import H3 from "./from-generics/h3.astro";
@@ -35,6 +36,7 @@ export const components = {
   img: Img,
   kbd: Keystroke,
   li: ListItem,
+  mark: Mark,
   ol: Ol,
   q: Quote,
   ul: List,

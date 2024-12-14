@@ -1,4 +1,5 @@
 import Callout from "../atoms/callout/callout.astro";
+import Cite from "../atoms/cite/cite.astro";
 import Code from "../atoms/code/code.astro";
 import Figcaption from "../atoms/figure/figcaption.astro";
 import Figure from "../atoms/figure/figure.astro";
@@ -18,6 +19,7 @@ import Ol from "./from-generics/ol.astro";
 export const components = {
   a: Link,
   callout: Callout,
+  cite: Cite,
   code: Code,
   figcaption: Figcaption,
   figure: Figure,

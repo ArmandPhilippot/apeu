@@ -4,12 +4,14 @@ import node from "@astrojs/node";
 import sitemap from "@astrojs/sitemap";
 import icon from "astro-icon";
 import { defineConfig } from "astro/config";
+import remarkDirective from "remark-directive";
 import { componentsStories } from "./src/lib/astro/integrations/components-stories";
 import { devOnlyPages } from "./src/lib/astro/integrations/dev-only-pages";
 import { pagefind } from "./src/lib/astro/integrations/pagefind";
 import { rehypeCodeBlocks } from "./src/lib/rehype/rehype-code-blocks";
 import { rehypeDisableExplicitJsx } from "./src/lib/rehype/rehype-disable-explicit-jsx";
 import { rehypeImages } from "./src/lib/rehype/rehype-images";
+import { remarkCallouts } from "./src/lib/remark/remark-callouts";
 import { remarkWordsCount } from "./src/lib/remark/remark-words-count";
 import { shikiTheme } from "./src/lib/shiki/theme";
 import { CONFIG } from "./src/utils/constants";
@@ -47,7 +49,7 @@ export default defineConfig({
     }),
   ],
   markdown: {
-    remarkPlugins: [remarkWordsCount],
+    remarkPlugins: [remarkDirective, remarkCallouts, remarkWordsCount],
     rehypePlugins: [rehypeDisableExplicitJsx, rehypeCodeBlocks, rehypeImages],
     shikiConfig: {
       theme: shikiTheme,

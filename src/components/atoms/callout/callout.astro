@@ -2,8 +2,8 @@
 import { Icon } from "astro-icon/components";
 import type { HTMLAttributes } from "astro/types";
 import type { CalloutType } from "../../../types/tokens";
+import { isValidCalloutType } from "../../../utils/callouts";
 import { useI18n } from "../../../utils/i18n";
-import { isString } from "../../../utils/type-checks";
 
 type Props = HTMLAttributes<"div"> & {
   label?: string | null | undefined;
@@ -30,12 +30,6 @@ const defaultLabel = {
   warning: translate("callout.label.warning"),
 } satisfies Record<CalloutType, string>;
 const heading = label || defaultLabel[type];
-
-const isValidCalloutType = (value: unknown) => {
-  if (!isString(value)) return false;
-
-  return Object.keys(defaultLabel).includes(value);
-};
 ---
 
 <div

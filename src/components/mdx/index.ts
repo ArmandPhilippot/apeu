@@ -1,3 +1,4 @@
+import Blockquote from "../atoms/blockquote/blockquote.astro";
 import Callout from "../atoms/callout/callout.astro";
 import Cite from "../atoms/cite/cite.astro";
 import Code from "../atoms/code/code.astro";
@@ -18,6 +19,7 @@ import Ol from "./from-generics/ol.astro";
 
 export const components = {
   a: Link,
+  blockquote: Blockquote,
   callout: Callout,
   cite: Cite,
   code: Code,

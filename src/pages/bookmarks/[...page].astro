@@ -2,7 +2,7 @@
 import type { GetStaticPaths } from "astro";
 import type { ComponentProps } from "astro/types";
 import { components } from "../../components/mdx";
-import Grid from "../../components/molecules/grid/grid.astro";
+import CardsList from "../../components/molecules/cards-list/cards-list.astro";
 import CollectionCard from "../../components/organisms/collection-card/collection-card.astro";
 import CollectionMeta from "../../components/organisms/collection-meta/collection-meta.astro";
 import Pagination from "../../components/organisms/pagination/pagination.astro";
@@ -98,7 +98,7 @@ const getCTA = (
   />
   <Content components={components} slot={page.hasContent ? "body" : ""} />
   <Fragment slot="disconnected-body">
-    <Grid class="bookmarks-list" isCentered items={bookmarks}>
+    <CardsList items={bookmarks} sizeMinCols="35rem">
       {
         (bookmark: (typeof bookmarks)[number]) => (
           <CollectionCard
@@ -109,7 +109,7 @@ const getCTA = (
           />
         )
       }
-    </Grid>
+    </CardsList>
     {
       pagination.lastPage > 1 ? (
         <Pagination
@@ -122,11 +122,3 @@ const getCTA = (
     }
   </Fragment>
 </PageLayout>
-
-<style>
-  .bookmarks-list {
-    @container (width > 55em) {
-      --cols: repeat(auto-fit, minmax(clamp(34rem, 18dvw, 50rem), 1fr));
-    }
-  }
-</style>

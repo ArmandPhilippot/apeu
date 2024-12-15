@@ -6,9 +6,9 @@ import Link from "../../atoms/link/link.astro";
 import ListItem from "../../atoms/list/list-item.astro";
 import List from "../../atoms/list/list.astro";
 import PageLayout from "../../templates/page-layout/page-layout.astro";
-import GridComponent from "./grid.astro";
+import CardsListComponent from "./cards-list.astro";
 
-const title = "Grid";
+const title = "CardsList";
 const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
   { label: "Home", url: "/" },
   { label: "Design system", url: "/design-system" },
@@ -54,7 +54,7 @@ const items = [
   <Fragment slot="body">
     <Heading as="h2">Usage</Heading>
     <p>
-      When using a <code>Grid</code> component, you'll need to provide a function
+      When using a <code>CardsList</code> component, you'll need to provide a function
       as child that describes how to render the given items. See the example at the
       end of the <Link
         href="https://docs.astro.build/en/reference/api-reference/#astroslotsrender"
@@ -75,7 +75,7 @@ const items = [
     >
       <Heading as="h2">Default</Heading>
     </Box>
-    <GridComponent items={items}>
+    <CardsListComponent items={items}>
       {
         (item: (typeof items)[number]) => (
           <Box isPadded>
@@ -88,37 +88,6 @@ const items = [
           </Box>
         )
       }
-    </GridComponent>
-    <Box
-      elevation="raised"
-      isBordered
-      isCentered
-      isPadded
-      isProse
-      isRounded
-      isSpaced
-    >
-      <Heading as="h2"
-        ><code>isCentered</code> with a custom <code>--cols</code> variable</Heading
-      >
-    </Box>
-    <GridComponent
-      isCentered
-      items={items}
-      style="--cols: repeat(auto-fit, minmax(auto, 33em));"
-    >
-      {
-        (item: (typeof items)[number]) => (
-          <Box isPadded>
-            <p>Received:</p>
-            <List>
-              <ListItem>Body: {item.body}</ListItem>
-              <ListItem>Heading: {item.heading}</ListItem>
-              <ListItem>Url: {item.url}</ListItem>
-            </List>
-          </Box>
-        )
-      }
-    </GridComponent>
+    </CardsListComponent>
   </Fragment>
 </PageLayout>

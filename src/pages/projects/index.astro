@@ -1,7 +1,7 @@
 ---
 import type { ComponentProps } from "astro/types";
 import { components } from "../../components/mdx";
-import Grid from "../../components/molecules/grid/grid.astro";
+import CardsList from "../../components/molecules/cards-list/cards-list.astro";
 import CollectionCard from "../../components/organisms/collection-card/collection-card.astro";
 import CollectionMeta from "../../components/organisms/collection-meta/collection-meta.astro";
 import PageLayout from "../../components/templates/page-layout/page-layout.astro";
@@ -57,15 +57,16 @@ const getCTA = (
     slot="meta"
   />
   <Content components={components} slot={page.hasContent ? "body" : ""} />
-  <Grid
-    class="projects-list"
-    isCentered
+  <CardsList
+    isContainer
     items={projects}
+    sizeMinCols="25em"
     slot="disconnected-body"
   >
     {
       (project: (typeof projects)[number]) => (
         <CollectionCard
+          class="project-card"
           cta={getCTA(project.title)}
           elevation="raised"
           entry={project}
@@ -73,13 +74,13 @@ const getCTA = (
         />
       )
     }
-  </Grid>
+  </CardsList>
 </PageLayout>
 
 <style>
-  .projects-list {
-    @container (width > 55em) {
-      --cols: repeat(auto-fit, minmax(clamp(34rem, 18dvw, 50rem), 1fr));
+  .project-card {
+    @container body (width >= 51.5em) {
+      border: var(--border-size-sm) solid var(--color-border);
     }
   }
 </style>

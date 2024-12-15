@@ -5,8 +5,8 @@ import Box from "../components/atoms/box/box.astro";
 import Heading from "../components/atoms/heading/heading.astro";
 import { components } from "../components/mdx";
 import Card from "../components/molecules/card/card.astro";
+import CardsList from "../components/molecules/cards-list/cards-list.astro";
 import Greetings from "../components/molecules/greetings/greetings.astro";
-import Grid from "../components/molecules/grid/grid.astro";
 import CollectionCard from "../components/organisms/collection-card/collection-card.astro";
 import ContactCard from "../components/organisms/contact-card/contact-card.astro";
 import IdentityCard from "../components/organisms/identity-card/identity-card.astro";
@@ -124,15 +124,16 @@ const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
               {translate("page.home.section.collections.heading")}
             </Heading>
           </Box>
-          <Grid class="collections-list" isCentered items={collections}>
+          <CardsList isContainer items={collections} sizeMinCols="27rem">
             {({ meta, ...collection }: (typeof collections)[number]) => (
               <CollectionCard
+                class="homepage-collection"
                 elevation="raised"
                 entry={collection}
                 headingLvl="h3"
               />
             )}
-          </Grid>
+          </CardsList>
         </section>
       ) : null
     }
@@ -205,9 +206,9 @@ const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
     }
   }
 
-  .collections-list {
-    @container (width > 55em) {
-      --cols: repeat(auto-fit, minmax(27rem, auto));
+  .homepage-collection {
+    @container body (width >= 51.3em) {
+      border: var(--border-size-sm) solid var(--color-border);
     }
   }
 </style>

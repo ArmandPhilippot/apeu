@@ -2,7 +2,7 @@
 import type { GetStaticPaths } from "astro";
 import type { ComponentProps } from "astro/types";
 import { components } from "../../../../components/mdx";
-import Grid from "../../../../components/molecules/grid/grid.astro";
+import CardsList from "../../../../components/molecules/cards-list/cards-list.astro";
 import CollectionCard from "../../../../components/organisms/collection-card/collection-card.astro";
 import CollectionMeta from "../../../../components/organisms/collection-meta/collection-meta.astro";
 import PageLayout from "../../../../components/templates/page-layout/page-layout.astro";
@@ -72,15 +72,16 @@ const getCTA = (
     slot="meta"
   />
   <Content components={components} slot={page.hasContent ? "body" : ""} />
-  <Grid
-    class="posts-list"
-    isCentered
+  <CardsList
+    isContainer
     items={relatedPosts}
+    sizeMinCols="35rem"
     slot="disconnected-body"
   >
     {
       (post: (typeof relatedPosts)[number]) => (
         <CollectionCard
+          class="post-card"
           cta={getCTA(post.title)}
           elevation="raised"
           entry={post}
@@ -88,13 +89,13 @@ const getCTA = (
         />
       )
     }
-  </Grid>
+  </CardsList>
 </PageLayout>
 
 <style>
-  .posts-list {
-    @container (width > 55em) {
-      --cols: repeat(auto-fit, minmax(clamp(34rem, 18dvw, 50rem), 1fr));
+  .post-card {
+    @container body (width >= 55em) {
+      border: var(--border-size-sm) solid var(--color-border);
     }
   }
 </style>

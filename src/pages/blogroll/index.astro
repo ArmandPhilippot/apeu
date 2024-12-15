@@ -1,7 +1,7 @@
 ---
 import type { ComponentProps } from "astro/types";
 import { components } from "../../components/mdx";
-import Grid from "../../components/molecules/grid/grid.astro";
+import CardsList from "../../components/molecules/cards-list/cards-list.astro";
 import CollectionCard from "../../components/organisms/collection-card/collection-card.astro";
 import CollectionMeta from "../../components/organisms/collection-meta/collection-meta.astro";
 import PageLayout from "../../components/templates/page-layout/page-layout.astro";
@@ -53,7 +53,7 @@ const cta: ComponentProps<typeof CollectionCard>["cta"] = {
     slot="meta"
   />
   <Content components={components} slot={page.hasContent ? "body" : ""} />
-  <Grid class="blogs-list" isCentered items={blogroll} slot="disconnected-body">
+  <CardsList items={blogroll} sizeMinCols="35rem" slot="disconnected-body">
     {
       (blog: (typeof blogroll)[number]) => (
         <CollectionCard
@@ -64,13 +64,5 @@ const cta: ComponentProps<typeof CollectionCard>["cta"] = {
         />
       )
     }
-  </Grid>
+  </CardsList>
 </PageLayout>
-
-<style>
-  .blogs-list {
-    @container (width > 55em) {
-      --cols: repeat(auto-fit, minmax(clamp(34rem, 18dvw, 50rem), 1fr));
-    }
-  }
-</style>

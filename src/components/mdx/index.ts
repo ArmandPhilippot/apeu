@@ -13,6 +13,7 @@ import List from "../atoms/list/list.astro";
 import Mark from "../atoms/mark/mark.astro";
 import Quote from "../atoms/quote/quote.astro";
 import Samp from "../atoms/samp/samp.astro";
+import Table from "../atoms/table/table.astro";
 import Var from "../atoms/var/var.astro";
 import H2 from "./from-generics/h2.astro";
 import H3 from "./from-generics/h3.astro";
@@ -42,6 +43,7 @@ export const components = {
   ol: Ol,
   q: Quote,
   samp: Samp,
+  table: Table,
   ul: List,
   var: Var,
 };

@@ -1,0 +1,88 @@
+---
+import type { ComponentProps } from "astro/types";
+import PageLayout from "../../templates/page-layout/page-layout.astro";
+import Heading from "../heading/heading.astro";
+import TableComponent from "./table.astro";
+
+const title = "Table";
+const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
+  { label: "Home", url: "/" },
+  { label: "Design system", url: "/design-system" },
+  { label: "Components", url: "/design-system/components" },
+  { label: "Atoms", url: "/design-system/components/atoms" },
+  { label: title, url: Astro.url.href },
+];
+const seo: ComponentProps<typeof PageLayout>["seo"] = {
+  nofollow: true,
+  noindex: true,
+  title: breadcrumb
+    .slice(1)
+    .reverse()
+    .map((crumb) => crumb.label)
+    .join(" | "),
+};
+---
+
+<PageLayout breadcrumb={breadcrumb} seo={seo} title={title}>
+  <Fragment slot="body">
+    <Heading as="h2">Usage</Heading>
+    <p>This component can be used to represent tabular data.</p>
+    <TableComponent>
+      <tr>
+        <th>Name</th>
+        <th>Age</th>
+      </tr>
+      <tr>
+        <td>John Doe</td>
+        <td>28</td>
+      </tr>
+      <tr>
+        <td>Jane Doe</td>
+        <td>34</td>
+      </tr>
+    </TableComponent>
+    <Heading as="h2">More advanced structure with caption</Heading>
+    {/* cSpell:disable */}
+    <TableComponent>
+      <caption>Codes associated to their pronunciation</caption>
+      <thead>
+        <tr>
+          <th scope="col" rowspan="2">Symbol</th>
+          <th scope="col" rowspan="2">Code word</th>
+          <th scope="col" colspan="2">Pronunciation</th>
+        </tr>
+        <tr>
+          <th scope="col">IPA</th>
+          <th scope="col">Respelling</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">A</th>
+          <td>Alfa</td>
+          <td>ˈælfa</td>
+          <td>AL fah</td>
+        </tr>
+        <tr>
+          <th scope="row">B</th>
+          <td>Bravo</td>
+          <td>ˈbraːˈvo</td>
+          <td>BRAH voh</td>
+        </tr>
+        <tr>
+          <th scope="row">C</th>
+          <td>Charlie</td>
+          <td>ˈtʃɑːli</td>
+          <td>CHAR lee</td>
+        </tr>
+        <tr>
+          <th scope="row">D</th>
+          <td>Delta</td>
+          <td>ˈdeltɑ</td>
+          <td>DELL tah</td>
+        </tr>
+      </tbody>
+    </TableComponent>
+    {/* cSpell:enable */}
+  </Fragment>
+</PageLayout>

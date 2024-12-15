@@ -2,9 +2,9 @@
 import type { ComponentProps } from "astro/types";
 import PageLayout from "../../templates/page-layout/page-layout.astro";
 import Heading from "../heading/heading.astro";
-import MarkComponent from "./mark.astro";
+import SampComponent from "./samp.astro";
 
-const title = "Mark";
+const title = "Samp";
 const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
   { label: "Home", url: "/" },
   { label: "Design system", url: "/design-system" },
@@ -27,11 +27,13 @@ const seo: ComponentProps<typeof PageLayout>["seo"] = {
   <Fragment slot="body">
     <Heading as="h2">Usage</Heading>
     <p>
-      This component is used to represent text which is marked or highlighted
-      for reference or notation purposes.
+      This component is used to enclose inline text which represents sample (or
+      quoted) output from a computer program.
     </p>
     <p>
-      This is a component of <MarkComponent>my</MarkComponent> design system.
+      Example: when executing the search script, it will output <SampComponent
+        >Found 20 results</SampComponent
+      > in the console.
     </p>
   </Fragment>
 </PageLayout>

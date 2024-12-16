@@ -1,0 +1,19 @@
+---
+import type { ComponentProps } from "astro/types";
+import AstroLink from "../../atoms/link/link.astro";
+
+type Props = ComponentProps<typeof AstroLink>;
+
+const { href, isExternal, ...attrs } = Astro.props;
+/* In Link component I don't think it's safe to use that to detect external
+ * link but for MDX contents, it's likely that a link starting with http is an
+ * external link. */
+const isExternalLink =
+  isExternal ||
+  (href?.toString().startsWith("http") &&
+    !href.toString().includes(Astro.url.origin));
+---
+
+<AstroLink {...attrs} href={href} isExternal={isExternalLink}
+  ><slot /></AstroLink
+>

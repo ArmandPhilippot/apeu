@@ -21,6 +21,7 @@ import H4 from "./from-generics/h4.astro";
 import H5 from "./from-generics/h5.astro";
 import H6 from "./from-generics/h6.astro";
 import Ol from "./from-generics/ol.astro";
+import Placeholder from "./placeholder.astro";
 
 export const components = {
   a: Link,
@@ -29,6 +30,7 @@ export const components = {
   callout: Callout,
   cite: Cite,
   code: Code,
+  div: Placeholder,
   figcaption: Figcaption,
   figure: Figure,
   h2: H2,

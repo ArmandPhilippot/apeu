@@ -74,6 +74,12 @@ const mainNav = [
 ] satisfies ComponentProps<typeof NavList>["items"];
 const footerLinks = [
   { label: translate("page.legal.notice.title"), url: route("legal.notice") },
+  {
+    icon: "feed",
+    iconSize: 17,
+    label: translate("page.feeds.title"),
+    url: route("feeds"),
+  },
   ...(import.meta.env.DEV
     ? [{ label: "Design system", url: "/design-system" }]
     : []),

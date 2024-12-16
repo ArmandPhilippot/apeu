@@ -146,9 +146,21 @@ const { translate } = useI18n(Astro.currentLocale);
       min-height: var(--one-px-in-rem) * 48;
     }
 
+    @media (width >= 640px) {
+      &:where(.search) {
+        position: relative;
+      }
+    }
+
     @media (width >= 1024px) {
       padding-inline: clamp(var(--spacing-xs), 1.5dvw, var(--spacing-lg));
       position: relative;
+
+      &:where(.menu) {
+        & > :global(:is(input, label)) {
+          display: none;
+        }
+      }
     }
 
     &:where(:not(:last-child)) {
@@ -156,14 +168,6 @@ const { translate } = useI18n(Astro.currentLocale);
 
       @media (width >= 1024px) {
         border-inline-end: none;
-      }
-    }
-
-    @media (width >= 1024px) {
-      &:where(.menu) {
-        & > :global(:is(input, label)) {
-          display: none;
-        }
       }
     }
   }
@@ -201,7 +205,6 @@ const { translate } = useI18n(Astro.currentLocale);
 
     @media (width >= 640px) {
       bottom: unset;
-      left: calc(var(--spacing-lg) * -1);
       top: 100%;
       border-inline: var(--border-size-sm) solid var(--color-border);
       box-shadow: var(--shadow-elevated-to-top-center);
@@ -217,7 +220,7 @@ const { translate } = useI18n(Astro.currentLocale);
     transform-origin: 20% 100%;
 
     @media (width >= 640px) {
-      transform-origin: 30% -25%;
+      transform-origin: 20% -25%;
     }
 
     @media (width >= 1024px) {
@@ -234,7 +237,8 @@ const { translate } = useI18n(Astro.currentLocale);
     transform-origin: 50% 100%;
 
     @media (width >= 640px) {
-      transform-origin: 65% -50%;
+      left: auto;
+      transform-origin: 85% -50%;
     }
   }
 
@@ -242,7 +246,8 @@ const { translate } = useI18n(Astro.currentLocale);
     transform-origin: 80% 100%;
 
     @media (width >= 640px) {
-      transform-origin: 85% -15%;
+      left: auto;
+      transform-origin: 85% -25%;
     }
   }
 

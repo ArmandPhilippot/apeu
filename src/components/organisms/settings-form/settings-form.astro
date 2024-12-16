@@ -30,7 +30,7 @@ const { locale, translate } = useI18n(Astro.currentLocale);
     setting="theme"
   />
   <ThemeSetting
-    class="settings-form-shiki"
+    class="settings-form-theme"
     id={`${id}-shiki`}
     isInline
     label={translate("form.settings.label.theme.shiki")}
@@ -40,25 +40,32 @@ const { locale, translate } = useI18n(Astro.currentLocale);
 
 <style>
   .settings-form {
-    display: flex;
-    flex-flow: column;
-
-    @media (width > 480px) {
+    @media (width >= 480px) {
+      width: fit-content;
       display: grid;
       grid-template-columns: max-content minmax(0, 1fr);
       grid-template-rows: auto;
-      gap: var(--spacing-md) clamp(var(--spacing-xs), 1dvw, var(--spacing-md));
       align-items: center;
-      align-content: start;
-      white-space: nowrap;
+      justify-items: end;
+      gap: var(--spacing-sm);
+      margin-inline: auto;
+    }
 
-      & > :global(*) {
-        display: contents;
-      }
+    @media (width >= 640px) {
+      margin-inline-end: 0;
     }
   }
 
-  .settings-form-theme {
-    column-gap: var(--spacing-2xs);
+  .settings-form-language,
+  .settings-form-theme,
+  .settings-form-theme > :global(*) {
+    @media (width >= 480px) {
+      display: contents;
+    }
+  }
+
+  .settings-form-language,
+  .settings-form-theme > :global(*) {
+    flex-flow: column;
   }
 </style>

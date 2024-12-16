@@ -225,6 +225,7 @@ Before starting, please follow the instructions in [Setup](#setup).
 │       │   ├── blogroll.md
 │       │   ├── bookmarks.md
 │       │   ├── contact.md
+│       │   ├── feeds.md
 │       │   ├── home.md
 │       │   ├── legal-notice.md
 │       │   └── search.md
@@ -266,6 +267,7 @@ Before starting, please follow the instructions in [Setup](#setup).
 │   │   ├── tags/
 │   │   │   └── index.astro
 │   │   ├── contact.astro
+│   │   ├── feeds.astro
 │   │   ├── index.astro
 │   │   ├── legal-notice.astro
 │   │   └── search.astro
@@ -296,7 +298,7 @@ In details:
 - `src/utils/`: all the utilities (constants, helpers, etc.) to build the project.
 
 > [!IMPORTANT]
-> All the `index.md` files in the `content` directory are required. These files are used in `src/pages` to add metadata and optional content to the index pages of your collections. Pages created in `content/pages` can use any filename but some pages are required: `blogroll.md`, `bookmarks.md`, `contact.md`, `home.md`, `legal-notice.md` and `search.md`. You can also use the `.mdx` extension.
+> All the `index.md` files in the `content` directory are required. These files are used in `src/pages` to add metadata and optional content to the index pages of your collections. Pages created in `content/pages` can use any filename but some pages are required: `blogroll.md`, `bookmarks.md`, `contact.md`, `feeds.md`, `home.md`, `legal-notice.md` and `search.md`. You can also use the `.mdx` extension.
 
 ### Design system
 

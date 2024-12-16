@@ -93,6 +93,10 @@ const {
         border-block-start: var(--border-size-sm) solid var(--color-border);
       }
     }
+
+    & > :global(*) {
+      max-width: 100%;
+    }
   }
 
   :global(:where([data-theme="light"])) .figure::before {

@@ -143,7 +143,7 @@ To check the expected fields in the frontmatter, please consult the files in `sr
 
 Both `.md` and `.mdx` extensions are supported. However, because of technologies limitations, the `.mdx` format is recommended.
 
-This project is designed to avoid imports in `src/content`. Elements (even HTML tags) are automatically mapped to custom components when you use the `.mdx` extension.
+This project is designed to avoid imports in your `content` directory. Elements (even HTML tags) are automatically mapped to custom components when you use the `.mdx` extension.
 
 ### Automatic meta: Words count / Reading time
 

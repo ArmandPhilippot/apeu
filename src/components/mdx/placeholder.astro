@@ -1,0 +1,20 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import Gallery from "./gallery.astro";
+
+type Props = HTMLAttributes<"div">;
+
+const { class: className, ...attrs } = Astro.props;
+---
+
+{
+  className === "gallery" ? (
+    <Gallery {...attrs}>
+      <slot />
+    </Gallery>
+  ) : (
+    <div>
+      <slot />
+    </div>
+  )
+}

@@ -1,7 +1,7 @@
 ---
 import type { ComponentProps } from "astro/types";
 import { components } from "../../components/mdx";
-import Grid from "../../components/molecules/grid/grid.astro";
+import CardsList from "../../components/molecules/cards-list/cards-list.astro";
 import CollectionCard from "../../components/organisms/collection-card/collection-card.astro";
 import CollectionMeta from "../../components/organisms/collection-meta/collection-meta.astro";
 import PageLayout from "../../components/templates/page-layout/page-layout.astro";
@@ -49,19 +49,24 @@ const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
     slot="meta"
   />
   <Content components={components} slot={page.hasContent ? "body" : ""} />
-  <Grid class="tags-list" isCentered items={tags} slot="disconnected-body">
+  <CardsList
+    isContainer
+    items={tags}
+    sizeMinCols="27rem"
+    slot="disconnected-body"
+  >
     {
       ({ meta, ...tag }: (typeof tags)[number]) => (
-        <CollectionCard elevation="raised" entry={tag} />
+        <CollectionCard class="tag-card" elevation="raised" entry={tag} />
       )
     }
-  </Grid>
+  </CardsList>
 </PageLayout>
 
 <style>
-  .tags-list {
-    @container (width > calc(28em * 2)) {
-      --cols: repeat(auto-fit, minmax(27rem, auto));
+  .tag-card {
+    @container body (width >= 51.3em) {
+      border: var(--border-size-sm) solid var(--color-border);
     }
   }
 </style>

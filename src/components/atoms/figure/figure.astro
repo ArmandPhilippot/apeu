@@ -59,7 +59,7 @@ const {
       z-index: -1;
       pointer-events: none;
       user-select: none;
-      border-radius: var(--border-radii-lg);
+      border-radius: inherit;
     }
 
     &::before {
@@ -92,6 +92,10 @@ const {
       &:is(figcaption) {
         border-block-start: var(--border-size-sm) solid var(--color-border);
       }
+    }
+
+    & > :global(*) {
+      max-width: 100%;
     }
   }
 

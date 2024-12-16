@@ -1,21 +1,19 @@
 ---
 import type { ComponentProps } from "astro/types";
+import Grid from "../../atoms/grid/grid.astro";
 import ListItem from "../../atoms/list/list-item.astro";
-import List from "../../atoms/list/list.astro";
 
 type Props = Omit<
-  ComponentProps<typeof List>,
-  "colSpacing" | "hideMarker" | "rowSpacing"
+  ComponentProps<typeof Grid>,
+  "as" | "cols" | "justifyContent"
 > & {
-  isCentered?: boolean | null | undefined;
   isContainer?: boolean | null | undefined;
   items: unknown[];
 };
 
 const {
-  as: Tag = "ul",
   class: className,
-  isCentered = false,
+  gap = "md",
   isContainer = false,
   items,
   ...attrs
@@ -23,37 +21,30 @@ const {
 
 if (!Astro.slots.has("default"))
   throw new Error(
-    "Grid requires a function that describes how to render a single item as child.",
+    "CardsList requires a function that describes how to render a single item as child.",
   );
 ---
 
-<List
+<Grid
   {...attrs}
-  class:list={["grid", { centered: isCentered }, className]}
-  hideMarker
+  as="ul"
+  class:list={["cards-list", className]}
+  cols="auto-fit"
+  gap={gap}
+  justifyContent="center"
 >
   {
     items.map((item, index, list) => (
       <ListItem
-        class:list={["grid-item", { container: isContainer }]}
+        class:list={["cards-list-item", { container: isContainer }]}
         set:html={Astro.slots.render("default", [item, index, list])}
       />
     ))
   }
-</List>
+</Grid>
 
 <style>
-  .grid {
-    display: grid;
-    grid-template-columns: var(--cols, minmax(0, 1fr));
-    gap: var(--spacing-md);
-
-    &:where(.centered) {
-      justify-content: center;
-    }
-  }
-
-  .grid-item {
+  .cards-list-item {
     & > :global(*) {
       height: 100%;
       margin-inline: auto;

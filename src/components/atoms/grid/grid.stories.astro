@@ -1,0 +1,167 @@
+---
+import type { ComponentProps } from "astro/types";
+import PageLayout from "../../templates/page-layout/page-layout.astro";
+import Code from "../code/code.astro";
+import Heading from "../heading/heading.astro";
+import GridComponent from "./grid.astro";
+
+const title = "Grid";
+const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
+  { label: "Home", url: "/" },
+  { label: "Design system", url: "/design-system" },
+  { label: "Components", url: "/design-system/components" },
+  { label: "Atoms", url: "/design-system/components/atoms" },
+  { label: title, url: Astro.url.href },
+];
+const seo: ComponentProps<typeof PageLayout>["seo"] = {
+  nofollow: true,
+  noindex: true,
+  title: breadcrumb
+    .slice(1)
+    .reverse()
+    .map((crumb) => crumb.label)
+    .join(" | "),
+};
+---
+
+<PageLayout breadcrumb={breadcrumb} seo={seo} title={title}>
+  <Fragment slot="body">
+    <Heading as="h2">Usage</Heading>
+    <p>This component can be used to create a CSS grid.</p>
+    <GridComponent>
+      <div>Item 1</div>
+      <div>Item 2</div>
+      <div>Item 3</div>
+      <div>Item 4</div>
+      <div>Item 5</div>
+      <div>Item 6</div>
+    </GridComponent>
+    <Heading as="h2">Options</Heading>
+    <Heading as="h3"><Code>cols</Code></Heading>
+    <p>
+      The <Code>cols</Code> property lets you define an explicit columns number.
+      Caveat: You'll need to handle yourself small viewports.
+    </p>
+    <GridComponent cols={2}>
+      <div>Item 1</div>
+      <div>Item 2</div>
+      <div>Item 3</div>
+      <div>Item 4</div>
+      <div>Item 5</div>
+      <div>Item 6</div>
+    </GridComponent>
+    <Heading as="h3"><Code>rows</Code></Heading>
+    <p>
+      The <Code>rows</Code> property lets you define an explicit rows number. Caveat:
+      This is not useful by itself.
+    </p>
+    <GridComponent rows={3}>
+      <div>Item 1</div>
+      <div>Item 2</div>
+      <div>Item 3</div>
+      <div>Item 4</div>
+      <div>Item 5</div>
+      <div>Item 6</div>
+    </GridComponent>
+    <Heading as="h3"><Code>gap</Code></Heading>
+    <p>
+      The <Code>gap</Code> property lets you define an explicit columns number. Caveat:
+      You'll need to handle yourself small viewports.
+    </p>
+    <Heading as="h4">Unique gap</Heading>
+    <GridComponent gap="md">
+      <div>Item 1</div>
+      <div>Item 2</div>
+      <div>Item 3</div>
+      <div>Item 4</div>
+      <div>Item 5</div>
+      <div>Item 6</div>
+    </GridComponent>
+    <Heading as="h4">Col gap</Heading>
+    <GridComponent gap={{ col: "md" }}>
+      <div>Item 1</div>
+      <div>Item 2</div>
+      <div>Item 3</div>
+      <div>Item 4</div>
+      <div>Item 5</div>
+      <div>Item 6</div>
+    </GridComponent>
+    <Heading as="h4">Row gap</Heading>
+    <GridComponent gap={{ row: "md" }}>
+      <div>Item 1</div>
+      <div>Item 2</div>
+      <div>Item 3</div>
+      <div>Item 4</div>
+      <div>Item 5</div>
+      <div>Item 6</div>
+    </GridComponent>
+    <Heading as="h4">Both gaps with different value</Heading>
+    <GridComponent gap={{ col: "md", row: "xs" }}>
+      <div>Item 1</div>
+      <div>Item 2</div>
+      <div>Item 3</div>
+      <div>Item 4</div>
+      <div>Item 5</div>
+      <div>Item 6</div>
+    </GridComponent>
+    <Heading as="h3"><Code>sizeMinCols</Code></Heading>
+    <p>
+      The <Code>sizeMinCols</Code> property lets you override the default minimal
+      size for columns.
+    </p>
+    <GridComponent sizeMinCols="400px">
+      <div>Item 1</div>
+      <div>Item 2</div>
+      <div>Item 3</div>
+      <div>Item 4</div>
+      <div>Item 5</div>
+      <div>Item 6</div>
+    </GridComponent>
+    <Heading as="h3"><Code>sizeMaxCols</Code></Heading>
+    <p>
+      The <Code>sizeMaxCols</Code> property lets you override the default maximal
+      size for columns.
+    </p>
+    <GridComponent sizeMaxCols="200px">
+      <div>Item 1</div>
+      <div>Item 2</div>
+      <div>Item 3</div>
+      <div>Item 4</div>
+      <div>Item 5</div>
+      <div>Item 6</div>
+    </GridComponent>
+    <Heading as="h3"><Code>templateCols</Code></Heading>
+    <p>
+      The <Code>templateCols</Code> property lets you override the default template
+      for columns.
+    </p>
+    <GridComponent templateCols="1fr auto 1fr">
+      <div>Item 1</div>
+      <div>Item 2</div>
+      <div>Item 3</div>
+      <div>Item 4</div>
+      <div>Item 5</div>
+      <div>Item 6</div>
+    </GridComponent>
+    <Heading as="h3"><Code>templateRows</Code></Heading>
+    <p>
+      The <Code>templateRows</Code> property lets you override the default template
+      for rows.
+    </p>
+    <GridComponent templateRows="auto 3rem auto">
+      <div>Item 1</div>
+      <div>Item 2</div>
+      <div>Item 3</div>
+      <div>Item 4</div>
+      <div>Item 5</div>
+      <div>Item 6</div>
+    </GridComponent>
+    <Heading as="h3">Other CSS grid properties</Heading>
+    <p>
+      You can also use <Code>alignContent</Code>, <Code>alignItems</Code>, <Code
+        >justifyContent</Code
+      > and <Code>justifyItems</Code> to customize the alignment of your items in
+      the grid.
+    </p>
+  </Fragment>
+</PageLayout>

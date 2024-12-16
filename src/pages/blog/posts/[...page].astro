@@ -2,7 +2,7 @@
 import type { GetStaticPaths } from "astro";
 import type { ComponentProps } from "astro/types";
 import { components } from "../../../components/mdx";
-import Grid from "../../../components/molecules/grid/grid.astro";
+import CardsList from "../../../components/molecules/cards-list/cards-list.astro";
 import CollectionCard from "../../../components/organisms/collection-card/collection-card.astro";
 import CollectionMeta from "../../../components/organisms/collection-meta/collection-meta.astro";
 import Pagination from "../../../components/organisms/pagination/pagination.astro";
@@ -99,10 +99,11 @@ const getCTA = (
   />
   <Content components={components} slot={page.hasContent ? "body" : ""} />
   <Fragment slot="disconnected-body">
-    <Grid class="posts-list" isCentered items={posts}>
+    <CardsList isContainer items={posts}>
       {
         (post: (typeof posts)[number]) => (
           <CollectionCard
+            class="post-card"
             cta={getCTA(post.title)}
             elevation="raised"
             entry={post}
@@ -110,7 +111,7 @@ const getCTA = (
           />
         )
       }
-    </Grid>
+    </CardsList>
     {
       pagination.lastPage > 1 ? (
         <Pagination
@@ -123,3 +124,11 @@ const getCTA = (
     }
   </Fragment>
 </PageLayout>
+
+<style>
+  .post-card {
+    @container body (width >= 55em) {
+      border: var(--border-size-sm) solid var(--color-border);
+    }
+  }
+</style>

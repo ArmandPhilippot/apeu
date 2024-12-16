@@ -76,6 +76,7 @@ const isCurrentRouteOrNested = (url: string) => {
     border-block-start: var(--border-size-sm) solid var(--color-border-dark);
     border-radius: 0;
     break-inside: avoid;
+    font-size: var(--font-size-xs);
     outline-offset: calc(var(--border-size-md) * -1);
 
     &:where(.selected) {
@@ -85,7 +86,6 @@ const isCurrentRouteOrNested = (url: string) => {
     @media (width >= 1024px) {
       padding-inline: clamp(var(--spacing-2xs), 1.25dvw, var(--spacing-lg));
       border-radius: var(--border-radii-md);
-      font-size: var(--font-size-xs);
       outline-offset: 0;
 
       &:where(:not(.selected)) {

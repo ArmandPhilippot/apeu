@@ -13,14 +13,14 @@ import Quote from "../atoms/quote/quote.astro";
 import Samp from "../atoms/samp/samp.astro";
 import Table from "../atoms/table/table.astro";
 import Var from "../atoms/var/var.astro";
-import Figure from "./from-generics/figure.astro";
-import H2 from "./from-generics/h2.astro";
-import H3 from "./from-generics/h3.astro";
-import H4 from "./from-generics/h4.astro";
-import H5 from "./from-generics/h5.astro";
-import H6 from "./from-generics/h6.astro";
-import Link from "./from-generics/link.astro";
-import Ol from "./from-generics/ol.astro";
+import Figure from "./figure.astro";
+import H2 from "./h2.astro";
+import H3 from "./h3.astro";
+import H4 from "./h4.astro";
+import H5 from "./h5.astro";
+import H6 from "./h6.astro";
+import Link from "./link.astro";
+import Ol from "./ol.astro";
 import Placeholder from "./placeholder.astro";
 
 export const components = {

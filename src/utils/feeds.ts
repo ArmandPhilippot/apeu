@@ -1,5 +1,7 @@
+import { getContainerRenderer as mdxRenderer } from "@astrojs/mdx";
 import type { RSSFeedItem } from "@astrojs/rss";
 import { experimental_AstroContainer } from "astro/container";
+import { loadRenderers } from "astro:container";
 import type { CollectionKey } from "astro:content";
 import sanitizeHtml from "sanitize-html";
 import {
@@ -17,7 +19,8 @@ const renderEntryContent = async (
 ): Promise<string | undefined> => {
   if (!("Content" in entry)) return undefined;
 
-  const container = await experimental_AstroContainer.create();
+  const renderers = await loadRenderers([mdxRenderer()]);
+  const container = await experimental_AstroContainer.create({ renderers });
   const htmlContent = await container.renderToString(entry.Content);
 
   return sanitizeHtml(htmlContent, {

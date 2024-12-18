@@ -253,7 +253,9 @@ const topId = translate("anchor.site.top");
 
     @media (width >= 1024px) {
       display: grid;
-      grid-template-columns: minmax(13em, 21dvw) minmax(0, 1fr);
+      grid-template-columns:
+        minmax(calc(var(--one-px-in-rem) * 200), 22dvw)
+        minmax(0, 1fr);
       grid-template-rows: minmax(0, 1fr) minmax(0, auto);
     }
 
@@ -342,7 +344,7 @@ const topId = translate("anchor.site.top");
 
     @media (width >= 1024px) {
       flex: 1;
-      margin-block-start: clamp(var(--spacing-2xs), 1.5dvh, var(--spacing-md));
+      margin-block-start: clamp(var(--spacing-4xs), 1dvh, var(--spacing-xl));
       border-inline-start: none;
     }
   }

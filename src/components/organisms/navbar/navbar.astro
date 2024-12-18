@@ -134,6 +134,7 @@ const { translate } = useI18n(Astro.currentLocale);
     @media (width >= 1024px) {
       display: flex;
       flex-flow: column;
+      gap: clamp(var(--spacing-2xs), 1.5dvh, var(--spacing-sm));
       padding-inline: clamp(var(--spacing-sm), 2dvw, var(--spacing-2xl));
     }
   }
@@ -189,9 +190,28 @@ const { translate } = useI18n(Astro.currentLocale);
     }
   }
 
+  :where(.navbar-item:has(> input:checked)) .navbar-item-label {
+    border-color: var(--color-primary);
+  }
+
   :where(.navbar-item:has(> input:checked:not(:focus))) .navbar-item-label {
     outline: none;
     border-color: var(--color-primary);
+  }
+
+  :where(.navbar-item:has(> input:not(:checked))) .navbar-item-label {
+    @media (width >= 1024px) {
+      border-color: var(--color-border);
+    }
+  }
+
+  :where(.navbar-item:where(.search, .settings)) .navbar-item-label {
+    @media (width >= 1024px) {
+      background-color: var(--color-regular-light);
+      font-size: var(--font-size-sm);
+      outline-offset: calc(var(--border-size-sm) * -1);
+      text-transform: none;
+    }
   }
 
   .navbar-item-modal {

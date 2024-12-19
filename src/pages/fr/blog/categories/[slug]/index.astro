@@ -11,22 +11,19 @@ import { getWebPageGraph } from "../../../../../lib/schema-dts/graphs/webpage-gr
 import { useI18n } from "../../../../../utils/i18n";
 
 export const getStaticPaths = (async () => {
-  const { entries: categories, total } = await queryCollection(
-    "blogCategories",
-    {
-      where: { locale: "fr" },
-    },
-  );
+  const { entries: categories } = await queryCollection("blogCategories", {
+    where: { locale: "fr" },
+  });
 
   return categories.map(({ slug, ...cat }) => {
     return {
       params: { slug },
-      props: { ...cat, total },
+      props: { ...cat },
     };
   });
 }) satisfies GetStaticPaths;
 
-const { Content, total, ...page } = Astro.props;
+const { Content, ...page } = Astro.props;
 const { route, translate, translatePlural } = useI18n(Astro.currentLocale);
 const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
   { label: translate("page.home.title"), url: route("home") },
@@ -40,10 +37,13 @@ const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
 const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
   await getWebPageGraph({ ...page, breadcrumb }),
 ];
-const { entries: relatedPosts } = await queryCollection("blogPosts", {
-  orderBy: { key: "publishedOn", order: "DESC" },
-  where: { categories: [page.id] },
-});
+const { entries: relatedPosts, total: totalPosts } = await queryCollection(
+  "blogPosts",
+  {
+    orderBy: { key: "publishedOn", order: "DESC" },
+    where: { categories: [page.id] },
+  },
+);
 const getCTA = (
   title: string,
 ): ComponentProps<typeof CollectionCard>["cta"] => {
@@ -66,7 +66,7 @@ const getCTA = (
   <CollectionMeta
     data={{
       total: translatePlural("meta.value.total.blog.posts", {
-        count: total,
+        count: totalPosts,
       }),
     }}
     slot="meta"

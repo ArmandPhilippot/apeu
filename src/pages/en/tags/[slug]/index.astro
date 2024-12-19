@@ -6,51 +6,76 @@ import CardsList from "../../../../components/molecules/cards-list/cards-list.as
 import CollectionCard from "../../../../components/organisms/collection-card/collection-card.astro";
 import CollectionMeta from "../../../../components/organisms/collection-meta/collection-meta.astro";
 import PageLayout from "../../../../components/templates/page-layout/page-layout.astro";
-import { queryCollection } from "../../../../lib/astro/collections/query-collection";
+import {
+  queryCollection,
+  queryCollections,
+} from "../../../../lib/astro/collections/query-collection";
 import { getWebPageGraph } from "../../../../lib/schema-dts/graphs/webpage-graph";
 import { useI18n } from "../../../../utils/i18n";
 
 export const getStaticPaths = (async () => {
-  const { entries: categories } = await queryCollection("blogCategories", {
-    where: { locale: "fr" },
+  const { entries: tags } = await queryCollection("tags", {
+    where: { locale: "en" },
   });
-
-  return categories.map(({ slug, ...cat }) => {
+  return tags.map(({ slug, ...tag }) => {
     return {
       params: { slug },
-      props: { ...cat },
+      props: { ...tag },
     };
   });
 }) satisfies GetStaticPaths;
 
 const { Content, ...page } = Astro.props;
-const { route, translate, translatePlural } = useI18n(Astro.currentLocale);
+const { locale, route, translate, translatePlural } = useI18n(
+  Astro.currentLocale,
+);
 const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
   { label: translate("page.home.title"), url: route("home") },
-  { label: translate("page.blog.title"), url: route("blog") },
-  {
-    label: translate("page.blog.categories.title"),
-    url: route("blog.categories"),
-  },
+  { label: translate("page.tags.title"), url: route("tags") },
   { label: page.title, url: Astro.url.href },
 ];
 const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
   await getWebPageGraph({ ...page, breadcrumb }),
 ];
-const { entries: relatedPosts, total: totalPosts } = await queryCollection(
-  "blogPosts",
+const { entries: relatedEntries, total } = await queryCollections(
+  ["blogPosts", "blogroll", "bookmarks", "guides", "notes", "projects"],
   {
+    format: "preview",
     orderBy: { key: "publishedOn", order: "DESC" },
-    where: { categories: [page.id] },
+    where: { locale, tags: [page.id] },
   },
 );
 const getCTA = (
-  title: string,
+  entry: (typeof relatedEntries)[number],
 ): ComponentProps<typeof CollectionCard>["cta"] => {
-  return {
-    ariaLabel: translate("cta.read.more.a11y", { title }),
-    label: translate("cta.read.more"),
-  };
+  switch (entry.collection) {
+    case "blogPosts":
+    case "guides":
+    case "notes":
+      return {
+        ariaLabel: translate("cta.read.more.a11y", { title: entry.title }),
+        label: translate("cta.read.more"),
+      };
+    case "blogroll":
+      return {
+        ariaLabel: translate("cta.open.website.a11y"),
+        isExternal: true,
+        label: translate("cta.open.website"),
+      };
+    case "bookmarks":
+      return {
+        ariaLabel: translate("cta.read.more.a11y", { title: entry.title }),
+        isExternal: true,
+        label: translate("cta.read.more"),
+      };
+    case "projects":
+      return {
+        ariaLabel: translate("cta.discover.a11y", { title: entry.title }),
+        label: translate("cta.discover"),
+      };
+    default:
+      return null;
+  }
 };
 ---
 
@@ -65,27 +90,27 @@ const getCTA = (
 >
   <CollectionMeta
     data={{
-      total: translatePlural("meta.value.total.blog.posts", {
-        count: totalPosts,
+      total: translatePlural("meta.value.total.entries", {
+        count: total,
       }),
     }}
     slot="meta"
   />
-  <Content components={components} slot={page.hasContent ? "body" : ""} />
+  <Content components={components} slot="body" />
   <CardsList
     isContainer
-    items={relatedPosts}
+    items={relatedEntries}
     sizeMinCols="35rem"
     slot="disconnected-body"
   >
     {
-      (post: (typeof relatedPosts)[number]) => (
+      (entry: (typeof relatedEntries)[number]) => (
         <CollectionCard
-          class="post-card"
-          cta={getCTA(post.title)}
+          class="entry-card"
+          cta={getCTA(entry)}
           elevation="raised"
-          entry={post}
-          featuredMeta={{ icon: "blog", key: "publishedOn" }}
+          entry={entry}
+          showCollection
         />
       )
     }
@@ -93,7 +118,7 @@ const getCTA = (
 </PageLayout>
 
 <style>
-  .post-card {
+  .entry-card {
     @container body (width >= 55em) {
       border: var(--border-size-sm) solid var(--color-border);
     }

@@ -1,24 +1,24 @@
 ---
 import type { GetStaticPaths } from "astro";
 import type { ComponentProps } from "astro/types";
-import OpenGraphArticle from "../../components/atoms/open-graph-article/open-graph-article.astro";
-import { components } from "../../components/mdx";
-import CollectionMeta from "../../components/organisms/collection-meta/collection-meta.astro";
-import PageLayout from "../../components/templates/page-layout/page-layout.astro";
-import { queryCollection } from "../../lib/astro/collections/query-collection";
-import { getArticleGraph } from "../../lib/schema-dts/graphs/article-graph";
-import { getWebPageGraph } from "../../lib/schema-dts/graphs/webpage-graph";
-import { useI18n } from "../../utils/i18n";
+import OpenGraphArticle from "../../../components/atoms/open-graph-article/open-graph-article.astro";
+import { components } from "../../../components/mdx";
+import CollectionMeta from "../../../components/organisms/collection-meta/collection-meta.astro";
+import PageLayout from "../../../components/templates/page-layout/page-layout.astro";
+import { queryCollection } from "../../../lib/astro/collections/query-collection";
+import { getArticleGraph } from "../../../lib/schema-dts/graphs/article-graph";
+import { getWebPageGraph } from "../../../lib/schema-dts/graphs/webpage-graph";
+import { useI18n } from "../../../utils/i18n";
 
 export const getStaticPaths = (async () => {
-  const { entries: notes } = await queryCollection("notes", {
+  const { entries: posts } = await queryCollection("blogPosts", {
     where: { locale: "fr" },
   });
 
-  return notes.map(({ slug, ...note }) => {
+  return posts.map(({ slug, ...post }) => {
     return {
       params: { slug },
-      props: { ...note },
+      props: { ...post },
     };
   });
 }) satisfies GetStaticPaths;
@@ -27,7 +27,8 @@ const { Content, ...page } = Astro.props;
 const { route, translate } = useI18n(Astro.currentLocale);
 const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
   { label: translate("page.home.title"), url: route("home") },
-  { label: translate("page.notes.title"), url: route("notes") },
+  { label: translate("page.blog.title"), url: route("blog") },
+  { label: translate("page.blog.posts.title"), url: route("blog.posts") },
   { label: page.title, url: Astro.url.href },
 ];
 const graphs: ComponentProps<typeof PageLayout>["graphs"] = [

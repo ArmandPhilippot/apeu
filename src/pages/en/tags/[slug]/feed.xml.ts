@@ -1,6 +1,9 @@
 import rss from "@astrojs/rss";
 import type { APIRoute, GetStaticPaths } from "astro";
-import { queryCollection } from "../../../../lib/astro/collections/query-collection";
+import {
+  queryCollection,
+  queryCollections,
+} from "../../../../lib/astro/collections/query-collection";
 import type { TaxonomyPreview } from "../../../../types/data";
 import { MissingSiteConfigError } from "../../../../utils/exceptions";
 import {
@@ -10,14 +13,14 @@ import {
 import { useI18n } from "../../../../utils/i18n";
 
 export const getStaticPaths = (async () => {
-  const { entries } = await queryCollection("blogCategories", {
-    where: { locale: "fr" },
+  const { entries } = await queryCollection("tags", {
+    where: { locale: "en" },
   });
 
-  return entries.map((cat) => {
+  return entries.map((tag) => {
     return {
-      params: { slug: cat.slug },
-      props: { ...cat },
+      params: { slug: tag.slug },
+      props: { ...tag },
     };
   });
 }) satisfies GetStaticPaths;
@@ -29,19 +32,20 @@ export const GET: APIRoute<TaxonomyPreview> = async ({
 }) => {
   if (!site) throw new MissingSiteConfigError();
   const { locale, translate } = useI18n(currentLocale);
-  const { entries } = await queryCollection("blogPosts", {
-    format: "full",
-    orderBy: { key: "publishedOn", order: "ASC" },
-    where: { locale, categories: [props.id] },
-  });
+  const { entries } = await queryCollections(
+    ["blogPosts", "blogroll", "bookmarks", "guides", "notes", "projects"],
+    {
+      format: "full",
+      orderBy: { key: "publishedOn", order: "ASC" },
+      where: { locale, tags: [props.id] },
+    },
+  );
 
   return rss({
-    description: translate("feed.blog.category.description", {
-      name: props.title,
-    }),
+    description: translate("feed.tag.description", { name: props.title }),
     items: await getRSSItemsFromEntries(entries, locale),
     site,
-    title: translate("feed.blog.category.title", { name: props.title }),
+    title: translate("feed.tag.title", { name: props.title }),
     customData: `<language>${getFeedLanguageFromLocale(locale)}</language>`,
   });
 };

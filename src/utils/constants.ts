@@ -28,7 +28,7 @@ export const CONFIG = {
   ITEMS_PER_PAGE: 10,
   LANGUAGES: {
     AVAILABLE: ["en", "fr"],
-    DEFAULT: "en",
+    DEFAULT: "fr",
   },
   // This is mainly used to avoid hardcoding while defining schema.org ids.
   PROTOCOL: "https://",

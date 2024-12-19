@@ -15,13 +15,13 @@ const { locale, route, translate, translatePlural } = useI18n(
 );
 const { Content, ...page } = await queryEntry({
   collection: "pages",
-  id: "notes",
+  id: "projects",
   locale,
 });
-const { entries: notes, total } = await queryCollection("notes", {
+const { entries: projects, total } = await queryCollection("projects", {
   format: "preview",
   orderBy: { key: "publishedOn", order: "DESC" },
-  where: { locale: "fr" },
+  where: { locale },
 });
 const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
   { label: translate("page.home.title"), url: route("home") },
@@ -34,8 +34,8 @@ const getCTA = (
   title: string,
 ): ComponentProps<typeof CollectionCard>["cta"] => {
   return {
-    ariaLabel: translate("cta.read.more.a11y", { title }),
-    label: translate("cta.read.more"),
+    ariaLabel: translate("cta.discover.a11y", { title }),
+    label: translate("cta.discover"),
   };
 };
 ---
@@ -43,14 +43,14 @@ const getCTA = (
 <PageLayout
   breadcrumb={breadcrumb}
   description={page.description}
-  feed={`${route("notes")}/feed.xml`}
+  feed={`${route("projects")}/feed.xml`}
   graphs={graphs}
   seo={page.seo}
   title={page.title}
 >
   <CollectionMeta
     data={{
-      total: translatePlural("meta.value.total.notes", {
+      total: translatePlural("meta.value.total.projects", {
         count: total,
       }),
     }}
@@ -59,18 +59,18 @@ const getCTA = (
   <Content components={components} slot={page.hasContent ? "body" : ""} />
   <CardsList
     isContainer
-    items={notes}
-    sizeMinCols="35rem"
+    items={projects}
+    sizeMinCols="25em"
     slot="disconnected-body"
   >
     {
-      (note: (typeof notes)[number]) => (
+      (project: (typeof projects)[number]) => (
         <CollectionCard
-          class="note-card"
-          cta={getCTA(note.title)}
+          class="project-card"
+          cta={getCTA(project.title)}
           elevation="raised"
-          entry={note}
-          featuredMeta={{ icon: "notepad", key: "publishedOn" }}
+          entry={project}
+          featuredMeta={{ icon: "project", key: "kind" }}
         />
       )
     }
@@ -78,8 +78,8 @@ const getCTA = (
 </PageLayout>
 
 <style>
-  .note-card {
-    @container body (width >= 55em) {
+  .project-card {
+    @container body (width >= 51.5em) {
       border: var(--border-size-sm) solid var(--color-border);
     }
   }

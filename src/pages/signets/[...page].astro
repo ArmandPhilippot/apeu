@@ -17,28 +17,27 @@ import { renderPaginationLink } from "../../utils/pagination";
 export const getStaticPaths = (async ({ paginate }) => {
   const page = await queryEntry({
     collection: "pages",
-    id: "guides",
+    id: "bookmarks",
     locale: "fr",
   });
-  const { entries: guides, total } = await queryCollection("guides", {
+  const { entries: bookmarks, total } = await queryCollection("bookmarks", {
     format: "preview",
     orderBy: { key: "publishedOn", order: "DESC" },
-    where: { locale: "fr" },
   });
 
-  return paginate(guides, { pageSize: CONFIG.ITEMS_PER_PAGE }).map(
-    (paginatedGuides) => {
-      const { data, url, ...pagination } = paginatedGuides.props.page;
+  return paginate(bookmarks, { pageSize: CONFIG.ITEMS_PER_PAGE }).map(
+    (paginatedBookmarks) => {
+      const { data, url, ...pagination } = paginatedBookmarks.props.page;
       return {
-        ...paginatedGuides,
+        ...paginatedBookmarks,
         params: {
-          page: paginatedGuides.params.page
-            ? `/page/${paginatedGuides.params.page}`
+          page: paginatedBookmarks.params.page
+            ? `/page/${paginatedBookmarks.params.page}`
             : undefined,
         },
         props: {
           ...page,
-          guides: data,
+          bookmarks: data,
           pagination,
           total,
         },
@@ -47,7 +46,7 @@ export const getStaticPaths = (async ({ paginate }) => {
   );
 }) satisfies GetStaticPaths;
 
-const { Content, guides, pagination, total, ...page } = Astro.props;
+const { Content, bookmarks, pagination, total, ...page } = Astro.props;
 const { route, translate, translatePlural } = useI18n(Astro.currentLocale);
 const isFirstPage = pagination.currentPage === 1;
 const pageLabel = translate("page.paginated.label", {
@@ -75,6 +74,7 @@ const getCTA = (
 ): ComponentProps<typeof CollectionCard>["cta"] => {
   return {
     ariaLabel: translate("cta.read.more.a11y", { title }),
+    isExternal: true,
     label: translate("cta.read.more"),
   };
 };
@@ -83,14 +83,14 @@ const getCTA = (
 <PageLayout
   breadcrumb={breadcrumb}
   description={page.description}
-  feed={`${route("guides")}/feed.xml`}
+  feed={`${route("bookmarks")}/feed.xml`}
   graphs={graphs}
   seo={seo}
   title={title}
 >
   <CollectionMeta
     data={{
-      total: translatePlural("meta.value.total.guides", {
+      total: translatePlural("meta.value.total.bookmarks", {
         count: total,
       }),
     }}
@@ -98,15 +98,14 @@ const getCTA = (
   />
   <Content components={components} slot={page.hasContent ? "body" : ""} />
   <Fragment slot="disconnected-body">
-    <CardsList isContainer items={guides}>
+    <CardsList items={bookmarks} sizeMinCols="35rem">
       {
-        (guide: (typeof guides)[number]) => (
+        (bookmark: (typeof bookmarks)[number]) => (
           <CollectionCard
-            class="guide-card"
-            cta={getCTA(guide.title)}
+            cta={getCTA(bookmark.title)}
             elevation="raised"
-            entry={guide}
-            featuredMeta={{ icon: "guide", key: "publishedOn" }}
+            entry={bookmark}
+            featuredMeta={{ icon: "bookmark", key: "publishedOn" }}
           />
         )
       }
@@ -117,17 +116,9 @@ const getCTA = (
           aria-label={translate("pagination.a11y")}
           current={pagination.currentPage}
           last={pagination.lastPage}
-          renderLink={renderPaginationLink(route("guides"))}
+          renderLink={renderPaginationLink(route("bookmarks"))}
         />
       ) : null
     }
   </Fragment>
 </PageLayout>
-
-<style>
-  .guide-card {
-    @container body (width >= 55em) {
-      border: var(--border-size-sm) solid var(--color-border);
-    }
-  }
-</style>

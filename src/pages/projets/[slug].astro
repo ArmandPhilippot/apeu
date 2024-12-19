@@ -11,14 +11,14 @@ import { getWebPageGraph } from "../../lib/schema-dts/graphs/webpage-graph";
 import { useI18n } from "../../utils/i18n";
 
 export const getStaticPaths = (async () => {
-  const { entries: notes } = await queryCollection("notes", {
+  const { entries: projects } = await queryCollection("projects", {
     where: { locale: "fr" },
   });
 
-  return notes.map(({ slug, ...note }) => {
+  return projects.map(({ slug, ...project }) => {
     return {
       params: { slug },
-      props: { ...note },
+      props: { ...project },
     };
   });
 }) satisfies GetStaticPaths;
@@ -27,7 +27,7 @@ const { Content, ...page } = Astro.props;
 const { route, translate } = useI18n(Astro.currentLocale);
 const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
   { label: translate("page.home.title"), url: route("home") },
-  { label: translate("page.notes.title"), url: route("notes") },
+  { label: translate("page.projects.title"), url: route("projects") },
   { label: page.title, url: Astro.url.href },
 ];
 const graphs: ComponentProps<typeof PageLayout>["graphs"] = [

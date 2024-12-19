@@ -1,17 +1,17 @@
 import rss from "@astrojs/rss";
 import type { APIRoute, GetStaticPaths } from "astro";
-import { queryCollection } from "../../../../lib/astro/collections/query-collection";
-import type { TaxonomyPreview } from "../../../../types/data";
-import { MissingSiteConfigError } from "../../../../utils/exceptions";
+import { queryCollection } from "../../../../../lib/astro/collections/query-collection";
+import type { TaxonomyPreview } from "../../../../../types/data";
+import { MissingSiteConfigError } from "../../../../../utils/exceptions";
 import {
   getFeedLanguageFromLocale,
   getRSSItemsFromEntries,
-} from "../../../../utils/feeds";
-import { useI18n } from "../../../../utils/i18n";
+} from "../../../../../utils/feeds";
+import { useI18n } from "../../../../../utils/i18n";
 
 export const getStaticPaths = (async () => {
   const { entries } = await queryCollection("blogCategories", {
-    where: { locale: "fr" },
+    where: { locale: "en" },
   });
 
   return entries.map((cat) => {

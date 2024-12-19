@@ -1,45 +1,45 @@
 ---
 import type { GetStaticPaths } from "astro";
 import type { ComponentProps } from "astro/types";
-import { components } from "../../components/mdx";
-import CardsList from "../../components/molecules/cards-list/cards-list.astro";
-import CollectionCard from "../../components/organisms/collection-card/collection-card.astro";
-import CollectionMeta from "../../components/organisms/collection-meta/collection-meta.astro";
-import Pagination from "../../components/organisms/pagination/pagination.astro";
-import PageLayout from "../../components/templates/page-layout/page-layout.astro";
-import { queryCollection } from "../../lib/astro/collections/query-collection";
-import { queryEntry } from "../../lib/astro/collections/query-entry";
-import { getWebPageGraph } from "../../lib/schema-dts/graphs/webpage-graph";
-import { CONFIG } from "../../utils/constants";
-import { useI18n } from "../../utils/i18n";
-import { renderPaginationLink } from "../../utils/pagination";
+import { components } from "../../../components/mdx";
+import CardsList from "../../../components/molecules/cards-list/cards-list.astro";
+import CollectionCard from "../../../components/organisms/collection-card/collection-card.astro";
+import CollectionMeta from "../../../components/organisms/collection-meta/collection-meta.astro";
+import Pagination from "../../../components/organisms/pagination/pagination.astro";
+import PageLayout from "../../../components/templates/page-layout/page-layout.astro";
+import { queryCollection } from "../../../lib/astro/collections/query-collection";
+import { queryEntry } from "../../../lib/astro/collections/query-entry";
+import { getWebPageGraph } from "../../../lib/schema-dts/graphs/webpage-graph";
+import { CONFIG } from "../../../utils/constants";
+import { useI18n } from "../../../utils/i18n";
+import { renderPaginationLink } from "../../../utils/pagination";
 
 export const getStaticPaths = (async ({ paginate }) => {
   const page = await queryEntry({
     collection: "pages",
-    id: "guides",
+    id: "blog/posts",
     locale: "fr",
   });
-  const { entries: guides, total } = await queryCollection("guides", {
+  const { entries: posts, total } = await queryCollection("blogPosts", {
     format: "preview",
     orderBy: { key: "publishedOn", order: "DESC" },
     where: { locale: "fr" },
   });
 
-  return paginate(guides, { pageSize: CONFIG.ITEMS_PER_PAGE }).map(
-    (paginatedGuides) => {
-      const { data, url, ...pagination } = paginatedGuides.props.page;
+  return paginate(posts, { pageSize: CONFIG.ITEMS_PER_PAGE }).map(
+    (paginatedPosts) => {
+      const { data, url, ...pagination } = paginatedPosts.props.page;
       return {
-        ...paginatedGuides,
+        ...paginatedPosts,
         params: {
-          page: paginatedGuides.params.page
-            ? `/page/${paginatedGuides.params.page}`
+          page: paginatedPosts.params.page
+            ? `/page/${paginatedPosts.params.page}`
             : undefined,
         },
         props: {
           ...page,
-          guides: data,
           pagination,
+          posts: data,
           total,
         },
       };
@@ -47,7 +47,7 @@ export const getStaticPaths = (async ({ paginate }) => {
   );
 }) satisfies GetStaticPaths;
 
-const { Content, guides, pagination, total, ...page } = Astro.props;
+const { Content, pagination, posts, total, ...page } = Astro.props;
 const { route, translate, translatePlural } = useI18n(Astro.currentLocale);
 const isFirstPage = pagination.currentPage === 1;
 const pageLabel = translate("page.paginated.label", {
@@ -56,6 +56,7 @@ const pageLabel = translate("page.paginated.label", {
 
 const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
   { label: translate("page.home.title"), url: route("home") },
+  { label: translate("page.blog.title"), url: route("blog") },
   { label: page.title, url: Astro.url.href },
   ...[isFirstPage ? null : { label: pageLabel, url: Astro.url.href }],
 ].filter((crumb) => !!crumb);
@@ -83,14 +84,14 @@ const getCTA = (
 <PageLayout
   breadcrumb={breadcrumb}
   description={page.description}
-  feed={`${route("guides")}/feed.xml`}
+  feed={`${route("blog.posts")}/feed.xml`}
   graphs={graphs}
   seo={seo}
   title={title}
 >
   <CollectionMeta
     data={{
-      total: translatePlural("meta.value.total.guides", {
+      total: translatePlural("meta.value.total.blog.posts", {
         count: total,
       }),
     }}
@@ -98,15 +99,15 @@ const getCTA = (
   />
   <Content components={components} slot={page.hasContent ? "body" : ""} />
   <Fragment slot="disconnected-body">
-    <CardsList isContainer items={guides}>
+    <CardsList isContainer items={posts}>
       {
-        (guide: (typeof guides)[number]) => (
+        (post: (typeof posts)[number]) => (
           <CollectionCard
-            class="guide-card"
-            cta={getCTA(guide.title)}
+            class="post-card"
+            cta={getCTA(post.title)}
             elevation="raised"
-            entry={guide}
-            featuredMeta={{ icon: "guide", key: "publishedOn" }}
+            entry={post}
+            featuredMeta={{ icon: "blog", key: "publishedOn" }}
           />
         )
       }
@@ -125,7 +126,7 @@ const getCTA = (
 </PageLayout>
 
 <style>
-  .guide-card {
+  .post-card {
     @container body (width >= 55em) {
       border: var(--border-size-sm) solid var(--color-border);
     }

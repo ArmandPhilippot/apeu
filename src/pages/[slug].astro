@@ -10,7 +10,7 @@ import { isAvailableRoute, useI18n } from "../utils/i18n";
 
 export const getStaticPaths = (async () => {
   const { entries: pages } = await queryCollection("pages", {
-    where: { locale: "en" },
+    where: { locale: "fr" },
   });
 
   return pages

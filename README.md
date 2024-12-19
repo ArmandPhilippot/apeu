@@ -206,35 +206,37 @@ Before starting, please follow the instructions in [Setup](#setup).
 │   │   └── blog2.json
 │   ├── bookmarks/
 │   │   └── a-bookmark.json
-│   └── en/
-│       ├── blog/
-│       │   ├── categories/
-│       │   │   ├── index.md
-│       │   │   └── category1.md
-│       │   ├── posts/
-│       │   │   ├── index.md
-│       │   │   └── post1.md
-│       │   └── index.md
-│       ├── guides/
-│       │   ├── index.md
-│       │   └── guide1.md
-│       ├── notes/
-│       │   ├── index.md
-│       │   └── note1.md
-│       ├── pages/
-│       │   ├── blogroll.md
-│       │   ├── bookmarks.md
-│       │   ├── contact.md
-│       │   ├── feeds.md
-│       │   ├── home.md
-│       │   ├── legal-notice.md
-│       │   └── search.md
-│       ├── projects/
-│       │   ├── index.md
-│       │   └── project1.md
-│       └── tags/
-│           ├── index.md
-│           └── tag1.md
+│   ├── en/
+│   │   ├── blog/
+│   │   │   ├── categories/
+│   │   │   │   ├── index.md
+│   │   │   │   └── category1.md
+│   │   │   ├── posts/
+│   │   │   │   ├── index.md
+│   │   │   │   └── post1.md
+│   │   │   └── index.md
+│   │   ├── guides/
+│   │   │   ├── index.md
+│   │   │   └── guide1.md
+│   │   ├── notes/
+│   │   │   ├── index.md
+│   │   │   └── note1.md
+│   │   ├── pages/
+│   │   │   ├── blogroll.md
+│   │   │   ├── bookmarks.md
+│   │   │   ├── contact.md
+│   │   │   ├── feeds.md
+│   │   │   ├── home.md
+│   │   │   ├── legal-notice.md
+│   │   │   └── search.md
+│   │   ├── projects/
+│   │   │   ├── index.md
+│   │   │   └── project1.md
+│   │   └── tags/
+│   │       ├── index.md
+│   │       └── tag1.md
+│   └── fr/
+│       └── same as en/
 ├── public/
 ├── src/
 │   ├── assets/
@@ -251,26 +253,52 @@ Before starting, please follow the instructions in [Setup](#setup).
 │   │   ├── blog/
 │   │   │   ├── categories/
 │   │   │   │   └── index.astro
-│   │   │   ├── posts/
+│   │   │   ├── articles/
 │   │   │   │   └── index.astro
 │   │   │   └── index.astro
 │   │   ├── blogroll/
 │   │   │   └── index.astro
-│   │   ├── bookmarks/
+│   │   ├── en/
+│   │   │   ├── blog/
+│   │   │   │   ├── categories/
+│   │   │   │   │   └── index.astro
+│   │   │   │   ├── posts/
+│   │   │   │   │   └── index.astro
+│   │   │   │   └── index.astro
+│   │   │   ├── blogroll/
+│   │   │   │   └── index.astro
+│   │   │   ├── bookmarks/
+│   │   │   │   └── index.astro
+│   │   │   ├── guides/
+│   │   │   │   └── index.astro
+│   │   │   ├── notes/
+│   │   │   │   └── index.astro
+│   │   │   ├── projects/
+│   │   │   │   └── index.astro
+│   │   │   ├── tags/
+│   │   │   │   └── index.astro
+│   │   │   ├── [...slug].astro
+│   │   │   ├── contact.astro
+│   │   │   ├── feeds.astro
+│   │   │   ├── index.astro
+│   │   │   ├── legal-notice.astro
+│   │   │   └── search.astro
+│   │   ├── etiquettes/
 │   │   │   └── index.astro
 │   │   ├── guides/
 │   │   │   └── index.astro
 │   │   ├── notes/
 │   │   │   └── index.astro
-│   │   ├── projects/
+│   │   ├── projets/
 │   │   │   └── index.astro
-│   │   ├── tags/
+│   │   ├── signets/
 │   │   │   └── index.astro
+│   │   ├── [...slug].astro
 │   │   ├── contact.astro
-│   │   ├── feeds.astro
+│   │   ├── flux.astro
 │   │   ├── index.astro
-│   │   ├── legal-notice.astro
-│   │   └── search.astro
+│   │   ├── mentions-legales.astro
+│   │   └── recherche.astro
 │   ├── services/
 │   │   └── mailer/
 │   ├── styles/

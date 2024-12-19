@@ -6,6 +6,7 @@ export type AvailableLanguage = keyof typeof translations;
 
 export const availableNamedLanguages = {
   en: "English",
+  fr: "Français",
 } as const satisfies Record<AvailableLanguage, string>;
 
 type I18nMessages = (typeof translations)[typeof CONFIG.LANGUAGES.DEFAULT];
@@ -178,6 +179,8 @@ export const getLanguageTerritory = (
   switch (locale) {
     case "en":
       return "en_US";
+    case "fr":
+      return "fr_FR";
     default:
       throw new Error(`Locale not supported. Received: ${locale}`);
   }

@@ -27,7 +27,7 @@ export const CONFIG = {
   HOST: "armand.philippot.eu",
   ITEMS_PER_PAGE: 10,
   LANGUAGES: {
-    AVAILABLE: ["en"],
+    AVAILABLE: ["en", "fr"],
     DEFAULT: "en",
   },
   // This is mainly used to avoid hardcoding while defining schema.org ids.
@@ -118,6 +118,7 @@ export const STORIES_EXT = `${STORIES_SUFFIX}.astro`;
  */
 export const WORDS_PER_MINUTE = {
   EN: 228,
+  FR: 195,
 } satisfies Record<
   Uppercase<(typeof CONFIG.LANGUAGES.AVAILABLE)[number]>,
   number

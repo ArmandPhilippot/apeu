@@ -116,6 +116,7 @@ export const getFeedLanguageFromLocale = (locale: string): string => {
 
   const availableLocales = {
     en: "en-us",
+    fr: "fr-fr",
   } as const satisfies Record<AvailableLanguage, string>;
 
   return availableLocales[locale];

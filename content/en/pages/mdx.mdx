@@ -65,19 +65,17 @@ Sometimes you may need more complex structures like:
 
 ### Asides
 
-You can use the HTML tag `aside` for your contents:
+You can use Markdown directives in your content by specifying a type after the opening of the directive to create asides:
 
-<aside>This is an example of an aside.</aside>
+:::warning
+This is an example of an aside using the `warning` type.
+:::
 
-If you use a class that matches a valid `Notice` kind (see `src/components/atoms/notice`), you can use different kind of asides:
+You can provide a title using `[The title]`:
 
-<aside class="warning">This is an example of an aside using `warning`.</aside>
-
-You can also provide a title using the `data-title` attribute:
-
-<aside class="idea" data-title="This is the title">
-  This is an example of an aside using the `idea` and a title.
-</aside>
+:::idea[This is the title]
+This is an example of an aside using the `idea` type and a title.
+:::
 
 ### Figure
 

@@ -1,0 +1,134 @@
+---
+import type { GetStaticPaths } from "astro";
+import type { ComponentProps } from "astro/types";
+import { components } from "../../../../components/mdx";
+import CardsList from "../../../../components/molecules/cards-list/cards-list.astro";
+import CollectionCard from "../../../../components/organisms/collection-card/collection-card.astro";
+import CollectionMeta from "../../../../components/organisms/collection-meta/collection-meta.astro";
+import Pagination from "../../../../components/organisms/pagination/pagination.astro";
+import PageLayout from "../../../../components/templates/page-layout/page-layout.astro";
+import { queryCollection } from "../../../../lib/astro/collections/query-collection";
+import { queryEntry } from "../../../../lib/astro/collections/query-entry";
+import { getWebPageGraph } from "../../../../lib/schema-dts/graphs/webpage-graph";
+import { CONFIG } from "../../../../utils/constants";
+import { useI18n } from "../../../../utils/i18n";
+import { renderPaginationLink } from "../../../../utils/pagination";
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const page = await queryEntry({
+    collection: "pages",
+    id: "blog/posts",
+    locale: "fr",
+  });
+  const { entries: posts, total } = await queryCollection("blogPosts", {
+    format: "preview",
+    orderBy: { key: "publishedOn", order: "DESC" },
+    where: { locale: "fr" },
+  });
+
+  return paginate(posts, { pageSize: CONFIG.ITEMS_PER_PAGE }).map(
+    (paginatedPosts) => {
+      const { data, url, ...pagination } = paginatedPosts.props.page;
+      return {
+        ...paginatedPosts,
+        params: {
+          page: paginatedPosts.params.page
+            ? `/page/${paginatedPosts.params.page}`
+            : undefined,
+        },
+        props: {
+          ...page,
+          pagination,
+          posts: data,
+          total,
+        },
+      };
+    },
+  );
+}) satisfies GetStaticPaths;
+
+const { Content, pagination, posts, total, ...page } = Astro.props;
+const { route, translate, translatePlural } = useI18n(Astro.currentLocale);
+const isFirstPage = pagination.currentPage === 1;
+const pageLabel = translate("page.paginated.label", {
+  number: pagination.currentPage,
+});
+
+const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
+  { label: translate("page.home.title"), url: route("home") },
+  { label: translate("page.blog.title"), url: route("blog") },
+  { label: page.title, url: Astro.url.href },
+  ...[isFirstPage ? null : { label: pageLabel, url: Astro.url.href }],
+].filter((crumb) => !!crumb);
+const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
+  await getWebPageGraph({ ...page, breadcrumb }),
+];
+const title: ComponentProps<typeof PageLayout>["title"] = isFirstPage
+  ? page.title
+  : `${page.title} - ${pageLabel}`;
+
+const seo: ComponentProps<typeof PageLayout>["seo"] = {
+  ...page.seo,
+  title: isFirstPage ? page.seo.title : `${page.seo.title} - ${pageLabel}`,
+};
+const getCTA = (
+  title: string,
+): ComponentProps<typeof CollectionCard>["cta"] => {
+  return {
+    ariaLabel: translate("cta.read.more.a11y", { title }),
+    label: translate("cta.read.more"),
+  };
+};
+---
+
+<PageLayout
+  breadcrumb={breadcrumb}
+  description={page.description}
+  feed={`${route("blog.posts")}/feed.xml`}
+  graphs={graphs}
+  seo={seo}
+  title={title}
+>
+  <CollectionMeta
+    data={{
+      total: translatePlural("meta.value.total.blog.posts", {
+        count: total,
+      }),
+    }}
+    slot="meta"
+  />
+  <Content components={components} slot={page.hasContent ? "body" : ""} />
+  <Fragment slot="disconnected-body">
+    <CardsList isContainer items={posts}>
+      {
+        (post: (typeof posts)[number]) => (
+          <CollectionCard
+            class="post-card"
+            cta={getCTA(post.title)}
+            elevation="raised"
+            entry={post}
+            featuredMeta={{ icon: "blog", key: "publishedOn" }}
+          />
+        )
+      }
+    </CardsList>
+    {
+      pagination.lastPage > 1 ? (
+        <Pagination
+          aria-label={translate("pagination.a11y")}
+          current={pagination.currentPage}
+          last={pagination.lastPage}
+          renderLink={renderPaginationLink(route("guides"))}
+        />
+      ) : null
+    }
+  </Fragment>
+</PageLayout>
+
+<style>
+  .post-card {
+    @container body (width >= 55em) {
+      border: var(--border-size-sm) solid var(--color-border);
+    }
+  }
+</style>

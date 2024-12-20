@@ -1,0 +1,100 @@
+---
+title: MDX
+description: "Une page MDX pour tester l'intégration."
+publishedOn: "2024-12-19T15:04"
+seo:
+  title: "MDX"
+  description: "Il s'agit d'une description utilisée par les moteurs de recherche."
+---
+
+Ceci est une page MDX ! Son but est de tester le rendu des éléments HTML/Markdown associés. Vous pouvez y accéder en utilisant `/fr/mdx`.
+
+## Un titre
+
+L'association des titres à notre composant Astro devrait être pris en charge, ainsi que :
+
+- les listes et éléments de liste
+- les [liens](/)
+- le `code en ligne`
+- les <kbd>touches</kbd> du clavier
+- les <q>citations en ligne</q>
+
+Les listes ordonnées doivent également être prises en charge :
+
+1. élément 1
+2. élément 2
+3. élément 3
+
+Vous pouvez également utiliser les blocs de citation :
+
+> Pour vos citations
+
+## Images
+
+### Avec la syntaxe Markdown
+
+Vous devriez également pouvoir utiliser des images avec la syntaxe Markdown :
+
+![une image](../../../../src/assets/favicon.png)
+
+### Avec la syntaxe HTML
+
+Or using an HTML tag:
+
+<img alt="une image HTML" src="../../../../src/assets/favicon.png" />
+
+### Images distantes
+
+<img alt="une image distante" src="https://picsum.photos/640/480" />
+
+### Images cliquables
+
+Vous pouvez également utiliser des images cliquables avec les deux syntaxes :
+
+[![une image cliquable](../../../../src/assets/favicon.png)](../../../../src/assets/favicon.png)
+
+Le lien ne sera pas mis à jour s'il ne cible pas la source de l'image :
+
+<a href="https://astro.build">
+  <img alt="une image HTML" src="../../../../src/assets/favicon.png" />
+</a>
+
+## Structures complexes
+
+Parfois, vous pouvez avoir besoin de structures plus complexes comme :
+
+### Apartés
+
+Vous pouvez utiliser des directives Markdown dans vos contenus en précisant un type après l'ouverture de la directive pour créer des apartés :
+
+:::warning
+Voici un exemple d'un aparté utilisant le type `warning`.
+:::
+
+Vous pouvez également fournir un titre en utilisant `[Le titre]` :
+
+:::idea[C'est le titre]
+Voici un exemple d'un aparté utilisant le type `idea` et un titre.
+:::
+
+### Figure
+
+<figure>
+  <img alt="une image" src="../../../../src/assets/favicon.png" />
+  <figcaption>La légende de la figure</figcaption>
+</figure>
+
+### Code clôturé
+
+```js
+const a = 2;
+const b = 4;
+console.log(a + b);
+```
+
+### Tableaux
+
+| Colonne 1 | Colonne 2 | Colonne 3 |
+| --------- | --------- | --------- |
+| Élément 1 | Élément 2 | Élément 3 |
+| Élément 4 | Élément 5 | Élément 6 |

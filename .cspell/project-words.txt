@@ -5,8 +5,10 @@ blogroll
 bluesky
 canvaskit
 commitlint
+Français
 frontmatter
 globby
+linkedin
 mdast
 Mdxjs
 nanostores

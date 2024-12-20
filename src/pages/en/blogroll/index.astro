@@ -1,0 +1,68 @@
+---
+import type { ComponentProps } from "astro/types";
+import { components } from "../../../components/mdx";
+import CardsList from "../../../components/molecules/cards-list/cards-list.astro";
+import CollectionCard from "../../../components/organisms/collection-card/collection-card.astro";
+import CollectionMeta from "../../../components/organisms/collection-meta/collection-meta.astro";
+import PageLayout from "../../../components/templates/page-layout/page-layout.astro";
+import { queryCollection } from "../../../lib/astro/collections/query-collection";
+import { queryEntry } from "../../../lib/astro/collections/query-entry";
+import { getWebPageGraph } from "../../../lib/schema-dts/graphs/webpage-graph";
+import { useI18n } from "../../../utils/i18n";
+
+const { locale, route, translate, translatePlural } = useI18n(
+  Astro.currentLocale,
+);
+const { Content, ...page } = await queryEntry({
+  collection: "pages",
+  id: "blogroll",
+  locale,
+});
+const { entries: blogroll, total } = await queryCollection("blogroll", {
+  orderBy: { key: "title", order: "ASC" },
+});
+const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
+  { label: translate("page.home.title"), url: route("home") },
+  { label: page.title, url: Astro.url.href },
+];
+const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
+  await getWebPageGraph({ ...page, breadcrumb }),
+];
+const cta: ComponentProps<typeof CollectionCard>["cta"] = {
+  ariaLabel: translate("cta.open.website.a11y"),
+  icon: "globe",
+  isExternal: true,
+  label: translate("cta.open.website"),
+};
+---
+
+<PageLayout
+  breadcrumb={breadcrumb}
+  description={page.description}
+  feed={`${route("blogroll")}/feed.xml`}
+  graphs={graphs}
+  seo={page.seo}
+  title={page.title}
+>
+  <CollectionMeta
+    data={{
+      total: translatePlural("meta.value.total.blogroll", {
+        count: total,
+      }),
+    }}
+    slot="meta"
+  />
+  <Content components={components} slot={page.hasContent ? "body" : ""} />
+  <CardsList items={blogroll} sizeMinCols="35rem" slot="disconnected-body">
+    {
+      (blog: (typeof blogroll)[number]) => (
+        <CollectionCard
+          cta={cta}
+          elevation="raised"
+          entry={blog}
+          featuredMeta={{ icon: "locale", key: "inLanguages" }}
+        />
+      )
+    }
+  </CardsList>
+</PageLayout>

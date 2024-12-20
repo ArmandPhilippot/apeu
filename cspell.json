@@ -22,6 +22,11 @@
       "name": "collaborators-name",
       "noSuggest": true,
       "path": "./.cspell/collaborators-name.txt"
+    },
+    {
+      "name": "french-contents",
+      "path": "./.cspell/french-contents.txt",
+      "noSuggest": true
     }
   ],
   "enableFiletypes": ["astro", "mdx"],
@@ -36,7 +41,23 @@
     "pnpm-lock.yaml"
   ],
   "ignoreRegExpList": ["Email", "Urls", "#[\\w-]*", "/id: '.*'/g"],
+  "import": ["@cspell/dict-fr-fr/cspell-ext.json"],
   "language": "en",
   "useGitignore": true,
-  "version": "0.2"
+  "version": "0.2",
+  "overrides": [
+    {
+      "filename": [
+        ".cspell/french-contents.txt",
+        "content/fr/**",
+        "README.md",
+        "src/pages/!(en)/**",
+        "src/translations/fr.json"
+      ],
+      "language": "en,fr",
+      "dictionaries": ["french-contents"],
+      "caseSensitive": false,
+      "allowCompoundWords": true
+    }
+  ]
 }

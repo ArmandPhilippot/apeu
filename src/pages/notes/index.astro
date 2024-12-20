@@ -21,7 +21,7 @@ const { Content, ...page } = await queryEntry({
 const { entries: notes, total } = await queryCollection("notes", {
   format: "preview",
   orderBy: { key: "publishedOn", order: "DESC" },
-  where: { locale: "en" },
+  where: { locale: "fr" },
 });
 const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
   { label: translate("page.home.title"), url: route("home") },

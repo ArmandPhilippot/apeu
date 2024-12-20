@@ -44,6 +44,7 @@ export default defineConfig({
         defaultLocale: CONFIG.LANGUAGES.DEFAULT,
         locales: {
           en: "en-US",
+          fr: "fr-FR",
         },
       },
     }),

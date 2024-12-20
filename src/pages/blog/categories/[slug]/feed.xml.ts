@@ -11,7 +11,7 @@ import { useI18n } from "../../../../utils/i18n";
 
 export const getStaticPaths = (async () => {
   const { entries } = await queryCollection("blogCategories", {
-    where: { locale: "en" },
+    where: { locale: "fr" },
   });
 
   return entries.map((cat) => {

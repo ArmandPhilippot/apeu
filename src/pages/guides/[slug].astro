@@ -12,7 +12,7 @@ import { useI18n } from "../../utils/i18n";
 
 export const getStaticPaths = (async () => {
   const { entries: guides } = await queryCollection("guides", {
-    where: { locale: "en" },
+    where: { locale: "fr" },
   });
 
   return guides.map(({ slug, ...guide }) => {

@@ -1,15 +1,19 @@
 ---
 import type { ComponentProps } from "astro/types";
+import { CONFIG } from "../../../utils/constants";
+import { useI18n } from "../../../utils/i18n";
 import NavItem from "../../molecules/nav-item/nav-item.astro";
 import NavList from "../../molecules/nav-list/nav-list.astro";
 
 type Props = Omit<ComponentProps<typeof NavList>, "children" | "hideMarker">;
 
 const { class: className, items, ...attrs } = Astro.props;
+const { locale, route } = useI18n(Astro.currentLocale);
 const isCurrentRouteOrNested = (url: string) => {
-  if (url === "/") return Astro.url.pathname === url;
-  const parentPath = Astro.url.pathname.split("/")[1];
-  const slug = url.split("/")[1];
+  if (url === route("home")) return Astro.url.pathname === url;
+  const parentSlugIndex = locale === CONFIG.LANGUAGES.DEFAULT ? 1 : 2;
+  const parentPath = Astro.url.pathname.split("/")[parentSlugIndex];
+  const slug = url.split("/")[parentSlugIndex];
 
   return parentPath === slug;
 };

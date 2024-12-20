@@ -18,12 +18,12 @@ export const getStaticPaths = (async ({ paginate }) => {
   const page = await queryEntry({
     collection: "pages",
     id: "guides",
-    locale: "en",
+    locale: "fr",
   });
   const { entries: guides, total } = await queryCollection("guides", {
     format: "preview",
     orderBy: { key: "publishedOn", order: "DESC" },
-    where: { locale: "en" },
+    where: { locale: "fr" },
   });
 
   return paginate(guides, { pageSize: CONFIG.ITEMS_PER_PAGE }).map(

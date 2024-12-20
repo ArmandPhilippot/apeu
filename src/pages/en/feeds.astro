@@ -43,7 +43,7 @@ const feeds = await getCollectionsFeeds(locale);
     <Content components={components} />
     <p>{translate("page.feeds.global.feed.introduction")}</p>
     <p>
-      <Button as="a" href="/feed.xml">
+      <Button as="a" href={`${route("home")}feed.xml`}>
         <Icon aria-hidden="true" name="feed" />
         {translate("cta.subscribe.to.website")}
       </Button>

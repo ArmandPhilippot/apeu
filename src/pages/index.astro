@@ -64,7 +64,7 @@ const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
   title={translate("page.home.title")}
 >
   <Fragment slot="disconnected-body">
-    <Greetings isCentered isSpaced name={author.name} />
+    <Greetings class="homepage-greetings" isCentered name={author.name} />
     {
       author ? (
         <Fragment>
@@ -118,13 +118,16 @@ const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
             isPadded
             isProse
             isRounded
-            isSpaced
           >
             <Heading as="h2">
               {translate("page.home.section.collections.heading")}
             </Heading>
           </Box>
-          <CardsList isContainer items={collections} sizeMinCols="27rem">
+          <CardsList
+            isContainer
+            items={collections}
+            sizeMinCols="clamp(26rem,20dvi,30rem)"
+          >
             {({ meta, ...collection }: (typeof collections)[number]) => (
               <CollectionCard
                 class="homepage-collection"
@@ -142,13 +145,14 @@ const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
 
 <style>
   .homepage {
-    @container (width > 41em) {
+    @container (width > 55em) {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, auto));
-    }
+      gap: var(--spacing-md);
 
-    @container (width > 55em) {
-      column-gap: var(--spacing-md);
+      & > :global(*) {
+        margin-block: 0;
+      }
     }
 
     @container (width > 82em) {
@@ -164,7 +168,7 @@ const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
       > :global(
         *:where(:not(.homepage-about, .homepage-contact, .homepage-content))
       ) {
-      @container (width > 41em) {
+      @container (width > 55em) {
         grid-column: 1 / -1;
       }
     }
@@ -173,7 +177,7 @@ const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
       > :global(
         *:where(:not(.homepage-about, .homepage-contact, .homepage-content))
       ) {
-      @container (width > 41em) {
+      @container (width > 55em) {
         grid-column: 1 / span 2;
       }
 
@@ -183,21 +187,25 @@ const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
     }
   }
 
+  .homepage-greetings {
+    margin-block: clamp(var(--spacing-md), 6dvi, var(--spacing-lg));
+  }
+
   .homepage-about {
-    @container (width > 41em) {
+    @container (width > 55em) {
       grid-column: 1;
     }
   }
 
   .homepage-contact {
-    @container (width > 41em) {
+    @container (width > 55em) {
       border-inline-start: var(--border-size-sm) solid var(--color-border);
       grid-column: 2;
     }
   }
 
   .homepage-content {
-    @container (width > 41em) {
+    @container (width > 55em) {
       grid-column: 1 / -1;
     }
 
@@ -207,7 +215,8 @@ const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
   }
 
   .homepage-collection {
-    @container body (width >= 51.3em) {
+    /* TODO: avoid magic numbers... */
+    @container body (width >= 49.6em) {
       border: var(--border-size-sm) solid var(--color-border);
     }
   }

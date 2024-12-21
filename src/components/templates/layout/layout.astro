@@ -289,9 +289,9 @@ const topId = translate("anchor.site.top");
       grid-column: 1;
       grid-row: 1;
       flex-flow: column;
-      gap: var(--spacing-sm);
-      padding-block-start: clamp(var(--spacing-4xs), 1.5dvh, var(--spacing-md));
-      padding-inline: var(--spacing-xs);
+      gap: clamp(var(--spacing-sm), 2dvi, var(--spacing-2xl));
+      padding: clamp(var(--spacing-4xs), 1.5dvi, var(--spacing-2xl))
+        var(--spacing-xs) 0;
       border-block-end: none;
       box-shadow: none;
     }
@@ -344,7 +344,6 @@ const topId = translate("anchor.site.top");
 
     @media (width >= 1024px) {
       flex: 1;
-      margin-block-start: clamp(var(--spacing-4xs), 1dvw, var(--spacing-2xl));
       border-inline-start: none;
     }
   }
@@ -383,15 +382,12 @@ const topId = translate("anchor.site.top");
        * fix height to the navbar is not ideal neither so I prefer to use a
        * "magic" number here. */
     bottom: 6.5rem;
-    right: calc(1dvw + var(--spacing-sm));
+    right: calc(1dvi + var(--spacing-sm));
     z-index: 2;
 
     @media (width >= 640px) {
-      bottom: calc(1dvw + var(--spacing-md));
-    }
-
-    @media (width >= 640px) {
-      right: calc(1dvw + var(--spacing-md));
+      bottom: calc(1dvi + var(--spacing-md));
+      right: calc(1dvi + var(--spacing-md));
     }
   }
 

@@ -134,8 +134,8 @@ const { translate } = useI18n(Astro.currentLocale);
     @media (width >= 1024px) {
       display: flex;
       flex-flow: column;
-      gap: clamp(var(--spacing-2xs), 1.5dvh, var(--spacing-sm));
-      padding-inline: clamp(var(--spacing-sm), 2dvw, var(--spacing-2xl));
+      gap: clamp(var(--spacing-2xs), 1.5dvi, var(--spacing-md));
+      padding-inline: clamp(var(--spacing-sm), 2dvi, var(--spacing-2xl));
     }
   }
 
@@ -185,7 +185,7 @@ const { translate } = useI18n(Astro.currentLocale);
       flex-flow: row wrap;
       justify-content: start;
       padding: var(--spacing-xs)
-        clamp(var(--spacing-2xs), 1.25dvw, var(--spacing-lg));
+        clamp(var(--spacing-2xs), 1dvi, var(--spacing-lg));
     }
   }
 
@@ -212,7 +212,6 @@ const { translate } = useI18n(Astro.currentLocale);
     @media (width >= 1024px) {
       background-color: var(--color-regular-light);
       font-size: var(--font-size-sm);
-      outline-offset: calc(var(--border-size-sm) * -1);
       text-transform: none;
     }
   }

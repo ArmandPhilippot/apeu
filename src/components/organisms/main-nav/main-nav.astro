@@ -75,8 +75,19 @@ const isCurrentRouteOrNested = (url: string) => {
       }
 
       @media (width >= 1024px) {
+        padding: 0;
         background: var(--color-regular-light);
         border-color: var(--color-border);
+
+        &:first-child {
+          border-start-start-radius: inherit;
+          border-start-end-radius: inherit;
+        }
+
+        &:last-child {
+          border-end-start-radius: inherit;
+          border-end-end-radius: inherit;
+        }
 
         &:where(:has(> *:is(.selected))) {
           background: transparent;
@@ -126,11 +137,17 @@ const isCurrentRouteOrNested = (url: string) => {
     @media (width >= 480px) {
       flex-flow: row wrap;
       justify-content: start;
-      padding-inline: clamp(var(--spacing-xs), 1dvw, var(--spacing-sm));
+      padding-inline: clamp(var(--spacing-xs), 1dvi, var(--spacing-sm));
     }
 
-    &:where(.selected) {
-      @media (width >= 1024px) {
+    @media (width >= 1024px) {
+      padding: var(--spacing-xs)
+        clamp(var(--spacing-2xs), 1dvi, var(--spacing-lg));
+      border: 0;
+      border-radius: inherit;
+      outline-offset: calc(var(--border-size-sm) * -1);
+
+      &:where(.selected) {
         border: 0;
       }
     }

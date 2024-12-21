@@ -42,7 +42,7 @@ const { translate } = useI18n(Astro.currentLocale);
         isRounded
       >
         {heading ? (
-          <div class="page-heading">
+          <Box class="page-heading" isPadded isProse>
             <Heading as="h1" class="page-title">
               {heading}
             </Heading>
@@ -56,7 +56,7 @@ const { translate } = useI18n(Astro.currentLocale);
                 {translate("cta.subscribe")}
               </Button>
             ) : null}
-          </div>
+          </Box>
         ) : null}
         {cover ? (
           <AstroImg {...cover} class="page-cover" loading="eager" />
@@ -83,7 +83,7 @@ const { translate } = useI18n(Astro.currentLocale);
           <Heading as="h2" class="page-toc-title" slot="label">
             {translate("collapsible.toc.title")}
           </Heading>
-          <Box isPadded>
+          <Box class="page-toc-body" isPadded isProse>
             <TableOfContents headings={buildToc(toc)} />
           </Box>
         </Collapsible>
@@ -171,8 +171,6 @@ const { translate } = useI18n(Astro.currentLocale);
     align-items: center;
     place-content: center;
     gap: var(--spacing-sm) var(--spacing-md);
-    padding: clamp(var(--spacing-sm), 3dvw, var(--spacing-md))
-      clamp(var(--spacing-md), 4dvw, var(--spacing-lg));
     text-align: center;
 
     @container (width >= calc(55em / 1.25)) {
@@ -211,7 +209,7 @@ const { translate } = useI18n(Astro.currentLocale);
   }
 
   .page-meta {
-    padding: var(--spacing-md);
+    padding: clamp(var(--spacing-md), 1.5dvi, var(--spacing-xl));
     text-align: center;
   }
 
@@ -237,14 +235,6 @@ const { translate } = useI18n(Astro.currentLocale);
     @container (width > calc(55em * 4 / 3)) {
       position: sticky;
       top: var(--spacing-md);
-
-      & > :global(:is(summary)) {
-        padding-inline-start: clamp(
-          var(--spacing-sm),
-          1.5dvw,
-          var(--spacing-md)
-        );
-      }
     }
   }
 
@@ -252,8 +242,14 @@ const { translate } = useI18n(Astro.currentLocale);
     font-size: var(--font-size-xl);
   }
 
+  .page-toc > :global(:is(summary)),
+  .page-toc-body {
+    @container (width > calc(55em * 4 / 3)) {
+      padding-inline-start: clamp(var(--spacing-sm), 1.5dvi, var(--spacing-md));
+    }
+  }
+
   .page-body {
-    padding-block: clamp(var(--spacing-md), 2.5dvw, var(--spacing-xl));
     border-start-start-radius: 0;
     border-start-end-radius: 0;
 
@@ -267,13 +263,18 @@ const { translate } = useI18n(Astro.currentLocale);
     }
   }
 
+  :where(.page:has(.page-toc)) .page-body {
+    padding-block: clamp(var(--spacing-md), 3dvi, var(--spacing-lg))
+      clamp(var(--spacing-md), 4dvi, var(--spacing-xl));
+  }
+
   :where(.page.has-disconnected-body:not(:has(.page-body))) .page-header,
   :where(.page.has-disconnected-body) .page-body {
-    margin-block-end: var(--spacing-md);
+    margin-block-end: clamp(var(--spacing-2xs), 4dvi, var(--spacing-md));
   }
 
   :where(.page.has-disconnected-body) .page-footer {
-    margin-block-start: var(--spacing-md);
+    margin-block-start: clamp(var(--spacing-2xs), 4dvi, var(--spacing-md));
   }
 
   :where(.page:not(.has-disconnected-body)) .page-footer {

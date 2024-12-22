@@ -15,10 +15,19 @@ type Props = HTMLAttributes<"article"> & {
   cover?: ComponentProps<typeof AstroImg> | null | undefined;
   feed?: string | URL | null | undefined;
   heading?: string | null | undefined;
+  isIndex?: boolean | null | undefined;
   toc?: MarkdownHeading[] | null | undefined;
 };
 
-const { class: className, cover, feed, heading, toc, ...attrs } = Astro.props;
+const {
+  class: className,
+  cover,
+  feed,
+  heading,
+  isIndex = false,
+  toc,
+  ...attrs
+} = Astro.props;
 const { translate } = useI18n(Astro.currentLocale);
 ---
 
@@ -26,7 +35,10 @@ const { translate } = useI18n(Astro.currentLocale);
   {...attrs}
   class:list={[
     "page",
-    { "has-disconnected-body": Astro.slots.has("disconnected-body") },
+    {
+      "has-disconnected-body": Astro.slots.has("disconnected-body"),
+      index: isIndex,
+    },
     className,
   ]}
 >
@@ -263,9 +275,9 @@ const { translate } = useI18n(Astro.currentLocale);
     }
   }
 
-  :where(.page:has(.page-toc)) .page-body {
+  :where(.page:not(.index)) .page-body {
     padding-block: clamp(var(--spacing-md), 3dvi, var(--spacing-lg))
-      clamp(var(--spacing-md), 4dvi, var(--spacing-xl));
+      clamp(var(--spacing-lg), 4dvi, var(--spacing-xl));
   }
 
   :where(.page.has-disconnected-body:not(:has(.page-body))) .page-header,

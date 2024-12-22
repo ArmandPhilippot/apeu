@@ -74,19 +74,21 @@ const getPostCTA = (
       isSpaced
     >
       <Heading>{translate("page.blog.section.recent.posts.heading")}</Heading>
-      <Button as="a" href={route("blog.posts")}>
-        {translatePlural("cta.see.all.posts", { count: totalPosts })}
-      </Button>
-      <Button
-        aria-label={translate("cta.subscribe.a11y", {
-          title: translate("page.blog.posts.title"),
-        })}
-        as="a"
-        href={`${route("blog.posts")}/feed.xml`}
-      >
-        <Icon aria-hidden="true" name="feed" />
-        {translate("cta.subscribe")}
-      </Button>
+      <div class="blog-section-cta">
+        <Button as="a" href={route("blog.posts")}>
+          {translatePlural("cta.see.all.posts", { count: totalPosts })}
+        </Button>
+        <Button
+          aria-label={translate("cta.subscribe.a11y", {
+            title: translate("page.blog.posts.title"),
+          })}
+          as="a"
+          href={`${route("blog.posts")}/feed.xml`}
+        >
+          <Icon aria-hidden="true" name="feed" />
+          {translate("cta.subscribe")}
+        </Button>
+      </div>
     </Box>
     <CardsList isContainer items={recentPosts} sizeMinCols="35rem">
       {
@@ -130,13 +132,29 @@ const getPostCTA = (
 </PageLayout>
 
 <style>
-  .blog-section-heading {
+  .blog-section-heading,
+  .blog-section-cta {
     display: flex;
-    flex-flow: row wrap;
+    align-items: center;
     gap: var(--spacing-sm) var(--spacing-md);
+  }
+
+  .blog-section-heading {
+    flex-flow: row wrap;
+    justify-content: center;
 
     & > :global(*:first-child) {
-      margin-inline-end: auto;
+      @container (width >= 44em) {
+        margin-inline-end: auto;
+      }
+    }
+  }
+
+  .blog-section-cta {
+    flex-flow: column wrap;
+
+    @container (width >= 44em) {
+      flex-flow: row wrap;
     }
   }
 

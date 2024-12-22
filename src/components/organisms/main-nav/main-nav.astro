@@ -51,7 +51,7 @@ const isCurrentRouteOrNested = (url: string) => {
     &:where(:not(:has(> :only-child))) {
       column-count: 2;
       column-gap: 0;
-      column-rule: var(--border-size-sm) solid var(--color-primary);
+      column-rule: var(--border-size-sm) solid var(--color-border-light);
 
       @media (width >= 480px) {
         column-count: 3;
@@ -66,7 +66,7 @@ const isCurrentRouteOrNested = (url: string) => {
 
     & > :global(*) {
       padding: var(--spacing-3xs);
-      border-block-start: var(--border-size-sm) solid var(--color-primary);
+      border-block-start: var(--border-size-sm) solid var(--color-border-light);
 
       &:first-child {
         @media (width >= 1024px) {
@@ -99,7 +99,7 @@ const isCurrentRouteOrNested = (url: string) => {
 
     &:where(:has(> :last-child:not(:nth-child(2n)))) > :global(*:last-child) {
       @media (width < 480px) {
-        border-block-end: var(--border-size-sm) solid var(--color-primary);
+        border-block-end: var(--border-size-sm) solid var(--color-border-light);
       }
     }
 
@@ -107,7 +107,7 @@ const isCurrentRouteOrNested = (url: string) => {
       > :global(*:nth-last-child(2)),
     &:where(:has(> :last-child:not(:nth-child(3n)))) > :global(*:last-child) {
       @media (width >= 480px) {
-        border-block-end: var(--border-size-sm) solid var(--color-primary);
+        border-block-end: var(--border-size-sm) solid var(--color-border-light);
       }
 
       @media (width >= 1024px) {
@@ -146,10 +146,6 @@ const isCurrentRouteOrNested = (url: string) => {
       border: 0;
       border-radius: inherit;
       outline-offset: calc(var(--border-size-sm) * -1);
-
-      &:where(.selected) {
-        border: 0;
-      }
     }
   }
 

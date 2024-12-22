@@ -158,6 +158,9 @@ const { translate } = useI18n(Astro.currentLocale);
       position: relative;
 
       &:where(.menu) {
+        border-radius: var(--border-radii-md);
+        box-shadow: var(--shadow-raised-to-top-left);
+
         & > :global(:is(input, label)) {
           display: none;
         }
@@ -211,6 +214,7 @@ const { translate } = useI18n(Astro.currentLocale);
   :where(.navbar-item:where(.search, .settings)) .navbar-item-label {
     @media (width >= 1024px) {
       background-color: var(--color-regular-light);
+      box-shadow: var(--shadow-raised-to-top-left);
       font-size: var(--font-size-sm);
       text-transform: none;
     }

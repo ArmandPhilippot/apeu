@@ -51,50 +51,115 @@ const isCurrentRouteOrNested = (url: string) => {
     &:where(:not(:has(> :only-child))) {
       column-count: 2;
       column-gap: 0;
-      column-rule: var(--border-size-sm) solid var(--color-border-dark);
+      column-rule: var(--border-size-sm) solid var(--color-border-light);
+
+      @media (width >= 480px) {
+        column-count: 3;
+      }
 
       @media (width >= 1024px) {
+        border: var(--border-size-sm) solid var(--color-border);
+        border-radius: var(--border-radii-md);
         column-count: unset;
       }
     }
 
-    & > :global(*:nth-child(odd):last-child) {
-      border-block-end: var(--border-size-sm) solid var(--color-border-dark);
+    & > :global(*) {
+      padding: var(--spacing-3xs);
+      border-block-start: var(--border-size-sm) solid var(--color-border-light);
+
+      &:first-child {
+        @media (width >= 1024px) {
+          border-block-start: 0;
+        }
+      }
 
       @media (width >= 1024px) {
-        border-block-end: none;
+        padding: 0;
+        background: var(--color-regular-light);
+        border-color: var(--color-border);
+
+        &:first-child {
+          border-start-start-radius: inherit;
+          border-start-end-radius: inherit;
+        }
+
+        &:last-child {
+          border-end-start-radius: inherit;
+          border-end-end-radius: inherit;
+        }
+
+        &:where(:has(> *:is(.selected))) {
+          background: transparent;
+          box-shadow: inset 0 0 var(--border-size-sm) var(--border-size-sm)
+            oklch(from var(--color-shadow) l c h / 0.5);
+        }
       }
     }
 
-    & > :global(*:not(:first-child)) {
+    &:where(:has(> :last-child:not(:nth-child(2n)))) > :global(*:last-child) {
+      @media (width < 480px) {
+        border-block-end: var(--border-size-sm) solid var(--color-border-light);
+      }
+    }
+
+    &:where(:has(> :first-child:nth-last-child(4)))
+      > :global(*:nth-last-child(2)),
+    &:where(:has(> :last-child:not(:nth-child(3n)))) > :global(*:last-child) {
+      @media (width >= 480px) {
+        border-block-end: var(--border-size-sm) solid var(--color-border-light);
+      }
+
       @media (width >= 1024px) {
-        margin-block-start: var(--spacing-2xs);
+        border-block-end: 0;
+      }
+    }
+
+    &::before {
+      @media (width >= 1024px) {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
+        user-select: none;
+        background: var(--color-regular-light);
+        border-radius: inherit;
+        mask: linear-gradient(var(--color-regular) 0 0);
       }
     }
   }
 
   .main-nav-item {
-    flex-flow: row wrap;
-    justify-content: start;
-    padding: var(--spacing-xs) var(--spacing-2xs);
-    border-block-start: var(--border-size-sm) solid var(--color-border-dark);
-    border-radius: 0;
-    break-inside: avoid;
+    break-inside: avoid-column;
     outline-offset: calc(var(--border-size-md) * -1);
 
-    &:where(.selected) {
-      border-block-start-color: var(--color-primary);
+    @media (width >= 480px) {
+      flex-flow: row wrap;
+      justify-content: start;
+      padding-inline: clamp(var(--spacing-xs), 1dvi, var(--spacing-sm));
     }
 
     @media (width >= 1024px) {
-      padding-inline: clamp(var(--spacing-2xs), 1.25dvw, var(--spacing-lg));
-      border-radius: var(--border-radii-md);
-      font-size: var(--font-size-xs);
-      outline-offset: 0;
+      padding: var(--spacing-xs)
+        clamp(var(--spacing-2xs), 1dvi, var(--spacing-lg));
+      border: 0;
+      border-radius: inherit;
+      outline-offset: calc(var(--border-size-sm) * -1);
+    }
+  }
 
-      &:where(:not(.selected)) {
-        border-block-color: transparent;
-      }
+  :global(:where([data-theme="light"])) .main-nav::before {
+    @media (width >= 1024px) {
+      filter: url("#paper-filter") brightness(0.985) contrast(98.5%)
+        saturate(103%);
+    }
+  }
+
+  :global(:where([data-theme="dark"])) .main-nav::before {
+    @media (width >= 1024px) {
+      filter: url("#dark-paper-filter") brightness(0.85) contrast(103%)
+        saturate(120%);
     }
   }
 </style>

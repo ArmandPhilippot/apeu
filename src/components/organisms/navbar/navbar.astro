@@ -134,21 +134,37 @@ const { translate } = useI18n(Astro.currentLocale);
     @media (width >= 1024px) {
       display: flex;
       flex-flow: column;
+      gap: clamp(var(--spacing-2xs), 1.5dvi, var(--spacing-md));
+      padding-inline: clamp(var(--spacing-sm), 2dvi, var(--spacing-2xl));
     }
   }
 
   .navbar-item {
     min-height: calc(var(--one-px-in-rem) * 54);
-    padding: var(--spacing-3xs);
     position: unset;
 
     @media (any-pointer: fine) {
       min-height: var(--one-px-in-rem) * 48;
     }
 
+    @media (width >= 640px) {
+      &:where(.search) {
+        position: relative;
+      }
+    }
+
     @media (width >= 1024px) {
-      padding-inline: clamp(var(--spacing-xs), 1.5dvw, var(--spacing-lg));
+      padding: 0;
       position: relative;
+
+      &:where(.menu) {
+        border-radius: var(--border-radii-md);
+        box-shadow: var(--shadow-raised-to-top-left);
+
+        & > :global(:is(input, label)) {
+          display: none;
+        }
+      }
     }
 
     &:where(:not(:last-child)) {
@@ -158,18 +174,11 @@ const { translate } = useI18n(Astro.currentLocale);
         border-inline-end: none;
       }
     }
-
-    @media (width >= 1024px) {
-      &:where(.menu) {
-        & > :global(:is(input, label)) {
-          display: none;
-        }
-      }
-    }
   }
 
   .navbar-item-label {
     font-size: var(--font-size-xs);
+    text-transform: uppercase;
 
     @media (width >= 640px) {
       padding-inline: var(--spacing-2xs);
@@ -179,13 +188,36 @@ const { translate } = useI18n(Astro.currentLocale);
       flex-flow: row wrap;
       justify-content: start;
       padding: var(--spacing-xs)
-        clamp(var(--spacing-2xs), 1.25dvw, var(--spacing-lg));
+        clamp(var(--spacing-2xs), 1dvi, var(--spacing-lg));
     }
+  }
+
+  :where(.navbar-item:has(> input:focus)) .navbar-item-label {
+    outline-offset: calc(var(--border-size-md) * -1);
+  }
+
+  :where(.navbar-item:has(> input:checked)) .navbar-item-label {
+    border-color: var(--color-primary);
   }
 
   :where(.navbar-item:has(> input:checked:not(:focus))) .navbar-item-label {
     outline: none;
     border-color: var(--color-primary);
+  }
+
+  :where(.navbar-item:has(> input:not(:checked))) .navbar-item-label {
+    @media (width >= 1024px) {
+      border-color: var(--color-border);
+    }
+  }
+
+  :where(.navbar-item:where(.search, .settings)) .navbar-item-label {
+    @media (width >= 1024px) {
+      background-color: var(--color-regular-light);
+      box-shadow: var(--shadow-raised-to-top-left);
+      font-size: var(--font-size-sm);
+      text-transform: none;
+    }
   }
 
   .navbar-item-modal {
@@ -200,8 +232,9 @@ const { translate } = useI18n(Astro.currentLocale);
     box-shadow: var(--shadow-elevated-to-bottom-center);
 
     @media (width >= 640px) {
+      min-width: max-content;
+      left: auto;
       bottom: unset;
-      left: calc(var(--spacing-lg) * -1);
       top: 100%;
       border-inline: var(--border-size-sm) solid var(--color-border);
       box-shadow: var(--shadow-elevated-to-top-center);
@@ -217,7 +250,9 @@ const { translate } = useI18n(Astro.currentLocale);
     transform-origin: 20% 100%;
 
     @media (width >= 640px) {
-      transform-origin: 30% -25%;
+      --x: -40%;
+      right: auto;
+      transform-origin: 10% -25%;
     }
 
     @media (width >= 1024px) {
@@ -234,7 +269,9 @@ const { translate } = useI18n(Astro.currentLocale);
     transform-origin: 50% 100%;
 
     @media (width >= 640px) {
-      transform-origin: 65% -50%;
+      --x: 25%;
+
+      transform-origin: 90% -50%;
     }
   }
 
@@ -242,17 +279,18 @@ const { translate } = useI18n(Astro.currentLocale);
     transform-origin: 80% 100%;
 
     @media (width >= 640px) {
-      transform-origin: 85% -15%;
+      transform-origin: 85% -25%;
     }
   }
 
   :where(.navbar-item:where(.search, .settings)) .navbar-item-modal {
     @media (width >= 1024px) {
+      --x: var(--spacing-sm);
       --y: -50%;
 
       top: 50%;
       left: 100%;
-      transform-origin: -20% 10%;
+      transform-origin: -20% 5%;
     }
   }
 </style>

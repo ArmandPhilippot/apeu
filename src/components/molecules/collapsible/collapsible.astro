@@ -29,7 +29,7 @@ if (!Astro.slots.has("label")) throw new MissingSlotError("label");
     display: flex;
     flex-flow: row nowrap;
     align-items: center;
-    padding-inline-end: clamp(var(--spacing-sm), 1.5dvw, var(--spacing-md));
+    padding-inline-end: var(--spacing-md);
     color: var(--color-primary-faded);
     cursor: pointer;
     font-weight: var(--font-weight-bold);
@@ -56,7 +56,7 @@ if (!Astro.slots.has("label")) throw new MissingSlotError("label");
     min-width: var(--icon-size);
     aspect-ratio: 1 / 1;
     margin-inline-start: auto;
-    padding-inline-start: clamp(var(--spacing-sm), 1.5dvw, var(--spacing-md));
+    padding-inline-start: var(--spacing-md);
     position: relative;
     border-inline-start: var(--border-size-sm) solid var(--color-border);
 

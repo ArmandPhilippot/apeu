@@ -76,10 +76,6 @@ const { as = "article", class: className, ...attrs } = Astro.props;
         grid-auto-rows: max-content 1fr max-content;
       }
     }
-
-    & > :global(*:not(.card-footer):last-child) {
-      padding-block-end: clamp(var(--spacing-md), 3.5dvh, var(--spacing-xl));
-    }
   }
 
   :where(.card:not(:has(.card-cover))) {
@@ -110,7 +106,7 @@ const { as = "article", class: className, ...attrs } = Astro.props;
   .card-frontmatter {
     gap: var(--spacing-xs);
     max-width: unset;
-    padding-block: clamp(var(--spacing-xs), 0.75dvw, var(--spacing-sm));
+    padding-block: clamp(var(--spacing-xs), 0.75dvi, var(--spacing-sm));
     border-block-end: var(--border-size-sm) solid var(--color-border);
     border-radius: inherit;
     color: var(--color-primary-faded);
@@ -131,20 +127,10 @@ const { as = "article", class: className, ...attrs } = Astro.props;
     justify-content: space-between;
     gap: var(--spacing-md);
     margin-block-start: auto;
-    padding-block: var(--spacing-md)
-      clamp(var(--spacing-md), 1.5dvh, var(--spacing-lg));
+    padding: clamp(var(--spacing-md), 1dvi, var(--spacing-lg)) 0
+      clamp(var(--spacing-md), 1.5dvi, var(--spacing-xl));
+    margin-inline: clamp(var(--spacing-md), 2.5dvi, var(--spacing-xl));
     border-block-start: var(--border-size-sm) solid var(--color-border);
-
-    @container (width > 55em) {
-      display: grid;
-      grid-template-columns: auto minmax(0, 1fr);
-      padding-inline: 0;
-      margin-inline: clamp(var(--spacing-md), 2dvw, var(--spacing-lg));
-
-      &:where(.has-meta) > :global(*:first-child) {
-        margin-block-end: clamp(var(--spacing-xs), 1dvh, var(--spacing-sm));
-      }
-    }
 
     &:where(:not(.has-meta)) {
       justify-content: end;
@@ -156,28 +142,16 @@ const { as = "article", class: className, ...attrs } = Astro.props;
   }
 
   :global(:where(.card:has(.card-frontmatter))) .card-heading {
-    padding-block-start: clamp(var(--spacing-md), 2.5dvh, var(--spacing-lg));
-  }
-
-  :global(:where(.card:not(:has(.card-frontmatter)))) .card-heading {
-    margin-block-start: clamp(var(--spacing-xs), 1dvh, var(--spacing-sm));
+    padding-block-start: clamp(var(--spacing-md), 1dvi, var(--spacing-lg));
   }
 
   .card-body {
-    padding-block-start: 0;
+    &:where(:not(:first-child)) {
+      padding-block-start: 0;
+    }
 
     &:where(:not(:last-child)) {
-      margin-block-end: var(--spacing-sm);
-      padding-block-end: clamp(var(--spacing-md), 2dvh, var(--spacing-lg));
-    }
-
-    &:is(:first-child) {
-      margin-block-start: clamp(var(--spacing-sm), 1.5dvh, var(--spacing-md));
-      padding-block-start: clamp(var(--spacing-md), 3.5dvh, var(--spacing-xl));
-    }
-
-    &:is(:last-child) {
-      margin-block-end: clamp(var(--spacing-sm), 1.5dvh, var(--spacing-md));
+      padding-block-end: clamp(var(--spacing-xs), 0.5dvi, var(--spacing-md));
     }
   }
 

@@ -106,13 +106,13 @@ const {
     }
 
     &:where(.prose.padded) {
-      padding: clamp(var(--spacing-md), 3.5dvh, var(--spacing-xl))
-        clamp(var(--spacing-md), 2.5dvw, var(--spacing-lg));
+      padding: clamp(var(--spacing-md), 1.5dvi, var(--spacing-xl))
+        clamp(var(--spacing-md), 2.5dvi, var(--spacing-xl));
     }
 
     &:where(.padded:not(.prose)) {
       padding: var(--spacing-sm)
-        clamp(var(--spacing-sm), 1.5dvw, var(--spacing-md));
+        clamp(var(--spacing-sm), 1.5dvi, var(--spacing-md));
     }
 
     &:where(.rounded.prose) {
@@ -128,7 +128,7 @@ const {
     &:where(.raised.prose) {
       box-shadow: var(--shadow-raised-to-top-center);
 
-      @container (width > 55em) {
+      @container body (width > 55em) {
         box-shadow: var(--shadow-raised-to-top-left);
       }
     }
@@ -137,8 +137,16 @@ const {
       box-shadow: var(--shadow-raised-to-top-left);
     }
 
-    &:where(.spaced) {
+    &:where(.spaced:not(.prose)) {
       margin-block: var(--spacing-md);
+    }
+
+    &:where(.spaced.prose) {
+      margin-block: clamp(var(--spacing-2xs), 4dvi, var(--spacing-md));
+
+      @container (width > 55em) {
+        margin-block: var(--spacing-md);
+      }
     }
   }
 </style>

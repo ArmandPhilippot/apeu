@@ -5,19 +5,13 @@ import ListItem from "../../atoms/list/list-item.astro";
 
 type Props = Omit<
   ComponentProps<typeof Grid>,
-  "as" | "cols" | "justifyContent"
+  "as" | "cols" | "gap" | "justifyContent"
 > & {
   isContainer?: boolean | null | undefined;
   items: unknown[];
 };
 
-const {
-  class: className,
-  gap = "md",
-  isContainer = false,
-  items,
-  ...attrs
-} = Astro.props;
+const { class: className, isContainer = false, items, ...attrs } = Astro.props;
 
 if (!Astro.slots.has("default"))
   throw new Error(
@@ -30,7 +24,6 @@ if (!Astro.slots.has("default"))
   as="ul"
   class:list={["cards-list", className]}
   cols="auto-fit"
-  gap={gap}
   justifyContent="center"
 >
   {
@@ -44,6 +37,11 @@ if (!Astro.slots.has("default"))
 </Grid>
 
 <style>
+  .cards-list {
+    margin: clamp(var(--spacing-2xs), 4dvi, var(--spacing-md)) 0 0;
+    gap: clamp(var(--spacing-2xs), 4dvi, var(--spacing-md));
+  }
+
   .cards-list-item {
     & > :global(*) {
       height: 100%;

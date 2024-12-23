@@ -28,7 +28,7 @@ const { translate } = useI18n(Astro.currentLocale);
     width: fit-content;
     min-width: 35%;
     max-width: calc(100% - var(--spacing-md));
-    padding: var(--spacing-lg);
+    padding: clamp(var(--spacing-md), 10dvi, var(--spacing-lg));
     position: relative;
     background: transparent;
     border-radius: var(--border-radii-md);

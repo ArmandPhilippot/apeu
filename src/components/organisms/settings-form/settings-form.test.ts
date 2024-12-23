@@ -1,8 +1,6 @@
 import { experimental_AstroContainer as AstroContainer } from "astro/container";
 import type { ComponentProps } from "astro/types";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { CONFIG } from "../../../utils/constants";
-import { useI18n } from "../../../utils/i18n";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import SettingsForm from "./settings-form.astro";
 
 vi.mock("../../../utils/constants", async (importOriginal) => {
@@ -20,6 +18,23 @@ vi.mock("../../../utils/constants", async (importOriginal) => {
   };
 });
 
+vi.mock("../../../utils/i18n", async (importOriginal) => {
+  const mod =
+    // eslint-disable-next-line @typescript-eslint/consistent-type-imports
+    await importOriginal<typeof import("../../../utils/i18n")>();
+
+  return {
+    ...mod,
+    useI18n: vi.fn(() => ({
+      locale: "en",
+      route: vi.fn(),
+      translate: (key: string) => `translated_${key}`,
+      translatePlural: (key: string, { count }: { count: number }) =>
+        `translated_${key}_${count}`,
+    })),
+  };
+});
+
 type LocalTestContext = {
   container: AstroContainer;
 };
@@ -27,10 +42,6 @@ type LocalTestContext = {
 describe("SettingsForm", () => {
   beforeEach<LocalTestContext>(async (context) => {
     context.container = await AstroContainer.create();
-  });
-
-  afterEach(() => {
-    vi.resetAllMocks();
   });
 
   it<LocalTestContext>("renders a settings form", async ({ container }) => {
@@ -42,11 +53,7 @@ describe("SettingsForm", () => {
     expect.assertions(2);
 
     expect(result).toContain("</form>");
-    expect(result).toContain(
-      useI18n(CONFIG.LANGUAGES.DEFAULT).translate(
-        "form.settings.label.theme.website",
-      ),
-    );
+    expect(result).toContain("translated_form.settings.label.theme.website");
   });
 
   it<LocalTestContext>("can use an id", async ({ container }) => {
@@ -67,19 +74,31 @@ describe("SettingsForm", () => {
     container,
   }) => {
     const props = {
-      altLanguages: [
-        { locale: "en", route: "#my-en-route" },
-        { locale: "fr", route: "#ma-route-fr" },
-      ] as const,
+      altLanguages: [{ locale: "fr", route: "#ma-route-fr" }] as const,
       id: "voluptates",
     } satisfies ComponentProps<typeof SettingsForm>;
     const result = await container.renderToString(SettingsForm, {
       props,
     });
 
-    expect.assertions(2);
+    expect.assertions(1);
 
     expect(result).toContain(props.altLanguages[0].route);
-    expect(result).toContain(props.altLanguages[1].route);
+  });
+
+  it<LocalTestContext>("does not use the given route for the current locale", async ({
+    container,
+  }) => {
+    const props = {
+      altLanguages: [{ locale: "en", route: "#my-en-route" }] as const,
+      id: "voluptates",
+    } satisfies ComponentProps<typeof SettingsForm>;
+    const result = await container.renderToString(SettingsForm, {
+      props,
+    });
+
+    expect.assertions(1);
+
+    expect(result).not.toContain(props.altLanguages[0].route);
   });
 });

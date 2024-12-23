@@ -9,7 +9,19 @@ import Link from "../../atoms/link/link.astro";
 import ListItem from "../../atoms/list/list-item.astro";
 import List from "../../atoms/list/list.astro";
 
+type Languages = Record<
+  string,
+  {
+    name: string;
+    route: string;
+  }
+>;
+
 type Props = ComponentProps<typeof Fieldset> & {
+  /**
+   * An object containing the a
+   */
+  altRoutes?: Partial<Record<string, string>>;
   /**
    * A locale key defined in `languages`
    */
@@ -25,7 +37,7 @@ type Props = ComponentProps<typeof Fieldset> & {
   /**
    * An object with the locale as key and a readable name as value.
    */
-  languages: Record<string, string>;
+  languages: Languages;
 };
 
 const {
@@ -43,7 +55,7 @@ if (!currentLanguage)
     "The value for `current` does not match any key in `languages`.",
   );
 
-const { route, translate } = useI18n(Astro.currentLocale);
+const { translate } = useI18n(Astro.currentLocale);
 const controllerId = `${id}-controller`;
 ---
 
@@ -57,24 +69,24 @@ const controllerId = `${id}-controller`;
     />
     <Label
       aria-label={translate("language.picker.a11y", {
-        language: currentLanguage,
+        language: currentLanguage.name,
       })}
       class="language-picker-label"
       for={controllerId}
     >
       <Icon aria-hidden name="locale" size={28} />
-      {currentLanguage}
+      {currentLanguage.name}
     </Label>
     <List class="language-picker-list" hideMarker>
       {
-        Object.entries(languages).map(([locale, label]) => (
+        Object.entries(languages).map(([locale, language]) => (
           <ListItem class="language-picker-item">
             <Link
               class="language-picker-link"
-              href={route("home", locale)}
+              href={language.route}
               lang={locale}
             >
-              {label}
+              {language.name}
             </Link>
           </ListItem>
         ))

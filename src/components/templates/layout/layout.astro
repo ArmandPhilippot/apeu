@@ -161,7 +161,11 @@ const topId = translate("anchor.site.top");
             resultsPage={route("search")}
             slot="search"
           />
-          <SettingsForm id="site-settings" slot="settings" />
+          <SettingsForm
+            altLanguages={seo.languages}
+            id="site-settings"
+            slot="settings"
+          />
         </Navbar>
       </header>
       <div {...attrs} class:list={["site-body", className]} id={contentsId}>

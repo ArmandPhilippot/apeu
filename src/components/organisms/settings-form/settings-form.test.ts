@@ -62,4 +62,24 @@ describe("SettingsForm", () => {
     expect(result).toContain(`id="${props.id}"`);
     expect(result).toContain(`${props.id}-theme`);
   });
+
+  it<LocalTestContext>("can use the given routes in the language picker", async ({
+    container,
+  }) => {
+    const props = {
+      altLanguages: [
+        { locale: "en", route: "#my-en-route" },
+        { locale: "fr", route: "#ma-route-fr" },
+      ] as const,
+      id: "voluptates",
+    } satisfies ComponentProps<typeof SettingsForm>;
+    const result = await container.renderToString(SettingsForm, {
+      props,
+    });
+
+    expect.assertions(2);
+
+    expect(result).toContain(props.altLanguages[0].route);
+    expect(result).toContain(props.altLanguages[1].route);
+  });
 });

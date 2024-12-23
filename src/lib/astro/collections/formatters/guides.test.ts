@@ -52,6 +52,7 @@ describe("get-guide", () => {
         "route": "/guides/in-depth-guide",
         "seo": {
           "description": "The guide description for search engines.",
+          "languages": null,
           "title": "The guide title for search engines",
         },
         "slug": "in-depth-guide",

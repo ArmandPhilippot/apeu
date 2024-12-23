@@ -6,6 +6,7 @@ import {
   getCategoryFromReference,
   getTagsFromReferences,
   resolveReferences,
+  resolveTranslations,
 } from "./utils";
 
 export const getBlogPostPreview = async (
@@ -41,6 +42,7 @@ export const getBlogPost = async (
   const preview = await getBlogPostPreview(post);
   const resolvedAuthors = await resolveReferences(post.data.meta.authors);
   const { remarkPluginFrontmatter, ...renderResult } = await render(post);
+  const altLanguages = await resolveTranslations(post.data.i18n);
 
   return {
     ...preview,
@@ -50,7 +52,10 @@ export const getBlogPost = async (
       ...preview.meta,
       authors: resolvedAuthors?.map(getAuthorLink) ?? [],
     },
-    seo: post.data.seo,
+    seo: {
+      ...post.data.seo,
+      languages: altLanguages,
+    },
     slug: post.data.slug,
   };
 };

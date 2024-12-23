@@ -5,6 +5,7 @@ import type {
   TaxonomyLink,
   TaxonomyPreview,
 } from "../../../../types/data";
+import { resolveTranslations } from "./utils";
 
 export const getTaxonomyLink = (taxonomy: RawTaxonomyEntry): TaxonomyLink => {
   const { route, title } = taxonomy.data;
@@ -40,12 +41,16 @@ export const getTaxonomy = async (
 ): Promise<Taxonomy> => {
   const preview = getTaxonomyPreview(taxonomy);
   const { remarkPluginFrontmatter, ...renderResult } = await render(taxonomy);
+  const altLanguages = await resolveTranslations(taxonomy.data.i18n);
 
   return {
     ...preview,
     ...renderResult,
     hasContent: !!taxonomy.body,
-    seo: taxonomy.data.seo,
+    seo: {
+      ...taxonomy.data.seo,
+      languages: altLanguages,
+    },
     slug: taxonomy.data.slug,
   };
 };

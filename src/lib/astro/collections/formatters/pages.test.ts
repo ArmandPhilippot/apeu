@@ -51,6 +51,7 @@ describe("get-page", () => {
         "route": "/generic-page",
         "seo": {
           "description": "The page description for search engines.",
+          "languages": null,
           "title": "The page title for search engines",
         },
         "slug": "generic-page",

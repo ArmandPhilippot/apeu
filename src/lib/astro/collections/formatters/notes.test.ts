@@ -51,6 +51,7 @@ describe("get-note", () => {
         "route": "/notes/temporary-note",
         "seo": {
           "description": "The note description for search engines.",
+          "languages": null,
           "title": "The note title for search engines",
         },
         "slug": "temporary-note",

@@ -12,6 +12,7 @@ import type {
 } from "../../../types/utilities";
 import type { AvailableLanguage } from "../../../utils/i18n";
 import { sortByKey } from "../../../utils/sort";
+import { isObject } from "../../../utils/type-checks";
 import { formatEntry, type EntryFormat } from "./format-entry";
 
 type QueryCollectionOrderBy<C extends CollectionKey> = {
@@ -182,12 +183,14 @@ const matchesLocale = (
   if (!locale) return true;
 
   const hasNoLocaleInfo =
-    !("description" in entry.data) && !("locale" in entry.data);
+    (!("description" in entry.data) || !isObject(entry.data.description)) &&
+    !("locale" in entry.data);
+
+  if (hasNoLocaleInfo) return true;
 
   return (
     hasLocaleInDescription(entry, locale) ||
-    hasMatchingLocaleProperty(entry, locale) ||
-    hasNoLocaleInfo
+    hasMatchingLocaleProperty(entry, locale)
   );
 };
 

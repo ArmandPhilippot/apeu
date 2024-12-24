@@ -1,124 +1,79 @@
 import type * as astro from "astro:content";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import {
+  authorFixture,
+  blogPostFixture,
+  blogrollFixture,
+  guideFixture,
+  projectFixture,
+} from "../../../../tests/fixtures/collections";
 import { queryCollection, queryCollections } from "./query-collection";
 
 const mockEntries = [
+  authorFixture,
   {
-    collection: "blogPosts",
+    ...blogPostFixture,
     id: "post-1",
     data: {
-      description: "Description of post 1",
-      locale: "en",
+      ...blogPostFixture.data,
       meta: {
-        authors: [{ collection: "authors", id: "author1" }],
-        category: { collection: "blogCategories", id: "category1" },
-        isDraft: false,
-        publishedOn: new Date("2024-09-22T21:10:11.400Z"),
+        ...blogPostFixture.data.meta,
         tags: [{ collection: "tags", id: "tag1" }],
-        updatedOn: new Date("2024-09-22T21:10:11.400Z"),
       },
-      route: "/posts/post-1",
-      seo: {
-        description: "Vero numquam quisquam.",
-        title: "optio quibusdam et",
-      },
-      slug: "post-1",
-      title: "Post 1",
     },
   },
   {
-    collection: "blogPosts",
+    ...blogPostFixture,
     id: "post-2",
     data: {
-      description: "Description of post 2.",
-      locale: "en",
+      ...blogPostFixture.data,
       meta: {
+        ...blogPostFixture.data.meta,
         authors: [{ collection: "authors", id: "author2" }],
-        category: { collection: "blogCategories", id: "category2" },
-        isDraft: false,
-        publishedOn: new Date("2024-10-11T12:30:15.400Z"),
-        tags: [{ collection: "tags", id: "tag2" }],
-        updatedOn: new Date("2024-11-05T11:20:11.400Z"),
+        category: { collection: "blogCategories", id: "category1" },
+        publishedOn: new Date(
+          blogPostFixture.data.meta.publishedOn.getTime() + 24 * 60 * 60 * 1000,
+        ),
       },
-      route: "/posts/post-2",
-      seo: {
-        description:
-          "Voluptas totam dolores atque perferendis ea consequatur quam earum.",
-        title: "quaerat ut natus",
-      },
-      slug: "post-2",
       title: "Post 2",
     },
   },
+  blogrollFixture,
   {
-    collection: "guides",
-    id: "guide-1",
+    ...blogrollFixture,
+    id: "blog2",
     data: {
-      description: "Description of guide 1.",
-      locale: "en",
-      meta: {
-        authors: [{ collection: "authors", id: "author2" }],
-        isDraft: false,
-        publishedOn: new Date("2024-10-11T12:30:15.400Z"),
-        tags: [{ collection: "tags", id: "tag2" }],
-        updatedOn: new Date("2024-11-05T11:20:11.400Z"),
+      ...blogrollFixture.data,
+      description: {
+        fr: "A description in French.",
       },
-      route: "/guides/guide-1",
-      seo: {
-        description:
-          "Accusamus veniam et enim numquam modi modi est est dicta.",
-        title: "dolorem quia provident",
-      },
-      slug: "guide-1",
-      title: "Guide 1",
     },
   },
+  guideFixture,
   {
-    collection: "guides",
+    ...guideFixture,
     id: "guide-2",
     data: {
-      description: "Description of guide 2.",
-      locale: "en",
+      ...guideFixture.data,
       meta: {
+        ...guideFixture.data.meta,
         authors: [{ collection: "authors", id: "author2" }],
-        isDraft: true,
-        publishedOn: new Date("2024-10-11T12:30:15.400Z"),
-        tags: [{ collection: "tags", id: "tag2" }],
-        updatedOn: new Date("2024-11-05T11:20:11.400Z"),
       },
-      route: "/guides/guide-2",
-      seo: {
-        description: "Est hic repellat aliquid nam unde.",
-        title: "velit est hic",
-      },
-      slug: "guide-2",
       title: "Guide 2",
     },
   },
+  projectFixture,
   {
-    collection: "projects",
-    id: "project-1",
+    ...projectFixture,
+    id: "project-2",
     data: {
-      description: "Description of project 1.",
-      locale: "en",
-      meta: {
-        isDraft: false,
-        kind: "theme",
-        publishedOn: new Date("2024-10-11T12:30:15.400Z"),
-        repository: "https://example.test",
-        tags: [{ collection: "tags", id: "tag1" }],
-        updatedOn: new Date("2024-11-05T11:20:11.400Z"),
-      },
-      route: "/projects/project-1",
-      seo: {
-        description: "Maxime qui culpa ratione est et dolores eum a quod.",
-        title: "velit eos voluptas",
-      },
-      slug: "project-1",
-      title: "Project 1",
+      ...projectFixture.data,
+      locale: "fr",
     },
   },
-] satisfies astro.CollectionEntry<"blogPosts" | "guides" | "projects">[];
+] satisfies astro.CollectionEntry<
+  "authors" | "blogPosts" | "blogroll" | "guides" | "projects"
+>[];
 
 vi.mock("astro:content", async () => {
   const originalModule = await vi.importActual("astro:content");
@@ -143,13 +98,13 @@ describe("queryCollection", () => {
 
   it("can filter entries by authors", async () => {
     const result = await queryCollection("blogPosts", {
-      where: { authors: ["author1"] },
+      where: { authors: ["author2"] },
     });
 
     expect.assertions(2);
 
     expect(result.entries).toHaveLength(1);
-    expect(result.entries[0]?.id).toBe("post-1");
+    expect(result.entries[0]?.id).toBe("post-2");
   });
 
   it("can filter entries by categories", async () => {
@@ -160,7 +115,7 @@ describe("queryCollection", () => {
     expect.assertions(2);
 
     expect(result.entries).toHaveLength(1);
-    expect(result.entries[0]?.id).toBe("post-1");
+    expect(result.entries[0]?.id).toBe("post-2");
   });
 
   it("can filter entries by tags", async () => {
@@ -221,6 +176,27 @@ describe("queryCollection", () => {
       ).length,
     );
   });
+
+  it("can filter entries by locale when locale is in description", async () => {
+    const result = await queryCollection("blogroll", {
+      where: { locale: "fr" },
+    });
+    expect(result.entries).toHaveLength(1);
+  });
+
+  it("can filter entries by locale when locale is a direct property", async () => {
+    const result = await queryCollection("projects", {
+      where: { locale: "fr" },
+    });
+    expect(result.entries).toHaveLength(1);
+  });
+
+  it("includes entries without locale information when filtering by locale", async () => {
+    const result = await queryCollection("authors", {
+      where: { locale: "en" },
+    });
+    expect(result.entries).toHaveLength(1);
+  });
 });
 
 describe("queryCollections", () => {
@@ -231,10 +207,13 @@ describe("queryCollections", () => {
 
   it("can query multiple collections", async () => {
     const result = await queryCollections(["blogPosts", "guides", "projects"]);
+    const filteredMockedEntries = mockEntries.filter((entry) =>
+      ["blogPosts", "guides", "projects"].includes(entry.collection),
+    );
 
     expect.assertions(1);
 
-    expect(result.entries).toHaveLength(mockEntries.length);
+    expect(result.entries).toHaveLength(filteredMockedEntries.length);
   });
 
   it("can apply filters across multiple collections", async () => {
@@ -245,14 +224,13 @@ describe("queryCollections", () => {
     expect.assertions(2);
 
     expect(result.entries).toHaveLength(
-      mockEntries.filter((entry) =>
-        entry.data.meta.authors?.some((author) => author.id === "author2"),
+      mockEntries.filter(
+        (entry) =>
+          "meta" in entry.data &&
+          "authors" in entry.data.meta &&
+          entry.data.meta.authors?.some((author) => author.id === "author2"),
       ).length,
     );
-    expect(result.entries.map((e) => e.id)).toEqual([
-      "post-2",
-      "guide-1",
-      "guide-2",
-    ]);
+    expect(result.entries.map((e) => e.id)).toEqual(["post-2", "guide-2"]);
   });
 });

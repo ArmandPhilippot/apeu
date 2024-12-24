@@ -154,12 +154,41 @@ const matchesIds = (
   return !ids?.length || ids.includes(entry.id);
 };
 
+const hasLocaleInDescription = (
+  entry: CollectionEntry<CollectionKey>,
+  locale: string,
+): boolean => {
+  if (!("description" in entry.data)) return false;
+  if (!entry.data.description) return false;
+  if (typeof entry.data.description !== "object") return false;
+
+  return locale in entry.data.description;
+};
+
+const hasMatchingLocaleProperty = (
+  entry: CollectionEntry<CollectionKey>,
+  locale: string,
+): boolean => {
+  if (!("locale" in entry.data)) return false;
+  if (!entry.data.locale) return false;
+
+  return entry.data.locale === locale;
+};
+
 const matchesLocale = (
   entry: CollectionEntry<CollectionKey>,
   locale?: string,
 ): boolean => {
-  if (!locale || !("locale" in entry.data)) return true;
-  return entry.data.locale === locale;
+  if (!locale) return true;
+
+  const hasNoLocaleInfo =
+    !("description" in entry.data) && !("locale" in entry.data);
+
+  return (
+    hasLocaleInDescription(entry, locale) ||
+    hasMatchingLocaleProperty(entry, locale) ||
+    hasNoLocaleInfo
+  );
 };
 
 const matchesTags = (

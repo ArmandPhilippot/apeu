@@ -20,6 +20,7 @@ const { Content, ...page } = await queryEntry({
 });
 const { entries: blogroll, total } = await queryCollection("blogroll", {
   orderBy: { key: "title", order: "ASC" },
+  where: { locale },
 });
 const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
   { label: translate("page.home.title"), url: route("home") },

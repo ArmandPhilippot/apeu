@@ -5,6 +5,7 @@ import {
 } from "astro:content";
 import type { Order } from "../../../types/tokens";
 import type {
+  CollectionReference,
   HasNestedKey,
   KeyOfType,
   LooseAutocomplete,
@@ -287,6 +288,60 @@ const processEntries = async <C extends CollectionKey, F extends EntryFormat>(
 };
 
 /**
+ * Filter tags by locale.
+ *
+ * @param {CollectionReference<"tags">[]} tags - The list of tags.
+ * @param {string} locale - The target locale.
+ * @returns {CollectionReference<"tags">[]} The filtered tags for the given locale.
+ */
+const filterTagsReferencesByLocale = (
+  tags: CollectionReference<"tags">[],
+  locale: string,
+): CollectionReference<"tags">[] => {
+  return tags.filter((tag) => tag.id.startsWith(`${locale}/`));
+};
+
+/**
+ * Transform the entries to filter tags based on the provided locale.
+ *
+ * @template C - CollectionKey
+ * @param {CollectionEntry<C>[]} entries - The collection entries.
+ * @param {string} [locale] - The locale to filter tags by.
+ * @returns {CollectionEntry<C>[]} The transformed entries.
+ */
+const transformEntriesForLocale = <C extends CollectionKey>(
+  entries: CollectionEntry<C>[],
+  locale?: string,
+): CollectionEntry<C>[] => {
+  if (!locale) return entries;
+
+  return entries.map((entry) => {
+    if (
+      !("meta" in entry.data) ||
+      !("tags" in entry.data.meta) ||
+      !entry.data.meta.tags?.length
+    )
+      return entry;
+
+    const filteredTags = filterTagsReferencesByLocale(
+      entry.data.meta.tags,
+      locale,
+    );
+
+    return {
+      ...entry,
+      data: {
+        ...entry.data,
+        meta: {
+          ...entry.data.meta,
+          tags: filteredTags,
+        },
+      },
+    };
+  });
+};
+
+/**
  * Query a collection using filters.
  *
  * @template C - CollectionKey
@@ -307,8 +362,12 @@ export const queryCollection = async <
     collection,
     applyCollectionFilters(where),
   );
+  const transformedEntries = transformEntriesForLocale(
+    filteredEntries,
+    options.where?.locale,
+  );
 
-  return processEntries(filteredEntries, remainingOptions);
+  return processEntries(transformedEntries, remainingOptions);
 };
 
 /**
@@ -335,6 +394,10 @@ export const queryCollections = async <
       ),
     )
   ).flat();
+  const transformedEntries = transformEntriesForLocale(
+    filteredEntries,
+    options.where?.locale,
+  );
 
-  return processEntries(filteredEntries, remainingOptions);
+  return processEntries(transformedEntries, remainingOptions);
 };

@@ -23,6 +23,7 @@ export const getStaticPaths = (async ({ paginate }) => {
   const { entries: bookmarks, total } = await queryCollection("bookmarks", {
     format: "preview",
     orderBy: { key: "publishedOn", order: "DESC" },
+    where: { locale: "fr" },
   });
 
   return paginate(bookmarks, { pageSize: CONFIG.ITEMS_PER_PAGE }).map(

@@ -1,6 +1,6 @@
 import rss from "@astrojs/rss";
 import type { APIRoute, GetStaticPaths } from "astro";
-import { queryCollection } from "../../../../lib/astro/collections/query-collection";
+import { queryCollection } from "../../../../lib/astro/collections";
 import type { TaxonomyPreview } from "../../../../types/data";
 import { MissingSiteConfigError } from "../../../../utils/exceptions";
 import {

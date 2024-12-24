@@ -2,14 +2,11 @@
 "apeu": minor
 ---
 
-Adds `queryCollection`, `queryCollections` and `queryEntry` helpers to reduce boilerplate code when querying collections entries.
+Adds `queryCollection` and `queryEntry` helpers to reduce boilerplate code when querying collections entries.
 
 Instead of using directly the `getCollection` helper from Astro, you should use the `queryCollection` helper declared in this project. This function helps you query a collection with filters, offset and ordering. `queryCollection` will also resolves every references!
 
-You can also use:
-
-- `queryCollections` if you need to resolve multiple collections at once
-- `queryEntry` to resolve a single entry
+You can also use it if you need to resolve multiple collections at once or you can use `queryEntry` to resolve a single entry.
 
 You can now reduce the amount of code in your templates:
 

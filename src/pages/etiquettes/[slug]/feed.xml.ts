@@ -1,9 +1,6 @@
 import rss from "@astrojs/rss";
 import type { APIRoute, GetStaticPaths } from "astro";
-import {
-  queryCollection,
-  queryCollections,
-} from "../../../lib/astro/collections/query-collection";
+import { queryCollection } from "../../../lib/astro/collections";
 import type { TaxonomyPreview } from "../../../types/data";
 import { MissingSiteConfigError } from "../../../utils/exceptions";
 import {
@@ -32,7 +29,7 @@ export const GET: APIRoute<TaxonomyPreview> = async ({
 }) => {
   if (!site) throw new MissingSiteConfigError();
   const { locale, translate } = useI18n(currentLocale);
-  const { entries } = await queryCollections(
+  const { entries } = await queryCollection(
     ["blogPosts", "blogroll", "bookmarks", "guides", "notes", "projects"],
     {
       format: "full",

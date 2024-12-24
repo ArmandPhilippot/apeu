@@ -7,7 +7,7 @@ import {
   guideFixture,
   projectFixture,
 } from "../../../../tests/fixtures/collections";
-import { queryCollection, queryCollections } from "./query-collection";
+import { queryCollection } from "./query-collection";
 
 const mockEntries = [
   authorFixture,
@@ -199,14 +199,14 @@ describe("queryCollection", () => {
   });
 });
 
-describe("queryCollections", () => {
+describe("queryCollection", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     vi.stubEnv("PROD", false);
   });
 
   it("can query multiple collections", async () => {
-    const result = await queryCollections(["blogPosts", "guides", "projects"]);
+    const result = await queryCollection(["blogPosts", "guides", "projects"]);
     const filteredMockedEntries = mockEntries.filter((entry) =>
       ["blogPosts", "guides", "projects"].includes(entry.collection),
     );
@@ -217,7 +217,7 @@ describe("queryCollections", () => {
   });
 
   it("can apply filters across multiple collections", async () => {
-    const result = await queryCollections(["blogPosts", "guides"], {
+    const result = await queryCollection(["blogPosts", "guides"], {
       where: { authors: ["author2"] },
     });
 

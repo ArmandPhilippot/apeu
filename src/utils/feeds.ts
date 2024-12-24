@@ -4,10 +4,7 @@ import { experimental_AstroContainer } from "astro/container";
 import { loadRenderers } from "astro:container";
 import type { CollectionKey } from "astro:content";
 import sanitizeHtml from "sanitize-html";
-import {
-  queryCollection,
-  queryCollections,
-} from "../lib/astro/collections/query-collection";
+import { queryCollection } from "../lib/astro/collections";
 import type { FeedCompatibleEntry } from "../types/data";
 import { UnsupportedLocaleError } from "./exceptions";
 import { isAvailableLanguage, useI18n, type AvailableLanguage } from "./i18n";
@@ -140,7 +137,7 @@ export const getCollectionsFeeds = async (language: AvailableLanguage) => {
     orderBy: { key: "title", order: "ASC" },
     where: { ids: pagesWithFeed },
   });
-  const { entries: entriesWithDynamicFeed } = await queryCollections(
+  const { entries: entriesWithDynamicFeed } = await queryCollection(
     ["blogCategories", "tags"],
     {
       format: "preview",

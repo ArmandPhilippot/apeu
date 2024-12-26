@@ -277,7 +277,7 @@ Before starting, please follow the instructions in [Setup](#setup).
 │   │   │   │   └── index.astro
 │   │   │   ├── tags/
 │   │   │   │   └── index.astro
-│   │   │   ├── [...slug].astro
+│   │   │   ├── [slug].astro
 │   │   │   ├── contact.astro
 │   │   │   ├── feeds.astro
 │   │   │   ├── index.astro
@@ -293,7 +293,8 @@ Before starting, please follow the instructions in [Setup](#setup).
 │   │   │   └── index.astro
 │   │   ├── signets/
 │   │   │   └── index.astro
-│   │   ├── [...slug].astro
+│   │   ├── [slug].astro
+│   │   ├── 404.astro
 │   │   ├── contact.astro
 │   │   ├── flux.astro
 │   │   ├── index.astro
@@ -326,7 +327,7 @@ In details:
 - `src/utils/`: all the utilities (constants, helpers, etc.) to build the project.
 
 > [!IMPORTANT]
-> All the `index.md` files in the `content` directory are required. These files are used in `src/pages` to add metadata and optional content to the index pages of your collections. Pages created in `content/pages` can use any filename but some pages are required: `blogroll.md`, `bookmarks.md`, `contact.md`, `feeds.md`, `home.md`, `legal-notice.md` and `search.md`. You can also use the `.mdx` extension.
+> All the `index.md` files in the `content` directory are required. These files are used in `src/pages` to add metadata and optional content to the index pages of your collections. Pages created in `content/pages` can use any filename but some pages are required: `404.md`, `blogroll.md`, `bookmarks.md`, `contact.md`, `feeds.md`, `home.md`, `legal-notice.md` and `search.md`. You can also use the `.mdx` extension.
 
 ### Design system
 

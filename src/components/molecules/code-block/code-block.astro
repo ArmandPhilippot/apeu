@@ -274,8 +274,9 @@ const cssVars = getCSSVars({
 
       &::before {
         content: counter(line-number);
-        /* This should be suitable for line numbers >100 and <1000 */
-        min-width: 3em;
+        /* This should be suitable for line numbers up to 4 digits with diff
+         * token (+ or -). */
+        min-width: 4em;
       }
     }
   }

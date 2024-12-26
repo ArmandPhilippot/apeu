@@ -7,8 +7,7 @@ import CollectionCard from "../../../components/organisms/collection-card/collec
 import CollectionMeta from "../../../components/organisms/collection-meta/collection-meta.astro";
 import Pagination from "../../../components/organisms/pagination/pagination.astro";
 import PageLayout from "../../../components/templates/page-layout/page-layout.astro";
-import { queryCollection } from "../../../lib/astro/collections/query-collection";
-import { queryEntry } from "../../../lib/astro/collections/query-entry";
+import { queryCollection, queryEntry } from "../../../lib/astro/collections";
 import { getWebPageGraph } from "../../../lib/schema-dts/graphs/webpage-graph";
 import { CONFIG } from "../../../utils/constants";
 import { useI18n } from "../../../utils/i18n";
@@ -23,6 +22,7 @@ export const getStaticPaths = (async ({ paginate }) => {
   const { entries: bookmarks, total } = await queryCollection("bookmarks", {
     format: "preview",
     orderBy: { key: "publishedOn", order: "DESC" },
+    where: { locale: "en" },
   });
 
   return paginate(bookmarks, { pageSize: CONFIG.ITEMS_PER_PAGE }).map(

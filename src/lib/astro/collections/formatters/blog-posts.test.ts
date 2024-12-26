@@ -54,6 +54,7 @@ describe("get-blog-post", () => {
         "route": "/blog/post/my-awesome-post",
         "seo": {
           "description": "The blog post description for search engines.",
+          "languages": null,
           "title": "The blog post title for search engines",
         },
         "slug": "my-awesome-post",

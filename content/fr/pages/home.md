@@ -5,6 +5,8 @@ publishedOn: "2024-12-19T15:03"
 seo:
   title: "Accueil"
   description: "Il s'agit d'une description utilisée par les moteurs de recherche."
+i18n:
+  en: "en/home"
 ---
 
 Du contenu supplémentaire à afficher sur la page d'accueil.

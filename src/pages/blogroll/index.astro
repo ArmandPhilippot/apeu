@@ -5,8 +5,7 @@ import CardsList from "../../components/molecules/cards-list/cards-list.astro";
 import CollectionCard from "../../components/organisms/collection-card/collection-card.astro";
 import CollectionMeta from "../../components/organisms/collection-meta/collection-meta.astro";
 import PageLayout from "../../components/templates/page-layout/page-layout.astro";
-import { queryCollection } from "../../lib/astro/collections/query-collection";
-import { queryEntry } from "../../lib/astro/collections/query-entry";
+import { queryCollection, queryEntry } from "../../lib/astro/collections";
 import { getWebPageGraph } from "../../lib/schema-dts/graphs/webpage-graph";
 import { useI18n } from "../../utils/i18n";
 
@@ -20,6 +19,7 @@ const { Content, ...page } = await queryEntry({
 });
 const { entries: blogroll, total } = await queryCollection("blogroll", {
   orderBy: { key: "title", order: "ASC" },
+  where: { locale },
 });
 const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
   { label: translate("page.home.title"), url: route("home") },

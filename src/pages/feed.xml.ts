@@ -1,6 +1,6 @@
 import rss from "@astrojs/rss";
 import type { APIRoute } from "astro";
-import { queryCollections } from "../lib/astro/collections/query-collection";
+import { queryCollection } from "../lib/astro/collections";
 import { MissingSiteConfigError } from "../utils/exceptions";
 import {
   getFeedLanguageFromLocale,
@@ -11,7 +11,7 @@ import { useI18n } from "../utils/i18n";
 export const GET: APIRoute = async ({ currentLocale, site }) => {
   if (!site) throw new MissingSiteConfigError();
   const { locale, translate } = useI18n(currentLocale);
-  const { entries } = await queryCollections(
+  const { entries } = await queryCollection(
     ["blogPosts", "blogroll", "bookmarks", "guides", "notes", "projects"],
     {
       format: "full",

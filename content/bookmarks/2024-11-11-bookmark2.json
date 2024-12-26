@@ -3,5 +3,6 @@
   "description": "Some excerpt related to this bookmark.",
   "url": "https://astro.build",
   "inLanguage": "en",
-  "publishedOn": "2024-11-11T15:34"
+  "publishedOn": "2024-11-11T15:34",
+  "tags": ["en/tag2"]
 }

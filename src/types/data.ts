@@ -31,6 +31,21 @@ export type RemarkPluginFrontmatterMeta = {
   readingTime?: ReadingTime | undefined;
 };
 
+export type AltLanguage = {
+  locale: string;
+  route: string;
+};
+
+export type SEO = {
+  author?: Omit<AuthorLink, "isWebsiteOwner"> | null | undefined;
+  canonical?: string | null | undefined;
+  description?: string | undefined;
+  languages?: AltLanguage[] | null | undefined;
+  nofollow?: boolean | null | undefined;
+  noindex?: boolean | null | undefined;
+  title: string;
+};
+
 export type Author = Pick<CollectionEntry<"authors">, "collection" | "id"> &
   Omit<CollectionEntry<"authors">["data"], "avatar"> & {
     avatar?: Omit<Img, "alt"> | null | undefined;
@@ -85,13 +100,14 @@ export type BlogPostMetaData = Omit<
 
 export type BlogPost = Pick<CollectionEntry<"blogPosts">, "collection" | "id"> &
   Omit<RenderedContent, "remarkPluginFrontmatter"> &
-  Omit<CollectionEntry<"blogPosts">["data"], "meta"> & {
+  Omit<CollectionEntry<"blogPosts">["data"], "i18n" | "meta"> & {
     meta: BlogPostMetaData;
+    seo: SEO;
   };
 
 export type BlogPostPreview = Omit<
   BlogPost,
-  keyof RenderedContent | "meta" | "seo" | "slug"
+  keyof RenderedContent | "i18n" | "meta" | "seo" | "slug"
 > & {
   meta: Omit<BlogPostMetaData, "authors">;
 };
@@ -119,14 +135,15 @@ export type GuideMetaData = Omit<
 
 export type Guide = Pick<CollectionEntry<"guides">, "collection" | "id"> &
   Omit<RenderedContent, "remarkPluginFrontmatter"> &
-  Omit<CollectionEntry<"guides">["data"], "cover" | "meta"> & {
+  Omit<CollectionEntry<"guides">["data"], "i18n" | "cover" | "meta"> & {
     cover?: Img | null | undefined;
     meta: GuideMetaData;
+    seo: SEO;
   };
 
 export type GuidePreview = Omit<
   Guide,
-  keyof RenderedContent | "meta" | "seo" | "slug"
+  keyof RenderedContent | "i18n" | "meta" | "seo" | "slug"
 > & {
   meta: Omit<GuideMetaData, "authors">;
 };
@@ -141,11 +158,15 @@ export type NoteMetaData = Omit<
 
 export type Note = Pick<CollectionEntry<"notes">, "collection" | "id"> &
   Omit<RenderedContent, "remarkPluginFrontmatter"> &
-  Omit<CollectionEntry<"notes">["data"], "meta"> & {
+  Omit<CollectionEntry<"notes">["data"], "i18n" | "meta"> & {
     meta: NoteMetaData;
+    seo: SEO;
   };
 
-export type NotePreview = Omit<Note, keyof RenderedContent | "seo" | "slug">;
+export type NotePreview = Omit<
+  Note,
+  keyof RenderedContent | "i18n" | "seo" | "slug"
+>;
 
 export type PageMetaData = Omit<
   CollectionEntry<"pages">["data"]["meta"],
@@ -155,12 +176,16 @@ export type PageMetaData = Omit<
 
 export type Page = Pick<CollectionEntry<"pages">, "collection" | "id"> &
   Omit<RenderedContent, "remarkPluginFrontmatter"> &
-  Omit<CollectionEntry<"pages">["data"], "cover" | "meta"> & {
+  Omit<CollectionEntry<"pages">["data"], "i18n" | "cover" | "meta"> & {
     cover?: Img | null | undefined;
     meta: PageMetaData;
+    seo: SEO;
   };
 
-export type PagePreview = Omit<Page, keyof RenderedContent | "seo" | "slug">;
+export type PagePreview = Omit<
+  Page,
+  keyof RenderedContent | "i18n" | "seo" | "slug"
+>;
 
 export type ProjectMetaData = Omit<
   CollectionEntry<"projects">["data"]["meta"],
@@ -172,14 +197,15 @@ export type ProjectMetaData = Omit<
 
 export type Project = Pick<CollectionEntry<"projects">, "collection" | "id"> &
   Omit<RenderedContent, "remarkPluginFrontmatter"> &
-  Omit<CollectionEntry<"projects">["data"], "cover" | "meta"> & {
+  Omit<CollectionEntry<"projects">["data"], "i18n" | "cover" | "meta"> & {
     cover?: Img | null | undefined;
     meta: ProjectMetaData;
+    seo: SEO;
   };
 
 export type ProjectPreview = Omit<
   Project,
-  keyof RenderedContent | "seo" | "slug"
+  keyof RenderedContent | "i18n" | "seo" | "slug"
 >;
 
 export type RawTaxonomyEntry = CollectionEntry<"blogCategories" | "tags">;
@@ -191,16 +217,17 @@ export type TaxonomyMetaData = Omit<
 
 export type Taxonomy = Pick<RawTaxonomyEntry, "collection" | "id"> &
   Omit<RenderedContent, "remarkPluginFrontmatter"> &
-  Omit<RawTaxonomyEntry["data"], "cover" | "meta"> & {
+  Omit<RawTaxonomyEntry["data"], "i18n" | "cover" | "meta"> & {
     cover?: Img | null | undefined;
     meta: TaxonomyMetaData;
+    seo: SEO;
   };
 
 export type TaxonomyLink = Pick<Taxonomy, "route" | "title">;
 
 export type TaxonomyPreview = Omit<
   Taxonomy,
-  keyof RenderedContent | "seo" | "slug"
+  keyof RenderedContent | "i18n" | "seo" | "slug"
 >;
 
 export type CollectionMetaData =

@@ -3,7 +3,7 @@ import type { ComponentProps } from "astro/types";
 import { beforeEach, describe, expect, it } from "vitest";
 import LanguagePicker from "./language-picker.astro";
 
-/* cSpell:ignore Español Français */
+/* cSpell:ignore Français */
 
 type LocalTestContext = {
   container: AstroContainer;
@@ -19,19 +19,24 @@ describe("LanguagePicker", () => {
       current: "en",
       id: "test1",
       label: "non nulla blanditiis",
-      languages: { en: "English", fr: "Français" },
+      languages: {
+        en: { name: "English", route: "#en" },
+        fr: { name: "Français", route: "#fr" },
+      },
     } satisfies ComponentProps<typeof LanguagePicker>;
     const result = await container.renderToString(LanguagePicker, {
       props,
     });
 
-    expect.assertions(4);
+    expect.assertions(6);
 
     const linkItems = [...result.matchAll(/<li/g)];
 
     expect(result).toContain(props.label);
-    expect(result).toContain(props.languages.en);
-    expect(result).toContain(props.languages.fr);
+    expect(result).toContain(props.languages.en.name);
+    expect(result).toContain(props.languages.en.route);
+    expect(result).toContain(props.languages.fr.name);
+    expect(result).toContain(props.languages.fr.route);
     expect(linkItems).toHaveLength(Object.keys(props.languages).length);
   });
 
@@ -42,7 +47,10 @@ describe("LanguagePicker", () => {
       current: "ru",
       id: "test1",
       label: "non nulla blanditiis",
-      languages: { en: "English", fr: "Français" },
+      languages: {
+        en: { name: "English", route: "#en" },
+        fr: { name: "Français", route: "#fr" },
+      },
     } satisfies ComponentProps<typeof LanguagePicker>;
 
     expect.assertions(1);

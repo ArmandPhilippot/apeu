@@ -90,6 +90,7 @@ describe("get-taxonomy", () => {
         "route": "/blog/category/micro-blog",
         "seo": {
           "description": "The category description for search engines.",
+          "languages": null,
           "title": "The category title for search engines",
         },
         "slug": "micro-blog",
@@ -120,6 +121,7 @@ describe("get-taxonomy", () => {
         "route": "/tags/catchall-tag",
         "seo": {
           "description": "The tag description for search engines.",
+          "languages": null,
           "title": "The tag title for search engines",
         },
         "slug": "catchall-tag",

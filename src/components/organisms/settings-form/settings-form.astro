@@ -1,24 +1,42 @@
 ---
 import type { HTMLAttributes } from "astro/types";
+import type { AltLanguage } from "../../../types/data";
 import { availableNamedLanguages, useI18n } from "../../../utils/i18n";
 import LanguagePicker from "../../molecules/language-picker/language-picker.astro";
 import ThemeSetting from "../../molecules/theme-setting/theme-setting.astro";
 
-type Props = HTMLAttributes<"form">;
+type Props = HTMLAttributes<"form"> & {
+  altLanguages?: AltLanguage[] | null | undefined;
+};
 
-const { class: className, id, ...attrs } = Astro.props;
-const { locale, translate } = useI18n(Astro.currentLocale);
+const { altLanguages, class: className, id, ...attrs } = Astro.props;
+const { locale, route, translate } = useI18n(Astro.currentLocale);
+const languages = Object.fromEntries(
+  Object.entries(availableNamedLanguages).map(([lang, langName]) => {
+    return [
+      lang,
+      {
+        name: langName,
+        route:
+          lang === locale
+            ? Astro.url.href
+            : (altLanguages?.find((altLang) => altLang.locale === lang)
+                ?.route ?? route("home", lang)),
+      },
+    ];
+  }),
+);
 ---
 
 <form {...attrs} class:list={["settings-form", className]} id={id}>
   {
-    Object.keys(availableNamedLanguages).length > 1 ? (
+    Object.keys(languages).length > 1 ? (
       <LanguagePicker
         class="settings-form-language"
         current={locale}
         id={`${id}-language-picker`}
         label={translate("form.settings.label.language")}
-        languages={availableNamedLanguages}
+        languages={languages}
       />
     ) : null
   }
@@ -48,11 +66,6 @@ const { locale, translate } = useI18n(Astro.currentLocale);
       align-items: center;
       justify-items: end;
       gap: var(--spacing-sm);
-      margin-inline: auto;
-    }
-
-    @media (width >= 640px) {
-      margin-inline-end: 0;
     }
   }
 

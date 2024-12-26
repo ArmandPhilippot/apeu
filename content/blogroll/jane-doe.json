@@ -5,6 +5,7 @@
   "inLanguages": ["en", "fr"],
   "publishedOn": "2024-11-10T17:26",
   "description": {
-    "en": "A description in English of this blog."
+    "en": "A description in English of this blog.",
+    "fr": "Une description en Français pour ce blog."
   }
 }

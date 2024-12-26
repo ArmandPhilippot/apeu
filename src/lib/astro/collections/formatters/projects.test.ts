@@ -55,6 +55,7 @@ describe("get-project", () => {
         "route": "/projects/revolutionary-project",
         "seo": {
           "description": "The project description for search engines.",
+          "languages": null,
           "title": "The project title for search engines",
         },
         "slug": "revolutionary-project",

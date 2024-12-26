@@ -2,7 +2,11 @@ import { render, type CollectionEntry } from "astro:content";
 import type { Guide, GuidePreview } from "../../../../types/data";
 import { getMetaFromRemarkPluginFrontmatter } from "../../../../utils/frontmatter";
 import { getAuthorLink } from "./authors";
-import { getTagsFromReferences, resolveReferences } from "./utils";
+import {
+  getTagsFromReferences,
+  resolveReferences,
+  resolveTranslations,
+} from "./utils";
 
 export const getGuidePreview = async (
   guide: CollectionEntry<"guides">,
@@ -35,6 +39,7 @@ export const getGuide = async (
   const preview = await getGuidePreview(guide);
   const resolvedAuthors = await resolveReferences(guide.data.meta.authors);
   const { remarkPluginFrontmatter, ...renderResult } = await render(guide);
+  const altLanguages = await resolveTranslations(guide.data.i18n);
 
   return {
     ...preview,
@@ -44,7 +49,10 @@ export const getGuide = async (
       ...preview.meta,
       authors: resolvedAuthors?.map(getAuthorLink) ?? [],
     },
-    seo: guide.data.seo,
+    seo: {
+      ...guide.data.seo,
+      languages: altLanguages,
+    },
     slug: guide.data.slug,
   };
 };

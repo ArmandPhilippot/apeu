@@ -1,6 +1,6 @@
 import rss from "@astrojs/rss";
 import type { APIRoute } from "astro";
-import { queryCollection } from "../../../../lib/astro/collections/query-collection";
+import { queryCollection } from "../../../../lib/astro/collections";
 import { MissingSiteConfigError } from "../../../../utils/exceptions";
 import {
   getFeedLanguageFromLocale,

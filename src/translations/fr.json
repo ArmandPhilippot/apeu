@@ -46,9 +46,9 @@
     "cta.read.more": "Lire la suite",
     "cta.read.more.a11y": "Lire la suite de {title}",
     "cta.see.all.posts": {
-      "zero": "Voir tout (aucun article)",
-      "one": "Voir tout (1 article)",
-      "more": "Voir tout ({count} articles)"
+      "zero": "Tout voir (aucun article)",
+      "one": "Tout voir (1 article)",
+      "more": "Tout voir ({count} articles)"
     },
     "cta.skip.to.content": "Aller au contenu",
     "cta.subscribe": "S’abonner",

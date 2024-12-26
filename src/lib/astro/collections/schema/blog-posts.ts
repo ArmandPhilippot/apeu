@@ -1,4 +1,5 @@
 import { defineCollection, reference, z } from "astro:content";
+import { isAvailableLanguage } from "../../../../utils/i18n";
 import { globLoader } from "../../loaders/glob-loader";
 import { contentsBaseSchema } from "./partials";
 
@@ -14,6 +15,12 @@ export const blogPosts = defineCollection({
             alt: z.string(),
             src: image(),
           })
+          .optional(),
+        i18n: z
+          .record(
+            z.string().refine(isAvailableLanguage),
+            reference("blogPosts"),
+          )
           .optional(),
         tags: z.array(reference("tags")).optional(),
       })

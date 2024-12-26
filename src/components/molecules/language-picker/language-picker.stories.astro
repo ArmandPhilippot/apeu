@@ -23,6 +23,11 @@ const seo: ComponentProps<typeof PageLayout>["seo"] = {
     .map((crumb) => crumb.label)
     .join(" | "),
 };
+const languages: ComponentProps<typeof LanguagePickerComponent>["languages"] = {
+  en: { name: "English", route: "#en" },
+  es: { name: "Español", route: "#es" },
+  fr: { name: "Français", route: "#fr" },
+};
 ---
 
 <PageLayout breadcrumb={breadcrumb} seo={seo} title={title}>
@@ -36,7 +41,7 @@ const seo: ComponentProps<typeof PageLayout>["seo"] = {
       current="es"
       id="usage-example"
       label="Choose a language:"
-      languages={{ en: "English", es: "Español", fr: "Français" }}
+      languages={languages}
     />
   </Fragment>
 </PageLayout>

@@ -1,5 +1,6 @@
 ---
 import type { ComponentProps } from "astro/types";
+import Code from "../../atoms/code/code.astro";
 import Heading from "../../atoms/heading/heading.astro";
 import PageLayout from "../../templates/page-layout/page-layout.astro";
 import SettingsFormComponent from "./settings-form.astro";
@@ -22,15 +23,31 @@ const seo: ComponentProps<typeof PageLayout>["seo"] = {
     .map((crumb) => crumb.label)
     .join(" | "),
 };
+const altLanguages: ComponentProps<
+  typeof SettingsFormComponent
+>["altLanguages"] = [
+  { locale: "en", route: "#my-en-route" },
+  { locale: "fr", route: "#ma-route-fr" },
+];
 ---
 
 <PageLayout breadcrumb={breadcrumb} seo={seo} title={title}>
   <Fragment slot="body">
     <Heading as="h2">Usage</Heading>
     <p>
-      A <code>SettingsForm</code> component should be used to authorize the user
+      A <Code>SettingsForm</Code> component should be used to authorize the user
       to customize the website.
     </p>
     <SettingsFormComponent id="usage-example" />
+    <Heading as="h2">Alternatives languages</Heading>
+    <p>
+      You can provide the routes to use for the alternative languages using the <Code
+        >altLanguages</Code
+      > property.
+    </p>
+    <SettingsFormComponent
+      altLanguages={altLanguages}
+      id="alt-languages-example"
+    />
   </Fragment>
 </PageLayout>

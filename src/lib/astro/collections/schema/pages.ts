@@ -1,4 +1,5 @@
-import { defineCollection, z } from "astro:content";
+import { defineCollection, reference, z } from "astro:content";
+import { isAvailableLanguage } from "../../../../utils/i18n";
 import { globLoader } from "../../loaders/glob-loader";
 import { contentsBaseSchema } from "./partials";
 
@@ -12,6 +13,9 @@ export const pages = defineCollection({
             alt: z.string(),
             src: image(),
           })
+          .optional(),
+        i18n: z
+          .record(z.string().refine(isAvailableLanguage), reference("pages"))
           .optional(),
       })
       .transform(({ isDraft, publishedOn, updatedOn, ...page }) => {

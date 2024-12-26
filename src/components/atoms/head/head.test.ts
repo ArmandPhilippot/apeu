@@ -118,8 +118,8 @@ describe("Head", () => {
       brand: "et a dolores",
       seo: {
         languages: [
-          { locale: "fr", url: "/modi-odit-voluptatem" },
-          { locale: "es", url: "/et-sint-laudantium" },
+          { locale: "fr", route: "/modi-odit-voluptatem" },
+          { locale: "es", route: "/et-sint-laudantium" },
         ],
         title: "est et fugiat",
       },
@@ -131,10 +131,10 @@ describe("Head", () => {
     expect.assertions(2);
 
     expect(result).toContain(
-      `<link rel="alternate" href="${props.seo.languages[0]?.url}" hreflang="${props.seo.languages[0]?.locale}">`,
+      `<link rel="alternate" href="${props.seo.languages[0]?.route}" hreflang="${props.seo.languages[0]?.locale}">`,
     );
     expect(result).toContain(
-      `<link rel="alternate" href="${props.seo.languages[1]?.url}" hreflang="${props.seo.languages[1]?.locale}">`,
+      `<link rel="alternate" href="${props.seo.languages[1]?.route}" hreflang="${props.seo.languages[1]?.locale}">`,
     );
   });
 
@@ -144,7 +144,7 @@ describe("Head", () => {
     const props = {
       brand: "et a dolores",
       seo: {
-        author: { name: "Godfrey.Mann73", url: "https://example.test" },
+        author: { name: "Godfrey.Mann73", website: "https://example.test" },
         title: "est et fugiat",
       },
     } satisfies ComponentProps<typeof Head>;
@@ -158,7 +158,7 @@ describe("Head", () => {
       `<meta name="author" content="${props.seo.author.name}">`,
     );
     expect(result).toContain(
-      `<link rel="author" href="${props.seo.author.url}">`,
+      `<link rel="author" href="${props.seo.author.website}">`,
     );
   });
 

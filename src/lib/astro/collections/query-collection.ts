@@ -3,195 +3,14 @@ import {
   type CollectionEntry,
   type CollectionKey,
 } from "astro:content";
-import type { Order } from "../../../types/tokens";
-import type {
-  HasNestedKey,
-  KeyOfType,
-  LooseAutocomplete,
-  SharedShape,
-} from "../../../types/utilities";
-import type { AvailableLanguage } from "../../../utils/i18n";
-import { sortByKey } from "../../../utils/sort";
 import { formatEntry, type EntryFormat } from "./format-entry";
-
-type QueryCollectionOrderBy<C extends CollectionKey> = {
-  /**
-   * The key used to order the entries.
-   */
-  key: CollectionEntry<C>["data"] extends Record<"meta", unknown>
-    ?
-        | KeyOfType<CollectionEntry<C>["data"]["meta"], string | Date>
-        | KeyOfType<CollectionEntry<C>["data"], string | Date>
-    : KeyOfType<CollectionEntry<C>["data"], string | Date>;
-  /**
-   * The entries order.
-   */
-  order: Order;
-};
-
-/**
- * Check if the given key is present in both objects.
- *
- * @param {T1} a - An object.
- * @param {T2} b - Another object.
- * @param {string} key - The key to test.
- * @returns {boolean} True if the key is in both objects.
- */
-const hasCommonKey = <
-  T1 extends Record<string, unknown>,
-  T2 extends Record<string, unknown>,
->(
-  a: T1,
-  b: T2,
-  key: string,
-): key is keyof SharedShape<T1, T2> => key in a && key in b;
-
-/**
- * Order the entries in collection with the given instructions.
- *
- * @template C - CollectionEntry
- * @param {CollectionEntry<C>[]} entries - The collection entries.
- * @param {QueryCollectionOrderBy<C>} orderBy - The ordering instructions.
- * @returns {CollectionEntry<C>[]} The ordered entries.
- */
-const getOrderedEntries = <C extends CollectionKey>(
-  entries: CollectionEntry<C>[],
-  { key, order }: QueryCollectionOrderBy<C>,
-): CollectionEntry<C>[] => {
-  const orderedEntries = [...entries].sort((a, b) => {
-    const sourceA =
-      "meta" in a.data && key in a.data.meta ? a.data.meta : a.data;
-    const sourceB =
-      "meta" in b.data && key in b.data.meta ? b.data.meta : b.data;
-
-    if (!hasCommonKey(sourceA, sourceB, key))
-      throw new Error(`Property ${key} must be available in both entries.`);
-
-    return sortByKey(sourceA, sourceB, key);
-  });
-
-  return order === "DESC" ? orderedEntries.reverse() : orderedEntries;
-};
-
-type QueryCollectionWhere = {
-  /**
-   * Retrieve only entries attached to the given authors.
-   */
-  authors: LooseAutocomplete<CollectionEntry<"authors">["id"]>[];
-  /**
-   * Retrieve only entries attached to the given blog categories.
-   */
-  categories: LooseAutocomplete<CollectionEntry<"blogCategories">["id"]>[];
-  /**
-   * Retrieve only entries with a matching id.
-   */
-  ids: string[];
-  /**
-   * Retrieve only entries in the given locale.
-   */
-  locale: LooseAutocomplete<AvailableLanguage>;
-  /**
-   * Retrieve only entries attached to the given tags.
-   */
-  tags: LooseAutocomplete<CollectionEntry<"tags">["id"]>[];
-};
-
-type CollectionEntryWithMeta<C extends CollectionKey> = HasNestedKey<
-  CollectionEntry<C>,
-  "data",
-  "meta"
->;
-
-const hasMetaProperty = <C extends CollectionKey>(
-  entry: CollectionEntry<C>,
-): entry is CollectionEntryWithMeta<C> => {
-  return "meta" in entry.data && "isDraft" in entry.data.meta;
-};
-
-const hasDraftProperty = <C extends CollectionKey>(
-  entry: CollectionEntry<C>,
-): entry is CollectionEntry<C> & { data: { meta: { isDraft?: boolean } } } => {
-  return hasMetaProperty(entry) && "isDraft" in entry.data.meta;
-};
-
-const isDraftOnProd = (
-  entry: CollectionEntryWithMeta<CollectionKey>,
-): boolean => {
-  if (!hasDraftProperty(entry) || !import.meta.env.PROD) return false;
-
-  return entry.data.meta.isDraft;
-};
-
-const matchesAuthors = (
-  entry: CollectionEntryWithMeta<CollectionKey>,
-  authors?: string[],
-): boolean => {
-  if (!authors) return true;
-  if (!authors.length || !entry.data.meta || !("authors" in entry.data.meta))
-    return false;
-
-  return entry.data.meta.authors.some((ref) =>
-    authors.some((author) => author === ref.id),
-  );
-};
-
-const matchesCategories = (
-  entry: CollectionEntryWithMeta<CollectionKey>,
-  categories?: string[],
-): boolean => {
-  if (!categories?.length) return true;
-
-  return (
-    "category" in entry.data.meta &&
-    categories.includes(entry.data.meta.category.id)
-  );
-};
-
-const matchesIds = (
-  entry: CollectionEntry<CollectionKey>,
-  ids?: string[],
-): boolean => {
-  return !ids?.length || ids.includes(entry.id);
-};
-
-const matchesLocale = (
-  entry: CollectionEntry<CollectionKey>,
-  locale?: string,
-): boolean => {
-  if (!locale || !("locale" in entry.data)) return true;
-  return entry.data.locale === locale;
-};
-
-const matchesTags = (
-  entry: CollectionEntryWithMeta<CollectionKey>,
-  tags?: string[],
-): boolean => {
-  if (!tags?.length) return true;
-
-  return (
-    "tags" in entry.data.meta &&
-    !!entry.data.meta.tags &&
-    entry.data.meta.tags.some((ref) => tags.some((tag) => tag === ref.id))
-  );
-};
-
-const applyCollectionFilters =
-  (filters: Partial<QueryCollectionWhere> = {}) =>
-  (entry: CollectionEntry<CollectionKey>) => {
-    const { authors, categories, ids, locale, tags } = filters;
-
-    if (!hasMetaProperty(entry))
-      return matchesIds(entry, ids) && matchesLocale(entry, locale);
-
-    return (
-      !isDraftOnProd(entry) &&
-      matchesAuthors(entry, authors) &&
-      matchesCategories(entry, categories) &&
-      matchesIds(entry, ids) &&
-      matchesLocale(entry, locale) &&
-      matchesTags(entry, tags)
-    );
-  };
+import { applyCollectionFilters } from "./utils/filters";
+import { getOrderedEntries } from "./utils/ordering";
+import { updateEntriesTagsForLocale } from "./utils/transformations";
+import type {
+  QueryCollectionOrderBy,
+  QueryCollectionWhere,
+} from "./utils/types";
 
 type QueryCollectionOptions<C extends CollectionKey, F extends EntryFormat> = {
   /**
@@ -232,21 +51,29 @@ export type QueriedCollection<
   total: number;
 };
 
+const paginateEntries = <C extends CollectionKey>(
+  entries: CollectionEntry<C>[],
+  after: number,
+  first?: number,
+): CollectionEntry<C>[] =>
+  first !== undefined
+    ? entries.slice(after, after + first)
+    : entries.slice(after);
+
+const formatEntries = async <C extends CollectionKey, F extends EntryFormat>(
+  entries: CollectionEntry<C>[],
+  format?: F,
+): Promise<Awaited<ReturnType<typeof formatEntry<C, F>>>[]> =>
+  Promise.all(entries.map((entry) => formatEntry(entry, format)));
+
 const processEntries = async <C extends CollectionKey, F extends EntryFormat>(
   entries: CollectionEntry<C>[],
   options: Omit<QueryCollectionOptions<C, F>, "where"> = {},
 ): Promise<QueriedCollection<C, F>> => {
   const { after = 0, first, format, orderBy } = options;
-  const orderedEntries = orderBy
-    ? getOrderedEntries(entries, orderBy)
-    : entries;
-  const paginatedEntries =
-    first !== undefined
-      ? orderedEntries.slice(after, after + first)
-      : orderedEntries.slice(after);
-  const formattedEntries = await Promise.all(
-    paginatedEntries.map((entry) => formatEntry(entry, format)),
-  );
+  const orderedEntries = getOrderedEntries(entries, orderBy);
+  const paginatedEntries = paginateEntries(orderedEntries, after, first);
+  const formattedEntries = await formatEntries(paginatedEntries, format);
 
   return {
     entries: formattedEntries,
@@ -255,11 +82,11 @@ const processEntries = async <C extends CollectionKey, F extends EntryFormat>(
 };
 
 /**
- * Query a collection using filters.
+ * Query one or multiple collections at once using filters.
  *
  * @template C - CollectionKey
  * @template F - EntryFormat
- * @param {C} collection - The collection name.
+ * @param {C | C[]} collections - The collections names.
  * @param {Partial<QueryCollectionOptions<C, F>>} options - The options.
  * @returns {Promise<QueriedCollection<C, F>>} The collection entries.
  */
@@ -267,42 +94,26 @@ export const queryCollection = async <
   C extends CollectionKey,
   F extends EntryFormat = "full",
 >(
-  collection: C,
+  collections: C | C[],
   options: QueryCollectionOptions<C, F> = {},
 ): Promise<QueriedCollection<C, F>> => {
   const { where, ...remainingOptions } = options;
-  const filteredEntries = await getCollection(
-    collection,
-    applyCollectionFilters(where),
-  );
+  const collectionArray = Array.isArray(collections)
+    ? collections
+    : [collections];
 
-  return processEntries(filteredEntries, remainingOptions);
-};
-
-/**
- * Query multiple collections at once using filters.
- *
- * @template C - CollectionKey
- * @template F - EntryFormat
- * @param {C[]} collections - The collections names.
- * @param {Partial<QueryCollectionOptions<C, F>>} options - The options.
- * @returns {Promise<QueriedCollection<C, F>>} The collection entries.
- */
-export const queryCollections = async <
-  C extends CollectionKey,
-  F extends EntryFormat = "full",
->(
-  collections: C[],
-  options: QueryCollectionOptions<C, F> = {},
-): Promise<QueriedCollection<C, F>> => {
-  const { where, ...remainingOptions } = options;
   const filteredEntries = (
     await Promise.all(
-      collections.map((collection) =>
+      collectionArray.map((collection) =>
         getCollection(collection, applyCollectionFilters(where)),
       ),
     )
   ).flat();
 
-  return processEntries(filteredEntries, remainingOptions);
+  const transformedEntries = updateEntriesTagsForLocale(
+    filteredEntries,
+    options.where?.locale,
+  );
+
+  return processEntries(transformedEntries, remainingOptions);
 };

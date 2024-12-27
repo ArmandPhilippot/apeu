@@ -9,7 +9,6 @@ describe("bookmarks", () => {
       inLanguage: "es",
       isDraft: true,
       publishedOn: new Date("2023-01-01"),
-      updatedOn: new Date("2023-01-02"),
       url: "https://example.test",
     };
 
@@ -23,7 +22,6 @@ describe("bookmarks", () => {
       expect(result.data.meta.inLanguage).toBe(bookmark.inLanguage);
       expect(result.data.meta.isDraft).toBe(true);
       expect(result.data.meta.publishedOn).toEqual(new Date("2023-01-01"));
-      expect(result.data.meta.updatedOn).toEqual(new Date("2023-01-02"));
     }
   });
 
@@ -44,7 +42,6 @@ describe("bookmarks", () => {
     expect(result.success).toBe(true);
     if (result.success) {
       expect(result.data.meta.isDraft).toBe(false);
-      expect(result.data.meta.updatedOn).toEqual(result.data.meta.publishedOn);
     }
   });
 });

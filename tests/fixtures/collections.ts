@@ -87,7 +87,6 @@ export const bookmarkFixture = {
       isDraft: false,
       publishedOn: new Date("2024-09-22T21:00:40.797Z"),
       tags: [],
-      updatedOn: new Date("2024-09-22T21:00:40.797Z"),
     },
     title: "The bookmark title",
     url: "https://any-site.test/must-read",

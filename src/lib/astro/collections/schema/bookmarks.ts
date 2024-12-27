@@ -6,22 +6,14 @@ import { contentsBaseSchema } from "./partials";
 export const bookmarks = defineCollection({
   loader: globLoader("bookmarks"),
   schema: contentsBaseSchema
-    .omit({ route: true, seo: true, slug: true })
+    .omit({ route: true, seo: true, slug: true, updatedOn: true })
     .extend({
       inLanguage: z.string().refine(isValidLanguageCode),
       tags: z.array(reference("tags")).optional(),
       url: z.string().url(),
     })
     .transform(
-      ({
-        inLanguage,
-        isDraft,
-        locale,
-        publishedOn,
-        tags,
-        updatedOn,
-        ...bookmark
-      }) => {
+      ({ inLanguage, isDraft, locale, publishedOn, tags, ...bookmark }) => {
         return {
           ...bookmark,
           meta: {
@@ -29,7 +21,6 @@ export const bookmarks = defineCollection({
             isDraft,
             publishedOn,
             tags,
-            updatedOn: updatedOn ?? publishedOn,
           },
         };
       },

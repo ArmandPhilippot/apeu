@@ -9,6 +9,10 @@ export const bookmarks = defineCollection({
     .omit({ route: true, seo: true, slug: true, updatedOn: true })
     .extend({
       inLanguage: z.string().refine(isValidLanguageCode),
+      /**
+       * Is the description a quote from the linked post?
+       */
+      isQuote: z.boolean().optional().default(false),
       tags: z.array(reference("tags")).optional(),
       url: z.string().url(),
     })

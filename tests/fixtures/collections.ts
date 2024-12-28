@@ -82,6 +82,7 @@ export const bookmarkFixture = {
   collection: "bookmarks",
   data: {
     description: "The bookmark description.",
+    isQuote: false,
     meta: {
       inLanguage: "en",
       isDraft: false,

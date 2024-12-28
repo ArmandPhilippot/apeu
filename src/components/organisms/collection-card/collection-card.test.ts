@@ -196,6 +196,7 @@ describe("CollectionCard", () => {
         collection: "bookmarks",
         description: "Test description",
         id: "bookmark",
+        isQuote: false,
         title: "Test Post",
         url: "https://external-site.com",
       },

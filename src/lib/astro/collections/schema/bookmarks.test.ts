@@ -41,6 +41,7 @@ describe("bookmarks", () => {
 
     expect(result.success).toBe(true);
     if (result.success) {
+      expect(result.data.isQuote).toBe(false);
       expect(result.data.meta.isDraft).toBe(false);
     }
   });

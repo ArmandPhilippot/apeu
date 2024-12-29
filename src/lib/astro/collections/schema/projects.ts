@@ -22,7 +22,12 @@ export const projects = defineCollection({
           z.literal("site"),
           z.literal("theme"),
         ]),
-        repository: z.string().url().optional(),
+        repository: z
+          .object({
+            name: z.string(),
+            url: z.string().url(),
+          })
+          .optional(),
         tags: z.array(reference("tags")).optional(),
       })
       .transform(

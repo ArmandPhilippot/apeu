@@ -129,7 +129,7 @@ const configs: MetaDataConfigs = {
     renderLabel: () => ({
       token: "meta.label.repository",
     }),
-    renderValue: (value) => [{ href: value, text: value }],
+    renderValue: ({ name, url }) => [{ href: url, text: name }],
   },
   category: {
     shouldRender: (value): value is NonNullable<MetaData["category"]> =>

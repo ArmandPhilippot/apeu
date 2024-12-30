@@ -222,6 +222,7 @@ Before starting, please follow the instructions in [Setup](#setup).
 │   │   │   ├── index.md
 │   │   │   └── note1.md
 │   │   ├── pages/
+│   │   │   ├── 404.md
 │   │   │   ├── blogroll.md
 │   │   │   ├── bookmarks.md
 │   │   │   ├── contact.md
@@ -278,6 +279,7 @@ Before starting, please follow the instructions in [Setup](#setup).
 │   │   │   ├── tags/
 │   │   │   │   └── index.astro
 │   │   │   ├── [slug].astro
+│   │   │   ├── 404.astro
 │   │   │   ├── contact.astro
 │   │   │   ├── feeds.astro
 │   │   │   ├── index.astro

@@ -7,9 +7,3 @@ const { class: className, ...attrs } = Astro.props;
 ---
 
 <samp {...attrs} class:list={["samp", className]}><slot /></samp>
-
-<style>
-  .samp {
-    font-family: var(--font-family-mono);
-  }
-</style>

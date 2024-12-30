@@ -5,40 +5,7 @@ type Props<
   T extends Extract<HTMLTag, "h1" | "h2" | "h3" | "h4" | "h5" | "h6"> = "h2",
 > = Polymorphic<{ as: T }>;
 
-const { as: Tag = "h2", class: className, ...attrs } = Astro.props;
+const { as: Tag = "h2", ...attrs } = Astro.props;
 ---
 
-<Tag {...attrs} class:list={["heading", className]}><slot /></Tag>
-
-<style>
-  .heading {
-    margin: 0;
-    color: var(--color-primary-faded);
-    font-weight: var(--font-weight-bold);
-    text-wrap: balance;
-
-    &:where(:is(h1)) {
-      font-size: var(--font-size-5xl);
-    }
-
-    &:where(:is(h2)) {
-      font-size: var(--font-size-4xl);
-    }
-
-    &:where(:is(h3)) {
-      font-size: var(--font-size-3xl);
-    }
-
-    &:where(:is(h4)) {
-      font-size: var(--font-size-2xl);
-    }
-
-    &:where(:is(h5)) {
-      font-size: var(--font-size-xl);
-    }
-
-    &:where(:is(h6)) {
-      font-size: var(--font-size-lg);
-    }
-  }
-</style>
+<Tag {...attrs}><slot /></Tag>

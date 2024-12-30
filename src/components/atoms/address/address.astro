@@ -7,9 +7,3 @@ const { class: className, ...attrs } = Astro.props;
 ---
 
 <address {...attrs} class:list={["address", className]}><slot /></address>
-
-<style>
-  .address {
-    font-style: normal;
-  }
-</style>

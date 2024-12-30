@@ -20,15 +20,6 @@ const { class: className, isRequired = false, ...attrs } = Astro.props;
 </label>
 
 <style>
-  .label {
-    color: var(--color-primary-faded);
-    font-weight: var(--font-weight-bold);
-
-    &:where([for]) {
-      cursor: pointer;
-    }
-  }
-
   .label-star {
     color: var(--color-critical);
   }

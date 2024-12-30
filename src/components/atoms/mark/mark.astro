@@ -7,10 +7,3 @@ const { class: className, ...attrs } = Astro.props;
 ---
 
 <mark {...attrs} class:list={["mark", className]}><slot /></mark>
-
-<style>
-  .mark {
-    background: oklch(from var(--color-info) l c h / 25%);
-    color: inherit;
-  }
-</style>

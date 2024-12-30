@@ -7,14 +7,3 @@ const { class: className, ...attrs } = Astro.props;
 ---
 
 <code {...attrs} class:list={["code", className]}><slot /></code>
-
-<style>
-  :global(:where(:not(pre))) > .code {
-    padding: var(--spacing-4xs) var(--spacing-2xs);
-    background: var(--color-regular-darker);
-    border: var(--border-size-sm) solid var(--color-border);
-    border-radius: var(--border-radii-md);
-    font-family: var(--font-family-mono);
-    font-size: inherit;
-  }
-</style>

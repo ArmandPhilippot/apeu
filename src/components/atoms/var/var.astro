@@ -7,9 +7,3 @@ const { class: className, ...attrs } = Astro.props;
 ---
 
 <var {...attrs} class:list={["var", className]}><slot /></var>
-
-<style>
-  .var {
-    font-family: var(--font-family-mono);
-  }
-</style>

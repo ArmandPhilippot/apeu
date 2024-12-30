@@ -7,21 +7,3 @@ const { class: className, ...attrs } = Astro.props;
 ---
 
 <kbd {...attrs} class:list={["keystroke", className]}><slot /></kbd>
-
-<style>
-  .keystroke {
-    font-family: var(--font-family-mono);
-
-    &:not(:has(.keystroke)) {
-      display: inline-block;
-      padding: var(--spacing-4xs) var(--spacing-2xs);
-      background: var(--color-regular-lighter);
-      border: var(--border-size-sm) solid var(--color-border-dark);
-      border-radius: var(--border-radii-md);
-      box-shadow: var(--border-size-sm) var(--border-size-sm) 0
-        var(--border-size-sm) var(--color-shadow);
-      line-height: 1;
-      white-space: nowrap;
-    }
-  }
-</style>

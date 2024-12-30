@@ -97,6 +97,11 @@ const {
     & > :global(*) {
       max-width: 100%;
     }
+
+    & > :global(figcaption) {
+      padding: var(--spacing-2xs) var(--spacing-sm);
+      text-align: center;
+    }
   }
 
   :global(:where([data-theme="light"])) .figure::before {

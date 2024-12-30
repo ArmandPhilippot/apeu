@@ -14,9 +14,6 @@ const { class: className, isBordered = false, ...attrs } = Astro.props;
 
 <style>
   .legend {
-    color: var(--color-primary-faded);
-    font-weight: var(--font-weight-bold);
-
     &:where(.bordered) {
       padding: var(--spacing-4xs) var(--spacing-sm);
       border: var(--border-size-sm) solid var(--color-border);

@@ -7,15 +7,3 @@ const { class: className, ...attrs } = Astro.props;
 ---
 
 <q {...attrs} class:list={["quote", className]}><slot /></q>
-
-<style>
-  :global([lang="fr"]) .quote {
-    &::before {
-      margin-inline-end: var(--spacing-4xs);
-    }
-
-    &::after {
-      margin-inline-start: var(--spacing-4xs);
-    }
-  }
-</style>

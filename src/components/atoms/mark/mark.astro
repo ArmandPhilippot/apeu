@@ -1,9 +1,0 @@
----
-import type { HTMLAttributes } from "astro/types";
-
-type Props = HTMLAttributes<"mark">;
-
-const { class: className, ...attrs } = Astro.props;
----
-
-<mark {...attrs} class:list={["mark", className]}><slot /></mark>

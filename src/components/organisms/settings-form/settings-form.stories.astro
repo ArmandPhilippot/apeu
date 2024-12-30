@@ -1,6 +1,5 @@
 ---
 import type { ComponentProps } from "astro/types";
-import Code from "../../atoms/code/code.astro";
 import Heading from "../../atoms/heading/heading.astro";
 import PageLayout from "../../templates/page-layout/page-layout.astro";
 import SettingsFormComponent from "./settings-form.astro";
@@ -35,14 +34,14 @@ const altLanguages: ComponentProps<
   <Fragment slot="body">
     <Heading as="h2">Usage</Heading>
     <p>
-      A <Code>SettingsForm</Code> component should be used to authorize the user
+      A <code>SettingsForm</code> component should be used to authorize the user
       to customize the website.
     </p>
     <SettingsFormComponent id="usage-example" />
     <Heading as="h2">Alternatives languages</Heading>
     <p>
-      You can provide the routes to use for the alternative languages using the <Code
-        >altLanguages</Code
+      You can provide the routes to use for the alternative languages using the <code
+        >altLanguages</code
       > property.
     </p>
     <SettingsFormComponent

@@ -1,9 +1,0 @@
----
-import type { HTMLAttributes } from "astro/types";
-
-type Props = HTMLAttributes<"q">;
-
-const { class: className, ...attrs } = Astro.props;
----
-
-<q {...attrs} class:list={["quote", className]}><slot /></q>

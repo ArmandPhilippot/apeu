@@ -1,9 +1,0 @@
----
-import type { HTMLAttributes } from "astro/types";
-
-type Props = HTMLAttributes<"kbd">;
-
-const { class: className, ...attrs } = Astro.props;
----
-
-<kbd {...attrs} class:list={["keystroke", className]}><slot /></kbd>

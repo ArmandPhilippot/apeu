@@ -1,18 +1,9 @@
-import Address from "../atoms/address/address.astro";
 import Blockquote from "../atoms/blockquote/blockquote.astro";
 import Callout from "../atoms/callout/callout.astro";
-import Cite from "../atoms/cite/cite.astro";
-import Code from "../atoms/code/code.astro";
 import Figcaption from "../atoms/figure/figcaption.astro";
 import Img from "../atoms/img/img.astro";
-import Keystroke from "../atoms/keystroke/keystroke.astro";
 import ListItem from "../atoms/list/list-item.astro";
 import List from "../atoms/list/list.astro";
-import Mark from "../atoms/mark/mark.astro";
-import Quote from "../atoms/quote/quote.astro";
-import Samp from "../atoms/samp/samp.astro";
-import Table from "../atoms/table/table.astro";
-import Var from "../atoms/var/var.astro";
 import Figure from "./figure.astro";
 import H2 from "./h2.astro";
 import H3 from "./h3.astro";
@@ -25,11 +16,8 @@ import Placeholder from "./placeholder.astro";
 
 export const components = {
   a: Link,
-  address: Address,
   blockquote: Blockquote,
   callout: Callout,
-  cite: Cite,
-  code: Code,
   div: Placeholder,
   figcaption: Figcaption,
   figure: Figure,
@@ -39,13 +27,7 @@ export const components = {
   h5: H5,
   h6: H6,
   img: Img,
-  kbd: Keystroke,
   li: ListItem,
-  mark: Mark,
   ol: Ol,
-  q: Quote,
-  samp: Samp,
-  table: Table,
   ul: List,
-  var: Var,
 };

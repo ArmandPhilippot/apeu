@@ -1,7 +1,6 @@
 ---
 import type { ComponentProps } from "astro/types";
 import PageLayout from "../../templates/page-layout/page-layout.astro";
-import Code from "../code/code.astro";
 import Heading from "../heading/heading.astro";
 import GridComponent from "./grid.astro";
 
@@ -37,9 +36,9 @@ const seo: ComponentProps<typeof PageLayout>["seo"] = {
       <div>Item 6</div>
     </GridComponent>
     <Heading as="h2">Options</Heading>
-    <Heading as="h3"><Code>cols</Code></Heading>
+    <Heading as="h3"><code>cols</code></Heading>
     <p>
-      The <Code>cols</Code> property lets you define an explicit columns number.
+      The <code>cols</code> property lets you define an explicit columns number.
       Caveat: You'll need to handle yourself small viewports.
     </p>
     <GridComponent cols={2}>
@@ -50,9 +49,9 @@ const seo: ComponentProps<typeof PageLayout>["seo"] = {
       <div>Item 5</div>
       <div>Item 6</div>
     </GridComponent>
-    <Heading as="h3"><Code>rows</Code></Heading>
+    <Heading as="h3"><code>rows</code></Heading>
     <p>
-      The <Code>rows</Code> property lets you define an explicit rows number. Caveat:
+      The <code>rows</code> property lets you define an explicit rows number. Caveat:
       This is not useful by itself.
     </p>
     <GridComponent rows={3}>
@@ -63,9 +62,9 @@ const seo: ComponentProps<typeof PageLayout>["seo"] = {
       <div>Item 5</div>
       <div>Item 6</div>
     </GridComponent>
-    <Heading as="h3"><Code>gap</Code></Heading>
+    <Heading as="h3"><code>gap</code></Heading>
     <p>
-      The <Code>gap</Code> property lets you define an explicit columns number. Caveat:
+      The <code>gap</code> property lets you define an explicit columns number. Caveat:
       You'll need to handle yourself small viewports.
     </p>
     <Heading as="h4">Unique gap</Heading>
@@ -104,9 +103,9 @@ const seo: ComponentProps<typeof PageLayout>["seo"] = {
       <div>Item 5</div>
       <div>Item 6</div>
     </GridComponent>
-    <Heading as="h3"><Code>sizeMinCols</Code></Heading>
+    <Heading as="h3"><code>sizeMinCols</code></Heading>
     <p>
-      The <Code>sizeMinCols</Code> property lets you override the default minimal
+      The <code>sizeMinCols</code> property lets you override the default minimal
       size for columns.
     </p>
     <GridComponent sizeMinCols="400px">
@@ -117,9 +116,9 @@ const seo: ComponentProps<typeof PageLayout>["seo"] = {
       <div>Item 5</div>
       <div>Item 6</div>
     </GridComponent>
-    <Heading as="h3"><Code>sizeMaxCols</Code></Heading>
+    <Heading as="h3"><code>sizeMaxCols</code></Heading>
     <p>
-      The <Code>sizeMaxCols</Code> property lets you override the default maximal
+      The <code>sizeMaxCols</code> property lets you override the default maximal
       size for columns.
     </p>
     <GridComponent sizeMaxCols="200px">
@@ -130,9 +129,9 @@ const seo: ComponentProps<typeof PageLayout>["seo"] = {
       <div>Item 5</div>
       <div>Item 6</div>
     </GridComponent>
-    <Heading as="h3"><Code>templateCols</Code></Heading>
+    <Heading as="h3"><code>templateCols</code></Heading>
     <p>
-      The <Code>templateCols</Code> property lets you override the default template
+      The <code>templateCols</code> property lets you override the default template
       for columns.
     </p>
     <GridComponent templateCols="1fr auto 1fr">
@@ -143,9 +142,9 @@ const seo: ComponentProps<typeof PageLayout>["seo"] = {
       <div>Item 5</div>
       <div>Item 6</div>
     </GridComponent>
-    <Heading as="h3"><Code>templateRows</Code></Heading>
+    <Heading as="h3"><code>templateRows</code></Heading>
     <p>
-      The <Code>templateRows</Code> property lets you override the default template
+      The <code>templateRows</code> property lets you override the default template
       for rows.
     </p>
     <GridComponent templateRows="auto 3rem auto">
@@ -158,9 +157,9 @@ const seo: ComponentProps<typeof PageLayout>["seo"] = {
     </GridComponent>
     <Heading as="h3">Other CSS grid properties</Heading>
     <p>
-      You can also use <Code>alignContent</Code>, <Code>alignItems</Code>, <Code
-        >justifyContent</Code
-      > and <Code>justifyItems</Code> to customize the alignment of your items in
+      You can also use <code>alignContent</code>, <code>alignItems</code>, <code
+        >justifyContent</code
+      > and <code>justifyItems</code> to customize the alignment of your items in
       the grid.
     </p>
   </Fragment>

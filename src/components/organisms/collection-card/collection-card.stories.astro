@@ -77,10 +77,10 @@ const bookmark = {
   collection: "bookmarks",
   description: "A short description about the bookmark.",
   id: "bookmark-card",
+  isQuote: false,
   meta: {
     inLanguage: "en",
     publishedOn: new Date(),
-    updatedOn: new Date(),
   },
   title: "The bookmark title",
   url: "#molestiae-eum-facere",
@@ -128,7 +128,10 @@ const project = {
   locale: "en",
   meta: {
     kind: "site",
-    repository: "https://github.com/user/repo",
+    repository: {
+      name: "repo",
+      url: "https://github.com/user/repo",
+    },
     publishedOn: new Date("2024-09-16"),
     updatedOn: new Date("2024-09-16"),
   },

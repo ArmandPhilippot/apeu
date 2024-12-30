@@ -94,7 +94,7 @@ const getCTA = (
     }}
     slot="meta"
   />
-  <Content components={components} slot="body" />
+  <Content components={components} slot={page.hasContent ? "body" : ""} />
   <CardsList
     isContainer
     items={relatedEntries}

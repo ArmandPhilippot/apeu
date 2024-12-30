@@ -228,15 +228,18 @@ describe("CollectionMeta", () => {
   }) => {
     const props = {
       data: {
-        repository: "https://github.com/user/repo",
+        repository: {
+          name: "repo",
+          url: "https://github.com/user/repo",
+        },
       },
     } as const satisfies ComponentProps<typeof CollectionMeta>;
     const result = await container.renderToString(CollectionMeta, {
       props,
     });
 
-    expect(result).toContain(`href="${props.data.repository}"`);
-    expect(result).toContain(`>${props.data.repository}<`);
+    expect(result).toContain(`href="${props.data.repository.url}"`);
+    expect(result).toContain(`>${props.data.repository.name}<`);
   });
 
   it<LocalTestContext>("renders category with correct link", async ({

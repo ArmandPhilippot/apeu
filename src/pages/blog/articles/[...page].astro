@@ -99,7 +99,7 @@ const getCTA = (
   />
   <Content components={components} slot={page.hasContent ? "body" : ""} />
   <Fragment slot="disconnected-body">
-    <CardsList isContainer items={posts}>
+    <CardsList isContainer items={posts} sizeMinCols="100%">
       {
         (post: (typeof posts)[number]) => (
           <CollectionCard
@@ -116,9 +116,11 @@ const getCTA = (
       pagination.lastPage > 1 ? (
         <Pagination
           aria-label={translate("pagination.a11y")}
+          class="pagination"
           current={pagination.currentPage}
+          isCentered
           last={pagination.lastPage}
-          renderLink={renderPaginationLink(route("guides"))}
+          renderLink={renderPaginationLink(route("blog.posts"))}
         />
       ) : null
     }
@@ -130,5 +132,9 @@ const getCTA = (
     @container body (width >= 55em) {
       border: var(--border-size-sm) solid var(--color-border);
     }
+  }
+
+  .pagination {
+    margin-block: var(--spacing-lg);
   }
 </style>

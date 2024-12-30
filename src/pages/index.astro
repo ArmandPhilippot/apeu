@@ -4,7 +4,6 @@ import logo from "../assets/logo.svg";
 import Box from "../components/atoms/box/box.astro";
 import Heading from "../components/atoms/heading/heading.astro";
 import { components } from "../components/mdx";
-import Card from "../components/molecules/card/card.astro";
 import CardsList from "../components/molecules/cards-list/cards-list.astro";
 import Greetings from "../components/molecules/greetings/greetings.astro";
 import CollectionCard from "../components/organisms/collection-card/collection-card.astro";
@@ -95,16 +94,18 @@ const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
     }
     {
       page.hasContent ? (
-        <Card
+        <Box
           as="section"
           class="homepage-content"
           elevation="raised"
+          isBordered
           isCentered
+          isPadded
+          isProse
           isSpaced
         >
-          <Heading slot="heading">{page.title}</Heading>
           <Content components={components} />
-        </Card>
+        </Box>
       ) : null
     }
     {

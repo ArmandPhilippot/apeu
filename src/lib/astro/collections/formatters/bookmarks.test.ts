@@ -13,11 +13,11 @@ describe("get-bookmark", () => {
         "collection": "bookmarks",
         "description": "The bookmark description.",
         "id": "must-read-bookmark",
+        "isQuote": false,
         "meta": {
           "inLanguage": "en",
           "publishedOn": 2024-09-22T21:00:40.797Z,
           "tags": null,
-          "updatedOn": 2024-09-22T21:00:40.797Z,
         },
         "title": "The bookmark title",
         "url": "https://any-site.test/must-read",

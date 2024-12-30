@@ -115,7 +115,9 @@ const getCTA = (
       pagination.lastPage > 1 ? (
         <Pagination
           aria-label={translate("pagination.a11y")}
+          class="pagination"
           current={pagination.currentPage}
+          isCentered
           last={pagination.lastPage}
           renderLink={renderPaginationLink(route("bookmarks"))}
         />
@@ -123,3 +125,9 @@ const getCTA = (
     }
   </Fragment>
 </PageLayout>
+
+<style>
+  .pagination {
+    margin-block: var(--spacing-lg);
+  }
+</style>

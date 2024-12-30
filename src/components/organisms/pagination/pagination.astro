@@ -13,6 +13,10 @@ type Props = HTMLAttributes<"nav"> & {
    */
   current: number;
   /**
+   * Should the pagination be centered?
+   */
+  isCentered?: boolean | null | undefined;
+  /**
    * The page number of the last page.
    */
   last: number;
@@ -40,6 +44,7 @@ type Props = HTMLAttributes<"nav"> & {
 const {
   class: className,
   current,
+  isCentered = false,
   last,
   perPage = 5,
   renderLink,
@@ -57,7 +62,10 @@ const hasNextPage = current < last;
 const ellipsis = "\u2026" as const;
 ---
 
-<nav {...attrs} class:list={["pagination", className]}>
+<nav
+  {...attrs}
+  class:list={["pagination", { centered: isCentered }, className]}
+>
   <List as="ol" class="pagination-list" hideMarker isInline>
     {
       hasPreviousPage ? (
@@ -150,6 +158,15 @@ const ellipsis = "\u2026" as const;
 </nav>
 
 <style>
+  .pagination {
+    width: fit-content;
+    max-width: var(--size-prose);
+
+    &:where(.centered) {
+      margin-inline: auto;
+    }
+  }
+
   .pagination-list {
     gap: var(--spacing-2xs);
   }

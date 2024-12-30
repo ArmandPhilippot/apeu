@@ -116,8 +116,9 @@ const getCTA = (
       pagination.lastPage > 1 ? (
         <Pagination
           aria-label={translate("pagination.a11y")}
-          class="posts-pagination"
+          class="pagination"
           current={pagination.currentPage}
+          isCentered
           last={pagination.lastPage}
           renderLink={renderPaginationLink(route("blog.posts"))}
         />
@@ -133,9 +134,7 @@ const getCTA = (
     }
   }
 
-  .posts-pagination {
-    width: fit-content;
-    max-width: var(--size-prose);
-    margin: var(--spacing-lg) auto 0;
+  .pagination {
+    margin-block: var(--spacing-lg);
   }
 </style>

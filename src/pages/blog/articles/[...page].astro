@@ -2,8 +2,7 @@
 import type { GetStaticPaths } from "astro";
 import type { ComponentProps } from "astro/types";
 import { components } from "../../../components/mdx";
-import CardsList from "../../../components/molecules/cards-list/cards-list.astro";
-import CollectionCard from "../../../components/organisms/collection-card/collection-card.astro";
+import CollectionListByYear from "../../../components/organisms/collection-list-by-year/collection-list-by-year.astro";
 import CollectionMeta from "../../../components/organisms/collection-meta/collection-meta.astro";
 import Pagination from "../../../components/organisms/pagination/pagination.astro";
 import PageLayout from "../../../components/templates/page-layout/page-layout.astro";
@@ -70,14 +69,6 @@ const seo: ComponentProps<typeof PageLayout>["seo"] = {
   ...page.seo,
   title: isFirstPage ? page.seo.title : `${page.seo.title} - ${pageLabel}`,
 };
-const getCTA = (
-  title: string,
-): ComponentProps<typeof CollectionCard>["cta"] => {
-  return {
-    ariaLabel: translate("cta.read.more.a11y", { title }),
-    label: translate("cta.read.more"),
-  };
-};
 ---
 
 <PageLayout
@@ -99,19 +90,11 @@ const getCTA = (
   />
   <Content components={components} slot={page.hasContent ? "body" : ""} />
   <Fragment slot="disconnected-body">
-    <CardsList isContainer items={posts} sizeMinCols="100%">
-      {
-        (post: (typeof posts)[number]) => (
-          <CollectionCard
-            class="post-card"
-            cta={getCTA(post.title)}
-            elevation="raised"
-            entry={post}
-            featuredMeta={{ icon: "blog", key: "publishedOn" }}
-          />
-        )
-      }
-    </CardsList>
+    <CollectionListByYear
+      elevation="raised"
+      featuredMeta={{ icon: "blog", key: "publishedOn" }}
+      items={posts}
+    />
     {
       pagination.lastPage > 1 ? (
         <Pagination
@@ -128,12 +111,6 @@ const getCTA = (
 </PageLayout>
 
 <style>
-  .post-card {
-    @container body (width >= 55em) {
-      border: var(--border-size-sm) solid var(--color-border);
-    }
-  }
-
   .pagination {
     margin-block: var(--spacing-lg);
   }

@@ -51,11 +51,12 @@ describe("projects", () => {
     const parsedSchema = projects.schema({ image: vi.fn() });
     const result = await parsedSchema.safeParseAsync(project);
 
-    expect.assertions(4);
+    expect.assertions(5);
 
     expect(result.success).toBe(true);
     if (result.success) {
       expect(result.data.locale).toBe(CONFIG.LANGUAGES.DEFAULT);
+      expect(result.data.meta.isArchived).toBe(false);
       expect(result.data.meta.isDraft).toBe(false);
       expect(result.data.meta.updatedOn).toEqual(result.data.meta.publishedOn);
     }

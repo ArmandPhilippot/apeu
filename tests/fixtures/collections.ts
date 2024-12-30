@@ -167,6 +167,7 @@ export const projectFixture = {
     description: "The project description.",
     locale: "en",
     meta: {
+      isArchived: false,
       isDraft: false,
       kind: "app",
       publishedOn: new Date("2024-09-22T21:00:40.804Z"),

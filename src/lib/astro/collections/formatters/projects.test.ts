@@ -15,6 +15,7 @@ describe("get-project-preview", () => {
         "id": "revolutionary-project",
         "locale": "en",
         "meta": {
+          "isArchived": false,
           "kind": "app",
           "publishedOn": 2024-09-22T21:00:40.804Z,
           "readingTime": undefined,
@@ -45,6 +46,7 @@ describe("get-project", () => {
         "id": "revolutionary-project",
         "locale": "en",
         "meta": {
+          "isArchived": false,
           "kind": "app",
           "publishedOn": 2024-09-22T21:00:40.804Z,
           "readingTime": undefined,

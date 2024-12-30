@@ -123,6 +123,7 @@
     "meta.label.reading.time": "Durée de la lecture :",
     "meta.label.repository": "Dépôt :",
     "meta.label.speak": "Parle :",
+    "meta.label.status": "Statut :",
     "meta.label.tags": {
       "zero": "Étiquette :",
       "one": "Étiquette :",
@@ -150,6 +151,7 @@
       "one": "{count} minute",
       "more": "{count} minutes"
     },
+    "meta.value.status.archived": "Archivé",
     "meta.value.total.blog.categories": {
       "zero": "{count} catégorie",
       "one": "{count} catégorie",

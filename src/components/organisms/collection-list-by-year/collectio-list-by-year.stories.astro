@@ -1,0 +1,102 @@
+---
+import type { ComponentProps } from "astro/types";
+import Heading from "../../atoms/heading/heading.astro";
+import PageLayout from "../../templates/page-layout/page-layout.astro";
+import CollectionListByYearComponent from "./collection-list-by-year.astro";
+
+const title = "CollectionListByYear";
+const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
+  { label: "Home", url: "/" },
+  { label: "Design system", url: "/design-system" },
+  { label: "Components", url: "/design-system/components" },
+  { label: "Organisms", url: "/design-system/components/organisms" },
+  { label: title, url: Astro.url.href },
+];
+const seo: ComponentProps<typeof PageLayout>["seo"] = {
+  nofollow: true,
+  noindex: true,
+  title: breadcrumb
+    .slice(1)
+    .reverse()
+    .map((crumb) => crumb.label)
+    .join(" | "),
+};
+
+const items: ComponentProps<typeof CollectionListByYearComponent>["items"] = [
+  {
+    collection: "blogPosts",
+    description: "Excerpt of the post 1.",
+    id: "post-1",
+    locale: "en",
+    meta: {
+      publishedOn: new Date("2024-12-30"),
+      updatedOn: new Date("2024-12-30"),
+    },
+    route: "#post-1",
+    title: "Post 1",
+  },
+  {
+    collection: "blogPosts",
+    description: "Excerpt of the post 2.",
+    id: "post-2",
+    locale: "en",
+    meta: {
+      publishedOn: new Date("2024-10-20"),
+      updatedOn: new Date("2024-11-15"),
+    },
+    route: "#post-2",
+    title: "Post 2",
+  },
+  {
+    collection: "blogPosts",
+    description: "Excerpt of the post 3.",
+    id: "post-3",
+    locale: "en",
+    meta: {
+      publishedOn: new Date("2023-11-10"),
+      updatedOn: new Date("2023-11-10"),
+    },
+    route: "#post-3",
+    title: "Post 3",
+  },
+  {
+    collection: "blogPosts",
+    description: "Excerpt of the post 4.",
+    id: "post-4",
+    locale: "en",
+    meta: {
+      publishedOn: new Date("2022-05-11"),
+      updatedOn: new Date("2022-05-11"),
+    },
+    route: "#post-4",
+    title: "Post 4",
+  },
+  {
+    collection: "blogPosts",
+    description: "Excerpt of the post 5.",
+    id: "post-5",
+    locale: "en",
+    meta: {
+      publishedOn: new Date("2022-03-30"),
+      updatedOn: new Date("2024-04-05"),
+    },
+    route: "#post-5",
+    title: "Post 5",
+  },
+];
+---
+
+<PageLayout breadcrumb={breadcrumb} seo={seo} title={title}>
+  <Fragment slot="body">
+    <Heading as="h2">Usage</Heading>
+    <p>
+      A <code>CollectionListByYear</code> component should be used to display a list
+      of collection cards grouped by year.
+    </p>
+  </Fragment>
+  <CollectionListByYearComponent
+    headingLvl="h3"
+    items={items}
+    slot="disconnected-body"
+  />
+</PageLayout>

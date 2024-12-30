@@ -1,0 +1,159 @@
+---
+import type { ComponentProps, HTMLAttributes } from "astro/types";
+import type {
+  Blog,
+  BlogPostPreview,
+  Bookmark,
+  GuidePreview,
+  NotePreview,
+  PagePreview,
+  ProjectPreview,
+  TaxonomyPreview,
+} from "../../../types/data";
+import type { HeadingLvl } from "../../../types/tokens";
+import { useI18n } from "../../../utils/i18n";
+import { compareDates } from "../../../utils/sort";
+import Box from "../../atoms/box/box.astro";
+import Heading from "../../atoms/heading/heading.astro";
+import CardsList from "../../molecules/cards-list/cards-list.astro";
+import CollectionCard from "../collection-card/collection-card.astro";
+
+type CollectionListItem =
+  | Blog
+  | BlogPostPreview
+  | Bookmark
+  | GuidePreview
+  | NotePreview
+  | PagePreview
+  | ProjectPreview
+  | TaxonomyPreview;
+
+type Props = HTMLAttributes<"section"> &
+  Pick<
+    ComponentProps<typeof CollectionCard>,
+    "elevation" | "featuredMeta" | "headingLvl"
+  > & {
+    items: CollectionListItem[];
+  };
+
+const {
+  class: className,
+  elevation,
+  featuredMeta,
+  headingLvl = "h2",
+  items,
+  ...props
+} = Astro.props;
+const { translate } = useI18n(Astro.currentLocale);
+const getCTA = (
+  title: string,
+): ComponentProps<typeof CollectionCard>["cta"] => {
+  return {
+    ariaLabel: translate("cta.read.more.a11y", { title }),
+    label: translate("cta.read.more"),
+  };
+};
+const getItemsByYear = (data: CollectionListItem[]) => {
+  const yearCollection = new Map<string, CollectionListItem[]>();
+  const sortedItems = [...data].sort((a, b) =>
+    compareDates(b.meta.publishedOn, a.meta.publishedOn),
+  );
+
+  for (const post of sortedItems) {
+    const currentPostYear = post.meta?.publishedOn?.getFullYear().toString();
+
+    const yearItems = yearCollection.get(currentPostYear) ?? [];
+
+    yearCollection.set(currentPostYear, [...yearItems, post]);
+  }
+
+  return yearCollection;
+};
+type ValidLvl = 1 | 2 | 3 | 4 | 5;
+const isValidLvl = (value: number): value is ValidLvl =>
+  value >= 1 && value < 6;
+const getHeadingsLvl = () => {
+  const desiredLvl = Number(headingLvl.replace("h", ""));
+
+  if (!isValidLvl(desiredLvl))
+    return {
+      yearHeadingLvl: "h2",
+      cardsHeadingLvl: "h3",
+    } as const;
+
+  return {
+    yearHeadingLvl: `h${desiredLvl}`,
+    cardsHeadingLvl: `h${desiredLvl + 1}` as HeadingLvl,
+  } as const;
+};
+const { cardsHeadingLvl, yearHeadingLvl } = getHeadingsLvl();
+---
+
+{
+  Array.from(getItemsByYear(items)).map(([year, sortedItems]) => (
+    <section {...props} class="year-section">
+      <div class="year-section-heading">
+        <Box elevation={elevation} isBordered isCentered isPadded isProse>
+          <Heading as={yearHeadingLvl}>{year}</Heading>
+        </Box>
+      </div>
+      <CardsList
+        class="year-section-list"
+        items={sortedItems}
+        sizeMinCols="100%"
+      >
+        {(item: (typeof sortedItems)[number]) => (
+          <CollectionCard
+            cta={getCTA(item.title)}
+            elevation={elevation}
+            entry={item}
+            featuredMeta={featuredMeta}
+            headingLvl={cardsHeadingLvl}
+          />
+        )}
+      </CardsList>
+    </section>
+  ))
+}
+
+<style>
+  .year-section {
+    @container (width > 55em) {
+      display: grid;
+      grid-template-columns: max-content minmax(0, var(--size-prose));
+      gap: var(--spacing-md);
+      width: fit-content;
+      margin-inline: auto;
+
+      &:not(:last-of-type) {
+        padding-block-end: var(--spacing-md);
+      }
+    }
+  }
+
+  .year-section-heading {
+    @container (width > 55em) {
+      grid-column: 1;
+      grid-row: 1 / -1;
+
+      & > * {
+        width: fit-content;
+        margin-inline-end: 0;
+        padding: clamp(var(--spacing-4xs), 0.5dvi, var(--spacing-xs))
+          var(--spacing-sm);
+        position: sticky;
+        top: 0;
+
+        & > * {
+          font-size: var(--font-size-lg);
+        }
+      }
+    }
+  }
+
+  .year-section-list {
+    @container (width > 55em) {
+      margin-block-start: 0;
+    }
+  }
+</style>

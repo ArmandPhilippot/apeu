@@ -8,6 +8,7 @@ export const projects = defineCollection({
   schema: ({ image }) =>
     contentsBaseSchema
       .extend({
+        isArchived: z.boolean().optional().default(false),
         cover: z
           .object({
             alt: z.string(),
@@ -22,11 +23,17 @@ export const projects = defineCollection({
           z.literal("site"),
           z.literal("theme"),
         ]),
-        repository: z.string().url().optional(),
+        repository: z
+          .object({
+            name: z.string(),
+            url: z.string().url(),
+          })
+          .optional(),
         tags: z.array(reference("tags")).optional(),
       })
       .transform(
         ({
+          isArchived,
           isDraft,
           kind,
           publishedOn,
@@ -38,6 +45,7 @@ export const projects = defineCollection({
           return {
             ...project,
             meta: {
+              isArchived,
               isDraft,
               kind,
               publishedOn,

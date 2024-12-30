@@ -82,12 +82,12 @@ export const bookmarkFixture = {
   collection: "bookmarks",
   data: {
     description: "The bookmark description.",
+    isQuote: false,
     meta: {
       inLanguage: "en",
       isDraft: false,
       publishedOn: new Date("2024-09-22T21:00:40.797Z"),
       tags: [],
-      updatedOn: new Date("2024-09-22T21:00:40.797Z"),
     },
     title: "The bookmark title",
     url: "https://any-site.test/must-read",
@@ -167,6 +167,7 @@ export const projectFixture = {
     description: "The project description.",
     locale: "en",
     meta: {
+      isArchived: false,
       isDraft: false,
       kind: "app",
       publishedOn: new Date("2024-09-22T21:00:40.804Z"),

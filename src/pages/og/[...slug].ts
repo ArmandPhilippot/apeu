@@ -31,8 +31,6 @@ const individualPages = collections.entries.map(
   },
 );
 
-console.log(individualPages);
-
 export const { getStaticPaths, GET } = oGImageRoute({
   param: "slug",
   pages: Object.fromEntries(individualPages),

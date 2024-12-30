@@ -261,6 +261,13 @@ const { translate } = useI18n(Astro.currentLocale);
     }
   }
 
+  .page-toc-body {
+    @container (width > calc(55em * 4 / 3)) {
+      max-height: calc(100dvh - (var(--one-px-in-rem) * 130));
+      overflow-y: auto;
+    }
+  }
+
   .page-body {
     border-start-start-radius: 0;
     border-start-end-radius: 0;

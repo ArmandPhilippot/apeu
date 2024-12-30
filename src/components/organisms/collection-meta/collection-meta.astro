@@ -123,13 +123,19 @@ const configs: MetaDataConfigs = {
       }),
     ],
   },
+  isArchived: {
+    shouldRender: (value): value is NonNullable<MetaData["isArchived"]> =>
+      !!value,
+    renderLabel: () => ({ token: "meta.label.status" }),
+    renderValue: () => [translate("meta.value.status.archived")],
+  },
   repository: {
     shouldRender: (value): value is NonNullable<MetaData["repository"]> =>
       !!value,
     renderLabel: () => ({
       token: "meta.label.repository",
     }),
-    renderValue: (value) => [{ href: value, text: value }],
+    renderValue: ({ name, url }) => [{ href: url, text: name }],
   },
   category: {
     shouldRender: (value): value is NonNullable<MetaData["category"]> =>

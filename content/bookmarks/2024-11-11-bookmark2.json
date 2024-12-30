@@ -1,8 +1,9 @@
 {
   "title": "The bookmark title 2",
-  "description": "Some excerpt related to this bookmark.",
+  "description": "Some excerpt from the bookmark link.",
   "url": "https://astro.build",
   "inLanguage": "en",
+  "isQuote": true,
   "publishedOn": "2024-11-11T15:34",
   "tags": ["en/tag2"]
 }

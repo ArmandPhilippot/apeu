@@ -24,6 +24,7 @@ import Description from "../../atoms/description-list/description.astro";
 import Term from "../../atoms/description-list/term.astro";
 import Heading from "../../atoms/heading/heading.astro";
 import Link from "../../atoms/link/link.astro";
+import Quote from "../../atoms/quote/quote.astro";
 import Card from "../../molecules/card/card.astro";
 import CollectionMeta from "../collection-meta/collection-meta.astro";
 
@@ -137,6 +138,10 @@ const { extracted: frontmatter, remaining: meta } = splitObject(
   entry.meta,
   featuredMeta?.key,
 );
+const description = isString(entry.description)
+  ? entry.description
+  : entry.description[locale];
+const isQuote = "isQuote" in entry ? entry.isQuote : false;
 ---
 
 <Card {...attrs} as="article" class:list={["collection-card", className]}>
@@ -191,13 +196,13 @@ const { extracted: frontmatter, remaining: meta } = splitObject(
       )
     }
   </Heading>
-  <div lang={entryLocale}>
-    {
-      isString(entry.description)
-        ? entry.description
-        : entry.description[locale]
-    }
-  </div>
+  {
+    isQuote ? (
+      <Quote lang={entryLocale}>{description}</Quote>
+    ) : (
+      <div lang={entryLocale}>{description}</div>
+    )
+  }
   {
     meta ? (
       <CollectionMeta

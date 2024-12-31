@@ -40,29 +40,30 @@ const itemVars = getCSSVars({
 
 <div
   {...attrs}
-  class:list={["item", { inline: isInline }, className]}
+  class:list={["description-list-item", className]}
+  {...isInline && { "data-inline": true }}
   style={`${itemVars}${style}`}
 >
   <slot />
 </div>
 
 <style>
-  .item {
-    &:where(.inline) > :global(:is(dt + dd)) {
-      margin-inline-start: var(--col-spacing, 0);
+  .description-list-item {
+    &:where([data-inline="true"]) {
+      & > :global(:is(dt + dd)) {
+        margin-inline-start: var(--col-spacing, 0);
+      }
     }
 
-    &:where(:not(.inline)) > :global(:is(dd + dt, dt + dd)) {
-      &::before {
+    &:where(:not([data-inline="true"])) {
+      & > :global(:is(dd + dt, dt + dd)::before) {
         display: block;
         content: "";
       }
     }
 
-    & > :global(:is(dt + dd)) {
-      &::before {
-        margin-block-start: var(--row-spacing, 0);
-      }
+    & > :global(:is(dt + dd)::before) {
+      margin-block-start: var(--row-spacing, 0);
     }
   }
 </style>

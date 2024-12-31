@@ -42,7 +42,8 @@ const listVars = getCSSVars({
 
 <dl
   {...attrs}
-  class:list={["description-list", { inline: isInline }, className]}
+  class:list={["description-list", className]}
+  {...isInline && { "data-inline": true }}
   style={`${listVars}${style}`}
 >
   <slot />
@@ -52,38 +53,33 @@ const listVars = getCSSVars({
   .description-list {
     margin: 0;
 
-    &:where(.inline) > :global(dd + dt) {
-      margin-inline-start: var(--col-spacing, 0);
-    }
+    &:where([data-inline="true"]) {
+      &:has(> div) {
+        display: flex;
+        flex-flow: row wrap;
+        gap: var(--row-spacing, 0) var(--col-spacing, 0);
+      }
 
-    &:where(.inline:has(> div)) {
-      display: flex;
-      flex-flow: row wrap;
-      gap: var(--row-spacing, 0) var(--col-spacing, 0);
-    }
-
-    &:where(:not(.inline)) > :global(:is(dd + dt, dt + dd)) {
-      &::before {
-        display: block;
-        content: "";
+      & > :global(dd + dt) {
+        margin-inline-start: var(--col-spacing, 0);
       }
     }
 
-    &:where(:not(.inline)) > :global(:is(dd + dt)) {
-      &::before {
+    &:where(:not([data-inline="true"])) {
+      & > :global(:is(dd + dt, dt + dd)::before) {
+        display: block;
+        content: "";
+      }
+
+      & > :global(:is(dd + dt)::before),
+      & > :global(div + div) {
         margin-block-start: var(--row-spacing, 0);
       }
     }
 
-    &:where(:not(.inline)) > :global(div + div) {
-      margin-block-start: var(--row-spacing, 0);
-    }
-
-    & :global(:is(dt + dt, dd + dd)) {
-      &::before {
-        content: ", ";
-        margin-inline-start: -0.5ex;
-      }
+    & :global(:is(dt + dt, dd + dd)::before) {
+      content: ", ";
+      margin-inline-start: -0.5ex;
     }
   }
 </style>

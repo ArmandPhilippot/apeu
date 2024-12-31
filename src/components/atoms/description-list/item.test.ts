@@ -36,10 +36,9 @@ describe("Item", () => {
       slots: { default: body },
     });
 
-    expect.assertions(2);
+    expect.assertions(1);
 
-    expect(result).toContain("</div>");
-    expect(result).toContain("inline");
+    expect(result).toContain('data-inline="true"');
   });
 
   it<LocalTestContext>("can render an item with col spacing", async ({
@@ -54,9 +53,8 @@ describe("Item", () => {
       slots: { default: body },
     });
 
-    expect.assertions(2);
+    expect.assertions(1);
 
-    expect(result).toContain("</div>");
     expect(result).toContain(`var(--spacing-${props.colSpacing})`);
   });
 
@@ -72,9 +70,8 @@ describe("Item", () => {
       slots: { default: body },
     });
 
-    expect.assertions(2);
+    expect.assertions(1);
 
-    expect(result).toContain("</div>");
     expect(result).toContain(`var(--spacing-${props.rowSpacing})`);
   });
 });

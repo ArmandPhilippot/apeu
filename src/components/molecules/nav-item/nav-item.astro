@@ -53,11 +53,10 @@ const Tag = as === "a" ? Link : Label;
 
 <Tag
   {...attrs}
-  class:list={[
-    "nav-item",
-    { block: isBlock, bordered: isBordered, rounded: isRounded },
-    className,
-  ]}
+  class:list={["nav-item", className]}
+  {...isBlock && { "data-block": true }}
+  {...isBordered && { "data-border": true }}
+  {...isRounded && { "data-rounded": true }}
 >
   {
     icon ? (
@@ -77,7 +76,7 @@ const Tag = as === "a" ? Link : Label;
     border: var(--border-size-sm) solid transparent;
     color: var(--color-primary);
 
-    &:where(.block) {
+    &:where([data-block="true"]) {
       display: flex;
       flex-flow: column wrap;
       align-items: center;
@@ -88,11 +87,7 @@ const Tag = as === "a" ? Link : Label;
       padding: var(--spacing-2xs);
       font-size: var(--font-size-sm);
       font-weight: var(--font-weight-bold);
-      hyphens: auto;
-      outline-width: var(--border-size-md);
-      overflow-wrap: anywhere;
       text-decoration: none;
-      transition: all 0.15s linear 0s;
 
       @media (any-pointer: fine) {
         min-height: var(--one-px-in-rem) * 48;
@@ -132,26 +127,19 @@ const Tag = as === "a" ? Link : Label;
           var(--border-size-md) 100%;
         animation: draw-borders 0.7s linear 1 0s;
       }
-
-      &:where(:focus-visible) {
-        outline-color: var(--color-primary-lighter);
-        outline-style: solid;
-      }
     }
 
-    &:where(.bordered) {
+    &:where([data-border="true"]) {
       border-color: var(--color-primary);
-      outline-offset: calc(var(--border-size-lg) * -1);
     }
 
-    &:where(.rounded) {
+    &:where([data-rounded="true"]) {
       border-radius: var(--border-radii-md);
     }
   }
 
-  :global(:where(.nav-item:not(.block))) .nav-item-icon {
+  :where(.nav-item:not([data-block="true"])) .nav-item-icon {
     margin-right: var(--spacing-4xs);
-    vertical-align: middle;
   }
 
   @keyframes draw-borders {

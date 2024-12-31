@@ -57,7 +57,7 @@ describe("NavItem", () => {
 
     expect.assertions(1);
 
-    expect(result).toContain("block");
+    expect(result).toContain('data-block="true"');
   });
 
   it<LocalTestContext>("can be bordered", async ({ container }) => {
@@ -73,7 +73,7 @@ describe("NavItem", () => {
 
     expect.assertions(1);
 
-    expect(result).toContain("bordered");
+    expect(result).toContain('data-border="true"');
   });
 
   it<LocalTestContext>("can render an item with an SVG icon", async ({

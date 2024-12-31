@@ -28,28 +28,25 @@ const {
 
 <Tag
   {...attrs}
-  class:list={[
-    "box",
-    {
-      bordered: isBordered,
-      centered: isCentered,
-      elevated: elevation === "elevated",
-      floating: elevation === "floating",
-      padded: isPadded,
-      prose: isProse,
-      raised: elevation === "raised",
-      rounded: isRounded,
-      spaced: isSpaced,
-    },
-    className,
-  ]}><slot /></Tag
+  class:list={["box", className]}
+  {...isBordered && { "data-border": true }}
+  {...isCentered && { "data-centered": true }}
+  {...!!elevation && { "data-elevation": elevation }}
+  {...isPadded && { "data-padded": true }}
+  {...isProse && { "data-prose": true }}
+  {...isRounded && { "data-rounded": true }}
+  {...isSpaced && { "data-spaced": true }}><slot /></Tag
 >
 
 <style>
   .box {
     background: var(--color-regular);
 
-    &:where(.prose) {
+    &:where([data-centered="true"]) {
+      margin-inline: auto;
+    }
+
+    &:where([data-prose="true"]) {
       max-width: var(--size-prose);
 
       & > :global(*:first-child) {
@@ -61,7 +58,7 @@ const {
       }
     }
 
-    &:where(.bordered.prose) {
+    &:where([data-border="true"][data-prose="true"]) {
       border-block: var(--border-size-sm) solid var(--color-border);
 
       @container (width > 55em) {
@@ -69,19 +66,15 @@ const {
       }
     }
 
-    &:where(.bordered:not(.prose)) {
+    &:where([data-border="true"]:not([data-prose="true"])) {
       border: var(--border-size-sm) solid var(--color-border);
     }
 
-    &:where(.centered) {
-      margin-inline: auto;
-    }
-
-    &:where(.prose.centered) {
+    &:where([data-centered="true"][data-prose="true"]) {
       width: 100%;
     }
 
-    &:where(.elevated.prose) {
+    &:where([data-elevation="elevated"][data-prose="true"]) {
       box-shadow: var(--shadow-elevated-to-top-center);
 
       @container (width > 55em) {
@@ -89,11 +82,11 @@ const {
       }
     }
 
-    &:where(.elevated:not(.prose)) {
+    &:where([data-elevation="elevated"]:not([data-prose="true"])) {
       box-shadow: var(--shadow-elevated-to-top-left);
     }
 
-    &:where(.floating.prose) {
+    &:where([data-elevation="floating"][data-prose="true"]) {
       box-shadow: var(--shadow-floating-to-top-center);
 
       @container (width > 55em) {
@@ -101,52 +94,52 @@ const {
       }
     }
 
-    &:where(.floating:not(.prose)) {
+    &:where([data-elevation="floating"]:not([data-prose="true"])) {
       box-shadow: var(--shadow-floating-to-top-left);
     }
 
-    &:where(.prose.padded) {
+    &:where([data-elevation="raised"][data-prose="true"]) {
+      box-shadow: var(--shadow-raised-to-top-center);
+
+      @container (width > 55em) {
+        box-shadow: var(--shadow-raised-to-top-left);
+      }
+    }
+
+    &:where([data-elevation="raised"]:not([data-prose="true"])) {
+      box-shadow: var(--shadow-raised-to-top-left);
+    }
+
+    &:where([data-padded="true"][data-prose="true"]) {
       padding: clamp(var(--spacing-md), 1.5dvi, var(--spacing-xl))
         clamp(var(--spacing-md), 2.5dvi, var(--spacing-xl));
     }
 
-    &:where(.padded:not(.prose)) {
+    &:where([data-padded="true"]:not([data-prose="true"])) {
       padding: var(--spacing-sm)
         clamp(var(--spacing-sm), 1.5dvi, var(--spacing-md));
     }
 
-    &:where(.rounded.prose) {
+    &:where([data-rounded="true"][data-prose="true"]) {
       @container (width > 55em) {
         border-radius: var(--border-radii-md);
       }
     }
 
-    &:where(.rounded:not(.prose)) {
+    &:where([data-rounded="true"]:not([data-prose="true"])) {
       border-radius: var(--border-radii-md);
     }
 
-    &:where(.raised.prose) {
-      box-shadow: var(--shadow-raised-to-top-center);
-
-      @container body (width > 55em) {
-        box-shadow: var(--shadow-raised-to-top-left);
-      }
-    }
-
-    &:where(.raised:not(.prose)) {
-      box-shadow: var(--shadow-raised-to-top-left);
-    }
-
-    &:where(.spaced:not(.prose)) {
-      margin-block: var(--spacing-md);
-    }
-
-    &:where(.spaced.prose) {
+    &:where([data-spaced="true"][data-prose="true"]) {
       margin-block: clamp(var(--spacing-2xs), 4dvi, var(--spacing-md));
 
       @container (width > 55em) {
         margin-block: var(--spacing-md);
       }
+    }
+
+    &:where([data-spaced="true"]:not([data-prose="true"])) {
+      margin-block: var(--spacing-md);
     }
   }
 </style>

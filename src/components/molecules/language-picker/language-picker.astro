@@ -17,7 +17,7 @@ type Languages = Record<
   }
 >;
 
-type Props = ComponentProps<typeof Fieldset> & {
+type Props = Omit<ComponentProps<typeof Fieldset>, "gap" | "isInline"> & {
   /**
    * An object containing the a
    */
@@ -59,8 +59,14 @@ const { translate } = useI18n(Astro.currentLocale);
 const controllerId = `${id}-controller`;
 ---
 
-<Fieldset {...attrs} class:list={["language-picker", className]} id={id}>
-  <Legend slot="legend">{label}</Legend>
+<Fieldset
+  {...attrs}
+  class:list={["language-picker", className]}
+  gap="2xs"
+  id={id}
+  isInline
+>
+  <Legend isInline slot="legend">{label}</Legend>
   <ap-language-picker class="language-picker-dropdown">
     <input
       class="language-picker-controller"
@@ -96,17 +102,6 @@ const controllerId = `${id}-controller`;
 </Fieldset>
 
 <style>
-  .language-picker {
-    display: flex;
-    flex-flow: row wrap;
-    align-items: center;
-    gap: var(--spacing-2xs);
-
-    & > :global(legend) {
-      display: contents;
-    }
-  }
-
   .language-picker-dropdown {
     display: block;
     width: fit-content;

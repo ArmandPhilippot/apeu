@@ -14,7 +14,8 @@ const { class: className, isCentered = false, items, ...attrs } = Astro.props;
 
 <nav
   {...attrs}
-  class:list={["breadcrumb", { centered: isCentered }, className]}
+  class:list={["breadcrumb", className]}
+  {...isCentered && { "data-centered": true }}
 >
   <NavList class="breadcrumb-list" hideMarker isInline isOrdered items={items}>
     {
@@ -27,7 +28,7 @@ const { class: className, isCentered = false, items, ...attrs } = Astro.props;
           </span>
         ) : (
           <Fragment>
-            <NavItem {...item} class="breadcrumb-item" href={url}>
+            <NavItem {...item} class="breadcrumb-item" href={url} isRounded>
               {label}
             </NavItem>
             <span aria-hidden="true">&gt;</span>
@@ -40,21 +41,16 @@ const { class: className, isCentered = false, items, ...attrs } = Astro.props;
 
 <style>
   .breadcrumb {
+    padding-block: var(--spacing-xs);
     overflow-x: auto;
   }
 
   .breadcrumb-list {
     flex-wrap: nowrap;
     white-space: nowrap;
-
-    & > :global(li) {
-      display: flex;
-      flex-flow: row;
-      align-items: center;
-    }
   }
 
-  :where(.breadcrumb.centered) .breadcrumb-list {
+  :where(.breadcrumb[data-centered="true"]) .breadcrumb-list {
     & > :global(li:first-child) {
       margin-inline-start: auto;
     }
@@ -64,19 +60,19 @@ const { class: className, isCentered = false, items, ...attrs } = Astro.props;
     }
   }
 
+  .breadcrumb-list > :global(li),
   .breadcrumb-item {
     display: flex;
     flex-flow: row;
     align-items: center;
-    padding: var(--spacing-xs) var(--spacing-2xs);
+  }
+
+  .breadcrumb-item {
+    padding: var(--spacing-4xs) var(--spacing-2xs);
     font-size: var(--font-size-sm);
+    outline-offset: calc(var(--spacing-3xs) * -1);
 
-    &:where(:not(:is(span))) {
-      border-radius: var(--border-radii-md);
-      outline-offset: calc(var(--spacing-3xs) * -1);
-    }
-
-    &:where(:is(span)) {
+    &:where(span) {
       color: var(--color-muted-faded);
       font-weight: var(--font-weight-bold);
     }

@@ -55,6 +55,6 @@ describe("Breadcrumb", () => {
 
     expect.assertions(1);
 
-    expect(result).toContain("centered");
+    expect(result).toContain('data-centered="true"');
   });
 });

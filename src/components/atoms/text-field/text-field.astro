@@ -32,32 +32,37 @@ const { class: className, type, ...attrs } = Astro.props;
 
 <style>
   .text-field {
-    display: block;
-    max-width: 100%;
-    min-height: calc(var(--one-px-in-rem) * 54);
     padding: var(--spacing-2xs) var(--spacing-2xs);
     background: var(--color-regular-dark);
     border: var(--border-size-sm) solid var(--color-border);
     border-radius: var(--border-radii-md);
     box-shadow:
       var(--shadow-raised-to-top-left),
-      calc(var(--one-px-in-rem) * 3) calc(var(--one-px-in-rem) * 3) 0 0
-        var(--color-muted-darker);
+      var(--border-size-lg) var(--border-size-lg) 0 0 var(--color-muted-darker);
     color: var(--color-on-regular);
     line-height: inherit;
-    transition: all 0.15s linear 0s;
+    outline-offset: calc(var(--border-size-sm) * -1);
+    transition:
+      background-color 0.2s linear 0s,
+      box-shadow 0.2s ease-in-out 0s,
+      color 0.2s linear 0s,
+      outline-offset 0.15s linear 0s,
+      transform 0.2s ease-in-out 0s;
 
-    @media (any-pointer: fine) {
-      min-height: calc(var(--one-px-in-rem) * 48);
-    }
-
-    &:where(:is(textarea)) {
+    &:where(textarea) {
       min-height: 15cap;
     }
 
-    &::placeholder {
-      color: var(--color-muted-faded);
-      opacity: 1;
+    &:where(:not(textarea)) {
+      min-height: calc(var(--one-px-in-rem) * 54);
+
+      @media (any-pointer: fine) {
+        min-height: calc(var(--one-px-in-rem) * 48);
+      }
+    }
+
+    &:where(:disabled) {
+      cursor: not-allowed;
     }
 
     &:where(:disabled, :read-only) {
@@ -65,24 +70,26 @@ const { class: className, type, ...attrs } = Astro.props;
       border-color: var(--color-muted-light);
     }
 
-    &:where(:disabled) {
-      cursor: not-allowed;
+    &:where(:not(:disabled)) {
+      &:where(:focus-visible) {
+        outline: var(--color-primary-lighter) solid var(--border-size-md);
+      }
+
+      &:where(:focus-visible:read-only) {
+        background: var(--color-muted-dark);
+      }
+
+      &:where(:focus-visible:not(:read-only)) {
+        background: var(--color-regular-darker);
+        box-shadow: none;
+        transform: translateY(var(--border-size-lg))
+          translateX(var(--border-size-lg));
+      }
     }
 
-    &:where(:focus-visible) {
-      outline: var(--color-primary-lighter) solid var(--border-size-md);
-      outline-offset: calc(var(--border-size-sm) * -1);
-    }
-
-    &:where(:focus-visible:read-only) {
-      background: var(--color-muted-dark);
-    }
-
-    &:where(:focus-visible:not(:read-only)) {
-      background: var(--color-regular-darker);
-      box-shadow: none;
-      transform: translateY(calc(var(--one-px-in-rem) * 3))
-        translateX(calc(var(--one-px-in-rem) * 3));
+    &::placeholder {
+      color: var(--color-muted-faded);
+      opacity: 1;
     }
   }
 </style>

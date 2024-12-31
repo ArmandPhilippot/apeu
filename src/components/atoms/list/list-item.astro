@@ -8,12 +8,16 @@ type Props = HTMLAttributes<"li"> & {
 const { class: className, hideMarker = false, ...attrs } = Astro.props;
 ---
 
-<li {...attrs} class:list={["item", { "no-marker": hideMarker }, className]}>
+<li
+  {...attrs}
+  class:list={["list-item", className]}
+  {...hideMarker && { "data-marker": false }}
+>
   <slot />
 </li>
 
 <style>
-  .item:where(.no-marker) {
+  .list-item:where([data-marker="false"]) {
     list-style-type: none;
   }
 </style>

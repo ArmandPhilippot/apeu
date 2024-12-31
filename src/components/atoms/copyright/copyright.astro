@@ -11,9 +11,9 @@ const { creationYear, owner, ...attrs } = Astro.props;
 const currentYear = new Date().getFullYear();
 ---
 
-<span {...attrs}>
-  &copy; {creationYear}{
+<span {...attrs}
+  >&copy; {creationYear}{
     currentYear === creationYear ? null : ` - ${currentYear}`
   }
-  {owner}.
-</span>
+  {owner}.</span
+>

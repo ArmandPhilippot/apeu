@@ -21,11 +21,9 @@ describe("Copyright", () => {
       props,
     });
 
-    expect.assertions(3);
+    expect.assertions(1);
 
-    expect(result).toContain("&copy;");
-    expect(result).toContain(props.creationYear);
-    expect(result).toContain(props.owner);
+    expect(result).toContain(`&copy; ${props.creationYear} ${props.owner}.`);
   });
 
   it<LocalTestContext>("can add the current year when different from the creation year", async ({
@@ -39,9 +37,10 @@ describe("Copyright", () => {
       props,
     });
 
-    expect.assertions(2);
+    expect.assertions(1);
 
-    expect(result).toContain(props.creationYear);
-    expect(result).toContain(new Date().getFullYear());
+    expect(result).toContain(
+      `&copy; ${props.creationYear} - ${new Date().getFullYear()} ${props.owner}.`,
+    );
   });
 });

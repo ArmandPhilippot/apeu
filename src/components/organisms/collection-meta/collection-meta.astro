@@ -10,7 +10,6 @@ import {
   type SingularUIKey,
 } from "../../../utils/i18n";
 import DescriptionList from "../../atoms/description-list/description-list.astro";
-import Description from "../../atoms/description-list/description.astro";
 import Link from "../../atoms/link/link.astro";
 import Time from "../../atoms/time/time.astro";
 import CollectionMetaItem from "./collection-meta-item.astro";
@@ -205,7 +204,7 @@ const { translate, translatePlural } = useI18n(Astro.currentLocale);
             }
           >
             {contentItems.map((item) => (
-              <Description
+              <dd
                 title={renderDescription ? renderDescription(value) : undefined}
               >
                 {item instanceof Date ? (
@@ -217,7 +216,7 @@ const { translate, translatePlural } = useI18n(Astro.currentLocale);
                 ) : (
                   item
                 )}
-              </Description>
+              </dd>
             ))}
           </CollectionMetaItem>
         );

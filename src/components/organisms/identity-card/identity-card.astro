@@ -5,9 +5,7 @@ import type { AuthorPreview } from "../../../types/data";
 import { useI18n } from "../../../utils/i18n";
 import { toLowerCase } from "../../../utils/strings";
 import DescriptionList from "../../atoms/description-list/description-list.astro";
-import Description from "../../atoms/description-list/description.astro";
 import Item from "../../atoms/description-list/item.astro";
-import Term from "../../atoms/description-list/term.astro";
 import Figure from "../../atoms/figure/figure.astro";
 import Card from "../../molecules/card/card.astro";
 
@@ -41,55 +39,55 @@ const { translate } = useI18n(Astro.currentLocale);
   }
   <DescriptionList class="identity-card-meta" rowSpacing="4xs">
     <Item colSpacing="4xs" isInline>
-      <Term>{translate("meta.label.name")}</Term>
-      <Description>{author.name}</Description>
+      <dt>{translate("meta.label.name")}</dt>
+      <dd>{author.name}</dd>
     </Item>
     {
       author.nameIPA ? (
         <Item colSpacing="4xs" isInline>
-          <Term>{translate("meta.label.pronunciation")}</Term>
-          <Description>{author.nameIPA}</Description>
+          <dt>{translate("meta.label.pronunciation")}</dt>
+          <dd>{author.nameIPA}</dd>
         </Item>
       ) : null
     }
     {
       author.country ? (
         <Item colSpacing="4xs" isInline>
-          <Term>{translate("meta.label.country")}</Term>
-          <Description>
+          <dt>{translate("meta.label.country")}</dt>
+          <dd>
             {translate(
               `meta.value.country.name.${toLowerCase(author.country)}`,
             )}
-          </Description>
+          </dd>
         </Item>
       ) : null
     }
     {
       author.job ? (
         <Item colSpacing="4xs" isInline>
-          <Term>{translate("meta.label.job")}</Term>
-          <Description>{author.job}</Description>
+          <dt>{translate("meta.label.job")}</dt>
+          <dd>{author.job}</dd>
         </Item>
       ) : null
     }
     {
       author.nationality ? (
         <Item colSpacing="4xs" isInline>
-          <Term>{translate("meta.label.nationality")}</Term>
-          <Description>
+          <dt>{translate("meta.label.nationality")}</dt>
+          <dd>
             {translate(
               `meta.value.nationality.${toLowerCase(author.nationality)}`,
             )}
-          </Description>
+          </dd>
         </Item>
       ) : null
     }
     {
       author.spokenLanguages ? (
         <Item colSpacing="4xs" isInline>
-          <Term>{translate("meta.label.speak")}</Term>
+          <dt>{translate("meta.label.speak")}</dt>
           {author.spokenLanguages.map((language) => (
-            <Description>{translate(`language.name.${language}`)}</Description>
+            <dd>{translate(`language.name.${language}`)}</dd>
           ))}
         </Item>
       ) : null

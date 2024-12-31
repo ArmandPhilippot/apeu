@@ -85,8 +85,8 @@ describe("CollectionMeta", () => {
     });
 
     expect(result).toContain(`href="${props.data.authors[0].website}"`);
-    expect(result).toContain(`>${props.data.authors[0].name}<`);
-    expect(result).toContain(`>${props.data.authors[1].name}<`);
+    expect(result).toContain(props.data.authors[0].name);
+    expect(result).toContain(props.data.authors[1].name);
     // Check that Jane Smith is not wrapped in a link
     expect(result).not.toMatch(/<a[^>]*>Jane Smith<\/a>/);
   });

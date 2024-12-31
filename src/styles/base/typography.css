@@ -69,11 +69,14 @@ address {
   font-style: normal;
 }
 
-caption {
-  background: var(--color-regular-dark);
+:where(caption, figcaption) {
   color: var(--color-primary-faded);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-bold);
+}
+
+caption {
+  background: var(--color-regular-dark);
 }
 
 cite {
@@ -93,9 +96,15 @@ cite {
   font-size: inherit;
 }
 
-figcaption {
-  color: var(--color-primary-faded);
-  font-size: var(--font-size-sm);
+:where(dd, dt) {
+  display: inline;
+}
+
+dd {
+  margin: 0;
+}
+
+dt {
   font-weight: var(--font-weight-bold);
 }
 

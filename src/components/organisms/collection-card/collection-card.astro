@@ -20,8 +20,6 @@ import { splitObject } from "../../../utils/objects";
 import { isString } from "../../../utils/type-checks";
 import Button from "../../atoms/button/button.astro";
 import DescriptionList from "../../atoms/description-list/description-list.astro";
-import Description from "../../atoms/description-list/description.astro";
-import Term from "../../atoms/description-list/term.astro";
 import Heading from "../../atoms/heading/heading.astro";
 import Link from "../../atoms/link/link.astro";
 import Card from "../../molecules/card/card.astro";
@@ -147,15 +145,15 @@ const isQuote = "isQuote" in entry ? entry.isQuote : false;
   {
     showCollection && !featuredMeta ? (
       <DescriptionList isInline slot={showCollection ? "frontmatter" : ""}>
-        <Term class="sr-only">{translate("meta.label.collection")}</Term>
-        <Description class="collection-card-frontmatter">
+        <dt class="sr-only">{translate("meta.label.collection")}</dt>
+        <dd class="collection-card-frontmatter">
           <Icon
             aria-hidden="true"
             name={collectionIcon[entry.collection].icon}
             size={22}
           />
           {collectionIcon[entry.collection].label}
-        </Description>
+        </dd>
       </DescriptionList>
     ) : null
   }

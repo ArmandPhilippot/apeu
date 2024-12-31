@@ -25,7 +25,7 @@ describe("Button", () => {
     expect.assertions(3);
 
     expect(result).toContain("</button>");
-    expect(result).toContain("secondary");
+    expect(result).toContain('data-type="secondary"');
     expect(result).toContain(body);
   });
 
@@ -41,7 +41,7 @@ describe("Button", () => {
 
     expect.assertions(1);
 
-    expect(result).toContain("primary");
+    expect(result).toContain('data-type="primary"');
   });
 
   it<LocalTestContext>("can use the discreet kind", async ({ container }) => {
@@ -56,7 +56,7 @@ describe("Button", () => {
 
     expect.assertions(1);
 
-    expect(result).toContain("discreet");
+    expect(result).toContain('data-type="discreet"');
   });
 
   it<LocalTestContext>("can use the neutral kind", async ({ container }) => {
@@ -71,7 +71,7 @@ describe("Button", () => {
 
     expect.assertions(1);
 
-    expect(result).toContain("neutral");
+    expect(result).toContain('data-type="neutral"');
   });
 
   it<LocalTestContext>("can render an anchor tag", async ({ container }) => {
@@ -104,7 +104,7 @@ describe("Button", () => {
 
     expect.assertions(1);
 
-    expect(result).toContain("external");
+    expect(result).toContain('data-external="true"');
   });
 
   it<LocalTestContext>("throws an error when using isExternal with primary kind", async ({

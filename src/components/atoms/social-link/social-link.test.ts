@@ -52,9 +52,10 @@ describe("SocialLink", () => {
       props,
     });
 
-    expect.assertions(1);
+    expect.assertions(2);
 
     expect(result).toContain("sr-only");
+    expect(result).toContain('data-label="false"');
   });
 
   it<LocalTestContext>("can use a custom label", async ({ container }) => {

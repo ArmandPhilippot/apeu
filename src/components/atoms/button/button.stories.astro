@@ -91,5 +91,17 @@ const seo: ComponentProps<typeof PageLayout>["seo"] = {
     </ButtonComponent>
     <Heading as="h3"><code>isExternal</code></Heading>
     <ButtonComponent isExternal kind="neutral">Call to action</ButtonComponent>
+    <Heading as="h2">Links as button</Heading>
+    <Heading as="h3">States</Heading>
+    <Heading as="h4">Default</Heading>
+    <ButtonComponent as="a" href="#link">Call to action</ButtonComponent>
+    <Heading as="h4">Busy</Heading>
+    <ButtonComponent aria-busy="true" as="a" href="#link">
+      Call to action
+    </ButtonComponent>
+    <Heading as="h3"><code>isExternal</code></Heading>
+    <ButtonComponent as="a" href="#link" isExternal>
+      Call to action
+    </ButtonComponent>
   </Fragment>
 </PageLayout>

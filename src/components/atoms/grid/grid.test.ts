@@ -57,7 +57,7 @@ describe("Grid Component", () => {
         slots: { default: "test" },
       });
 
-      expect(result).toMatch(/--gap: var\(--spacing-md\) var\(--spacing-md\)/);
+      expect(result).toMatch(/--gap: var\(--spacing-md\)/);
     });
 
     it<LocalTestContext>("should generate correct CSS variables for row and column gaps", async ({

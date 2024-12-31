@@ -1,3 +1,4 @@
+import type { Gap } from "../types/css";
 import type { Spacing } from "../types/tokens";
 
 /**
@@ -21,4 +22,14 @@ export const getSpacingVarValue = (spacing: Spacing | null | undefined) => {
   if (spacing) return `var(--spacing-${spacing})`;
   if (typeof spacing === "undefined") return null;
   return 0;
+};
+
+export const getSpacingVarFromGap = (gap: Gap | null | undefined) => {
+  if (!gap) return 0;
+  if (typeof gap === "object") {
+    const colGap = gap.col ? getSpacingVarValue(gap.col) : 0;
+    const rowGap = gap.row ? getSpacingVarValue(gap.row) : 0;
+    return `${rowGap} ${colGap}`;
+  }
+  return getSpacingVarValue(gap);
 };

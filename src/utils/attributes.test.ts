@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { getCSSVars, getSpacingVarValue } from "./attributes";
+import {
+  getCSSVars,
+  getSpacingVarFromGap,
+  getSpacingVarValue,
+} from "./attributes";
 
 describe("get-css-vars", () => {
   it("stringifies the given object as css variables", () => {
@@ -43,5 +47,37 @@ describe("get-spacing-var-value", () => {
     const spacing: Parameters<typeof getSpacingVarValue>[0] = undefined;
 
     expect(getSpacingVarValue(spacing)).toMatchInlineSnapshot(`null`);
+  });
+});
+
+describe("get-spacing-var-from-gap", () => {
+  it("should return a valid CSS value from a single gap", () => {
+    const result = getSpacingVarFromGap("2xs");
+
+    expect(result).toBe("var(--spacing-2xs)");
+  });
+
+  it("should return a valid CSS value from an undefined gap", () => {
+    const result = getSpacingVarFromGap(null);
+
+    expect(result).toBe(0);
+  });
+
+  it("should return a valid CSS value from a decompound gap", () => {
+    const result = getSpacingVarFromGap({ col: "3xs", row: "md" });
+
+    expect(result).toBe("var(--spacing-md) var(--spacing-3xs)");
+  });
+
+  it("should return a valid CSS value from a column gap", () => {
+    const result = getSpacingVarFromGap({ col: "3xs" });
+
+    expect(result).toBe("0 var(--spacing-3xs)");
+  });
+
+  it("should return a valid CSS value from a row gap", () => {
+    const result = getSpacingVarFromGap({ row: "2xs" });
+
+    expect(result).toBe("var(--spacing-2xs) 0");
   });
 });

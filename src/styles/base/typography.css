@@ -50,8 +50,6 @@ a {
 
   &:has(img, svg) {
     display: inline-block;
-    width: fit-content;
-    height: fit-content;
 
     & > :is(img, svg) {
       vertical-align: middle;

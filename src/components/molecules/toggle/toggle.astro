@@ -12,19 +12,15 @@ type ToggleItem = {
   value: string;
 };
 
-type Props = Omit<
-  ComponentProps<typeof RadioGroup>,
-  "isBordered" | "isInline"
-> & {
+type Props = Omit<ComponentProps<typeof RadioGroup>, "isBordered"> & {
   groupName: string;
-  isInline?: boolean | null | undefined;
   items: ToggleItem[];
   value?: string | null | undefined;
 };
 
 const {
   class: className,
-  isInline = false,
+  isInline,
   items,
   groupName,
   value,
@@ -34,7 +30,9 @@ const {
 
 <RadioGroup
   {...attrs}
-  class:list={["toggle", { inlined: isInline }, className]}
+  class:list={["toggle", className]}
+  hasInlinedLegend={isInline}
+  isInline={isInline}
 >
   <div class="toggle-items">
     {
@@ -57,11 +55,7 @@ const {
 
 <style>
   .toggle {
-    gap: var(--spacing-xs) var(--spacing-md);
-
-    &:where(.inlined) :global(legend) {
-      display: contents;
-    }
+    gap: var(--spacing-xs);
   }
 
   .toggle-items {
@@ -76,18 +70,21 @@ const {
     border: var(--border-size-sm) solid var(--color-border);
 
     &:where(:has(input:checked)) {
-      border: var(--border-size-sm) solid var(--color-primary-darker);
       z-index: 1;
     }
 
+    &:where(:has(input:checked, input:not(:checked):active)) {
+      border: var(--border-size-sm) solid var(--color-primary-darker);
+    }
+
     &:where(:first-of-type) {
-      border-start-start-radius: var(--border-radii-md);
-      border-end-start-radius: var(--border-radii-md);
+      border-start-start-radius: inherit;
+      border-end-start-radius: inherit;
     }
 
     &:where(:last-of-type) {
-      border-start-end-radius: var(--border-radii-md);
-      border-end-end-radius: var(--border-radii-md);
+      border-start-end-radius: inherit;
+      border-end-end-radius: inherit;
     }
 
     &:where(:not(:first-of-type)) {

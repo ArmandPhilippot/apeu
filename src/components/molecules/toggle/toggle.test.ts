@@ -34,25 +34,4 @@ describe("Toggle", () => {
     expect(result).toContain(props.label);
     expect(items).toHaveLength(props.items.length);
   });
-
-  it<LocalTestContext>("renders a toggle and a label inlined", async ({
-    container,
-  }) => {
-    const props = {
-      groupName: "enim",
-      isInline: true,
-      items: [
-        { id: "ut", label: "velit earum quos", value: "alias" },
-        { id: "et", label: "dolorum esse consequuntur", value: "laboriosam" },
-      ],
-      label: "autem vel nostrum",
-    } satisfies ComponentProps<typeof Toggle>;
-    const result = await container.renderToString(Toggle, {
-      props,
-    });
-
-    expect.assertions(1);
-
-    expect(result).toContain(`inlined`);
-  });
 });

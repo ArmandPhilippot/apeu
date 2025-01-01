@@ -35,7 +35,11 @@ const label = await Astro.slots.render("label", [controllerId]);
 const modal = await Astro.slots.render("modal", [modalId]);
 ---
 
-<ap-popover {...attrs} class:list={["popover", `to-${openTo}`, className]}>
+<ap-popover
+  {...attrs}
+  class:list={["popover", className]}
+  data-open-to={openTo}
+>
   <input
     aria-controls={modalId}
     class="popover-controller"
@@ -51,25 +55,18 @@ const modal = await Astro.slots.render("modal", [modalId]);
     display: grid;
     position: relative;
 
-    &:where(.to-bottom, .to-top) {
+    &:where([data-open-to="bottom"], [data-open-to="top"]) {
       --x: -50%;
       --y: 0;
     }
 
-    &:where(.to-left, .to-right) {
+    &:where([data-open-to="left"], [data-open-to="right"]) {
       --x: 0;
       --y: -50%;
     }
 
     & > :global(*) {
       grid-area: 1 / 1;
-
-      &:is(label) {
-        color: var(--color-primary);
-        cursor: pointer;
-        outline-width: var(--border-size-md);
-        transition: all 0.15s linear 0s;
-      }
 
       &:last-child {
         contain: layout;
@@ -82,28 +79,28 @@ const modal = await Astro.slots.render("modal", [modalId]);
     }
   }
 
-  :where(.popover.to-bottom) > :global(*:last-child) {
+  :where([data-open-to="top"]) > :global(*:last-child) {
+    bottom: 100%;
+    left: 50%;
+    transform-origin: 0% 100%;
+  }
+
+  :where([data-open-to="bottom"]) > :global(*:last-child) {
     top: 100%;
     left: 50%;
     transform-origin: 0% 0%;
   }
 
-  :where(.popover.to-left) > :global(*:last-child) {
+  :where([data-open-to="left"]) > :global(*:last-child) {
     top: 50%;
     right: 100%;
     transform-origin: 100% 0%;
   }
 
-  :where(.popover.to-right) > :global(*:last-child) {
+  :where([data-open-to="right"]) > :global(*:last-child) {
     top: 50%;
     left: 100%;
     transform-origin: 0% 0%;
-  }
-
-  :where(.popover.to-top) > :global(*:last-child) {
-    bottom: 100%;
-    left: 50%;
-    transform-origin: 0% 100%;
   }
 
   .popover-controller {
@@ -112,33 +109,23 @@ const modal = await Astro.slots.render("modal", [modalId]);
     z-index: -1;
   }
 
-  :where(.popover-controller:is(:hover, :focus)) + :global(label) {
-    color: var(--color-primary-light);
-  }
-
-  :where(.popover-controller:active) + :global(label) {
-    color: var(--color-primary-dark);
-  }
-
   :where(.popover-controller:focus) ~ :global(label) {
-    outline-color: var(--color-primary-lighter);
-    outline-style: solid;
+    outline: var(--color-primary-lighter) solid var(--border-size-md);
   }
 
-  :where(.popover-controller:not(:checked)) ~ :global(*:last-child) {
-    visibility: hidden;
-    opacity: 0;
-    transform: translate3d(0, 0, 100px) scale(0);
+  :where(.popover-controller:checked:not(:focus)) ~ :global(label) {
+    outline: var(--color-primary-darker) solid var(--border-size-md);
+    outline-offset: var(--border-size-md);
   }
 
   :where(.popover-controller:checked) ~ :global(*:last-child) {
     transform: translate3d(var(--x, 0), var(--y, 0), 0) scale(1);
   }
 
-  :where(.popover-controller:checked:not(:focus)) ~ :global(label) {
-    outline-color: var(--color-primary-darker);
-    outline-offset: var(--border-size-md);
-    outline-style: solid;
+  :where(.popover-controller:not(:checked)) ~ :global(*:last-child) {
+    visibility: hidden;
+    opacity: 0;
+    transform: translate3d(0, 0, 100px) scale(0);
   }
 </style>
 

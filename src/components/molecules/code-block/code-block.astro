@@ -7,7 +7,6 @@ import { SHIKI_SETTING_KEY } from "../../../services/stores/settings";
 import { getCSSVars } from "../../../utils/attributes";
 import { InvalidProps } from "../../../utils/exceptions";
 import { useI18n } from "../../../utils/i18n";
-import Figcaption from "../../atoms/figure/figcaption.astro";
 import Figure from "../../atoms/figure/figure.astro";
 import CopyToClipboard from "../copy-to-clipboard/copy-to-clipboard.astro";
 import ThemeSetting from "../theme-setting/theme-setting.astro";
@@ -126,12 +125,14 @@ const cssVars = getCSSVars({
   isFullWidth
   style={`${cssVars}${style}`}
 >
-  <Figcaption
+  <figcaption
     aria-label={filePath
       ? translate("code.block.caption.path.a11y").replace("{path}", filePath)
       : translate("code.block.caption.lang.a11y").replace("{lang}", lang)}
-    class="code-block-caption">{filePath ?? lang}</Figcaption
+    class="code-block-caption"
   >
+    {filePath ?? lang}
+  </figcaption>
   <div class:list={["code-block-toolbar", "js-only"]}>
     <ThemeSetting
       label={translate("code.block.toolbar.theme.switch.label")}

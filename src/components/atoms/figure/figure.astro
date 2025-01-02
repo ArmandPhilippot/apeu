@@ -16,14 +16,9 @@ const {
 
 <figure
   {...attrs}
-  class:list={[
-    "figure",
-    {
-      centered: isCentered,
-      "full-width": isFullWidth,
-    },
-    className,
-  ]}
+  class:list={["figure", className]}
+  data-centered={isCentered}
+  data-full-width={isFullWidth}
 >
   <slot />
 </figure>
@@ -33,22 +28,21 @@ const {
     display: flex;
     flex-flow: column wrap;
     place-content: center;
-    max-width: 100%;
     padding: var(--spacing-xs);
     position: relative;
     z-index: 1;
     border: var(--border-size-sm) solid var(--color-border-dark);
     border-radius: var(--border-radii-lg);
 
-    &:where(.centered) {
+    &:where([data-centered="true"]) {
       margin: 0 auto;
     }
 
-    &:where(:not(.centered)) {
+    &:where([data-centered="false"]) {
       margin: 0;
     }
 
-    &:where(:not(.full-width)) {
+    &:where([data-full-width="false"]) {
       width: fit-content;
     }
 
@@ -76,31 +70,36 @@ const {
         var(--shadow-raised-to-bottom-right);
     }
 
-    & > :global(*:first-child) {
-      border-start-start-radius: inherit;
-      border-start-end-radius: inherit;
+    & > :global(figcaption) {
+      padding: var(--spacing-3xs) var(--spacing-sm);
+      text-align: center;
 
-      &:is(figcaption) {
+      &:first-child {
         border-block-end: var(--border-size-sm) solid var(--color-border);
       }
-    }
 
-    & > :global(*:last-child) {
-      border-end-start-radius: inherit;
-      border-end-end-radius: inherit;
-
-      &:is(figcaption) {
+      &:last-child {
         border-block-start: var(--border-size-sm) solid var(--color-border);
       }
     }
 
-    & > :global(*) {
-      max-width: 100%;
+    & > :global(img) {
+      width: 100%;
+      object-fit: cover;
     }
 
-    & > :global(figcaption) {
-      padding: var(--spacing-2xs) var(--spacing-sm);
-      text-align: center;
+    & > :global(*) {
+      max-width: 100%;
+
+      &:first-child {
+        border-start-start-radius: inherit;
+        border-start-end-radius: inherit;
+      }
+
+      &:last-child {
+        border-end-start-radius: inherit;
+        border-end-end-radius: inherit;
+      }
     }
   }
 

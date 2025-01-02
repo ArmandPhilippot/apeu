@@ -20,10 +20,12 @@ describe("Figure", () => {
       slots: { default: body },
     });
 
-    expect.assertions(2);
+    expect.assertions(4);
 
     expect(result).toContain("</figure>");
     expect(result).toContain(body);
+    expect(result).toContain('data-centered="false"');
+    expect(result).toContain('data-full-width="false"');
   });
 
   it<LocalTestContext>("can render a centered figure", async ({
@@ -39,7 +41,7 @@ describe("Figure", () => {
     expect.assertions(2);
 
     expect(result).toContain("</figure>");
-    expect(result).toContain("centered");
+    expect(result).toContain('data-centered="true"');
   });
 
   it<LocalTestContext>("can render a full-width figure", async ({
@@ -55,6 +57,6 @@ describe("Figure", () => {
     expect.assertions(2);
 
     expect(result).toContain("</figure>");
-    expect(result).toContain("full-width");
+    expect(result).toContain('data-full-width="true"');
   });
 });

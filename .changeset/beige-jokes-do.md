@@ -12,7 +12,6 @@ Here a list of the syntax automatically mapped to a custom component:
 | blockquote    | Blockquote  |
 | callout       | Callout     |
 | div           | Placeholder |
-| figcaption    | Figcaption  |
 | figure        | Figure      |
 | h2            | H2          |
 | h3            | H3          |

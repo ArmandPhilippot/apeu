@@ -1,6 +1,5 @@
 import Blockquote from "../atoms/blockquote/blockquote.astro";
 import Callout from "../atoms/callout/callout.astro";
-import Figcaption from "../atoms/figure/figcaption.astro";
 import Img from "../atoms/img/img.astro";
 import ListItem from "../atoms/list/list-item.astro";
 import List from "../atoms/list/list.astro";
@@ -19,7 +18,6 @@ export const components = {
   blockquote: Blockquote,
   callout: Callout,
   div: Placeholder,
-  figcaption: Figcaption,
   figure: Figure,
   h2: H2,
   h3: H3,

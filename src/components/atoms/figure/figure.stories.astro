@@ -3,7 +3,6 @@ import type { ComponentProps } from "astro/types";
 import { Image as AstroImg } from "astro:assets";
 import PageLayout from "../../templates/page-layout/page-layout.astro";
 import Heading from "../heading/heading.astro";
-import Figcaption from "./figcaption.astro";
 import FigureComponent from "./figure.astro";
 
 const title = "Figure";
@@ -33,7 +32,7 @@ const seo: ComponentProps<typeof PageLayout>["seo"] = {
       can be moved to another part of the document without affecting the main
       flow.
     </p>
-    <Heading as="h2">Without Figcaption</Heading>
+    <Heading as="h2">Without figcaption</Heading>
     <FigureComponent>
       <AstroImg
         alt="Any image"
@@ -42,10 +41,10 @@ const seo: ComponentProps<typeof PageLayout>["seo"] = {
         height={480}
       />
     </FigureComponent>
-    <Heading as="h2">With Figcaption</Heading>
+    <Heading as="h2">With figcaption</Heading>
     <Heading as="h3">At the top</Heading>
     <FigureComponent>
-      <Figcaption>An image used as example</Figcaption>
+      <figcaption>An image used as example</figcaption>
       <AstroImg
         alt="Any image"
         src="https://picsum.photos/640/480"
@@ -61,7 +60,7 @@ const seo: ComponentProps<typeof PageLayout>["seo"] = {
         width={640}
         height={480}
       />
-      <Figcaption>An image used as example</Figcaption>
+      <figcaption>An image used as example</figcaption>
     </FigureComponent>
     <Heading as="h2">Horizontally centered</Heading>
     <FigureComponent isCentered>

@@ -61,7 +61,7 @@ const {
     &:where([data-border="true"][data-prose="true"]) {
       border-block: var(--border-size-sm) solid var(--color-border);
 
-      @container (width > 55em) {
+      @media (--prose) {
         border-inline: var(--border-size-sm) solid var(--color-border);
       }
     }
@@ -77,7 +77,7 @@ const {
     &:where([data-elevation="elevated"][data-prose="true"]) {
       box-shadow: var(--shadow-elevated-to-top-center);
 
-      @container (width > 55em) {
+      @media (--prose) {
         box-shadow: var(--shadow-elevated-to-top-left);
       }
     }
@@ -89,7 +89,7 @@ const {
     &:where([data-elevation="floating"][data-prose="true"]) {
       box-shadow: var(--shadow-floating-to-top-center);
 
-      @container (width > 55em) {
+      @media (--prose) {
         box-shadow: var(--shadow-floating-to-top-left);
       }
     }
@@ -101,7 +101,7 @@ const {
     &:where([data-elevation="raised"][data-prose="true"]) {
       box-shadow: var(--shadow-raised-to-top-center);
 
-      @container (width > 55em) {
+      @media (--prose) {
         box-shadow: var(--shadow-raised-to-top-left);
       }
     }
@@ -120,8 +120,20 @@ const {
         clamp(var(--spacing-sm), 1.5dvi, var(--spacing-md));
     }
 
+    &:where([data-rounded="true"]) {
+      & > :global(:first-child) {
+        border-start-start-radius: inherit;
+        border-start-end-radius: inherit;
+      }
+
+      & > :global(:last-child) {
+        border-end-start-radius: inherit;
+        border-end-end-radius: inherit;
+      }
+    }
+
     &:where([data-rounded="true"][data-prose="true"]) {
-      @container (width > 55em) {
+      @media (--prose) {
         border-radius: var(--border-radii-md);
       }
     }
@@ -133,7 +145,7 @@ const {
     &:where([data-spaced="true"][data-prose="true"]) {
       margin-block: clamp(var(--spacing-2xs), 4dvi, var(--spacing-md));
 
-      @container (width > 55em) {
+      @media (--prose) {
         margin-block: var(--spacing-md);
       }
     }

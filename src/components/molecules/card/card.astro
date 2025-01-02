@@ -78,21 +78,23 @@ const { as = "article", class: className, ...attrs } = Astro.props;
     }
   }
 
-  :where(.card:not(:has(.card-cover))) {
+  .card-header {
     @container (width > 55em) {
-      & > :global(*),
-      .card-header > :global(*) {
-        grid-column: 1 / -1;
-      }
+      display: contents;
     }
   }
 
-  .card-header {
-    border-start-start-radius: inherit;
-    border-start-end-radius: inherit;
-
+  :where(.card:not(:has(.card-cover))) > :global(*),
+  :where(.card:has(.card-cover)) .card-frontmatter,
+  :where(.card:not(:has(.card-cover)) .card-header) > :global(*) {
     @container (width > 55em) {
-      display: contents;
+      grid-column: 1 / -1;
+    }
+  }
+
+  :where(.card:has(.card-cover)) :is(.card-heading, .card-body, .card-footer) {
+    @container (width > 55em) {
+      grid-column: 2;
     }
   }
 
@@ -105,7 +107,6 @@ const { as = "article", class: className, ...attrs } = Astro.props;
 
   .card-frontmatter {
     gap: var(--spacing-xs);
-    max-width: unset;
     padding-block: clamp(var(--spacing-xs), 0.75dvi, var(--spacing-sm));
     border-block-end: var(--border-size-sm) solid var(--color-border);
     border-radius: inherit;
@@ -126,10 +127,9 @@ const { as = "article", class: className, ...attrs } = Astro.props;
   .card-footer {
     justify-content: space-between;
     gap: var(--spacing-md);
-    margin-block-start: auto;
+    margin: auto clamp(var(--spacing-md), 2.5dvi, var(--spacing-xl)) 0;
     padding: clamp(var(--spacing-md), 1dvi, var(--spacing-lg)) 0
       clamp(var(--spacing-md), 1.5dvi, var(--spacing-xl));
-    margin-inline: clamp(var(--spacing-md), 2.5dvi, var(--spacing-xl));
     border-block-start: var(--border-size-sm) solid var(--color-border);
 
     &:where(:not(.has-meta)) {
@@ -139,10 +139,7 @@ const { as = "article", class: className, ...attrs } = Astro.props;
 
   .card-heading {
     padding-block-end: 0;
-  }
-
-  :global(:where(.card:has(.card-frontmatter))) .card-heading {
-    padding-block-start: clamp(var(--spacing-md), 1dvi, var(--spacing-lg));
+    border-radius: inherit;
   }
 
   .card-body {
@@ -155,20 +152,6 @@ const { as = "article", class: className, ...attrs } = Astro.props;
     }
   }
 
-  :where(.card:has(.card-cover)) {
-    @container (width > 55em) {
-      .card-frontmatter {
-        grid-column: 1 / -1;
-      }
-
-      .card-heading,
-      .card-body,
-      .card-footer {
-        grid-column: 2;
-      }
-    }
-  }
-
   .card-cover {
     margin: var(--spacing-sm) var(--spacing-sm) 0;
     padding: var(--spacing-3xs);
@@ -176,12 +159,13 @@ const { as = "article", class: className, ...attrs } = Astro.props;
     @container (width > 55em) {
       grid-column: 1;
       grid-row: 1 / span 3;
-      margin: var(--spacing-sm);
+      margin-block-end: var(--spacing-sm);
       position: relative;
     }
 
     & > :global(img) {
       display: block;
+      width: 100%;
       max-width: 100%;
       max-height: calc(var(--one-px-in-rem) * 200);
       margin-inline: auto;
@@ -189,6 +173,7 @@ const { as = "article", class: className, ...attrs } = Astro.props;
       border-radius: var(--border-radii-md);
 
       @container (width > 55em) {
+        height: 100%;
         max-width: calc(100% - var(--spacing-3xs) * 2);
         max-height: calc(100% - var(--spacing-3xs) * 2);
         /* Prevent the grid to grow because of the cover size. */
@@ -197,11 +182,9 @@ const { as = "article", class: className, ...attrs } = Astro.props;
     }
   }
 
-  :where(.card:has(.card-frontmatter)) {
-    .card-cover {
-      @container (width > 55em) {
-        grid-row-start: 2;
-      }
+  :where(.card:has(.card-frontmatter)) .card-cover {
+    @container (width > 55em) {
+      grid-row-start: 2;
     }
   }
 </style>

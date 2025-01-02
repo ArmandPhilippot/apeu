@@ -240,13 +240,26 @@ const isQuote = "isQuote" in entry ? entry.isQuote : false;
 
 <style>
   .collection-card {
-    position: relative;
+    &:where(:not(:has(.collection-card-meta, .collection-card-cta))) {
+      position: relative;
 
-    &:where(
-        :not(:has(.collection-card-meta, .collection-card-cta))
-      ):focus-within {
-      outline: var(--border-size-lg) solid var(--color-primary-lighter);
-      outline-offset: calc(var(--border-size-lg) * -1);
+      &:focus-within {
+        outline: var(--border-size-lg) solid var(--color-primary-lighter);
+        outline-offset: calc(var(--border-size-lg) * -1);
+      }
+
+      .collection-card-link {
+        &::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          z-index: 1;
+        }
+
+        &:focus {
+          outline: none;
+        }
+      }
     }
   }
 
@@ -259,22 +272,6 @@ const isQuote = "isQuote" in entry ? entry.isQuote : false;
 
   .collection-card-title {
     font-size: var(--font-size-3xl);
-  }
-
-  :where(
-      .collection-card:not(:has(.collection-card-meta, .collection-card-cta))
-    )
-    .collection-card-link {
-    &::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      z-index: 1;
-    }
-
-    &:focus {
-      outline: none;
-    }
   }
 
   .collection-card-cta {

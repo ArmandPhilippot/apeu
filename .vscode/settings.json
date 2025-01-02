@@ -9,9 +9,6 @@
   },
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
-  "files.associations": {
-    "*.css": "css"
-  },
   "stylelint.validate": ["astro", "css", "postcss", "scss"],
   "typescript.preferences.autoImportFileExcludePatterns": ["**/*.stories.astro"]
 }

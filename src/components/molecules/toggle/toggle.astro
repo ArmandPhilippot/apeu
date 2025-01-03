@@ -12,7 +12,10 @@ type ToggleItem = {
   value: string;
 };
 
-type Props = Omit<ComponentProps<typeof RadioGroup>, "isBordered"> & {
+type Props = Omit<
+  ComponentProps<typeof RadioGroup>,
+  "isBordered" | "hasInlinedLegend"
+> & {
   groupName: string;
   items: ToggleItem[];
   value?: string | null | undefined;
@@ -31,7 +34,7 @@ const {
 <RadioGroup
   {...attrs}
   class:list={["toggle", className]}
-  hasInlinedLegend={isInline}
+  hasInlinedLegend
   isInline={isInline}
 >
   <div class="toggle-items">
@@ -54,16 +57,16 @@ const {
 </RadioGroup>
 
 <style>
-  .toggle {
-    gap: var(--spacing-xs);
-  }
-
   .toggle-items {
     display: flex;
     flex-flow: row wrap;
     width: fit-content;
     border-radius: var(--border-radii-md);
     box-shadow: var(--shadow-raised-to-top-left);
+  }
+
+  :global(:where(:not([data-inline="true"]))) .toggle-items {
+    margin-block-start: var(--spacing-2xs);
   }
 
   .toggle-item {

@@ -42,12 +42,7 @@ const { class: className, type, ...attrs } = Astro.props;
     color: var(--color-on-regular);
     line-height: inherit;
     outline-offset: calc(var(--border-size-sm) * -1);
-    transition:
-      background-color 0.2s linear 0s,
-      box-shadow 0.2s ease-in-out 0s,
-      color 0.2s linear 0s,
-      outline-offset 0.15s linear 0s,
-      transform 0.2s ease-in-out 0s;
+    transition: all 0.15s ease-in-out 0s;
 
     &:where(textarea) {
       min-height: 15cap;

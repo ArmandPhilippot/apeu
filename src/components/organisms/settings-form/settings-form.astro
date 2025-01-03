@@ -43,14 +43,12 @@ const languages = Object.fromEntries(
   <ThemeSetting
     class="settings-form-theme"
     id={`${id}-theme`}
-    isInline
     label={translate("form.settings.label.theme.website")}
     setting="theme"
   />
   <ThemeSetting
     class="settings-form-theme"
     id={`${id}-shiki`}
-    isInline
     label={translate("form.settings.label.theme.shiki")}
     setting="shiki"
   />
@@ -58,27 +56,32 @@ const languages = Object.fromEntries(
 
 <style>
   .settings-form {
-    @media (width >= 480px) {
-      width: fit-content;
-      display: grid;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto;
+    align-items: center;
+    justify-items: center;
+
+    @media (--xxs-or-above) {
       grid-template-columns: max-content minmax(0, 1fr);
-      grid-template-rows: auto;
-      align-items: center;
       justify-items: end;
       gap: var(--spacing-sm);
+      width: fit-content;
     }
+  }
+
+  .settings-form-language,
+  .settings-form-theme > :global(*) {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
   }
 
   .settings-form-language,
   .settings-form-theme,
   .settings-form-theme > :global(*) {
-    @media (width >= 480px) {
+    @media (--xxs-or-above) {
       display: contents;
     }
-  }
-
-  .settings-form-language,
-  .settings-form-theme > :global(*) {
-    flex-flow: column;
   }
 </style>

@@ -32,7 +32,7 @@ const languages: ComponentProps<typeof LanguagePickerComponent>["languages"] = {
 
 <PageLayout breadcrumb={breadcrumb} seo={seo} title={title}>
   <Fragment slot="body">
-    <Heading>Usage</Heading>
+    <Heading as="h2">Usage</Heading>
     <p>
       This component is used to let an user choose the current language of the
       website.
@@ -40,6 +40,16 @@ const languages: ComponentProps<typeof LanguagePickerComponent>["languages"] = {
     <LanguagePickerComponent
       current="es"
       id="usage-example"
+      label="Choose a language:"
+      languages={languages}
+    />
+    <Heading as="h2">Options</Heading>
+    <Heading as="h3"><code>isInline</code></Heading>
+    <LanguagePickerComponent
+      current="es"
+      id="is-inline-example"
+      isInline
+      gap="2xs"
       label="Choose a language:"
       languages={languages}
     />

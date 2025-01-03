@@ -47,7 +47,7 @@ const { translate } = useI18n(Astro.currentLocale);
   data-results-page={resultsPage}
   id={id}
 >
-  <form class:list={["search-form", { inlined: isInline }]}>
+  <form class="search-form" data-inlined={isInline}>
     <Label class:list={[{ "sr-only": isInline }]} for={fieldId} slot="label">
       {translate("form.search.label")}
     </Label>
@@ -77,29 +77,25 @@ const { translate } = useI18n(Astro.currentLocale);
     display: flex;
     position: relative;
 
-    &:where(:not(.inlined)) {
-      flex-flow: column wrap;
-      gap: var(--spacing-sm);
-    }
-
-    &:where(.inlined) {
+    &:where([data-inlined="true"]) {
       --btn-size: calc(var(--one-px-in-rem) * 54);
 
       flex-flow: row wrap;
     }
+
+    &:where([data-inlined="false"]) {
+      flex-flow: column wrap;
+      gap: var(--spacing-sm);
+    }
   }
 
-  :where(.search-form.inlined) .search-form-field {
+  :where([data-inlined="true"]) .search-form-field {
     flex: 1;
     min-height: var(--btn-size);
     padding-inline-end: calc(var(--btn-size) + var(--spacing-2xs));
   }
 
-  :where(.search-form:not(.inlined)) .search-form-btn {
-    align-self: center;
-  }
-
-  :where(.search-form.inlined) .search-form-btn {
+  :where([data-inlined="true"]) .search-form-btn {
     width: var(--btn-size);
     aspect-ratio: 1 / 1;
     padding: 0;
@@ -110,6 +106,7 @@ const { translate } = useI18n(Astro.currentLocale);
     border-start-end-radius: var(--border-radii-md);
     border-end-end-radius: var(--border-radii-md);
     color: var(--color-primary);
+    transition: all 0.15s ease-in-out 0s;
 
     &:focus {
       outline: var(--border-size-md) solid var(--color-primary-lighter);
@@ -120,25 +117,24 @@ const { translate } = useI18n(Astro.currentLocale);
       transition: all 0.3s ease-in-out 0s;
     }
 
-    &:focus,
-    &:hover {
-      & > :global(svg) {
-        transform: rotate(-12deg);
-      }
+    &:where(:focus, :hover) > :global(svg) {
+      transform: rotate(-12deg);
     }
 
-    &:active {
-      & > :global(svg) {
-        transform: scale(0.9);
-      }
+    &:where(:active) > :global(svg) {
+      transform: scale(0.9);
     }
   }
 
-  :where(.search-form.inlined .search-form-field:focus-within)
+  :where([data-inlined="true"] .search-form-field:focus-within)
     ~ .search-form-btn {
     border-inline-start-color: var(--color-primary);
-    transform: translateX(calc(var(--one-px-in-rem) * 3))
-      translateY(calc(var(--one-px-in-rem) * 3));
+    transform: translateY(var(--border-size-lg))
+      translateX(var(--border-size-lg));
+  }
+
+  :where([data-inlined="false"]) .search-form-btn {
+    align-self: center;
   }
 </style>
 

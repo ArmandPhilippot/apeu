@@ -17,7 +17,7 @@ type Languages = Record<
   }
 >;
 
-type Props = Omit<ComponentProps<typeof Fieldset>, "gap" | "isInline"> & {
+type Props = ComponentProps<typeof Fieldset> & {
   /**
    * An object containing the a
    */
@@ -44,6 +44,7 @@ const {
   class: className,
   current,
   id,
+  isInline,
   label,
   languages,
   ...attrs
@@ -62,9 +63,8 @@ const controllerId = `${id}-controller`;
 <Fieldset
   {...attrs}
   class:list={["language-picker", className]}
-  gap="2xs"
   id={id}
-  isInline
+  isInline={isInline}
 >
   <Legend isInline slot="legend">{label}</Legend>
   <ap-language-picker class="language-picker-dropdown">
@@ -103,7 +103,13 @@ const controllerId = `${id}-controller`;
 
 <style>
   .language-picker-dropdown {
+    display: block;
+    width: max-content;
     position: relative;
+  }
+
+  :global(:where(:not([data-inline="true"]))) .language-picker-dropdown {
+    margin-block-start: var(--spacing-2xs);
   }
 
   .language-picker-controller {
@@ -141,7 +147,6 @@ const controllerId = `${id}-controller`;
     min-width: 100%;
     position: absolute;
     top: calc(100% + var(--spacing-4xs));
-    left: 50%;
     z-index: 10;
     border: var(--border-size-sm) solid var(--color-border);
     border-radius: var(--border-radii-md);
@@ -149,15 +154,32 @@ const controllerId = `${id}-controller`;
     transition: all 0.3s ease-out 0s;
   }
 
+  :global(:where([data-inline="true"])) .language-picker-list {
+    left: 50%;
+  }
+
+  :global(:where(:not([data-inline="true"]))) .language-picker-list {
+    left: 0;
+  }
+
   :where(.language-picker-controller:checked) ~ .language-picker-list {
     background: var(--color-regular-light);
     opacity: 1;
     visibility: visible;
+  }
+
+  :where([data-inline="true"] .language-picker-controller:checked)
+    ~ .language-picker-list {
     transform: rotateX(0) translate3d(-50%, 0, 0);
   }
 
+  :where(:not([data-inline="true"]) .language-picker-controller:checked)
+    ~ .language-picker-list {
+    transform: rotateX(0) translate3d(0, 0, 0);
+  }
+
   :where(.language-picker-controller:not(:checked)) ~ .language-picker-list {
-    transform: rotateX(-90deg) translate3d(-50%, 0, 0);
+    transform: rotateX(-90deg) translate3d(0, 0, 0);
     transform-origin: top center;
     opacity: 0;
     visibility: hidden;

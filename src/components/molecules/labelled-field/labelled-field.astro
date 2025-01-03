@@ -101,7 +101,8 @@ if (!Astro.slots.has("field")) throw new MissingSlotError("field");
   :where([data-variant="inline-reversed"]) :global(label),
   :where([data-variant="inline"])
     :is(
-      :global(input, textarea),
+      :global(input),
+      :global(textarea),
       .labelled-field-errors,
       .labelled-field-hint
     ) {

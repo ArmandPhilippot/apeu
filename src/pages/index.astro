@@ -145,13 +145,15 @@ const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
 </PageLayout>
 
 <style>
-  .homepage {
+  /* We need to increase specificity because of inconsistencies between
+   * dev/build modes. */
+  article.homepage {
     @container (width > 55em) {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, auto));
       gap: var(--spacing-md);
 
-      & > :global(*) {
+      & > :global(*:not(.homepage-greetings)) {
         margin-block: 0;
       }
     }
@@ -189,7 +191,7 @@ const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
   }
 
   .homepage-greetings {
-    margin: clamp(var(--spacing-md), 6dvi, var(--spacing-lg)) auto;
+    margin: clamp(var(--spacing-md), 5dvh, var(--spacing-lg)) auto;
   }
 
   .homepage-about {

@@ -49,7 +49,9 @@ const defaultIconSize = hideLabel ? 32 : 22;
 </Button>
 
 <style>
-  .social-link {
+  /* We need to increase specificity because of inconsistencies between
+   * dev/build modes. */
+  a.social-link {
     padding: var(--spacing-xs);
 
     &:where([data-label="false"]) {

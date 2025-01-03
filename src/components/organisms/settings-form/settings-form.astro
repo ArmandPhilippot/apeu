@@ -70,16 +70,20 @@ const languages = Object.fromEntries(
     }
   }
 
-  .settings-form-language,
-  .settings-form-theme > :global(*) {
+  /* We need to increase specificity because of inconsistencies between
+   * dev/build modes. */
+  .settings-form .settings-form-language,
+  .settings-form .settings-form-theme > :global(*) {
     display: flex;
     flex-flow: column;
     align-items: center;
   }
 
-  .settings-form-language,
-  .settings-form-theme,
-  .settings-form-theme > :global(*) {
+  /* We need to increase specificity because of inconsistencies between
+   * dev/build modes. */
+  .settings-form .settings-form-language,
+  .settings-form .settings-form-theme,
+  .settings-form .settings-form-theme > :global(*) {
     @media (--xxs-or-above) {
       display: contents;
     }

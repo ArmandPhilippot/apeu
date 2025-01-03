@@ -31,7 +31,9 @@ if (!anchor.startsWith("#"))
 </Button>
 
 <style>
-  .back-to {
+  /* We need to increase specificity because of inconsistencies between
+   * dev/build modes. */
+  a.back-to {
     aspect-ratio: 1 / 1;
     border-width: var(--border-size-md);
     box-shadow: var(--shadow-elevated-to-top-left);

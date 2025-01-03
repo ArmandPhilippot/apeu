@@ -243,8 +243,10 @@ const { translate } = useI18n(Astro.currentLocale);
     font-size: var(--font-size-2xl);
   }
 
-  .page-toc > :global(:is(summary)),
-  .page-toc-body {
+  /* We need to increase specificity because of inconsistencies between
+   * dev/build modes. */
+  .page .page-toc > :global(:is(summary)),
+  .page .page-toc-body {
     @container (width > calc(55em * 4 / 3)) {
       padding-inline-start: clamp(var(--spacing-sm), 1.5dvi, var(--spacing-md));
     }

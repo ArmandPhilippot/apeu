@@ -50,9 +50,7 @@ const { translate } = useI18n(Astro.currentLocale);
       >
         {heading ? (
           <Box class="page-heading" isPadded isProse>
-            <Heading as="h1" class="page-title">
-              {heading}
-            </Heading>
+            <Heading as="h1">{heading}</Heading>
             {feed ? (
               <Button
                 aria-label={translate("cta.subscribe.a11y", { title: heading })}
@@ -193,10 +191,6 @@ const { translate } = useI18n(Astro.currentLocale);
     @container (width >= calc(55em / 1.5)) {
       grid-column: 1 / span 2;
     }
-  }
-
-  .page-title {
-    margin: 0;
   }
 
   .page-cover {

@@ -22,16 +22,11 @@ const { translate } = useI18n(Astro.currentLocale);
 
 <style>
   .greetings {
-    display: flex;
-    flex-flow: column;
-    justify-content: center;
     width: fit-content;
-    min-width: 35%;
     max-width: calc(100% - var(--spacing-md));
     padding: clamp(var(--spacing-md), 10dvi, var(--spacing-lg));
     position: relative;
     background: transparent;
-    border-radius: var(--border-radii-md);
     color: var(--color-primary-faded);
     font-size: var(--font-size-4xl);
     font-weight: var(--font-weight-bold);
@@ -74,12 +69,12 @@ const { translate } = useI18n(Astro.currentLocale);
         100% 0%
       );
     }
-  }
 
-  :where(.greetings) :global(*) {
-    opacity: 0;
+    & > :global(*) {
+      opacity: 0;
+    }
 
-    &:first-child {
+    & > :global(*:first-child) {
       --fromY: -100%;
       --toY: 0;
 
@@ -89,7 +84,7 @@ const { translate } = useI18n(Astro.currentLocale);
         slide-in 0.7s linear 0.7s;
     }
 
-    &:nth-child(2) {
+    & > :global(*:nth-child(2)) {
       --fromX: -10%;
       --toX: 0;
       --filterFrom: grayscale(80%) brightness(100%) saturate(150%)
@@ -115,7 +110,7 @@ const { translate } = useI18n(Astro.currentLocale);
         filter-anim 1.2s alternate infinite 1.6s;
     }
 
-    &:last-child {
+    & > :global(*:last-child) {
       --fromY: 50%;
       --toY: 0;
 

@@ -111,11 +111,12 @@ const modal = await Astro.slots.render("modal", [modalId]);
 
   :where(.popover-controller:focus) ~ :global(label) {
     outline: var(--color-primary-lighter) solid var(--border-size-md);
+    outline-offset: calc(var(--border-size-md) * -1);
   }
 
   :where(.popover-controller:checked:not(:focus)) ~ :global(label) {
     outline: var(--color-primary-darker) solid var(--border-size-md);
-    outline-offset: var(--border-size-md);
+    outline-offset: calc(var(--border-size-md) * -2);
   }
 
   :where(.popover-controller:checked) ~ :global(*:last-child) {

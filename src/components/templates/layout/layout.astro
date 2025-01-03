@@ -255,7 +255,7 @@ const topId = translate("anchor.site.top");
     flex-flow: column;
     min-height: 100dvh;
 
-    @media (width >= 1024px) {
+    @media (--md-or-above) {
       display: grid;
       grid-template-columns:
         minmax(calc(var(--one-px-in-rem) * 200), 22dvw)
@@ -281,22 +281,22 @@ const topId = translate("anchor.site.top");
   .site-header {
     display: contents;
 
-    @media (width >= 640px) {
+    @media (--sm-or-above) {
       display: flex;
       flex-flow: row wrap;
-      gap: var(--spacing-sm);
+      gap: var(--spacing-md);
       border-block-end: var(--border-size-sm) solid var(--color-border);
       box-shadow: var(--shadow-raised-to-top-center);
     }
 
-    @media (width >= 1024px) {
+    @media (--md-or-above) {
       grid-column: 1;
       grid-row: 1;
       flex-flow: column;
       gap: clamp(var(--spacing-sm), 2dvi, var(--spacing-2xl));
       padding: clamp(var(--spacing-4xs), 1.5dvi, var(--spacing-2xl))
         var(--spacing-xs) 0;
-      border-block-end: none;
+      border-block-end: 0;
       box-shadow: none;
     }
   }
@@ -313,7 +313,7 @@ const topId = translate("anchor.site.top");
     padding: var(--spacing-2xs);
     border-block-end: var(--border-size-sm) solid var(--color-border);
 
-    @media (width >= 640px) {
+    @media (--sm-or-above) {
       border-block: 0;
     }
   }
@@ -336,19 +336,17 @@ const topId = translate("anchor.site.top");
       user-select: none;
     }
 
-    @media (width >= 640px) {
+    @media (--sm-or-above) {
       flex: 1;
       order: unset;
       position: relative;
-      bottom: unset;
-      border-block: 0;
+      border-block-start: 0;
       border-inline-start: var(--border-size-sm) solid var(--color-border);
       box-shadow: none;
     }
 
-    @media (width >= 1024px) {
-      flex: 1;
-      border-inline-start: none;
+    @media (--md-or-above) {
+      border-inline-start: 0;
     }
   }
 
@@ -356,7 +354,7 @@ const topId = translate("anchor.site.top");
     container: body / inline-size;
     flex: 1;
 
-    @media (width >= 1024px) {
+    @media (--md-or-above) {
       grid-column: 2;
       grid-row: 1;
     }
@@ -368,7 +366,7 @@ const topId = translate("anchor.site.top");
     padding: clamp(var(--spacing-md), 4dvh, var(--spacing-lg)) var(--spacing-md);
     font-size: var(--font-size-sm);
 
-    @media (width >= 1024px) {
+    @media (--md-or-above) {
       grid-column: 1 / -1;
       grid-row: 2;
     }
@@ -381,15 +379,14 @@ const topId = translate("anchor.site.top");
 
   .site-back-to-top {
     position: fixed;
-
-    /* This not ideal because the navbar height could change but setting a
-       * fix height to the navbar is not ideal neither so I prefer to use a
-       * "magic" number here. */
+    /* This not ideal because the navbar height could change but setting a fix
+     * height to the navbar is not ideal neither so I prefer to use a "magic"
+     * number here. */
     bottom: 6.5rem;
     right: calc(1dvi + var(--spacing-sm));
     z-index: 2;
 
-    @media (width >= 640px) {
+    @media (--sm-or-above) {
       bottom: calc(1dvi + var(--spacing-md));
       right: calc(1dvi + var(--spacing-md));
     }

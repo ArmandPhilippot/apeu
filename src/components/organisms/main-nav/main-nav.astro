@@ -33,7 +33,8 @@ const isCurrentRouteOrNested = (url: string) => {
         <NavItem
           {...item}
           aria-current={url === Astro.url.pathname ? "page" : undefined}
-          class:list={["main-nav-item", { selected: isSelected }]}
+          class="main-nav-item"
+          {...(isSelected && { "data-selected": true })}
           href={url}
           isBlock
           isBordered={isSelected}
@@ -53,11 +54,11 @@ const isCurrentRouteOrNested = (url: string) => {
       column-gap: 0;
       column-rule: var(--border-size-sm) solid var(--color-border-light);
 
-      @media (width >= 480px) {
+      @media (--xxs-or-above) {
         column-count: 3;
       }
 
-      @media (width >= 1024px) {
+      @media (--md-or-above) {
         border: var(--border-size-sm) solid var(--color-border);
         border-radius: var(--border-radii-md);
         column-count: unset;
@@ -68,18 +69,13 @@ const isCurrentRouteOrNested = (url: string) => {
       padding: var(--spacing-3xs);
       border-block-start: var(--border-size-sm) solid var(--color-border-light);
 
-      &:first-child {
-        @media (width >= 1024px) {
-          border-block-start: 0;
-        }
-      }
-
-      @media (width >= 1024px) {
+      @media (--md-or-above) {
         padding: 0;
         background: var(--color-regular-light);
         border-color: var(--color-border);
 
         &:first-child {
+          border-block-start: 0;
           border-start-start-radius: inherit;
           border-start-end-radius: inherit;
         }
@@ -89,7 +85,7 @@ const isCurrentRouteOrNested = (url: string) => {
           border-end-end-radius: inherit;
         }
 
-        &:where(:has(> *:is(.selected))) {
+        &:where(:has(> [data-selected="true"])) {
           background: transparent;
           box-shadow: inset 0 0 var(--border-size-sm) var(--border-size-sm)
             oklch(from var(--color-shadow) l c h / 0.5);
@@ -98,34 +94,20 @@ const isCurrentRouteOrNested = (url: string) => {
     }
 
     &:where(:has(> :last-child:not(:nth-child(2n)))) > :global(*:last-child) {
-      @media (width < 480px) {
-        border-block-end: var(--border-size-sm) solid var(--color-border-light);
+      border-block-end: var(--border-size-sm) solid var(--color-border-light);
+
+      @media (--xxs-or-above) {
+        border-block-end: unset;
       }
     }
 
-    &:where(:has(> :first-child:nth-last-child(4)))
-      > :global(*:nth-last-child(2)),
     &:where(:has(> :last-child:not(:nth-child(3n)))) > :global(*:last-child) {
-      @media (width >= 480px) {
+      @media (--xxs-or-above) {
         border-block-end: var(--border-size-sm) solid var(--color-border-light);
       }
 
-      @media (width >= 1024px) {
+      @media (--md-or-above) {
         border-block-end: 0;
-      }
-    }
-
-    &::before {
-      @media (width >= 1024px) {
-        content: "";
-        position: absolute;
-        inset: 0;
-        z-index: -1;
-        pointer-events: none;
-        user-select: none;
-        background: var(--color-regular-light);
-        border-radius: inherit;
-        mask: linear-gradient(var(--color-regular) 0 0);
       }
     }
   }
@@ -134,32 +116,18 @@ const isCurrentRouteOrNested = (url: string) => {
     break-inside: avoid-column;
     outline-offset: calc(var(--border-size-md) * -1);
 
-    @media (width >= 480px) {
+    @media (--xxs-or-above) {
       flex-flow: row wrap;
       justify-content: start;
       padding-inline: clamp(var(--spacing-xs), 1dvi, var(--spacing-sm));
     }
 
-    @media (width >= 1024px) {
+    @media (--md-or-above) {
       padding: var(--spacing-xs)
         clamp(var(--spacing-2xs), 1dvi, var(--spacing-lg));
       border: 0;
       border-radius: inherit;
       outline-offset: calc(var(--border-size-sm) * -1);
-    }
-  }
-
-  :global(:where([data-theme="light"])) .main-nav::before {
-    @media (width >= 1024px) {
-      filter: url("#paper-filter") brightness(0.985) contrast(98.5%)
-        saturate(103%);
-    }
-  }
-
-  :global(:where([data-theme="dark"])) .main-nav::before {
-    @media (width >= 1024px) {
-      filter: url("#dark-paper-filter") brightness(0.85) contrast(103%)
-        saturate(120%);
     }
   }
 </style>

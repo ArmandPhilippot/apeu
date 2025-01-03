@@ -127,6 +127,12 @@ const Tag = as === "a" ? Link : Label;
           var(--border-size-md) 100%;
         animation: draw-borders 0.7s linear 1 0s;
       }
+
+      &:where(:active) {
+        background: var(--color-regular);
+        box-shadow: inset 0 0 var(--border-size-md) var(--border-size-sm)
+          oklch(from var(--color-shadow) l c h / 0.65);
+      }
     }
 
     &:where([data-border="true"]) {

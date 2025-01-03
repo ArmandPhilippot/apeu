@@ -22,8 +22,9 @@ const { translate } = useI18n(Astro.currentLocale);
 <nav {...attrs} class:list={["navbar", className]} id={id}>
   <Popover
     {...attrs}
-    class:list={["navbar-item", "menu"]}
+    class="navbar-item"
     controllerId={`${id}-menu-controller`}
+    data-item="menu"
     modalId={`${id}-menu-modal`}
     openTo="top"
   >
@@ -56,8 +57,9 @@ const { translate } = useI18n(Astro.currentLocale);
   </Popover>
   <Popover
     {...attrs}
-    class:list={["navbar-item", "search"]}
+    class="navbar-item"
     controllerId={`${id}-search-controller`}
+    data-item="search"
     modalId={`${id}-search-modal`}
     openTo="top"
   >
@@ -90,8 +92,9 @@ const { translate } = useI18n(Astro.currentLocale);
   </Popover>
   <Popover
     {...attrs}
-    class:list={["navbar-item", "settings"]}
+    class="navbar-item"
     controllerId={`${id}-settings-controller`}
+    data-item="settings"
     modalId={`${id}-settings-modal`}
     openTo="top"
   >
@@ -131,7 +134,7 @@ const { translate } = useI18n(Astro.currentLocale);
     grid-auto-flow: column dense;
     position: relative;
 
-    @media (width >= 1024px) {
+    @media (--md-or-above) {
       display: flex;
       flex-flow: column;
       gap: clamp(var(--spacing-2xs), 1.5dvi, var(--spacing-md));
@@ -140,38 +143,30 @@ const { translate } = useI18n(Astro.currentLocale);
   }
 
   .navbar-item {
-    min-height: calc(var(--one-px-in-rem) * 54);
     position: unset;
 
-    @media (any-pointer: fine) {
-      min-height: var(--one-px-in-rem) * 48;
-    }
-
-    @media (width >= 640px) {
-      &:where(.search) {
-        position: relative;
-      }
-    }
-
-    @media (width >= 1024px) {
-      padding: 0;
+    @media (--sm-or-above) {
       position: relative;
-
-      &:where(.menu) {
-        border-radius: var(--border-radii-md);
-        box-shadow: var(--shadow-raised-to-top-left);
-
-        & > :global(:is(input, label)) {
-          display: none;
-        }
-      }
     }
 
     &:where(:not(:last-child)) {
       border-inline-end: var(--border-size-sm) solid var(--color-border);
 
-      @media (width >= 1024px) {
+      @media (--md-or-above) {
         border-inline-end: none;
+      }
+    }
+
+    &:where([data-item="menu"]) {
+      @media (--md-or-above) {
+        border-radius: var(--border-radii-md);
+        box-shadow: var(--shadow-raised-to-top-left);
+      }
+
+      & > :global(:is(input, label)) {
+        @media (--md-or-above) {
+          display: none;
+        }
       }
     }
   }
@@ -180,43 +175,24 @@ const { translate } = useI18n(Astro.currentLocale);
     font-size: var(--font-size-xs);
     text-transform: uppercase;
 
-    @media (width >= 640px) {
-      padding-inline: var(--spacing-2xs);
-    }
-
-    @media (width >= 1024px) {
+    @media (--md-or-above) {
       flex-flow: row wrap;
       justify-content: start;
       padding: var(--spacing-xs)
         clamp(var(--spacing-2xs), 1dvi, var(--spacing-lg));
-    }
-  }
-
-  :where(.navbar-item:has(> input:focus)) .navbar-item-label {
-    outline-offset: calc(var(--border-size-md) * -1);
-  }
-
-  :where(.navbar-item:has(> input:checked)) .navbar-item-label {
-    border-color: var(--color-primary);
-  }
-
-  :where(.navbar-item:has(> input:checked:not(:focus))) .navbar-item-label {
-    outline: none;
-    border-color: var(--color-primary);
-  }
-
-  :where(.navbar-item:has(> input:not(:checked))) .navbar-item-label {
-    @media (width >= 1024px) {
-      border-color: var(--color-border);
-    }
-  }
-
-  :where(.navbar-item:where(.search, .settings)) .navbar-item-label {
-    @media (width >= 1024px) {
       background-color: var(--color-regular-light);
+      border-color: var(--color-border);
       box-shadow: var(--shadow-raised-to-top-left);
       font-size: var(--font-size-sm);
       text-transform: none;
+
+      &:where(:active) {
+        background: var(--color-regular);
+        box-shadow:
+          inset 0 0 var(--border-size-md) var(--border-size-sm)
+            oklch(from var(--color-shadow) l c h / 0.65),
+          var(--shadow-raised-to-top-left);
+      }
     }
   }
 
@@ -231,7 +207,7 @@ const { translate } = useI18n(Astro.currentLocale);
     border-block: var(--border-size-sm) solid var(--color-border);
     box-shadow: var(--shadow-elevated-to-bottom-center);
 
-    @media (width >= 640px) {
+    @media (--sm-or-above) {
       min-width: max-content;
       left: auto;
       bottom: unset;
@@ -240,22 +216,23 @@ const { translate } = useI18n(Astro.currentLocale);
       box-shadow: var(--shadow-elevated-to-top-center);
     }
 
-    @media (width >= 1024px) {
+    @media (--md-or-above) {
       min-width: max-content;
       box-shadow: var(--shadow-elevated-to-top-left);
     }
   }
 
-  :where(.navbar-item.menu) .navbar-item-modal {
+  :where([data-item="menu"]) .navbar-item-modal {
     transform-origin: 20% 100%;
 
-    @media (width >= 640px) {
+    @media (--sm-or-above) {
       --x: -40%;
+
       right: auto;
-      transform-origin: 10% -25%;
+      transform-origin: 25% calc(var(--one-px-in-rem) * -25);
     }
 
-    @media (width >= 1024px) {
+    @media (--md-or-above) {
       display: contents;
       position: relative;
       inset: unset;
@@ -265,32 +242,32 @@ const { translate } = useI18n(Astro.currentLocale);
     }
   }
 
-  :where(.navbar-item.search) .navbar-item-modal {
+  :where([data-item="search"]) .navbar-item-modal {
     transform-origin: 50% 100%;
 
-    @media (width >= 640px) {
+    @media (--sm-or-above) {
       --x: 25%;
 
-      transform-origin: 90% -50%;
+      transform-origin: 90% calc(var(--one-px-in-rem) * -25);
     }
   }
 
-  :where(.navbar-item.settings) .navbar-item-modal {
+  :where([data-item="settings"]) .navbar-item-modal {
     transform-origin: 80% 100%;
 
-    @media (width >= 640px) {
-      transform-origin: 85% -25%;
+    @media (--sm-or-above) {
+      transform-origin: 85% calc(var(--one-px-in-rem) * -25);
     }
   }
 
-  :where(.navbar-item:where(.search, .settings)) .navbar-item-modal {
-    @media (width >= 1024px) {
+  :where([data-item="search"], [data-item="settings"]) .navbar-item-modal {
+    @media (--md-or-above) {
       --x: var(--spacing-sm);
       --y: -50%;
 
       top: 50%;
       left: 100%;
-      transform-origin: -20% 5%;
+      transform-origin: -125px 5%;
     }
   }
 </style>

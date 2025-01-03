@@ -84,6 +84,7 @@ const { class: className, queryParam, ...attrs } = Astro.props;
 
       &:focus {
         outline: var(--color-primary-lighter) solid var(--border-size-md);
+        outline-offset: calc(var(--border-size-md) * -1);
       }
     }
 

@@ -12,13 +12,13 @@ const { class: className, name, ...attrs } = Astro.props;
 const { translate } = useI18n(Astro.currentLocale);
 ---
 
-<Box {...attrs} as="header" class:list={["greetings", className]} isPadded>
+<header {...attrs} class:list={["greetings", className]}>
   <p>{translate("greetings.name.before", { name: "" })}</p>
   <Heading aria-label={name} as="h1">
     {name}.
   </Heading>
   <p>{translate("greetings.name.after")}</p>
-</Box>
+</header>
 
 <style>
   .greetings {

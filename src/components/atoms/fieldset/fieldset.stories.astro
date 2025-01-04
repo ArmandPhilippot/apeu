@@ -65,5 +65,13 @@ const seo: ComponentProps<typeof PageLayout>["seo"] = {
       <Label for="option-fieldset-legend-bordered2">Field 2:</Label>
       <TextField id="option-fieldset-legend-bordered2" type="text" />
     </FieldsetComponent>
+    <Heading as="h3">Fieldset <code>isInline</code></Heading>
+    <FieldsetComponent gap="md" isInline>
+      <Legend slot="legend">The fieldset legend</Legend>
+      <Label for="option-fieldset-bordered1">Field 1:</Label>
+      <TextField id="option-fieldset-bordered1" type="text" />
+      <Label for="option-fieldset-bordered2">Field 2:</Label>
+      <TextField id="option-fieldset-bordered2" type="text" />
+    </FieldsetComponent>
   </Fragment>
 </PageLayout>

@@ -25,7 +25,9 @@ if (!Astro.slots.has("label")) throw new MissingSlotError("label");
 </Box>
 
 <style>
-  .collapsible-label {
+  /* We need to increase specificity because of inconsistencies between
+   * dev/build modes. */
+  .collapsible .collapsible-label {
     display: flex;
     flex-flow: row nowrap;
     align-items: center;
@@ -38,8 +40,13 @@ if (!Astro.slots.has("label")) throw new MissingSlotError("label");
       color: var(--color-primary);
     }
 
-    &:where(.prose) {
+    &:where([data-prose="true"]) {
       padding-block: var(--spacing-sm);
+    }
+
+    & > :global(*:not(.collapsible-icon)) {
+      margin-block: 0;
+      padding-inline-end: var(--spacing-md);
     }
   }
 

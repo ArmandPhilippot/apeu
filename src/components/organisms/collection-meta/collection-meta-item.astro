@@ -3,7 +3,6 @@ import { Icon } from "astro-icon/components";
 import type { ComponentProps } from "astro/types";
 import type { IconName } from "../../../types/tokens";
 import Item from "../../atoms/description-list/item.astro";
-import Term from "../../atoms/description-list/term.astro";
 
 type Props = Omit<ComponentProps<typeof Item>, "isInline"> & {
   /**
@@ -38,7 +37,7 @@ const {
 ---
 
 <Item {...attrs} class:list={["collection-meta-item", className]} isInline>
-  <Term>
+  <dt>
     {
       icon ? (
         <Icon
@@ -52,7 +51,7 @@ const {
     <span class:list={{ "sr-only": hideLabel }}>
       {label}
     </span>
-  </Term>
+  </dt>
   <slot />
 </Item>
 

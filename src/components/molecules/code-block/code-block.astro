@@ -7,7 +7,6 @@ import { SHIKI_SETTING_KEY } from "../../../services/stores/settings";
 import { getCSSVars } from "../../../utils/attributes";
 import { InvalidProps } from "../../../utils/exceptions";
 import { useI18n } from "../../../utils/i18n";
-import Figcaption from "../../atoms/figure/figcaption.astro";
 import Figure from "../../atoms/figure/figure.astro";
 import CopyToClipboard from "../copy-to-clipboard/copy-to-clipboard.astro";
 import ThemeSetting from "../theme-setting/theme-setting.astro";
@@ -110,28 +109,25 @@ const cssVars = getCSSVars({
 
 <Figure
   {...attrs}
-  class:list={[
-    "code-block",
-    {
-      "has-line-numbers": showLineNumbers,
-      "has-path": !!filePath,
-      "has-prompt": showPrompt,
-      "is-command-line": isCommandLine,
-      "is-sql-server": showPrompt && isSQL,
-    },
-    className,
-  ]}
+  class:list={["code-block", className]}
+  {...isCommandLine && { "data-cli": true }}
   data-diff={isDiff}
+  data-line-numbers={showLineNumbers}
+  data-prompt={showPrompt}
+  data-path={!!filePath}
   data-root={isCommandLine && promptUser === "root" ? "" : null}
+  {...showPrompt && isSQL && { "data-sql-server": true }}
   isFullWidth
   style={`${cssVars}${style}`}
 >
-  <Figcaption
+  <figcaption
     aria-label={filePath
       ? translate("code.block.caption.path.a11y").replace("{path}", filePath)
       : translate("code.block.caption.lang.a11y").replace("{lang}", lang)}
-    class="code-block-caption">{filePath ?? lang}</Figcaption
+    class="code-block-caption"
   >
+    {filePath ?? lang}
+  </figcaption>
   <div class:list={["code-block-toolbar", "js-only"]}>
     <ThemeSetting
       label={translate("code.block.toolbar.theme.switch.label")}
@@ -165,26 +161,19 @@ const cssVars = getCSSVars({
     }
   }
 
-  .code-block-caption {
+  .code-block .code-block-caption {
     display: flex;
     align-items: center;
-    padding: var(--spacing-xs) var(--spacing-sm);
-    background: var(--color-regular);
 
     @container (width >= 568px) {
       border-inline-end: var(--border-size-sm) solid var(--color-border);
-    }
-  }
-
-  .code-block:where(:not(.has-path)) .code-block-caption {
-    text-transform: uppercase;
-  }
-
-  .code-block .code-block-caption {
-    @container (width >= 568px) {
       border-block-end: none;
       border-start-end-radius: 0;
     }
+  }
+
+  :where([data-path="false"]) .code-block-caption {
+    text-transform: uppercase;
   }
 
   .code-block-toolbar {
@@ -215,25 +204,18 @@ const cssVars = getCSSVars({
       grid-column: 1 / -1;
     }
 
-    & > :global(code) {
+    & :global(:is(code, .line)) {
       display: inline-block;
       width: 100%;
       font-family: var(--font-family-mono);
     }
-
-    & :global(.line) {
-      display: inline-block;
-      width: 100%;
-    }
   }
 
-  .code-block:not(.has-line-numbers, .has-prompt) {
-    & :global(code) {
-      padding: var(--spacing-xs) var(--spacing-sm);
-    }
+  :where([data-line-numbers="false"][data-prompt="false"]) :global(code) {
+    padding: var(--spacing-xs) var(--spacing-sm);
   }
 
-  .code-block:where(.has-line-numbers, .has-prompt) :global(.line) {
+  :where([data-line-numbers="true"], [data-prompt="true"]) :global(.line) {
     padding-inline-end: var(--spacing-sm);
 
     &::before {
@@ -260,41 +242,44 @@ const cssVars = getCSSVars({
     }
   }
 
-  .code-block:where(.has-line-numbers) {
-    & :global(code) {
-      counter-reset: line-number calc(var(--line-start, 1) - 1);
+  :where([data-line-numbers="true"]) :global(code) {
+    counter-reset: line-number calc(var(--line-start, 1) - 1);
+  }
+
+  :where([data-line-numbers="true"]) :global(.line) {
+    counter-increment: line-number;
+
+    &:where(.diff.remove) + :global(.line:not(.diff.remove)) {
+      counter-increment: none;
     }
 
-    & :global(.line) {
-      counter-increment: line-number;
-
-      &.diff.remove + :global(.line:not(.diff.remove)) {
-        counter-increment: none;
-      }
-
-      &::before {
-        content: counter(line-number);
-        /* This should be suitable for line numbers up to 4 digits with diff
+    &::before {
+      content: counter(line-number);
+      /* This should be suitable for line numbers up to 4 digits with diff
          * token (+ or -). */
-        min-width: 4em;
-      }
+      min-width: 4em;
     }
   }
 
-  .code-block:where(.has-prompt:not([data-root])) :global(.line::before) {
-    content: "[" var(--prompt-user) "@" var(--prompt-host) "] $";
-  }
-
-  .code-block:where(.has-prompt[data-root]) :global(.line::before) {
-    content: "[" var(--prompt-user) "@" var(--prompt-host) "] #";
-  }
-
-  .code-block:where(.is-sql-server) :global(.line::before) {
+  :where([data-prompt="true"][data-sql-server="true"]) :global(.line::before) {
     content: var(--prompt-host) " [(" var(--prompt-db) ")] >";
   }
 
-  .code-block:where([data-diff]) :global(.line) {
-    &.add {
+  :where([data-prompt="true"]:not([data-sql-server="true"]))
+    :global(.line::before) {
+    content: var(--prompt-user) "@" var(--prompt-host) ": " var(--prompt-sign);
+  }
+
+  :where([data-prompt="true"][data-root]) :global(.line::before) {
+    --prompt-sign: "#";
+  }
+
+  :where([data-prompt="true"]:not([data-root])) :global(.line::before) {
+    --prompt-sign: "$";
+  }
+
+  :where([data-diff="true"]) :global(.line) {
+    &:where(.add) {
       background: var(--color-shiki-line-added);
 
       &::before {
@@ -303,7 +288,7 @@ const cssVars = getCSSVars({
       }
     }
 
-    &.remove {
+    &:where(.remove) {
       background: var(--color-shiki-line-removed);
 
       &::before {

@@ -33,7 +33,8 @@ const defaultIconSize = hideLabel ? 32 : 22;
 <Button
   {...attrs}
   as="a"
-  class:list={["social-link", { "hidden-label": hideLabel }, className]}
+  class:list={["social-link", className]}
+  {...hideLabel && { "data-label": false }}
   data-medium={medium}
   href={url}
   kind="discreet"
@@ -48,11 +49,12 @@ const defaultIconSize = hideLabel ? 32 : 22;
 </Button>
 
 <style>
-  .social-link {
-    gap: var(--spacing-xs);
+  /* We need to increase specificity because of inconsistencies between
+   * dev/build modes. */
+  a.social-link {
     padding: var(--spacing-xs);
 
-    &:where(.hidden-label) {
+    &:where([data-label="false"]) {
       aspect-ratio: 1 / 1;
     }
   }

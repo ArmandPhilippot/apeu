@@ -52,7 +52,7 @@ describe("Popover", () => {
 
     expect.assertions(1);
 
-    expect(result).toContain(`to-${props.openTo}`);
+    expect(result).toContain('data-open-to="bottom"');
   });
 
   it<LocalTestContext>("can open a modal to the left", async ({
@@ -72,7 +72,7 @@ describe("Popover", () => {
 
     expect.assertions(1);
 
-    expect(result).toContain(`to-${props.openTo}`);
+    expect(result).toContain('data-open-to="left"');
   });
 
   it<LocalTestContext>("can open a modal to the right", async ({
@@ -92,7 +92,7 @@ describe("Popover", () => {
 
     expect.assertions(1);
 
-    expect(result).toContain(`to-${props.openTo}`);
+    expect(result).toContain('data-open-to="right"');
   });
 
   it<LocalTestContext>("can open a modal to the top", async ({ container }) => {
@@ -110,7 +110,7 @@ describe("Popover", () => {
 
     expect.assertions(1);
 
-    expect(result).toContain(`to-${props.openTo}`);
+    expect(result).toContain('data-open-to="top"');
   });
 
   it<LocalTestContext>("throws an error when the label slot is missing", async ({

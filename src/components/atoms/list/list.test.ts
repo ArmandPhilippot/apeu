@@ -72,7 +72,7 @@ describe("List", () => {
 
     expect.assertions(1);
 
-    expect(result).toContain("inline");
+    expect(result).toContain('data-inline="true"');
   });
 
   it<LocalTestContext>("can hide the list marker", async ({ container }) => {
@@ -87,6 +87,6 @@ describe("List", () => {
 
     expect.assertions(1);
 
-    expect(result).toContain("no-marker");
+    expect(result).toContain('data-marker="false"');
   });
 });

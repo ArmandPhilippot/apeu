@@ -6,6 +6,7 @@
 /* Base */
 @import "base/accessibility.css";
 @import "base/fonts.css";
+@import "base/typography.css";
 
 /* Variables */
 @import "variables/borders.css";

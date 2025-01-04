@@ -8,20 +8,29 @@ type Props = Omit<
   "as" | "cols" | "gap" | "justifyContent"
 > & {
   isContainer?: boolean | null | undefined;
+  isOrdered?: boolean | null | undefined;
   items: unknown[];
 };
 
-const { class: className, isContainer = false, items, ...attrs } = Astro.props;
+const {
+  class: className,
+  isContainer = false,
+  isOrdered = false,
+  items,
+  ...attrs
+} = Astro.props;
 
 if (!Astro.slots.has("default"))
   throw new Error(
     "CardsList requires a function that describes how to render a single item as child.",
   );
+
+const tag = isOrdered ? "ol" : "ul";
 ---
 
 <Grid
   {...attrs}
-  as="ul"
+  as={tag}
   class:list={["cards-list", className]}
   cols="auto-fit"
   justifyContent="center"
@@ -29,7 +38,8 @@ if (!Astro.slots.has("default"))
   {
     items.map((item, index, list) => (
       <ListItem
-        class:list={["cards-list-item", { container: isContainer }]}
+        class="cards-list-item"
+        {...(isContainer && { "data-container": true })}
         set:html={Astro.slots.render("default", [item, index, list])}
       />
     ))
@@ -43,13 +53,13 @@ if (!Astro.slots.has("default"))
   }
 
   .cards-list-item {
+    &:where([data-container="true"]) {
+      container: item / inline-size;
+    }
+
     & > :global(*) {
       height: 100%;
       margin-inline: auto;
-    }
-
-    &:where(.container) {
-      container: item / inline-size;
     }
   }
 </style>

@@ -68,7 +68,7 @@ describe("CodeBlock", () => {
 
       expect.assertions(2);
 
-      expect(result).toContain("has-line-numbers");
+      expect(result).toContain('data-line-numbers="true"');
       expect(result).toContain(`--line-start: 1;`);
     });
 
@@ -101,7 +101,7 @@ describe("CodeBlock", () => {
 
       expect.assertions(3);
 
-      expect(result).toContain("has-prompt");
+      expect(result).toContain('data-prompt="true"');
       expect(result).toContain(`--prompt-host: &#34;localhost&#34;`);
       expect(result).toContain(`--prompt-user: &#34;user&#34;`);
     });
@@ -169,7 +169,7 @@ describe("CodeBlock", () => {
 
       expect.assertions(4);
 
-      expect(result).toContain("has-prompt");
+      expect(result).toContain('data-prompt="true"');
       expect(result).toContain(`--prompt-host: &#34;SQL&#34;`);
       expect(result).toContain(`--prompt-db: &#34;none&#34;`);
       expect(result).not.toContain("prompt-user");

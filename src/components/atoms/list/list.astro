@@ -19,32 +19,32 @@ const {
 
 <Tag
   {...attrs}
-  class:list={[
-    "list",
-    { inline: isInline, "no-marker": hideMarker },
-    className,
-  ]}><slot /></Tag
+  class:list={["list", className]}
+  {...isInline && { "data-inline": true }}
+  {...hideMarker && { "data-marker": false }}><slot /></Tag
 >
 
 <style>
   .list {
-    &:where(.inline, .no-marker) {
-      padding-inline-start: 0;
-    }
+    margin: 0;
 
-    &:where(.inline) {
+    &:where([data-inline="true"]) {
       display: flex;
       flex-flow: row wrap;
       align-items: center;
       list-style-position: inside;
     }
 
-    &:where(.no-marker) {
+    &:where([data-marker="false"]) {
       list-style-type: none;
     }
 
-    &:where(:not(.inline, .no-marker)) {
-      padding-inline: var(--spacing-md);
+    &:where([data-inline="true"], [data-marker="false"]) {
+      padding-inline-start: 0;
+    }
+
+    &:where(:not([data-inline="true"], [data-marker="false"])) {
+      padding-inline-start: var(--spacing-md);
     }
   }
 </style>

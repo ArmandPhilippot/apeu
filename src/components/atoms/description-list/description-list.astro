@@ -38,52 +38,51 @@ const listVars = getCSSVars({
   "col-spacing": getSpacingVarValue(colSpacing),
   "row-spacing": getSpacingVarValue(rowSpacing),
 });
+const content = await Astro.slots.render("default");
+const trimmedContent = content
+  .replace(/>\s+</g, "><") // Removes whitespace between elements
+  .replace(/(?<=\>)\s+/g, "") // Removes leading spaces after opening tag
+  .replace(/\s+(?=<)/g, ""); // Removes trailing spaces before closing tag
 ---
 
 <dl
   {...attrs}
-  class:list={["description-list", { inline: isInline }, className]}
+  class:list={["description-list", className]}
+  {...isInline && { "data-inline": true }}
+  set:html={trimmedContent}
   style={`${listVars}${style}`}
->
-  <slot />
-</dl>
+/>
 
 <style>
   .description-list {
     margin: 0;
 
-    &:where(.inline) > :global(dd + dt) {
-      margin-inline-start: var(--col-spacing, 0);
-    }
+    &:where([data-inline="true"]) {
+      &:has(> div) {
+        display: flex;
+        flex-flow: row wrap;
+        gap: var(--row-spacing, 0) var(--col-spacing, 0);
+      }
 
-    &:where(.inline:has(> div)) {
-      display: flex;
-      flex-flow: row wrap;
-      gap: var(--row-spacing, 0) var(--col-spacing, 0);
-    }
-
-    &:where(:not(.inline)) > :global(:is(dd + dt, dt + dd)) {
-      &::before {
-        display: block;
-        content: "";
+      & > :global(dd + dt) {
+        margin-inline-start: var(--col-spacing, 0);
       }
     }
 
-    &:where(:not(.inline)) > :global(:is(dd + dt)) {
-      &::before {
+    &:where(:not([data-inline="true"])) {
+      & > :global(:is(dd + dt, dt + dd)::before) {
+        display: block;
+        content: "";
+      }
+
+      & > :global(:is(dd + dt)::before),
+      & > :global(div + div) {
         margin-block-start: var(--row-spacing, 0);
       }
     }
 
-    &:where(:not(.inline)) > :global(div + div) {
-      margin-block-start: var(--row-spacing, 0);
-    }
-
-    & :global(:is(dt + dt, dd + dd)) {
-      &::before {
-        content: ", ";
-        margin-inline-start: -0.5ex;
-      }
+    & :global(:is(dt + dt, dd + dd)::before) {
+      content: ", ";
     }
   }
 </style>

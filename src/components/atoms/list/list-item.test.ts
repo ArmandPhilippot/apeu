@@ -37,6 +37,6 @@ describe("ListItem", () => {
 
     expect.assertions(1);
 
-    expect(result).toContain("no-marker");
+    expect(result).toContain('data-marker="false"');
   });
 });

@@ -73,8 +73,8 @@ if (hideItemsLabel && !(item1.icon && item2.icon))
   );
 ---
 
-<ap-switch {...attrs} class:list={["switch", { inline: isInline }, className]}>
-  <Label aria-label={ariaLabel} class="switch-label">
+<ap-switch {...attrs} class:list={["switch", className]}>
+  <Label aria-label={ariaLabel} class="switch-label" data-inline={isInline}>
     {hideLabel ? null : label}
     <Button
       aria-checked={value === item2.value ? "true" : "false"}
@@ -128,22 +128,22 @@ if (hideItemsLabel && !(item1.icon && item2.icon))
     gap: var(--spacing-xs);
     width: fit-content;
     cursor: pointer;
-  }
 
-  :where(.switch:not(.inline)) .switch-label {
-    flex-flow: column wrap;
-  }
+    &:where([data-inline="true"]) {
+      flex-flow: row wrap;
+      align-items: center;
+    }
 
-  :where(.switch.inline) .switch-label {
-    flex-flow: row wrap;
-    align-items: center;
+    &:where([data-inline="false"]) {
+      flex-flow: column wrap;
+    }
   }
 
   .switch-btn {
     padding: 0;
     flex-flow: column;
 
-    @container (width > 20em) {
+    @container (width >= 320px) {
       flex-flow: row wrap;
       align-items: center;
     }
@@ -155,7 +155,7 @@ if (hideItemsLabel && !(item1.icon && item2.icon))
     align-items: center;
     gap: var(--spacing-2xs);
 
-    @container (width > 20em) {
+    @container (width >= 320px) {
       flex-flow: row wrap;
     }
   }
@@ -170,7 +170,7 @@ if (hideItemsLabel && !(item1.icon && item2.icon))
     border-radius: var(--border-radii-rounded) / 25%;
     box-shadow: inset 0 0 var(--border-size-xl) 0 var(--color-black);
 
-    @container (width > 20em) {
+    @container (width >= 320px) {
       width: unset;
       height: var(--switch-height);
       aspect-ratio: 2 / 1;
@@ -193,7 +193,7 @@ if (hideItemsLabel && !(item1.icon && item2.icon))
       transform: translateY(0);
       transition: all 0.25s ease 0s;
 
-      @container (width > 20em) {
+      @container (width >= 320px) {
         transform: translateX(0);
       }
     }
@@ -205,7 +205,7 @@ if (hideItemsLabel && !(item1.icon && item2.icon))
       var(--shadow-raised-to-top-right);
     transform: translateY(calc(100% + var(--border-size-sm)));
 
-    @container (width > 20em) {
+    @container (width >= 320px) {
       transform: translateX(calc(100% + var(--border-size-sm)));
     }
   }

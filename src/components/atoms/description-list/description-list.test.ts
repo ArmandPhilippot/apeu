@@ -38,9 +38,38 @@ describe("DescriptionList", () => {
       slots: { default: body },
     });
 
-    expect.assertions(2);
+    expect.assertions(1);
 
-    expect(result).toContain("</dl>");
-    expect(result).toContain("inline");
+    expect(result).toContain('data-inline="true"');
+  });
+
+  it<LocalTestContext>("can use a col spacing", async ({ container }) => {
+    const props = {
+      colSpacing: "lg",
+    } satisfies ComponentProps<typeof DescriptionList>;
+    const body = "pariatur dolorem ipsum";
+    const result = await container.renderToString(DescriptionList, {
+      props,
+      slots: { default: body },
+    });
+
+    expect.assertions(1);
+
+    expect(result).toContain(`var(--spacing-${props.colSpacing})`);
+  });
+
+  it<LocalTestContext>("can use a row spacing", async ({ container }) => {
+    const props = {
+      rowSpacing: "lg",
+    } satisfies ComponentProps<typeof DescriptionList>;
+    const body = "pariatur dolorem ipsum";
+    const result = await container.renderToString(DescriptionList, {
+      props,
+      slots: { default: body },
+    });
+
+    expect.assertions(1);
+
+    expect(result).toContain(`var(--spacing-${props.rowSpacing})`);
   });
 });

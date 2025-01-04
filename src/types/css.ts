@@ -1,3 +1,5 @@
+import type { Spacing } from "./tokens";
+
 type Alignment =
   | "baseline"
   | "center"
@@ -16,6 +18,12 @@ type Alignment =
 export type AlignContent = Alignment;
 
 export type AlignItems = Alignment;
+
+type DecompoundGap = {
+  row?: Spacing | null | undefined;
+  col?: Spacing | null | undefined;
+};
+export type Gap = DecompoundGap | Spacing;
 
 export type JustifyContent = Exclude<
   Alignment,

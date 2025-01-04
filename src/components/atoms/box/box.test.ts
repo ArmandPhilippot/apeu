@@ -37,7 +37,7 @@ describe("Box", () => {
 
     expect.assertions(1);
 
-    expect(result).toContain("bordered");
+    expect(result).toContain('data-border="true"');
   });
 
   it<LocalTestContext>("can render a centered box", async ({ container }) => {
@@ -52,7 +52,7 @@ describe("Box", () => {
 
     expect.assertions(1);
 
-    expect(result).toContain("centered");
+    expect(result).toContain('data-centered="true"');
   });
 
   it<LocalTestContext>("can render a raised box", async ({ container }) => {
@@ -67,7 +67,7 @@ describe("Box", () => {
 
     expect.assertions(1);
 
-    expect(result).toContain("raised");
+    expect(result).toContain('data-elevation="raised"');
   });
 
   it<LocalTestContext>("can render an elevated box", async ({ container }) => {
@@ -82,7 +82,7 @@ describe("Box", () => {
 
     expect.assertions(1);
 
-    expect(result).toContain("elevated");
+    expect(result).toContain('data-elevation="elevated"');
   });
 
   it<LocalTestContext>("can render a floating box", async ({ container }) => {
@@ -97,7 +97,7 @@ describe("Box", () => {
 
     expect.assertions(1);
 
-    expect(result).toContain("floating");
+    expect(result).toContain('data-elevation="floating"');
   });
 
   it<LocalTestContext>("can render a padded box", async ({ container }) => {
@@ -112,7 +112,7 @@ describe("Box", () => {
 
     expect.assertions(1);
 
-    expect(result).toContain("padded");
+    expect(result).toContain('data-padded="true"');
   });
 
   it<LocalTestContext>("can render a box sized to prose", async ({
@@ -129,7 +129,7 @@ describe("Box", () => {
 
     expect.assertions(1);
 
-    expect(result).toContain("prose");
+    expect(result).toContain('data-prose="true"');
   });
 
   it<LocalTestContext>("can render a rounded box", async ({ container }) => {
@@ -144,7 +144,7 @@ describe("Box", () => {
 
     expect.assertions(1);
 
-    expect(result).toContain("rounded");
+    expect(result).toContain('data-rounded="true"');
   });
 
   it<LocalTestContext>("can render a spaced box", async ({ container }) => {
@@ -159,6 +159,6 @@ describe("Box", () => {
 
     expect.assertions(1);
 
-    expect(result).toContain("spaced");
+    expect(result).toContain('data-spaced="true"');
   });
 });

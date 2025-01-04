@@ -64,8 +64,10 @@ const spinnerVars = getCSSVars({
     border-radius: 50%;
     mask: repeating-conic-gradient(
         hsl(from var(--color-regular) h s l / 0%) 0deg,
-        var(--color-primary) 1deg 20deg,
-        hsl(from var(--color-regular) h s l / 0%) 21deg 36deg
+        var(--color-primary) 1deg,
+        var(--color-primary) 20deg,
+        hsl(from var(--color-regular) h s l / 0%) 21deg,
+        hsl(from var(--color-regular) h s l / 0%) 36deg
       ),
       radial-gradient(
         farthest-side,

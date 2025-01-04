@@ -1,7 +1,6 @@
 ---
 import type { ComponentProps } from "astro/types";
 import PageLayout from "../../templates/page-layout/page-layout.astro";
-import Cite from "../cite/cite.astro";
 import Heading from "../heading/heading.astro";
 import BlockquoteComponent from "./blockquote.astro";
 
@@ -47,7 +46,7 @@ const seo: ComponentProps<typeof PageLayout>["seo"] = {
     <Heading as="h2">Blockquote with figcaption</Heading>
     <BlockquoteComponent>
       Necessitatibus repudiandae voluptates accusantium architecto sint.
-      <Fragment slot="caption">In <Cite>Lorem ipsum</Cite></Fragment>
+      <Fragment slot="caption">In <cite>Lorem ipsum</cite></Fragment>
     </BlockquoteComponent>
   </Fragment>
 </PageLayout>

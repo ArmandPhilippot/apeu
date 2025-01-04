@@ -3,24 +3,34 @@ import type { HTMLAttributes } from "astro/types";
 
 type Props = HTMLAttributes<"legend"> & {
   isBordered?: boolean | null | undefined;
+  isInline?: boolean | null | undefined;
 };
 
-const { class: className, isBordered = false, ...attrs } = Astro.props;
+const {
+  class: className,
+  isBordered = false,
+  isInline = false,
+  ...attrs
+} = Astro.props;
 ---
 
-<legend {...attrs} class:list={["legend", { bordered: isBordered }, className]}
-  ><slot /></legend
+<legend
+  {...attrs}
+  class:list={["legend", className]}
+  {...isBordered && { "data-border": true }}
+  {...isInline && { "data-inline": true }}><slot /></legend
 >
 
 <style>
   .legend {
-    color: var(--color-primary-faded);
-    font-weight: var(--font-weight-bold);
-
-    &:where(.bordered) {
+    &:where([data-border="true"]) {
       padding: var(--spacing-4xs) var(--spacing-sm);
       border: var(--border-size-sm) solid var(--color-border);
       border-radius: var(--border-radii-md);
+    }
+
+    &:where([data-inline="true"]) {
+      display: contents;
     }
   }
 </style>

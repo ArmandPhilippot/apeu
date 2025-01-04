@@ -5,9 +5,7 @@ import Heading from "../heading/heading.astro";
 import ListItem from "../list/list-item.astro";
 import List from "../list/list.astro";
 import DescriptionListComponent from "./description-list.astro";
-import Description from "./description.astro";
 import Item from "./item.astro";
-import Term from "./term.astro";
 
 const title = "DescriptionList";
 const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
@@ -41,37 +39,37 @@ const seo: ComponentProps<typeof PageLayout>["seo"] = {
     <Heading as="h3">Without Item component</Heading>
     <Heading as="h4">No spacing (default)</Heading>
     <DescriptionListComponent>
-      <Term>Term 1 - Variant 1</Term>
-      <Term>Term 1 - Variant 2</Term>
-      <Description>The description of Term 1 variants</Description>
-      <Term>Term 2</Term>
-      <Description>The description of term 2</Description>
-      <Term>Term 3</Term>
-      <Description>The first description of term 3</Description>
-      <Description>The second description of term 3</Description>
+      <dt>Term 1 - Variant 1</dt>
+      <dt>Term 1 - Variant 2</dt>
+      <dd>The description of Term 1 variants</dd>
+      <dt>Term 2</dt>
+      <dd>The description of term 2</dd>
+      <dt>Term 3</dt>
+      <dd>The first description of term 3</dd>
+      <dd>The second description of term 3</dd>
     </DescriptionListComponent>
     <Heading as="h4">With <code>colSpacing</code></Heading>
     <p>This option has no effects with this configuration.</p>
     <DescriptionListComponent colSpacing="sm">
-      <Term>Term 1 - Variant 1</Term>
-      <Term>Term 1 - Variant 2</Term>
-      <Description>The description of Term 1 variants</Description>
-      <Term>Term 2</Term>
-      <Description>The description of term 2</Description>
-      <Term>Term 3</Term>
-      <Description>The first description of term 3</Description>
-      <Description>The second description of term 3</Description>
+      <dt>Term 1 - Variant 1</dt>
+      <dt>Term 1 - Variant 2</dt>
+      <dd>The description of Term 1 variants</dd>
+      <dt>Term 2</dt>
+      <dd>The description of term 2</dd>
+      <dt>Term 3</dt>
+      <dd>The first description of term 3</dd>
+      <dd>The second description of term 3</dd>
     </DescriptionListComponent>
     <Heading as="h4">With <code>rowSpacing</code></Heading>
     <DescriptionListComponent rowSpacing="sm">
-      <Term>Term 1 - Variant 1</Term>
-      <Term>Term 1 - Variant 2</Term>
-      <Description>The description of Term 1 variants</Description>
-      <Term>Term 2</Term>
-      <Description>The description of term 2</Description>
-      <Term>Term 3</Term>
-      <Description>The first description of term 3</Description>
-      <Description>The second description of term 3</Description>
+      <dt>Term 1 - Variant 1</dt>
+      <dt>Term 1 - Variant 2</dt>
+      <dd>The description of Term 1 variants</dd>
+      <dt>Term 2</dt>
+      <dd>The description of term 2</dd>
+      <dt>Term 3</dt>
+      <dd>The first description of term 3</dd>
+      <dd>The second description of term 3</dd>
     </DescriptionListComponent>
     <Heading as="h3">With Item component</Heading>
     <Heading as="h4"
@@ -80,174 +78,174 @@ const seo: ComponentProps<typeof PageLayout>["seo"] = {
     <Heading as="h5">No spacing on both (default)</Heading>
     <DescriptionListComponent>
       <Item>
-        <Term>Term 1 - Variant 1</Term>
-        <Term>Term 1 - Variant 2</Term>
-        <Description>The description of Term 1 variants</Description>
+        <dt>Term 1 - Variant 1</dt>
+        <dt>Term 1 - Variant 2</dt>
+        <dd>The description of Term 1 variants</dd>
       </Item>
       <Item>
-        <Term>Term 2</Term>
-        <Description>The description of term 2</Description>
+        <dt>Term 2</dt>
+        <dd>The description of term 2</dd>
       </Item>
       <Item>
-        <Term>Term 3</Term>
-        <Description>The first description of term 3</Description>
-        <Description>The second description of term 3</Description>
+        <dt>Term 3</dt>
+        <dd>The first description of term 3</dd>
+        <dd>The second description of term 3</dd>
       </Item>
     </DescriptionListComponent>
     <Heading as="h5">With <code>colSpacing</code> on DescriptionList</Heading>
     <p>This option has no effects with this configuration.</p>
     <DescriptionListComponent colSpacing="sm">
       <Item>
-        <Term>Term 1 - Variant 1</Term>
-        <Term>Term 1 - Variant 2</Term>
-        <Description>The description of Term 1 variants</Description>
+        <dt>Term 1 - Variant 1</dt>
+        <dt>Term 1 - Variant 2</dt>
+        <dd>The description of Term 1 variants</dd>
       </Item>
       <Item>
-        <Term>Term 2</Term>
-        <Description>The description of term 2</Description>
+        <dt>Term 2</dt>
+        <dd>The description of term 2</dd>
       </Item>
       <Item>
-        <Term>Term 3</Term>
-        <Description>The first description of term 3</Description>
-        <Description>The second description of term 3</Description>
+        <dt>Term 3</dt>
+        <dd>The first description of term 3</dd>
+        <dd>The second description of term 3</dd>
       </Item>
     </DescriptionListComponent>
     <Heading as="h5">With <code>rowSpacing</code> on DescriptionList</Heading>
     <DescriptionListComponent rowSpacing="sm">
       <Item>
-        <Term>Term 1 - Variant 1</Term>
-        <Term>Term 1 - Variant 2</Term>
-        <Description>The description of Term 1 variants</Description>
+        <dt>Term 1 - Variant 1</dt>
+        <dt>Term 1 - Variant 2</dt>
+        <dd>The description of Term 1 variants</dd>
       </Item>
       <Item>
-        <Term>Term 2</Term>
-        <Description>The description of term 2</Description>
+        <dt>Term 2</dt>
+        <dd>The description of term 2</dd>
       </Item>
       <Item>
-        <Term>Term 3</Term>
-        <Description>The first description of term 3</Description>
-        <Description>The second description of term 3</Description>
+        <dt>Term 3</dt>
+        <dd>The first description of term 3</dd>
+        <dd>The second description of term 3</dd>
       </Item>
     </DescriptionListComponent>
     <Heading as="h5">With <code>colSpacing</code> on Item</Heading>
     <p>This option has no effects with this configuration.</p>
     <DescriptionListComponent>
       <Item colSpacing="sm">
-        <Term>Term 1 - Variant 1</Term>
-        <Term>Term 1 - Variant 2</Term>
-        <Description>The description of Term 1 variants</Description>
+        <dt>Term 1 - Variant 1</dt>
+        <dt>Term 1 - Variant 2</dt>
+        <dd>The description of Term 1 variants</dd>
       </Item>
       <Item colSpacing="sm">
-        <Term>Term 2</Term>
-        <Description>The description of term 2</Description>
+        <dt>Term 2</dt>
+        <dd>The description of term 2</dd>
       </Item>
       <Item colSpacing="sm">
-        <Term>Term 3</Term>
-        <Description>The first description of term 3</Description>
-        <Description>The second description of term 3</Description>
+        <dt>Term 3</dt>
+        <dd>The first description of term 3</dd>
+        <dd>The second description of term 3</dd>
       </Item>
     </DescriptionListComponent>
     <Heading as="h5">With <code>rowSpacing</code> on Item</Heading>
     <DescriptionListComponent>
       <Item rowSpacing="sm">
-        <Term>Term 1 - Variant 1</Term>
-        <Term>Term 1 - Variant 2</Term>
-        <Description>The description of Term 1 variants</Description>
+        <dt>Term 1 - Variant 1</dt>
+        <dt>Term 1 - Variant 2</dt>
+        <dd>The description of Term 1 variants</dd>
       </Item>
       <Item rowSpacing="sm">
-        <Term>Term 2</Term>
-        <Description>The description of term 2</Description>
+        <dt>Term 2</dt>
+        <dd>The description of term 2</dd>
       </Item>
       <Item rowSpacing="sm">
-        <Term>Term 3</Term>
-        <Description>The first description of term 3</Description>
-        <Description>The second description of term 3</Description>
+        <dt>Term 3</dt>
+        <dd>The first description of term 3</dd>
+        <dd>The second description of term 3</dd>
       </Item>
     </DescriptionListComponent>
     <Heading as="h4">With <code>isInline: true</code> on Item</Heading>
     <Heading as="h5">No spacing on both (default)</Heading>
     <DescriptionListComponent>
       <Item isInline>
-        <Term>Term 1 - Variant 1</Term>
-        <Term>Term 1 - Variant 2</Term>
-        <Description>The description of Term 1 variants</Description>
+        <dt>Term 1 - Variant 1</dt>
+        <dt>Term 1 - Variant 2</dt>
+        <dd>The description of Term 1 variants</dd>
       </Item>
       <Item isInline>
-        <Term>Term 2</Term>
-        <Description>The description of term 2</Description>
+        <dt>Term 2</dt>
+        <dd>The description of term 2</dd>
       </Item>
       <Item isInline>
-        <Term>Term 3</Term>
-        <Description>The first description of term 3</Description>
-        <Description>The second description of term 3</Description>
+        <dt>Term 3</dt>
+        <dd>The first description of term 3</dd>
+        <dd>The second description of term 3</dd>
       </Item>
     </DescriptionListComponent>
     <Heading as="h5">With <code>colSpacing</code> on DescriptionList</Heading>
     <DescriptionListComponent colSpacing="sm">
       <Item isInline>
-        <Term>Term 1 - Variant 1</Term>
-        <Term>Term 1 - Variant 2</Term>
-        <Description>The description of Term 1 variants</Description>
+        <dt>Term 1 - Variant 1</dt>
+        <dt>Term 1 - Variant 2</dt>
+        <dd>The description of Term 1 variants</dd>
       </Item>
       <Item isInline>
-        <Term>Term 2</Term>
-        <Description>The description of term 2</Description>
+        <dt>Term 2</dt>
+        <dd>The description of term 2</dd>
       </Item>
       <Item isInline>
-        <Term>Term 3</Term>
-        <Description>The first description of term 3</Description>
-        <Description>The second description of term 3</Description>
+        <dt>Term 3</dt>
+        <dd>The first description of term 3</dd>
+        <dd>The second description of term 3</dd>
       </Item>
     </DescriptionListComponent>
     <Heading as="h5">With <code>rowSpacing</code> on DescriptionList</Heading>
     <DescriptionListComponent rowSpacing="sm">
       <Item isInline>
-        <Term>Term 1 - Variant 1</Term>
-        <Term>Term 1 - Variant 2</Term>
-        <Description>The description of Term 1 variants</Description>
+        <dt>Term 1 - Variant 1</dt>
+        <dt>Term 1 - Variant 2</dt>
+        <dd>The description of Term 1 variants</dd>
       </Item>
       <Item isInline>
-        <Term>Term 2</Term>
-        <Description>The description of term 2</Description>
+        <dt>Term 2</dt>
+        <dd>The description of term 2</dd>
       </Item>
       <Item isInline>
-        <Term>Term 3</Term>
-        <Description>The first description of term 3</Description>
-        <Description>The second description of term 3</Description>
+        <dt>Term 3</dt>
+        <dd>The first description of term 3</dd>
+        <dd>The second description of term 3</dd>
       </Item>
     </DescriptionListComponent>
     <Heading as="h5">With <code>colSpacing</code> on Item</Heading>
     <DescriptionListComponent>
       <Item colSpacing="sm" isInline>
-        <Term>Term 1 - Variant 1</Term>
-        <Term>Term 1 - Variant 2</Term>
-        <Description>The description of Term 1 variants</Description>
+        <dt>Term 1 - Variant 1</dt>
+        <dt>Term 1 - Variant 2</dt>
+        <dd>The description of Term 1 variants</dd>
       </Item>
       <Item colSpacing="sm" isInline>
-        <Term>Term 2</Term>
-        <Description>The description of term 2</Description>
+        <dt>Term 2</dt>
+        <dd>The description of term 2</dd>
       </Item>
       <Item colSpacing="sm" isInline>
-        <Term>Term 3</Term>
-        <Description>The first description of term 3</Description>
-        <Description>The second description of term 3</Description>
+        <dt>Term 3</dt>
+        <dd>The first description of term 3</dd>
+        <dd>The second description of term 3</dd>
       </Item>
     </DescriptionListComponent>
     <Heading as="h5">With <code>rowSpacing</code> on Item</Heading>
     <DescriptionListComponent>
       <Item isInline rowSpacing="sm">
-        <Term>Term 1 - Variant 1</Term>
-        <Term>Term 1 - Variant 2</Term>
-        <Description>The description of Term 1 variants</Description>
+        <dt>Term 1 - Variant 1</dt>
+        <dt>Term 1 - Variant 2</dt>
+        <dd>The description of Term 1 variants</dd>
       </Item>
       <Item isInline rowSpacing="sm">
-        <Term>Term 2</Term>
-        <Description>The description of term 2</Description>
+        <dt>Term 2</dt>
+        <dd>The description of term 2</dd>
       </Item>
       <Item isInline rowSpacing="sm">
-        <Term>Term 3</Term>
-        <Description>The first description of term 3</Description>
-        <Description>The second description of term 3</Description>
+        <dt>Term 3</dt>
+        <dd>The first description of term 3</dd>
+        <dd>The second description of term 3</dd>
       </Item>
     </DescriptionListComponent>
     <Heading as="h2">With <code>isInline: true</code></Heading>
@@ -258,212 +256,212 @@ const seo: ComponentProps<typeof PageLayout>["seo"] = {
     </p>
     <Heading as="h4">No spacing (default)</Heading>
     <DescriptionListComponent isInline>
-      <Term>Term 1 - Variant 1</Term>
-      <Term>Term 1 - Variant 2</Term>
-      <Description>The description of Term 1 variants</Description>
-      <Term>Term 2</Term>
-      <Description>The description of term 2</Description>
-      <Term>Term 3</Term>
-      <Description>The first description of term 3</Description>
-      <Description>The second description of term 3</Description>
+      <dt>Term 1 - Variant 1</dt>
+      <dt>Term 1 - Variant 2</dt>
+      <dd>The description of Term 1 variants</dd>
+      <dt>Term 2</dt>
+      <dd>The description of term 2</dd>
+      <dt>Term 3</dt>
+      <dd>The first description of term 3</dd>
+      <dd>The second description of term 3</dd>
     </DescriptionListComponent>
     <Heading as="h4">With <code>colSpacing</code></Heading>
     <DescriptionListComponent isInline colSpacing="sm">
-      <Term>Term 1 - Variant 1</Term>
-      <Term>Term 1 - Variant 2</Term>
-      <Description>The description of Term 1 variants</Description>
-      <Term>Term 2</Term>
-      <Description>The description of term 2</Description>
-      <Term>Term 3</Term>
-      <Description>The first description of term 3</Description>
-      <Description>The second description of term 3</Description>
+      <dt>Term 1 - Variant 1</dt>
+      <dt>Term 1 - Variant 2</dt>
+      <dd>The description of Term 1 variants</dd>
+      <dt>Term 2</dt>
+      <dd>The description of term 2</dd>
+      <dt>Term 3</dt>
+      <dd>The first description of term 3</dd>
+      <dd>The second description of term 3</dd>
     </DescriptionListComponent>
     <Heading as="h4">With <code>rowSpacing</code></Heading>
     <p>This option has no effects with this configuration.</p>
     <DescriptionListComponent isInline rowSpacing="sm">
-      <Term>Term 1 - Variant 1</Term>
-      <Term>Term 1 - Variant 2</Term>
-      <Description>The description of Term 1 variants</Description>
-      <Term>Term 2</Term>
-      <Description>The description of term 2</Description>
-      <Term>Term 3</Term>
-      <Description>The first description of term 3</Description>
-      <Description>The second description of term 3</Description>
+      <dt>Term 1 - Variant 1</dt>
+      <dt>Term 1 - Variant 2</dt>
+      <dd>The description of Term 1 variants</dd>
+      <dt>Term 2</dt>
+      <dd>The description of term 2</dd>
+      <dt>Term 3</dt>
+      <dd>The first description of term 3</dd>
+      <dd>The second description of term 3</dd>
     </DescriptionListComponent>
     <Heading as="h3">With Item component</Heading>
     <Heading as="h4">With <code>isInline: false</code> on Item</Heading>
     <Heading as="h5">No spacing on both (default)</Heading>
     <DescriptionListComponent isInline>
       <Item>
-        <Term>Term 1 - Variant 1</Term>
-        <Term>Term 1 - Variant 2</Term>
-        <Description>The description of Term 1 variants</Description>
+        <dt>Term 1 - Variant 1</dt>
+        <dt>Term 1 - Variant 2</dt>
+        <dd>The description of Term 1 variants</dd>
       </Item>
       <Item>
-        <Term>Term 2</Term>
-        <Description>The description of term 2</Description>
+        <dt>Term 2</dt>
+        <dd>The description of term 2</dd>
       </Item>
       <Item>
-        <Term>Term 3</Term>
-        <Description>The first description of term 3</Description>
-        <Description>The second description of term 3</Description>
+        <dt>Term 3</dt>
+        <dd>The first description of term 3</dd>
+        <dd>The second description of term 3</dd>
       </Item>
     </DescriptionListComponent>
     <Heading as="h5">With <code>colSpacing</code> on DescriptionList</Heading>
     <DescriptionListComponent isInline colSpacing="md">
       <Item>
-        <Term>Term 1 - Variant 1</Term>
-        <Term>Term 1 - Variant 2</Term>
-        <Description>The description of Term 1 variants</Description>
+        <dt>Term 1 - Variant 1</dt>
+        <dt>Term 1 - Variant 2</dt>
+        <dd>The description of Term 1 variants</dd>
       </Item>
       <Item>
-        <Term>Term 2</Term>
-        <Description>The description of term 2</Description>
+        <dt>Term 2</dt>
+        <dd>The description of term 2</dd>
       </Item>
       <Item>
-        <Term>Term 3</Term>
-        <Description>The first description of term 3</Description>
-        <Description>The second description of term 3</Description>
+        <dt>Term 3</dt>
+        <dd>The first description of term 3</dd>
+        <dd>The second description of term 3</dd>
       </Item>
     </DescriptionListComponent>
     <Heading as="h5">With <code>rowSpacing</code> on DescriptionList</Heading>
     <DescriptionListComponent isInline rowSpacing="md">
       <Item>
-        <Term>Term 1 - Variant 1</Term>
-        <Term>Term 1 - Variant 2</Term>
-        <Description>The description of Term 1 variants</Description>
+        <dt>Term 1 - Variant 1</dt>
+        <dt>Term 1 - Variant 2</dt>
+        <dd>The description of Term 1 variants</dd>
       </Item>
       <Item>
-        <Term>Term 2</Term>
-        <Description>The description of term 2</Description>
+        <dt>Term 2</dt>
+        <dd>The description of term 2</dd>
       </Item>
       <Item>
-        <Term>Term 3</Term>
-        <Description>The first description of term 3</Description>
-        <Description>The second description of term 3</Description>
+        <dt>Term 3</dt>
+        <dd>The first description of term 3</dd>
+        <dd>The second description of term 3</dd>
       </Item>
     </DescriptionListComponent>
     <Heading as="h5">With <code>colSpacing</code> on Item</Heading>
     <p>This option has no effects with this configuration.</p>
     <DescriptionListComponent isInline>
       <Item colSpacing="sm">
-        <Term>Term 1 - Variant 1</Term>
-        <Term>Term 1 - Variant 2</Term>
-        <Description>The description of Term 1 variants</Description>
+        <dt>Term 1 - Variant 1</dt>
+        <dt>Term 1 - Variant 2</dt>
+        <dd>The description of Term 1 variants</dd>
       </Item>
       <Item colSpacing="sm">
-        <Term>Term 2</Term>
-        <Description>The description of term 2</Description>
+        <dt>Term 2</dt>
+        <dd>The description of term 2</dd>
       </Item>
       <Item colSpacing="sm">
-        <Term>Term 3</Term>
-        <Description>The first description of term 3</Description>
-        <Description>The second description of term 3</Description>
+        <dt>Term 3</dt>
+        <dd>The first description of term 3</dd>
+        <dd>The second description of term 3</dd>
       </Item>
     </DescriptionListComponent>
     <Heading as="h5">With <code>rowSpacing</code> on Item</Heading>
     <DescriptionListComponent isInline>
       <Item rowSpacing="sm">
-        <Term>Term 1 - Variant 1</Term>
-        <Term>Term 1 - Variant 2</Term>
-        <Description>The description of Term 1 variants</Description>
+        <dt>Term 1 - Variant 1</dt>
+        <dt>Term 1 - Variant 2</dt>
+        <dd>The description of Term 1 variants</dd>
       </Item>
       <Item rowSpacing="sm">
-        <Term>Term 2</Term>
-        <Description>The description of term 2</Description>
+        <dt>Term 2</dt>
+        <dd>The description of term 2</dd>
       </Item>
       <Item rowSpacing="sm">
-        <Term>Term 3</Term>
-        <Description>The first description of term 3</Description>
-        <Description>The second description of term 3</Description>
+        <dt>Term 3</dt>
+        <dd>The first description of term 3</dd>
+        <dd>The second description of term 3</dd>
       </Item>
     </DescriptionListComponent>
     <Heading as="h4">With <code>isInline: true</code> on Item</Heading>
     <Heading as="h5">No spacing on both (default)</Heading>
     <DescriptionListComponent isInline>
       <Item isInline>
-        <Term>Term 1 - Variant 1</Term>
-        <Term>Term 1 - Variant 2</Term>
-        <Description>The description of Term 1 variants</Description>
+        <dt>Term 1 - Variant 1</dt>
+        <dt>Term 1 - Variant 2</dt>
+        <dd>The description of Term 1 variants</dd>
       </Item>
       <Item isInline>
-        <Term>Term 2</Term>
-        <Description>The description of term 2</Description>
+        <dt>Term 2</dt>
+        <dd>The description of term 2</dd>
       </Item>
       <Item isInline>
-        <Term>Term 3</Term>
-        <Description>The first description of term 3</Description>
-        <Description>The second description of term 3</Description>
+        <dt>Term 3</dt>
+        <dd>The first description of term 3</dd>
+        <dd>The second description of term 3</dd>
       </Item>
     </DescriptionListComponent>
     <Heading as="h5">With <code>colSpacing</code> on DescriptionList</Heading>
     <p>This option has no effects with this configuration.</p>
     <DescriptionListComponent isInline colSpacing="md">
       <Item isInline>
-        <Term>Term 1 - Variant 1</Term>
-        <Term>Term 1 - Variant 2</Term>
-        <Description>The description of Term 1 variants</Description>
+        <dt>Term 1 - Variant 1</dt>
+        <dt>Term 1 - Variant 2</dt>
+        <dd>The description of Term 1 variants</dd>
       </Item>
       <Item isInline>
-        <Term>Term 2</Term>
-        <Description>The description of term 2</Description>
+        <dt>Term 2</dt>
+        <dd>The description of term 2</dd>
       </Item>
       <Item isInline>
-        <Term>Term 3</Term>
-        <Description>The first description of term 3</Description>
-        <Description>The second description of term 3</Description>
+        <dt>Term 3</dt>
+        <dd>The first description of term 3</dd>
+        <dd>The second description of term 3</dd>
       </Item>
     </DescriptionListComponent>
     <Heading as="h5">With <code>rowSpacing</code> on DescriptionList</Heading>
     <DescriptionListComponent isInline rowSpacing="md">
       <Item isInline>
-        <Term>Term 1 - Variant 1</Term>
-        <Term>Term 1 - Variant 2</Term>
-        <Description>The description of Term 1 variants</Description>
+        <dt>Term 1 - Variant 1</dt>
+        <dt>Term 1 - Variant 2</dt>
+        <dd>The description of Term 1 variants</dd>
       </Item>
       <Item isInline>
-        <Term>Term 2</Term>
-        <Description>The description of term 2</Description>
+        <dt>Term 2</dt>
+        <dd>The description of term 2</dd>
       </Item>
       <Item isInline>
-        <Term>Term 3</Term>
-        <Description>The first description of term 3</Description>
-        <Description>The second description of term 3</Description>
+        <dt>Term 3</dt>
+        <dd>The first description of term 3</dd>
+        <dd>The second description of term 3</dd>
       </Item>
     </DescriptionListComponent>
     <Heading as="h5">With <code>colSpacing</code> on Item</Heading>
     <DescriptionListComponent isInline>
       <Item colSpacing="sm" isInline>
-        <Term>Term 1 - Variant 1</Term>
-        <Term>Term 1 - Variant 2</Term>
-        <Description>The description of Term 1 variants</Description>
+        <dt>Term 1 - Variant 1</dt>
+        <dt>Term 1 - Variant 2</dt>
+        <dd>The description of Term 1 variants</dd>
       </Item>
       <Item colSpacing="sm" isInline>
-        <Term>Term 2</Term>
-        <Description>The description of term 2</Description>
+        <dt>Term 2</dt>
+        <dd>The description of term 2</dd>
       </Item>
       <Item colSpacing="sm" isInline>
-        <Term>Term 3</Term>
-        <Description>The first description of term 3</Description>
-        <Description>The second description of term 3</Description>
+        <dt>Term 3</dt>
+        <dd>The first description of term 3</dd>
+        <dd>The second description of term 3</dd>
       </Item>
     </DescriptionListComponent>
     <Heading as="h5">With <code>rowSpacing</code> on Item</Heading>
     <p>This option has no effects with this configuration.</p>
     <DescriptionListComponent isInline>
       <Item isInline rowSpacing="sm">
-        <Term>Term 1 - Variant 1</Term>
-        <Term>Term 1 - Variant 2</Term>
-        <Description>The description of Term 1 variants</Description>
+        <dt>Term 1 - Variant 1</dt>
+        <dt>Term 1 - Variant 2</dt>
+        <dd>The description of Term 1 variants</dd>
       </Item>
       <Item isInline rowSpacing="sm">
-        <Term>Term 2</Term>
-        <Description>The description of term 2</Description>
+        <dt>Term 2</dt>
+        <dd>The description of term 2</dd>
       </Item>
       <Item isInline rowSpacing="sm">
-        <Term>Term 3</Term>
-        <Description>The first description of term 3</Description>
-        <Description>The second description of term 3</Description>
+        <dt>Term 3</dt>
+        <dd>The first description of term 3</dd>
+        <dd>The second description of term 3</dd>
       </Item>
     </DescriptionListComponent>
   </Fragment>

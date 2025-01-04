@@ -5,11 +5,11 @@ import Legend from "../../atoms/fieldset/legend.astro";
 
 type Props = ComponentProps<typeof Fieldset> & {
   /**
-   * Should the radio group be inlined?
+   * Should the legend be inlined?
    *
    * @default false
    */
-  isInline?: boolean | null | undefined;
+  hasInlinedLegend?: boolean | null | undefined;
   /**
    * The group label.
    */
@@ -18,8 +18,8 @@ type Props = ComponentProps<typeof Fieldset> & {
 
 const {
   class: className,
+  hasInlinedLegend = false,
   isBordered = false,
-  isInline = false,
   label,
   name,
   ...attrs
@@ -28,24 +28,11 @@ const {
 
 <Fieldset
   {...attrs}
-  class:list={["radio-group", { inlined: isInline }, className]}
+  class:list={["radio-group", className]}
   isBordered={isBordered}
 >
-  <Legend isBordered={isBordered} slot="legend">{label}</Legend>
+  <Legend isBordered={isBordered} isInline={hasInlinedLegend} slot="legend"
+    >{label}</Legend
+  >
   <slot />
 </Fieldset>
-
-<style>
-  .radio-group {
-    display: flex;
-
-    &:where(.inlined) {
-      flex-flow: row wrap;
-      align-items: center;
-    }
-
-    &:where(:not(.inlined)) {
-      flex-flow: column;
-    }
-  }
-</style>

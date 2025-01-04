@@ -20,11 +20,8 @@ import { splitObject } from "../../../utils/objects";
 import { isString } from "../../../utils/type-checks";
 import Button from "../../atoms/button/button.astro";
 import DescriptionList from "../../atoms/description-list/description-list.astro";
-import Description from "../../atoms/description-list/description.astro";
-import Term from "../../atoms/description-list/term.astro";
 import Heading from "../../atoms/heading/heading.astro";
 import Link from "../../atoms/link/link.astro";
-import Quote from "../../atoms/quote/quote.astro";
 import Card from "../../molecules/card/card.astro";
 import CollectionMeta from "../collection-meta/collection-meta.astro";
 
@@ -148,15 +145,15 @@ const isQuote = "isQuote" in entry ? entry.isQuote : false;
   {
     showCollection && !featuredMeta ? (
       <DescriptionList isInline slot={showCollection ? "frontmatter" : ""}>
-        <Term class="sr-only">{translate("meta.label.collection")}</Term>
-        <Description class="collection-card-frontmatter">
+        <dt class="sr-only">{translate("meta.label.collection")}</dt>
+        <dd class="collection-card-frontmatter">
           <Icon
             aria-hidden="true"
             name={collectionIcon[entry.collection].icon}
             size={22}
           />
           {collectionIcon[entry.collection].label}
-        </Description>
+        </dd>
       </DescriptionList>
     ) : null
   }
@@ -198,7 +195,7 @@ const isQuote = "isQuote" in entry ? entry.isQuote : false;
   </Heading>
   {
     isQuote ? (
-      <Quote lang={entryLocale}>{description}</Quote>
+      <q lang={entryLocale}>{description}</q>
     ) : (
       <div lang={entryLocale}>{description}</div>
     )
@@ -243,13 +240,26 @@ const isQuote = "isQuote" in entry ? entry.isQuote : false;
 
 <style>
   .collection-card {
-    position: relative;
+    &:where(:not(:has(.collection-card-meta, .collection-card-cta))) {
+      position: relative;
 
-    &:where(
-        :not(:has(.collection-card-meta, .collection-card-cta))
-      ):focus-within {
-      outline: var(--border-size-lg) solid var(--color-primary-lighter);
-      outline-offset: calc(var(--border-size-lg) * -1);
+      &:focus-within {
+        outline: var(--border-size-lg) solid var(--color-primary-lighter);
+        outline-offset: calc(var(--border-size-lg) * -1);
+      }
+
+      .collection-card-link {
+        &::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          z-index: 1;
+        }
+
+        &:focus {
+          outline: none;
+        }
+      }
     }
   }
 
@@ -262,22 +272,6 @@ const isQuote = "isQuote" in entry ? entry.isQuote : false;
 
   .collection-card-title {
     font-size: var(--font-size-3xl);
-  }
-
-  :where(
-      .collection-card:not(:has(.collection-card-meta, .collection-card-cta))
-    )
-    .collection-card-link {
-    &::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      z-index: 1;
-    }
-
-    &:focus {
-      outline: none;
-    }
   }
 
   .collection-card-cta {

@@ -126,7 +126,7 @@ describe("Switch", () => {
 
     expect.assertions(1);
 
-    expect(result).toContain("switch inline");
+    expect(result).toContain('data-inline="true"');
   });
 
   it<LocalTestContext>("should throw an error with an invalid value", async ({

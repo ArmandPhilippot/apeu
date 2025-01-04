@@ -85,13 +85,14 @@ const socialImg = getOpenGraphImg({ locale, slug: Astro.url.pathname });
 </Layout>
 
 <style>
-  .page-layout {
+  .page-layout,
+  .page-layout-content,
+  .page-layout-main {
     display: flex;
     flex-flow: column;
   }
 
   .page-layout-breadcrumb {
-    padding: var(--spacing-2xs) 0;
     font-size: var(--font-size-sm);
   }
 
@@ -99,9 +100,7 @@ const socialImg = getOpenGraphImg({ locale, slug: Astro.url.pathname });
     --inset-shadow-color: oklch(from var(--color-shadow) l c h / 0.5);
 
     flex: 1;
-    display: flex;
-    flex-flow: column;
-    padding: 0 0 var(--border-size-sm);
+    padding-block-end: var(--spacing-md);
     position: relative;
     border-block: var(--border-size-sm) solid var(--color-border);
     box-shadow:
@@ -110,11 +109,11 @@ const socialImg = getOpenGraphImg({ locale, slug: Astro.url.pathname });
       inset 0 calc(var(--border-size-sm) * -1) var(--border-size-sm)
         calc(var(--border-size-sm) * -1) var(--inset-shadow-color);
 
-    @container (width > 55em) {
+    @media (--prose) {
       padding: clamp(var(--spacing-sm), 2.5dvi, var(--spacing-xl));
     }
 
-    @media (width >= 1024px) {
+    @media (--md-or-above) {
       margin-inline-end: 1.5dvw;
       border: var(--border-size-sm) solid var(--color-border);
       border-radius: var(--border-radii-md);
@@ -135,12 +134,13 @@ const socialImg = getOpenGraphImg({ locale, slug: Astro.url.pathname });
   }
 
   :where(.page-layout:not(:has(.page-layout-breadcrumb))) .page-layout-content {
-    @media (width >= 1024px) {
+    @media (--md-or-above) {
       margin-block-start: 1.5dvw;
     }
   }
 
   .page-layout-main {
+    flex: 1;
     margin-block-start: calc(var(--border-size-sm) * -1);
   }
 

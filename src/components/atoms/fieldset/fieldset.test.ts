@@ -63,6 +63,45 @@ describe("Fieldset", () => {
 
     expect.assertions(1);
 
-    expect(result).toContain("bordered");
+    expect(result).toContain('data-border="true"');
+  });
+
+  it<LocalTestContext>("can render an inlined fieldset", async ({
+    container,
+  }) => {
+    const props = {
+      isInline: true,
+    } satisfies ComponentProps<typeof Fieldset>;
+    const body = "eius alias doloribus";
+    const legend = "pariatur dolorem ipsum";
+    const result = await container.renderToString(Fieldset, {
+      props,
+      slots: { default: body, legend },
+    });
+
+    expect.assertions(1);
+
+    expect(result).toContain('data-inline="true"');
+  });
+
+  it<LocalTestContext>("throws an error when gap is used without isInline", async ({
+    container,
+  }) => {
+    const props = {
+      gap: "md",
+    } satisfies ComponentProps<typeof Fieldset>;
+    const body = "eius alias doloribus";
+    const legend = "pariatur dolorem ipsum";
+
+    expect.assertions(1);
+
+    await expect(async () =>
+      container.renderToString(Fieldset, {
+        props,
+        slots: { default: body, legend },
+      }),
+    ).rejects.toThrowErrorMatchingInlineSnapshot(
+      `[Error: Invalid properties: gap is only compatible with isInline]`,
+    );
   });
 });

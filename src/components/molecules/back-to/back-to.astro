@@ -31,14 +31,15 @@ if (!anchor.startsWith("#"))
 </Button>
 
 <style>
-  .back-to {
+  /* We need to increase specificity because of inconsistencies between
+   * dev/build modes. */
+  a.back-to {
     aspect-ratio: 1 / 1;
     border-width: var(--border-size-md);
     box-shadow: var(--shadow-elevated-to-top-left);
 
-    &:where(:hover, :focus) {
-      box-shadow: var(--shadow-floating-to-top-left);
-      transform: scale(1.1);
+    @media (any-pointer: fine) {
+      padding: var(--spacing-sm);
     }
 
     &:where(:focus-visible) {
@@ -46,7 +47,12 @@ if (!anchor.startsWith("#"))
       outline-width: var(--border-size-lg);
     }
 
-    &:active {
+    &:where(:hover, :focus) {
+      box-shadow: var(--shadow-floating-to-top-left);
+      transform: scale(1.1);
+    }
+
+    &:where(:active) {
       box-shadow: var(--shadow-raised-to-top-left);
       transform: scale(0.95);
     }

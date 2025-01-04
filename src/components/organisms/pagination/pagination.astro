@@ -64,7 +64,8 @@ const ellipsis = "\u2026" as const;
 
 <nav
   {...attrs}
-  class:list={["pagination", { centered: isCentered }, className]}
+  class:list={["pagination", className]}
+  data-centered={isCentered}
 >
   <List as="ol" class="pagination-list" hideMarker isInline>
     {
@@ -128,7 +129,7 @@ const ellipsis = "\u2026" as const;
                     from: `${page + 1}`,
                     to: `${nextPage - 1}`,
                   })}
-                  class:list={["pagination-link", "disabled"]}
+                  class="pagination-link"
                 >
                   {ellipsis}
                 </span>
@@ -159,10 +160,9 @@ const ellipsis = "\u2026" as const;
 
 <style>
   .pagination {
-    width: fit-content;
     max-width: var(--size-prose);
 
-    &:where(.centered) {
+    &:where([data-centered="true"]) {
       margin-inline: auto;
     }
   }
@@ -180,12 +180,7 @@ const ellipsis = "\u2026" as const;
     border-radius: var(--border-radii-md);
     font-weight: var(--font-weight-bold);
 
-    @media (any-pointer: fine) {
-      min-width: calc(var(--one-px-in-rem) * 48);
-      min-height: calc(var(--one-px-in-rem) * 48);
-    }
-
-    &:where(.disabled) {
+    &:not(:is(a)) {
       background: var(--color-regular-dark);
       border: var(--border-size-sm) solid var(--color-muted);
       color: var(--color-primary-faded);

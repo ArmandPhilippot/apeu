@@ -36,6 +36,10 @@ const blogPostMeta = {
     title: "A category",
   },
   publishedOn: new Date("2024-09-16"),
+  tags: [
+    { route: "#tag1", title: "Tag 1" },
+    { route: "#tag2", title: "Tag 2" },
+  ],
   updatedOn: new Date(),
 } satisfies ComponentProps<typeof CollectionMetaComponent>["data"];
 

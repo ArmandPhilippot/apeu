@@ -178,11 +178,17 @@ const iterateConfigs = <K extends keyof typeof configs>(
 const isMetaTranslationKey = (key: unknown): key is SingularUIKey =>
   typeof key === "string" && key.startsWith("meta.");
 
-const { data, hideLabel = false, icons, ...attrs } = Astro.props;
+const {
+  colSpacing = "2xs",
+  data,
+  hideLabel = false,
+  icons,
+  ...attrs
+} = Astro.props;
 const { translate, translatePlural } = useI18n(Astro.currentLocale);
 ---
 
-<DescriptionList {...attrs}>
+<DescriptionList {...attrs} colSpacing={colSpacing}>
   {
     iterateConfigs(
       (key, { renderDescription, renderLabel, renderValue, shouldRender }) => {

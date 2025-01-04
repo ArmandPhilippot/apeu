@@ -38,13 +38,13 @@ const { translate } = useI18n(Astro.currentLocale);
     ) : null
   }
   <DescriptionList class="identity-card-meta" rowSpacing="4xs">
-    <Item colSpacing="4xs" isInline>
+    <Item colSpacing="2xs" isInline>
       <dt>{translate("meta.label.name")}</dt>
       <dd>{author.name}</dd>
     </Item>
     {
       author.nameIPA ? (
-        <Item colSpacing="4xs" isInline>
+        <Item colSpacing="2xs" isInline>
           <dt>{translate("meta.label.pronunciation")}</dt>
           <dd>{author.nameIPA}</dd>
         </Item>
@@ -52,7 +52,7 @@ const { translate } = useI18n(Astro.currentLocale);
     }
     {
       author.country ? (
-        <Item colSpacing="4xs" isInline>
+        <Item colSpacing="2xs" isInline>
           <dt>{translate("meta.label.country")}</dt>
           <dd>
             {translate(
@@ -64,7 +64,7 @@ const { translate } = useI18n(Astro.currentLocale);
     }
     {
       author.job ? (
-        <Item colSpacing="4xs" isInline>
+        <Item colSpacing="2xs" isInline>
           <dt>{translate("meta.label.job")}</dt>
           <dd>{author.job}</dd>
         </Item>
@@ -72,7 +72,7 @@ const { translate } = useI18n(Astro.currentLocale);
     }
     {
       author.nationality ? (
-        <Item colSpacing="4xs" isInline>
+        <Item colSpacing="2xs" isInline>
           <dt>{translate("meta.label.nationality")}</dt>
           <dd>
             {translate(
@@ -84,7 +84,7 @@ const { translate } = useI18n(Astro.currentLocale);
     }
     {
       author.spokenLanguages ? (
-        <Item colSpacing="4xs" isInline>
+        <Item colSpacing="2xs" isInline>
           <dt>{translate("meta.label.speak")}</dt>
           {author.spokenLanguages.map((language) => (
             <dd>{translate(`language.name.${language}`)}</dd>

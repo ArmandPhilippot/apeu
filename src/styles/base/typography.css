@@ -36,6 +36,10 @@ a {
     --lang-icon: "[" attr(hreflang) "]";
   }
 
+  &:where(:not([hreflang])) {
+    --is-lang-hidden: "";
+  }
+
   &:where([rel~="external"]:not(.download)) {
     --link-icon: var(--external-icon);
   }

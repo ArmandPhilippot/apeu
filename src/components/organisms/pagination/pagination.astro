@@ -171,6 +171,10 @@ const ellipsis = "\u2026" as const;
     gap: var(--spacing-2xs);
   }
 
+  :where([data-centered="true"]) .pagination-list {
+    justify-content: center;
+  }
+
   .pagination-link {
     display: flex;
     align-items: center;

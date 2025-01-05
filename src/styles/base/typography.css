@@ -84,14 +84,65 @@ cite {
 
 :is(code, kbd, samp, var) {
   font-family: var(--font-family-mono);
+  font-size: inherit;
+  line-height: inherit;
+  vertical-align: middle;
+}
+
+:is(kbd, samp, var) {
+  white-space: nowrap;
+}
+
+:where(:not(pre)) > code,
+kbd,
+samp {
+  display: inline-block;
+  border-radius: var(--border-radii-md);
+}
+
+:where(:not(pre)) > code,
+kbd:not(:has(kbd, samp)),
+samp:not(:has(kbd)) {
+  padding-inline: var(--spacing-2xs);
 }
 
 :where(:not(pre)) > code {
-  padding: var(--spacing-4xs) var(--spacing-2xs);
   background: var(--color-regular-darker);
   border: var(--border-size-sm) solid var(--color-border);
-  border-radius: var(--border-radii-md);
-  font-size: inherit;
+}
+
+:where(:not(samp)) > kbd {
+  &:not(:has(kbd, samp)) {
+    background: var(--color-regular-lighter);
+    box-shadow:
+      inset 0 0 var(--border-size-sm) var(--border-size-sm)
+        var(--color-muted-light),
+      inset 0 0 0 var(--border-size-sm) var(--color-muted-light),
+      0 0 0 var(--border-size-sm) var(--color-muted),
+      var(--border-size-md) var(--border-size-md) 0 var(--border-size-sm)
+        var(--color-shadow);
+    color: var(--color-muted-faded);
+  }
+
+  &:has(samp) {
+    background: var(--color-regular-darker);
+    border: var(--border-size-sm) solid var(--color-border-light);
+    box-shadow: inset 0 calc(var(--border-size-sm) * -1) var(--border-size-md) 0
+      var(--color-muted-darker);
+    color: var(--color-muted-faded);
+    font-style: italic;
+    font-weight: bold;
+  }
+}
+
+:where(:not(kbd)) > samp {
+  background: var(--color-regular-lighter);
+  border: var(--border-size-sm) solid var(--color-border-light);
+  font-style: italic;
+
+  &:not(:has(kbd)) {
+    background: var(--color-regular-darker);
+  }
 }
 
 :where(dd, dt) {
@@ -134,20 +185,6 @@ h5 {
 
 h6 {
   font-size: var(--font-size-lg);
-}
-
-kbd {
-  &:not(:has(kbd)) {
-    display: inline-block;
-    padding: var(--spacing-2xs);
-    background: var(--color-regular-lighter);
-    border: var(--border-size-sm) solid var(--color-border-dark);
-    border-radius: var(--border-radii-md);
-    box-shadow: var(--border-size-sm) var(--border-size-sm) 0
-      var(--border-size-sm) var(--color-shadow);
-    line-height: 0.85;
-    white-space: nowrap;
-  }
 }
 
 label {

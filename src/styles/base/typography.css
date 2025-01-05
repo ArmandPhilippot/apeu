@@ -86,7 +86,7 @@ cite {
   font-family: var(--font-family-mono);
 }
 
-:where(:not(pre)) > .code {
+:where(:not(pre)) > code {
   padding: var(--spacing-4xs) var(--spacing-2xs);
   background: var(--color-regular-darker);
   border: var(--border-size-sm) solid var(--color-border);

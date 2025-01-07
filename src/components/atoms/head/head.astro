@@ -62,9 +62,15 @@ const feeds = await getCollectionsFeeds(locale);
   />
   <link rel="canonical" href={seo.canonical ?? Astro.url.href} />
   {
-    seo.languages?.map((language) => (
-      <link rel="alternate" href={language.route} hreflang={language.locale} />
-    ))
+    Astro.site
+      ? seo.languages?.map((language) => (
+          <link
+            rel="alternate"
+            href={new URL(language.route, Astro.site)}
+            hreflang={language.locale}
+          />
+        ))
+      : null
   }
   {
     seo.author ? (

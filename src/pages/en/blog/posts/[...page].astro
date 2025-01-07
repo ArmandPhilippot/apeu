@@ -108,10 +108,12 @@ const getCTA = (
             elevation="raised"
             entry={{
               ...post,
-              cover: post.cover ? {
-                ...post.cover,
-                loading: index > 0 ? "lazy" : "eager"
-              } : null
+              cover: post.cover
+                ? {
+                    ...post.cover,
+                    loading: index > 0 ? "lazy" : "eager",
+                  }
+                : null,
             }}
             featuredMeta={{ icon: "blog", key: "publishedOn" }}
           />

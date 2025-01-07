@@ -64,12 +64,20 @@ const getCTA = (
     slot="disconnected-body"
   >
     {
-      (project: (typeof projects)[number]) => (
+      (project: (typeof projects)[number], index: number) => (
         <CollectionCard
           class="project-card"
           cta={getCTA(project.title)}
           elevation="raised"
-          entry={project}
+          entry={{
+            ...project,
+            cover: project.cover
+              ? {
+                  ...project.cover,
+                  loading: index > 1 ? "lazy" : "eager",
+                }
+              : null,
+          }}
           featuredMeta={{ icon: "project", key: "kind" }}
         />
       )

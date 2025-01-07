@@ -100,7 +100,8 @@ export type BlogPostMetaData = Omit<
 
 export type BlogPost = Pick<CollectionEntry<"blogPosts">, "collection" | "id"> &
   Omit<RenderedContent, "remarkPluginFrontmatter"> &
-  Omit<CollectionEntry<"blogPosts">["data"], "i18n" | "meta"> & {
+  Omit<CollectionEntry<"blogPosts">["data"], "cover" | "i18n" | "meta"> & {
+    cover?: Img | null | undefined;
     meta: BlogPostMetaData;
     seo: SEO;
   };

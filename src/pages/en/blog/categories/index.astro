@@ -57,8 +57,20 @@ const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
     slot="disconnected-body"
   >
     {
-      ({ meta, ...cat }: (typeof categories)[number]) => (
-        <CollectionCard class="category-card" elevation="raised" entry={cat} />
+      ({ meta, cover, ...cat }: (typeof categories)[number], index: number) => (
+        <CollectionCard
+          class="category-card"
+          elevation="raised"
+          entry={{
+            ...cat,
+            cover: cover
+              ? {
+                  ...cover,
+                  loading: index > 1 ? "lazy" : "eager",
+                }
+              : null,
+          }}
+        />
       )
     }
   </CardsList>

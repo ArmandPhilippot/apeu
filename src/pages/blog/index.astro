@@ -97,7 +97,15 @@ const getPostCTA = (
             class="post-card"
             cta={getPostCTA(post.title)}
             elevation="raised"
-            entry={post}
+            entry={{
+              ...post,
+              cover: post.cover
+                ? {
+                    ...post.cover,
+                    loading: "eager",
+                  }
+                : null,
+            }}
             featuredMeta={{ icon: "blog", key: "publishedOn" }}
             headingLvl="h3"
           />

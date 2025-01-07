@@ -101,12 +101,18 @@ const getCTA = (
   <Fragment slot="disconnected-body">
     <CardsList isContainer items={posts} sizeMinCols="100%">
       {
-        (post: (typeof posts)[number]) => (
+        (post: (typeof posts)[number], index: number) => (
           <CollectionCard
             class="post-card"
             cta={getCTA(post.title)}
             elevation="raised"
-            entry={post}
+            entry={{
+              ...post,
+              cover: post.cover ? {
+                ...post.cover,
+                loading: index > 0 ? "lazy" : "eager"
+              } : null
+            }}
             featuredMeta={{ icon: "blog", key: "publishedOn" }}
           />
         )

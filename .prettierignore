@@ -1,3 +1,7 @@
 dist
 node_modules
 pnpm-lock.yaml
+
+# It adds unwanted line breaks when using html tags in a paragraph...
+*.md
+*.mdx

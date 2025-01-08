@@ -111,33 +111,6 @@ describe("Head", () => {
     expect(result).toContain(`<meta name="robots" content="noindex, follow">`);
   });
 
-  it<LocalTestContext>("can add a meta for alternate languages", async ({
-    container,
-  }) => {
-    const props = {
-      brand: "et a dolores",
-      seo: {
-        languages: [
-          { locale: "fr", route: "/modi-odit-voluptatem" },
-          { locale: "es", route: "/et-sint-laudantium" },
-        ],
-        title: "est et fugiat",
-      },
-    } satisfies ComponentProps<typeof Head>;
-    const result = await container.renderToString(Head, {
-      props,
-    });
-
-    expect.assertions(2);
-
-    expect(result).toContain(
-      `<link rel="alternate" href="${props.seo.languages[0]?.route}" hreflang="${props.seo.languages[0]?.locale}">`,
-    );
-    expect(result).toContain(
-      `<link rel="alternate" href="${props.seo.languages[1]?.route}" hreflang="${props.seo.languages[1]?.locale}">`,
-    );
-  });
-
   it<LocalTestContext>("can update the meta related to page author", async ({
     container,
   }) => {

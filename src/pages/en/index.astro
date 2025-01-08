@@ -68,7 +68,12 @@ const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
         <Fragment>
           <IdentityCard
             as="section"
-            author={author}
+            author={{
+              ...author,
+              avatar: author.avatar
+                ? { ...author.avatar, loading: "eager" }
+                : null,
+            }}
             class="homepage-about"
             elevation="raised"
             isSpaced

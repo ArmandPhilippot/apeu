@@ -100,12 +100,17 @@ const getCTA = (
   <Fragment slot="disconnected-body">
     <CardsList isContainer items={guides} sizeMinCols="100%">
       {
-        (guide: (typeof guides)[number]) => (
+        (guide: (typeof guides)[number], index: number) => (
           <CollectionCard
             class="guide-card"
             cta={getCTA(guide.title)}
             elevation="raised"
-            entry={guide}
+            entry={{
+              ...guide,
+              cover: guide.cover
+                ? { ...guide.cover, loading: index > 0 ? "lazy" : "eager" }
+                : null,
+            }}
             featuredMeta={{ icon: "guide", key: "publishedOn" }}
           />
         )

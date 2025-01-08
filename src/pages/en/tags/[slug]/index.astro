@@ -102,12 +102,22 @@ const getCTA = (
     slot="disconnected-body"
   >
     {
-      (entry: (typeof relatedEntries)[number]) => (
+      (entry: (typeof relatedEntries)[number], index: number) => (
         <CollectionCard
           class="entry-card"
           cta={getCTA(entry)}
           elevation="raised"
-          entry={entry}
+          entry={{
+            ...entry,
+            ...("cover" in entry && entry.cover
+              ? {
+                  cover: {
+                    ...entry.cover,
+                    loading: index > 1 ? "lazy" : "eager",
+                  },
+                }
+              : {}),
+          }}
           showCollection
         />
       )

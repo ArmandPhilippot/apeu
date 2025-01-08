@@ -83,9 +83,16 @@ const {
       }
     }
 
-    & > :global(img) {
+    &:where([data-full-width="true"]) > :global(img) {
+      flex: 1;
       width: 100%;
       object-fit: cover;
+    }
+
+    &:where([data-full-width="false"]) > :global(img) {
+      flex: 1;
+      object-fit: contain;
+      height: auto;
     }
 
     & > :global(*) {
@@ -100,6 +107,10 @@ const {
         border-end-start-radius: inherit;
         border-end-end-radius: inherit;
       }
+    }
+
+    & > :global(* img) {
+      border-radius: inherit;
     }
   }
 

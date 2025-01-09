@@ -3,13 +3,25 @@ import type { RSSFeedItem } from "@astrojs/rss";
 import { experimental_AstroContainer } from "astro/container";
 import { loadRenderers } from "astro:container";
 import type { CollectionKey } from "astro:content";
-import sanitizeHtml from "sanitize-html";
+import {
+  DOCTYPE_NODE,
+  ELEMENT_NODE,
+  TEXT_NODE,
+  transform,
+  walk,
+  type TextNode,
+} from "ultrahtml";
+import sanitize from "ultrahtml/transformers/sanitize";
 import { queryCollection } from "../lib/astro/collections";
 import type { FeedCompatibleEntry } from "../types/data";
+import { CONFIG } from "./constants";
 import { UnsupportedLocaleError } from "./exceptions";
 import { isAvailableLanguage, useI18n, type AvailableLanguage } from "./i18n";
 
 type CollectionWithFeed = Exclude<CollectionKey, "authors">;
+
+const getAbsoluteUrl = (relativeUrl: string) =>
+  `${CONFIG.PROTOCOL}${CONFIG.HOST}${relativeUrl}`;
 
 const renderEntryContent = async (
   entry: FeedCompatibleEntry,
@@ -18,15 +30,45 @@ const renderEntryContent = async (
 
   const renderers = await loadRenderers([mdxRenderer()]);
   const container = await experimental_AstroContainer.create({ renderers });
-  const htmlContent = await container.renderToString(entry.Content);
+  const html = await container.renderToString(entry.Content);
 
-  return sanitizeHtml(htmlContent, {
-    allowedAttributes: {
-      ...sanitizeHtml.defaults.allowedAttributes,
-      a: ["href", "hreflang"],
+  return transform(html, [
+    async (ast) => {
+      await walk(ast, (node) => {
+        if (node.type === DOCTYPE_NODE) {
+          (node as unknown as TextNode).type = TEXT_NODE;
+          node.value = "";
+        } else if (node.type === ELEMENT_NODE) {
+          if (node.name === "a" && node.attributes["href"]?.startsWith("/")) {
+            node.attributes["href"] = getAbsoluteUrl(node.attributes["href"]);
+          }
+          if (node.name === "img" && node.attributes["src"]?.startsWith("/")) {
+            node.attributes["src"] = getAbsoluteUrl(node.attributes["src"]);
+          }
+        }
+      });
+
+      return ast;
     },
-    allowedTags: sanitizeHtml.defaults.allowedTags.concat(["img"]),
-  });
+    sanitize({
+      dropAttributes: {
+        class: ["*"],
+        "data-align-items": ["div"],
+        "data-astro-source-file": ["*"],
+        "data-astro-source-loc": ["*"],
+        "data-centered": ["figure"],
+        "data-clickable": ["img"],
+        "data-diff": ["figure"],
+        "data-gap": ["div"],
+        "data-image-component": ["img"],
+        "data-line-numbers": ["figure"],
+        "data-path": ["figure"],
+        "data-prompt": ["figure"],
+        "data-size-min": ["div"],
+      },
+      dropElements: ["link", "script", "style"],
+    }),
+  ]);
 };
 
 const getItemCategoryFromCollection = (

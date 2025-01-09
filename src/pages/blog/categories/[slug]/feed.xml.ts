@@ -26,6 +26,7 @@ export const GET: APIRoute<TaxonomyPreview> = async ({
   currentLocale,
   props,
   site,
+  url,
 }) => {
   if (!site) throw new MissingSiteConfigError();
   const { locale, translate } = useI18n(currentLocale);
@@ -42,6 +43,12 @@ export const GET: APIRoute<TaxonomyPreview> = async ({
     items: await getRSSItemsFromEntries(entries, locale),
     site,
     title: translate("feed.blog.category.title", { name: props.title }),
-    customData: `<language>${getFeedLanguageFromLocale(locale)}</language>`,
+    customData: [
+      `<language>${getFeedLanguageFromLocale(locale)}</language>`,
+      `<atom:link href="${url}" rel="self" type="application/rss+xml" />`,
+    ].join(""),
+    xmlns: {
+      atom: "http://www.w3.org/2005/Atom",
+    },
   });
 };

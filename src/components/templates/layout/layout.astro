@@ -409,13 +409,13 @@ const topId = translate("anchor.site.top");
 
 <script>
   import {
-  settings,
-  SHIKI_SETTING_KEY,
-  THEME_SETTING_KEY,
-  type Settings,
-} from "../../../services/stores/settings";
-import type { Theme } from "../../../types/tokens";
-import { resolveCurrentColorScheme } from "../../../utils/themes";
+    settings,
+    SHIKI_SETTING_KEY,
+    THEME_SETTING_KEY,
+    type Settings,
+  } from "../../../services/stores/settings";
+  import type { Theme } from "../../../types/tokens";
+  import { resolveCurrentColorScheme } from "../../../utils/themes";
 
   class APWebsite extends HTMLElement {
     #backToTopBtn: HTMLAnchorElement | null = null;

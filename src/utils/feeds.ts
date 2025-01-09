@@ -14,20 +14,18 @@ import {
 import sanitize from "ultrahtml/transformers/sanitize";
 import { queryCollection } from "../lib/astro/collections";
 import type { FeedCompatibleEntry } from "../types/data";
-import { CONFIG } from "./constants";
 import { UnsupportedLocaleError } from "./exceptions";
 import { isAvailableLanguage, useI18n, type AvailableLanguage } from "./i18n";
+import { getWebsiteUrl } from "./url";
 
 type CollectionWithFeed = Exclude<CollectionKey, "authors">;
-
-const getAbsoluteUrl = (relativeUrl: string) =>
-  `${CONFIG.PROTOCOL}${CONFIG.HOST}${relativeUrl}`;
 
 const renderEntryContent = async (
   entry: FeedCompatibleEntry,
 ): Promise<string | undefined> => {
   if (!("Content" in entry)) return undefined;
 
+  const websiteUrl = getWebsiteUrl();
   const renderers = await loadRenderers([mdxRenderer()]);
   const container = await experimental_AstroContainer.create({ renderers });
   const html = await container.renderToString(entry.Content);
@@ -40,10 +38,10 @@ const renderEntryContent = async (
           node.value = "";
         } else if (node.type === ELEMENT_NODE) {
           if (node.name === "a" && node.attributes["href"]?.startsWith("/")) {
-            node.attributes["href"] = getAbsoluteUrl(node.attributes["href"]);
+            node.attributes["href"] = `${websiteUrl}${node.attributes["href"]}`;
           }
           if (node.name === "img" && node.attributes["src"]?.startsWith("/")) {
-            node.attributes["src"] = getAbsoluteUrl(node.attributes["src"]);
+            node.attributes["src"] = `${websiteUrl}${node.attributes["src"]}`;
           }
         }
       });

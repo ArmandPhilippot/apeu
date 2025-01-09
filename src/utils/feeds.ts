@@ -63,6 +63,7 @@ const renderEntryContent = async (
         "data-path": ["figure"],
         "data-prompt": ["figure"],
         "data-size-min": ["div"],
+        style: ["*"],
       },
       dropElements: ["link", "script", "style"],
     }),

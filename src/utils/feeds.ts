@@ -30,6 +30,12 @@ const renderEntryContent = async (
   const container = await experimental_AstroContainer.create({ renderers });
   const html = await container.renderToString(entry.Content);
 
+  /*
+   * Special thanks for the inspiration:
+   * @Princesseuh https://github.com/Princesseuh/erika.florist/blob/ed50468bece9f8cd4156c1b1d0e628b989a01e96/src/middleware.ts
+   * @Chris https://github.com/delucis/astro-blog-full-text-rss/blob/17c14db9b4fd68a20f097f5ad8ae66edb2da1815/src/pages/rss.xml.ts
+   * @HiDeoo https://github.com/HiDeoo/starlight-blog/blob/fb46bad1ac7c6c8e8ac6802fcd2891804326666c/packages/starlight-blog/libs/rss.ts#L123-L161
+   */
   return transform(html, [
     async (ast) => {
       await walk(ast, (node) => {

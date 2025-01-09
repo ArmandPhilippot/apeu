@@ -1,5 +1,6 @@
 ---
 import type { ComponentProps } from "astro/types";
+import Callout from "../../components/atoms/callout/callout.astro";
 import { components } from "../../components/mdx";
 import ContactForm from "../../components/organisms/contact-form/contact-form.astro";
 import PageLayout from "../../components/templates/page-layout/page-layout.astro";
@@ -31,6 +32,11 @@ const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
 >
   <Fragment slot="body">
     <Content components={components} />
+    <noscript>
+      <Callout style="margin-block-end: var(--spacing-md);" type="warning">
+        {translate("no.js.contact.form.text")}
+      </Callout>
+    </noscript>
     <ContactForm id="contact-page-form" />
   </Fragment>
 </PageLayout>

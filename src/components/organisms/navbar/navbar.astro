@@ -57,7 +57,7 @@ const { translate } = useI18n(Astro.currentLocale);
   </Popover>
   <Popover
     {...attrs}
-    class="navbar-item"
+    class:list={["navbar-item", "js-only"]}
     controllerId={`${id}-search-controller`}
     data-item="search"
     modalId={`${id}-search-modal`}
@@ -92,7 +92,7 @@ const { translate } = useI18n(Astro.currentLocale);
   </Popover>
   <Popover
     {...attrs}
-    class="navbar-item"
+    class:list={["navbar-item", "js-only"]}
     controllerId={`${id}-settings-controller`}
     data-item="settings"
     modalId={`${id}-settings-modal`}

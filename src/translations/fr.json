@@ -202,6 +202,7 @@
     "navbar.main.nav.label": "Menu",
     "navbar.search.label": "Recherche",
     "navbar.settings.label": "Paramètres",
+    "no.js.contact.form.text": "Désolé, vous ne pouvez pas utiliser le formulaire de contact avec Javascript désactivé. Assurez-vous d’autoriser les scripts au moins temporairement dans votre navigateur pour pouvoir m’envoyer un email.",
     "page.blog.section.categories.heading": "Catégories",
     "page.blog.section.recent.posts.heading": "Articles récents",
     "page.blog.title": "Blog",

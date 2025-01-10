@@ -7,15 +7,17 @@ import type { Options } from "nodemailer/lib/smtp-connection";
  * @returns {Options} The SMTP options
  */
 const getSMTPOptionsFromEnv = (): Options => {
+  const port = Number(process.env.SMTP_PORT);
+
   return {
-    host: import.meta.env.SMTP_HOST,
-    port: import.meta.env.SMTP_PORT,
+    host: process.env.SMTP_HOST,
+    port,
     /* The secure option should only be `true` with port `465`, so it should be
      * safe to set the option by checking the port */
-    secure: import.meta.env.SMTP_PORT === 465,
+    secure: port === 465,
     auth: {
-      user: import.meta.env.SMTP_USER,
-      pass: import.meta.env.SMTP_PASSWORD,
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASSWORD,
     },
   };
 };
@@ -27,7 +29,11 @@ const getSMTPOptionsFromEnv = (): Options => {
  */
 export const createSMTPTransporter = (): Transporter => {
   const config = getSMTPOptionsFromEnv();
-  const transporter = nodemailer.createTransport(config);
+  const transporter = nodemailer.createTransport({
+    ...config,
+    connectionTimeout: 10000,
+    socketTimeout: 10000,
+  });
 
   return transporter;
 };

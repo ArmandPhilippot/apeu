@@ -167,9 +167,11 @@ const getItemDescription = (
 const getRSSItem =
   (locale: AvailableLanguage) =>
   async (entry: FeedCompatibleEntry): Promise<RSSFeedItem> => {
+    const content = await renderEntryContent(entry);
+
     return {
       categories: getItemCategories(entry, locale),
-      content: await renderEntryContent(entry),
+      ...(content ? { content } : {}),
       description: getItemDescription(entry, locale),
       link: "route" in entry ? entry.route : entry.url,
       pubDate: entry.meta.publishedOn,

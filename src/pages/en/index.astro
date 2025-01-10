@@ -1,7 +1,9 @@
 ---
+import { Icon } from "astro-icon/components";
 import type { ComponentProps } from "astro/types";
 import logo from "../../assets/logo.svg";
 import Box from "../../components/atoms/box/box.astro";
+import Button from "../../components/atoms/button/button.astro";
 import Heading from "../../components/atoms/heading/heading.astro";
 import { components } from "../../components/mdx";
 import CardsList from "../../components/molecules/cards-list/cards-list.astro";
@@ -16,7 +18,7 @@ import { getWebPageGraph } from "../../lib/schema-dts/graphs/webpage-graph";
 import { getWebSiteGraph } from "../../lib/schema-dts/graphs/website-graph";
 import { useI18n } from "../../utils/i18n";
 
-const { locale, translate } = useI18n(Astro.currentLocale);
+const { locale, route, translate } = useI18n(Astro.currentLocale);
 const { Content, ...page } = await queryEntry({
   collection: "pages",
   id: "home",
@@ -118,6 +120,7 @@ const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
       collections?.length ? (
         <section class="homepage-collections">
           <Box
+            class="homepage-collections-heading"
             elevation="raised"
             isBordered
             isCentered
@@ -128,6 +131,14 @@ const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
             <Heading as="h2">
               {translate("page.home.section.collections.heading")}
             </Heading>
+            <Button
+              aria-label={translate("cta.subscribe.to.website")}
+              as="a"
+              href={`${route("home")}feed.xml`}
+            >
+              <Icon aria-hidden="true" name="feed" />
+              {translate("cta.subscribe")}
+            </Button>
           </Box>
           <CardsList
             isContainer
@@ -220,6 +231,12 @@ const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
     @container (width > 82em) {
       grid-column: 3;
     }
+  }
+
+  .homepage-collections-heading {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm) var(--spacing-md);
   }
 
   .homepage-collection {

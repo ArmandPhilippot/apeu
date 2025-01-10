@@ -9,9 +9,13 @@ import {
   TEXT_NODE,
   transform,
   walk,
+  type Node as AstNode,
+  type ElementNode,
   type TextNode,
 } from "ultrahtml";
-import sanitize from "ultrahtml/transformers/sanitize";
+import sanitize, {
+  type SanitizeOptions,
+} from "ultrahtml/transformers/sanitize";
 import { queryCollection } from "../lib/astro/collections";
 import type { FeedCompatibleEntry } from "../types/data";
 import { UnsupportedLocaleError } from "./exceptions";
@@ -20,60 +24,102 @@ import { getWebsiteUrl } from "./url";
 
 type CollectionWithFeed = Exclude<CollectionKey, "authors">;
 
+const SANITIZE_CONFIG = {
+  dropAttributes: {
+    class: ["*"],
+    "data-align-items": ["div"],
+    "data-astro-source-file": ["*"],
+    "data-astro-source-loc": ["*"],
+    "data-centered": ["figure"],
+    "data-clickable": ["img"],
+    "data-diff": ["figure"],
+    "data-gap": ["div"],
+    "data-image-component": ["img"],
+    "data-line-numbers": ["figure"],
+    "data-path": ["figure"],
+    "data-prompt": ["figure"],
+    "data-size-min": ["div"],
+    style: ["*"],
+  },
+  dropElements: ["link", "script", "style"],
+} as const satisfies SanitizeOptions;
+
+const isJsOnlyNode = (node: AstNode): boolean =>
+  !!node.attributes?.class?.includes("js-only");
+
+const clearNode = (node: AstNode): void => {
+  (node as unknown as TextNode).type = TEXT_NODE;
+  node.value = "";
+};
+
+const createUrlTransformer = () => {
+  const websiteUrl = getWebsiteUrl();
+
+  return (path: string): string =>
+    path.startsWith("/") || path.startsWith("#")
+      ? `${websiteUrl}${path}`
+      : path;
+};
+
+const transformCalloutToDiv = (node: ElementNode): void => {
+  node.name = "div";
+  node.role = "note";
+  if (node.attributes?.label) {
+    node.attributes["aria-label"] = node.attributes.label;
+    delete node.attributes.label;
+  }
+  if (node.attributes?.type) {
+    delete node.attributes.type;
+  }
+};
+
+/*
+ * Special thanks for the inspiration:
+ * @Princesseuh https://github.com/Princesseuh/erika.florist/blob/ed50468bece9f8cd4156c1b1d0e628b989a01e96/src/middleware.ts
+ * @Chris https://github.com/delucis/astro-blog-full-text-rss/blob/17c14db9b4fd68a20f097f5ad8ae66edb2da1815/src/pages/rss.xml.ts
+ * @HiDeoo https://github.com/HiDeoo/starlight-blog/blob/fb46bad1ac7c6c8e8ac6802fcd2891804326666c/packages/starlight-blog/libs/rss.ts#L123-L161
+ */
+const createNodeTransformer = () => {
+  const makeAbsoluteUrl = createUrlTransformer();
+
+  return async (node: AstNode): Promise<void> => {
+    if (node.type === DOCTYPE_NODE || isJsOnlyNode(node)) {
+      clearNode(node);
+      return;
+    }
+
+    if (node.type !== ELEMENT_NODE) return;
+
+    if (node.name === "a" && node.attributes?.href) {
+      node.attributes.href = makeAbsoluteUrl(node.attributes.href);
+    } else if (node.name === "img" && node.attributes?.src) {
+      node.attributes.src = makeAbsoluteUrl(node.attributes.src);
+    } else if (node.name === "callout") {
+      transformCalloutToDiv(node);
+    }
+  };
+};
+
+const transformContent = async (html: string): Promise<string> => {
+  return transform(html, [
+    async (ast) => {
+      await walk(ast, createNodeTransformer());
+      return ast;
+    },
+    sanitize(SANITIZE_CONFIG),
+  ]);
+};
+
 const renderEntryContent = async (
   entry: FeedCompatibleEntry,
 ): Promise<string | undefined> => {
   if (!("Content" in entry)) return undefined;
 
-  const websiteUrl = getWebsiteUrl();
   const renderers = await loadRenderers([mdxRenderer()]);
   const container = await experimental_AstroContainer.create({ renderers });
   const html = await container.renderToString(entry.Content);
 
-  /*
-   * Special thanks for the inspiration:
-   * @Princesseuh https://github.com/Princesseuh/erika.florist/blob/ed50468bece9f8cd4156c1b1d0e628b989a01e96/src/middleware.ts
-   * @Chris https://github.com/delucis/astro-blog-full-text-rss/blob/17c14db9b4fd68a20f097f5ad8ae66edb2da1815/src/pages/rss.xml.ts
-   * @HiDeoo https://github.com/HiDeoo/starlight-blog/blob/fb46bad1ac7c6c8e8ac6802fcd2891804326666c/packages/starlight-blog/libs/rss.ts#L123-L161
-   */
-  return transform(html, [
-    async (ast) => {
-      await walk(ast, (node) => {
-        if (node.type === DOCTYPE_NODE) {
-          (node as unknown as TextNode).type = TEXT_NODE;
-          node.value = "";
-        } else if (node.type === ELEMENT_NODE) {
-          if (node.name === "a" && node.attributes["href"]?.startsWith("/")) {
-            node.attributes["href"] = `${websiteUrl}${node.attributes["href"]}`;
-          }
-          if (node.name === "img" && node.attributes["src"]?.startsWith("/")) {
-            node.attributes["src"] = `${websiteUrl}${node.attributes["src"]}`;
-          }
-        }
-      });
-
-      return ast;
-    },
-    sanitize({
-      dropAttributes: {
-        class: ["*"],
-        "data-align-items": ["div"],
-        "data-astro-source-file": ["*"],
-        "data-astro-source-loc": ["*"],
-        "data-centered": ["figure"],
-        "data-clickable": ["img"],
-        "data-diff": ["figure"],
-        "data-gap": ["div"],
-        "data-image-component": ["img"],
-        "data-line-numbers": ["figure"],
-        "data-path": ["figure"],
-        "data-prompt": ["figure"],
-        "data-size-min": ["div"],
-        style: ["*"],
-      },
-      dropElements: ["link", "script", "style"],
-    }),
-  ]);
+  return transformContent(html);
 };
 
 const getItemCategoryFromCollection = (

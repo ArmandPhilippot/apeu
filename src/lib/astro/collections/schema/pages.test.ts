@@ -2,6 +2,17 @@ import { describe, expect, it, vi } from "vitest";
 import { CONFIG } from "../../../../utils/constants";
 import { pages } from "./pages";
 
+vi.mock("../../../../utils/dates", async (importOriginal) => {
+  const mod =
+    // eslint-disable-next-line @typescript-eslint/consistent-type-imports
+    await importOriginal<typeof import("../../../../utils/dates")>();
+
+  return {
+    ...mod,
+    applyTimezone: vi.fn((date) => date), // Mocked to return the input date
+  };
+});
+
 describe("pages", () => {
   it("should include the meta in the transformed output", () => {
     const page = {

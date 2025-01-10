@@ -3,6 +3,17 @@ import { z } from "zod";
 import { CONFIG } from "../../../../utils/constants";
 import { guides } from "./guides";
 
+vi.mock("../../../../utils/dates", async (importOriginal) => {
+  const mod =
+    // eslint-disable-next-line @typescript-eslint/consistent-type-imports
+    await importOriginal<typeof import("../../../../utils/dates")>();
+
+  return {
+    ...mod,
+    applyTimezone: vi.fn((date) => date), // Mocked to return the input date
+  };
+});
+
 function createReferenceMock(collection: string) {
   return z.string().transform((slug) => ({
     collection,

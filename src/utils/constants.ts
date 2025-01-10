@@ -35,6 +35,7 @@ export const CONFIG = {
   SEARCH: {
     QUERY_PARAM: "q",
   },
+  TIMEZONE: "Europe/Paris",
 } as const;
 
 /**

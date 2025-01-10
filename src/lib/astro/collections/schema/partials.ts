@@ -4,8 +4,7 @@ import { applyTimezone } from "../../../../utils/dates";
 import { isAvailableLanguage } from "../../../../utils/i18n";
 
 const dateSchema = z.coerce.date().transform((date) => {
-  const timezone = "Europe/Paris"; // Replace with desired timezone
-  return applyTimezone(date, { lang: "fr-FR", timezone });
+  return applyTimezone(date, { lang: "fr-FR", timezone: CONFIG.TIMEZONE });
 });
 
 export const locale = z

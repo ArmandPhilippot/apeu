@@ -1,6 +1,11 @@
 import { z } from "astro:schema";
 import { CONFIG } from "../../../../utils/constants";
+import { applyTimezone } from "../../../../utils/dates";
 import { isAvailableLanguage } from "../../../../utils/i18n";
+
+const dateSchema = z.coerce.date().transform((date) => {
+  return applyTimezone(date, { lang: "fr-FR", timezone: CONFIG.TIMEZONE });
+});
 
 export const locale = z
   .string()
@@ -19,8 +24,8 @@ export const contentsBaseSchema = z.object({
   title: z.string(),
   description: z.string(),
   isDraft: z.boolean().optional().default(false),
-  publishedOn: z.coerce.date(),
-  updatedOn: z.coerce.date().optional(),
+  publishedOn: dateSchema,
+  updatedOn: dateSchema.optional(),
   seo,
   locale,
   slug: z.string().default(""),

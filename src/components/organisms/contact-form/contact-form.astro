@@ -280,6 +280,9 @@ const fields = [
       const response = await fetch(API_ROUTES.SEND_EMAIL, {
         method: "POST",
         body: formData,
+        headers: {
+          Accept: "application/json",
+        },
       });
       const data = await response.json();
 

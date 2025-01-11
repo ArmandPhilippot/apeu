@@ -1,12 +1,12 @@
 {
   "$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json",
   "dictionaries": [
-    "collaborators-name",
     "companies",
     "css",
     "fonts",
     "html",
     "node",
+    "people-name",
     "project-words",
     "softwareTerms",
     "typescript",
@@ -19,9 +19,9 @@
       "path": "./.cspell/project-words.txt"
     },
     {
-      "name": "collaborators-name",
+      "name": "people-name",
       "noSuggest": true,
-      "path": "./.cspell/collaborators-name.txt"
+      "path": "./.cspell/people-name.txt"
     },
     {
       "name": "french-contents",

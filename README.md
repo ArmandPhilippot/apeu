@@ -537,6 +537,12 @@ All commands are run from the root of the project, from a terminal.
 | `pnpm ci:version` | Bump version and generate a changelog |
 | `pnpm ci:release` | Create a new release                  |
 
+## Acknowledgments
+
+* Thanks to [@MoustaphaDev](https://github.com/MoustaphaDev) for the inspiration for my Dev-only pages feature with [astro-dev-only-routes](https://github.com/MoustaphaDev/astro-dev-only-routes).
+* Thanks [@Princesseuh](https://github.com/Princesseuh), [@delucis](https://github.com/delucis) and [@HiDeoo](https://github.com/HiDeoo) for the inspiration to handle RSS feeds.
+* Thanks [@Princesseuh](https://github.com/Princesseuh) for the inspiration for my custom glob loader.
+
 ## License
 
 The source code is licensed under the [MIT license](./LICENSE).

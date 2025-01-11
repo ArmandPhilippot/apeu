@@ -327,8 +327,8 @@ In details:
 - `content/`: the website contents (pages, posts...),
 - `public/`: any static assets, like fonts, can be placed in this directory,
 - `src/assets/`: any assets that must be processed by Astro (like images) can be placed in this directory,
-- `src/components/`: the project components,
-- `src/lib/`: the features based on dependencies (e.g. Astro integration),
+- `src/components/`: the components,
+- `src/lib/`: the features based on dependencies (e.g. Astro integration or Shiki transformers),
 - `src/pages/`: the special components used to create pages and API routes,
 - `src/services/`: the website services (e.g. mailer),
 - `src/styles/`: global styles, variables and helpers should be placed in this directory,
@@ -362,8 +362,7 @@ When creating a new component you should also create stories for it and use the 
 ├── button/
 │   ├── button.astro
 │   ├── button.stories.astro
-│   ├── button.test.ts
-│   └── index.ts
+│   └── button.test.ts
 └── other components
 ```
 
@@ -390,17 +389,17 @@ When creating new design elements, you should use them. For example:
 }
 ```
 
-You can find all available tokens in the design system (accessible under `/design-system` in your browser).
+You can find all the available tokens in the design system (accessible under `/design-system` in your browser).
 
 ### Add a new language
 
 To add a new language for this website, you need to create a new JSON file in `src/translations` using the locale as filename. Here are the required steps:
 
-1. `cp content/en content/fr` and keep the filenames of the `pages` untranslated,
-2. `cp src/translations/en.json src/translations/fr.json`,
-3. `nano src/translations/fr.json`, translate all the keys in your language then save the file,
+1. `cp content/en content/es` and keep the filenames of the `pages` untranslated,
+2. `cp src/translations/en.json src/translations/es.json`,
+3. `nano src/translations/es.json`, translate all the keys in your language then save the file,
 4. `nano src/translations/index.ts`: in that file, import then reexport your new language,
-5. Copy the pages in `src/pages` in a new directory matching the locale you're adding (e.g. `src/pages/fr`) and translates the filename so that they match your translations in `src/translations`,
+5. Copy the pages in `src/pages` in a new directory matching the locale you're adding (e.g. `src/pages/es`) and translates the filename so that they match your translations in `src/translations`,
 6. The new language is now available!
 
 ### Use localized UI strings in templates
@@ -417,10 +416,15 @@ If you need to use UI strings or routes in your templates:
 ---
 import { useI18n } from "src/utils/helpers/i18n";
 
-const { translate } = useI18n(Astro.currentLocale);
+const { locale, route, translate, translatePlural } = useI18n(Astro.currentLocale);
 ---
 
-<div>{translate("some.key.available.in.translations")}</div>
+<a href={route("a.route.key")}>
+  {translate("some.key.available.in.translations")}
+</a>
+<div>
+  {translatePlural("some.key.supporting.pluralization", { count: 42 })}
+</div>
 ```
 
 **DON'T:**

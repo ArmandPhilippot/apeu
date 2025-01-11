@@ -144,7 +144,7 @@ The available content types are:
 
 To check the expected fields in the frontmatter, please consult the files in `src/lib/astro/collections/schema`.
 
-Both `.md` and `.mdx` extensions are supported. However, because of technologies limitations, the `.mdx` format is recommended.
+Both `.md` and `.mdx` extensions are supported. However, because of technologies limitations, the `.mdx` format is recommended if you want to be able to use extra features like callouts and code blocks.
 
 This project is designed to avoid imports in your `content` directory. Elements (even HTML tags) are automatically mapped to custom components when you use the `.mdx` extension.
 

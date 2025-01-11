@@ -15,11 +15,12 @@ The source code of [my personal website](https://armand.philippot.eu).
 
 This project supports and uses dev-only pages. Those pages are accessible in your browser in dev mode but they won't be built (so they are not available in preview mode). You can find them thanks to their `_dev_` prefix.
 
-Why `_dev_` ? Because [Astro already uses a single underscore](https://docs.astro.build/en/guides/routing/#excluding-pages) to exclude the pages from being built so we need a different prefix and a double underscore could be confusing.
+Why `_dev_`? Because [Astro already uses a single underscore](https://docs.astro.build/en/guides/routing/#excluding-pages) to exclude the pages from being built so we need a different prefix to differentiate them and a double underscore could be confusing.
 
 > [!Note]
 > This integration only supports directories or pages with Astro extension (e.g. `_dev_tokens.astro`). You won't be able to build dev-only pages from Markdown files.
-> The following patterns are supported:
+
+The following patterns are supported:
 
 - a dev-only page anywhere inside the pages directory
 - a dev-only folder containing regular pages anywhere inside the pages directory.
@@ -30,13 +31,13 @@ The following pattern is not supported because it does not make sense:
 
 > [!IMPORTANT]
 > The pages are injected right after reading the configuration file. So if you create a new dev-only page (or rename an existing one), the page will not be recognized. You'll need to reload the Astro dev server.
-> Also, it seems the Astro Dev Toolbar can't be displayed in injected routes so you do not have access to the Audit app for example.
+> Also, it seems the Astro Dev Toolbar can't be displayed in some dev pages so you do not have access to the Audit app for example. I'm not sure why.
 
-Then to access the page in your browser, you need to remove the prefix from the slug. For example, the existing `src/pages/_dev_design-system` folder can be accessed in your browser with the following url `http://localhost:4321/design-system`.
+To access the page in your browser, you need to remove the prefix from the slug. For example, the existing `src/pages/_dev_design-system` folder can be accessed in your browser with the following url `http://localhost:4321/design-system`.
 
 ### Component stories
 
-Currently, it is not possible to use [Storybook with Astro](https://github.com/storybookjs/storybook/issues/18356). So I added an Astro integration to be able to test the components in isolation. This is not Storybook replacement: you can't play with props, dynamically generate a table of available props, etc.
+Currently, it is not possible to use [Storybook with Astro](https://github.com/storybookjs/storybook/issues/18356). So I added an Astro integration to be able to test the components in isolation. This is not a Storybook replacement: you can't play with props, dynamically generate a table of available props, etc.
 
 To create stories for your components, use the following structure:
 
@@ -53,14 +54,14 @@ To create stories for your components, use the following structure:
 About this structure:
 
 - `button.astro`: your Astro component
-- `button.stories.astro`: your stories about the component
+- `button.stories.astro`: your component's stories
 
-The `button.stories.astro` file is a regular Astro page: import the component, use a layout if needed, and use HTML markup to write about the component.
+The `button.stories.astro` file is treated as a regular Astro page: import the component, use a layout if needed, and use some HTML markup to add explanations regarding the component behavior.
 
 > [!NOTE]
 > The VS Code extension will infer the file name as `Button`, so to import your component you'll need to rename the import (e.g. `ButtonComponent`) to avoid conflicts.
 
-Using that structure, you can access your stories in a browser using the following slugs:
+The integration supports a base path to inject the stories. So with the current configuration and using the previous structure, you can access your stories in a browser with the following slugs:
 
 - `/design-system/components/button`
 - `/design-system/components/link`
@@ -83,14 +84,16 @@ If you need to divide your stories in multiple files, you can use a `stories` di
     └── link.astro
 ```
 
+It is up to you to define links to your sub-stories in `index.stories.astro` or `button.stories.astro`.
+
 > [!IMPORTANT]
 > If you create a new story file (ie. `.stories.astro`), you'll need to restart the dev server to be able to access it in your browser.
 
-Only `.astro` extension is supported for stories. I'd like to use `.mdx` but Astro integrations can only inject routes for `.astro`, `.js` and `.ts` files.
+Only `.astro` extension is supported for stories. I'd like to use `.mdx` but if I'm right, Astro integrations can only inject routes for `.astro`, `.js` and `.ts` files.
 
 ### i18n
 
-This project is i18n-ready but only available in English right now.
+This project is i18n-ready and it is available in English and in French right now.
 
 All UI strings are stored as a key/value pair in a JSON file located in `src/translations`. Note that for routes, except for the homepage, the translations should match the names used in `src/pages`.
 
@@ -122,6 +125,10 @@ There are some caveats in dev mode:
 
 You can choose to use a dark theme or light theme while browsing the website. You can also choose to set the theme as `auto`. In this case, the website theme will be updated according to your operating system preferences. This is especially useful when you want to change the theme depending on the time of day.
 
+### RSS feeds
+
+A global feed is available in each language. This projects also supports individual feeds for each collections.
+
 ## Authoring
 
 The content directory located at the root of the project is used to store all the website contents. You can provide a custom relative path using an environment variable named `CONTENT_PATH`.
@@ -141,7 +148,7 @@ The available content types are:
 
 To check the expected fields in the frontmatter, please consult the files in `src/lib/astro/collections/schema`.
 
-Both `.md` and `.mdx` extensions are supported. However, because of technologies limitations, the `.mdx` format is recommended.
+Both `.md` and `.mdx` extensions are supported. However, because of technologies limitations, the `.mdx` format is recommended if you want to be able to use extra features like callouts and code blocks.
 
 This project is designed to avoid imports in your `content` directory. Elements (even HTML tags) are automatically mapped to custom components when you use the `.mdx` extension.
 
@@ -181,7 +188,8 @@ console.log("Hello, world!");
 
 See `src/components/molecules/code-block/code-block.astro` for the supported props.
 
-> [!CAUTION] > `<pre><code></code></pre>` syntax is not supported. If fenced code blocks are not enough for you, then you will need to import the component in your file directly.
+> [!CAUTION]
+> `<pre><code></code></pre>` syntax is not supported. If fenced code blocks are not enough for you, then you will need to import the component in your file directly.
 
 ### Images
 
@@ -319,8 +327,8 @@ In details:
 - `content/`: the website contents (pages, posts...),
 - `public/`: any static assets, like fonts, can be placed in this directory,
 - `src/assets/`: any assets that must be processed by Astro (like images) can be placed in this directory,
-- `src/components/`: the project components,
-- `src/lib/`: the features based on dependencies (e.g. Astro integration),
+- `src/components/`: the components,
+- `src/lib/`: the features based on dependencies (e.g. Astro integration or Shiki transformers),
 - `src/pages/`: the special components used to create pages and API routes,
 - `src/services/`: the website services (e.g. mailer),
 - `src/styles/`: global styles, variables and helpers should be placed in this directory,
@@ -354,8 +362,7 @@ When creating a new component you should also create stories for it and use the 
 ├── button/
 │   ├── button.astro
 │   ├── button.stories.astro
-│   ├── button.test.ts
-│   └── index.ts
+│   └── button.test.ts
 └── other components
 ```
 
@@ -382,17 +389,17 @@ When creating new design elements, you should use them. For example:
 }
 ```
 
-You can find all available tokens in the design system (accessible under `/design-system` in your browser).
+You can find all the available tokens in the design system (accessible under `/design-system` in your browser).
 
 ### Add a new language
 
 To add a new language for this website, you need to create a new JSON file in `src/translations` using the locale as filename. Here are the required steps:
 
-1. `cp content/en content/fr` and keep the filenames of the `pages` untranslated,
-2. `cp src/translations/en.json src/translations/fr.json`,
-3. `nano src/translations/fr.json`, translate all the keys in your language then save the file,
+1. `cp content/en content/es` and keep the filenames of the `pages` untranslated,
+2. `cp src/translations/en.json src/translations/es.json`,
+3. `nano src/translations/es.json`, translate all the keys in your language then save the file,
 4. `nano src/translations/index.ts`: in that file, import then reexport your new language,
-5. Copy the pages in `src/pages` in a new directory matching the locale you're adding (e.g. `src/pages/fr`) and translates the filename so that they match your translations in `src/translations`,
+5. Copy the pages in `src/pages` in a new directory matching the locale you're adding (e.g. `src/pages/es`) and translates the filename so that they match your translations in `src/translations`,
 6. The new language is now available!
 
 ### Use localized UI strings in templates
@@ -409,10 +416,15 @@ If you need to use UI strings or routes in your templates:
 ---
 import { useI18n } from "src/utils/helpers/i18n";
 
-const { translate } = useI18n(Astro.currentLocale);
+const { locale, route, translate, translatePlural } = useI18n(Astro.currentLocale);
 ---
 
-<div>{translate("some.key.available.in.translations")}</div>
+<a href={route("a.route.key")}>
+  {translate("some.key.available.in.translations")}
+</a>
+<div>
+  {translatePlural("some.key.supporting.pluralization", { count: 42 })}
+</div>
 ```
 
 **DON'T:**
@@ -536,6 +548,12 @@ All commands are run from the root of the project, from a terminal.
 | :---------------- | :------------------------------------ |
 | `pnpm ci:version` | Bump version and generate a changelog |
 | `pnpm ci:release` | Create a new release                  |
+
+## Acknowledgments
+
+* Thanks to [@MoustaphaDev](https://github.com/MoustaphaDev) for the inspiration for my Dev-only pages feature with [astro-dev-only-routes](https://github.com/MoustaphaDev/astro-dev-only-routes).
+* Thanks [@Princesseuh](https://github.com/Princesseuh), [@delucis](https://github.com/delucis) and [@HiDeoo](https://github.com/HiDeoo) for the inspiration to handle RSS feeds.
+* Thanks [@Princesseuh](https://github.com/Princesseuh) for the inspiration for my custom glob loader.
 
 ## License
 

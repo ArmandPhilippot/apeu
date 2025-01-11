@@ -184,7 +184,8 @@ console.log("Hello, world!");
 
 See `src/components/molecules/code-block/code-block.astro` for the supported props.
 
-> [!CAUTION] > `<pre><code></code></pre>` syntax is not supported. If fenced code blocks are not enough for you, then you will need to import the component in your file directly.
+> [!CAUTION]
+> `<pre><code></code></pre>` syntax is not supported. If fenced code blocks are not enough for you, then you will need to import the component in your file directly.
 
 ### Images
 

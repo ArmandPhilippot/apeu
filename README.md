@@ -125,6 +125,10 @@ There are some caveats in dev mode:
 
 You can choose to use a dark theme or light theme while browsing the website. You can also choose to set the theme as `auto`. In this case, the website theme will be updated according to your operating system preferences. This is especially useful when you want to change the theme depending on the time of day.
 
+### RSS feeds
+
+A global feed is available in each language. This projects also supports individual feeds for each collections.
+
 ## Authoring
 
 The content directory located at the root of the project is used to store all the website contents. You can provide a custom relative path using an environment variable named `CONTENT_PATH`.

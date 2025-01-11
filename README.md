@@ -37,7 +37,7 @@ To access the page in your browser, you need to remove the prefix from the slug.
 
 ### Component stories
 
-Currently, it is not possible to use [Storybook with Astro](https://github.com/storybookjs/storybook/issues/18356). So I added an Astro integration to be able to test the components in isolation. This is not Storybook replacement: you can't play with props, dynamically generate a table of available props, etc.
+Currently, it is not possible to use [Storybook with Astro](https://github.com/storybookjs/storybook/issues/18356). So I added an Astro integration to be able to test the components in isolation. This is not a Storybook replacement: you can't play with props, dynamically generate a table of available props, etc.
 
 To create stories for your components, use the following structure:
 
@@ -54,14 +54,14 @@ To create stories for your components, use the following structure:
 About this structure:
 
 - `button.astro`: your Astro component
-- `button.stories.astro`: your stories about the component
+- `button.stories.astro`: your component's stories
 
-The `button.stories.astro` file is a regular Astro page: import the component, use a layout if needed, and use HTML markup to write about the component.
+The `button.stories.astro` file is treated as a regular Astro page: import the component, use a layout if needed, and use some HTML markup to add explanations regarding the component behavior.
 
 > [!NOTE]
 > The VS Code extension will infer the file name as `Button`, so to import your component you'll need to rename the import (e.g. `ButtonComponent`) to avoid conflicts.
 
-Using that structure, you can access your stories in a browser using the following slugs:
+The integration supports a base path to inject the stories. So with the current configuration and using the previous structure, you can access your stories in a browser with the following slugs:
 
 - `/design-system/components/button`
 - `/design-system/components/link`
@@ -84,10 +84,12 @@ If you need to divide your stories in multiple files, you can use a `stories` di
     └── link.astro
 ```
 
+It is up to you to define links to your sub-stories in `index.stories.astro` or `button.stories.astro`.
+
 > [!IMPORTANT]
 > If you create a new story file (ie. `.stories.astro`), you'll need to restart the dev server to be able to access it in your browser.
 
-Only `.astro` extension is supported for stories. I'd like to use `.mdx` but Astro integrations can only inject routes for `.astro`, `.js` and `.ts` files.
+Only `.astro` extension is supported for stories. I'd like to use `.mdx` but if I'm right, Astro integrations can only inject routes for `.astro`, `.js` and `.ts` files.
 
 ### i18n
 

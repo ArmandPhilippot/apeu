@@ -93,7 +93,7 @@ Only `.astro` extension is supported for stories. I'd like to use `.mdx` but if 
 
 ### i18n
 
-This project is i18n-ready but only available in English right now.
+This project is i18n-ready and it is available in English and in French right now.
 
 All UI strings are stored as a key/value pair in a JSON file located in `src/translations`. Note that for routes, except for the homepage, the translations should match the names used in `src/pages`.
 

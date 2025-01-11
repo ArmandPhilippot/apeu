@@ -142,11 +142,8 @@ const getItemCategoryFromCollection = (
   return categories[collection];
 };
 
-const getItemCategories = (
-  entry: FeedCompatibleEntry,
-  locale: AvailableLanguage,
-) => {
-  const categories = [getItemCategoryFromCollection(entry.collection, locale)];
+const getItemCategories = (entry: FeedCompatibleEntry) => {
+  const categories: string[] = [];
 
   if ("tags" in entry.meta && entry.meta.tags?.length) {
     categories.push(...entry.meta.tags.map((tag) => tag.title));
@@ -170,12 +167,12 @@ const getRSSItem =
     const content = await renderEntryContent(entry);
 
     return {
-      categories: getItemCategories(entry, locale),
+      categories: getItemCategories(entry),
       ...(content ? { content } : {}),
       description: getItemDescription(entry, locale),
       link: "route" in entry ? entry.route : entry.url,
       pubDate: entry.meta.publishedOn,
-      title: entry.title,
+      title: `[${getItemCategoryFromCollection(entry.collection, locale)}] ${entry.title}`,
     };
   };
 

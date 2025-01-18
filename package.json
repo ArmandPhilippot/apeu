@@ -120,14 +120,6 @@
     "typescript-eslint": "^8.20.0",
     "vitest": "^3.0.2"
   },
-  "pnpm": {
-    "overrides": {
-      "vite-node>vite": "6.0.7",
-      "@vitest/coverage-v8>vite": "6.0.7",
-      "@vitest/mocker>vite": "6.0.7",
-      "vitest>vite": "6.0.7"
-    }
-  },
   "optionalDependencies": {
     "husky": "^9.1.7"
   }

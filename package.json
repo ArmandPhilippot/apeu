@@ -103,7 +103,7 @@
     "@types/sanitize-html": "^2.13.0",
     "@types/web-app-manifest": "^1.0.8",
     "@typescript-eslint/parser": "^8.20.0",
-    "@vitest/coverage-v8": "^2.1.8",
+    "@vitest/coverage-v8": "^3.0.2",
     "autoprefixer": "^10.4.20",
     "cspell": "^8.17.2",
     "cypress": "^14.0.0",
@@ -118,15 +118,7 @@
     "stylelint": "^16.13.2",
     "stylelint-config-html": "^1.1.0",
     "typescript-eslint": "^8.20.0",
-    "vitest": "^2.1.8"
-  },
-  "pnpm": {
-    "overrides": {
-      "vite-node>vite": "6.0.7",
-      "@vitest/coverage-v8>vite": "6.0.7",
-      "@vitest/mocker>vite": "6.0.7",
-      "vitest>vite": "6.0.7"
-    }
+    "vitest": "^3.0.2"
   },
   "optionalDependencies": {
     "husky": "^9.1.7"

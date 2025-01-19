@@ -1,5 +1,31 @@
 # apeu
 
+## 1.0.1
+
+### Patch Changes
+
+- f048cca: Removes the notes from the global feed.
+
+  I'm using them as "personal" notes so I think they shouldn't be in the feed. If someone wants to subscribe to my notes, it's still possible using the individual feed.
+
+- 20e4205: Fixes a style issue in code blocks preventing the line numbers and prompts to stay sticky while scrolling horizontally.
+- 7720df5: Adds missing cover on individual pages (posts, guides and projects).
+- 20e4205: Fixes a style issue when using diff notation inside code blocks.
+
+  This fixes an issue where the lines marked as diff were not taking the full width of their parent, so the background was not displayed correctly.
+
+- 0da391f: Improves the differentiation of RSS items by prefixing their title with the content type.
+
+  Since I have some collections that target external resources (e.g. "John Doe" being in the blog roll), it might be confusing for someone subscribed to the RSS feed to see only "John Doe". By prefixing the title with the content type (e.g. "[Blogroll] John Doe"), it should prevent any confusion.
+
+- 20e4205: Fixes the text alignment inside code blocks' caption.
+- 993be5e: Fixes a style issue in callouts where the last child could add an extra margin.
+- 7720df5: Fixes images performance by using picture and srcset.
+
+  This enables the experimental `responsiveImages` feature of Astro in addition to wrapping all images in a picture element to provide multiple sources. This also adds a `srcset` attribute to images to try to please a bit more Lighthouse.
+
+- 993be5e: Fixes a style issue in callouts where a long heading was not correctly aligned with the icon.
+
 ## 1.0.0
 
 ### Major Changes

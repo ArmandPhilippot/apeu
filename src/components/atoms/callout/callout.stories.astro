@@ -41,7 +41,10 @@ const seo: ComponentProps<typeof PageLayout>["seo"] = {
     <Heading as="h3">Warning</Heading>
     <CalloutComponent type="warning"> The contents. </CalloutComponent>
     <Heading as="h2">With a custom label</Heading>
-    <CalloutComponent label="The custom label" type="critical">
+    <CalloutComponent
+      label="A custom label a bit long for small devices"
+      type="critical"
+    >
       The contents.
     </CalloutComponent>
   </Fragment>

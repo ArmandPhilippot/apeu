@@ -48,7 +48,7 @@ const heading = label || defaultLabel[type];
 
 <style>
   .callout {
-    padding: var(--spacing-xs) var(--spacing-sm);
+    padding: var(--spacing-xs) var(--spacing-sm) var(--spacing-sm);
     border: var(--border-size-md) solid;
     border-inline-start-width: var(--border-size-xl);
     border-radius: var(--border-radii-md);
@@ -92,7 +92,6 @@ const heading = label || defaultLabel[type];
 
   .callout-heading {
     display: flex;
-    flex-flow: row wrap;
     align-items: center;
     gap: var(--spacing-2xs);
     margin: 0 0 var(--spacing-sm);
@@ -100,5 +99,13 @@ const heading = label || defaultLabel[type];
     border-block-end: var(--border-size-sm) solid currentcolor;
     font-size: var(--font-size-lg);
     font-weight: var(--font-weight-bold);
+
+    svg {
+      flex: 0 0 auto;
+    }
+  }
+
+  .callout > :global(*:last-child:not(:only-child)) {
+    margin-block-end: 0;
   }
 </style>

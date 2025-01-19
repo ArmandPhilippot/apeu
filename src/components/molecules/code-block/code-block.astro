@@ -164,6 +164,7 @@ const cssVars = getCSSVars({
   .code-block .code-block-caption {
     display: flex;
     align-items: center;
+    text-align: start;
 
     @container (width >= 568px) {
       border-inline-end: var(--border-size-sm) solid var(--color-border);
@@ -206,8 +207,15 @@ const cssVars = getCSSVars({
 
     & :global(:is(code, .line)) {
       display: inline-block;
-      width: 100%;
       font-family: var(--font-family-mono);
+    }
+
+    & :global(code) {
+      min-width: 100%;
+    }
+
+    & :global(.line) {
+      width: 100%;
     }
   }
 

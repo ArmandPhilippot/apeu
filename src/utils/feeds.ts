@@ -93,7 +93,12 @@ const createNodeTransformer = () => {
     if (node.name === "a" && node.attributes?.href) {
       node.attributes.href = makeAbsoluteUrl(node.attributes.href);
     } else if (node.name === "img" && node.attributes?.src) {
-      node.attributes.src = makeAbsoluteUrl(node.attributes.src);
+      if (node.attributes?.src)
+        node.attributes.src = makeAbsoluteUrl(node.attributes.src);
+      if (node.attributes?.srcset) {
+        const sources = node.attributes.srcset.split(", ");
+        node.attributes.srcset = sources.map(makeAbsoluteUrl).join(", ");
+      }
     } else if (node.name === "callout") {
       transformCalloutToDiv(node);
     }

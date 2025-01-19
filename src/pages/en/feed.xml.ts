@@ -12,7 +12,7 @@ export const GET: APIRoute = async ({ currentLocale, site, url }) => {
   if (!site) throw new MissingSiteConfigError();
   const { locale, translate } = useI18n(currentLocale);
   const { entries } = await queryCollection(
-    ["blogPosts", "blogroll", "bookmarks", "guides", "notes", "projects"],
+    ["blogPosts", "blogroll", "bookmarks", "guides", "projects"],
     {
       format: "full",
       orderBy: { key: "publishedOn", order: "ASC" },

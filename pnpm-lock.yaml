@@ -151,6 +151,9 @@ importers:
       '@cspell/dict-fr-fr':
         specifier: ^2.2.5
         version: 2.2.5
+      '@csstools/postcss-cascade-layers':
+        specifier: ^5.0.1
+        version: 5.0.1(postcss@8.5.1)
       '@csstools/postcss-global-data':
         specifier: ^3.0.0
         version: 3.0.0(postcss@8.5.1)

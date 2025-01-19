@@ -1,9 +1,9 @@
 ---
 import type { ComponentProps } from "astro/types";
-import { Image as AstroImg } from "astro:assets";
 import Box from "../../atoms/box/box.astro";
 import Button from "../../atoms/button/button.astro";
 import Heading from "../../atoms/heading/heading.astro";
+import Img from "../../atoms/img/img.astro";
 import Link from "../../atoms/link/link.astro";
 import PageLayout from "../../templates/page-layout/page-layout.astro";
 import CardComponent from "./card.astro";
@@ -152,7 +152,7 @@ const seo: ComponentProps<typeof PageLayout>["seo"] = {
       <Heading>With title, body and cover</Heading>
     </Box>
     <CardComponent>
-      <AstroImg
+      <Img
         alt="The card cover"
         height={480}
         slot="cover"
@@ -179,7 +179,7 @@ const seo: ComponentProps<typeof PageLayout>["seo"] = {
       <Heading>With title, body, cover and meta</Heading>
     </Box>
     <CardComponent>
-      <AstroImg
+      <Img
         alt="The card cover"
         height={480}
         slot="cover"
@@ -208,7 +208,7 @@ const seo: ComponentProps<typeof PageLayout>["seo"] = {
     </Box>
     <CardComponent>
       <span slot="frontmatter">Category</span>
-      <AstroImg
+      <Img
         alt="The card cover"
         height={480}
         slot="cover"
@@ -237,7 +237,7 @@ const seo: ComponentProps<typeof PageLayout>["seo"] = {
       <Heading>With linked heading without cta</Heading>
     </Box>
     <CardComponent>
-      <AstroImg
+      <Img
         alt="The card cover"
         height={480}
         slot="cover"
@@ -268,7 +268,7 @@ const seo: ComponentProps<typeof PageLayout>["seo"] = {
     </Box>
     <CardComponent>
       <span slot="frontmatter">Category</span>
-      <AstroImg
+      <Img
         alt="The card cover"
         height={480}
         slot="cover"

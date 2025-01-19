@@ -23,10 +23,16 @@ export default defineConfig({
   }),
   experimental: {
     contentIntellisense: true,
+    responsiveImages: true,
   },
   i18n: {
     defaultLocale: CONFIG.LANGUAGES.DEFAULT,
     locales: [...CONFIG.LANGUAGES.AVAILABLE],
+  },
+  image: {
+    experimentalLayout: "responsive",
+    experimentalObjectFit: "cover",
+    experimentalObjectPosition: "top",
   },
   integrations: [
     componentsStories({

@@ -1,18 +1,19 @@
 ---
 import type { MarkdownHeading } from "astro";
 import { Icon } from "astro-icon/components";
-import type { ComponentProps, HTMLAttributes } from "astro/types";
-import { Image as AstroImg } from "astro:assets";
+import type { HTMLAttributes } from "astro/types";
+import type { Img as ImgType } from "../../../types/data";
 import { useI18n } from "../../../utils/i18n";
 import { buildToc } from "../../../utils/toc";
 import Box from "../../atoms/box/box.astro";
 import Button from "../../atoms/button/button.astro";
 import Heading from "../../atoms/heading/heading.astro";
+import Img from "../../atoms/img/img.astro";
 import Collapsible from "../../molecules/collapsible/collapsible.astro";
 import TableOfContents from "../table-of-contents/table-of-contents.astro";
 
 type Props = HTMLAttributes<"article"> & {
-  cover?: ComponentProps<typeof AstroImg> | null | undefined;
+  cover?: ImgType | null | undefined;
   feed?: string | URL | null | undefined;
   heading?: string | null | undefined;
   isIndex?: boolean | null | undefined;
@@ -63,9 +64,7 @@ const { translate } = useI18n(Astro.currentLocale);
             ) : null}
           </Box>
         ) : null}
-        {cover ? (
-          <AstroImg {...cover} class="page-cover" loading="eager" />
-        ) : null}
+        {cover ? <Img {...cover} class="page-cover" loading="eager" /> : null}
         {Astro.slots.has("meta") ? (
           <div class="page-meta">
             <slot name="meta" />
@@ -195,16 +194,17 @@ const { translate } = useI18n(Astro.currentLocale);
 
   .page-cover {
     display: block;
-    width: 100%;
     height: 100%;
     max-width: 100%;
     max-height: calc(var(--one-px-in-rem) * 250);
-    object-fit: cover;
   }
 
   :where(.page:has(.page-meta)) .page-cover {
+    border-block-end: var(--border-size-sm) solid var(--color-border);
+
     @container (width >= calc(55em / 1.5)) {
       grid-column: 1;
+      border-block-end: none;
       border-inline-end: var(--border-size-sm) solid var(--color-border);
     }
   }
@@ -217,6 +217,7 @@ const { translate } = useI18n(Astro.currentLocale);
   :where(.page:has(.page-cover)) .page-meta {
     @container (width >= calc(55em / 1.5)) {
       grid-column: 2;
+      align-self: center;
       text-align: start;
     }
   }

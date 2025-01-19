@@ -76,8 +76,7 @@ export type HTTPStatus = {
 
 export type Img = Omit<
   LocalImageProps | RemoteImageProps,
-  | "width"
-  | "height"
+  "width" | "height"
 > & {
   height?: number | undefined;
   width?: number | undefined;

@@ -206,8 +206,15 @@ const cssVars = getCSSVars({
 
     & :global(:is(code, .line)) {
       display: inline-block;
-      width: 100%;
       font-family: var(--font-family-mono);
+    }
+
+    & :global(code) {
+      min-width: 100%;
+    }
+
+    & :global(.line) {
+      width: 100%;
     }
   }
 

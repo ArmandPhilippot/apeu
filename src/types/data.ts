@@ -74,7 +74,13 @@ export type HTTPStatus = {
   TEXT: string;
 };
 
-export type Img = LocalImageProps | RemoteImageProps;
+export type Img = Omit<
+  LocalImageProps | RemoteImageProps,
+  "width" | "height"
+> & {
+  height?: number | undefined;
+  width?: number | undefined;
+};
 
 export type BlogMetaData = Omit<
   CollectionEntry<"blogroll">["data"]["meta"],

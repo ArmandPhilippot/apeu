@@ -1,8 +1,8 @@
 ---
 import type { ComponentProps } from "astro/types";
-import { Image as AstroImg } from "astro:assets";
 import PageLayout from "../../templates/page-layout/page-layout.astro";
 import Heading from "../heading/heading.astro";
+import Img from "../img/img.astro";
 import FigureComponent from "./figure.astro";
 
 const title = "Figure";
@@ -34,7 +34,7 @@ const seo: ComponentProps<typeof PageLayout>["seo"] = {
     </p>
     <Heading as="h2">Without figcaption</Heading>
     <FigureComponent>
-      <AstroImg
+      <Img
         alt="Any image"
         src="https://picsum.photos/640/480"
         width={640}
@@ -45,7 +45,7 @@ const seo: ComponentProps<typeof PageLayout>["seo"] = {
     <Heading as="h3">At the top</Heading>
     <FigureComponent>
       <figcaption>An image used as example</figcaption>
-      <AstroImg
+      <Img
         alt="Any image"
         src="https://picsum.photos/640/480"
         width={640}
@@ -54,7 +54,7 @@ const seo: ComponentProps<typeof PageLayout>["seo"] = {
     </FigureComponent>
     <Heading as="h3">At the bottom</Heading>
     <FigureComponent>
-      <AstroImg
+      <Img
         alt="Any image"
         src="https://picsum.photos/640/480"
         width={640}
@@ -64,7 +64,7 @@ const seo: ComponentProps<typeof PageLayout>["seo"] = {
     </FigureComponent>
     <Heading as="h2">Horizontally centered</Heading>
     <FigureComponent isCentered>
-      <AstroImg
+      <Img
         alt="Any image"
         src="https://picsum.photos/640/480"
         width={640}
@@ -73,7 +73,7 @@ const seo: ComponentProps<typeof PageLayout>["seo"] = {
     </FigureComponent>
     <Heading as="h2">Full width</Heading>
     <FigureComponent isFullWidth>
-      <AstroImg
+      <Img
         alt="Any image"
         src="https://picsum.photos/640/480"
         width={640}

@@ -52,12 +52,17 @@ a {
     --link-icon: var(--download-icon) "\0000a0" var(--external-icon);
   }
 
-  &:has(img, svg) {
+  &:has(> img, > svg) {
     display: inline-block;
+    vertical-align: middle;
 
     & > :is(img, svg) {
       vertical-align: middle;
     }
+  }
+
+  &:has(> picture) {
+    display: block;
   }
 
   & > img {

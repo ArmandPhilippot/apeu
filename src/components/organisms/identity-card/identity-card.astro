@@ -30,10 +30,7 @@ const { translate } = useI18n(Astro.currentLocale);
         })}
         class="identity-card-avatar"
       >
-        {/* Can't figure out what is the issue... Typescript does not
-         * complain with Img but it does with Omit<Img, 'alt'>... so:
-         * @ts-expect-error */}
-        <Img {...author.avatar} alt="" />
+        <Img {...author.avatar} alt="" loading="eager" />
       </Figure>
     ) : null
   }
@@ -104,10 +101,6 @@ const { translate } = useI18n(Astro.currentLocale);
   }
 
   .identity-card-avatar {
-    max-width: clamp(
-      calc(var(--one-px-in-rem * 140)),
-      10dvi,
-      calc(var(--one-px-in-rem * 200))
-    );
+    min-width: calc(var(--one-px-in-rem * 200));
   }
 </style>

@@ -7,7 +7,10 @@ import {
   type AvailableLanguage,
 } from "../../../utils/i18n";
 
-const CONTENT_DIR: string = import.meta.env?.CONTENT_PATH ?? "./content";
+/* This is not a supported usage, so it could break. Currently `import.meta.
+ * env` doesn't work anymore when using a path outside the project's root (ie.
+ * when I'm using a Git submodules). Using `process.env` seems to fix that. */
+const CONTENT_DIR: string = process.env?.CONTENT_PATH ?? "./content";
 
 const getLocalesPattern = () => {
   if (CONFIG.LANGUAGES.AVAILABLE.length > 1)

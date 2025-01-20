@@ -1,5 +1,11 @@
 # apeu
 
+## 1.0.2
+
+### Patch Changes
+
+- 9f87ca4: Fixes an issue where CONTENT_PATH was no longer defined when using this project as a Git submodule.
+
 ## 1.0.1
 
 ### Patch Changes

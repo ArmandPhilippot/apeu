@@ -1,5 +1,6 @@
 import type { MimeTypeImage } from "../types/mime-type";
 import { isDefaultLanguage, useI18n } from "./i18n";
+import { removeTrailingSlash } from "./strings";
 import { getWebsiteUrl } from "./url";
 
 type GetOpenGraphImgConfig = {
@@ -15,7 +16,8 @@ export const getOpenGraphImg = ({ locale, slug }: GetOpenGraphImgConfig) => {
   return {
     height: 630,
     type: "image/png" satisfies MimeTypeImage,
-    url: new URL(`/og/${ogImgPath}.png`, getWebsiteUrl()).href,
+    url: new URL(`/og/${removeTrailingSlash(ogImgPath)}.png`, getWebsiteUrl())
+      .href,
     width: 1200,
   } as const;
 };

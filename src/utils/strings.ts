@@ -12,3 +12,14 @@ export const toLowerCase = <T extends string>(str: T) =>
 
 export const toUpperCase = <T extends string>(str: T) =>
   str.toUpperCase() as Uppercase<T>;
+
+/**
+ * Remove the trailing slash from a string.
+ *
+ * @param {string} str - A string.
+ * @returns {string} The string without trailing slash.
+ */
+export const removeTrailingSlash = (str: string): string => {
+  if (!str.endsWith("/")) return str;
+  return str.replace(/\/+$/g, "");
+};

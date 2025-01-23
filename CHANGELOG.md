@@ -1,5 +1,11 @@
 # apeu
 
+## 1.0.3
+
+### Patch Changes
+
+- 076b0ad: Fixes an issue where OG images could be malformed because of a trailing slash in the path.
+
 ## 1.0.2
 
 ### Patch Changes

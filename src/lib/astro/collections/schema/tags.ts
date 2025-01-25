@@ -8,12 +8,7 @@ export const tags = defineCollection({
   schema: ({ image }) =>
     contentsBaseSchema
       .extend({
-        cover: z
-          .object({
-            alt: z.string(),
-            src: image(),
-          })
-          .optional(),
+        cover: image().optional(),
         i18n: z
           .record(z.string().refine(isAvailableLanguage), reference("tags"))
           .optional(),
@@ -21,6 +16,8 @@ export const tags = defineCollection({
       .transform(({ isDraft, publishedOn, updatedOn, ...tag }) => {
         return {
           ...tag,
+          // `<Image />` component expect the src to be the full object.
+          ...(tag.cover ? { cover: { src: tag.cover } } : {}),
           meta: {
             isDraft,
             publishedOn,

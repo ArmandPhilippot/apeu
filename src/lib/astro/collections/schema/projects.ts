@@ -9,12 +9,7 @@ export const projects = defineCollection({
     contentsBaseSchema
       .extend({
         isArchived: z.boolean().optional().default(false),
-        cover: z
-          .object({
-            alt: z.string(),
-            src: image(),
-          })
-          .optional(),
+        cover: image().optional(),
         i18n: z
           .record(z.string().refine(isAvailableLanguage), reference("projects"))
           .optional(),
@@ -44,6 +39,8 @@ export const projects = defineCollection({
         }) => {
           return {
             ...project,
+            // `<Image />` component expect the src to be the full object.
+            ...(project.cover ? { cover: { src: project.cover } } : {}),
             meta: {
               isArchived,
               isDraft,

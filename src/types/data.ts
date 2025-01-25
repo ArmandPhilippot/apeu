@@ -48,7 +48,7 @@ export type SEO = {
 
 export type Author = Pick<CollectionEntry<"authors">, "collection" | "id"> &
   Omit<CollectionEntry<"authors">["data"], "avatar"> & {
-    avatar?: Omit<Img, "alt"> | null | undefined;
+    avatar?: Img | null | undefined;
   };
 
 export type AuthorLink = Pick<Author, "isWebsiteOwner" | "name" | "website">;
@@ -76,8 +76,9 @@ export type HTTPStatus = {
 
 export type Img = Omit<
   LocalImageProps | RemoteImageProps,
-  "width" | "height"
+  "alt" | "width" | "height"
 > & {
+  alt?: string | null | undefined;
   height?: number | undefined;
   width?: number | undefined;
 };

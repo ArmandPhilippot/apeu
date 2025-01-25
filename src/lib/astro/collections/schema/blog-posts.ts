@@ -10,12 +10,7 @@ export const blogPosts = defineCollection({
       .extend({
         authors: z.array(reference("authors")),
         category: reference("blogCategories"),
-        cover: z
-          .object({
-            alt: z.string(),
-            src: image(),
-          })
-          .optional(),
+        cover: image().optional(),
         i18n: z
           .record(
             z.string().refine(isAvailableLanguage),
@@ -36,6 +31,8 @@ export const blogPosts = defineCollection({
         }) => {
           return {
             ...post,
+            // `<Image />` component expect the src to be the full object.
+            ...(post.cover ? { cover: { src: post.cover } } : {}),
             meta: {
               authors,
               category,

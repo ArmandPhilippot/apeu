@@ -122,7 +122,8 @@ describe("CollectionCard", () => {
     const result = await container.renderToString(CollectionCard, { props });
 
     expect(result).toContain("test-image.jpg");
-    expect(result).toContain('alt="Test Image"');
+    // Decorative image, so the alt should be replaced
+    expect(result).not.toContain('alt="Test Image"');
     expect(result).toContain('width="640"');
     expect(result).toContain('height="480"');
   });

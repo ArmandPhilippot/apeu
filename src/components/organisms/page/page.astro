@@ -13,7 +13,7 @@ import Collapsible from "../../molecules/collapsible/collapsible.astro";
 import TableOfContents from "../table-of-contents/table-of-contents.astro";
 
 type Props = HTMLAttributes<"article"> & {
-  cover?: ImgType | null | undefined;
+  cover?: Omit<ImgType, "alt"> | null | undefined;
   feed?: string | URL | null | undefined;
   heading?: string | null | undefined;
   isIndex?: boolean | null | undefined;
@@ -64,7 +64,9 @@ const { translate } = useI18n(Astro.currentLocale);
             ) : null}
           </Box>
         ) : null}
-        {cover ? <Img {...cover} class="page-cover" loading="eager" /> : null}
+        {cover ? (
+          <Img {...cover} alt="" class="page-cover" loading="eager" />
+        ) : null}
         {Astro.slots.has("meta") ? (
           <div class="page-meta">
             <slot name="meta" />

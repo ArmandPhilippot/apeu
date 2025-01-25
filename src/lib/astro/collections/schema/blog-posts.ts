@@ -1,7 +1,7 @@
 import { defineCollection, reference, z } from "astro:content";
 import { isAvailableLanguage } from "../../../../utils/i18n";
 import { globLoader } from "../../loaders/glob-loader";
-import { contentsBaseSchema } from "./partials";
+import { contentsBaseSchema, coverSchema } from "./partials";
 
 export const blogPosts = defineCollection({
   loader: globLoader("blog.posts"),
@@ -10,7 +10,7 @@ export const blogPosts = defineCollection({
       .extend({
         authors: z.array(reference("authors")),
         category: reference("blogCategories"),
-        cover: image().optional(),
+        cover: coverSchema(image).optional(),
         i18n: z
           .record(
             z.string().refine(isAvailableLanguage),
@@ -31,8 +31,6 @@ export const blogPosts = defineCollection({
         }) => {
           return {
             ...post,
-            // `<Image />` component expect the src to be the full object.
-            ...(post.cover ? { cover: { src: post.cover } } : {}),
             meta: {
               authors,
               category,

@@ -11,6 +11,7 @@ describe("get-project-preview", () => {
     expect(result).toMatchInlineSnapshot(`
       {
         "collection": "projects",
+        "cover": null,
         "description": "The project description.",
         "id": "revolutionary-project",
         "locale": "en",
@@ -40,6 +41,7 @@ describe("get-project", () => {
       {
         "Content": [Function],
         "collection": "projects",
+        "cover": null,
         "description": "The project description.",
         "hasContent": false,
         "headings": [],

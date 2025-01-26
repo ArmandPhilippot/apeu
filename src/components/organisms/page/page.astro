@@ -65,7 +65,12 @@ const { translate } = useI18n(Astro.currentLocale);
           </Box>
         ) : null}
         {cover ? (
-          <Img {...cover} alt="" class="page-cover" loading="eager" />
+          <Img
+            {...cover}
+            alt=""
+            loading="eager"
+            pictureAttributes={{ class: "page-cover" }}
+          />
         ) : null}
         {Astro.slots.has("meta") ? (
           <div class="page-meta">
@@ -198,7 +203,14 @@ const { translate } = useI18n(Astro.currentLocale);
     display: block;
     height: 100%;
     max-width: 100%;
-    max-height: calc(var(--one-px-in-rem) * 250);
+
+    & :global(img) {
+      max-height: calc(var(--one-px-in-rem) * 250);
+
+      @container (width >= calc(55em / 1.5)) {
+        max-height: calc(var(--one-px-in-rem) * 375);
+      }
+    }
   }
 
   :where(.page:has(.page-meta)) .page-cover {

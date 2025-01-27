@@ -167,18 +167,21 @@ const { as = "article", class: className, ...attrs } = Astro.props;
 
   .card-cover {
     align-self: center;
+    max-width: calc(100% - 2 * var(--spacing-md));
     margin: var(--spacing-sm) var(--spacing-sm) 0;
+    /* aspect-ratio: 2 / 1; */
 
     @container (width > 55em) {
       grid-column: 1;
       grid-row: 1 / span 3;
       align-self: unset;
-      margin-block-end: var(--spacing-sm);
+      max-width: 100%;
+      margin: var(--spacing-sm) 0 var(--spacing-sm) var(--spacing-sm);
     }
 
     & :global(img) {
       max-width: 100%;
-      max-height: calc(var(--one-px-in-rem) * 220);
+      max-height: calc(var(--one-px-in-rem) * 240);
       border-radius: inherit;
       box-shadow: var(--shadow-raised-to-top-left);
 

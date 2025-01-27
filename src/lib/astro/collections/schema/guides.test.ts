@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
-import { z } from "zod";
+import { createReferenceMock } from "../../../../../tests/mocks/references";
+import { createImageMock } from "../../../../../tests/mocks/schema";
 import { CONFIG } from "../../../../utils/constants";
 import { guides } from "./guides";
 
@@ -14,16 +15,6 @@ vi.mock("../../../../utils/dates", async (importOriginal) => {
   };
 });
 
-function createReferenceMock(collection: string) {
-  return z.string().transform((slug) => ({
-    collection,
-    slug,
-    data: {
-      name: `Mock ${collection} ${slug}`,
-    },
-  }));
-}
-
 vi.mock("astro:content", async () => {
   const actual = await vi.importActual("astro:content");
   return {
@@ -31,6 +22,8 @@ vi.mock("astro:content", async () => {
     reference: vi.fn((collection: string) => createReferenceMock(collection)),
   };
 });
+
+const mockImage = createImageMock();
 
 describe("guides", () => {
   it("should include the meta in the transformed output", async () => {
@@ -50,7 +43,7 @@ describe("guides", () => {
     if (typeof guides.schema !== "function")
       throw new Error("The schema is not callable");
 
-    const parsedSchema = guides.schema({ image: vi.fn() });
+    const parsedSchema = guides.schema({ image: mockImage });
     const result = await parsedSchema.safeParseAsync(guide);
 
     expect.assertions(4);
@@ -78,7 +71,7 @@ describe("guides", () => {
     if (typeof guides.schema !== "function")
       throw new Error("The schema is not callable");
 
-    const parsedSchema = guides.schema({ image: vi.fn() });
+    const parsedSchema = guides.schema({ image: mockImage });
     const result = await parsedSchema.safeParseAsync(guide);
 
     expect.assertions(4);

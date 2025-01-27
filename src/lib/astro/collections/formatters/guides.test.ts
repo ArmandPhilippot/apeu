@@ -11,6 +11,7 @@ describe("get-guide-preview", () => {
     expect(result).toMatchInlineSnapshot(`
       {
         "collection": "guides",
+        "cover": null,
         "description": "The guide description.",
         "id": "en/in-depth-guide",
         "locale": "en",
@@ -37,6 +38,7 @@ describe("get-guide", () => {
       {
         "Content": [Function],
         "collection": "guides",
+        "cover": null,
         "description": "The guide description.",
         "hasContent": false,
         "headings": [],

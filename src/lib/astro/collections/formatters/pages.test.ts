@@ -11,6 +11,7 @@ describe("get-page-preview", () => {
     expect(result).toMatchInlineSnapshot(`
       {
         "collection": "pages",
+        "cover": null,
         "description": "The page description.",
         "id": "en/generic-page",
         "locale": "en",
@@ -37,6 +38,7 @@ describe("get-page", () => {
       {
         "Content": [Function],
         "collection": "pages",
+        "cover": null,
         "description": "The page description.",
         "hasContent": false,
         "headings": [],

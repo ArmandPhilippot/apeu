@@ -25,7 +25,12 @@ export const getTaxonomyPreview = ({
   const { isDraft, ...meta } = rawMeta;
 
   return {
-    cover,
+    cover: cover
+      ? {
+          ...(cover.position ? { position: cover.position } : {}),
+          src: cover.src,
+        }
+      : null,
     collection,
     description,
     id,

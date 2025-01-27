@@ -12,7 +12,7 @@ import {
 export const getBlogPostPreview = async (
   post: CollectionEntry<"blogPosts">,
 ): Promise<BlogPostPreview> => {
-  const { locale, meta, seo, slug, ...postData } = post.data;
+  const { cover, locale, meta, seo, slug, ...postData } = post.data;
   const { authors, category, isDraft, tags, ...postMeta } = meta;
   const resolvedCategory = await getCategoryFromReference(category);
   const resolvedTags = await getTagsFromReferences(tags);
@@ -25,6 +25,12 @@ export const getBlogPostPreview = async (
   return {
     ...postData,
     collection: post.collection,
+    cover: cover
+      ? {
+          ...(cover.position ? { position: cover.position } : {}),
+          src: cover.src,
+        }
+      : null,
     id: post.id,
     locale,
     meta: {

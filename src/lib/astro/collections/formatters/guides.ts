@@ -11,7 +11,7 @@ import {
 export const getGuidePreview = async (
   guide: CollectionEntry<"guides">,
 ): Promise<GuidePreview> => {
-  const { locale, meta, seo, slug, ...remainingData } = guide.data;
+  const { cover, locale, meta, seo, slug, ...remainingData } = guide.data;
   const { authors, isDraft, tags, ...remainingMeta } = meta;
   const resolvedTags = await getTagsFromReferences(tags);
   const { remarkPluginFrontmatter } = await render(guide);
@@ -22,6 +22,12 @@ export const getGuidePreview = async (
 
   return {
     ...remainingData,
+    cover: cover
+      ? {
+          ...(cover.position ? { position: cover.position } : {}),
+          src: cover.src,
+        }
+      : null,
     collection: guide.collection,
     id: guide.id,
     locale,

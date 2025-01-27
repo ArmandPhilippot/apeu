@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
+import { createImageMock } from "../../../../../tests/mocks/schema";
 import { CONFIG } from "../../../../utils/constants";
 import { pages } from "./pages";
 
@@ -12,6 +13,8 @@ vi.mock("../../../../utils/dates", async (importOriginal) => {
     applyTimezone: vi.fn((date) => date), // Mocked to return the input date
   };
 });
+
+const mockImage = createImageMock();
 
 describe("pages", () => {
   it("should include the meta in the transformed output", () => {
@@ -30,7 +33,7 @@ describe("pages", () => {
     if (typeof pages.schema !== "function")
       throw new Error("The schema is not callable");
 
-    const parsedSchema = pages.schema({ image: vi.fn() });
+    const parsedSchema = pages.schema({ image: mockImage });
     const result = parsedSchema.safeParse(page);
 
     expect(result.success).toBe(true);
@@ -55,7 +58,7 @@ describe("pages", () => {
     if (typeof pages.schema !== "function")
       throw new Error("The schema is not callable");
 
-    const parsedSchema = pages.schema({ image: vi.fn() });
+    const parsedSchema = pages.schema({ image: mockImage });
     const result = parsedSchema.safeParse(page);
 
     expect(result.success).toBe(true);

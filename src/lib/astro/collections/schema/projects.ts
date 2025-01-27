@@ -1,7 +1,7 @@
 import { defineCollection, reference, z } from "astro:content";
 import { isAvailableLanguage } from "../../../../utils/i18n";
 import { globLoader } from "../../loaders/glob-loader";
-import { contentsBaseSchema } from "./partials";
+import { contentsBaseSchema, coverSchema } from "./partials";
 
 export const projects = defineCollection({
   loader: globLoader("projects"),
@@ -9,12 +9,7 @@ export const projects = defineCollection({
     contentsBaseSchema
       .extend({
         isArchived: z.boolean().optional().default(false),
-        cover: z
-          .object({
-            alt: z.string(),
-            src: image(),
-          })
-          .optional(),
+        cover: coverSchema(image).optional(),
         i18n: z
           .record(z.string().refine(isAvailableLanguage), reference("projects"))
           .optional(),

@@ -66,6 +66,10 @@ const img = await getImage({
 });
 const mergedAttrs = { ...img.attributes, ...attrs };
 const Wrapper = isClickable ? Link : Fragment;
+/* When used in class:list it seems the picture class is overridden... */
+const pictureClass = pictureAttributes?.class
+  ? `picture ${pictureAttributes.class}`
+  : "picture";
 ---
 
 <Wrapper href={img.src}>
@@ -75,7 +79,7 @@ const Wrapper = isClickable ? Link : Fragment;
     alt={alt}
     pictureAttributes={{
       ...pictureAttributes,
-      "class:list": ["picture", pictureAttributes?.class],
+      class: pictureClass,
     }}
     src={img.src}
   />

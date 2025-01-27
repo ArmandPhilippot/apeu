@@ -6,7 +6,7 @@ import { getTagsFromReferences, resolveTranslations } from "./utils";
 export const getProjectPreview = async (
   project: CollectionEntry<"projects">,
 ): Promise<ProjectPreview> => {
-  const { locale, meta, seo, slug, ...remainingData } = project.data;
+  const { cover, locale, meta, seo, slug, ...remainingData } = project.data;
   const { isDraft, tags, ...remainingMeta } = meta;
   const resolvedTags = await getTagsFromReferences(tags);
   const { remarkPluginFrontmatter } = await render(project);
@@ -17,6 +17,12 @@ export const getProjectPreview = async (
 
   return {
     ...remainingData,
+    cover: cover
+      ? {
+          ...(cover.position ? { position: cover.position } : {}),
+          src: cover.src,
+        }
+      : null,
     collection: project.collection,
     id: project.id,
     locale,

@@ -11,6 +11,7 @@ describe("get-blog-post-preview", () => {
     expect(result).toMatchInlineSnapshot(`
       {
         "collection": "blogPosts",
+        "cover": null,
         "description": "The blog post description.",
         "id": "en/my-awesome-post",
         "locale": "en",
@@ -38,6 +39,7 @@ describe("get-blog-post", () => {
       {
         "Content": [Function],
         "collection": "blogPosts",
+        "cover": null,
         "description": "The blog post description.",
         "hasContent": false,
         "headings": [],

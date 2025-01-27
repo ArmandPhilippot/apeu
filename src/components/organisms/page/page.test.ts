@@ -62,7 +62,6 @@ describe("Page", () => {
   it<LocalTestContext>("can render a cover", async ({ container }) => {
     const props = {
       cover: {
-        alt: "et ut debitis",
         height: 480,
         src: "https://picsum.photos/640/480",
         width: 640,
@@ -73,9 +72,8 @@ describe("Page", () => {
       props,
     });
 
-    expect.assertions(2);
+    expect.assertions(1);
 
-    expect(result).toContain(props.cover.alt);
     expect(result).toContain(props.cover.src);
   });
 

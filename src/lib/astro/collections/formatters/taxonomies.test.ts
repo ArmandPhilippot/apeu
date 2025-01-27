@@ -34,7 +34,7 @@ describe("get-taxonomy-preview", () => {
     expect(getTaxonomyPreview(blogCategoryFixture)).toMatchInlineSnapshot(`
       {
         "collection": "blogCategories",
-        "cover": undefined,
+        "cover": null,
         "description": "The category description.",
         "id": "en/micro-blog",
         "locale": "en",
@@ -52,7 +52,7 @@ describe("get-taxonomy-preview", () => {
     expect(getTaxonomyPreview(tagFixture)).toMatchInlineSnapshot(`
       {
         "collection": "tags",
-        "cover": undefined,
+        "cover": null,
         "description": "The tag description.",
         "id": "catchall-tag",
         "locale": "en",
@@ -77,7 +77,7 @@ describe("get-taxonomy", () => {
       {
         "Content": [Function],
         "collection": "blogCategories",
-        "cover": undefined,
+        "cover": null,
         "description": "The category description.",
         "hasContent": false,
         "headings": [],
@@ -108,7 +108,7 @@ describe("get-taxonomy", () => {
       {
         "Content": [Function],
         "collection": "tags",
-        "cover": undefined,
+        "cover": null,
         "description": "The tag description.",
         "hasContent": false,
         "headings": [],

@@ -6,7 +6,7 @@ import { resolveTranslations } from "./utils";
 export const getPagePreview = async (
   page: CollectionEntry<"pages">,
 ): Promise<PagePreview> => {
-  const { locale, meta, seo, slug, ...remainingData } = page.data;
+  const { cover, locale, meta, seo, slug, ...remainingData } = page.data;
   const { remarkPluginFrontmatter } = await render(page);
   const { readingTime } = getMetaFromRemarkPluginFrontmatter(
     remarkPluginFrontmatter,
@@ -15,6 +15,12 @@ export const getPagePreview = async (
 
   return {
     ...remainingData,
+    cover: cover
+      ? {
+          ...(cover.position ? { position: cover.position } : {}),
+          src: cover.src,
+        }
+      : null,
     collection: page.collection,
     id: page.id,
     locale,

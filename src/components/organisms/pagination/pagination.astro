@@ -175,7 +175,9 @@ const ellipsis = "\u2026" as const;
     justify-content: center;
   }
 
-  .pagination-link {
+  /* When building, the CSS order is not the same so we need to increase the
+   * specificity to get the same result... */
+  .pagination .pagination-link {
     display: flex;
     align-items: center;
     place-content: center;

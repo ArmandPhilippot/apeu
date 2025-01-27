@@ -1,5 +1,26 @@
 # apeu
 
+## 1.0.4
+
+### Patch Changes
+
+- 1099999: Enables the customization of the cover position for content collections that supports a cover.
+
+  A new `position` property is available in the `cover` object for content collections accepting a cover. The value should match the tokens supported by the CSS `object-position` property (only strings like `top`, `left`, etc. are supported).
+
+- 1099999: Removes alt text for decorative images.
+
+  The collections entries using a `cover` no longer accepts an `alt` property to define the alternative text of the images. Those are purely decorative so they shouldn't be announced to screen readers.
+
+- a49c607: Fixes an issue where pagination styles was overridden by other styles in production.
+
+  The CSS order seems a bit inconsistent between development and production modes. The style for pagination links was not correctly applied to the built website.
+
+- 1099999: Readjusts the cover dimensions.
+- 6165c62: Removes links pointing to the current page.
+
+  Some pages (tags, categories) was linking to themselves. This removes those useless links.
+
 ## 1.0.3
 
 ### Patch Changes

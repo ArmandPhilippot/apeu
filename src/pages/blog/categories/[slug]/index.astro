@@ -37,13 +37,17 @@ const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
 const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
   await getWebPageGraph({ ...page, breadcrumb }),
 ];
-const { entries: relatedPosts, total: totalPosts } = await queryCollection(
-  "blogPosts",
-  {
-    orderBy: { key: "publishedOn", order: "DESC" },
-    where: { categories: [page.id] },
-  },
-);
+const { entries, total: totalPosts } = await queryCollection("blogPosts", {
+  orderBy: { key: "publishedOn", order: "DESC" },
+  where: { categories: [page.id] },
+});
+const relatedPosts = entries.map(({ meta, ...post }) => {
+  const { category, ...remainingMeta } = meta;
+  return {
+    ...post,
+    meta: remainingMeta,
+  };
+});
 const getCTA = (
   title: string,
 ): ComponentProps<typeof CollectionCard>["cta"] => {

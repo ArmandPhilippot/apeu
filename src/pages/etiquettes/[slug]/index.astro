@@ -8,6 +8,7 @@ import CollectionMeta from "../../../components/organisms/collection-meta/collec
 import PageLayout from "../../../components/templates/page-layout/page-layout.astro";
 import { queryCollection } from "../../../lib/astro/collections";
 import { getWebPageGraph } from "../../../lib/schema-dts/graphs/webpage-graph";
+import type { TaxonomyLink } from "../../../types/data";
 import { useI18n } from "../../../utils/i18n";
 
 export const getStaticPaths = (async () => {
@@ -74,6 +75,7 @@ const getCTA = (
       return null;
   }
 };
+const removeCurrentTag = (tag: TaxonomyLink) => tag.route !== page.route;
 ---
 
 <PageLayout
@@ -118,6 +120,10 @@ const getCTA = (
                   },
                 }
               : {}),
+            meta: {
+              ...entry.meta,
+              tags: entry.meta.tags?.filter(removeCurrentTag),
+            },
           }}
           showCollection
         />

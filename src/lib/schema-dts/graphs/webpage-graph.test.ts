@@ -171,15 +171,19 @@ describe("get-webpage-graph", () => {
           "@type": "BreadcrumbList",
           "itemListElement": [
             {
-              "@id": "/qui",
               "@type": "ListItem",
-              "name": "qui",
+              "item": {
+                "@id": "/qui",
+                "name": "qui",
+              },
               "position": 1,
             },
             {
-              "@id": "/molestiae",
               "@type": "ListItem",
-              "name": "molestiae",
+              "item": {
+                "@id": "/molestiae",
+                "name": "molestiae",
+              },
               "position": 2,
             },
           ],

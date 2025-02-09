@@ -13,8 +13,10 @@ export const getListItemGraph = ({
 }: ListItemGraphData): ListItem => {
   return {
     "@type": "ListItem",
-    "@id": id,
-    name: label,
+    item: {
+      "@id": id,
+      name: label,
+    },
     position,
   };
 };

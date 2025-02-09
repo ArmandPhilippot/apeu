@@ -1,5 +1,11 @@
 # apeu
 
+## 1.0.5
+
+### Patch Changes
+
+- 4b1ea0d: Fixes the BreadcrumbList format used in Schema.org structured data.
+
 ## 1.0.4
 
 ### Patch Changes

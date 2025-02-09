@@ -1,6 +1,6 @@
 :root {
-  --font-family-mono: "Cousine", "Liberation Mono", "DejaVu Sans Mono",
-    "Courier New", monospace;
+  --font-family-mono:
+    "Cousine", "Liberation Mono", "DejaVu Sans Mono", "Courier New", monospace;
   --font-family-regular: "Inter", "Liberation Sans", arial, sans-serif;
   --font-weight-regular: 400;
   --font-weight-bold: 600;

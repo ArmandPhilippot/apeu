@@ -11,9 +11,11 @@ describe("get-list-item-graph", () => {
 
     expect(graph).toMatchInlineSnapshot(`
       {
-        "@id": "optio",
         "@type": "ListItem",
-        "name": "magni",
+        "item": {
+          "@id": "optio",
+          "name": "magni",
+        },
         "position": 2,
       }
     `);

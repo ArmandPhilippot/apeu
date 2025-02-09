@@ -19,15 +19,19 @@ describe("get-breadcrumb-list-graph", () => {
         "@type": "BreadcrumbList",
         "itemListElement": [
           {
-            "@id": "/magni",
             "@type": "ListItem",
-            "name": "magni",
+            "item": {
+              "@id": "/magni",
+              "name": "magni",
+            },
             "position": 1,
           },
           {
-            "@id": "/quasi",
             "@type": "ListItem",
-            "name": "quasi",
+            "item": {
+              "@id": "/quasi",
+              "name": "quasi",
+            },
             "position": 2,
           },
         ],

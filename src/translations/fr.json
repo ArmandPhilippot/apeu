@@ -90,7 +90,7 @@
     "form.settings.label.language": "Langue :",
     "form.settings.label.theme.shiki": "Thème des blocs de code :",
     "form.settings.label.theme.website": "Thème du site :",
-    "greetings.name.before": "Salut, je m’apelle {name}",
+    "greetings.name.before": "Salut, je m’appelle {name}",
     "greetings.name.after": "Bienvenue !",
     "language.name.en": "Anglais",
     "language.name.es": "Espagnol",

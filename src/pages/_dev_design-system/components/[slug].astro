@@ -1,8 +1,8 @@
 ---
+import { join } from "node:path";
 import type { GetStaticPaths } from "astro";
 import type { ComponentProps } from "astro/types";
 import { globby } from "globby";
-import { join } from "path";
 import Link from "../../../components/atoms/link/link.astro";
 import ListItem from "../../../components/atoms/list/list-item.astro";
 import List from "../../../components/atoms/list/list.astro";
@@ -15,8 +15,8 @@ import {
 import { getStoryNameFromSlug, getStoryRoute } from "../../../utils/stories";
 import { capitalizeFirstLetter } from "../../../utils/strings";
 
-export const getStaticPaths = (() => {
-  return Promise.all(
+export const getStaticPaths = (() =>
+  Promise.all(
     COMPONENT_KINDS.map(async (kind) => {
       const componentDir = "src/components/";
       const storiesPaths = await globby(join(componentDir, kind), {
@@ -24,12 +24,12 @@ export const getStaticPaths = (() => {
           extensions: [STORIES_EXT],
         },
       });
-      const stories = storiesPaths
+      const componentsStories = storiesPaths
         .filter(
           (path) =>
             !path.includes(`/${STORIES_SUFFIX}/`) ||
             (path.includes(`/${STORIES_SUFFIX}/`) &&
-              path.endsWith(`index.${STORIES_EXT}`)),
+              path.endsWith(`index.${STORIES_EXT}`))
         )
         .map((path) => {
           const slug = getStoryRoute(path).replace(componentDir, "");
@@ -42,11 +42,13 @@ export const getStaticPaths = (() => {
 
       return {
         params: { slug: kind },
-        props: { stories, title: capitalizeFirstLetter(kind) },
+        props: {
+          stories: componentsStories,
+          title: capitalizeFirstLetter(kind),
+        },
       };
-    }),
-  );
-}) satisfies GetStaticPaths;
+    })
+  )) satisfies GetStaticPaths;
 
 const { stories, title } = Astro.props;
 
@@ -70,7 +72,7 @@ const seo: ComponentProps<typeof PageLayout>["seo"] = {
 <PageLayout breadcrumb={breadcrumb} seo={seo} title={title}>
   <Fragment slot="body">
     {
-      stories.length ? (
+      stories.length > 0 ? (
         <List>
           {stories.map((story) => (
             <ListItem>

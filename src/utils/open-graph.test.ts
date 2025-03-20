@@ -2,15 +2,15 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { isDefaultLanguage, useI18n } from "./i18n";
 import { getOpenGraphImg } from "./open-graph";
 
-vi.mock("./i18n", () => ({
-  useI18n: vi.fn(),
-  isDefaultLanguage: vi.fn(),
-}));
+vi.mock("./i18n", () => {
+  return {
+    useI18n: vi.fn(),
+    isDefaultLanguage: vi.fn(),
+  };
+});
 
 vi.mock("./url", async (importOriginal) => {
-  const mod =
-    // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-    await importOriginal<typeof import("./url")>();
+  const mod = await importOriginal<typeof import("./url")>();
   return {
     ...mod,
     getWebsiteUrl: () => "https://example.test",
@@ -33,7 +33,7 @@ describe("getOpenGraphImg", () => {
 
     const result = getOpenGraphImg({ locale: "en", slug: "/" });
 
-    expect(result).toEqual({
+    expect(result).toStrictEqual({
       height: 630,
       type: "image/png",
       url: new URL("/og/home.png", "https://example.test").href,
@@ -52,7 +52,7 @@ describe("getOpenGraphImg", () => {
 
     const result = getOpenGraphImg({ locale: "fr", slug: "/" });
 
-    expect(result).toEqual({
+    expect(result).toStrictEqual({
       height: 630,
       type: "image/png",
       url: new URL("/og/fr/home.png", "https://example.test").href,
@@ -74,7 +74,7 @@ describe("getOpenGraphImg", () => {
 
     const result = getOpenGraphImg({ locale: "en", slug: "/about" });
 
-    expect(result).toEqual({
+    expect(result).toStrictEqual({
       height: 630,
       type: "image/png",
       url: new URL("/og/about.png", "https://example.test").href,
@@ -96,7 +96,7 @@ describe("getOpenGraphImg", () => {
 
     const result = getOpenGraphImg({ locale: "fr", slug: "/fr/about" });
 
-    expect(result).toEqual({
+    expect(result).toStrictEqual({
       height: 630,
       type: "image/png",
       url: new URL("/og/fr/about.png", "https://example.test").href,

@@ -1,10 +1,13 @@
-import nodemailer, { type Transporter } from "nodemailer";
+import { createTransport, type Transporter } from "nodemailer";
 import type { Options } from "nodemailer/lib/smtp-connection";
+import type SMTPTransport from "nodemailer/lib/smtp-transport";
+
+const SECURE_PORT = 465;
 
 /**
  * Retrieve the SMTP options from environment variables.
  *
- * @returns {Options} The SMTP options
+ * @returns {Options} The SMTP options.
  */
 const getSMTPOptionsFromEnv = (): Options => {
   const port = Number(process.env.SMTP_PORT);
@@ -14,7 +17,7 @@ const getSMTPOptionsFromEnv = (): Options => {
     port,
     /* The secure option should only be `true` with port `465`, so it should be
      * safe to set the option by checking the port */
-    secure: port === 465,
+    secure: port === SECURE_PORT,
     auth: {
       user: process.env.SMTP_USER,
       pass: process.env.SMTP_PASSWORD,
@@ -25,14 +28,17 @@ const getSMTPOptionsFromEnv = (): Options => {
 /**
  * Create an SMTP transporter using Nodemailer.
  *
- * @returns {SentMessageInfo} The transporter.
+ * @returns {Transporter<SMTPTransport.SentMessageInfo, SMTPTransport.Options>} The NodeMailer transporter.
  */
-export const createSMTPTransporter = (): Transporter => {
+export const createSMTPTransporter = (): Transporter<
+  SMTPTransport.SentMessageInfo,
+  SMTPTransport.Options
+> => {
   const config = getSMTPOptionsFromEnv();
-  const transporter = nodemailer.createTransport({
+  const transporter = createTransport({
     ...config,
-    connectionTimeout: 10000,
-    socketTimeout: 10000,
+    connectionTimeout: 10_000,
+    socketTimeout: 10_000,
   });
 
   return transporter;

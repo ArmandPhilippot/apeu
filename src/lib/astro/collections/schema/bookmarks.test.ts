@@ -2,9 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 import { bookmarks } from "./bookmarks";
 
 vi.mock("../../../../utils/dates", async (importOriginal) => {
-  const mod =
-    // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-    await importOriginal<typeof import("../../../../utils/dates")>();
+  const mod = await importOriginal<typeof import("../../../../utils/dates")>();
 
   return {
     ...mod,
@@ -23,17 +21,23 @@ describe("bookmarks", () => {
       url: "https://example.test",
     };
 
-    if (!bookmarks.schema || typeof bookmarks.schema === "function")
+    if (
+      bookmarks.schema === undefined ||
+      typeof bookmarks.schema === "function"
+    ) {
       throw new Error("The schema is not accessible");
+    }
 
     const result = bookmarks.schema.safeParse(bookmark);
 
     expect(result.success).toBe(true);
-    if (result.success) {
-      expect(result.data.meta.inLanguage).toBe(bookmark.inLanguage);
-      expect(result.data.meta.isDraft).toBe(true);
-      expect(result.data.meta.publishedOn).toEqual(new Date("2023-01-01"));
-    }
+
+    // This guards against TypeScript errors but won't execute if the test is passing
+    if (!result.success) return;
+
+    expect(result.data.meta.inLanguage).toBe(bookmark.inLanguage);
+    expect(result.data.meta.isDraft).toBe(true);
+    expect(result.data.meta.publishedOn).toStrictEqual(new Date("2023-01-01"));
   });
 
   it("should apply default values as expected", () => {
@@ -45,15 +49,21 @@ describe("bookmarks", () => {
       inLanguage: "en",
     };
 
-    if (!bookmarks.schema || typeof bookmarks.schema === "function")
+    if (
+      bookmarks.schema === undefined ||
+      typeof bookmarks.schema === "function"
+    ) {
       throw new Error("The schema is not accessible");
+    }
 
     const result = bookmarks.schema.safeParse(bookmark);
 
     expect(result.success).toBe(true);
-    if (result.success) {
-      expect(result.data.isQuote).toBe(false);
-      expect(result.data.meta.isDraft).toBe(false);
-    }
+
+    // This guards against TypeScript errors but won't execute if the test is passing
+    if (!result.success) return;
+
+    expect(result.data.isQuote).toBe(false);
+    expect(result.data.meta.isDraft).toBe(false);
   });
 });

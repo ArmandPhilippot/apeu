@@ -32,6 +32,8 @@ export type HasNestedKey<U, K1 extends PropertyKey, K2 extends PropertyKey> =
 
 /**
  * Create an union of object keys where the value matches the given type.
+ *
+ * @template T, V
  */
 export type KeyOfType<T, V> = {
   [K in keyof T]: K extends string ? (T[K] extends V ? K : never) : never;
@@ -41,6 +43,8 @@ type AnyString = string & Record<never, never>;
 
 /**
  * Provide autocompletion from a string literal type while allowing any string.
+ *
+ * @template T
  */
 export type LooseAutocomplete<T extends string> = T | AnyString;
 

@@ -2,7 +2,7 @@
 import type { HTMLAttributes } from "astro/types";
 import type { Gap } from "../../../types/css";
 import { getCSSVars, getSpacingVarFromGap } from "../../../utils/attributes";
-import { InvalidProps, MissingSlotError } from "../../../utils/exceptions";
+import { InvalidPropsError, MissingSlotError } from "../../../utils/exceptions";
 
 type Props = HTMLAttributes<"fieldset"> & {
   gap?: Gap | null | undefined;
@@ -20,8 +20,9 @@ const {
 } = Astro.props;
 
 if (!Astro.slots.has("legend")) throw new MissingSlotError("legend");
-if (gap && !isInline)
-  throw new InvalidProps("gap is only compatible with isInline");
+if (gap && !isInline) {
+  throw new InvalidPropsError("gap is only compatible with isInline");
+}
 
 const cssVars = getCSSVars({
   "fieldset-gap": getSpacingVarFromGap(gap),

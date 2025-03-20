@@ -5,10 +5,11 @@
   "editor.codeActionsOnSave": {
     "source": "never",
     "source.fixAll": "explicit",
-    "source.organizeImports": "always"
+    "source.organizeImports": "never"
   },
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
+  "eslint.validate": ["javascript", "astro", "typescript"],
   "stylelint.validate": ["astro", "css", "postcss", "scss"],
   "typescript.preferences.autoImportFileExcludePatterns": ["**/*.stories.astro"]
 }

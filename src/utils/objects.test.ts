@@ -11,7 +11,7 @@ describe("splitObject", () => {
 
     const result = splitObject(input, "name");
 
-    expect(result).toEqual({
+    expect(result).toStrictEqual({
       extracted: { name: "John" },
       remaining: { age: 30, city: "New York" },
     });
@@ -25,7 +25,7 @@ describe("splitObject", () => {
 
     const result = splitObject(input, "address");
 
-    expect(result).toEqual({
+    expect(result).toStrictEqual({
       remaining: {
         name: "John",
         age: 30,
@@ -41,7 +41,7 @@ describe("splitObject", () => {
 
     const result = splitObject(input, undefined);
 
-    expect(result).toEqual({
+    expect(result).toStrictEqual({
       remaining: {
         name: "John",
         age: 30,
@@ -52,7 +52,7 @@ describe("splitObject", () => {
   it("should return empty object when input object is undefined", () => {
     const result = splitObject(undefined, "name");
 
-    expect(result).toEqual({});
+    expect(result).toStrictEqual({});
   });
 
   it("should handle empty object correctly", () => {
@@ -60,7 +60,7 @@ describe("splitObject", () => {
 
     const result = splitObject(input, "name");
 
-    expect(result).toEqual({
+    expect(result).toStrictEqual({
       remaining: {},
     });
   });
@@ -73,7 +73,7 @@ describe("splitObject", () => {
 
     const result = splitObject(input, "user");
 
-    expect(result).toEqual({
+    expect(result).toStrictEqual({
       extracted: { user: { id: 1, name: "John" } },
       remaining: { settings: { theme: "dark" } },
     });
@@ -84,17 +84,19 @@ describe("splitObject", () => {
       string: "text",
       number: 42,
       boolean: true,
+      /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Fake data. */
       array: [1, 2, 3],
       null: null,
     };
 
     const result = splitObject(input, "number");
 
-    expect(result).toEqual({
+    expect(result).toStrictEqual({
       extracted: { number: 42 },
       remaining: {
         string: "text",
         boolean: true,
+        /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Fake data. */
         array: [1, 2, 3],
         null: null,
       },
@@ -115,7 +117,7 @@ describe("splitObject", () => {
 
     const result = splitObject(input, "id");
 
-    expect(result.extracted?.id).toBe(1);
+    expect(result.extracted.id).toBe(1);
     expect(result.remaining.name).toBe("John");
 
     // @ts-expect-error - This should cause a TypeScript error

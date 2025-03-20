@@ -1,10 +1,17 @@
 import { render, type CollectionEntry } from "astro:content";
 import type { Project, ProjectPreview } from "../../../../types/data";
 import { getMetaFromRemarkPluginFrontmatter } from "../../../../utils/frontmatter";
+import { isObject } from "../../../../utils/type-checks";
 import { getTagsFromReferences, resolveTranslations } from "./utils";
 
+/**
+ * Convert a project collection entry to a ProjectPreview object.
+ *
+ * @param {CollectionEntry<"projects">} project - The project collection entry.
+ * @returns {Promise<ProjectPreview>} An object describing the project preview.
+ */
 export const getProjectPreview = async (
-  project: CollectionEntry<"projects">,
+  project: CollectionEntry<"projects">
 ): Promise<ProjectPreview> => {
   const { cover, locale, meta, seo, slug, ...remainingData } = project.data;
   const { isDraft, tags, ...remainingMeta } = meta;
@@ -12,12 +19,12 @@ export const getProjectPreview = async (
   const { remarkPluginFrontmatter } = await render(project);
   const { readingTime } = getMetaFromRemarkPluginFrontmatter(
     remarkPluginFrontmatter,
-    locale,
+    locale
   );
 
   return {
     ...remainingData,
-    cover: cover
+    cover: isObject(cover)
       ? {
           ...(cover.position ? { position: cover.position } : {}),
           src: cover.src,
@@ -34,8 +41,14 @@ export const getProjectPreview = async (
   };
 };
 
+/**
+ * Convert a project collection entry to a Project object.
+ *
+ * @param {CollectionEntry<"projects">} project - The project collection entry.
+ * @returns {Promise<Project>} An object describing the project.
+ */
 export const getProject = async (
-  project: CollectionEntry<"projects">,
+  project: CollectionEntry<"projects">
 ): Promise<Project> => {
   const preview = await getProjectPreview(project);
   const { remarkPluginFrontmatter, ...renderResult } = await render(project);
@@ -44,7 +57,7 @@ export const getProject = async (
   return {
     ...preview,
     ...renderResult,
-    hasContent: !!project.body,
+    hasContent: project.body !== undefined && project.body !== "",
     seo: {
       ...project.data.seo,
       languages: altLanguages,

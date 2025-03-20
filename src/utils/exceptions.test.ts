@@ -1,15 +1,15 @@
 import { describe, expect, it } from "vitest";
 import {
-  InvalidProps,
+  InvalidPropsError,
   MissingSiteConfigError,
   MissingSlotError,
   UnsupportedLocaleError,
 } from "./exceptions";
 
-describe("InvalidProps", () => {
+describe("InvalidPropsError", () => {
   it("returns an Error instance", () => {
     const error = "natus";
-    const exception = new InvalidProps(error);
+    const exception = new InvalidPropsError(error);
 
     expect(exception instanceof Error).toBe(true);
     expect(exception.message).toContain(error);

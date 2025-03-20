@@ -176,36 +176,36 @@ const defaultValue =
       return theme === this.#theme;
     }
 
-    #updateSwitchValue(settings: Readonly<Settings>) {
+    #updateSwitchValue(newSettings: Readonly<Settings>) {
       if (!this.#switchBtn) return;
 
-      const newTheme = settings[this.#settingKey];
+      const newTheme = newSettings[this.#settingKey];
       const themeToResolve =
         this.#settingKey === SHIKI_SETTING_KEY && newTheme === "auto"
-          ? settings.theme
+          ? newSettings.theme
           : newTheme;
       const theme = resolveCurrentColorScheme(themeToResolve);
 
       this.#switchBtn.ariaChecked = String(theme === "dark");
     }
 
-    #updateToggleValue(settings: Readonly<Settings>) {
+    #updateToggleValue(newSettings: Readonly<Settings>) {
       const newOption = this.querySelector<HTMLInputElement>(
-        `input[value="${settings[this.#settingKey]}"]`,
+        `input[value="${newSettings[this.#settingKey]}"]`
       );
 
       if (newOption) newOption.checked = true;
     }
 
-    #updateSelectedTheme(settings: Readonly<Settings>) {
-      if (this.#isSwitch) this.#updateSwitchValue(settings);
-      else this.#updateToggleValue(settings);
+    #updateSelectedTheme(newSettings: Readonly<Settings>) {
+      if (this.#isSwitch) this.#updateSwitchValue(newSettings);
+      else this.#updateToggleValue(newSettings);
     }
 
     listenSettings(
       newSettings: Readonly<Settings>,
       _oldSettings: Readonly<Settings> | undefined,
-      changedKey: keyof Settings | undefined,
+      changedKey: keyof Settings | undefined
     ) {
       const newTheme = newSettings[this.#settingKey];
       const isCurrentSetting = changedKey === this.#settingKey;

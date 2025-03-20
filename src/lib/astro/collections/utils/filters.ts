@@ -10,13 +10,12 @@ type CollectionEntryWithMeta<C extends CollectionKey> = HasNestedKey<
 >;
 
 const hasDraftProperty = <C extends CollectionKey>(
-  entry: CollectionEntry<C>,
-): entry is CollectionEntry<C> & { data: { meta: { isDraft?: boolean } } } => {
-  return "meta" in entry.data && "isDraft" in entry.data.meta;
-};
+  entry: CollectionEntry<C>
+): entry is CollectionEntry<C> & { data: { meta: { isDraft?: boolean } } } =>
+  "meta" in entry.data && "isDraft" in entry.data.meta;
 
 const isDraftOnProd = (
-  entry: CollectionEntryWithMeta<CollectionKey>,
+  entry: CollectionEntryWithMeta<CollectionKey>
 ): boolean => {
   if (!hasDraftProperty(entry) || !import.meta.env.PROD) return false;
 
@@ -25,22 +24,19 @@ const isDraftOnProd = (
 
 const matchesAuthors = (
   entry: CollectionEntryWithMeta<CollectionKey>,
-  authors?: string[],
+  authors?: string[]
 ): boolean => {
-  if (!authors) return true;
-  if (!authors.length || !entry.data.meta || !("authors" in entry.data.meta))
-    return false;
+  if (authors === undefined) return true;
+  if (authors.length === 0 || !("authors" in entry.data.meta)) return false;
 
-  return entry.data.meta.authors.some((ref) =>
-    authors.some((author) => author === ref.id),
-  );
+  return entry.data.meta.authors.some((ref) => authors.includes(ref.id));
 };
 
 const matchesCategories = (
   entry: CollectionEntryWithMeta<CollectionKey>,
-  categories?: string[],
+  categories?: string[]
 ): boolean => {
-  if (!categories?.length) return true;
+  if (categories === undefined || categories.length === 0) return true;
 
   return (
     "category" in entry.data.meta &&
@@ -50,16 +46,14 @@ const matchesCategories = (
 
 const matchesIds = (
   entry: CollectionEntry<CollectionKey>,
-  ids?: string[],
-): boolean => {
-  return !ids?.length || ids.includes(entry.id);
-};
+  ids?: string[]
+): boolean => ids === undefined || ids.length === 0 || ids.includes(entry.id);
 
 const matchesLocale = (
   entry: CollectionEntry<CollectionKey>,
-  locale?: string,
+  locale?: string
 ): boolean => {
-  if (!locale) return true;
+  if (locale === undefined) return true;
 
   const hasNoLocaleInfo =
     (!("description" in entry.data) || !isObject(entry.data.description)) &&
@@ -76,26 +70,24 @@ const matchesLocale = (
 
 const matchesTags = (
   entry: CollectionEntryWithMeta<CollectionKey>,
-  tags?: string[],
+  tags?: string[]
 ): boolean => {
-  if (!tags?.length) return true;
+  if (tags === undefined || tags.length === 0) return true;
 
   return (
     "tags" in entry.data.meta &&
-    !!entry.data.meta.tags &&
-    entry.data.meta.tags.some((ref) => tags.some((tag) => tag === ref.id))
+    Array.isArray(entry.data.meta.tags) &&
+    entry.data.meta.tags.some((ref) => tags.includes(ref.id))
   );
 };
 
 const hasMetaProperty = <C extends CollectionKey>(
-  entry: CollectionEntry<C>,
-): entry is CollectionEntryWithMeta<C> => {
-  return "meta" in entry.data;
-};
+  entry: CollectionEntry<C>
+): entry is CollectionEntryWithMeta<C> => "meta" in entry.data;
 
 const matchesFilter = <C extends CollectionKey>(
   entry: CollectionEntryWithMeta<C>,
-  filters: Partial<QueryCollectionWhere>,
+  filters: Partial<QueryCollectionWhere>
 ): boolean => {
   const { authors, categories, ids, locale, tags } = filters;
 
@@ -109,8 +101,16 @@ const matchesFilter = <C extends CollectionKey>(
   );
 };
 
+/**
+ * Apply the given filters to a content collection.
+ *
+ * @param {Partial<QueryCollectionWhere>} [filters] - The filters to apply.
+ * @returns {(entry: CollectionEntry<CollectionKey>) => boolean} A function accepting a collection entry that will be use against filters.
+ */
 export const applyCollectionFilters =
-  (filters: Partial<QueryCollectionWhere> = {}) =>
+  (
+    filters: Partial<QueryCollectionWhere> = {}
+  ): ((entry: CollectionEntry<CollectionKey>) => boolean) =>
   (entry: CollectionEntry<CollectionKey>) => {
     if (hasMetaProperty(entry)) return matchesFilter(entry, filters);
     return (

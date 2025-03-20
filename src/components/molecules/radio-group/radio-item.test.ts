@@ -15,6 +15,9 @@ describe("RadioItem", () => {
   it<LocalTestContext>("renders a radio button with label", async ({
     container,
   }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(5);
+
     const props = {
       fieldId: "libero",
       name: "optio",
@@ -26,8 +29,6 @@ describe("RadioItem", () => {
       slots: { default: label },
     });
 
-    expect.assertions(5);
-
     expect(result).toContain(`type="radio"`);
     expect(result).toContain(`id="${props.fieldId}"`);
     expect(result).toContain(`name="${props.name}"`);
@@ -38,20 +39,20 @@ describe("RadioItem", () => {
   it<LocalTestContext>("throws an error if the label is missing", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       fieldId: "libero",
       name: "optio",
       value: "voluptatem",
     } satisfies ComponentProps<typeof RadioItem>;
 
-    expect.assertions(1);
-
     await expect(async () =>
       container.renderToString(RadioItem, {
         props,
-      }),
+      })
     ).rejects.toThrowErrorMatchingInlineSnapshot(
-      `[Error: A default slot is required.]`,
+      `[MissingSlotError: A default slot is required.]`
     );
   });
 });

@@ -49,6 +49,6 @@ export const projects = defineCollection({
               updatedOn: updatedOn ?? publishedOn,
             },
           };
-        },
+        }
       ),
 });

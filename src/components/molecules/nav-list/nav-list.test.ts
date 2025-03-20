@@ -13,6 +13,8 @@ describe("NavList", () => {
   });
 
   it<LocalTestContext>("renders its children", async ({ container }) => {
+    expect.assertions(1);
+
     const props = {
       items: [
         { label: "Item 1", url: "#item-1" },
@@ -25,14 +27,14 @@ describe("NavList", () => {
       slots: { default: body },
     });
 
-    expect.assertions(1);
-
     expect(result).toContain(body);
   });
 
   it<LocalTestContext>("can render an ordered nav list", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       isOrdered: true,
       items: [
@@ -45,8 +47,6 @@ describe("NavList", () => {
       props,
       slots: { default: body },
     });
-
-    expect.assertions(1);
 
     expect(result).toContain("</ol>");
   });

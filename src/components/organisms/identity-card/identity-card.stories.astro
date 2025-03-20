@@ -70,7 +70,7 @@ const authorPreviewWithAllInfo = {
     >
       <Heading>Default</Heading>
     </Box>
-    <IdentityCardComponent isCentered author={authorPreview} />
+    <IdentityCardComponent author={authorPreview} isCentered />
     <Box
       elevation="raised"
       isBordered
@@ -82,7 +82,7 @@ const authorPreviewWithAllInfo = {
     >
       <Heading>With avatar</Heading>
     </Box>
-    <IdentityCardComponent isCentered author={authorPreviewWithAvatar} />
+    <IdentityCardComponent author={authorPreviewWithAvatar} isCentered />
     <Box
       elevation="raised"
       isBordered
@@ -94,7 +94,7 @@ const authorPreviewWithAllInfo = {
     >
       <Heading>With all available data</Heading>
     </Box>
-    <IdentityCardComponent isCentered author={authorPreviewWithAllInfo} />
+    <IdentityCardComponent author={authorPreviewWithAllInfo} isCentered />
     <Box
       elevation="raised"
       isBordered
@@ -106,7 +106,7 @@ const authorPreviewWithAllInfo = {
     >
       <Heading>With heading</Heading>
     </Box>
-    <IdentityCardComponent isCentered author={authorPreviewWithAllInfo}>
+    <IdentityCardComponent author={authorPreviewWithAllInfo} isCentered>
       <Heading as="h3" slot="heading">About {authorPreview.name}</Heading>
     </IdentityCardComponent>
   </Fragment>

@@ -2,6 +2,7 @@ import { join, parse } from "node:path";
 import slash from "slash";
 import { CONFIG } from "./constants";
 import { isAvailableLanguage, type AvailableLanguage } from "./i18n";
+import { isString } from "./type-checks";
 
 /**
  * Retrieve a path with forward slashes from a list of paths to join.
@@ -18,7 +19,7 @@ export const joinPaths = (...paths: string[]): string => slash(join(...paths));
  * Retrieve the parent directory path from a file path converted to a path with
  * forward slashes.
  *
- * @param {string} filePath - The file path.
+ * @param {string} filePath - The file path to evaluate.
  * @returns {string} The parent directory path.
  */
 export const getParentDirPath = (filePath: string): string =>
@@ -31,8 +32,8 @@ export const getParentDirPath = (filePath: string): string =>
  * @returns {string} The file path without extension.
  */
 export const removeExtFromPath = (filePath: string): string => {
-  const { dir, name } = parse(slash(filePath));
-  return `${dir}/${name}`;
+  const { dir, name: fileName } = parse(slash(filePath));
+  return `${dir}/${fileName}`;
 };
 
 /**
@@ -40,18 +41,18 @@ export const removeExtFromPath = (filePath: string): string => {
  * if no locale was found.
  *
  * @param {string} path - The file path.
- * @returns {AvailableLanguage} The locale.
+ * @returns {AvailableLanguage} The computed locale if valid or the default locale.
  */
 export const getLocaleFromPath = (path: string): AvailableLanguage => {
   // Get each `/[locale]/` directory encountered.
   const regex = new RegExp(
     `(?<=\\/)(?:${CONFIG.LANGUAGES.AVAILABLE.join("|")})(?=\\/|$)`,
-    "g",
+    "g"
   );
   const result = path.match(regex);
-  const currentLocale = result ? result[0] : null;
+  const currentLocale = result === null ? null : result[0];
 
-  return currentLocale && isAvailableLanguage(currentLocale)
+  return isString(currentLocale) && isAvailableLanguage(currentLocale)
     ? currentLocale
     : CONFIG.LANGUAGES.DEFAULT;
 };

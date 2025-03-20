@@ -8,38 +8,43 @@ import { toUpperCase } from "./strings";
  *
  * @param {number} wordsCount - The number of words.
  * @param {number} wordsPerMinute - The reading fluency.
- * @returns The reading time.
+ * @returns {{minutes: number, seconds: number}} The reading time as object.
  */
 const getReadingTimeInMinutesAndSeconds = (
   wordsCount: number,
-  wordsPerMinute: number,
-) => {
+  wordsPerMinute: number
+): { minutes: number; seconds: number } => {
   const oneMinuteInSeconds = 60;
   const wordsPerSecond = wordsPerMinute / oneMinuteInSeconds;
   const estimatedTimeInSeconds = wordsCount / wordsPerSecond;
   const estimatedTimeInMinutes = Math.floor(
-    estimatedTimeInSeconds / oneMinuteInSeconds,
+    estimatedTimeInSeconds / oneMinuteInSeconds
   );
 
   return {
     minutes: estimatedTimeInMinutes,
     seconds: Math.round(
-      estimatedTimeInSeconds - estimatedTimeInMinutes * oneMinuteInSeconds,
+      estimatedTimeInSeconds - estimatedTimeInMinutes * oneMinuteInSeconds
     ),
   };
 };
+
+const twoDecimals = 2;
 
 /**
  * Retrieve the reading time rounded in minutes.
  *
  * @param {number} wordsCount - The number of words.
  * @param {number} wordsPerMinute - The reading fluency.
- * @returns {number} The reading time.
+ * @returns {number} A number representing the reading time in minutes.
  */
 const getReadingTimeInMinutes = (
   wordsCount: number,
-  wordsPerMinute: number,
-): number => Math.round(parseFloat((wordsCount / wordsPerMinute).toFixed(2)));
+  wordsPerMinute: number
+): number =>
+  Math.round(
+    Number.parseFloat((wordsCount / wordsPerMinute).toFixed(twoDecimals))
+  );
 
 /**
  * Retrieve the reading time depending on a words count.
@@ -47,11 +52,11 @@ const getReadingTimeInMinutes = (
  * @template T - Should the seconds be included?
  * @param {number} wordsCount - The number of words.
  * @param {AvailableLanguage} locale - The current language.
- * @returns {ReadingTime} The reading time.
+ * @returns {ReadingTime} A detailed reading time object.
  */
 export const getReadingTime = (
   wordsCount: number,
-  locale: AvailableLanguage,
+  locale: AvailableLanguage
 ): ReadingTime => {
   const wordsPerMinute = WORDS_PER_MINUTE[toUpperCase(locale)];
 
@@ -59,7 +64,7 @@ export const getReadingTime = (
     inMinutes: getReadingTimeInMinutes(wordsCount, wordsPerMinute),
     inMinutesAndSeconds: getReadingTimeInMinutesAndSeconds(
       wordsCount,
-      wordsPerMinute,
+      wordsPerMinute
     ),
     wordsCount,
     wordsPerMinute,

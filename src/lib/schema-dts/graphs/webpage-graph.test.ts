@@ -3,9 +3,7 @@ import { CONFIG } from "../../../utils/constants";
 import { getWebPageGraph } from "./webpage-graph";
 
 vi.mock("../../../utils/constants", async (importOriginal) => {
-  const mod =
-    // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-    await importOriginal<typeof import("../../../utils/constants")>();
+  const mod = await importOriginal<typeof import("../../../utils/constants")>();
   return {
     ...mod,
     CONFIG: {
@@ -19,33 +17,50 @@ vi.mock("../../../utils/constants", async (importOriginal) => {
 });
 
 vi.mock("../../../utils/url", async (importOriginal) => {
-  const mod =
-    // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-    await importOriginal<typeof import("../../../utils/url")>();
+  const mod = await importOriginal<typeof import("../../../utils/url")>();
   return {
     ...mod,
     getWebsiteUrl: () => "https://example.test",
   };
 });
 
-describe("get-webpage-graph", () => {
-  it("returns an object describing the webpage", async () => {
-    const graph = await getWebPageGraph({
-      description: "Quam omnis in temporibus.",
-      locale: CONFIG.LANGUAGES.DEFAULT,
-      meta: {
-        publishedOn: new Date("2024-10-09T13:55:57.813Z"),
-        updatedOn: new Date("2024-10-09T13:55:57.813Z"),
-      },
-      route: "/some-route",
-      title: "beatae autem in",
-    });
+vi.mock("../../../utils/images", () => {
+  return {
+    getImgSrc: (cover: Record<"src", string>) => cover.src,
+  };
+});
 
+vi.mock("../../../utils/i18n", () => {
+  return {
+    useI18n: () => {
+      return {
+        route: (path: string) => (path === "home" ? "/" : `/${path}`),
+        translate: () => "https://creativecommons.org/licenses/by-sa/4.0/deed",
+      };
+    },
+  };
+});
+
+describe("getWebPageGraph", () => {
+  const basePageData = {
+    description: "Page description",
+    locale: CONFIG.LANGUAGES.DEFAULT,
+    meta: {
+      publishedOn: new Date("2024-10-09T13:00:00.000Z"),
+      updatedOn: new Date("2024-10-09T13:00:00.000Z"),
+    },
+    route: "/test-route",
+    title: "Test Page Title",
+  };
+
+  it("should generate WebPage with required properties", async () => {
     expect.assertions(1);
+
+    const graph = await getWebPageGraph(basePageData);
 
     expect(graph).toMatchInlineSnapshot(`
       {
-        "@id": "https://example.test/some-route",
+        "@id": "https://example.test/test-route",
         "@type": "WebPage",
         "author": {
           "@id": "https://example.test#author",
@@ -53,169 +68,152 @@ describe("get-webpage-graph", () => {
         "copyrightHolder": {
           "@id": "https://example.test#author",
         },
-        "dateCreated": "2024-10-09T13:55:57.813Z",
-        "dateModified": "2024-10-09T13:55:57.813Z",
-        "datePublished": "2024-10-09T13:55:57.813Z",
-        "description": "Quam omnis in temporibus.",
+        "dateCreated": "2024-10-09T13:00:00.000Z",
+        "dateModified": "2024-10-09T13:00:00.000Z",
+        "datePublished": "2024-10-09T13:00:00.000Z",
+        "description": "Page description",
         "editor": {
           "@id": "https://example.test#author",
         },
-        "headline": "beatae autem in",
+        "headline": "Test Page Title",
         "isAccessibleForFree": true,
         "isPartOf": {
           "@id": "https://example.test/",
         },
-        "lastReviewed": "2024-10-09T13:55:57.813Z",
+        "lastReviewed": "2024-10-09T13:00:00.000Z",
         "license": "https://creativecommons.org/licenses/by-sa/4.0/deed",
-        "name": "beatae autem in",
+        "name": "Test Page Title",
         "publisher": {
           "@id": "https://example.test#author",
         },
         "reviewedBy": {
           "@id": "https://example.test#author",
         },
-        "url": "https://example.test/some-route",
+        "url": "https://example.test/test-route",
       }
     `);
   });
 
-  it("can use a different type to describe the webpage", async () => {
+  it("should support custom page type", async () => {
+    expect.assertions(1);
+
     const graph = await getWebPageGraph({
-      description: "Quam omnis in temporibus.",
-      locale: CONFIG.LANGUAGES.DEFAULT,
-      meta: {
-        publishedOn: new Date("2024-10-09T13:55:57.813Z"),
-        updatedOn: new Date("2024-10-09T13:55:57.813Z"),
-      },
-      route: "/some-route",
-      title: "beatae autem in",
+      ...basePageData,
       type: "ItemPage",
     });
 
-    expect.assertions(1);
+    expect(graph["@type"]).toBe("ItemPage");
+  });
 
-    expect(graph).toMatchInlineSnapshot(`
+  it("should add breadcrumb when provided", async () => {
+    // eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory.
+    expect.assertions(2);
+
+    const breadcrumb = [
+      { label: "Home", url: "/" },
+      { label: "Category", url: "/category" },
+    ];
+
+    const graph = await getWebPageGraph({
+      ...basePageData,
+      breadcrumb,
+    });
+
+    expect(graph).toHaveProperty("breadcrumb");
+    expect(graph.breadcrumb).toMatchInlineSnapshot(`
       {
-        "@id": "https://example.test/some-route",
-        "@type": "ItemPage",
-        "author": {
-          "@id": "https://example.test#author",
-        },
-        "copyrightHolder": {
-          "@id": "https://example.test#author",
-        },
-        "dateCreated": "2024-10-09T13:55:57.813Z",
-        "dateModified": "2024-10-09T13:55:57.813Z",
-        "datePublished": "2024-10-09T13:55:57.813Z",
-        "description": "Quam omnis in temporibus.",
-        "editor": {
-          "@id": "https://example.test#author",
-        },
-        "headline": "beatae autem in",
-        "isAccessibleForFree": true,
-        "isPartOf": {
-          "@id": "https://example.test/",
-        },
-        "lastReviewed": "2024-10-09T13:55:57.813Z",
-        "license": "https://creativecommons.org/licenses/by-sa/4.0/deed",
-        "name": "beatae autem in",
-        "publisher": {
-          "@id": "https://example.test#author",
-        },
-        "reviewedBy": {
-          "@id": "https://example.test#author",
-        },
-        "url": "https://example.test/some-route",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "item": {
+              "@id": "/",
+              "name": "Home",
+            },
+            "position": 1,
+          },
+          {
+            "@type": "ListItem",
+            "item": {
+              "@id": "/category",
+              "name": "Category",
+            },
+            "position": 2,
+          },
+        ],
       }
     `);
   });
 
-  it("can add optional properties to the object describing the webpage", async () => {
+  it("should add reading time when provided", async () => {
+    expect.assertions(1);
+
     const graph = await getWebPageGraph({
-      breadcrumb: [
-        { label: "qui", url: "/qui" },
-        { label: "molestiae", url: "/molestiae" },
-      ],
-      cover: {
-        alt: "ea consectetur perferendis",
-        height: 480,
-        src: "https://picsum.photos/640/480",
-        width: 640,
-      },
-      description: "Quam omnis in temporibus.",
-      locale: CONFIG.LANGUAGES.DEFAULT,
+      ...basePageData,
       meta: {
-        publishedOn: new Date("2024-10-09T13:55:57.813Z"),
+        ...basePageData.meta,
         readingTime: {
           inMinutes: 2,
           inMinutesAndSeconds: { minutes: 1, seconds: 55 },
           wordsCount: 250,
           wordsPerMinute: 80,
         },
-        updatedOn: new Date("2024-10-09T13:55:57.813Z"),
       },
-      route: "/some-route",
-      title: "beatae autem in",
     });
 
+    expect(graph.timeRequired).toBe("PT1M55S");
+  });
+
+  it("should add cover image when provided", async () => {
     expect.assertions(1);
 
-    expect(graph).toMatchInlineSnapshot(`
-      {
-        "@id": "https://example.test/some-route",
-        "@type": "WebPage",
-        "author": {
-          "@id": "https://example.test#author",
-        },
-        "breadcrumb": {
-          "@type": "BreadcrumbList",
-          "itemListElement": [
-            {
-              "@type": "ListItem",
-              "item": {
-                "@id": "/qui",
-                "name": "qui",
-              },
-              "position": 1,
-            },
-            {
-              "@type": "ListItem",
-              "item": {
-                "@id": "/molestiae",
-                "name": "molestiae",
-              },
-              "position": 2,
-            },
-          ],
-        },
-        "copyrightHolder": {
-          "@id": "https://example.test#author",
-        },
-        "dateCreated": "2024-10-09T13:55:57.813Z",
-        "dateModified": "2024-10-09T13:55:57.813Z",
-        "datePublished": "2024-10-09T13:55:57.813Z",
-        "description": "Quam omnis in temporibus.",
-        "editor": {
-          "@id": "https://example.test#author",
-        },
-        "headline": "beatae autem in",
-        "isAccessibleForFree": true,
-        "isPartOf": {
-          "@id": "https://example.test/",
-        },
-        "lastReviewed": "2024-10-09T13:55:57.813Z",
-        "license": "https://creativecommons.org/licenses/by-sa/4.0/deed",
-        "name": "beatae autem in",
-        "publisher": {
-          "@id": "https://example.test#author",
-        },
-        "reviewedBy": {
-          "@id": "https://example.test#author",
-        },
-        "thumbnailUrl": "https://picsum.photos/640/480",
-        "timeRequired": "PT1M55S",
-        "url": "https://example.test/some-route",
-      }
-    `);
+    const cover = {
+      alt: "Image description",
+      height: 480,
+      src: "https://example.test/image.jpg",
+      width: 640,
+    };
+
+    const graph = await getWebPageGraph({
+      ...basePageData,
+      cover,
+    });
+
+    expect(graph.thumbnailUrl).toBe("https://example.test/image.jpg");
+  });
+
+  it("should combine all optional properties correctly", async () => {
+    // eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory.
+    expect.assertions(4);
+
+    const breadcrumb = [{ label: "Home", url: "/" }];
+    const cover = {
+      alt: "Image description",
+      height: 480,
+      src: "https://example.test/image.jpg",
+      width: 640,
+    };
+    const readingTime = {
+      inMinutes: 2,
+      inMinutesAndSeconds: { minutes: 1, seconds: 55 },
+      wordsCount: 250,
+      wordsPerMinute: 80,
+    };
+
+    const graph = await getWebPageGraph({
+      ...basePageData,
+      breadcrumb,
+      cover,
+      type: "ItemPage",
+      meta: {
+        ...basePageData.meta,
+        readingTime,
+      },
+    });
+
+    expect(graph["@type"]).toBe("ItemPage");
+    expect(graph.breadcrumb).toBeDefined();
+    expect(graph.thumbnailUrl).toBe("https://example.test/image.jpg");
+    expect(graph.timeRequired).toBe("PT1M55S");
   });
 });

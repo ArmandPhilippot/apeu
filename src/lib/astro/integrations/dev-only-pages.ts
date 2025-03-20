@@ -1,7 +1,7 @@
-import type { AstroIntegration } from "astro";
-import { globbySync } from "globby";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
+import type { AstroIntegration } from "astro";
+import { globbySync } from "globby";
 import slash from "slash";
 import { joinPaths } from "../../../utils/paths";
 
@@ -10,8 +10,8 @@ import { joinPaths } from "../../../utils/paths";
  *
  * Astro has a built-in feature to exclude some pages from being built. So we
  * should take advantage of that for our dev-only pages. However we need a
- * different prefix to ignore non-route files (ie. a component living in pages
- * directory) so the prefix should be at least two characters long.
+ * different prefix to ignore non-route files (ie. A component living in pages
+ * directory) so the prefix should be at least two characters long..
  *
  * @see https://docs.astro.build/en/guides/routing/#excluding-pages
  *
@@ -31,9 +31,9 @@ const removeTrailingIndex = (route: string) => route.replace(/\/index$/, "");
 /**
  * Retrieve the route of a dev-only page from its path and prefix.
  *
- * @param {string} path - The page path
- * @param {string} prefix - The prefix used for dev-only pages
- * @returns {string} The route
+ * @param {string} path - The path of a dev-only page.
+ * @param {string} prefix - The prefix used for dev-only pages.
+ * @returns {string} The computed route for the dev-only page.
  */
 const getDevOnlyPageRoute = (path: string, prefix: string): string => {
   const pathWithoutExt = removeAstroExt(path);
@@ -51,19 +51,19 @@ const getDevOnlyPageRoute = (path: string, prefix: string): string => {
  * Retrieve a message displaying the number of routes found and eventually a
  * list of those routes.
  *
- * @param {string[]} routes - The routes
+ * @param {string[]} routes - A list of dev-only pages routes.
  * @param {boolean} includeList - Should we include the routes list?
  * @returns {string} The info about the routes.
  */
 const getDevOnlyPagesResultMsg = (
   routes: string[],
-  includeList: boolean,
+  includeList: boolean
 ): string => {
   const message = `Found ${routes.length} dev-only ${
     routes.length === 1 ? "route" : "routes"
   }.`;
 
-  if (!includeList || !routes.length) return message;
+  if (!includeList || routes.length === 0) return message;
 
   return message.replace(".", `:\n${routes.join("\n")}`);
 };
@@ -89,7 +89,7 @@ type DevOnlyPagesConfig = {
  * This integration only supports `.astro` pages.
  *
  * @param {DevOnlyPagesConfig} config - A configuration object.
- * @returns {AstroIntegration}
+ * @returns {AstroIntegration} The Astro integration.
  */
 export const devOnlyPages = (({
   logPages = false,

@@ -2,9 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 import { getWebsiteUrl } from "./url";
 
 vi.mock("./constants", async (importOriginal) => {
-  const mod =
-    // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-    await importOriginal<typeof import("./constants")>();
+  const mod = await importOriginal<typeof import("./constants")>();
   return {
     ...mod,
     CONFIG: {

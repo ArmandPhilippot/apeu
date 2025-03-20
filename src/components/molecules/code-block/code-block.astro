@@ -5,7 +5,7 @@ import { shikiTheme } from "../../../lib/shiki/theme";
 import { shikiDiffNotation } from "../../../lib/shiki/transformers/diff-notation";
 import { SHIKI_SETTING_KEY } from "../../../services/stores/settings";
 import { getCSSVars } from "../../../utils/attributes";
-import { InvalidProps } from "../../../utils/exceptions";
+import { InvalidPropsError } from "../../../utils/exceptions";
 import { useI18n } from "../../../utils/i18n";
 import Figure from "../../atoms/figure/figure.astro";
 import CopyToClipboard from "../copy-to-clipboard/copy-to-clipboard.astro";
@@ -45,7 +45,7 @@ type Props = Omit<ComponentProps<typeof Figure>, "isFullWidth"> &
      */
     promptHost?: string | null | undefined;
     /**
-     * The username to display inside the prompt
+     * The username to display inside the prompt.
      *
      * @default user
      */
@@ -81,13 +81,14 @@ const {
   ...attrs
 } = Astro.props;
 
-if (showLineNumbers && showPrompt)
-  throw new InvalidProps(
-    "`showLineNumbers` and `showPrompt` can't be used together.",
+if (showLineNumbers && showPrompt) {
+  throw new InvalidPropsError(
+    "`showLineNumbers` and `showPrompt` can't be used together."
   );
+}
 
 const { translate } = useI18n(Astro.currentLocale);
-const trimmedCode = code.replace(/^\n|\n$/g, "");
+const trimmedCode = code.replaceAll(/^\n|\n$/g, "");
 const commandLineLanguages = [
   "bash",
   "console",
@@ -113,8 +114,8 @@ const cssVars = getCSSVars({
   {...isCommandLine && { "data-cli": true }}
   data-diff={isDiff}
   data-line-numbers={showLineNumbers}
-  data-prompt={showPrompt}
   data-path={!!filePath}
+  data-prompt={showPrompt}
   data-root={isCommandLine && promptUser === "root" ? "" : null}
   {...showPrompt && isSQL && { "data-sql-server": true }}
   isFullWidth
@@ -161,6 +162,10 @@ const cssVars = getCSSVars({
     }
   }
 
+  :where([data-path="false"]) .code-block-caption {
+    text-transform: uppercase;
+  }
+
   .code-block .code-block-caption {
     display: flex;
     align-items: center;
@@ -171,10 +176,6 @@ const cssVars = getCSSVars({
       border-block-end: none;
       border-start-end-radius: 0;
     }
-  }
-
-  :where([data-path="false"]) .code-block-caption {
-    text-transform: uppercase;
   }
 
   .code-block-toolbar {
@@ -260,13 +261,13 @@ const cssVars = getCSSVars({
     &:where(.diff.remove) + :global(.line:not(.diff.remove)) {
       counter-increment: none;
     }
+  }
 
-    &::before {
-      content: counter(line-number);
-      /* This should be suitable for line numbers up to 4 digits with diff
+  :where([data-line-numbers="true"]) :global(.line::before) {
+    content: counter(line-number);
+    /* This should be suitable for line numbers up to 4 digits with diff
          * token (+ or -). */
-      min-width: 4em;
-    }
+    min-width: 4em;
   }
 
   :where([data-prompt="true"][data-sql-server="true"]) :global(.line::before) {
@@ -286,23 +287,25 @@ const cssVars = getCSSVars({
     --prompt-sign: "$";
   }
 
-  :where([data-diff="true"]) :global(.line) {
+  :where([data-diff="true"], [data-language="diff"]) :global(.line) {
     &:where(.add) {
       background: var(--color-shiki-line-added);
-
-      &::before {
-        content: "+" counter(line-number);
-        color: var(--color-shiki-on-line-added);
-      }
     }
 
     &:where(.remove) {
       background: var(--color-shiki-line-removed);
-
-      &::before {
-        content: "-" counter(line-number);
-        color: var(--color-shiki-on-line-removed);
-      }
     }
+  }
+
+  :where([data-diff="true"], [data-language="diff"])
+    :global(.line.add::before) {
+    content: "+" counter(line-number);
+    color: var(--color-shiki-on-line-added);
+  }
+
+  :where([data-diff="true"], [data-language="diff"])
+    :global(.line.remove::before) {
+    content: "-" counter(line-number);
+    color: var(--color-shiki-on-line-removed);
   }
 </style>

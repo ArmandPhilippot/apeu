@@ -8,6 +8,19 @@ a {
     color: var(--color-primary-light);
   }
 
+  &:has(> img, > svg) {
+    display: inline-block;
+    vertical-align: middle;
+
+    & > :is(img, svg) {
+      vertical-align: middle;
+    }
+  }
+
+  &:has(> picture) {
+    display: block;
+  }
+
   &:hover {
     text-decoration-thickness: 0.4ex;
   }
@@ -36,33 +49,20 @@ a {
     --lang-icon: "[" attr(hreflang) "]";
   }
 
-  &:where(:not([hreflang])) {
+  &:not([hreflang]) {
     --is-lang-hidden: "";
   }
 
-  &:where([rel~="external"]:not(.download)) {
+  &[rel~="external"]:not(.download) {
     --link-icon: var(--external-icon);
   }
 
-  &:where(.download:not([rel~="external"])) {
+  &.download:not([rel~="external"]) {
     --link-icon: var(--download-icon);
   }
 
-  &:where(.download[rel~="external"]) {
+  &.download[rel~="external"] {
     --link-icon: var(--download-icon) "\0000a0" var(--external-icon);
-  }
-
-  &:has(> img, > svg) {
-    display: inline-block;
-    vertical-align: middle;
-
-    & > :is(img, svg) {
-      vertical-align: middle;
-    }
-  }
-
-  &:has(> picture) {
-    display: block;
   }
 
   & > img {

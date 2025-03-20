@@ -1,33 +1,42 @@
 import type { Element as HastElement } from "hast";
 import type { ShikiTransformerContext } from "shiki";
 import { describe, expect, it } from "vitest";
+import { isString } from "../../../utils/type-checks";
 import { shikiDiffNotation } from "./diff-notation";
 
 /**
  * Retrieves the first line in a node.
+ *
+ * @param {HastElement} node - A Hast node.
+ * @returns {HastElement} The first line in the node.
+ * @throws When the first line is not an element.
  */
 function getFirstLine(node: HastElement): HastElement {
-  const line = node.children[0];
+  const [firstLine] = node.children;
 
-  if (line?.type !== "element") {
+  if (firstLine?.type !== "element") {
     throw new Error("Expected child to be an element");
   }
 
-  return line;
+  return firstLine;
 }
 
 /**
  * Extracts text from a mock node's child, removing diff symbols (+/-).
  * Throws an error if the node structure is unexpected.
+ *
+ * @param {HastElement} node - A Hast node.
+ * @returns {string} The text extracted from the node.
+ * @throws When the text can't be extracted.
  */
 function extractTextFromNode(node: HastElement): string {
-  const lineChild = node.children[0];
-  if (!lineChild || lineChild.type !== "element") {
+  const [line] = node.children;
+  if (line?.type !== "element") {
     throw new Error("Unable to extract text from node");
   }
 
-  const tokenNode = lineChild.children[0];
-  if (!tokenNode || tokenNode.type !== "text") {
+  const [tokenNode] = line.children;
+  if (tokenNode?.type !== "text") {
     throw new Error("Unable to extract text from node");
   }
 
@@ -36,25 +45,27 @@ function extractTextFromNode(node: HastElement): string {
 
 /**
  * Retrieves the class names from a node's properties as an array.
+ *
+ * @param {HastElement} node - The Hast node.
+ * @returns {string[]} A list of classnames.
  */
 function getNodeClasses(node: HastElement): string[] {
-  return (node.properties?.className as string[]) || [];
+  return (node.properties.className ?? []) as string[];
 }
 
 /**
  * Creates a context object for the transformer, enabling class addition to
  * nodes.
+ *
+ * @returns {ShikiTransformerContext} - The transformer context to be used with Hast.
  */
 function createTransformerContext(): ShikiTransformerContext {
   return {
     addClassToHast(
       hast: HastElement,
-      className: string | string[],
+      className: string | string[]
     ): HastElement {
-      hast.properties = hast.properties || {};
-      hast.properties.className = Array.isArray(className)
-        ? className
-        : [className];
+      hast.properties.className = isString(className) ? [className] : className;
       return hast;
     },
   } as ShikiTransformerContext;
@@ -62,10 +73,14 @@ function createTransformerContext(): ShikiTransformerContext {
 
 /**
  * Creates a mock HastElement node for testing purposes.
+ *
+ * @param {string} value - The textual value of the element.
+ * @param {"text" | "comment"} [type] - The element type.
+ * @returns {HastElement} A Hast element.
  */
 function createMockNode(
   value: string,
-  type: "text" | "comment" = "text",
+  type: "text" | "comment" = "text"
 ): HastElement {
   return {
     type: "element",
@@ -102,7 +117,7 @@ describe("shikiDiffNotation transformer", () => {
     const firstLine = getFirstLine(mockNode);
 
     expect(extractTextFromNode(firstLine)).toBe("Added line");
-    expect(getNodeClasses(firstLine)).toEqual(["diff", "add"]);
+    expect(getNodeClasses(firstLine)).toStrictEqual(["diff", "add"]);
   });
 
   it("should add diff classes for removed lines", () => {
@@ -115,7 +130,7 @@ describe("shikiDiffNotation transformer", () => {
     const firstLine = getFirstLine(mockNode);
 
     expect(extractTextFromNode(firstLine)).toBe("Removed line");
-    expect(getNodeClasses(firstLine)).toEqual(["diff", "remove"]);
+    expect(getNodeClasses(firstLine)).toStrictEqual(["diff", "remove"]);
   });
 
   it("should handle custom class names", () => {
@@ -132,7 +147,10 @@ describe("shikiDiffNotation transformer", () => {
     const firstLine = getFirstLine(mockNode);
 
     expect(extractTextFromNode(firstLine)).toBe("Added line");
-    expect(getNodeClasses(firstLine)).toEqual(["custom-diff", "custom-add"]);
+    expect(getNodeClasses(firstLine)).toStrictEqual([
+      "custom-diff",
+      "custom-add",
+    ]);
   });
 
   it("should not modify lines without diff notation", () => {
@@ -157,7 +175,7 @@ describe("shikiDiffNotation transformer", () => {
 
     const firstLine = getFirstLine(mockNode);
 
-    expect(firstLine.properties?.className).toBeUndefined();
+    expect(firstLine.properties.className).toBeUndefined();
   });
 
   it("should handle partially overridden options", () => {
@@ -171,7 +189,7 @@ describe("shikiDiffNotation transformer", () => {
 
     const firstLine = getFirstLine(mockNode);
 
-    expect(getNodeClasses(firstLine)).toEqual(["diff", "custom-add"]);
+    expect(getNodeClasses(firstLine)).toStrictEqual(["diff", "custom-add"]);
   });
 
   it("should handle an element with no children", () => {
@@ -187,7 +205,7 @@ describe("shikiDiffNotation transformer", () => {
     transformer.code?.call(context, mockNode);
 
     // Without children, there should be no class changes
-    expect(mockNode.properties?.className).toBeUndefined();
+    expect(mockNode.properties.className).toBeUndefined();
   });
 
   it("should handle node with empty children array", () => {
@@ -202,8 +220,8 @@ describe("shikiDiffNotation transformer", () => {
     const transformer = shikiDiffNotation();
 
     expect(() =>
-      transformer.code?.call(context, emptyChildrenNode),
+      transformer.code?.call(context, emptyChildrenNode)
     ).not.toThrow();
-    expect(emptyChildrenNode.properties?.className).toBeUndefined();
+    expect(emptyChildrenNode.properties.className).toBeUndefined();
   });
 });

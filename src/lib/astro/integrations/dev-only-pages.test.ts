@@ -1,14 +1,16 @@
+import { join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { globbySync } from "globby";
-import { join } from "path";
 import slash from "slash";
-import { fileURLToPath } from "url";
 import { describe, expect, it, vi } from "vitest";
 import { createAstroConfigSetupMockContext } from "../../../../tests/mocks/integrations";
 import { devOnlyPages } from "./dev-only-pages";
 
-vi.mock("globby", () => ({
-  globbySync: vi.fn(),
-}));
+vi.mock("globby", () => {
+  return {
+    globbySync: vi.fn(),
+  };
+});
 
 describe("dev-only-pages", () => {
   it("should return an Astro integration", () => {
@@ -37,7 +39,7 @@ describe("dev-only-pages", () => {
       integration.hooks["astro:config:setup"](mockContext);
 
       expect(mockContext.logger.error).toHaveBeenCalledWith(
-        "The dev-only pages prefix must start with an underscore (`_`) and its length must be equal to or greater than 2.",
+        "The dev-only pages prefix must start with an underscore (`_`) and its length must be equal to or greater than 2."
       );
     });
 
@@ -61,16 +63,17 @@ describe("dev-only-pages", () => {
           `**/${prefix}*/**/*.astro`,
           `!**/${prefix}*/**/_*.astro`,
         ],
-        { cwd: new URL("./src/pages", mockContext.config.root) },
+        { cwd: new URL("./src/pages", mockContext.config.root) }
       );
 
+      /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
       expect(mockContext.injectRoute).toHaveBeenCalledTimes(2);
       expect(mockContext.injectRoute).toHaveBeenCalledWith({
         entrypoint: slash(
           join(
             fileURLToPath(new URL("./src/pages", mockContext.config.root)),
-            mockPages[0],
-          ),
+            mockPages[0]
+          )
         ),
         pattern: "/page1",
       });
@@ -78,14 +81,14 @@ describe("dev-only-pages", () => {
         entrypoint: slash(
           join(
             fileURLToPath(new URL("./src/pages", mockContext.config.root)),
-            mockPages[1],
-          ),
+            mockPages[1]
+          )
         ),
         pattern: "/page2", // `/index` should be removed
       });
 
       expect(mockContext.logger.info).toHaveBeenCalledWith(
-        expect.stringContaining("Found 2 dev-only routes."),
+        expect.stringContaining("Found 2 dev-only routes.")
       );
     });
 
@@ -101,7 +104,7 @@ describe("dev-only-pages", () => {
       integration.hooks["astro:config:setup"](mockContext);
 
       expect(mockContext.logger.info).toHaveBeenCalledWith(
-        "Found 1 dev-only route:\n- /page1",
+        "Found 1 dev-only route:\n- /page1"
       );
     });
 
@@ -115,7 +118,7 @@ describe("dev-only-pages", () => {
 
       expect(mockContext.injectRoute).not.toHaveBeenCalled();
       expect(mockContext.logger.info).toHaveBeenCalledWith(
-        "Found 0 dev-only routes.",
+        "Found 0 dev-only routes."
       );
     });
   });

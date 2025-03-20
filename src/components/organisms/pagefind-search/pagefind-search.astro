@@ -18,6 +18,7 @@ const { class: className, queryParam, ...attrs } = Astro.props;
 </ap-pagefind-search>
 
 <style>
+  /* stylelint-disable selector-class-pattern -- The class names come from Pagefind so we don't have control over it. */
   .pagefind-search {
     --pagefind-ui-scale: 1.05;
     --pagefind-ui-primary: var(--color-primary);
@@ -39,6 +40,7 @@ const { class: className, queryParam, ...attrs } = Astro.props;
 
       &::placeholder {
         color: var(--color-muted-faded);
+        /* stylelint-disable-next-line declaration-no-important -- We need to override Pagefind styles. */
         opacity: 1 !important;
       }
 
@@ -53,7 +55,7 @@ const { class: className, queryParam, ...attrs } = Astro.props;
     & :global(.pagefind-ui__button) {
       --pagefind-ui-background: var(--color-regular-light);
 
-      transition: all 0.18s ease-in-out 0s;
+      transition: outline 0.18s ease-in-out 0s;
 
       &:hover,
       &:focus {
@@ -75,7 +77,7 @@ const { class: className, queryParam, ...attrs } = Astro.props;
       border: var(--border-size-sm) solid var(--color-border);
       border-top-left-radius: 0;
       border-bottom-left-radius: 0;
-      transition: all 0.18s ease-in-out 0s;
+      transition: outline 0.18s ease-in-out 0s;
 
       &:hover,
       &:focus {
@@ -92,7 +94,7 @@ const { class: className, queryParam, ...attrs } = Astro.props;
       --pagefind-ui-text: var(--color-primary);
 
       text-underline-offset: 0.4ex;
-      transition: all 0.18s linear 0s;
+      transition: outline-offset 0.18s linear 0s;
 
       &:focus-visible {
         border-radius: var(--border-radii-sm);
@@ -122,11 +124,8 @@ const { class: className, queryParam, ...attrs } = Astro.props;
       window.removeEventListener("DOMContentLoaded", this.initSearch);
     }
 
-    #addEllipsisToExcerpt(
-      excerpt: string,
-      location: number | undefined,
-    ): string {
-      return `${location === 0 ? "" : "&hellip; "}${excerpt}&hellip;`;
+    #addEllipsisToExcerpt(excerpt: string, loc: number | undefined): string {
+      return `${loc === 0 ? "" : "&hellip; "}${excerpt}&hellip;`;
     }
 
     async #initPagefindUI(): Promise<
@@ -163,8 +162,9 @@ const { class: className, queryParam, ...attrs } = Astro.props;
         return null;
 
       return window.location.search.replace(
+        // eslint-disable-next-line no-useless-escape -- False positive
         new RegExp(`.*\?${this.#queryParam}=`),
-        "",
+        ""
       );
     }
 

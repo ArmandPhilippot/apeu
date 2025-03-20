@@ -5,13 +5,13 @@ import { useI18n, type AvailableLanguage } from "../../../utils/i18n";
 /**
  * Retrieve a Language graph from a code.
  *
- * @param {(typeof LANGUAGE_CODES)[number]} code - The language code.
+ * @param {(typeof LANGUAGE_CODES)[number]} code - A valid language code.
  * @param {AvailableLanguage} locale - Used to translate the language name.
- * @returns {Language} The language graph.
+ * @returns {Language} A graph representing the language.
  */
 export const getLanguageGraph = (
   code: (typeof LANGUAGE_CODES)[number],
-  locale: AvailableLanguage,
+  locale: AvailableLanguage
 ): Language => {
   const { translate } = useI18n(locale);
 

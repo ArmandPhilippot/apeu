@@ -13,14 +13,15 @@ describe("Legend", () => {
   });
 
   it<LocalTestContext>("renders a legend element", async ({ container }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(2);
+
     const props = {} satisfies ComponentProps<typeof Legend>;
     const body = "pariatur omnis adipisci";
     const result = await container.renderToString(Legend, {
       props,
       slots: { default: body },
     });
-
-    expect.assertions(2);
 
     expect(result).toContain("</legend>");
     expect(result).toContain(body);
@@ -29,6 +30,8 @@ describe("Legend", () => {
   it<LocalTestContext>("can render a bordered legend", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       isBordered: true,
     } satisfies ComponentProps<typeof Legend>;
@@ -38,14 +41,14 @@ describe("Legend", () => {
       slots: { default: body },
     });
 
-    expect.assertions(1);
-
     expect(result).toContain('data-border="true"');
   });
 
   it<LocalTestContext>("can render an inlined legend", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       isInline: true,
     } satisfies ComponentProps<typeof Legend>;
@@ -54,8 +57,6 @@ describe("Legend", () => {
       props,
       slots: { default: body },
     });
-
-    expect.assertions(1);
 
     expect(result).toContain('data-inline="true"');
   });

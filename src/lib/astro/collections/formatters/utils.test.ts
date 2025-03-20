@@ -6,21 +6,30 @@ vi.mock("astro:content", async () => {
   const originalModule = await vi.importActual("astro:content");
   return {
     ...originalModule,
-    getEntry: vi.fn(async (ref: { collection: string; id: string }) => ({
-      id: ref.id,
-      data: { route: `/test/${ref.id}` },
-    })),
+    getEntry: vi.fn((ref: { collection: string; id: string }) => {
+      return {
+        id: ref.id,
+        data: { route: `/test/${ref.id}` },
+      };
+    }),
   };
 });
 
-vi.mock("../../../../utils/i18n", () => ({
-  isAvailableLanguage: vi.fn((lang: string) => lang === "en" || lang === "fr"),
-}));
+vi.mock("../../../../utils/i18n", () => {
+  return {
+    isAvailableLanguage: vi.fn(
+      (lang: string) => lang === "en" || lang === "fr"
+    ),
+  };
+});
 
 type GetEntryMock = (ref: {
   collection: string;
   id: string;
-}) => Promise<{ id: string; data: { route: string } } | null>;
+}) =>
+  | Promise<{ id: string; data: { route: string } } | null>
+  | { id: string; data: { route: string } }
+  | null;
 
 describe("resolveTranslations", () => {
   beforeEach(() => {
@@ -28,20 +37,31 @@ describe("resolveTranslations", () => {
   });
 
   it("returns null for undefined translations", async () => {
+    expect.assertions(1);
+
     const result = await resolveTranslations(undefined);
+
     expect(result).toBeNull();
   });
 
   it("returns null for empty translations object", async () => {
+    expect.assertions(1);
+
     const result = await resolveTranslations({});
+
     expect(result).toBeNull();
   });
 
   it("successfully resolves valid translations", async () => {
-    vi.mocked(getEntry as GetEntryMock).mockImplementation(async (ref) => ({
-      id: ref.id,
-      data: { route: `/test/${ref.id}` },
-    }));
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(2);
+
+    vi.mocked(getEntry as GetEntryMock).mockImplementation((ref) => {
+      return {
+        id: ref.id,
+        data: { route: `/test/${ref.id}` },
+      };
+    });
 
     const translations = {
       en: { collection: "pages", id: "en" },
@@ -50,18 +70,24 @@ describe("resolveTranslations", () => {
 
     const result = await resolveTranslations(translations);
 
-    expect(result).toEqual([
+    expect(result).toStrictEqual([
       { locale: "en", route: "/test/en" },
       { locale: "fr", route: "/test/fr" },
     ]);
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
     expect(getEntry).toHaveBeenCalledTimes(2);
   });
 
   it("filters out invalid language codes", async () => {
-    vi.mocked(getEntry as GetEntryMock).mockImplementation(async (ref) => ({
-      id: ref.id,
-      data: { route: `/test/${ref.id}` },
-    }));
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(2);
+
+    vi.mocked(getEntry as GetEntryMock).mockImplementation((ref) => {
+      return {
+        id: ref.id,
+        data: { route: `/test/${ref.id}` },
+      };
+    });
 
     const translations = {
       en: { collection: "pages", id: "home" },
@@ -70,11 +96,13 @@ describe("resolveTranslations", () => {
 
     const result = await resolveTranslations(translations);
 
-    expect(result).toEqual([{ locale: "en", route: "/test/home" }]);
+    expect(result).toStrictEqual([{ locale: "en", route: "/test/home" }]);
     expect(getEntry).toHaveBeenCalledTimes(1);
   });
 
   it("handles getEntry returning null", async () => {
+    expect.assertions(1);
+
     vi.mocked(getEntry).mockResolvedValue(null);
 
     const translations = {
@@ -82,10 +110,13 @@ describe("resolveTranslations", () => {
     } as const;
 
     const result = await resolveTranslations(translations);
+
     expect(result).toBeNull();
   });
 
   it("handles entries without route data", async () => {
+    expect.assertions(1);
+
     vi.mocked(getEntry).mockResolvedValue({
       data: { title: "Test" },
     });
@@ -95,11 +126,14 @@ describe("resolveTranslations", () => {
     } as const;
 
     const result = await resolveTranslations(translations);
+
     expect(result).toBeNull();
   });
 
   it("handles mixed valid and invalid entries", async () => {
-    vi.mocked(getEntry as GetEntryMock).mockImplementation(async (ref) => {
+    expect.assertions(1);
+
+    vi.mocked(getEntry as GetEntryMock).mockImplementation((ref) => {
       if (ref.id === "home") {
         return { id: ref.id, data: { route: "/test/home" } };
       }
@@ -112,6 +146,7 @@ describe("resolveTranslations", () => {
     } as const;
 
     const result = await resolveTranslations(translations);
-    expect(result).toEqual([{ locale: "en", route: "/test/home" }]);
+
+    expect(result).toStrictEqual([{ locale: "en", route: "/test/home" }]);
   });
 });

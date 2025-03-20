@@ -4,9 +4,9 @@ import { getProject, getProjectPreview } from "./projects";
 
 describe("get-project-preview", () => {
   it("returns a project preview from a collection entry", async () => {
-    const result = await getProjectPreview(projectFixture);
-
     expect.assertions(1);
+
+    const result = await getProjectPreview(projectFixture);
 
     expect(result).toMatchInlineSnapshot(`
       {
@@ -33,9 +33,9 @@ describe("get-project-preview", () => {
 
 describe("get-project", () => {
   it("returns a project from a collection entry", async () => {
-    const result = await getProject(projectFixture);
-
     expect.assertions(1);
+
+    const result = await getProject(projectFixture);
 
     expect(result).toMatchInlineSnapshot(`
       {

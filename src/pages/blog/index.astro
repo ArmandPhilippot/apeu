@@ -14,7 +14,7 @@ import { getWebPageGraph } from "../../lib/schema-dts/graphs/webpage-graph";
 import { useI18n } from "../../utils/i18n";
 
 const { locale, route, translate, translatePlural } = useI18n(
-  Astro.currentLocale,
+  Astro.currentLocale
 );
 const { Content, ...page } = await queryEntry({
   collection: "pages",
@@ -41,10 +41,10 @@ const { entries: recentPosts, total: totalPosts } = await queryCollection(
     format: "preview",
     orderBy: { key: "publishedOn", order: "DESC" },
     where: { locale },
-  },
+  }
 );
 const getPostCTA = (
-  title: string,
+  title: string
 ): ComponentProps<typeof CollectionCard>["cta"] => {
   return {
     ariaLabel: translate("cta.read.more.a11y", { title }),
@@ -126,7 +126,7 @@ const getPostCTA = (
     </Box>
     <CardsList isContainer items={categories} sizeMinCols="27rem">
       {
-        ({ meta, ...cat }: (typeof categories)[number]) => (
+        ({ meta: _meta, ...cat }: (typeof categories)[number]) => (
           <CollectionCard
             class="category-card"
             elevation="raised"

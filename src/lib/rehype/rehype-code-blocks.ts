@@ -1,3 +1,4 @@
+import { resolve } from "node:path";
 import type {
   ElementContent,
   Element as HastElement,
@@ -9,8 +10,10 @@ import type {
   MdxJsxAttribute,
   MdxJsxFlowElementHast,
 } from "mdast-util-mdx-jsx";
-import { resolve } from "node:path";
-import type { Plugin as UnifiedPlugin } from "unified";
+import type {
+  Transformer as UnifiedTransformer,
+  Plugin as UnifiedPlugin,
+} from "unified";
 import { visit } from "unist-util-visit";
 import { isString } from "../../utils/type-checks";
 
@@ -18,7 +21,7 @@ import { isString } from "../../utils/type-checks";
 
 export const CODE_BLOCK_NAME = "CodeBlock";
 export const CODE_BLOCK_PATH = resolve(
-  "src/components/molecules/code-block/code-block.astro",
+  "src/components/molecules/code-block/code-block.astro"
 );
 
 const getAttribute = (name: string, value: string): MdxJsxAttribute => {
@@ -30,7 +33,7 @@ const getAttribute = (name: string, value: string): MdxJsxAttribute => {
 };
 
 const getLangAttribute = (
-  classNames: Properties[keyof Properties],
+  classNames: Properties[keyof Properties]
 ): MdxJsxAttribute | undefined => {
   if (!Array.isArray(classNames)) return undefined;
 
@@ -39,20 +42,22 @@ const getLangAttribute = (
     .find((className) => className.startsWith("language-"));
   const lang = langClass?.replace("language-", "");
 
-  return lang ? getAttribute("lang", lang) : undefined;
+  return isString(lang) ? getAttribute("lang", lang) : undefined;
 };
 
 const getAttributeFromKeyValuePair = (prop: string, separator: string) => {
   const [key, value] = prop.split(separator);
 
-  return key && value ? getAttribute(key, value) : undefined;
+  return isString(key) && isString(value)
+    ? getAttribute(key, value)
+    : undefined;
 };
 
 const getAttributeFromBooleanProp = (prop: string) =>
   getAttribute(prop, "true");
 
 const getAttributesFromMetaString = (metaString: string): MdxJsxAttribute[] => {
-  const notQuotedSpaces = /\s+(?=(?:[^'"]*['"][^'"]*['"])*[^'"]*$)/;
+  const notQuotedSpaces = /\s+(?=(?:(?:[^"']*["']){2})*[^"']*$)/;
   const props = metaString.split(notQuotedSpaces);
   const keyValueSeparator = "=";
   const attrs: MdxJsxAttribute[] = [];
@@ -61,7 +66,7 @@ const getAttributesFromMetaString = (metaString: string): MdxJsxAttribute[] => {
     if (prop.includes(keyValueSeparator)) {
       const attr = getAttributeFromKeyValuePair(prop, keyValueSeparator);
 
-      if (attr) attrs.push(attr);
+      if (attr !== undefined) attrs.push(attr);
     } else {
       attrs.push(getAttributeFromBooleanProp(prop));
     }
@@ -71,7 +76,7 @@ const getAttributesFromMetaString = (metaString: string): MdxJsxAttribute[] => {
 };
 
 const convertPropertiesToAttributes = (
-  props: Properties,
+  props: Properties
 ): MdxJsxAttribute[] => {
   const attrs: MdxJsxAttribute[] = [];
 
@@ -79,7 +84,7 @@ const convertPropertiesToAttributes = (
     if (prop === "className") {
       const langAttr = getLangAttribute(value);
 
-      if (langAttr) attrs.push(langAttr);
+      if (langAttr !== undefined) attrs.push(langAttr);
     } else if (prop === "metastring" && isString(value)) {
       attrs.push(...getAttributesFromMetaString(value));
     }
@@ -107,13 +112,13 @@ const convertChildrenToCodeAttribute = (children: ElementContent[]) => {
 };
 
 /**
- * Build a Hast element equivalent to: `<CodeBlock code={code} lang={lang} />`
+ * Build a Hast element equivalent to: `<CodeBlock code={code} lang={lang} />`.
  *
- * @param {HastElement} codeNode - The `<code />` node.
+ * @param {HastElement} codeNode - A node describing a code element.
  * @returns {MdxJsxFlowElementHast} The Hast element.
  */
 const buildCodeBlockElement = (
-  codeNode: HastElement,
+  codeNode: HastElement
 ): MdxJsxFlowElementHast => {
   return {
     name: CODE_BLOCK_NAME,
@@ -160,29 +165,33 @@ const createCodeBlockImportStatement = (): RootContent => {
 
 /**
  * Rehype plugin to use the custom CodeBlock component.
+ *
+ * @returns {UnifiedTransformer<Root>} A transformer function that modifies the AST in place.
  */
-export const rehypeCodeBlocks: UnifiedPlugin<[], Root> = () => (tree, file) => {
-  if (file.extname !== ".mdx") return;
-  /*
-   * We need to cast because of a TypeScript's type narrowing limitation
-   * @see https://typescript-eslint.io/rules/no-unnecessary-condition#when-not-to-use-it
-   */
-  let isImportNeeded = false as boolean;
+export const rehypeCodeBlocks: UnifiedPlugin<[], Root> =
+  (): UnifiedTransformer<Root> => (tree, file) => {
+    if (file.extname !== ".mdx") return;
+    /*
+     * We need to cast because of a TypeScript's type narrowing limitation.
+     *
+     * @see https://typescript-eslint.io/rules/no-unnecessary-condition#when-not-to-use-it
+     */
+    let isImportNeeded = false as boolean;
 
-  visit(tree, "element", (node, index, nodeParent) => {
-    if (node.tagName !== "pre") return;
+    visit(tree, "element", (node, index, nodeParent) => {
+      if (node.tagName !== "pre") return;
 
-    const codeNode = node.children[0];
+      const [codeNode] = node.children;
 
-    if (codeNode?.type !== "element" || codeNode.tagName !== "code") return;
+      if (codeNode?.type !== "element" || codeNode.tagName !== "code") return;
 
-    const component = buildCodeBlockElement(codeNode);
+      const component = buildCodeBlockElement(codeNode);
 
-    isImportNeeded = true;
+      isImportNeeded = true;
 
-    // Replace the pre element with our component
-    nodeParent?.children.splice(index ?? 0, 1, component);
-  });
+      // Replace the pre element with our component
+      nodeParent?.children.splice(index ?? 0, 1, component);
+    });
 
-  if (isImportNeeded) tree.children.unshift(createCodeBlockImportStatement());
-};
+    if (isImportNeeded) tree.children.unshift(createCodeBlockImportStatement());
+  };

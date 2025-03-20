@@ -13,6 +13,9 @@ describe("TextField", () => {
   });
 
   it<LocalTestContext>("can render an input", async ({ container }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(2);
+
     const props = {
       type: "date",
     } satisfies ComponentProps<typeof TextField>;
@@ -20,21 +23,19 @@ describe("TextField", () => {
       props,
     });
 
-    expect.assertions(2);
-
     expect(result).toContain("<input");
     expect(result).toContain(`type="${props.type}"`);
   });
 
   it<LocalTestContext>("can render a textarea", async ({ container }) => {
+    expect.assertions(1);
+
     const props = {
       type: "textarea",
     } satisfies ComponentProps<typeof TextField>;
     const result = await container.renderToString(TextField, {
       props,
     });
-
-    expect.assertions(1);
 
     expect(result).toContain("<textarea");
   });

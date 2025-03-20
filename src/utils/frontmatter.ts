@@ -6,13 +6,13 @@ import { isNumber } from "./type-checks";
 /**
  * Retrieve the meta from Astro's remarkPluginFrontmatter.
  *
- * @param {Record<string, unknown>} remarkPluginFrontmatter - The frontmatter
- * @param {AvailableLanguage} locale - The current locale
+ * @param {Record<string, unknown>} remarkPluginFrontmatter - The Markdown frontmatter.
+ * @param {AvailableLanguage} locale - The current locale.
  * @returns {RemarkPluginFrontmatterMeta} The meta stored in the frontmatter.
  */
 export const getMetaFromRemarkPluginFrontmatter = (
   remarkPluginFrontmatter: Record<string, unknown>,
-  locale: AvailableLanguage,
+  locale: AvailableLanguage
 ): RemarkPluginFrontmatterMeta => {
   const readingTime = isNumber(remarkPluginFrontmatter.wordsCount)
     ? getReadingTime(remarkPluginFrontmatter.wordsCount, locale)

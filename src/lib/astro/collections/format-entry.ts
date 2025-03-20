@@ -30,12 +30,23 @@ export type FormatEntryReturnMap<F extends EntryFormat | undefined> = {
   tags: F extends "full" ? typeof getTaxonomy : typeof getTaxonomyPreview;
 };
 
+/* eslint-disable complexity -- I should refactor this but the only way to make TypeScript happy is the switch statement. So I leave it as it is for now since this is working. */
+
+/**
+ * Format a collection entry to obtain either a full formatted entry or only a preview.
+ *
+ * @template C, F
+ * @param {CollectionKey} entry - The collection entry.
+ * @param {EntryFormat} [format] - The format of the returned entry.
+ * @returns {Promise<ReturnType<FormatEntryReturnMap<F>[C]>>} The formatted entry.
+ * @throws When the collection is invalid.
+ */
 export async function formatEntry<
   C extends CollectionKey,
   F extends EntryFormat = "full",
 >(
   entry: CollectionEntry<C> | DataEntryMap[C][keyof DataEntryMap[C] & string],
-  format?: F,
+  format?: F
 ): Promise<ReturnType<FormatEntryReturnMap<F>[C]>>;
 export async function formatEntry<
   C extends CollectionKey,
@@ -43,7 +54,7 @@ export async function formatEntry<
 >(
   // The DataEntryMap part is required due to the return type of getEntry...
   entry: CollectionEntry<C> | DataEntryMap[C][keyof DataEntryMap[C] & string],
-  format?: F,
+  format?: F
 ) {
   const isFullVersion = format !== "preview";
 
@@ -71,3 +82,4 @@ export async function formatEntry<
       throw new Error("Unsupported collection name.");
   }
 }
+/* eslint-enable complexity */

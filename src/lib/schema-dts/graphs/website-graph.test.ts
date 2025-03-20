@@ -3,9 +3,7 @@ import { CONFIG } from "../../../utils/constants";
 import { getWebSiteGraph } from "./website-graph";
 
 vi.mock("../../../utils/constants", async (importOriginal) => {
-  const mod =
-    // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-    await importOriginal<typeof import("../../../utils/constants")>();
+  const mod = await importOriginal<typeof import("../../../utils/constants")>();
   return {
     ...mod,
     CONFIG: {
@@ -19,9 +17,7 @@ vi.mock("../../../utils/constants", async (importOriginal) => {
 });
 
 vi.mock("../../../utils/url", async (importOriginal) => {
-  const mod =
-    // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-    await importOriginal<typeof import("../../../utils/url")>();
+  const mod = await importOriginal<typeof import("../../../utils/url")>();
   return {
     ...mod,
     getWebsiteUrl: () => "https://example.test",

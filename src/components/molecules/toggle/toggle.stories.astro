@@ -23,7 +23,7 @@ const seo: ComponentProps<typeof PageLayout>["seo"] = {
 };
 
 const getItems = (
-  name: string,
+  name: string
 ): ComponentProps<typeof ToggleComponent>["items"] => [
   { id: `${name}-item-1`, label: "Item 1", value: "item-1" },
   { id: `${name}-item-2`, label: "Item 2", value: "item-2" },
@@ -31,7 +31,7 @@ const getItems = (
 ];
 
 const getItemsWithIcon = (
-  name: string,
+  name: string
 ): ComponentProps<typeof ToggleComponent>["items"] => [
   { icon: "caret", id: `${name}-item-1`, label: "Item 1", value: "item-1" },
   { icon: "gear", id: `${name}-item-2`, label: "Item 2", value: "item-2" },

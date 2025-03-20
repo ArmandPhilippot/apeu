@@ -15,6 +15,9 @@ describe("RadioGroup", () => {
   it<LocalTestContext>("renders a group of radio buttons", async ({
     container,
   }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(2);
+
     const props = {
       label: "pariatur dolorem ipsum",
       name: "optio",
@@ -24,8 +27,6 @@ describe("RadioGroup", () => {
       props,
       slots: { default: items },
     });
-
-    expect.assertions(2);
 
     expect(result).toContain(props.label);
     expect(result).toContain(items);

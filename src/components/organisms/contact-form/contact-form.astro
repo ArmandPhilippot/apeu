@@ -184,10 +184,10 @@ const fields = [
      *
      * @param {Array<keyof MailDataSchema>} fieldNames - The fields to reset.
      */
-    #resetFieldsErrorsLists(fieldNames: Array<keyof MailDataSchema>) {
+    #resetFieldsErrorsLists(fieldNames: (keyof MailDataSchema)[]) {
       for (const fieldName of fieldNames) {
         const list = this.querySelector<HTMLUListElement>(
-          `#${this.id}-${fieldName}-errors`,
+          `#${this.id}-${fieldName}-errors`
         );
 
         if (list) {
@@ -205,7 +205,7 @@ const fields = [
      */
     #updateFieldErrorsList(fieldName: keyof MailDataSchema, errors: string[]) {
       const list = this.querySelector<HTMLUListElement>(
-        `#${this.id}-${fieldName}-errors`,
+        `#${this.id}-${fieldName}-errors`
       );
 
       if (list) {

@@ -12,19 +12,17 @@ type Props = HTMLAttributes<"form"> & {
 const { altLanguages, class: className, id, ...attrs } = Astro.props;
 const { locale, route, translate } = useI18n(Astro.currentLocale);
 const languages = Object.fromEntries(
-  Object.entries(availableNamedLanguages).map(([lang, langName]) => {
-    return [
-      lang,
-      {
-        name: langName,
-        route:
-          lang === locale
-            ? Astro.url.href
-            : (altLanguages?.find((altLang) => altLang.locale === lang)
-                ?.route ?? route("home", lang)),
-      },
-    ];
-  }),
+  Object.entries(availableNamedLanguages).map(([lang, langName]) => [
+    lang,
+    {
+      name: langName,
+      route:
+        lang === locale
+          ? Astro.url.href
+          : (altLanguages?.find((altLang) => altLang.locale === lang)?.route ??
+            route("home", lang)),
+    },
+  ])
 );
 ---
 
@@ -59,8 +57,7 @@ const languages = Object.fromEntries(
     display: grid;
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: auto;
-    align-items: center;
-    justify-items: center;
+    place-items: center center;
 
     @media (--xxs-or-above) {
       grid-template-columns: max-content minmax(0, 1fr);

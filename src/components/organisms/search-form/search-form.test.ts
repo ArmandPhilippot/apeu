@@ -13,6 +13,9 @@ describe("SearchForm", () => {
   });
 
   it<LocalTestContext>("renders a search form", async ({ container }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(3);
+
     const props = {
       id: "aliquid",
       queryParam: "quasi",
@@ -22,14 +25,14 @@ describe("SearchForm", () => {
       props,
     });
 
-    expect.assertions(3);
-
     expect(result).toContain("</form>");
     expect(result).toContain(`id="${props.id}"`);
     expect(result).toContain(`type="search"`);
   });
 
   it<LocalTestContext>("can be inlined", async ({ container }) => {
+    expect.assertions(1);
+
     const props = {
       id: "aliquid",
       isInline: true,
@@ -40,28 +43,26 @@ describe("SearchForm", () => {
       props,
     });
 
-    expect.assertions(1);
-
     expect(result).toContain("inlined");
   });
 
   it<LocalTestContext>("throws an error if the results page is invalid", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       id: "aliquid",
       queryParam: "quasi",
       resultsPage: "#qui-animi-impedit",
     } satisfies ComponentProps<typeof SearchForm>;
 
-    expect.assertions(1);
-
     await expect(async () =>
       container.renderToString(SearchForm, {
         props,
-      }),
+      })
     ).rejects.toThrowErrorMatchingInlineSnapshot(
-      `[Error: \`resultsPage\` must be a valid route starting with \`/\`.]`,
+      `[Error: \`resultsPage\` must be a valid route starting with \`/\`.]`
     );
   });
 });

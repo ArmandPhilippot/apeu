@@ -13,6 +13,9 @@ describe("NavItem", () => {
   });
 
   it<LocalTestContext>("renders a link", async ({ container }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(2);
+
     const props = {
       href: "#eius-voluptas-iste",
     } satisfies Omit<ComponentProps<typeof NavItem<"a">>, "children">;
@@ -22,13 +25,14 @@ describe("NavItem", () => {
       slots: { default: body },
     });
 
-    expect.assertions(2);
-
     expect(result).toContain(body);
     expect(result).toContain(props.href);
   });
 
   it<LocalTestContext>("can render a label", async ({ container }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(2);
+
     const props = {
       as: "label",
     } satisfies ComponentProps<typeof NavItem<"label">>;
@@ -38,13 +42,13 @@ describe("NavItem", () => {
       slots: { default: label },
     });
 
-    expect.assertions(2);
-
     expect(result).toContain(label);
     expect(result).toContain("</label>");
   });
 
   it<LocalTestContext>("can use the block variant", async ({ container }) => {
+    expect.assertions(1);
+
     const props = {
       href: "#eius-voluptas-iste",
       isBlock: true,
@@ -55,12 +59,12 @@ describe("NavItem", () => {
       slots: { default: body },
     });
 
-    expect.assertions(1);
-
     expect(result).toContain('data-block="true"');
   });
 
   it<LocalTestContext>("can be bordered", async ({ container }) => {
+    expect.assertions(1);
+
     const props = {
       href: "#eius-voluptas-iste",
       isBordered: true,
@@ -71,14 +75,14 @@ describe("NavItem", () => {
       slots: { default: body },
     });
 
-    expect.assertions(1);
-
     expect(result).toContain('data-border="true"');
   });
 
   it<LocalTestContext>("can render an item with an SVG icon", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       href: "#dolorem-possimus-impedit",
       icon: "caret",
@@ -88,8 +92,6 @@ describe("NavItem", () => {
       props,
       slots: { default: anchor },
     });
-
-    expect.assertions(1);
 
     expect(result).toContain(`</svg>`);
   });

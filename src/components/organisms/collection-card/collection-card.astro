@@ -133,7 +133,7 @@ const collectionIcon = {
 
 const { extracted: frontmatter, remaining: meta } = splitObject(
   entry.meta,
-  featuredMeta?.key,
+  featuredMeta?.key
 );
 const description = isString(entry.description)
   ? entry.description
@@ -212,7 +212,7 @@ const isQuote = "isQuote" in entry ? entry.isQuote : false;
   }
   {
     cta ? (
-      <div class="collection-card-cta" slot={!!cta ? "cta" : ""}>
+      <div class="collection-card-cta" slot={cta ? "cta" : ""}>
         <Button
           aria-label={cta.ariaLabel}
           as="a"
@@ -224,8 +224,8 @@ const isQuote = "isQuote" in entry ? entry.isQuote : false;
         </Button>
         {"feed" in entry && entry.feed ? (
           <Button
-            as="a"
             aria-label={translate("cta.open.feed.a11y")}
+            as="a"
             href={entry.feed}
             isExternal
           >

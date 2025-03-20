@@ -4,9 +4,9 @@ import { getBlogPost, getBlogPostPreview } from "./blog-posts";
 
 describe("get-blog-post-preview", () => {
   it("returns a blog post preview from a blogPosts collection entry", async () => {
-    const result = await getBlogPostPreview(blogPostFixture);
-
     expect.assertions(1);
+
+    const result = await getBlogPostPreview(blogPostFixture);
 
     expect(result).toMatchInlineSnapshot(`
       {
@@ -31,9 +31,9 @@ describe("get-blog-post-preview", () => {
 
 describe("get-blog-post", () => {
   it("returns a blog post from a blogPosts collection entry", async () => {
-    const result = await getBlogPost(blogPostFixture);
-
     expect.assertions(1);
+
+    const result = await getBlogPost(blogPostFixture);
 
     expect(result).toMatchInlineSnapshot(`
       {

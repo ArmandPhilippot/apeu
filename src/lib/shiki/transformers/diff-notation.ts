@@ -1,4 +1,8 @@
-import type { Element as HastElement } from "hast";
+import type {
+  ElementContent,
+  Element as HastElement,
+  Text as HastText,
+} from "hast";
 import type { ShikiTransformer } from "shiki";
 
 type ShikiDiffNotationOptions = {
@@ -7,17 +11,35 @@ type ShikiDiffNotationOptions = {
    */
   diffClass?: string;
   /**
-   * Class for added lines
+   * Class for added lines.
    */
   lineAddedClass?: string;
   /**
-   * Class for removed lines
+   * Class for removed lines.
    */
   lineRemovedClass?: string;
 };
 
+const getToken = (el: ElementContent | undefined) => {
+  if (el?.type === "element") return el.children[0];
+  if (el?.type === "text") return el;
+  return null;
+};
+
+const getTokenValue = (token: HastText) => {
+  if (token.value.startsWith("+")) return "+";
+  if (token.value.startsWith("-")) return "-";
+  return null;
+};
+
+/**
+ * A Shiki transformer to support diff notation.
+ *
+ * @param {ShikiDiffNotationOptions} [options] - The diff notation config.
+ * @returns {ShikiTransformer} A transformer to modify the AST.
+ */
 export function shikiDiffNotation(
-  options: ShikiDiffNotationOptions = {},
+  options: ShikiDiffNotationOptions = {}
 ): ShikiTransformer {
   const {
     diffClass = "diff",
@@ -29,29 +51,20 @@ export function shikiDiffNotation(
     name: "shiki-diff-notation",
     code(node: HastElement) {
       for (const line of node.children.filter(
-        (child) => child.type === "element",
+        (child) => child.type === "element"
       )) {
         for (const child of line.children) {
           if (child.type !== "element") continue;
 
           /* When using `+` or `-` in code blocks, they are wrapped with a
            * `span` so we need to isolate the span and check its first child. */
-          const el = child.children[0];
+          const [el] = child.children;
 
-          const token =
-            el?.type === "element"
-              ? el.children[0]
-              : el?.type === "text"
-                ? el
-                : null;
+          const token = getToken(el);
 
-          if (!token || token.type !== "text") continue;
+          if (token?.type !== "text") continue;
 
-          const tokenValue = token.value.startsWith("+")
-            ? "+"
-            : token.value.startsWith("-")
-              ? "-"
-              : null;
+          const tokenValue = getTokenValue(token);
 
           if (tokenValue) {
             /* We cannot use `child.children.shift()` because in addition of

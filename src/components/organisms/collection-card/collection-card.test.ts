@@ -7,12 +7,14 @@ vi.mock("../../../utils/i18n", async () => {
   const originalModule = await vi.importActual("../../../utils/i18n");
   return {
     ...originalModule,
-    useI18n: vi.fn(() => ({
-      locale: "en",
-      translate: (key: string) => `translated_${key}`,
-      translatePlural: (key: string, { count }: { count: number }) =>
-        `translated_${key}_${count}`,
-    })),
+    useI18n: vi.fn(() => {
+      return {
+        locale: "en",
+        translate: (key: string) => `translated_${key}`,
+        translatePlural: (key: string, { count }: { count: number }) =>
+          `translated_${key}_${count}`,
+      };
+    }),
   };
 });
 
@@ -28,6 +30,9 @@ describe("CollectionCard", () => {
   it<LocalTestContext>("renders basic card with required props", async ({
     container,
   }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(4);
+
     const props = {
       entry: {
         collection: "blogPosts",
@@ -50,6 +55,8 @@ describe("CollectionCard", () => {
   it<LocalTestContext>("renders card with featured meta", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       entry: {
         collection: "blogPosts",
@@ -76,6 +83,8 @@ describe("CollectionCard", () => {
   it<LocalTestContext>("renders card with CTA button", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       cta: {
         label: "Read More",
@@ -99,6 +108,9 @@ describe("CollectionCard", () => {
   it<LocalTestContext>("renders card with cover image", async ({
     container,
   }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(4);
+
     const props = {
       entry: {
         collection: "blogPosts",
@@ -131,6 +143,8 @@ describe("CollectionCard", () => {
   it<LocalTestContext>("renders card with localized description", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       entry: {
         collection: "blogroll",
@@ -151,6 +165,9 @@ describe("CollectionCard", () => {
   it<LocalTestContext>("renders card with feed button when available", async ({
     container,
   }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(2);
+
     const props = {
       entry: {
         collection: "blogroll",
@@ -174,6 +191,8 @@ describe("CollectionCard", () => {
   });
 
   it<LocalTestContext>("sets correct heading level", async ({ container }) => {
+    expect.assertions(1);
+
     const props = {
       entry: {
         collection: "blogPosts",
@@ -192,6 +211,8 @@ describe("CollectionCard", () => {
   });
 
   it<LocalTestContext>("handles external CTA links", async ({ container }) => {
+    expect.assertions(1);
+
     const props = {
       entry: {
         collection: "bookmarks",
@@ -215,6 +236,8 @@ describe("CollectionCard", () => {
   it<LocalTestContext>("renders CTA with custom aria-label", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       entry: {
         collection: "blogPosts",
@@ -239,6 +262,9 @@ describe("CollectionCard", () => {
   it<LocalTestContext>("renders collection icon and label when showCollection is true", async ({
     container,
   }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(3);
+
     const props = {
       entry: {
         collection: "blogPosts",
@@ -261,6 +287,8 @@ describe("CollectionCard", () => {
   it<LocalTestContext>("does not render CTA section when cta is undefined", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       entry: {
         collection: "blogPosts",

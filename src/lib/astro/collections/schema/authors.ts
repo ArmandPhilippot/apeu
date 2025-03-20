@@ -4,6 +4,7 @@ import {
   isValidLanguageCode,
 } from "../../../../utils/locales";
 import { globLoader } from "../../loaders/glob-loader";
+import { isString } from "../../../../utils/type-checks";
 
 export const authors = defineCollection({
   loader: globLoader("authors"),
@@ -21,12 +22,14 @@ export const authors = defineCollection({
         job: z.string().optional(),
         country: z
           .string()
+          /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
           .length(2)
           .toUpperCase()
           .refine(isValidCountryCode)
           .optional(),
         nationality: z
           .string()
+          /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
           .length(2)
           .toUpperCase()
           .refine(isValidCountryCode)
@@ -52,9 +55,11 @@ export const authors = defineCollection({
         return {
           ...author,
           // `<Image />` component expect the src to be the full object.
-          ...(author.avatar ? { avatar: { src: author.avatar } } : {}),
+          ...(author.avatar === undefined
+            ? {}
+            : { avatar: { src: author.avatar } }),
           name: `${author.firstName} ${author.lastName}`,
-          ...(author.firstNameIPA && author.lastNameIPA
+          ...(isString(author.firstNameIPA) && isString(author.lastNameIPA)
             ? { nameIPA: `${author.firstNameIPA} ${author.lastNameIPA}` }
             : {}),
         };

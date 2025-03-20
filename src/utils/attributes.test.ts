@@ -13,7 +13,7 @@ describe("get-css-vars", () => {
     };
 
     expect(getCSSVars(cssVars)).toMatchInlineSnapshot(
-      `"--foo: bar; --baz: 42px;"`,
+      `"--foo: bar; --baz: 42px;"`
     );
   });
 
@@ -33,7 +33,7 @@ describe("get-spacing-var-value", () => {
     const spacing: Parameters<typeof getSpacingVarValue>[0] = "md";
 
     expect(getSpacingVarValue(spacing)).toMatchInlineSnapshot(
-      `"var(--spacing-md)"`,
+      `"var(--spacing-md)"`
     );
   });
 

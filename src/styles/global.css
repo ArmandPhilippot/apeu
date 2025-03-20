@@ -1,19 +1,19 @@
 @charset "utf-8";
 
 /* Reset */
-@import "modern-normalize/modern-normalize.css";
+@import url("modern-normalize/modern-normalize.css");
 
 /* Base */
-@import "base/accessibility.css";
-@import "base/fonts.css";
-@import "base/typography.css";
+@import url("base/accessibility.css");
+@import url("base/fonts.css");
+@import url("base/typography.css");
 
 /* Variables */
-@import "variables/borders.css";
-@import "variables/colors.css";
-@import "variables/fonts.css";
-@import "variables/icons.css";
-@import "variables/sizes.css";
-@import "variables/shadows.css";
-@import "variables/spacings.css";
-@import "variables/utilities.css";
+@import url("variables/borders.css");
+@import url("variables/colors.css");
+@import url("variables/fonts.css");
+@import url("variables/icons.css");
+@import url("variables/sizes.css");
+@import url("variables/shadows.css");
+@import url("variables/spacings.css");
+@import url("variables/utilities.css");

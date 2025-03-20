@@ -15,14 +15,15 @@ describe("List", () => {
   it<LocalTestContext>("renders its children in an unordered list by default", async ({
     container,
   }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(2);
+
     const props = {} satisfies ComponentProps<typeof List>;
     const body = "id quibusdam eius";
     const result = await container.renderToString(List, {
       props,
       slots: { default: body },
     });
-
-    expect.assertions(2);
 
     expect(result).toContain("</ul>");
     expect(result).toContain(body);
@@ -31,6 +32,8 @@ describe("List", () => {
   it<LocalTestContext>("can render an unordered list", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       as: "ul",
     } satisfies ComponentProps<typeof List>;
@@ -40,12 +43,12 @@ describe("List", () => {
       slots: { default: body },
     });
 
-    expect.assertions(1);
-
     expect(result).toContain("</ul>");
   });
 
   it<LocalTestContext>("can render an ordered list", async ({ container }) => {
+    expect.assertions(1);
+
     const props = {
       as: "ol",
     } satisfies ComponentProps<typeof List>;
@@ -55,12 +58,12 @@ describe("List", () => {
       slots: { default: body },
     });
 
-    expect.assertions(1);
-
     expect(result).toContain("</ol>");
   });
 
   it<LocalTestContext>("can render a list inlined", async ({ container }) => {
+    expect.assertions(1);
+
     const props = {
       isInline: true,
     } satisfies ComponentProps<typeof List>;
@@ -70,12 +73,12 @@ describe("List", () => {
       slots: { default: body },
     });
 
-    expect.assertions(1);
-
     expect(result).toContain('data-inline="true"');
   });
 
   it<LocalTestContext>("can hide the list marker", async ({ container }) => {
+    expect.assertions(1);
+
     const props = {
       hideMarker: true,
     } satisfies ComponentProps<typeof List>;
@@ -84,8 +87,6 @@ describe("List", () => {
       props,
       slots: { default: body },
     });
-
-    expect.assertions(1);
 
     expect(result).toContain('data-marker="false"');
   });

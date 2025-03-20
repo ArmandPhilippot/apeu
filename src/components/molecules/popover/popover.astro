@@ -74,7 +74,10 @@ const modal = await Astro.slots.render("modal", [modalId]);
         overflow-y: auto;
         z-index: 10;
         content-visibility: auto;
-        transition: all 0.35s ease-in-out 0s;
+        transition:
+          opacity 0.35s ease-in-out 0s,
+          transform 0.35s ease-in-out 0s,
+          visibility 0.35s ease-in-out 0s;
       }
     }
   }
@@ -144,22 +147,22 @@ const modal = await Astro.slots.render("modal", [modalId]);
     connectedCallback() {
       this.ownerDocument.addEventListener(
         "click",
-        this.handleClickOrFocusOutside,
+        this.handleClickOrFocusOutside
       );
       this.ownerDocument.addEventListener(
         "focusin",
-        this.handleClickOrFocusOutside,
+        this.handleClickOrFocusOutside
       );
     }
 
     disconnectedCallback() {
       this.ownerDocument.removeEventListener(
         "click",
-        this.handleClickOrFocusOutside,
+        this.handleClickOrFocusOutside
       );
       this.ownerDocument.removeEventListener(
         "focusin",
-        this.handleClickOrFocusOutside,
+        this.handleClickOrFocusOutside
       );
     }
 

@@ -1,20 +1,24 @@
+import { join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { globbySync } from "globby";
-import { join } from "path";
 import slash from "slash";
-import { fileURLToPath } from "url";
 import { describe, expect, it, vi } from "vitest";
 import { createAstroConfigSetupMockContext } from "../../../../tests/mocks/integrations";
 import { STORIES_EXT } from "../../../utils/constants";
 import { getStoryRoute } from "../../../utils/stories";
 import { componentsStories } from "./components-stories";
 
-vi.mock("globby", () => ({
-  globbySync: vi.fn(),
-}));
+vi.mock("globby", () => {
+  return {
+    globbySync: vi.fn(),
+  };
+});
 
-vi.mock("../../../utils/stories", () => ({
-  getStoryRoute: vi.fn(),
-}));
+vi.mock("../../../utils/stories", () => {
+  return {
+    getStoryRoute: vi.fn(),
+  };
+});
 
 describe("components-stories", () => {
   it("should return an Astro integration", () => {
@@ -62,8 +66,10 @@ describe("components-stories", () => {
       expect(globbySync).toHaveBeenCalledWith(`**/*.${STORIES_EXT}`, {
         cwd: new URL("./src/components", mockContext.config.root),
       });
+      /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
       expect(getStoryRoute).toHaveBeenCalledTimes(2);
       expect(getStoryRoute).toHaveBeenNthCalledWith(1, mockStoryPaths[0]);
+      /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
       expect(getStoryRoute).toHaveBeenNthCalledWith(2, mockStoryPaths[1]);
     });
 
@@ -90,16 +96,18 @@ describe("components-stories", () => {
         slash(
           join(
             fileURLToPath(new URL("./src/components", mockContext.config.root)),
-            path,
-          ),
-        ),
+            path
+          )
+        )
       );
 
+      /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
       expect(mockContext.injectRoute).toHaveBeenCalledTimes(2);
       expect(mockContext.injectRoute).toHaveBeenNthCalledWith(1, {
         entrypoint: expectedEntrypoints[0],
         pattern: mockRoutes[0],
       });
+      /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
       expect(mockContext.injectRoute).toHaveBeenNthCalledWith(2, {
         entrypoint: expectedEntrypoints[1],
         pattern: mockRoutes[1],
@@ -122,7 +130,7 @@ describe("components-stories", () => {
       integration.hooks["astro:config:setup"](mockContext);
 
       expect(mockContext.logger.info).toHaveBeenCalledWith(
-        expect.stringContaining("Found 2 stories."),
+        expect.stringContaining("Found 2 stories.")
       );
     });
 
@@ -163,10 +171,10 @@ describe("components-stories", () => {
       integration.hooks["astro:config:setup"](mockContext);
 
       expect(mockContext.logger.info).toHaveBeenCalledWith(
-        expect.stringContaining("Found 1 story."),
+        expect.stringContaining("Found 1 story.")
       );
       expect(mockContext.logger.info).not.toHaveBeenCalledWith(
-        expect.stringContaining("\n"),
+        expect.stringContaining("\n")
       );
     });
 
@@ -186,10 +194,10 @@ describe("components-stories", () => {
       integration.hooks["astro:config:setup"](mockContext);
 
       expect(mockContext.logger.info).toHaveBeenCalledWith(
-        expect.stringContaining(`Found 1 story:`),
+        expect.stringContaining(`Found 1 story:`)
       );
       expect(mockContext.logger.info).toHaveBeenCalledWith(
-        expect.stringContaining(`- ${mockRoute}`),
+        expect.stringContaining(`- ${mockRoute}`)
       );
     });
   });

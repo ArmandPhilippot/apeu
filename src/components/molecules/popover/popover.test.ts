@@ -15,6 +15,9 @@ describe("Popover", () => {
   it<LocalTestContext>("renders a label, the modal and a controller", async ({
     container,
   }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(5);
+
     const props = {
       controllerId: "quasi",
       modalId: "tempora",
@@ -26,8 +29,6 @@ describe("Popover", () => {
       slots: { label, modal },
     });
 
-    expect.assertions(5);
-
     expect(result).toContain(`type="checkbox"`);
     expect(result).toContain(props.controllerId);
     expect(result).toContain(props.modalId);
@@ -38,6 +39,8 @@ describe("Popover", () => {
   it<LocalTestContext>("can open a modal to the bottom", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       controllerId: "quasi",
       modalId: "tempora",
@@ -50,14 +53,14 @@ describe("Popover", () => {
       slots: { label, modal },
     });
 
-    expect.assertions(1);
-
     expect(result).toContain('data-open-to="bottom"');
   });
 
   it<LocalTestContext>("can open a modal to the left", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       controllerId: "quasi",
       modalId: "tempora",
@@ -70,14 +73,14 @@ describe("Popover", () => {
       slots: { label, modal },
     });
 
-    expect.assertions(1);
-
     expect(result).toContain('data-open-to="left"');
   });
 
   it<LocalTestContext>("can open a modal to the right", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       controllerId: "quasi",
       modalId: "tempora",
@@ -90,12 +93,12 @@ describe("Popover", () => {
       slots: { label, modal },
     });
 
-    expect.assertions(1);
-
     expect(result).toContain('data-open-to="right"');
   });
 
   it<LocalTestContext>("can open a modal to the top", async ({ container }) => {
+    expect.assertions(1);
+
     const props = {
       controllerId: "quasi",
       modalId: "tempora",
@@ -108,50 +111,48 @@ describe("Popover", () => {
       slots: { label, modal },
     });
 
-    expect.assertions(1);
-
     expect(result).toContain('data-open-to="top"');
   });
 
   it<LocalTestContext>("throws an error when the label slot is missing", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       controllerId: "quasi",
       modalId: "tempora",
     } satisfies ComponentProps<typeof Popover>;
     const modal = "eius alias doloribus";
 
-    expect.assertions(1);
-
     await expect(async () =>
       container.renderToString(Popover, {
         props,
         slots: { modal },
-      }),
+      })
     ).rejects.toThrowErrorMatchingInlineSnapshot(
-      `[Error: A label slot is required.]`,
+      `[MissingSlotError: A label slot is required.]`
     );
   });
 
   it<LocalTestContext>("throws an error when the modal slot is missing", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       controllerId: "quasi",
       modalId: "tempora",
     } satisfies ComponentProps<typeof Popover>;
     const label = "pariatur dolorem ipsum";
 
-    expect.assertions(1);
-
     await expect(async () =>
       container.renderToString(Popover, {
         props,
         slots: { label },
-      }),
+      })
     ).rejects.toThrowErrorMatchingInlineSnapshot(
-      `[Error: A modal slot is required.]`,
+      `[MissingSlotError: A modal slot is required.]`
     );
   });
 });

@@ -44,24 +44,22 @@ const items = [
     </p>
     <NavListComponent items={items}>
       {
-        (item) => {
-          return (
-            <List>
-              <ListItem>
-                <code>icon:</code> {item.icon ?? "undefined"}
-              </ListItem>
-              <ListItem>
-                <code>iconSize:</code> {item.iconSize ?? "undefined"}
-              </ListItem>
-              <ListItem>
-                <code>label:</code> {item.label}
-              </ListItem>
-              <ListItem>
-                <code>url:</code> {item.url}
-              </ListItem>
-            </List>
-          );
-        }
+        (item) => (
+          <List>
+            <ListItem>
+              <code>icon:</code> {item.icon ?? "undefined"}
+            </ListItem>
+            <ListItem>
+              <code>iconSize:</code> {item.iconSize ?? "undefined"}
+            </ListItem>
+            <ListItem>
+              <code>label:</code> {item.label}
+            </ListItem>
+            <ListItem>
+              <code>url:</code> {item.url}
+            </ListItem>
+          </List>
+        )
       }
     </NavListComponent>
   </Fragment>

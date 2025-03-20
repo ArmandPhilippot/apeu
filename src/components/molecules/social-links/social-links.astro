@@ -26,8 +26,8 @@ const {
 
 <List {...attrs} class:list={["social-links", className]} hideMarker isInline>
   {
-    Object.entries(links).map(([medium, url]) => {
-      return url && isValidSocialMedium(medium) ? (
+    Object.entries(links).map(([medium, url]) =>
+      url && isValidSocialMedium(medium) ? (
         <ListItem>
           <SocialLink
             hideLabel={hideLabels}
@@ -36,8 +36,8 @@ const {
             url={url}
           />
         </ListItem>
-      ) : null;
-    })
+      ) : null
+    )
   }
 </List>
 

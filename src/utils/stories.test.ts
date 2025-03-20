@@ -27,23 +27,23 @@ describe("get-story-route", () => {
 describe("get-story-name-from-slug", () => {
   it("returns the story name from its slug", () => {
     const slug = "/the/story/slug";
-    const name = getStoryNameFromSlug(slug);
+    const storyName = getStoryNameFromSlug(slug);
 
-    expect(name).toMatchInlineSnapshot(`"Slug"`);
+    expect(storyName).toMatchInlineSnapshot(`"Slug"`);
   });
 
   it("can return the story name from slug separated by hyphens", () => {
     const slug = "/the/story/slug-separated-by-hyphens";
-    const name = getStoryNameFromSlug(slug);
+    const storyName = getStoryNameFromSlug(slug);
 
-    expect(name).toMatchInlineSnapshot(`"SlugSeparatedByHyphens"`);
+    expect(storyName).toMatchInlineSnapshot(`"SlugSeparatedByHyphens"`);
   });
 
   it("throws an error if the name can't be determined", () => {
     const slug = "";
 
     expect(() => getStoryNameFromSlug(slug)).toThrowErrorMatchingInlineSnapshot(
-      `[Error: Could not retrieve the story name from its slug. Are you sure this slug match a story?]`,
+      `[Error: Could not retrieve the story name from its slug. Are you sure this slug match a story?]`
     );
   });
 });

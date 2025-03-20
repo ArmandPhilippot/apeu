@@ -21,12 +21,6 @@ type Props = HTMLAttributes<"nav"> & {
    */
   last: number;
   /**
-   * The number of items per page.
-   *
-   * @default 5
-   */
-  perPage?: number | undefined;
-  /**
    * A function that provides the page link.
    *
    * @param {number} page - The page number.
@@ -46,7 +40,6 @@ const {
   current,
   isCentered = false,
   last,
-  perPage = 5,
   renderLink,
   siblings = 1,
   ...attrs
@@ -94,7 +87,7 @@ const ellipsis = "\u2026" as const;
         const isCurrentPage = page === current;
         const nextPage = list[index + 1];
 
-        if (isCurrentPage)
+        if (isCurrentPage) {
           return (
             <ListItem>
               <span
@@ -107,6 +100,7 @@ const ellipsis = "\u2026" as const;
               </span>
             </ListItem>
           );
+        }
 
         return (
           <Fragment>

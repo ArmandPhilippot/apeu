@@ -42,14 +42,14 @@ const { entries, total: totalPosts } = await queryCollection("blogPosts", {
   where: { categories: [page.id] },
 });
 const relatedPosts = entries.map(({ meta, ...post }) => {
-  const { category, ...remainingMeta } = meta;
+  const { category: _cat, ...remainingMeta } = meta;
   return {
     ...post,
     meta: remainingMeta,
   };
 });
 const getCTA = (
-  title: string,
+  title: string
 ): ComponentProps<typeof CollectionCard>["cta"] => {
   return {
     ariaLabel: translate("cta.read.more.a11y", { title }),

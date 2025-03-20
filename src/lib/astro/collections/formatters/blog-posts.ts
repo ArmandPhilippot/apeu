@@ -1,6 +1,7 @@
 import { render, type CollectionEntry } from "astro:content";
 import type { BlogPost, BlogPostPreview } from "../../../../types/data";
 import { getMetaFromRemarkPluginFrontmatter } from "../../../../utils/frontmatter";
+import { isObject } from "../../../../utils/type-checks";
 import { getAuthorLink } from "./authors";
 import {
   getCategoryFromReference,
@@ -9,8 +10,14 @@ import {
   resolveTranslations,
 } from "./utils";
 
+/**
+ * Convert a blog post collection entry to a BlogPostPreview object.
+ *
+ * @param {CollectionEntry<"blogPosts">} post - The blog post collection entry.
+ * @returns {Promise<BlogPostPreview>} An object describing the blog post preview.
+ */
 export const getBlogPostPreview = async (
-  post: CollectionEntry<"blogPosts">,
+  post: CollectionEntry<"blogPosts">
 ): Promise<BlogPostPreview> => {
   const { cover, locale, meta, seo, slug, ...postData } = post.data;
   const { authors, category, isDraft, tags, ...postMeta } = meta;
@@ -19,13 +26,13 @@ export const getBlogPostPreview = async (
   const { remarkPluginFrontmatter } = await render(post);
   const { readingTime } = getMetaFromRemarkPluginFrontmatter(
     remarkPluginFrontmatter,
-    locale,
+    locale
   );
 
   return {
     ...postData,
     collection: post.collection,
-    cover: cover
+    cover: isObject(cover)
       ? {
           ...(cover.position ? { position: cover.position } : {}),
           src: cover.src,
@@ -42,8 +49,14 @@ export const getBlogPostPreview = async (
   };
 };
 
+/**
+ * Convert a blog post collection entry to a BlogPost object.
+ *
+ * @param {CollectionEntry<"blogPosts">} post - The blog post collection entry.
+ * @returns {Promise<BlogPost>} An object describing the blog post.
+ */
 export const getBlogPost = async (
-  post: CollectionEntry<"blogPosts">,
+  post: CollectionEntry<"blogPosts">
 ): Promise<BlogPost> => {
   const preview = await getBlogPostPreview(post);
   const resolvedAuthors = await resolveReferences(post.data.meta.authors);
@@ -53,7 +66,7 @@ export const getBlogPost = async (
   return {
     ...preview,
     ...renderResult,
-    hasContent: !!post.body,
+    hasContent: post.body !== undefined && post.body !== "",
     meta: {
       ...preview.meta,
       authors: resolvedAuthors?.map(getAuthorLink) ?? [],

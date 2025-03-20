@@ -27,8 +27,9 @@ const {
   ...attrs
 } = Astro.props;
 
-if (isExternal && kind === "primary")
+if (isExternal && kind === "primary") {
   throw new Error("A button must not use primary kind for external resources!");
+}
 ---
 
 <Tag
@@ -217,8 +218,10 @@ if (isExternal && kind === "primary")
         [data-type="secondary"]
       ) {
       transition:
-        all 0.15s linear 0s,
-        outline 0.1s linear 0s;
+        box-shadow 0.15s linear 0s,
+        color 0.15s linear 0s,
+        outline-offset 0.1s linear 0s,
+        transform 0.15s linear 0s;
     }
 
     &:is([aria-busy="true"]) {

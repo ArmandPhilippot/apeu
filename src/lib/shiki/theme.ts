@@ -50,7 +50,7 @@ export const shikiTheme: ThemeRegistration = {
       name: "Constant Other",
       scope: "constant.other",
       settings: {
-        foreground: "var(--color-shiki-token-numeric)", // bash options
+        foreground: "var(--color-shiki-token-numeric)", // Bash options
       },
     },
     {

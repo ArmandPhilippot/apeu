@@ -1,8 +1,10 @@
 import { CONFIG } from "./constants";
 
 /**
- * Retrieve the website url (protocol + hostname)
+ * Retrieve the website url (protocol + hostname).
  *
- * @returns The url.
+ * @returns {string} The computed website url.
  */
-export const getWebsiteUrl = () => `${CONFIG.PROTOCOL}${CONFIG.HOST}` as const;
+export const getWebsiteUrl =
+  (): `${typeof CONFIG.PROTOCOL}${typeof CONFIG.HOST}` =>
+    `${CONFIG.PROTOCOL}${CONFIG.HOST}` as const;

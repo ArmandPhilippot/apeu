@@ -13,6 +13,8 @@ describe("Card", () => {
   });
 
   it<LocalTestContext>("can render the card body", async ({ container }) => {
+    expect.assertions(1);
+
     const props = {} satisfies ComponentProps<typeof Card>;
     const body = "a molestiae placeat";
     const result = await container.renderToString(Card, {
@@ -20,20 +22,19 @@ describe("Card", () => {
       slots: { default: body },
     });
 
-    expect.assertions(1);
-
     expect(result).toContain(body);
   });
 
   it<LocalTestContext>("can render the card heading", async ({ container }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(2);
+
     const props = {} satisfies ComponentProps<typeof Card>;
     const heading = "a molestiae placeat";
     const result = await container.renderToString(Card, {
       props,
       slots: { heading },
     });
-
-    expect.assertions(2);
 
     expect(result).toContain(heading);
     expect(result).toContain("</header>");
@@ -42,6 +43,9 @@ describe("Card", () => {
   it<LocalTestContext>("can render the card frontmatter", async ({
     container,
   }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(2);
+
     const props = {} satisfies ComponentProps<typeof Card>;
     const frontmatter = "a molestiae placeat";
     const result = await container.renderToString(Card, {
@@ -49,13 +53,14 @@ describe("Card", () => {
       slots: { frontmatter },
     });
 
-    expect.assertions(2);
-
     expect(result).toContain(frontmatter);
     expect(result).toContain("</header>");
   });
 
   it<LocalTestContext>("can render the card cover", async ({ container }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(2);
+
     const props = {} satisfies ComponentProps<typeof Card>;
     const cover = "a molestiae placeat";
     const result = await container.renderToString(Card, {
@@ -63,13 +68,14 @@ describe("Card", () => {
       slots: { cover },
     });
 
-    expect.assertions(2);
-
     expect(result).toContain(cover);
     expect(result).toContain("</header>");
   });
 
   it<LocalTestContext>("can render the card meta", async ({ container }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(3);
+
     const props = {} satisfies ComponentProps<typeof Card>;
     const meta = "a molestiae placeat";
     const result = await container.renderToString(Card, {
@@ -77,22 +83,21 @@ describe("Card", () => {
       slots: { meta },
     });
 
-    expect.assertions(3);
-
     expect(result).toContain("has-meta");
     expect(result).toContain(meta);
     expect(result).toContain("</footer>");
   });
 
   it<LocalTestContext>("can render the card cta", async ({ container }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(2);
+
     const props = {} satisfies ComponentProps<typeof Card>;
     const cta = "a molestiae placeat";
     const result = await container.renderToString(Card, {
       props,
       slots: { cta },
     });
-
-    expect.assertions(2);
 
     expect(result).toContain(cta);
     expect(result).toContain("</footer>");

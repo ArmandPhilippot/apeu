@@ -12,53 +12,36 @@ import type {
   MdxJsxFlowElementHast,
 } from "mdast-util-mdx-jsx";
 import type { MdxjsEsmHast } from "mdast-util-mdxjs-esm";
-import type { Plugin as UnifiedPlugin } from "unified";
+import type {
+  Transformer as UnifiedTransformer,
+  Plugin as UnifiedPlugin,
+} from "unified";
 import { visitParents } from "unist-util-visit-parents";
+import type { VFile } from "vfile";
 import { isString } from "../../utils/type-checks";
 
 const isImgElement = (
-  node: Root | Doctype | MdxjsEsmHast | ElementContent,
+  node: Root | Doctype | MdxjsEsmHast | ElementContent
 ): node is HastElement => node.type === "element" && node.tagName === "img";
 
 const isMdxImg = (
-  node: Root | Doctype | MdxjsEsmHast | ElementContent,
+  node: Root | Doctype | MdxjsEsmHast | ElementContent
 ): node is MdxJsxFlowElementHast =>
   node.type === "mdxJsxFlowElement" && node.name === "img";
 
 const isMdxOrElementImg = (
-  node: Root | Doctype | MdxjsEsmHast | ElementContent,
+  node: Root | Doctype | MdxjsEsmHast | ElementContent
 ): node is HastElement | MdxJsxFlowElementHast =>
   isImgElement(node) || isMdxImg(node);
 
-const convertNodeToImgEl = (
-  node: HastElement | MdxJsxFlowElementHast,
-): HastElement => {
-  if (node.type === "element") return node;
-
-  return {
-    children: [],
-    position: node.position,
-    properties: Object.fromEntries(
-      node.attributes
-        .map((attr) => {
-          if (attr.type !== "mdxJsxAttribute") return undefined;
-          return [attr.name, attr.value];
-        })
-        .filter((attr) => !!attr),
-    ),
-    tagName: "img",
-    type: "element",
-  };
-};
-
 const isLinkElement = (
-  node: Root | Doctype | MdxjsEsmHast | ElementContent,
+  node: Root | Doctype | MdxjsEsmHast | ElementContent
 ): node is HastElement | MdxJsxFlowElementHast =>
   (node.type === "mdxJsxFlowElement" && node.name === "a") ||
   (node.type === "element" && node.tagName === "a");
 
 const isHrefAttr = (
-  attr: MdxJsxAttribute | MdxJsxExpressionAttribute,
+  attr: MdxJsxAttribute | MdxJsxExpressionAttribute
 ): attr is MdxJsxAttribute =>
   attr.type === "mdxJsxAttribute" && attr.name === "href";
 
@@ -74,6 +57,23 @@ const getLinkTarget = (link: HastElement | MdxJsxFlowElementHast) => {
 const isRelativeSrc = (src: string) =>
   isRelativeUrl(src) && !src.startsWith("/");
 
+const handleMdxImgConversion = (node: MdxJsxFlowElementHast): HastElement => {
+  return {
+    children: [],
+    position: node.position,
+    properties: Object.fromEntries(
+      node.attributes
+        .map((attr) => {
+          if (attr.type !== "mdxJsxAttribute") return undefined;
+          return [attr.name, attr.value];
+        })
+        .filter((attr) => attr !== undefined)
+    ),
+    tagName: "img",
+    type: "element",
+  };
+};
+
 /**
  * Check if the image needs an `inferSize` prop.
  *
@@ -85,13 +85,29 @@ const isRelativeSrc = (src: string) =>
  * @param {Properties} props - The image properties.
  * @returns {boolean} True if `inferSize` should be added.
  */
-const isInferSizeRequired = (props: Properties): boolean => {
+const shouldAddInferSize = (props: Properties): boolean => {
   if (!isString(props.src) || isRelativeSrc(props.src)) return false;
-  const hasWidth = !!props.width;
-  const hasHeight = !!props.height;
-  const hasInferSize = !!props.inferSize;
+  const hasWidth = props.width !== undefined && props.width !== null;
+  const hasHeight = props.height !== undefined && props.height !== null;
+  const hasInferSize = props.inferSize === true;
 
   return (!hasWidth || !hasHeight) && !hasInferSize;
+};
+
+const processImageNode = (img: HastElement, file: VFile) => {
+  if (
+    isString(img.properties.src) &&
+    isRelativeSrc(img.properties.src) &&
+    Array.isArray(file.data.astro?.imagePaths) &&
+    !file.data.astro.imagePaths.includes(img.properties.src)
+  ) {
+    file.data.astro.imagePaths.push(img.properties.src);
+  }
+
+  if (shouldAddInferSize(img.properties)) {
+    /* eslint-disable-next-line no-param-reassign -- We need to update the image properties here. */
+    img.properties.inferSize = true;
+  }
 };
 
 /**
@@ -105,59 +121,46 @@ const isInferSizeRequired = (props: Properties): boolean => {
  * added in a custom component).
  * * adds `inferSize` to remote images if `width` and/or `height` are not
  * defined.
+ *
+ * @returns {UnifiedTransformer<Root>} A transformer function that modifies the AST in place.
  */
-export const rehypeImages: UnifiedPlugin<[], Root> = () => (tree, file) => {
-  if (file.extname !== ".mdx") return;
-  visitParents(tree, (node, ancestors) => {
-    if (!isMdxOrElementImg(node)) return;
+export const rehypeImages: UnifiedPlugin<[], Root> =
+  (): UnifiedTransformer<Root> => (tree, file) => {
+    if (file.extname !== ".mdx") return;
 
-    const imgParent = ancestors[ancestors.length - 1];
+    visitParents(tree, (node, ancestors) => {
+      if (!isMdxOrElementImg(node)) return;
 
-    if (!imgParent?.children) return;
+      const imgParent = ancestors.at(-1);
+      if (imgParent?.children === undefined) return;
 
-    /* Astro does not process MDX images because it expects them to be
-     * imported. So we need to convert them back to a regular img element to
-     * avoid duplicating Astro logic to import images. */
-    const img = convertNodeToImgEl(node);
-    const hasParentLink = isLinkElement(imgParent);
-    const linkTarget = hasParentLink ? getLinkTarget(imgParent) : undefined;
+      // Convert MDX images to Hast images
+      const img = node.type === "element" ? node : handleMdxImgConversion(node);
 
-    /* When the image is only used with MDX/HTML tags, Astro does not collect
-     * its path so we need to add it manually. */
-    if (
-      isString(img.properties.src) &&
-      isRelativeSrc(img.properties.src) &&
-      !file.data.astro?.imagePaths?.includes(img.properties.src)
-    )
-      file.data.astro?.imagePaths?.push(img.properties.src);
+      const hasParentLink = isLinkElement(imgParent);
+      const linkTarget = hasParentLink ? getLinkTarget(imgParent) : undefined;
 
-    if (
-      hasParentLink &&
-      isString(img.properties.src) &&
-      isRelativeSrc(img.properties.src) &&
-      img.properties.src === linkTarget
-    ) {
-      const linkParent = ancestors[ancestors.length - 2];
-      const linkIdx = linkParent?.children.indexOf(imgParent);
+      processImageNode(img, file);
 
-      if (!linkParent || typeof linkIdx === "undefined") return;
+      if (
+        hasParentLink &&
+        isString(img.properties.src) &&
+        isRelativeSrc(img.properties.src) &&
+        img.properties.src === linkTarget
+      ) {
+        /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Get the grandparent. */
+        const linkParent = ancestors.at(-2);
+        const linkIdx = linkParent?.children.indexOf(imgParent);
 
-      linkParent.children[linkIdx] = {
-        ...img,
-        properties: {
-          ...img.properties,
-          "data-clickable": "true",
-        },
-      };
-    } else {
-      const imgIdx = imgParent.children.indexOf(node);
-      imgParent.children[imgIdx] = {
-        ...img,
-        properties: {
-          ...img.properties,
-          ...(isInferSizeRequired(img.properties) && { inferSize: true }),
-        },
-      };
-    }
-  });
-};
+        if (linkParent !== undefined && linkIdx !== undefined) {
+          linkParent.children[linkIdx] = {
+            ...img,
+            properties: { ...img.properties, "data-clickable": "true" },
+          };
+        }
+      } else {
+        const imgIdx = imgParent.children.indexOf(node);
+        imgParent.children[imgIdx] = img;
+      }
+    });
+  };

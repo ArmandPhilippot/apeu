@@ -1,8 +1,8 @@
 ---
 import { Icon } from "astro-icon/components";
+import type { JSX } from "astro/jsx-runtime";
 import Button from "../../atoms/button/button.astro";
 import Box from "../../atoms/box/box.astro";
-import type { JSX } from "astro/jsx-runtime";
 
 type Props = JSX.HTMLAttributes & {
   /**
@@ -17,9 +17,9 @@ type Props = JSX.HTMLAttributes & {
    * How many level should we go up in the DOM from the button's parent to look
    * for the selector?
    * * If no value is provided, the document element will be used as root for
-   *   your selector.
+   * your selector.
    * * If the provided value is equal to `0` then the button's parent will be
-   *   used.
+   * used.
    * * If the value is `1` it will be the grand parent.
    * * And so on...
    *
@@ -123,8 +123,15 @@ const {
       this.#copyBtn?.removeEventListener("click", this.copy);
     }
 
+    /**
+     * Traverses up the DOM tree by the specified number of levels from th
+     *  current element
+     * @param {number} goUpUntil - Number of parent levels to traverse up
+     * @returns The ancestor element at the specified level, or null
+     */
     #getParentNode(goUpUntil: number) {
-      let parentNode: HTMLElement | Document | null | undefined = this;
+      // eslint-disable-next-line @typescript-eslint/no-this-alias
+      let parentNode: HTMLElement | null | undefined = this;
 
       for (let i = 0; i < goUpUntil; i++) {
         parentNode = parentNode?.parentElement;

@@ -1,6 +1,5 @@
-const range = (start: number, end: number) => {
-  return Array.from({ length: end - start + 1 }, (_, i) => i + start);
-};
+const range = (start: number, end: number) =>
+  Array.from({ length: end - start + 1 }, (_, i) => i + start);
 
 type PaginationConfig = {
   currentPage: number;
@@ -18,17 +17,22 @@ const calculatePageRange = ({
   currentPage,
   siblings,
   totalPages,
-}: PaginationConfig): PageRange => ({
-  startPage: Math.max(1, currentPage - siblings),
-  endPage: Math.min(totalPages, currentPage + siblings),
-  totalPages,
-});
+}: PaginationConfig): PageRange => {
+  return {
+    startPage: Math.max(1, currentPage - siblings),
+    endPage: Math.min(totalPages, currentPage + siblings),
+    totalPages,
+  };
+};
+
+const SINGLE_PAGE_GAP = 2;
 
 const hasSinglePageGap = (start: number, end: number): boolean =>
-  end - start === 2;
+  end - start === SINGLE_PAGE_GAP;
 
 const getStartingPages = (startPage: number): number[] => {
   if (startPage <= 1) return [];
+  /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- The first and second pages. */
   if (hasSinglePageGap(1, startPage)) return [1, 2];
   return [1];
 };
@@ -43,8 +47,9 @@ const getEndingPages = ({
   totalPages,
 }: Omit<PageRange, "startPage">): number[] => {
   if (endPage >= totalPages) return [];
-  if (hasSinglePageGap(endPage, totalPages))
+  if (hasSinglePageGap(endPage, totalPages)) {
     return [totalPages - 1, totalPages];
+  }
   return [totalPages];
 };
 
@@ -64,7 +69,15 @@ export const getPagination = (config: PaginationConfig): number[] => {
   ];
 };
 
-export const renderPaginationLink = (route: string) => (pageNumber: number) => {
-  if (pageNumber === 1) return route;
-  return `${route}/page/${pageNumber}`;
-};
+/**
+ * Retrieve a paginated slug for the given route.
+ *
+ * @param {string} route - The current route.
+ * @returns {(pageNumber: number) => string} The paginated route slug.
+ */
+export const renderPaginationLink =
+  (route: string): ((pageNumber: number) => string) =>
+  (pageNumber: number): string => {
+    if (pageNumber === 1) return route;
+    return `${route}/page/${pageNumber}`;
+  };

@@ -13,6 +13,9 @@ describe("Page", () => {
   });
 
   it<LocalTestContext>("renders its body", async ({ container }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(2);
+
     const props = {} satisfies ComponentProps<typeof Page>;
     const body = "consequatur placeat explicabo";
     const result = await container.renderToString(Page, {
@@ -20,13 +23,14 @@ describe("Page", () => {
       slots: { body },
     });
 
-    expect.assertions(2);
-
     expect(result).not.toContain("</h1>");
     expect(result).toContain(body);
   });
 
   it<LocalTestContext>("renders a heading", async ({ container }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(2);
+
     const props = {
       heading: "unde non eum",
     } satisfies ComponentProps<typeof Page>;
@@ -36,8 +40,6 @@ describe("Page", () => {
       slots: { body },
     });
 
-    expect.assertions(2);
-
     expect(result).toContain("</h1>");
     expect(result).toContain(props.heading);
   });
@@ -45,6 +47,8 @@ describe("Page", () => {
   it<LocalTestContext>("can render a disconnected body", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       heading: "unde non eum",
     } satisfies ComponentProps<typeof Page>;
@@ -54,12 +58,12 @@ describe("Page", () => {
       slots: { "disconnected-body": disconnectedBody },
     });
 
-    expect.assertions(1);
-
     expect(result).toContain(disconnectedBody);
   });
 
   it<LocalTestContext>("can render a cover", async ({ container }) => {
+    expect.assertions(1);
+
     const props = {
       cover: {
         height: 480,
@@ -72,14 +76,14 @@ describe("Page", () => {
       props,
     });
 
-    expect.assertions(1);
-
     expect(result).toContain(props.cover.src);
   });
 
   it<LocalTestContext>("can render a subscribe button", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       feed: "#perspiciatis-excepturi-repellendus",
       heading: "unde non eum",
@@ -88,12 +92,12 @@ describe("Page", () => {
       props,
     });
 
-    expect.assertions(1);
-
     expect(result).toContain(props.feed);
   });
 
   it<LocalTestContext>("can render the page meta", async ({ container }) => {
+    expect.assertions(1);
+
     const props = {
       heading: "unde non eum",
     } satisfies ComponentProps<typeof Page>;
@@ -103,12 +107,12 @@ describe("Page", () => {
       slots: { meta },
     });
 
-    expect.assertions(1);
-
     expect(result).toContain(meta);
   });
 
   it<LocalTestContext>("can render the page footer", async ({ container }) => {
+    expect.assertions(1);
+
     const props = {
       heading: "unde non eum",
     } satisfies ComponentProps<typeof Page>;
@@ -118,14 +122,15 @@ describe("Page", () => {
       slots: { footer },
     });
 
-    expect.assertions(1);
-
     expect(result).toContain(footer);
   });
 
   it<LocalTestContext>("can render a table of contents", async ({
     container,
   }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(4);
+
     const props = {
       heading: "unde non eum",
       toc: [
@@ -136,8 +141,6 @@ describe("Page", () => {
     const result = await container.renderToString(Page, {
       props,
     });
-
-    expect.assertions(4);
 
     expect(result).toContain(props.toc[0].text);
     expect(result).toContain(props.toc[0].slug);

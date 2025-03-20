@@ -14,7 +14,7 @@ export const blogPosts = defineCollection({
         i18n: z
           .record(
             z.string().refine(isAvailableLanguage),
-            reference("blogPosts"),
+            reference("blogPosts")
           )
           .optional(),
         tags: z.array(reference("tags")).optional(),
@@ -40,6 +40,6 @@ export const blogPosts = defineCollection({
               updatedOn: updatedOn ?? publishedOn,
             },
           };
-        },
+        }
       ),
 });

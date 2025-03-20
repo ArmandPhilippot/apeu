@@ -13,6 +13,8 @@ describe("CardsList", () => {
   });
 
   it<LocalTestContext>("renders a list of items", async ({ container }) => {
+    expect.assertions(1);
+
     const props = {
       items: [
         {
@@ -32,9 +34,7 @@ describe("CardsList", () => {
       slots: { default: (item: (typeof props.items)[number]) => item.body },
     });
 
-    expect.assertions(1);
-
-    const listItems = [...result.matchAll(/<li(?:.*?)<\/li>/g)];
+    const listItems = [...result.matchAll(/<li.*?<\/li>/g)];
 
     expect(listItems).toHaveLength(props.items.length);
   });
@@ -42,6 +42,8 @@ describe("CardsList", () => {
   it<LocalTestContext>("can render a list of items defined as container", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       isContainer: true,
       items: [
@@ -62,14 +64,14 @@ describe("CardsList", () => {
       slots: { default: (item: (typeof props.items)[number]) => item.body },
     });
 
-    expect.assertions(1);
-
     expect(result).toContain("container");
   });
 
   it<LocalTestContext>("throws an error when the default slot is missing", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       items: [
         {
@@ -85,14 +87,12 @@ describe("CardsList", () => {
       ],
     } satisfies ComponentProps<typeof CardsList>;
 
-    expect.assertions(1);
-
     await expect(async () =>
       container.renderToString(CardsList, {
         props,
-      }),
+      })
     ).rejects.toThrowErrorMatchingInlineSnapshot(
-      `[Error: CardsList requires a function that describes how to render a single item as child.]`,
+      `[Error: CardsList requires a function that describes how to render a single item as child.]`
     );
   });
 });

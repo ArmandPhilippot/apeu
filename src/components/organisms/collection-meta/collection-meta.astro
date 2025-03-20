@@ -52,57 +52,78 @@ type MetaDataConfigs = {
   [K in AllKeysOf<MetaData>]: RenderConfig<K>;
 };
 
+const {
+  colSpacing = "2xs",
+  data,
+  hideLabel = false,
+  icons,
+  ...attrs
+} = Astro.props;
+const { translate, translatePlural } = useI18n(Astro.currentLocale);
+
 const configs: MetaDataConfigs = {
   kind: {
     shouldRender: (value): value is NonNullable<MetaData["kind"]> => !!value,
-    renderLabel: () => ({
-      token: "meta.label.project.kind",
-    }),
+    renderLabel: () => {
+      return {
+        token: "meta.label.project.kind",
+      };
+    },
     renderValue: (value) => [`meta.value.project.kind.${value}`],
   },
   publishedOn: {
     shouldRender: (value): value is NonNullable<MetaData["publishedOn"]> =>
       !!value,
-    renderLabel: () => ({
-      token: "meta.label.published.on",
-    }),
+    renderLabel: () => {
+      return {
+        token: "meta.label.published.on",
+      };
+    },
     renderValue: (value) => [value],
   },
   updatedOn: {
     shouldRender: (value): value is NonNullable<MetaData["updatedOn"]> =>
       !!value && value.toISOString() !== data.publishedOn?.toISOString(),
-    renderLabel: () => ({
-      token: "meta.label.last.update",
-    }),
+    renderLabel: () => {
+      return {
+        token: "meta.label.last.update",
+      };
+    },
     renderValue: (value) => [value],
   },
   authors: {
     shouldRender: (value): value is NonNullable<MetaData["authors"]> =>
       !!value?.length,
-    renderLabel: () => ({
-      token: "meta.label.authors",
-      isPlural: true,
-    }),
+    renderLabel: () => {
+      return {
+        token: "meta.label.authors",
+        isPlural: true,
+      };
+    },
     renderValue: (value) =>
       value.map(({ isWebsiteOwner, name, website }) =>
-        website && !isWebsiteOwner ? { href: website, text: name } : name,
+        website && !isWebsiteOwner ? { href: website, text: name } : name
       ),
   },
   inLanguage: {
     shouldRender: (value): value is NonNullable<MetaData["inLanguage"]> =>
       !!value,
-    renderLabel: () => ({
-      token: "meta.label.language",
-    }),
+    renderLabel: () => {
+      return {
+        token: "meta.label.language",
+      };
+    },
     renderValue: (value) => [translate(`language.name.${value}`)],
   },
   inLanguages: {
     shouldRender: (value): value is NonNullable<MetaData["inLanguages"]> =>
       !!value?.length,
-    renderLabel: () => ({
-      token: "meta.label.languages",
-      isPlural: true,
-    }),
+    renderLabel: () => {
+      return {
+        token: "meta.label.languages",
+        isPlural: true,
+      };
+    },
     renderValue: (value) =>
       value.map((lang) => translate(`language.name.${lang}`)),
   },
@@ -115,7 +136,9 @@ const configs: MetaDataConfigs = {
         speed: value.wordsPerMinute,
         words: value.wordsCount,
       }),
-    renderLabel: () => ({ token: "meta.label.reading.time" }),
+    renderLabel: () => {
+      return { token: "meta.label.reading.time" };
+    },
     renderValue: (value) => [
       translatePlural("meta.value.reading.time.in.minutes", {
         count: value.inMinutes,
@@ -125,67 +148,69 @@ const configs: MetaDataConfigs = {
   isArchived: {
     shouldRender: (value): value is NonNullable<MetaData["isArchived"]> =>
       !!value,
-    renderLabel: () => ({ token: "meta.label.status" }),
+    renderLabel: () => {
+      return { token: "meta.label.status" };
+    },
     renderValue: () => [translate("meta.value.status.archived")],
   },
   repository: {
     shouldRender: (value): value is NonNullable<MetaData["repository"]> =>
       !!value,
-    renderLabel: () => ({
-      token: "meta.label.repository",
-    }),
+    renderLabel: () => {
+      return {
+        token: "meta.label.repository",
+      };
+    },
     renderValue: ({ name, url }) => [{ href: url, text: name }],
   },
   category: {
     shouldRender: (value): value is NonNullable<MetaData["category"]> =>
       !!value,
-    renderLabel: () => ({
-      token: "meta.label.category",
-    }),
+    renderLabel: () => {
+      return {
+        token: "meta.label.category",
+      };
+    },
     renderValue: (value) => [{ href: value.route, text: value.title }],
   },
   tags: {
     shouldRender: (value): value is NonNullable<MetaData["tags"]> =>
       !!value?.length,
-    renderLabel: () => ({
-      token: "meta.label.tags",
-      isPlural: true,
-    }),
+    renderLabel: () => {
+      return {
+        token: "meta.label.tags",
+        isPlural: true,
+      };
+    },
     renderValue: (value) =>
-      value.map((tag) => ({
-        href: tag.route,
-        text: tag.title,
-      })),
+      value.map((tag) => {
+        return {
+          href: tag.route,
+          text: tag.title,
+        };
+      }),
   },
   total: {
     shouldRender: (value): value is NonNullable<MetaData["total"]> => !!value,
-    renderLabel: () => ({
-      token: "meta.label.total",
-    }),
+    renderLabel: () => {
+      return {
+        token: "meta.label.total",
+      };
+    },
     renderValue: (value) => [value],
   },
 } as const;
 
 const iterateConfigs = <K extends keyof typeof configs>(
-  callback: (key: K, config: RenderConfig<K>) => JSX.Element | null,
-) => {
-  return (Object.keys(configs) as K[]).map((key) => {
+  callback: (key: K, config: RenderConfig<K>) => JSX.Element | null
+) =>
+  (Object.keys(configs) as K[]).map((key) => {
     const config = configs[key];
     return callback(key, config);
   });
-};
 
 const isMetaTranslationKey = (key: unknown): key is SingularUIKey =>
   typeof key === "string" && key.startsWith("meta.");
-
-const {
-  colSpacing = "2xs",
-  data,
-  hideLabel = false,
-  icons,
-  ...attrs
-} = Astro.props;
-const { translate, translatePlural } = useI18n(Astro.currentLocale);
 ---
 
 <DescriptionList {...attrs} colSpacing={colSpacing}>
@@ -209,24 +234,30 @@ const { translate, translatePlural } = useI18n(Astro.currentLocale);
                 : translate(token)
             }
           >
-            {contentItems.map((item) => (
-              <dd
-                title={renderDescription ? renderDescription(value) : undefined}
-              >
-                {item instanceof Date ? (
-                  <Time date={item} />
-                ) : typeof item === "object" ? (
-                  <Link href={item.href}>{item.text}</Link>
-                ) : isMetaTranslationKey(item) ? (
-                  translate(item)
-                ) : (
-                  item
-                )}
-              </dd>
-            ))}
+            {contentItems.map((item) => {
+              let content = item;
+
+              if (item instanceof Date) {
+                content = <Time date={item} />;
+              } else if (typeof item === "object") {
+                content = <Link href={item.href}>{item.text}</Link>;
+              } else if (isMetaTranslationKey(item)) {
+                content = translate(item);
+              }
+
+              return (
+                <dd
+                  title={
+                    renderDescription ? renderDescription(value) : undefined
+                  }
+                >
+                  {content}
+                </dd>
+              );
+            })}
           </CollectionMetaItem>
         );
-      },
+      }
     )
   }
 </DescriptionList>

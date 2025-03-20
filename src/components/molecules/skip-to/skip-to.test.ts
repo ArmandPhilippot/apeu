@@ -13,6 +13,9 @@ describe("SkipTo", () => {
   });
 
   it<LocalTestContext>("renders a link", async ({ container }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(3);
+
     const label = "et ea ratione";
     const props = {
       anchor: "#autem-qui-at",
@@ -22,8 +25,6 @@ describe("SkipTo", () => {
       slots: { default: label },
     });
 
-    expect.assertions(3);
-
     expect(result).toContain("</a>");
     expect(result).toContain(label);
     expect(result).toContain(`href="${props.anchor}"`);
@@ -32,17 +33,17 @@ describe("SkipTo", () => {
   it<LocalTestContext>("throws an error when the to prop is not an anchor", async ({
     container,
   }) => {
-    const label = "et ea ratione";
-
     expect.assertions(1);
+
+    const label = "et ea ratione";
 
     await expect(async () =>
       container.renderToString(SkipTo, {
         props: { anchor: "illum-consequuntur-minima" },
         slots: { default: label },
-      }),
+      })
     ).rejects.toThrowErrorMatchingInlineSnapshot(
-      `[Error: The \`anchor\` property should be targeting an id on the same page. It must start with \`#\`.]`,
+      `[Error: The \`anchor\` property should be targeting an id on the same page. It must start with \`#\`.]`
     );
   });
 });

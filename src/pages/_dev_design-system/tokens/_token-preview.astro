@@ -16,6 +16,7 @@ const { class: className, isInline = false, token, ...attrs } = Astro.props;
     { "token-preview--inlined": isInline },
     className,
   ]}
+  data-inline={`${isInline}`}
 >
   <slot />
   <figcaption>
@@ -36,7 +37,7 @@ const { class: className, isInline = false, token, ...attrs } = Astro.props;
     }
   }
 
-  .token-preview--inlined {
+  .token-preview[data-inline="true"] {
     flex-flow: row wrap;
   }
 

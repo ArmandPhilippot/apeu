@@ -53,7 +53,7 @@ const { translate } = useI18n(Astro.currentLocale);
           <dt>{translate("meta.label.country")}</dt>
           <dd>
             {translate(
-              `meta.value.country.name.${toLowerCase(author.country)}`,
+              `meta.value.country.name.${toLowerCase(author.country)}`
             )}
           </dd>
         </Item>
@@ -73,7 +73,7 @@ const { translate } = useI18n(Astro.currentLocale);
           <dt>{translate("meta.label.nationality")}</dt>
           <dd>
             {translate(
-              `meta.value.nationality.${toLowerCase(author.nationality)}`,
+              `meta.value.nationality.${toLowerCase(author.nationality)}`
             )}
           </dd>
         </Item>
@@ -101,6 +101,6 @@ const { translate } = useI18n(Astro.currentLocale);
   }
 
   .identity-card-avatar {
-    min-width: calc(var(--one-px-in-rem * 200));
+    min-width: calc(var(--one-px-in-rem) * 200);
   }
 </style>

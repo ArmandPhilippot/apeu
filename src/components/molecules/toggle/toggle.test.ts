@@ -15,6 +15,9 @@ describe("Toggle", () => {
   it<LocalTestContext>("renders a toggle with a label", async ({
     container,
   }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(2);
+
     const props = {
       groupName: "enim",
       items: [
@@ -27,9 +30,7 @@ describe("Toggle", () => {
       props,
     });
 
-    expect.assertions(2);
-
-    const items = [...result.matchAll(/<input(?:.*?)>/g)];
+    const items = [...result.matchAll(/<input.*?>/g)];
 
     expect(result).toContain(props.label);
     expect(items).toHaveLength(props.items.length);

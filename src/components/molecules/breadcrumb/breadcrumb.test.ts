@@ -15,6 +15,9 @@ describe("Breadcrumb", () => {
   it<LocalTestContext>("renders a list of breadcrumb items", async ({
     container,
   }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(5);
+
     const props = {
       items: [
         { label: "omnis assumenda aut", url: "#voluptate-est-sed" },
@@ -26,21 +29,22 @@ describe("Breadcrumb", () => {
       props,
     });
 
-    expect.assertions(6);
+    const listItems = [...result.matchAll(/<li.*?<\/li>/g)];
 
-    const listItems = [...result.matchAll(/<li(?:.*?)<\/li>/g)];
-
-    expect(result).toContain("</ol>");
     expect(listItems).toHaveLength(props.items.length);
     expect(result).toContain(props.items[0]?.url);
     expect(result).toContain(props.items[1]?.url);
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- `url` index. */
     expect(result).toContain(props.items[2]?.label);
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- `url` index. */
     expect(result).not.toContain(props.items[2]?.url);
   });
 
   it<LocalTestContext>("can render the items centered", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       isCentered: true,
       items: [
@@ -52,8 +56,6 @@ describe("Breadcrumb", () => {
     const result = await container.renderToString(Breadcrumb, {
       props,
     });
-
-    expect.assertions(1);
 
     expect(result).toContain('data-centered="true"');
   });

@@ -15,6 +15,9 @@ describe("Fieldset", () => {
   it<LocalTestContext>("renders a legend and its children", async ({
     container,
   }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(3);
+
     const props = {} satisfies ComponentProps<typeof Fieldset>;
     const body = "eius alias doloribus";
     const legend = "pariatur dolorem ipsum";
@@ -22,8 +25,6 @@ describe("Fieldset", () => {
       props,
       slots: { default: body, legend },
     });
-
-    expect.assertions(3);
 
     expect(result).toContain("</fieldset>");
     expect(result).toContain(legend);
@@ -33,24 +34,26 @@ describe("Fieldset", () => {
   it<LocalTestContext>("throws an error if the legend slot is missing", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {} satisfies ComponentProps<typeof Fieldset>;
     const body = "eius alias doloribus";
-
-    expect.assertions(1);
 
     await expect(async () =>
       container.renderToString(Fieldset, {
         props,
         slots: { default: body },
-      }),
+      })
     ).rejects.toThrowErrorMatchingInlineSnapshot(
-      `[Error: A legend slot is required.]`,
+      `[MissingSlotError: A legend slot is required.]`
     );
   });
 
   it<LocalTestContext>("can render a bordered fieldset", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       isBordered: true,
     } satisfies ComponentProps<typeof Fieldset>;
@@ -61,14 +64,14 @@ describe("Fieldset", () => {
       slots: { default: body, legend },
     });
 
-    expect.assertions(1);
-
     expect(result).toContain('data-border="true"');
   });
 
   it<LocalTestContext>("can render an inlined fieldset", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       isInline: true,
     } satisfies ComponentProps<typeof Fieldset>;
@@ -79,29 +82,27 @@ describe("Fieldset", () => {
       slots: { default: body, legend },
     });
 
-    expect.assertions(1);
-
     expect(result).toContain('data-inline="true"');
   });
 
   it<LocalTestContext>("throws an error when gap is used without isInline", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       gap: "md",
     } satisfies ComponentProps<typeof Fieldset>;
     const body = "eius alias doloribus";
     const legend = "pariatur dolorem ipsum";
 
-    expect.assertions(1);
-
     await expect(async () =>
       container.renderToString(Fieldset, {
         props,
         slots: { default: body, legend },
-      }),
+      })
     ).rejects.toThrowErrorMatchingInlineSnapshot(
-      `[Error: Invalid properties: gap is only compatible with isInline]`,
+      `[InvalidPropsError: gap is only compatible with isInline]`
     );
   });
 });

@@ -19,10 +19,11 @@ export const isValidTheme = (value: unknown): value is Theme => {
  */
 export const getPreferredColorScheme = (): Exclude<Theme, "auto"> => {
   if (
-    typeof window !== "undefined" &&
-    matchMedia("(prefers-color-scheme: dark)").matches
-  )
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- window can be undefined, at least while running Vitest.
+    globalThis.window?.matchMedia("(prefers-color-scheme: dark)").matches
+  ) {
     return "dark";
+  }
 
   return "light";
 };
@@ -34,7 +35,7 @@ export const getPreferredColorScheme = (): Exclude<Theme, "auto"> => {
  * @returns {Exclude<Theme, 'auto'>} The resolved color scheme.
  */
 export const resolveCurrentColorScheme = (
-  theme: Theme,
+  theme: Theme
 ): Exclude<Theme, "auto"> => {
   if (theme === "auto") return getPreferredColorScheme();
 

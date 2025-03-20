@@ -17,8 +17,8 @@ type PageData = Pick<
 /**
  * Retrieve a WebPage graph from the given data.
  *
- * @param {PageData} data - The page data.
- * @returns {Promise<WebPage} The WebPage graph.
+ * @param {PageData} data - An object containing the page data.
+ * @returns {Promise<WebPage>} A graph representing the WebPage.
  */
 export const getWebPageGraph = async ({
   breadcrumb,
@@ -39,7 +39,10 @@ export const getWebPageGraph = async ({
     "@id": url,
     "@type": type ?? "WebPage",
     author: { "@id": websiteAuthor },
-    ...(breadcrumb && { breadcrumb: getBreadcrumbListGraph(breadcrumb) }),
+    ...(breadcrumb !== null &&
+      breadcrumb !== undefined && {
+        breadcrumb: getBreadcrumbListGraph(breadcrumb),
+      }),
     copyrightHolder: { "@id": websiteAuthor },
     dateCreated: meta.publishedOn.toISOString(),
     dateModified: meta.updatedOn.toISOString(),
@@ -54,12 +57,13 @@ export const getWebPageGraph = async ({
     name: title,
     publisher: { "@id": websiteAuthor },
     reviewedBy: { "@id": websiteAuthor },
-    ...(meta.readingTime && {
+    ...(meta.readingTime !== undefined && {
       timeRequired: getDurationFromReadingTime(
-        meta.readingTime.inMinutesAndSeconds,
+        meta.readingTime.inMinutesAndSeconds
       ),
     }),
-    ...(cover && { thumbnailUrl: await getImgSrc(cover) }),
+    ...(cover !== null &&
+      cover !== undefined && { thumbnailUrl: await getImgSrc(cover) }),
     url,
   };
 };

@@ -1,10 +1,9 @@
 ---
-import type { ComponentProps } from "astro/types";
+import type { HTMLAttributes } from "astro/types";
 import { useI18n } from "../../../utils/i18n";
-import Box from "../../atoms/box/box.astro";
 import Heading from "../../atoms/heading/heading.astro";
 
-type Props = Omit<ComponentProps<typeof Box<"header">>, "as" | "isPadded"> & {
+type Props = HTMLAttributes<"header"> & {
   name: string;
 };
 
@@ -75,8 +74,8 @@ const { translate } = useI18n(Astro.currentLocale);
     }
 
     & > :global(*:first-child) {
-      --fromY: -100%;
-      --toY: 0;
+      --from-y: -100%;
+      --to-y: 0;
 
       margin: 0;
       animation:
@@ -85,11 +84,11 @@ const { translate } = useI18n(Astro.currentLocale);
     }
 
     & > :global(*:nth-child(2)) {
-      --fromX: -10%;
-      --toX: 0;
-      --filterFrom: grayscale(80%) brightness(100%) saturate(150%)
+      --from-x: -10%;
+      --to-x: 0;
+      --filter-from: grayscale(80%) brightness(100%) saturate(150%)
         drop-shadow(0 0 0 var(--color-shadow));
-      --filterTo: grayscale(0%) brightness(120%) saturate(100%)
+      --filter-to: grayscale(0%) brightness(120%) saturate(100%)
         drop-shadow(
           var(--border-size-sm) var(--border-size-sm) var(--border-size-sm)
             var(--color-shadow)
@@ -111,8 +110,8 @@ const { translate } = useI18n(Astro.currentLocale);
     }
 
     & > :global(*:last-child) {
-      --fromY: 50%;
-      --toY: 0;
+      --from-y: 50%;
+      --to-y: 0;
 
       margin: 0;
       animation:
@@ -133,11 +132,11 @@ const { translate } = useI18n(Astro.currentLocale);
 
   @keyframes filter-anim {
     from {
-      filter: var(--filterFrom);
+      filter: var(--filter-from);
     }
 
     to {
-      filter: var(--filterTo);
+      filter: var(--filter-to);
     }
   }
 
@@ -153,11 +152,11 @@ const { translate } = useI18n(Astro.currentLocale);
 
   @keyframes slide-in {
     from {
-      transform: translate(var(--fromX, 0), var(--fromY, 0));
+      transform: translate(var(--from-x, 0), var(--from-y, 0));
     }
 
     to {
-      transform: translate(var(--toX, 0), var(--toY, 0));
+      transform: translate(var(--to-x, 0), var(--to-y, 0));
     }
   }
 </style>

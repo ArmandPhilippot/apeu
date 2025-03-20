@@ -1,9 +1,9 @@
 ---
 import { Icon } from "astro-icon/components";
+import type { JSX } from "astro/jsx-runtime";
 import Button from "../../atoms/button/button.astro";
 import Label from "../../atoms/label/label.astro";
 import TextField from "../../atoms/text-field/text-field.astro";
-import type { JSX } from "astro/jsx-runtime";
 import { useI18n } from "../../../utils/i18n";
 
 type Props = JSX.HTMLAttributes & {
@@ -34,10 +34,14 @@ const {
 } = Astro.props;
 const fieldId = `${id}-field`;
 
-if (!resultsPage.startsWith("/"))
+if (!resultsPage.startsWith("/")) {
   throw new Error("`resultsPage` must be a valid route starting with `/`.");
+}
 
 const { translate } = useI18n(Astro.currentLocale);
+
+/* eslint-disable-next-line no-magic-numbers -- Self-explanatory. */
+const defaultIconSize = isInline ? 30 : 25;
 ---
 
 <ap-search-form
@@ -54,8 +58,8 @@ const { translate } = useI18n(Astro.currentLocale);
     <TextField
       class="search-form-field"
       id={fieldId}
-      required="true"
       name={fieldId}
+      required="true"
       slot="field"
       type="search"
     />
@@ -64,7 +68,7 @@ const { translate } = useI18n(Astro.currentLocale);
       kind={isInline ? "neutral" : "primary"}
       type="submit"
     >
-      <Icon aria-hidden="true" name="search" size={isInline ? 30 : 25} />
+      <Icon aria-hidden="true" name="search" size={defaultIconSize} />
       <span class:list={[{ "sr-only": isInline }]}
         >{translate("form.search.btn")}</span
       >
@@ -107,15 +111,15 @@ const { translate } = useI18n(Astro.currentLocale);
     border-start-end-radius: var(--border-radii-md);
     border-end-end-radius: var(--border-radii-md);
     color: var(--color-primary);
-    transition: all 0.15s ease-in-out 0s;
+    transition: transform 0.15s ease-in-out 0s;
 
-    &:focus {
+    &:where(:focus) {
       outline: var(--border-size-md) solid var(--color-primary-lighter);
       outline-offset: calc(var(--border-size-sm) * -2);
     }
 
     & > :global(svg) {
-      transition: all 0.3s ease-in-out 0s;
+      transition: transform 0.3s ease-in-out 0s;
     }
 
     &:where(:focus, :hover) > :global(svg) {

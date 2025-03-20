@@ -7,10 +7,24 @@
 export const capitalizeFirstLetter = (str: string): string =>
   str.charAt(0).toUpperCase() + str.slice(1);
 
-export const toLowerCase = <T extends string>(str: T) =>
+/**
+ * Get a lower cased version of the given string.
+ *
+ * @template T
+ * @param {T} str - Any string.
+ * @returns {Lowercase<T>} The lower-cased string.
+ */
+export const toLowerCase = <T extends string>(str: T): Lowercase<T> =>
   str.toLowerCase() as Lowercase<T>;
 
-export const toUpperCase = <T extends string>(str: T) =>
+/**
+ * Get an upper cased version of the given string.
+ *
+ * @template T
+ * @param {T} str - Any string.
+ * @returns {Lowercase<T>} The upper-cased string.
+ */
+export const toUpperCase = <T extends string>(str: T): Uppercase<T> =>
   str.toUpperCase() as Uppercase<T>;
 
 /**
@@ -21,5 +35,5 @@ export const toUpperCase = <T extends string>(str: T) =>
  */
 export const removeTrailingSlash = (str: string): string => {
   if (!str.endsWith("/")) return str;
-  return str.replace(/\/+$/g, "");
+  return str.replaceAll(/\/+$/g, "");
 };

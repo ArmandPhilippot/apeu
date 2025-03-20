@@ -13,6 +13,9 @@ describe("Navbar", () => {
   });
 
   it<LocalTestContext>("renders the navbar", async ({ container }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(4);
+
     const props = {
       id: "perspiciatis",
     } satisfies ComponentProps<typeof Navbar>;
@@ -24,8 +27,6 @@ describe("Navbar", () => {
       slots: { nav, search, settings },
     });
 
-    expect.assertions(4);
-
     expect(result).toContain(props.id);
     expect(result).toContain(nav);
     expect(result).toContain(search);
@@ -35,63 +36,63 @@ describe("Navbar", () => {
   it<LocalTestContext>("throws an error when the nav slot is missing", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       id: "perspiciatis",
     } satisfies ComponentProps<typeof Navbar>;
     const search = "totam molestiae tempora";
     const settings = "dolore vero exercitationem";
 
-    expect.assertions(1);
-
     await expect(async () =>
       container.renderToString(Navbar, {
         props,
         slots: { search, settings },
-      }),
+      })
     ).rejects.toThrowErrorMatchingInlineSnapshot(
-      `[Error: A nav slot is required.]`,
+      `[MissingSlotError: A nav slot is required.]`
     );
   });
 
   it<LocalTestContext>("throws an error when the search slot is missing", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       id: "perspiciatis",
     } satisfies ComponentProps<typeof Navbar>;
     const nav = "voluptatem cumque accusantium";
     const settings = "dolore vero exercitationem";
 
-    expect.assertions(1);
-
     await expect(async () =>
       container.renderToString(Navbar, {
         props,
         slots: { nav, settings },
-      }),
+      })
     ).rejects.toThrowErrorMatchingInlineSnapshot(
-      `[Error: A search slot is required.]`,
+      `[MissingSlotError: A search slot is required.]`
     );
   });
 
   it<LocalTestContext>("throws an error when the settings slot is missing", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       id: "perspiciatis",
     } satisfies ComponentProps<typeof Navbar>;
     const nav = "voluptatem cumque accusantium";
     const search = "totam molestiae tempora";
 
-    expect.assertions(1);
-
     await expect(async () =>
       container.renderToString(Navbar, {
         props,
         slots: { nav, search },
-      }),
+      })
     ).rejects.toThrowErrorMatchingInlineSnapshot(
-      `[Error: A settings slot is required.]`,
+      `[MissingSlotError: A settings slot is required.]`
     );
   });
 });

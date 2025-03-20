@@ -2,17 +2,15 @@ import { STORIES_EXT, STORIES_SUFFIX } from "./constants";
 import { getParentDirPath, joinPaths } from "./paths";
 import { capitalizeFirstLetter } from "./strings";
 
-const isSubStory = (path: string) => {
-  return path.endsWith(`/${STORIES_SUFFIX}`);
-};
+const isSubStory = (path: string) => path.endsWith(`/${STORIES_SUFFIX}`);
 
 const getSubStoryRoute = (path: string, baseSlug: string) => {
   const slug = path
     .replace(baseSlug, "")
     .replace(new RegExp(`.${STORIES_EXT}$`), "");
-  const parent = getParentDirPath(baseSlug);
+  const parentPath = getParentDirPath(baseSlug);
 
-  return slug === "/index" ? parent : joinPaths(parent, slug);
+  return slug === "/index" ? parentPath : joinPaths(parentPath, slug);
 };
 
 /**
@@ -23,8 +21,8 @@ const getSubStoryRoute = (path: string, baseSlug: string) => {
  * use `foo/bar/button` we need to truncate the path. The same applies for
  * stories located in a subdirectory.
  *
- * @param {string} path - The story path.
- * @returns {string} The story route.
+ * @param {string} path - The path to a story file.
+ * @returns {string} The computed story route.
  */
 export const getStoryRoute = (path: string): string => {
   const route = getParentDirPath(path);
@@ -32,16 +30,24 @@ export const getStoryRoute = (path: string): string => {
   return isSubStory(route) ? getSubStoryRoute(path, route) : route;
 };
 
-export const getStoryNameFromSlug = (slug: string) => {
-  const name = slug.split("/").pop();
+/**
+ * Retrieve a story name from its slug.
+ *
+ * @param {string} slug - The slug of a story.
+ * @returns {string} The name of a story.
+ * @throws {Error} When the story name can't be determined.
+ */
+export const getStoryNameFromSlug = (slug: string): string => {
+  const storyName = slug.split("/").pop();
 
-  if (!name)
+  if (storyName === "" || storyName === undefined) {
     throw new Error(
-      "Could not retrieve the story name from its slug. Are you sure this slug match a story?",
+      "Could not retrieve the story name from its slug. Are you sure this slug match a story?"
     );
+  }
 
-  return name
+  return storyName
     .split("-")
-    .map((name) => capitalizeFirstLetter(name))
+    .map((story) => capitalizeFirstLetter(story))
     .join("");
 };

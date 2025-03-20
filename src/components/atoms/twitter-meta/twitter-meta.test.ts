@@ -15,6 +15,8 @@ describe("TwitterMeta", () => {
   it<LocalTestContext>("can render a meta for the card type", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       card: "player",
     } satisfies ComponentProps<typeof TwitterMeta>;
@@ -22,16 +24,16 @@ describe("TwitterMeta", () => {
       props,
     });
 
-    expect.assertions(1);
-
     expect(result).toContain(
-      `<meta name="twitter:card" content="${props.card}"`,
+      `<meta content="${props.card}" name="twitter:card"`
     );
   });
 
   it<LocalTestContext>("can render a meta for the site url", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       site: "https://example.test",
     } satisfies ComponentProps<typeof TwitterMeta>;
@@ -39,16 +41,16 @@ describe("TwitterMeta", () => {
       props,
     });
 
-    expect.assertions(1);
-
     expect(result).toContain(
-      `<meta name="twitter:site" content="${props.site}"`,
+      `<meta content="${props.site}" name="twitter:site"`
     );
   });
 
   it<LocalTestContext>("can render a meta for the creator name", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       creator: "Mike77",
     } satisfies ComponentProps<typeof TwitterMeta>;
@@ -56,16 +58,16 @@ describe("TwitterMeta", () => {
       props,
     });
 
-    expect.assertions(1);
-
     expect(result).toContain(
-      `<meta name="twitter:creator" content="${props.creator}"`,
+      `<meta content="${props.creator}" name="twitter:creator"`
     );
   });
 
   it<LocalTestContext>("can render a meta for the page title", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       title: "assumenda eos maiores",
     } satisfies ComponentProps<typeof TwitterMeta>;
@@ -73,16 +75,16 @@ describe("TwitterMeta", () => {
       props,
     });
 
-    expect.assertions(1);
-
     expect(result).toContain(
-      `<meta name="twitter:title" content="${props.title}"`,
+      `<meta content="${props.title}" name="twitter:title"`
     );
   });
 
   it<LocalTestContext>("can render a meta for the page description", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       description: "iste sint eum",
     } satisfies ComponentProps<typeof TwitterMeta>;
@@ -90,16 +92,16 @@ describe("TwitterMeta", () => {
       props,
     });
 
-    expect.assertions(1);
-
     expect(result).toContain(
-      `<meta name="twitter:description" content="${props.description}"`,
+      `<meta content="${props.description}" name="twitter:description"`
     );
   });
 
   it<LocalTestContext>("can render a meta and truncate its contents for the page description", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const descriptionMaxLength = 200;
     const props = {
       description:
@@ -109,16 +111,16 @@ describe("TwitterMeta", () => {
       props,
     });
 
-    expect.assertions(1);
-
     expect(result).toContain(
-      `<meta name="twitter:description" content="${`${props.description.slice(0, descriptionMaxLength - 1)}…`}"`,
+      `<meta content="${props.description.slice(0, descriptionMaxLength - 1)}…" name="twitter:description"`
     );
   });
 
   it<LocalTestContext>("can render a meta for the image", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       image: "https://picsum.photos/640/480",
     } satisfies ComponentProps<typeof TwitterMeta>;
@@ -126,10 +128,8 @@ describe("TwitterMeta", () => {
       props,
     });
 
-    expect.assertions(1);
-
     expect(result).toContain(
-      `<meta name="twitter:image" content="${props.image}"`,
+      `<meta content="${props.image}" name="twitter:image"`
     );
   });
 });

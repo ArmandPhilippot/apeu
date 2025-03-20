@@ -5,7 +5,7 @@
  * @returns {boolean} True if the value is an object.
  */
 export const isObject = (
-  value: unknown,
+  value: unknown
 ): value is Record<string | number | symbol, unknown> =>
   value !== null &&
   (value instanceof Object || typeof value === "object") &&
@@ -14,13 +14,15 @@ export const isObject = (
 /**
  * Check if a key exists in an object.
  *
+ * @template O, K
  * @param {O} obj - An object.
  * @param {K} key - The expected object key.
  * @returns {boolean} True if the key exists in the object.
+ * @throws {Error} When the first argument is not an object.
  */
 export const isKeyExistIn = <O extends object, K extends string>(
   obj: O,
-  key: K,
+  key: K
 ): obj is O & Record<K, unknown> => {
   if (!isObject(obj)) throw new Error("First argument must be an object.");
 

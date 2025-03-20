@@ -1,4 +1,4 @@
-import type { APIRoute } from "astro";
+import type { APIContext, APIRoute } from "astro";
 import { zodErrorMap } from "../../lib/zod/error-map";
 import type { MailError, MailSuccess } from "../../services/mailer/helpers";
 import { sendMail } from "../../services/mailer/mailer";
@@ -8,10 +8,16 @@ import { useI18n } from "../../utils/i18n";
 
 export const prerender = false;
 
+/**
+ * Handles the `POST` request to generate an endpoint to send emails.
+ *
+ * @param {APIContext} context - The Astro API context.
+ * @returns {Promise<Response>} The response containing either validation errors or the result of the sending.
+ */
 export const POST: APIRoute = async ({
   currentLocale,
   request,
-}): Promise<Response> => {
+}: APIContext): Promise<Response> => {
   const { locale, translate } = useI18n(currentLocale);
   const result = mailData.safeParse(await request.formData(), {
     errorMap: zodErrorMap(locale),
@@ -34,10 +40,10 @@ export const POST: APIRoute = async ({
       {
         status: HTTP_STATUS.OK.CODE,
         statusText: HTTP_STATUS.OK.TEXT,
-      },
+      }
     );
-  } catch (err) {
-    console.error(err);
+  } catch (error) {
+    console.error(error);
 
     return new Response(
       JSON.stringify({
@@ -46,7 +52,7 @@ export const POST: APIRoute = async ({
       {
         status: HTTP_STATUS.INTERNAL_SERVER_ERROR.CODE,
         statusText: HTTP_STATUS.INTERNAL_SERVER_ERROR.TEXT,
-      },
+      }
     );
   }
 };

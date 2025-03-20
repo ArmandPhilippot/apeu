@@ -15,6 +15,9 @@ describe("CopyToClipboard", () => {
   it<LocalTestContext>("should render a button to copy to clipboard", async ({
     container,
   }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(4);
+
     const props = {
       feedback: "dicta voluptatem aut",
       label: "et quas numquam",
@@ -23,8 +26,6 @@ describe("CopyToClipboard", () => {
     const result = await container.renderToString(CopyToClipboard, {
       props,
     });
-
-    expect.assertions(4);
 
     expect(result).toContain("<button");
     expect(result).toContain(`data-selector="${props.selector}"`);

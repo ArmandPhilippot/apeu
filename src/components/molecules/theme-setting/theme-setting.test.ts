@@ -15,6 +15,9 @@ describe("ThemeSetting", () => {
   it<LocalTestContext>("should render a toggle component to update the theme", async ({
     container,
   }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(3);
+
     const props = {
       label: "fugiat animi sed",
       setting: "theme",
@@ -22,8 +25,6 @@ describe("ThemeSetting", () => {
     const result = await container.renderToString(ThemeSetting, {
       props,
     });
-
-    expect.assertions(3);
 
     expect(result).toContain(`data-setting="${props.setting}"`);
     expect(result).toContain('data-variant="toggle"');
@@ -33,6 +34,9 @@ describe("ThemeSetting", () => {
   it<LocalTestContext>("should render a switch component to update the theme", async ({
     container,
   }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(2);
+
     const props = {
       label: "fugiat animi sed",
       setting: "theme",
@@ -42,13 +46,14 @@ describe("ThemeSetting", () => {
       props,
     });
 
-    expect.assertions(2);
-
     expect(result).toContain(`data-setting="${props.setting}"`);
     expect(result).toContain('data-variant="switch"');
   });
 
   it<LocalTestContext>("can use a prefix from an id", async ({ container }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(4);
+
     const props = {
       id: "voluptatem",
       label: "fugiat animi sed",
@@ -57,8 +62,6 @@ describe("ThemeSetting", () => {
     const result = await container.renderToString(ThemeSetting, {
       props,
     });
-
-    expect.assertions(4);
 
     expect(result).toContain(`id="${props.id}"`);
     expect(result).toContain(`${props.id}-${props.setting}-auto`);

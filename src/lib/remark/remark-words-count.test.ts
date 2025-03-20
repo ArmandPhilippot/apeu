@@ -5,9 +5,7 @@ import { isObject } from "../../utils/type-checks";
 import { remarkWordsCount } from "./remark-words-count";
 
 vi.mock("../../utils/helpers/paths", async (importOriginal) => {
-  const mod =
-    // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-    await importOriginal<typeof import("../../utils/paths")>();
+  const mod = await importOriginal<typeof import("../../utils/paths")>();
 
   return {
     ...mod,
@@ -37,8 +35,9 @@ describe("remark-words-count", () => {
       !isObject(result.data.astro) ||
       !isObject(result.data.astro.frontmatter) ||
       !("wordsCount" in result.data.astro.frontmatter)
-    )
+    ) {
       throw new Error("wordsCount property missing in astro frontmatter.");
+    }
 
     expect(result.data.astro.frontmatter.wordsCount).toBe(wordsInMarkdown);
   });
@@ -69,8 +68,9 @@ describe("remark-words-count", () => {
       !isObject(result.data.astro) ||
       !isObject(result.data.astro.frontmatter) ||
       !("wordsCount" in result.data.astro.frontmatter)
-    )
+    ) {
       throw new Error("wordsCount property missing in astro frontmatter.");
+    }
 
     expect(result.data.astro.frontmatter.wordsCount).toBe(wordsInMarkdown);
   });

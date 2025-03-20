@@ -19,7 +19,7 @@ type WebSiteGraphData = {
  * Retrieve a Website graph from the given data.
  *
  * @param {WebSiteGraphData} data - The website data.
- * @returns {Website} The Website graph.
+ * @returns {WebSite} The Website graph.
  */
 export const getWebSiteGraph = ({
   description,

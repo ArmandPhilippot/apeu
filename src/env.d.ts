@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/consistent-type-definitions */
-
 interface ImportMetaEnv {
   readonly CONTENT_PATH: string | undefined;
 }

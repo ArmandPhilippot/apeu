@@ -8,9 +8,7 @@ import {
 } from "./paths";
 
 vi.mock("./constants", async (importOriginal) => {
-  const mod =
-    // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-    await importOriginal<typeof import("./constants")>();
+  const mod = await importOriginal<typeof import("./constants")>();
   return {
     ...mod,
     CONFIG: {
@@ -25,7 +23,6 @@ vi.mock("./constants", async (importOriginal) => {
 });
 
 vi.mock("./i18n", async (importOriginal) => {
-  // eslint-disable-next-line @typescript-eslint/consistent-type-imports
   const mod = await importOriginal<typeof import("./i18n")>();
 
   return {
@@ -33,7 +30,7 @@ vi.mock("./i18n", async (importOriginal) => {
     isAvailableLanguage: vi
       .fn()
       .mockImplementation((locale: string) =>
-        ["en", "es", "fr"].includes(locale),
+        ["en", "es", "fr"].includes(locale)
       ),
   };
 });
@@ -50,17 +47,17 @@ describe("join-paths", () => {
 describe("get-parent-dir-path", () => {
   it("returns the parent directory path from a UNIX-style path", () => {
     const file = "file";
-    const parent = "/some/path/to/a";
-    const filePath = `${parent}/${file}`;
+    const parentDir = "/some/path/to/a";
+    const filePath = `${parentDir}/${file}`;
     const result = getParentDirPath(filePath);
 
-    expect(result).toBe(parent);
+    expect(result).toBe(parentDir);
   });
 
   it("returns the parent directory path from a Windows-style path", () => {
     const file = "file";
-    const parent = "C:\\some\\path\\to";
-    const filePath = `${parent}\\${file}`;
+    const parentDir = String.raw`C:\some\path\to`;
+    const filePath = `${parentDir}\\${file}`;
     const result = getParentDirPath(filePath);
 
     expect(result).toMatchInlineSnapshot(`"C:/some/path/to"`);

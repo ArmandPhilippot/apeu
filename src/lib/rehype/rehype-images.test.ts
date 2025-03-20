@@ -9,7 +9,7 @@ const createVFile = (
   options: {
     path?: string;
     imagePaths?: string[];
-  } = {},
+  } = {}
 ) => {
   const { path = "file.mdx", imagePaths = [] } = options;
 
@@ -34,7 +34,7 @@ describe("rehypeImages plugin", () => {
       });
 
       expect(result.value).toMatchInlineSnapshot(
-        `"<html><head></head><body><a href="./some-img.jpg"><img alt="" src="./some-img.jpg"></a></body></html>"`,
+        `"<html><head></head><body><a href="./some-img.jpg"><img alt="" src="./some-img.jpg"></a></body></html>"`
       );
     });
   });

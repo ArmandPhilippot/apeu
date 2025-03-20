@@ -29,6 +29,7 @@ const { card, creator, description, image, site, title } = Astro.props;
 
 /**
  * `twitter:description` is limited to 200 characters.
+ *
  * @see https://developer.x.com/en/docs/x-for-websites/cards/overview/markup
  */
 const descriptionMaxLength = 200;
@@ -39,9 +40,9 @@ const twitterDesc =
     : description;
 ---
 
-{card ? <meta name="twitter:card" content={card} /> : null}
-{site ? <meta name="twitter:site" content={site} /> : null}
-{creator ? <meta name="twitter:creator" content={creator} /> : null}
-{title ? <meta name="twitter:title" content={title} /> : null}
-{twitterDesc ? <meta name="twitter:description" content={twitterDesc} /> : null}
-{image ? <meta name="twitter:image" content={image} /> : null}
+{card ? <meta content={card} name="twitter:card" /> : null}
+{site ? <meta content={site} name="twitter:site" /> : null}
+{creator ? <meta content={creator} name="twitter:creator" /> : null}
+{title ? <meta content={title} name="twitter:title" /> : null}
+{twitterDesc ? <meta content={twitterDesc} name="twitter:description" /> : null}
+{image ? <meta content={image} name="twitter:image" /> : null}

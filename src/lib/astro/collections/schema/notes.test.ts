@@ -3,9 +3,7 @@ import { CONFIG } from "../../../../utils/constants";
 import { notes } from "./notes";
 
 vi.mock("../../../../utils/dates", async (importOriginal) => {
-  const mod =
-    // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-    await importOriginal<typeof import("../../../../utils/dates")>();
+  const mod = await importOriginal<typeof import("../../../../utils/dates")>();
 
   return {
     ...mod,
@@ -27,17 +25,20 @@ describe("notes", () => {
       updatedOn: new Date("2023-01-02"),
     };
 
-    if (!notes.schema || typeof notes.schema === "function")
+    if (notes.schema === undefined || typeof notes.schema === "function") {
       throw new Error("The schema is not accessible");
+    }
 
     const result = notes.schema.safeParse(note);
 
     expect(result.success).toBe(true);
-    if (result.success) {
-      expect(result.data.meta.isDraft).toBe(true);
-      expect(result.data.meta.publishedOn).toEqual(new Date("2023-01-01"));
-      expect(result.data.meta.updatedOn).toEqual(new Date("2023-01-02"));
-    }
+
+    // This guards against TypeScript errors but won't execute if the test is passing
+    if (!result.success) return;
+
+    expect(result.data.meta.isDraft).toBe(true);
+    expect(result.data.meta.publishedOn).toStrictEqual(new Date("2023-01-01"));
+    expect(result.data.meta.updatedOn).toStrictEqual(new Date("2023-01-02"));
   });
 
   it("should apply default values as expected", () => {
@@ -51,16 +52,21 @@ describe("notes", () => {
       },
     };
 
-    if (!notes.schema || typeof notes.schema === "function")
+    if (notes.schema === undefined || typeof notes.schema === "function") {
       throw new Error("The schema is not accessible");
+    }
 
     const result = notes.schema.safeParse(note);
 
     expect(result.success).toBe(true);
-    if (result.success) {
-      expect(result.data.locale).toBe(CONFIG.LANGUAGES.DEFAULT);
-      expect(result.data.meta.isDraft).toBe(false);
-      expect(result.data.meta.updatedOn).toEqual(result.data.meta.publishedOn);
-    }
+
+    // This guards against TypeScript errors but won't execute if the test is passing
+    if (!result.success) return;
+
+    expect(result.data.locale).toBe(CONFIG.LANGUAGES.DEFAULT);
+    expect(result.data.meta.isDraft).toBe(false);
+    expect(result.data.meta.updatedOn).toStrictEqual(
+      result.data.meta.publishedOn
+    );
   });
 });

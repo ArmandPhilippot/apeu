@@ -6,15 +6,18 @@ import {
   useI18n,
   type AvailableLanguage,
 } from "../../../utils/i18n";
+import { isString } from "../../../utils/type-checks";
 
 /* This is not a supported usage, so it could break. Currently `import.meta.
  * env` doesn't work anymore when using a path outside the project's root (ie.
  * when I'm using a Git submodules). Using `process.env` seems to fix that. */
-const CONTENT_DIR: string = process.env?.CONTENT_PATH ?? "./content";
+const CONTENT_DIR: string = process.env.CONTENT_PATH ?? "./content";
 
 const getLocalesPattern = () => {
-  if (CONFIG.LANGUAGES.AVAILABLE.length > 1)
+  /* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- The languages number could change so it is safe to expect that a single language is configured. */
+  if (CONFIG.LANGUAGES.AVAILABLE.length > 1) {
     return `(${CONFIG.LANGUAGES.AVAILABLE.join("|")})`;
+  }
 
   return CONFIG.LANGUAGES.DEFAULT;
 };
@@ -28,7 +31,7 @@ const getLocalizedPattern = (pattern: string) => {
 const collectionsPattern = {
   authors: "authors/*.json",
   "blog.categories": getLocalizedPattern(
-    "/blog/categories/**/!(index).{md,mdx}",
+    "/blog/categories/**/!(index).{md,mdx}"
   ),
   "blog.posts": getLocalizedPattern("/blog/posts/**/!(index).{md,mdx}"),
   blogroll: "blogroll/*.json",
@@ -64,7 +67,7 @@ const getCollectionEntryRoute = ({
 const getLocaleAndSlugFromId = (collection: Collection, id: string) => {
   const [maybeLocale, ...slugParts] = id.split("/");
   const locale =
-    maybeLocale && isAvailableLanguage(maybeLocale)
+    isString(maybeLocale) && isAvailableLanguage(maybeLocale)
       ? maybeLocale
       : CONFIG.LANGUAGES.DEFAULT;
   const slug = slugParts
@@ -75,10 +78,16 @@ const getLocaleAndSlugFromId = (collection: Collection, id: string) => {
 };
 
 const isLocalizedCollection = (
-  collection: Collection,
+  collection: Collection
 ): collection is Exclude<Collection, "authors" | "blogroll" | "bookmarks"> =>
   !["authors", "blogroll", "bookmarks"].includes(collection);
 
+/**
+ * Create a glob loader for the given collection.
+ *
+ * @param {Collection} collection - The collection to load.
+ * @returns {Loader} A loader for the given collection.
+ */
 export const globLoader = (collection: Collection): Loader => {
   const originalGlob = glob({
     base: CONTENT_DIR,
@@ -90,18 +99,18 @@ export const globLoader = (collection: Collection): Loader => {
     load: async (ctx) => {
       await originalGlob.load(ctx);
 
-      const originalEntries = Array.from(ctx.store.entries());
+      const originalEntries = [...ctx.store.entries()];
       ctx.store.clear();
 
       for (const [originalId, entry] of originalEntries) {
-        if (!entry.filePath) continue;
+        if (entry.filePath === undefined) continue;
 
         const id = entry.id.replace(`${collection.replace(".", "/")}/`, "");
 
         if (isLocalizedCollection(collection)) {
           const { locale, slug } = getLocaleAndSlugFromId(
             collection,
-            originalId,
+            originalId
           );
           const route = getCollectionEntryRoute({ collection, locale, slug });
           ctx.store.set({

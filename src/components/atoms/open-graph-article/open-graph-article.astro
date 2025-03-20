@@ -21,31 +21,31 @@ const {
 {
   publishedTime ? (
     <meta
-      property="article:published_time"
       content={publishedTime.toISOString()}
+      property="article:published_time"
     />
   ) : null
 }
 {
   modifiedTime ? (
     <meta
-      property="article:modified_time"
       content={modifiedTime.toISOString()}
+      property="article:modified_time"
     />
   ) : null
 }
 {
   expirationTime ? (
     <meta
-      property="article:expiration_time"
       content={expirationTime.toISOString()}
+      property="article:expiration_time"
     />
   ) : null
 }
 {
   authorsProfilePage?.map((author) => (
-    <meta property="article:author" content={author} />
+    <meta content={author} property="article:author" />
   ))
 }
-{section ? <meta property="article:section" content={section} /> : null}
-{tags?.map((tag) => <meta property="article:tag" content={tag} />)}
+{section ? <meta content={section} property="article:section" /> : null}
+{tags?.map((tag) => <meta content={tag} property="article:tag" />)}

@@ -98,10 +98,10 @@ const processImageNode = (img: HastElement, file: VFile) => {
   if (
     isString(img.properties.src) &&
     isRelativeSrc(img.properties.src) &&
-    Array.isArray(file.data.astro?.imagePaths) &&
-    !file.data.astro.imagePaths.includes(img.properties.src)
+    Array.isArray(file.data.astro?.localImagePaths) &&
+    !file.data.astro.localImagePaths.includes(img.properties.src)
   ) {
-    file.data.astro.imagePaths.push(img.properties.src);
+    file.data.astro.localImagePaths.push(img.properties.src);
   }
 
   if (shouldAddInferSize(img.properties)) {

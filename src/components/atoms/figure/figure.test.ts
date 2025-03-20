@@ -15,12 +15,13 @@ describe("Figure", () => {
   it<LocalTestContext>("renders a figure and its children", async ({
     container,
   }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(4);
+
     const body = "id quibusdam eius";
     const result = await container.renderToString(Figure, {
       slots: { default: body },
     });
-
-    expect.assertions(4);
 
     expect(result).toContain("</figure>");
     expect(result).toContain(body);
@@ -31,14 +32,15 @@ describe("Figure", () => {
   it<LocalTestContext>("can render a centered figure", async ({
     container,
   }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(2);
+
     const props = { isCentered: true } satisfies ComponentProps<typeof Figure>;
     const body = "id quibusdam eius";
     const result = await container.renderToString(Figure, {
       props,
       slots: { default: body },
     });
-
-    expect.assertions(2);
 
     expect(result).toContain("</figure>");
     expect(result).toContain('data-centered="true"');
@@ -47,14 +49,15 @@ describe("Figure", () => {
   it<LocalTestContext>("can render a full-width figure", async ({
     container,
   }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(2);
+
     const props = { isFullWidth: true } satisfies ComponentProps<typeof Figure>;
     const body = "id quibusdam eius";
     const result = await container.renderToString(Figure, {
       props,
       slots: { default: body },
     });
-
-    expect.assertions(2);
 
     expect(result).toContain("</figure>");
     expect(result).toContain('data-full-width="true"');

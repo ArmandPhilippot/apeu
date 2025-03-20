@@ -13,6 +13,9 @@ describe("PageLayout", () => {
   });
 
   it<LocalTestContext>("renders the page", async ({ container }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(4);
+
     const props = {
       description: "Porro iste voluptatem architecto iste pariatur atque non.",
       seo: {
@@ -24,8 +27,6 @@ describe("PageLayout", () => {
       props,
     });
 
-    expect.assertions(4);
-
     expect(result).toContain("</main>");
     expect(result).toContain("</article>");
     expect(result).toContain(props.title);
@@ -33,6 +34,9 @@ describe("PageLayout", () => {
   });
 
   it<LocalTestContext>("can render a breadcrumb", async ({ container }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(3);
+
     const props = {
       breadcrumb: [
         { label: "omnis assumenda aut", url: "#voluptate-est-sed" },
@@ -48,14 +52,16 @@ describe("PageLayout", () => {
       props,
     });
 
-    expect.assertions(3);
-
     expect(result).toContain(props.breadcrumb[0].label);
     expect(result).toContain(props.breadcrumb[1].label);
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Access to third item. */
     expect(result).toContain(props.breadcrumb[2].label);
   });
 
   it<LocalTestContext>("can render an aside", async ({ container }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(2);
+
     const props = {
       seo: {
         title: "est et fugiat",
@@ -68,13 +74,13 @@ describe("PageLayout", () => {
       slots: { aside },
     });
 
-    expect.assertions(2);
-
     expect(result).toContain("</aside>");
     expect(result).toContain(aside);
   });
 
   it<LocalTestContext>("can render the page meta", async ({ container }) => {
+    expect.assertions(1);
+
     const props = {
       seo: {
         title: "est et fugiat",
@@ -87,12 +93,12 @@ describe("PageLayout", () => {
       slots: { meta },
     });
 
-    expect.assertions(1);
-
     expect(result).toContain(meta);
   });
 
   it<LocalTestContext>("can render the page body", async ({ container }) => {
+    expect.assertions(1);
+
     const props = {
       seo: {
         title: "est et fugiat",
@@ -105,14 +111,14 @@ describe("PageLayout", () => {
       slots: { body },
     });
 
-    expect.assertions(1);
-
     expect(result).toContain(body);
   });
 
   it<LocalTestContext>("can render the page disconnected body", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       seo: {
         title: "est et fugiat",
@@ -125,12 +131,12 @@ describe("PageLayout", () => {
       slots: { "disconnected-body": disconnectedBody },
     });
 
-    expect.assertions(1);
-
     expect(result).toContain(disconnectedBody);
   });
 
   it<LocalTestContext>("can render the page footer", async ({ container }) => {
+    expect.assertions(1);
+
     const props = {
       seo: {
         title: "est et fugiat",
@@ -142,8 +148,6 @@ describe("PageLayout", () => {
       props,
       slots: { footer },
     });
-
-    expect.assertions(1);
 
     expect(result).toContain(footer);
   });

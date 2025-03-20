@@ -10,7 +10,7 @@ import { getWebPageGraph } from "../../lib/schema-dts/graphs/webpage-graph";
 import { useI18n } from "../../utils/i18n";
 
 const { locale, route, translate, translatePlural } = useI18n(
-  Astro.currentLocale,
+  Astro.currentLocale
 );
 const { Content, ...page } = await queryEntry({
   collection: "pages",
@@ -29,6 +29,7 @@ const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
 const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
   await getWebPageGraph({ ...page, breadcrumb }),
 ];
+const imgAboveTheFoldCount = 2;
 ---
 
 <PageLayout
@@ -56,7 +57,10 @@ const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
     slot="disconnected-body"
   >
     {
-      ({ cover, meta, ...tag }: (typeof tags)[number], index: number) => (
+      (
+        { cover, meta: _meta, ...tag }: (typeof tags)[number],
+        index: number
+      ) => (
         <CollectionCard
           class="tag-card"
           elevation="raised"
@@ -65,7 +69,7 @@ const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
             cover: cover
               ? {
                   ...cover,
-                  loading: index > 2 ? "lazy" : "eager",
+                  loading: index > imgAboveTheFoldCount ? "lazy" : "eager",
                 }
               : null,
           }}

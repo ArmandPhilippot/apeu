@@ -1,6 +1,7 @@
 import { render, type CollectionEntry } from "astro:content";
 import type { Guide, GuidePreview } from "../../../../types/data";
 import { getMetaFromRemarkPluginFrontmatter } from "../../../../utils/frontmatter";
+import { isObject } from "../../../../utils/type-checks";
 import { getAuthorLink } from "./authors";
 import {
   getTagsFromReferences,
@@ -8,8 +9,14 @@ import {
   resolveTranslations,
 } from "./utils";
 
+/**
+ * Convert a guide collection entry to a GuidePreview object.
+ *
+ * @param {CollectionEntry<"guides">} guide - The guide collection entry.
+ * @returns {Promise<GuidePreview>} An object describing the guide preview.
+ */
 export const getGuidePreview = async (
-  guide: CollectionEntry<"guides">,
+  guide: CollectionEntry<"guides">
 ): Promise<GuidePreview> => {
   const { cover, locale, meta, seo, slug, ...remainingData } = guide.data;
   const { authors, isDraft, tags, ...remainingMeta } = meta;
@@ -17,12 +24,12 @@ export const getGuidePreview = async (
   const { remarkPluginFrontmatter } = await render(guide);
   const { readingTime } = getMetaFromRemarkPluginFrontmatter(
     remarkPluginFrontmatter,
-    locale,
+    locale
   );
 
   return {
     ...remainingData,
-    cover: cover
+    cover: isObject(cover)
       ? {
           ...(cover.position ? { position: cover.position } : {}),
           src: cover.src,
@@ -39,8 +46,14 @@ export const getGuidePreview = async (
   };
 };
 
+/**
+ * Convert a guide collection entry to a Guide object.
+ *
+ * @param {CollectionEntry<"guides">} guide - The guide collection entry.
+ * @returns {Promise<Guide>} An object describing the guide.
+ */
 export const getGuide = async (
-  guide: CollectionEntry<"guides">,
+  guide: CollectionEntry<"guides">
 ): Promise<Guide> => {
   const preview = await getGuidePreview(guide);
   const resolvedAuthors = await resolveReferences(guide.data.meta.authors);
@@ -50,7 +63,7 @@ export const getGuide = async (
   return {
     ...preview,
     ...renderResult,
-    hasContent: !!guide.body,
+    hasContent: guide.body !== undefined && guide.body !== "",
     meta: {
       ...preview.meta,
       authors: resolvedAuthors?.map(getAuthorLink) ?? [],

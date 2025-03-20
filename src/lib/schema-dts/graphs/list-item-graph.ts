@@ -6,6 +6,12 @@ type ListItemGraphData = {
   position: number;
 };
 
+/**
+ * Retrieve a ListItem graph from the given data.
+ *
+ * @param {ListItemGraphData} data - An object containing the item data.
+ * @returns {ListItem} A graph describing a list item.
+ */
 export const getListItemGraph = ({
   id,
   label,

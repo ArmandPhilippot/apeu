@@ -45,29 +45,29 @@ const feeds = await getCollectionsFeeds(locale);
 <head>
   <meta charset="utf-8" />
   <meta
-    name="viewport"
     content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    name="viewport"
   />
   <title>{seo.title}{addBrandToTitle ? ` | ${brand}` : ""}</title>
   {
     seo.description ? (
-      <meta name="description" content={seo.description} />
+      <meta content={seo.description} name="description" />
     ) : null
   }
   <meta
-    name="robots"
     content={`${seo.noindex ? "noindex" : "index"}, ${
       seo.nofollow ? "nofollow" : "follow"
     }`}
+    name="robots"
   />
-  <link rel="canonical" href={seo.canonical ?? Astro.url.href} />
+  <link href={seo.canonical ?? Astro.url.href} rel="canonical" />
   {
     Astro.site
       ? seo.languages?.map((language) => (
           <link
-            rel="alternate"
             href={new URL(language.route, Astro.site)}
             hreflang={language.locale}
+            rel="alternate"
           />
         ))
       : null
@@ -75,39 +75,39 @@ const feeds = await getCollectionsFeeds(locale);
   {
     seo.author ? (
       <>
-        <meta name="author" content={seo.author.name} />
-        <link rel="author" href={seo.author.website} />
+        <meta content={seo.author.name} name="author" />
+        <link href={seo.author.website} rel="author" />
       </>
     ) : (
       <>
-        <meta name="author" content={brand} />
-        {Astro.site ? <link rel="author" href={Astro.site.href} /> : null}
+        <meta content={brand} name="author" />
+        {Astro.site ? <link href={Astro.site.href} rel="author" /> : null}
       </>
     )
   }
-  {colorScheme ? <meta name="color-scheme" content={colorScheme} /> : null}
-  {themeColor ? <meta name="theme-color" content={themeColor} /> : null}
-  {generator ? <meta name="generator" content={generator} /> : null}
-  <link rel="icon" href="/favicon.ico" sizes="32x32" />
-  <link rel="icon" type="image/svg+xml" href={icon.src} />
-  <link rel="apple-touch-icon" href={appleTouchIcon.src} />
-  <link rel="manifest" href="/manifest.json" />
-  <link rel="sitemap" href="/sitemap-index.xml" />
+  {colorScheme ? <meta content={colorScheme} name="color-scheme" /> : null}
+  {themeColor ? <meta content={themeColor} name="theme-color" /> : null}
+  {generator ? <meta content={generator} name="generator" /> : null}
+  <link href="/favicon.ico" rel="icon" sizes="32x32" />
+  <link href={icon.src} rel="icon" type="image/svg+xml" />
+  <link href={appleTouchIcon.src} rel="apple-touch-icon" />
+  <link href="/manifest.json" rel="manifest" />
+  <link href="/sitemap-index.xml" rel="sitemap" />
   {
     Astro.site ? (
       <Fragment>
         <link
+          href={new URL("./feed.xml", Astro.site)}
           rel="alternate"
-          type="application/rss+xml"
           title={translate("feed.website.link.title")}
-          href={new URL("feed.xml", Astro.site)}
+          type="application/rss+xml"
         />
         {feeds.map((feed) => (
           <link
-            rel="alternate"
-            type="application/rss+xml"
-            title={feed.label}
             href={new URL(feed.slug, Astro.site)}
+            rel="alternate"
+            title={feed.label}
+            type="application/rss+xml"
           />
         ))}
       </Fragment>

@@ -27,6 +27,7 @@ const {
 } = Astro.props;
 const { translate } = useI18n(Astro.currentLocale);
 const mediumLabel = label ?? translate(`social.medium.label.${medium}`);
+/* eslint-disable-next-line no-magic-numbers -- Self-explanatory. */
 const defaultIconSize = hideLabel ? 32 : 22;
 ---
 
@@ -62,7 +63,7 @@ const defaultIconSize = hideLabel ? 32 : 22;
   .social-link-icon {
     filter: drop-shadow(
       var(--one-px-in-rem) var(--one-px-in-rem) 0
-        oklch(from var(--color-shadow) l c h / 0.75)
+        oklch(from var(--color-shadow) l c h / 75%)
     );
   }
 
@@ -71,7 +72,7 @@ const defaultIconSize = hideLabel ? 32 : 22;
   }
 
   :where([data-medium="diaspora"]) .social-link-icon {
-    color: hsl(195, 3%, 25%);
+    color: hsl(195deg 3% 25%);
   }
 
   :where([data-medium="email"]) .social-link-icon {
@@ -111,7 +112,7 @@ const defaultIconSize = hideLabel ? 32 : 22;
   }
 
   :where([data-medium="x"]) .social-link-icon {
-    color: hsl(0, 0%, 25%);
+    color: hsl(0deg 0% 25%);
   }
 
   :global(:where([data-theme="dark"])) .social-link .social-link-icon {

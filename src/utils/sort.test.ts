@@ -15,24 +15,24 @@ describe("sort-by-key", () => {
 
     expect(entries.sort((a, b) => sortByKey(a, b, "baz")))
       .toMatchInlineSnapshot(`
-      [
-        {
-          "bar": true,
-          "baz": 2024-04-20T17:56:00.000Z,
-          "foo": "id",
-        },
-        {
-          "bar": false,
-          "baz": 2024-04-21T12:26:00.000Z,
-          "foo": "aspernatur",
-        },
-        {
-          "bar": false,
-          "baz": 2024-04-29T13:34:00.000Z,
-          "foo": "fugiat",
-        },
-      ]
-    `);
+        [
+          {
+            "bar": true,
+            "baz": 2024-04-20T17:56:00.000Z,
+            "foo": "id",
+          },
+          {
+            "bar": false,
+            "baz": 2024-04-21T12:26:00.000Z,
+            "foo": "aspernatur",
+          },
+          {
+            "bar": false,
+            "baz": 2024-04-29T13:34:00.000Z,
+            "foo": "fugiat",
+          },
+        ]
+      `);
   });
 
   it("can be used to sort an array of objects by string", () => {
@@ -48,24 +48,24 @@ describe("sort-by-key", () => {
 
     expect(entries.sort((a, b) => sortByKey(a, b, "foo")))
       .toMatchInlineSnapshot(`
-      [
-        {
-          "bar": false,
-          "baz": 2024-04-20T17:56:00.000Z,
-          "foo": "aspernatur",
-        },
-        {
-          "bar": true,
-          "baz": 2024-04-29T13:34:00.000Z,
-          "foo": "id",
-        },
-        {
-          "bar": true,
-          "baz": 2024-04-21T12:26:00.000Z,
-          "foo": "ut",
-        },
-      ]
-    `);
+        [
+          {
+            "bar": false,
+            "baz": 2024-04-20T17:56:00.000Z,
+            "foo": "aspernatur",
+          },
+          {
+            "bar": true,
+            "baz": 2024-04-29T13:34:00.000Z,
+            "foo": "id",
+          },
+          {
+            "bar": true,
+            "baz": 2024-04-21T12:26:00.000Z,
+            "foo": "ut",
+          },
+        ]
+      `);
   });
 
   it("throws an error if the property type is not supported", () => {
@@ -75,9 +75,9 @@ describe("sort-by-key", () => {
     ];
 
     expect(() =>
-      entries.sort((a, b) => sortByKey(a, b, "bar")),
+      entries.sort((a, b) => sortByKey(a, b, "bar"))
     ).toThrowErrorMatchingInlineSnapshot(
-      `[Error: Unsupported property type for sorting]`,
+      `[Error: Unsupported property type for sorting]`
     );
   });
 });

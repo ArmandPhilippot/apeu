@@ -7,21 +7,21 @@ type LocalTestContext = {
   container: AstroContainer;
 };
 
-describe("Copyright", () => {
+describe("copyright", () => {
   beforeEach<LocalTestContext>(async (context) => {
     context.container = await AstroContainer.create();
   });
 
   it<LocalTestContext>("renders a copyright", async ({ container }) => {
+    expect.assertions(1);
+
     const props = {
       creationYear: new Date().getFullYear(),
       owner: "Wilford",
-    } satisfies ComponentProps<typeof Copyright>;
+    } as const satisfies ComponentProps<typeof Copyright>;
     const result = await container.renderToString(Copyright, {
       props,
     });
-
-    expect.assertions(1);
 
     expect(result).toContain(`&copy; ${props.creationYear} ${props.owner}.`);
   });
@@ -29,6 +29,8 @@ describe("Copyright", () => {
   it<LocalTestContext>("can add the current year when different from the creation year", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       creationYear: 2010,
       owner: "Wilford",
@@ -37,10 +39,8 @@ describe("Copyright", () => {
       props,
     });
 
-    expect.assertions(1);
-
     expect(result).toContain(
-      `&copy; ${props.creationYear} - ${new Date().getFullYear()} ${props.owner}.`,
+      `&copy; ${props.creationYear} - ${new Date().getFullYear()} ${props.owner}.`
     );
   });
 });

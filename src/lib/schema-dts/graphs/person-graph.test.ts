@@ -3,9 +3,7 @@ import { CONFIG } from "../../../utils/constants";
 import { getPersonGraph } from "./person-graph";
 
 vi.mock("../../../utils/constants", async (importOriginal) => {
-  const mod =
-    // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-    await importOriginal<typeof import("../../../utils/constants")>();
+  const mod = await importOriginal<typeof import("../../../utils/constants")>();
   return {
     ...mod,
     CONFIG: {
@@ -19,9 +17,7 @@ vi.mock("../../../utils/constants", async (importOriginal) => {
 });
 
 vi.mock("../../../utils/url", async (importOriginal) => {
-  const mod =
-    // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-    await importOriginal<typeof import("../../../utils/url")>();
+  const mod = await importOriginal<typeof import("../../../utils/url")>();
   return {
     ...mod,
     getWebsiteUrl: () => "https://example.test",
@@ -30,6 +26,8 @@ vi.mock("../../../utils/url", async (importOriginal) => {
 
 describe("get-person-graph", () => {
   it("returns an object describing the person", async () => {
+    expect.assertions(1);
+
     const graph = await getPersonGraph(
       {
         firstName: "John",
@@ -37,10 +35,8 @@ describe("get-person-graph", () => {
         lastName: "Doe",
         name: "John Doe",
       },
-      CONFIG.LANGUAGES.DEFAULT,
+      CONFIG.LANGUAGES.DEFAULT
     );
-
-    expect.assertions(1);
 
     expect(graph).toMatchInlineSnapshot(`
       {
@@ -53,6 +49,8 @@ describe("get-person-graph", () => {
   });
 
   it("can return an object describing the person using optional properties", async () => {
+    expect.assertions(1);
+
     const graph = await getPersonGraph(
       {
         avatar: {
@@ -67,10 +65,8 @@ describe("get-person-graph", () => {
         nationality: "FR",
         website: "https://example.test",
       },
-      CONFIG.LANGUAGES.DEFAULT,
+      CONFIG.LANGUAGES.DEFAULT
     );
-
-    expect.assertions(1);
 
     expect(graph).toMatchInlineSnapshot(`
       {
@@ -103,6 +99,8 @@ describe("get-person-graph", () => {
   });
 
   it("can add an id when the person is the website owner", async () => {
+    expect.assertions(1);
+
     const graph = await getPersonGraph(
       {
         firstName: "John",
@@ -110,10 +108,8 @@ describe("get-person-graph", () => {
         lastName: "Doe",
         name: "John Doe",
       },
-      CONFIG.LANGUAGES.DEFAULT,
+      CONFIG.LANGUAGES.DEFAULT
     );
-
-    expect.assertions(1);
 
     expect(graph).toMatchInlineSnapshot(`
       {

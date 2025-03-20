@@ -6,16 +6,17 @@ import type { QueryCollectionOrderBy } from "./types";
 /**
  * Order the entries in collection with the given instructions.
  *
- * @template C - CollectionEntry
+ * @template C - CollectionEntry.
  * @param {CollectionEntry<C>[]} entries - The collection entries.
  * @param {QueryCollectionOrderBy<C>} orderBy - The ordering instructions.
- * @returns {CollectionEntry<C>[]} The ordered entries.
+ * @returns {CollectionEntry<C>[]} The entries ordered using the ordering configuration.
+ * @throws {Error} When one of the entries doesn't provide the order by key.
  */
 export const getOrderedEntries = <C extends CollectionKey>(
   entries: CollectionEntry<C>[],
-  orderBy: QueryCollectionOrderBy<C> | undefined,
+  orderBy: QueryCollectionOrderBy<C> | undefined
 ): CollectionEntry<C>[] => {
-  if (!orderBy) return entries;
+  if (orderBy === undefined) return entries;
 
   const { key, order } = orderBy;
   const orderedEntries = [...entries].sort((a, b) => {
@@ -24,8 +25,9 @@ export const getOrderedEntries = <C extends CollectionKey>(
     const sourceB =
       "meta" in b.data && key in b.data.meta ? b.data.meta : b.data;
 
-    if (!hasCommonKey(sourceA, sourceB, key))
+    if (!hasCommonKey(sourceA, sourceB, key)) {
       throw new Error(`Property ${key} must be available in both entries.`);
+    }
 
     return sortByKey(sourceA, sourceB, key);
   });

@@ -13,6 +13,8 @@ describe("ListItem", () => {
   });
 
   it<LocalTestContext>("renders its children", async ({ container }) => {
+    expect.assertions(1);
+
     const props = {} satisfies ComponentProps<typeof ListItem>;
     const body = "id quibusdam eius";
     const result = await container.renderToString(ListItem, {
@@ -20,12 +22,12 @@ describe("ListItem", () => {
       slots: { default: body },
     });
 
-    expect.assertions(1);
-
     expect(result).toContain(body);
   });
 
   it<LocalTestContext>("can hide the list marker", async ({ container }) => {
+    expect.assertions(1);
+
     const props = {
       hideMarker: true,
     } satisfies ComponentProps<typeof ListItem>;
@@ -34,8 +36,6 @@ describe("ListItem", () => {
       props,
       slots: { default: body },
     });
-
-    expect.assertions(1);
 
     expect(result).toContain('data-marker="false"');
   });

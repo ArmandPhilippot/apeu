@@ -1,9 +1,10 @@
-import type { AstroIntegration } from "astro";
 import { spawn } from "node:child_process";
 import { access } from "node:fs/promises";
 import { dirname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
+import type { AstroIntegration } from "astro";
 import sirv from "sirv";
+import { isString } from "../../../utils/type-checks";
 
 // `sirv` will most likely only be used in this file so:
 // cSpell:ignore -- sirv
@@ -22,7 +23,7 @@ export const pagefind = (() => {
         outDir = fileURLToPath(
           config.adapter?.name === "@astrojs/node" && config.output === "static"
             ? config.build.client
-            : config.outDir,
+            : config.outDir
         );
 
         const pagefindDir = join(outDir, "/pagefind");
@@ -32,14 +33,14 @@ export const pagefind = (() => {
           logger.info("Search index found!");
         } catch {
           logger.warn(
-            "You need to run `pnpm build` once to be able to use search features in dev mode.",
+            "You need to run `pnpm build` once to be able to use search features in dev mode."
           );
         }
       },
       "astro:server:setup": ({ logger, server }) => {
-        if (!outDir) {
+        if (outDir === null) {
           logger.warn(
-            "Couldn't determine Pagefind output directory. Search will not be available.",
+            "Couldn't determine Pagefind output directory. Search will not be available."
           );
 
           return;
@@ -51,7 +52,7 @@ export const pagefind = (() => {
         });
 
         server.middlewares.use((req, res, next) => {
-          if (req.url?.startsWith("/pagefind/")) {
+          if (isString(req.url) && req.url.startsWith("/pagefind/")) {
             serve(req, res, next);
           } else {
             next();
@@ -70,7 +71,9 @@ export const pagefind = (() => {
             stdio: "inherit",
             shell: true,
             cwd,
-          }).on("close", () => resolve());
+          }).on("close", () => {
+            resolve();
+          });
         });
       },
     },

@@ -12,8 +12,8 @@ type BlogData = Pick<
 /**
  * Retrieve a Blog graph from the given data.
  *
- * @param {BlogData} data - The blog data.
- * @returns {Promise<Blog>} The Blog graph.
+ * @param {BlogData} data - An object containing the blog data.
+ * @returns {Promise<Blog>} A graph representing the Blog.
  */
 export const getBlogGraph = async ({
   cover,
@@ -44,7 +44,8 @@ export const getBlogGraph = async ({
     mainEntityOfPage: blogUrl,
     name: title,
     publisher: { "@id": websiteAuthor },
-    ...(cover && { thumbnailUrl: await getImgSrc(cover) }),
+    ...(cover !== null &&
+      cover !== undefined && { thumbnailUrl: await getImgSrc(cover) }),
     url: blogUrl,
   };
 };

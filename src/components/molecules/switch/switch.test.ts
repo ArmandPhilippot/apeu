@@ -15,6 +15,9 @@ describe("Switch", () => {
   it<LocalTestContext>("should render a switch button", async ({
     container,
   }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(4);
+
     const props = {
       items: [
         { label: "voluptatum illo commodi", value: "est" },
@@ -25,8 +28,6 @@ describe("Switch", () => {
     } satisfies ComponentProps<typeof Switch>;
     const result = await container.renderToString(Switch, { props });
 
-    expect.assertions(4);
-
     expect(result).toContain('role="switch"');
     expect(result).toContain(props.label);
     expect(result).toContain(props.items[0].label);
@@ -36,6 +37,8 @@ describe("Switch", () => {
   it<LocalTestContext>("should render the button as checked", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       items: [
         { label: "voluptatum illo commodi", value: "est" },
@@ -46,14 +49,15 @@ describe("Switch", () => {
     } satisfies ComponentProps<typeof Switch>;
     const result = await container.renderToString(Switch, { props });
 
-    expect.assertions(1);
-
     expect(result).toContain('aria-checked="true"');
   });
 
   it<LocalTestContext>("should visually hide the options labels with hideItemsLabel defined with true", async ({
     container,
   }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(2);
+
     const props = {
       hideItemsLabel: true,
       items: [
@@ -65,8 +69,6 @@ describe("Switch", () => {
     } satisfies ComponentProps<typeof Switch>;
     const result = await container.renderToString(Switch, { props });
 
-    expect.assertions(2);
-
     expect(result).toContain(`<title>${props.items[0].label}</title>`);
     expect(result).toContain(`<title>${props.items[1].label}</title>`);
   });
@@ -74,6 +76,9 @@ describe("Switch", () => {
   it<LocalTestContext>("should visually hide the options labels with hideItemsLabel defined with false", async ({
     container,
   }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(2);
+
     const props = {
       hideItemsLabel: false,
       items: [
@@ -85,8 +90,6 @@ describe("Switch", () => {
     } satisfies ComponentProps<typeof Switch>;
     const result = await container.renderToString(Switch, { props });
 
-    expect.assertions(2);
-
     expect(result).not.toContain(`<title>${props.items[0].label}</title>`);
     expect(result).not.toContain(`<title>${props.items[1].label}</title>`);
   });
@@ -94,6 +97,8 @@ describe("Switch", () => {
   it<LocalTestContext>("should hide the label with hideLabel", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       hideLabel: true,
       items: [
@@ -105,14 +110,14 @@ describe("Switch", () => {
     } satisfies ComponentProps<typeof Switch>;
     const result = await container.renderToString(Switch, { props });
 
-    expect.assertions(1);
-
     expect(result).toContain(`title="${props.label}"`);
   });
 
   it<LocalTestContext>("should inline the label and the options with isInline", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       isInline: true,
       items: [
@@ -124,14 +129,14 @@ describe("Switch", () => {
     } satisfies ComponentProps<typeof Switch>;
     const result = await container.renderToString(Switch, { props });
 
-    expect.assertions(1);
-
     expect(result).toContain('data-inline="true"');
   });
 
   it<LocalTestContext>("should throw an error with an invalid value", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       items: [
         { label: "voluptatum illo commodi", value: "est" },
@@ -141,18 +146,18 @@ describe("Switch", () => {
       value: "invalid",
     } satisfies ComponentProps<typeof Switch>;
 
-    expect.assertions(1);
-
     await expect(async () =>
-      container.renderToString(Switch, { props }),
+      container.renderToString(Switch, { props })
     ).rejects.toThrowErrorMatchingInlineSnapshot(
-      `[Error: The switch value should be the value of one of its items, received: invalid.]`,
+      `[Error: The switch value should be the value of one of its items, received: invalid.]`
     );
   });
 
   it<LocalTestContext>("should throw an error when using hideItemsLabel without icons", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       hideItemsLabel: true,
       items: [
@@ -163,12 +168,10 @@ describe("Switch", () => {
       value: "est",
     } satisfies ComponentProps<typeof Switch>;
 
-    expect.assertions(1);
-
     await expect(async () =>
-      container.renderToString(Switch, { props }),
+      container.renderToString(Switch, { props })
     ).rejects.toThrowErrorMatchingInlineSnapshot(
-      `[Error: The hideItemsLabel option is invalid when items do not have icons.]`,
+      `[Error: The hideItemsLabel option is invalid when items do not have icons.]`
     );
   });
 });

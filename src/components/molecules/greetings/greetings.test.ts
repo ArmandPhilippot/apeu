@@ -13,14 +13,14 @@ describe("Greetings", () => {
   });
 
   it<LocalTestContext>("renders the name", async ({ container }) => {
+    expect.assertions(1);
+
     const props = {
       name: "John Doe",
     } satisfies ComponentProps<typeof Greetings>;
     const result = await container.renderToString(Greetings, {
       props,
     });
-
-    expect.assertions(1);
 
     expect(result).toContain(props.name);
   });

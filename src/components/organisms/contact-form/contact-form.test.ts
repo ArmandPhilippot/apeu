@@ -15,6 +15,9 @@ describe("ContactForm", () => {
   });
 
   it<LocalTestContext>("renders a contact form", async ({ container }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(5);
+
     const { translate } = useI18n(CONFIG.LANGUAGES.DEFAULT);
     const props = {
       id: "odit",
@@ -22,8 +25,6 @@ describe("ContactForm", () => {
     const result = await container.renderToString(ContactForm, {
       props,
     });
-
-    expect.assertions(5);
 
     expect(result).toContain("</form>");
     expect(result).toContain(translate("form.contact.label.name"));

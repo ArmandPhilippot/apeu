@@ -4,9 +4,7 @@ import { CONFIG } from "../../../../utils/constants";
 import { projects } from "./projects";
 
 vi.mock("../../../../utils/dates", async (importOriginal) => {
-  const mod =
-    // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-    await importOriginal<typeof import("../../../../utils/dates")>();
+  const mod = await importOriginal<typeof import("../../../../utils/dates")>();
 
   return {
     ...mod,
@@ -18,6 +16,9 @@ const mockImage = createImageMock();
 
 describe("projects", () => {
   it("should include the meta in the transformed output", async () => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(4);
+
     const project = {
       title: "The title of the project",
       description: "A description of the project.",
@@ -31,23 +32,27 @@ describe("projects", () => {
       updatedOn: new Date("2023-01-02"),
     };
 
-    if (typeof projects.schema !== "function")
-      throw new Error("The schema is not callable");
+    if (typeof projects.schema !== "function") {
+      throw new TypeError("The schema is not callable");
+    }
 
     const parsedSchema = projects.schema({ image: mockImage });
     const result = await parsedSchema.safeParseAsync(project);
 
-    expect.assertions(4);
-
     expect(result.success).toBe(true);
-    if (result.success) {
-      expect(result.data.meta.isDraft).toBe(true);
-      expect(result.data.meta.publishedOn).toEqual(new Date("2023-01-01"));
-      expect(result.data.meta.updatedOn).toEqual(new Date("2023-01-02"));
-    }
+
+    // This guards against TypeScript errors but won't execute if the test is passing
+    if (!result.success) return;
+
+    expect(result.data.meta.isDraft).toBe(true);
+    expect(result.data.meta.publishedOn).toStrictEqual(new Date("2023-01-01"));
+    expect(result.data.meta.updatedOn).toStrictEqual(new Date("2023-01-02"));
   });
 
   it("should apply default values as expected", async () => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(5);
+
     const project = {
       title: "The title of the project",
       description: "A description of the project.",
@@ -59,20 +64,23 @@ describe("projects", () => {
       },
     };
 
-    if (typeof projects.schema !== "function")
-      throw new Error("The schema is not callable");
+    if (typeof projects.schema !== "function") {
+      throw new TypeError("The schema is not callable");
+    }
 
     const parsedSchema = projects.schema({ image: mockImage });
     const result = await parsedSchema.safeParseAsync(project);
 
-    expect.assertions(5);
-
     expect(result.success).toBe(true);
-    if (result.success) {
-      expect(result.data.locale).toBe(CONFIG.LANGUAGES.DEFAULT);
-      expect(result.data.meta.isArchived).toBe(false);
-      expect(result.data.meta.isDraft).toBe(false);
-      expect(result.data.meta.updatedOn).toEqual(result.data.meta.publishedOn);
-    }
+
+    // This guards against TypeScript errors but won't execute if the test is passing
+    if (!result.success) return;
+
+    expect(result.data.locale).toBe(CONFIG.LANGUAGES.DEFAULT);
+    expect(result.data.meta.isArchived).toBe(false);
+    expect(result.data.meta.isDraft).toBe(false);
+    expect(result.data.meta.updatedOn).toStrictEqual(
+      result.data.meta.publishedOn
+    );
   });
 });

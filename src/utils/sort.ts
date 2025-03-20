@@ -24,24 +24,28 @@ export const compareNonAsciiStrings = (a: string, b: string): number =>
 /**
  * Method to sort two objects using the value of the given key.
  *
+ * @template T1, T2
  * @param {T1} a - An object.
  * @param {T2} b - Another object.
  * @param {keyof SharedShape<T1, T2>} key - A key available in both objects.
  * @returns {number} The sort result.
+ * @throws {Error} When the property type is not supported.
  */
 export const sortByKey = <T1, T2>(
   a: T1,
   b: T2,
-  key: keyof SharedShape<T1, T2>,
+  key: keyof SharedShape<T1, T2>
 ): number => {
   const valueA = a[key];
   const valueB = b[key];
 
-  if (isString(valueA) && isString(valueB))
+  if (isString(valueA) && isString(valueB)) {
     return compareNonAsciiStrings(valueA, valueB);
+  }
 
-  if (valueA instanceof Date && valueB instanceof Date)
+  if (valueA instanceof Date && valueB instanceof Date) {
     return compareDates(valueA, valueB);
+  }
 
   throw new Error(`Unsupported property type for sorting`);
 };

@@ -13,12 +13,13 @@ describe("PagefindSearch", () => {
   });
 
   it<LocalTestContext>("renders the pagefind UI", async ({ container }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(2);
+
     const props = {} satisfies ComponentProps<typeof PagefindSearch>;
     const result = await container.renderToString(PagefindSearch, {
       props,
     });
-
-    expect.assertions(2);
 
     expect(result).toContain("</ap-pagefind-search>");
     expect(result).toContain(`id="pagefind"`);

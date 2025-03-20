@@ -1,7 +1,7 @@
-import type { AstroIntegration } from "astro";
-import { globbySync } from "globby";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
+import type { AstroIntegration } from "astro";
+import { globbySync } from "globby";
 import slash from "slash";
 import { STORIES_EXT } from "../../../utils/constants";
 import { joinPaths } from "../../../utils/paths";
@@ -11,18 +11,18 @@ import { getStoryRoute } from "../../../utils/stories";
  * Retrieve a message displaying the number of routes found and eventually a
  * list of those routes.
  *
- * @param {string[]} routes - The routes
+ * @param {string[]} routes - A list of stories routes.
  * @param {boolean} includeList - Should we include the routes list?
  * @returns {string} The info about the routes.
  */
 const getComponentStoriesResultMsg = (
   routes: string[],
-  includeList: boolean,
+  includeList: boolean
 ): string => {
   const storyOrStories = routes.length === 1 ? "story" : "stories";
   const message = `Found ${routes.length} ${storyOrStories}.`;
 
-  if (!includeList || !routes.length) return message;
+  if (!includeList || routes.length === 0) return message;
 
   return message.replace(".", `:\n${routes.join("\n")}`);
 };
@@ -58,7 +58,7 @@ type ComponentsStoriesConfig = {
  * should live alongside your components.
  *
  * @param {ComponentsStoriesConfig} config - A configuration object.
- * @returns {AstroIntegration}
+ * @returns {AstroIntegration} The Astro integration.
  */
 export const componentsStories = (({
   baseSlug,
@@ -79,7 +79,8 @@ export const componentsStories = (({
 
         const routes = stories.map((storyPath) => {
           const route = getStoryRoute(storyPath);
-          const prefixedRoute = baseSlug ? joinPaths(baseSlug, route) : route;
+          const prefixedRoute =
+            baseSlug === undefined ? route : joinPaths(baseSlug, route);
 
           injectRoute({
             entrypoint: slash(join(fileURLToPath(componentsDir), storyPath)),

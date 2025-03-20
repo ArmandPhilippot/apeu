@@ -4,9 +4,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import SettingsForm from "./settings-form.astro";
 
 vi.mock("../../../utils/constants", async (importOriginal) => {
-  const mod =
-    // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-    await importOriginal<typeof import("../../../utils/constants")>();
+  const mod = await importOriginal<typeof import("../../../utils/constants")>();
   return {
     ...mod,
     CONFIG: {
@@ -19,19 +17,19 @@ vi.mock("../../../utils/constants", async (importOriginal) => {
 });
 
 vi.mock("../../../utils/i18n", async (importOriginal) => {
-  const mod =
-    // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-    await importOriginal<typeof import("../../../utils/i18n")>();
+  const mod = await importOriginal<typeof import("../../../utils/i18n")>();
 
   return {
     ...mod,
-    useI18n: vi.fn(() => ({
-      locale: "en",
-      route: vi.fn(),
-      translate: (key: string) => `translated_${key}`,
-      translatePlural: (key: string, { count }: { count: number }) =>
-        `translated_${key}_${count}`,
-    })),
+    useI18n: vi.fn(() => {
+      return {
+        locale: "en",
+        route: vi.fn(),
+        translate: (key: string) => `translated_${key}`,
+        translatePlural: (key: string, { count }: { count: number }) =>
+          `translated_${key}_${count}`,
+      };
+    }),
   };
 });
 
@@ -45,26 +43,28 @@ describe("SettingsForm", () => {
   });
 
   it<LocalTestContext>("renders a settings form", async ({ container }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(2);
+
     const props = {} satisfies ComponentProps<typeof SettingsForm>;
     const result = await container.renderToString(SettingsForm, {
       props,
     });
-
-    expect.assertions(2);
 
     expect(result).toContain("</form>");
     expect(result).toContain("translated_form.settings.label.theme.website");
   });
 
   it<LocalTestContext>("can use an id", async ({ container }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(2);
+
     const props = {
       id: "voluptates",
     } satisfies ComponentProps<typeof SettingsForm>;
     const result = await container.renderToString(SettingsForm, {
       props,
     });
-
-    expect.assertions(2);
 
     expect(result).toContain(`id="${props.id}"`);
     expect(result).toContain(`${props.id}-theme`);
@@ -73,6 +73,8 @@ describe("SettingsForm", () => {
   it<LocalTestContext>("can use the given routes in the language picker", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       altLanguages: [{ locale: "fr", route: "#ma-route-fr" }] as const,
       id: "voluptates",
@@ -81,14 +83,14 @@ describe("SettingsForm", () => {
       props,
     });
 
-    expect.assertions(1);
-
     expect(result).toContain(props.altLanguages[0].route);
   });
 
   it<LocalTestContext>("does not use the given route for the current locale", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       altLanguages: [{ locale: "en", route: "#my-en-route" }] as const,
       id: "voluptates",
@@ -96,8 +98,6 @@ describe("SettingsForm", () => {
     const result = await container.renderToString(SettingsForm, {
       props,
     });
-
-    expect.assertions(1);
 
     expect(result).not.toContain(props.altLanguages[0].route);
   });

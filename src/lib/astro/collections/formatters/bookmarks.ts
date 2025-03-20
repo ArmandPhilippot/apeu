@@ -2,6 +2,12 @@ import type { CollectionEntry } from "astro:content";
 import type { Bookmark } from "../../../../types/data";
 import { getTagsFromReferences } from "./utils";
 
+/**
+ * Convert a bookmark collection entry to a Bookmark object.
+ *
+ * @param {CollectionEntry<"bookmarks">} bookmark - The bookmark collection entry.
+ * @returns {Promise<Bookmark>} An object describing the bookmark.
+ */
 export const getBookmark = async ({
   collection,
   data,

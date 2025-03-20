@@ -81,7 +81,7 @@ const { translate } = useI18n(Astro.currentLocale);
     ) : null
   }
   {
-    !!toc?.length ? (
+    toc?.length ? (
       <div class="page-sidebar">
         <Collapsible
           class="page-toc"
@@ -267,7 +267,7 @@ const { translate } = useI18n(Astro.currentLocale);
     }
   }
 
-  .page-toc-body {
+  .page .page-toc-body {
     @container (width > calc(55em * 4 / 3)) {
       max-height: calc(100dvh - (var(--one-px-in-rem) * 130));
       overflow-y: auto;
@@ -285,8 +285,8 @@ const { translate } = useI18n(Astro.currentLocale);
     &
       > :global(
         /* The list might not be complete... */
-        *:where(:not(a, code, em, input, img, span, strong))
-          + *:where(:not(a, code, em, img, input, span, strong))
+        *:where(:not(a:not(.btn), code, em, input, img, span, strong))
+          + *:where(:not(a:not(.btn), code, em, img, input, span, strong))
       ) {
       margin-block: var(--spacing-md);
     }

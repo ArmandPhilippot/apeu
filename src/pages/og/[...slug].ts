@@ -28,7 +28,7 @@ const individualPages = collections.entries.map(
     const pageId = getPageIdFromRoute(route);
 
     return [pageId || "home", { description, id, title }];
-  },
+  }
 );
 
 export const { getStaticPaths, GET } = oGImageRoute({
@@ -45,12 +45,14 @@ export const { getStaticPaths, GET } = oGImageRoute({
         path: "./src/pages/og/_images/bg.png",
       },
       border: {
+        // eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Destructured RGB value
         color: [18, 77, 104],
         width: 20,
       },
       font: {
         title: {
           families: ["Inter"],
+          // eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Destructured RGB value
           color: [18, 77, 104],
           weight: "Bold",
           size: 64,
@@ -58,6 +60,7 @@ export const { getStaticPaths, GET } = oGImageRoute({
         },
         description: {
           families: ["Inter"],
+          // eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Destructured RGB value
           color: [28, 31, 33],
           weight: "Normal",
           size: 40,

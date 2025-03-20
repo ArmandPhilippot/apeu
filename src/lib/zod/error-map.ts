@@ -12,80 +12,81 @@ import { useI18n, type TranslateSingularKeys } from "../../utils/i18n";
 
 const atLeastOrMoreThan = (
   isInclusive: boolean,
-  translate: TranslateSingularKeys,
+  translate: TranslateSingularKeys
 ) =>
   translate(
     isInclusive
       ? "zod.validation.constraint.at.least"
-      : "zod.validation.constraint.more.than",
+      : "zod.validation.constraint.more.than"
   );
 
 const atLeastOrOver = (
   isInclusive: boolean,
-  translate: TranslateSingularKeys,
+  translate: TranslateSingularKeys
 ) =>
   translate(
     isInclusive
       ? "zod.validation.constraint.at.least"
-      : "zod.validation.constraint.over",
+      : "zod.validation.constraint.over"
   );
 
 const atMostOrLessThan = (
   isInclusive: boolean,
-  translate: TranslateSingularKeys,
+  translate: TranslateSingularKeys
 ) =>
   translate(
     isInclusive
       ? "zod.validation.constraint.at.most"
-      : "zod.validation.constraint.less.than",
+      : "zod.validation.constraint.less.than"
   );
 
 const atMostOrUnder = (
   isInclusive: boolean,
-  translate: TranslateSingularKeys,
+  translate: TranslateSingularKeys
 ) =>
   translate(
     isInclusive
       ? "zod.validation.constraint.at.most"
-      : "zod.validation.constraint.under",
+      : "zod.validation.constraint.under"
   );
 
 const greaterThanOrEqual = (
   isInclusive: boolean,
-  translate: TranslateSingularKeys,
+  translate: TranslateSingularKeys
 ) =>
   translate(
     isInclusive
       ? "zod.validation.constraint.greater.than.or.equal"
-      : "zod.validation.constraint.greater.than",
+      : "zod.validation.constraint.greater.than"
   );
 
 const lessThanOrEqual = (
   isInclusive: boolean,
-  translate: TranslateSingularKeys,
+  translate: TranslateSingularKeys
 ) =>
   translate(
     isInclusive
       ? "zod.validation.constraint.less.than.or.equal"
-      : "zod.validation.constraint.less.than",
+      : "zod.validation.constraint.less.than"
   );
 
 const smallerThanOrEqual = (
   isInclusive: boolean,
-  translate: TranslateSingularKeys,
+  translate: TranslateSingularKeys
 ) =>
   translate(
     isInclusive
       ? "zod.validation.constraint.smaller.than.or.equal"
-      : "zod.validation.constraint.smaller.than",
+      : "zod.validation.constraint.smaller.than"
   );
 
 const getInvalidTypeMessage = (
   issue: ZodInvalidTypeIssue,
-  translate: TranslateSingularKeys,
+  translate: TranslateSingularKeys
 ) => {
-  if (issue.received === ZodParsedType.undefined)
+  if (issue.received === ZodParsedType.undefined) {
     return translate("zod.validation.required");
+  }
 
   return translate("zod.validation.invalid.type", {
     expected: issue.expected,
@@ -95,7 +96,7 @@ const getInvalidTypeMessage = (
 
 const getInvalidStringMessage = (
   issue: ZodInvalidStringIssue,
-  translate: TranslateSingularKeys,
+  translate: TranslateSingularKeys
 ) => {
   if (issue.validation === "regex") return translate("zod.validation.invalid");
 
@@ -133,35 +134,39 @@ const getInvalidStringMessage = (
 
 const getTooSmallMessage = (
   issue: ZodTooSmallIssue,
-  translate: TranslateSingularKeys,
+  translate: TranslateSingularKeys
 ) => {
   switch (issue.type) {
     case "array":
       return translate("zod.validation.array.must.contain", {
-        constraint: issue.exact
-          ? translate("zod.validation.constraint.exactly")
-          : atLeastOrMoreThan(issue.inclusive, translate),
+        constraint:
+          issue.exact === true
+            ? translate("zod.validation.constraint.exactly")
+            : atLeastOrMoreThan(issue.inclusive, translate),
         quantity: `${issue.minimum}`,
       });
     case "date":
       return translate("zod.validation.date.must.be", {
-        constraint: issue.exact
-          ? translate("zod.validation.constraint.exactly.equal")
-          : greaterThanOrEqual(issue.inclusive, translate),
-        value: `${new Date(Number(issue.minimum))}`,
+        constraint:
+          issue.exact === true
+            ? translate("zod.validation.constraint.exactly.equal")
+            : greaterThanOrEqual(issue.inclusive, translate),
+        value: new Date(Number(issue.minimum)).toLocaleDateString(),
       });
     case "number":
       return translate("zod.validation.number.must.be", {
-        constraint: issue.exact
-          ? translate("zod.validation.constraint.exactly.equal")
-          : greaterThanOrEqual(issue.inclusive, translate),
+        constraint:
+          issue.exact === true
+            ? translate("zod.validation.constraint.exactly.equal")
+            : greaterThanOrEqual(issue.inclusive, translate),
         value: `${issue.minimum}`,
       });
     case "string":
       return translate("zod.validation.string.must.contain", {
-        constraint: issue.exact
-          ? translate("zod.validation.constraint.exactly")
-          : atLeastOrOver(issue.inclusive, translate),
+        constraint:
+          issue.exact === true
+            ? translate("zod.validation.constraint.exactly")
+            : atLeastOrOver(issue.inclusive, translate),
         quantity: `${issue.minimum}`,
       });
     default:
@@ -171,42 +176,47 @@ const getTooSmallMessage = (
 
 const getTooBigMessage = (
   issue: ZodTooBigIssue,
-  translate: TranslateSingularKeys,
+  translate: TranslateSingularKeys
 ) => {
   switch (issue.type) {
     case "array":
       return translate("zod.validation.array.must.contain", {
-        constraint: issue.exact
-          ? translate("zod.validation.constraint.exactly")
-          : atMostOrLessThan(issue.inclusive, translate),
+        constraint:
+          issue.exact === true
+            ? translate("zod.validation.constraint.exactly")
+            : atMostOrLessThan(issue.inclusive, translate),
         quantity: `${issue.maximum}`,
       });
     case "bigint":
       return translate("zod.validation.bigint.must.be", {
-        constraint: issue.exact
-          ? translate("zod.validation.constraint.exactly")
-          : lessThanOrEqual(issue.inclusive, translate),
+        constraint:
+          issue.exact === true
+            ? translate("zod.validation.constraint.exactly")
+            : lessThanOrEqual(issue.inclusive, translate),
         value: `${issue.maximum}`,
       });
     case "date":
       return translate("zod.validation.date.must.be", {
-        constraint: issue.exact
-          ? translate("zod.validation.constraint.exactly")
-          : smallerThanOrEqual(issue.inclusive, translate),
-        value: `${new Date(Number(issue.maximum))}`,
+        constraint:
+          issue.exact === true
+            ? translate("zod.validation.constraint.exactly")
+            : smallerThanOrEqual(issue.inclusive, translate),
+        value: new Date(Number(issue.maximum)).toLocaleDateString(),
       });
     case "number":
       return translate("zod.validation.number.must.be", {
-        constraint: issue.exact
-          ? translate("zod.validation.constraint.exactly")
-          : lessThanOrEqual(issue.inclusive, translate),
+        constraint:
+          issue.exact === true
+            ? translate("zod.validation.constraint.exactly")
+            : lessThanOrEqual(issue.inclusive, translate),
         value: `${issue.maximum}`,
       });
     case "string":
       return translate("zod.validation.string.must.contain", {
-        constraint: issue.exact
-          ? translate("zod.validation.constraint.exactly")
-          : atMostOrUnder(issue.inclusive, translate),
+        constraint:
+          issue.exact === true
+            ? translate("zod.validation.constraint.exactly")
+            : atMostOrUnder(issue.inclusive, translate),
         quantity: `${issue.maximum}`,
       });
     default:
@@ -214,17 +224,18 @@ const getTooBigMessage = (
   }
 };
 
+/* eslint-disable complexity -- I should probably refactor this some day... */
 /**
  * Custom error map to translate zod messages.
  *
- * @param {string} currentLocale - The current locale.
- * @returns {ZodErrorMap} An error map.
+ * @param {string} currentLocale - A supported locale (fallback to the default locale if not supported).
+ * @returns {ZodErrorMap} The custom Zod error map.
  */
 export const zodErrorMap =
   (currentLocale: string): ZodErrorMap =>
   (issue, ctx) => {
     const { translate } = useI18n(currentLocale);
-    let message = "";
+    let message = ctx.defaultError;
 
     switch (issue.code) {
       case ZodIssueCode.invalid_type:
@@ -287,9 +298,9 @@ export const zodErrorMap =
         message = translate("zod.validation.number.not.finite");
         break;
       default:
-        message = ctx.defaultError;
         util.assertNever(issue);
     }
 
     return { message };
   };
+/* eslint-enable complexity */

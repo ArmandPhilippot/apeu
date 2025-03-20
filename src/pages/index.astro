@@ -64,7 +64,7 @@ const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
   title={translate("page.home.title")}
 >
   <Fragment slot="disconnected-body">
-    <Greetings class="homepage-greetings" isCentered name={author.name} />
+    <Greetings class="homepage-greetings" name={author.name} />
     {
       author ? (
         <Fragment>
@@ -145,7 +145,7 @@ const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
             items={collections}
             sizeMinCols="clamp(26rem,20dvi,30rem)"
           >
-            {({ meta, ...collection }: (typeof collections)[number]) => (
+            {({ meta: _meta, ...collection }: (typeof collections)[number]) => (
               <CollectionCard
                 class="homepage-collection"
                 elevation="raised"

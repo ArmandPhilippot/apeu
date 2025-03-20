@@ -17,10 +17,6 @@ const linkRel =
   isExternal && !rel?.includes("external") ? `external ${rel}` : rel;
 ---
 
-{
-  /* Unfortunately the `style` tag has to be on the same line as the link
-   * to avoid an extra space after the link when rendered. */
-}
 <a
   {...attrs}
   class:list={["link", { download: isDownload }, className]}

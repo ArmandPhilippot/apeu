@@ -39,7 +39,7 @@ const heading = label || defaultLabel[type];
   data-type={dataType && isValidCalloutType(dataType) ? dataType : type}
   role={role}
 >
-  <div aria-hidden={!ariaLabel ? "true" : "false"} class="callout-heading">
+  <div aria-hidden={ariaLabel ? "false" : "true"} class="callout-heading">
     <Icon aria-hidden="true" name={type} size={26} />
     {heading}
   </div>

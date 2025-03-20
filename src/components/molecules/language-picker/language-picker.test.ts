@@ -14,53 +14,56 @@ describe("LanguagePicker", () => {
     context.container = await AstroContainer.create();
   });
 
-  it<LocalTestContext>("renders a dropdown", async ({ container }) => {
-    const props = {
-      current: "en",
-      id: "test1",
-      label: "non nulla blanditiis",
-      languages: {
-        en: { name: "English", route: "#en" },
-        fr: { name: "Français", route: "#fr" },
-      },
-    } satisfies ComponentProps<typeof LanguagePicker>;
-    const result = await container.renderToString(LanguagePicker, {
-      props,
-    });
+  const props = {
+    current: "en",
+    id: "test1",
+    label: "non nulla blanditiis",
+    languages: {
+      en: { name: "English", route: "#en" },
+      fr: { name: "Français", route: "#fr" },
+    },
+  } satisfies ComponentProps<typeof LanguagePicker>;
 
-    expect.assertions(6);
+  it<LocalTestContext>("renders label and correct number of items", async ({
+    container,
+  }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(2);
 
+    const result = await container.renderToString(LanguagePicker, { props });
     const linkItems = [...result.matchAll(/<li/g)];
 
     expect(result).toContain(props.label);
+    expect(linkItems).toHaveLength(Object.keys(props.languages).length);
+  });
+
+  it<LocalTestContext>("renders expected language names and routes", async ({
+    container,
+  }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(4);
+
+    const result = await container.renderToString(LanguagePicker, { props });
+
     expect(result).toContain(props.languages.en.name);
     expect(result).toContain(props.languages.en.route);
     expect(result).toContain(props.languages.fr.name);
     expect(result).toContain(props.languages.fr.route);
-    expect(linkItems).toHaveLength(Object.keys(props.languages).length);
   });
 
   it<LocalTestContext>("throws an error if current does not match", async ({
     container,
   }) => {
-    const props = {
-      current: "ru",
-      id: "test1",
-      label: "non nulla blanditiis",
-      languages: {
-        en: { name: "English", route: "#en" },
-        fr: { name: "Français", route: "#fr" },
-      },
-    } satisfies ComponentProps<typeof LanguagePicker>;
-
     expect.assertions(1);
+
+    const invalidProps = { ...props, current: "ru" };
 
     await expect(async () =>
       container.renderToString(LanguagePicker, {
-        props,
-      }),
+        props: invalidProps,
+      })
     ).rejects.toThrowErrorMatchingInlineSnapshot(
-      `[Error: The value for \`current\` does not match any key in \`languages\`.]`,
+      `[Error: The value for \`current\` does not match any key in \`languages\`.]`
     );
   });
 });

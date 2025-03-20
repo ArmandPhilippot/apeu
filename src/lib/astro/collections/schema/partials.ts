@@ -24,15 +24,25 @@ const objectPosition = z.enum([
   "bottom right",
 ]);
 
+/* eslint-disable jsdoc/require-returns-type -- Don't know how to infer the return type before declaration... So I guess it's safe to omit it here. */
+/**
+ * Shareable schema to define a cover.
+ *
+ * @param {ImageFunction} image - The image function provided by Astro.
+ * @returns The zod schema.
+ */
 export const coverSchema = (image: ImageFunction) =>
   z.object({
     src: image(),
     position: objectPosition.optional(),
   });
+/* eslint-enable jsdoc/require-returns-type */
 
-const dateSchema = z.coerce.date().transform((date) => {
-  return applyTimezone(date, { lang: "fr-FR", timezone: CONFIG.TIMEZONE });
-});
+const dateSchema = z.coerce
+  .date()
+  .transform((date) =>
+    applyTimezone(date, { lang: "fr-FR", timezone: CONFIG.TIMEZONE })
+  );
 
 export const locale = z
   .string()
@@ -41,9 +51,11 @@ export const locale = z
   .default(CONFIG.LANGUAGES.DEFAULT);
 
 export const seo = z.object({
+  /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
   description: z.string().max(155),
   nofollow: z.boolean().optional(),
   noindex: z.boolean().optional(),
+  /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
   title: z.string().min(2).max(70),
 });
 

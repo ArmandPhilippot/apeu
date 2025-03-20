@@ -3,9 +3,7 @@ import { CONFIG } from "../../../utils/constants";
 import { getBlogGraph } from "./blog-graph";
 
 vi.mock("../../../utils/constants", async (importOriginal) => {
-  const mod =
-    // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-    await importOriginal<typeof import("../../../utils/constants")>();
+  const mod = await importOriginal<typeof import("../../../utils/constants")>();
   return {
     ...mod,
     CONFIG: {
@@ -19,9 +17,7 @@ vi.mock("../../../utils/constants", async (importOriginal) => {
 });
 
 vi.mock("../../../utils/url", async (importOriginal) => {
-  const mod =
-    // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-    await importOriginal<typeof import("../../../utils/url")>();
+  const mod = await importOriginal<typeof import("../../../utils/url")>();
   return {
     ...mod,
     getWebsiteUrl: () => "https://example.test",
@@ -30,6 +26,8 @@ vi.mock("../../../utils/url", async (importOriginal) => {
 
 describe("get-blog-graph", () => {
   it("returns an object describing the blog", async () => {
+    expect.assertions(1);
+
     const graph = await getBlogGraph({
       description: "Quam omnis in temporibus.",
       locale: CONFIG.LANGUAGES.DEFAULT,
@@ -39,8 +37,6 @@ describe("get-blog-graph", () => {
       },
       title: "beatae autem in",
     });
-
-    expect.assertions(1);
 
     expect(graph).toMatchInlineSnapshot(`
       {
@@ -76,6 +72,8 @@ describe("get-blog-graph", () => {
   });
 
   it("can add optional properties to the object describing the blog", async () => {
+    expect.assertions(1);
+
     const graph = await getBlogGraph({
       cover: {
         alt: "ea consectetur perferendis",
@@ -91,8 +89,6 @@ describe("get-blog-graph", () => {
       },
       title: "beatae autem in",
     });
-
-    expect.assertions(1);
 
     expect(graph).toMatchInlineSnapshot(`
       {

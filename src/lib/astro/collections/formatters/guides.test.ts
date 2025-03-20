@@ -4,9 +4,9 @@ import { getGuide, getGuidePreview } from "./guides";
 
 describe("get-guide-preview", () => {
   it("returns a guide preview from a guides collection entry", async () => {
-    const result = await getGuidePreview(guideFixture);
-
     expect.assertions(1);
+
+    const result = await getGuidePreview(guideFixture);
 
     expect(result).toMatchInlineSnapshot(`
       {
@@ -30,9 +30,9 @@ describe("get-guide-preview", () => {
 
 describe("get-guide", () => {
   it("returns a guide from a collection entry", async () => {
-    const result = await getGuide(guideFixture);
-
     expect.assertions(1);
+
+    const result = await getGuide(guideFixture);
 
     expect(result).toMatchInlineSnapshot(`
       {

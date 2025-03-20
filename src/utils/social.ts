@@ -7,7 +7,7 @@ import type { SocialMedium } from "../types/tokens";
  * @returns {boolean} True if the medium is valid.
  */
 export const isValidSocialMedium = (
-  medium: unknown,
+  medium: unknown
 ): medium is SocialMedium => {
   if (typeof medium !== "string") return false;
 

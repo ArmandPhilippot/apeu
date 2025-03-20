@@ -1,6 +1,7 @@
 import { translations } from "../translations";
 import type { KeyOfType, LooseAutocomplete } from "../types/utilities";
 import { CONFIG } from "./constants";
+import { isString } from "./type-checks";
 
 export type AvailableLanguage = keyof typeof translations;
 
@@ -18,7 +19,7 @@ type I18nMessages = (typeof translations)[typeof CONFIG.LANGUAGES.DEFAULT];
  * @returns {boolean} True if it is a valid language.
  */
 export const isAvailableLanguage = (
-  language: string,
+  language: string
 ): language is AvailableLanguage =>
   Object.keys(translations).includes(language);
 
@@ -29,7 +30,7 @@ export const isAvailableLanguage = (
  * @returns {boolean} True if it is the default language.
  */
 export const isDefaultLanguage = (
-  language: string,
+  language: string
 ): language is typeof CONFIG.LANGUAGES.DEFAULT =>
   language === CONFIG.LANGUAGES.DEFAULT;
 
@@ -45,9 +46,9 @@ export const isDefaultLanguage = (
  * @returns {AvailableLanguage} A valid locale.
  */
 export const getCurrentLocale = (
-  locale: string | undefined,
+  locale: string | undefined
 ): AvailableLanguage => {
-  if (locale && isAvailableLanguage(locale)) return locale;
+  if (isString(locale) && isAvailableLanguage(locale)) return locale;
 
   return CONFIG.LANGUAGES.DEFAULT;
 };
@@ -56,7 +57,7 @@ type Interpolations = Record<string, number | string>;
 
 const replaceInterpolationsInMsg = (
   message: string,
-  interpolations: Interpolations,
+  interpolations: Interpolations
 ) => {
   let updatedMsg = message;
 
@@ -73,6 +74,12 @@ export type PluralUIKey = KeyOfType<UIKey, Interpolations>;
 type QuantifierKeys = keyof UIKey[PluralUIKey];
 export type SingularUIKey = KeyOfType<UIKey, string>;
 
+/**
+ * Check if a route is available from its id.
+ *
+ * @param {string} id - The id of the route to check.
+ * @returns {boolean} True if the id match an available route.
+ */
 export const isAvailableRoute = (id: string): id is AvailableRoute => {
   const availableRoutes = translations[CONFIG.LANGUAGES.DEFAULT].routes;
 
@@ -92,21 +99,21 @@ type TranslatePluralKeysParams = {
 
 export type TranslatePluralKeys = (
   key: PluralUIKey,
-  interpolations: TranslatePluralKeysParams,
+  interpolations: TranslatePluralKeysParams
 ) => string;
 
 export type TranslateRoute = (
   key: AvailableRoute,
-  localeOverride?: LooseAutocomplete<AvailableLanguage>,
+  localeOverride?: LooseAutocomplete<AvailableLanguage>
 ) => string;
 
 export type TranslateSingularKeys = (
   key: SingularUIKey,
-  interpolations?: Interpolations,
+  interpolations?: Interpolations
 ) => string;
 
 type UseI18n = (
-  currentLocale: LooseAutocomplete<AvailableLanguage> | undefined,
+  currentLocale: LooseAutocomplete<AvailableLanguage> | undefined
 ) => {
   /**
    * The locale used for translations.
@@ -129,12 +136,12 @@ type UseI18n = (
 /**
  * Init translation functions and return the locale.
  *
- * @param currentLocale - The locale.
- * @returns An object containing translation functions and the locale.
+ * @param {LooseAutocomplete<AvailableLanguage> | undefined} currentLocale - A possibly valid locale.
+ * @returns {ReturnType<UseI18n>} An object containing translation functions and the locale.
  */
 export const useI18n: UseI18n = (
-  currentLocale: LooseAutocomplete<AvailableLanguage> | undefined,
-) => {
+  currentLocale: LooseAutocomplete<AvailableLanguage> | undefined
+): ReturnType<UseI18n> => {
   const locale = getCurrentLocale(currentLocale);
   const messages = translations[locale];
 
@@ -152,13 +159,13 @@ export const useI18n: UseI18n = (
   const translate: TranslateSingularKeys = (key, interpolations) => {
     const message = messages.ui[key];
 
-    if (!interpolations) return message;
+    if (interpolations === undefined) return message;
     return replaceInterpolationsInMsg(message, interpolations);
   };
 
   const translatePlural: TranslatePluralKeys = (
     key,
-    { count, ...interpolations },
+    { count, ...interpolations }
   ) => {
     const quantifier = getQuantifierKeyFromCount(count);
     const message = messages.ui[key][quantifier];
@@ -172,9 +179,16 @@ export const useI18n: UseI18n = (
   return { locale, route, translate, translatePlural };
 };
 
+/**
+ * Retrieve a `language_TERRITORY` code for a locale.
+ *
+ * @param {LooseAutocomplete<AvailableLanguage> | null | undefined} locale - The current locale.
+ * @returns {string} The language territory code.
+ * @throws {Error} When the locale is not supported.
+ */
 export const getLanguageTerritory = (
   locale: LooseAutocomplete<AvailableLanguage> | null | undefined = CONFIG
-    .LANGUAGES.DEFAULT,
+    .LANGUAGES.DEFAULT
 ): string => {
   switch (locale) {
     case "en":

@@ -27,6 +27,6 @@ export const guides = defineCollection({
               updatedOn: updatedOn ?? publishedOn,
             },
           };
-        },
+        }
       ),
 });

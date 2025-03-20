@@ -1,5 +1,5 @@
 import rss from "@astrojs/rss";
-import type { APIRoute, GetStaticPaths } from "astro";
+import type { APIContext, APIRoute, GetStaticPaths } from "astro";
 import { queryCollection } from "../../../lib/astro/collections";
 import type { TaxonomyPreview } from "../../../types/data";
 import { MissingSiteConfigError } from "../../../utils/exceptions";
@@ -22,13 +22,20 @@ export const getStaticPaths = (async () => {
   });
 }) satisfies GetStaticPaths;
 
+/**
+ * Handles the `GET` request to generate the `feed.xml` file at build time.
+ *
+ * @param {APIContext<TaxonomyPreview>} context - The Astro API context.
+ * @returns {Promise<Response>} The response containing the `feed.xml` file content.
+ */
 export const GET: APIRoute<TaxonomyPreview> = async ({
   currentLocale,
   props,
   site,
   url,
-}) => {
-  if (!site) throw new MissingSiteConfigError();
+}: APIContext<TaxonomyPreview>): Promise<Response> => {
+  if (site === undefined) throw new MissingSiteConfigError();
+
   const { locale, translate } = useI18n(currentLocale);
   const { entries } = await queryCollection(
     ["blogPosts", "blogroll", "bookmarks", "guides", "notes", "projects"],
@@ -36,7 +43,7 @@ export const GET: APIRoute<TaxonomyPreview> = async ({
       format: "full",
       orderBy: { key: "publishedOn", order: "ASC" },
       where: { locale, tags: [props.id] },
-    },
+    }
   );
 
   return rss({

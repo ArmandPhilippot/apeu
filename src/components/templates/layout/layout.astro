@@ -102,13 +102,14 @@ const topId = translate("anchor.site.top");
     themeColor="#214769"
   >
     <link
-      rel="preload"
-      href="/fonts/Inter/Inter.woff2?v=3.18"
       as="font"
-      type="font/woff2"
       crossorigin
+      href="/fonts/Inter/Inter.woff2?v=3.18"
+      rel="preload"
+      type="font/woff2"
     />
     <slot name="head" />
+    {/* This is intentionally inlined to avoid Flash Of Unstyled Content. */}
     <script is:inline>
       !(function () {
         const e = localStorage.getItem("settings:theme"),
@@ -134,6 +135,7 @@ const topId = translate("anchor.site.top");
     <noscript>
       <style>
         .js-only {
+          /* stylelint-disable-next-line declaration-no-important */
           display: none !important;
         }
       </style>
@@ -191,9 +193,9 @@ const topId = translate("anchor.site.top");
       </footer>
       <svg
         aria-hidden="true"
-        width="0"
         height="0"
         viewBox="0 0 100 100"
+        width="0"
         xmlns="http://www.w3.org/2000/svg"
       >
         <defs>
@@ -206,8 +208,8 @@ const topId = translate("anchor.site.top");
               type="fractalNoise"></feTurbulence>
             <feDiffuseLighting
               diffuseConstant="1.1"
-              lighting-color="var(--color-regular)"
               in="noise"
+              lighting-color="var(--color-regular)"
               surfaceScale="0.600"
             >
               <feDistantLight azimuth="60" elevation="65"></feDistantLight>
@@ -222,8 +224,8 @@ const topId = translate("anchor.site.top");
               type="fractalNoise"></feTurbulence>
             <feDiffuseLighting
               diffuseConstant="1.2"
-              lighting-color="var(--color-regular)"
               in="noise"
+              lighting-color="var(--color-regular)"
               surfaceScale="1.1"
             >
               <feDistantLight azimuth="40" elevation="57"></feDistantLight>
@@ -296,7 +298,7 @@ const topId = translate("anchor.site.top");
       gap: clamp(var(--spacing-sm), 2dvi, var(--spacing-2xl));
       padding: clamp(var(--spacing-4xs), 1.5dvi, var(--spacing-2xl))
         var(--spacing-xs) 0;
-      border-block-end: 0;
+      border-block-end: none;
       box-shadow: none;
     }
   }
@@ -314,7 +316,7 @@ const topId = translate("anchor.site.top");
     border-block-end: var(--border-size-sm) solid var(--color-border);
 
     @media (--sm-or-above) {
-      border-block: 0;
+      border-block: none;
     }
   }
 
@@ -340,13 +342,13 @@ const topId = translate("anchor.site.top");
       flex: 1;
       order: unset;
       position: relative;
-      border-block-start: 0;
+      border-block-start: none;
       border-inline-start: var(--border-size-sm) solid var(--color-border);
       box-shadow: none;
     }
 
     @media (--md-or-above) {
-      border-inline-start: 0;
+      border-inline-start: none;
     }
   }
 
@@ -487,7 +489,7 @@ const topId = translate("anchor.site.top");
     listenSettings(
       newSettings: Readonly<Settings>,
       _oldSettings: Readonly<Settings> | undefined,
-      changedKey: keyof Settings | undefined,
+      changedKey: keyof Settings | undefined
     ): void {
       if (!changedKey || typeof window === "undefined") return;
 

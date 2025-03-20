@@ -3,9 +3,7 @@ import { CONFIG } from "../../../utils/constants";
 import { getLanguageGraph } from "./language-graph";
 
 vi.mock("../../../utils/constants", async (importOriginal) => {
-  const mod =
-    // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-    await importOriginal<typeof import("../../../utils/constants")>();
+  const mod = await importOriginal<typeof import("../../../utils/constants")>();
   return {
     ...mod,
     CONFIG: {
@@ -23,11 +21,11 @@ describe("get-language-graph", () => {
     const graph = getLanguageGraph("en", CONFIG.LANGUAGES.DEFAULT);
 
     expect(graph).toMatchInlineSnapshot(`
-        {
-          "@type": "Language",
-          "alternateName": "en",
-          "name": "English",
-        }
-      `);
+      {
+        "@type": "Language",
+        "alternateName": "en",
+        "name": "English",
+      }
+    `);
   });
 });

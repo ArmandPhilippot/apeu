@@ -25,7 +25,7 @@ export const getStaticPaths = (async () => {
 
 const { Content, ...page } = Astro.props;
 const { locale, route, translate, translatePlural } = useI18n(
-  Astro.currentLocale,
+  Astro.currentLocale
 );
 const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
   { label: translate("page.home.title"), url: route("home") },
@@ -41,10 +41,10 @@ const { entries: relatedEntries, total } = await queryCollection(
     format: "preview",
     orderBy: { key: "publishedOn", order: "DESC" },
     where: { locale, tags: [page.id] },
-  },
+  }
 );
 const getCTA = (
-  entry: (typeof relatedEntries)[number],
+  entry: (typeof relatedEntries)[number]
 ): ComponentProps<typeof CollectionCard>["cta"] => {
   switch (entry.collection) {
     case "blogPosts":

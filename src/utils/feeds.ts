@@ -1,6 +1,6 @@
 import { getContainerRenderer as mdxRenderer } from "@astrojs/mdx";
 import type { RSSFeedItem } from "@astrojs/rss";
-import { experimental_AstroContainer } from "astro/container";
+import { experimental_AstroContainer as AstroContainer } from "astro/container";
 import { loadRenderers } from "astro:container";
 import type { CollectionKey } from "astro:content";
 import {
@@ -21,6 +21,9 @@ import type { FeedCompatibleEntry } from "../types/data";
 import { UnsupportedLocaleError } from "./exceptions";
 import { isAvailableLanguage, useI18n, type AvailableLanguage } from "./i18n";
 import { getWebsiteUrl } from "./url";
+import { isString } from "./type-checks";
+
+/* eslint-disable no-param-reassign -- The file do a lot of node transformations to create the feed content, so it's expected that parameters will be reassigned. */
 
 type CollectionWithFeed = Exclude<CollectionKey, "authors">;
 
@@ -44,8 +47,11 @@ const SANITIZE_CONFIG = {
   dropElements: ["link", "script", "style"],
 } as const satisfies SanitizeOptions;
 
+const isElementNode = (node: AstNode): node is ElementNode =>
+  node.type === ELEMENT_NODE;
+
 const isJsOnlyNode = (node: AstNode): boolean =>
-  !!node.attributes?.class?.includes("js-only");
+  isElementNode(node) && node.attributes.class?.includes("js-only") === true;
 
 const clearNode = (node: AstNode): void => {
   (node as unknown as TextNode).type = TEXT_NODE;
@@ -64,11 +70,11 @@ const createUrlTransformer = () => {
 const transformCalloutToDiv = (node: ElementNode): void => {
   node.name = "div";
   node.role = "note";
-  if (node.attributes?.label) {
+  if (node.attributes.label !== undefined) {
     node.attributes["aria-label"] = node.attributes.label;
     delete node.attributes.label;
   }
-  if (node.attributes?.type) {
+  if (node.attributes.type !== undefined) {
     delete node.attributes.type;
   }
 };
@@ -82,7 +88,7 @@ const transformCalloutToDiv = (node: ElementNode): void => {
 const createNodeTransformer = () => {
   const makeAbsoluteUrl = createUrlTransformer();
 
-  return async (node: AstNode): Promise<void> => {
+  return (node: AstNode): void => {
     if (node.type === DOCTYPE_NODE || isJsOnlyNode(node)) {
       clearNode(node);
       return;
@@ -90,12 +96,11 @@ const createNodeTransformer = () => {
 
     if (node.type !== ELEMENT_NODE) return;
 
-    if (node.name === "a" && node.attributes?.href) {
+    if (node.name === "a" && node.attributes.href !== undefined) {
       node.attributes.href = makeAbsoluteUrl(node.attributes.href);
-    } else if (node.name === "img" && node.attributes?.src) {
-      if (node.attributes?.src)
-        node.attributes.src = makeAbsoluteUrl(node.attributes.src);
-      if (node.attributes?.srcset) {
+    } else if (node.name === "img" && node.attributes.src !== undefined) {
+      node.attributes.src = makeAbsoluteUrl(node.attributes.src);
+      if (node.attributes.srcset !== undefined) {
         const sources = node.attributes.srcset.split(", ");
         node.attributes.srcset = sources.map(makeAbsoluteUrl).join(", ");
       }
@@ -105,23 +110,24 @@ const createNodeTransformer = () => {
   };
 };
 
-const transformContent = async (html: string): Promise<string> => {
-  return transform(html, [
+const transformContent = async (html: string): Promise<string> =>
+  transform(html, [
     async (ast) => {
       await walk(ast, createNodeTransformer());
       return ast;
     },
     sanitize(SANITIZE_CONFIG),
   ]);
-};
+
+/* eslint-enable no-param-reassign -- All node transformations should be done at this point. */
 
 const renderEntryContent = async (
-  entry: FeedCompatibleEntry,
+  entry: FeedCompatibleEntry
 ): Promise<string | undefined> => {
   if (!("Content" in entry)) return undefined;
 
   const renderers = await loadRenderers([mdxRenderer()]);
-  const container = await experimental_AstroContainer.create({ renderers });
+  const container = await AstroContainer.create({ renderers });
   const html = await container.renderToString(entry.Content);
 
   return transformContent(html);
@@ -129,7 +135,7 @@ const renderEntryContent = async (
 
 const getItemCategoryFromCollection = (
   collection: CollectionWithFeed,
-  locale: AvailableLanguage,
+  locale: AvailableLanguage
 ) => {
   const { translate } = useI18n(locale);
   const categories = {
@@ -150,7 +156,12 @@ const getItemCategoryFromCollection = (
 const getItemCategories = (entry: FeedCompatibleEntry) => {
   const categories: string[] = [];
 
-  if ("tags" in entry.meta && entry.meta.tags?.length) {
+  if (
+    "tags" in entry.meta &&
+    entry.meta.tags !== null &&
+    entry.meta.tags !== undefined &&
+    entry.meta.tags.length > 0
+  ) {
     categories.push(...entry.meta.tags.map((tag) => tag.title));
   }
 
@@ -159,7 +170,7 @@ const getItemCategories = (entry: FeedCompatibleEntry) => {
 
 const getItemDescription = (
   entry: FeedCompatibleEntry,
-  locale: AvailableLanguage,
+  locale: AvailableLanguage
 ) => {
   if (entry.collection === "blogroll") return entry.description[locale];
 
@@ -173,7 +184,7 @@ const getRSSItem =
 
     return {
       categories: getItemCategories(entry),
-      ...(content ? { content } : {}),
+      ...(isString(content) ? { content } : {}),
       description: getItemDescription(entry, locale),
       link: "route" in entry ? entry.route : entry.url,
       pubDate: entry.meta.publishedOn,
@@ -190,10 +201,10 @@ const getRSSItem =
  */
 export const getRSSItemsFromEntries = async (
   entries: FeedCompatibleEntry[],
-  locale: AvailableLanguage,
+  locale: AvailableLanguage
 ): Promise<RSSFeedItem[]> => {
   const rssItems: (RSSFeedItem | null)[] = await Promise.all(
-    entries.map(getRSSItem(locale)),
+    entries.map(getRSSItem(locale))
   );
 
   return rssItems.filter((item) => item !== null);
@@ -203,7 +214,8 @@ export const getRSSItemsFromEntries = async (
  * Retrieve the language to display between `<language>` tag in your feed.
  *
  * @param {AvailableLanguage} locale - The current locale.
- * @returns {string} The language.
+ * @returns {string} The feeds language.
+ * @throws {UnsupportedLocaleError} When the given locale is not supported.
  */
 export const getFeedLanguageFromLocale = (locale: string): string => {
   if (!isAvailableLanguage(locale)) throw new UnsupportedLocaleError(locale);
@@ -216,7 +228,17 @@ export const getFeedLanguageFromLocale = (locale: string): string => {
   return availableLocales[locale];
 };
 
-export const getCollectionsFeeds = async (language: AvailableLanguage) => {
+type FeedLink = { label: string; slug: string };
+
+/**
+ * Retrieve the feeds data for each collection having a feed.
+ *
+ * @param {AvailableLanguage} language - The feed language.
+ * @returns {Promise<FeedLink[]>} The label and slug for each feed.
+ */
+export const getCollectionsFeeds = async (
+  language: AvailableLanguage
+): Promise<FeedLink[]> => {
   const { locale, translate } = useI18n(language);
   const pagesWithFeed = [
     `${locale}/blog/categories`,
@@ -240,7 +262,7 @@ export const getCollectionsFeeds = async (language: AvailableLanguage) => {
       format: "preview",
       orderBy: { key: "title", order: "ASC" },
       where: { locale },
-    },
+    }
   );
   const entriesWithFeed = [...entriesWithStaticFeed, ...entriesWithDynamicFeed];
 

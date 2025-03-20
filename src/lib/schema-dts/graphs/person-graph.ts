@@ -11,31 +11,33 @@ import { getLanguageGraph } from "./language-graph";
  *
  * @param {Partial<Author> & Pick<Author, "name">} author - The data.
  * @param {AvailableLanguage} locale - The current locale.
- * @returns {Promise<Person>} The Person graph.
+ * @returns {Promise<Person>} A graph describing a Person.
  */
 export const getPersonGraph = async (
   author: Partial<Author> & Pick<Author, "name">,
-  locale: AvailableLanguage,
+  locale: AvailableLanguage
 ): Promise<Person> => {
   const websiteUrl = getWebsiteUrl();
   const websiteAuthor = `${websiteUrl}#author` as const;
 
   return {
     "@type": "Person",
-    ...(author.isWebsiteOwner && { "@id": websiteAuthor }),
-    ...(author.lastName && { familyName: author.lastName }),
-    ...(author.firstName && { givenName: author.firstName }),
-    ...(author.avatar && { image: await getImgSrc(author.avatar) }),
-    ...(author.job && { jobTitle: author.job }),
-    ...(author.spokenLanguages?.length && {
-      knowsLanguage: author.spokenLanguages.map((language) =>
-        getLanguageGraph(language, locale),
-      ),
-    }),
+    ...(author.isWebsiteOwner === true && { "@id": websiteAuthor }),
+    ...(author.lastName !== undefined && { familyName: author.lastName }),
+    ...(author.firstName !== undefined && { givenName: author.firstName }),
+    ...(author.avatar !== null &&
+      author.avatar !== undefined && { image: await getImgSrc(author.avatar) }),
+    ...(author.job !== undefined && { jobTitle: author.job }),
+    ...(author.spokenLanguages !== undefined &&
+      author.spokenLanguages.length > 0 && {
+        knowsLanguage: author.spokenLanguages.map((language) =>
+          getLanguageGraph(language, locale)
+        ),
+      }),
     name: author.name,
     ...(author.nationality && {
       nationality: getCountryGraph(author.nationality, locale),
     }),
-    ...(author.website && { url: author.website }),
+    ...(author.website !== undefined && { url: author.website }),
   };
 };

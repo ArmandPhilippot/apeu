@@ -69,9 +69,9 @@ describe("get-taxonomy-preview", () => {
 
 describe("get-taxonomy", () => {
   it("returns a taxonomy from a blog category entry", async () => {
-    const result = await getTaxonomy(blogCategoryFixture);
-
     expect.assertions(1);
+
+    const result = await getTaxonomy(blogCategoryFixture);
 
     expect(result).toMatchInlineSnapshot(`
       {
@@ -100,9 +100,9 @@ describe("get-taxonomy", () => {
   });
 
   it("returns a taxonomy from a tag entry", async () => {
-    const result = await getTaxonomy(tagFixture);
-
     expect.assertions(1);
+
+    const result = await getTaxonomy(tagFixture);
 
     expect(result).toMatchInlineSnapshot(`
       {

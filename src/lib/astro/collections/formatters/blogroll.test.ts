@@ -4,9 +4,9 @@ import { getBlog } from "./blogroll";
 
 describe("get-blog", () => {
   it("returns a blog from a blogroll collection entry", async () => {
-    const result = await getBlog(blogrollFixture);
-
     expect.assertions(1);
+
+    const result = await getBlog(blogrollFixture);
 
     expect(result).toMatchInlineSnapshot(`
       {

@@ -8,6 +8,7 @@ describe("getGMTOffset", () => {
       lang: "en-US",
       timezone: "Europe/Paris",
     });
+
     expect(offset).toBe(1); // GMT+1 in winter
   });
 
@@ -17,6 +18,7 @@ describe("getGMTOffset", () => {
       lang: "fr-FR",
       timezone: "Europe/Paris",
     });
+
     expect(offset).toBe(1); // GMT+1 in winter
   });
 
@@ -26,13 +28,15 @@ describe("getGMTOffset", () => {
       lang: "fr-FR",
       timezone: "Europe/Paris",
     });
-    expect(offset).toBe(2); // GMT+2 in summer
+
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- GMT+2 in summer */
+    expect(offset).toBe(2);
   });
 
   it("throws an error when offsetPart is missing", () => {
     const formatterMock = vi.spyOn(
       Intl.DateTimeFormat.prototype,
-      "formatToParts",
+      "formatToParts"
     );
     // Mock implementation returning an empty array (no timeZoneName part)
     formatterMock.mockImplementationOnce(() => [
@@ -40,8 +44,9 @@ describe("getGMTOffset", () => {
     ]);
 
     const date = new Date("2025-01-07T13:40:00Z");
+
     expect(() =>
-      getGMTOffset(date, { lang: "en-US", timezone: "Europe/Paris" }),
+      getGMTOffset(date, { lang: "en-US", timezone: "Europe/Paris" })
     ).toThrowError("Unable to determine GMT offset for timezone: Europe/Paris");
 
     formatterMock.mockRestore();
@@ -50,7 +55,7 @@ describe("getGMTOffset", () => {
   it("throws an error when offsetPart value is empty", () => {
     const formatterMock = vi.spyOn(
       Intl.DateTimeFormat.prototype,
-      "formatToParts",
+      "formatToParts"
     );
     // Mock implementation returning timeZoneName part with empty value
     formatterMock.mockImplementationOnce(() => [
@@ -58,8 +63,9 @@ describe("getGMTOffset", () => {
     ]);
 
     const date = new Date("2025-01-07T13:40:00Z");
+
     expect(() =>
-      getGMTOffset(date, { lang: "en-US", timezone: "Europe/Paris" }),
+      getGMTOffset(date, { lang: "en-US", timezone: "Europe/Paris" })
     ).toThrowError("Unable to determine GMT offset for timezone: Europe/Paris");
 
     formatterMock.mockRestore();
@@ -68,15 +74,16 @@ describe("getGMTOffset", () => {
   it("throws an error for unexpected offset format", () => {
     const formatterMock = vi.spyOn(
       Intl.DateTimeFormat.prototype,
-      "formatToParts",
+      "formatToParts"
     );
     formatterMock.mockImplementationOnce(() => [
       { type: "timeZoneName", value: "InvalidOffset" },
     ]);
 
     const date = new Date("2025-01-07T13:40:00Z");
+
     expect(() =>
-      getGMTOffset(date, { lang: "en-US", timezone: "Europe/Paris" }),
+      getGMTOffset(date, { lang: "en-US", timezone: "Europe/Paris" })
     ).toThrowError("Unexpected offset format: InvalidOffset");
 
     formatterMock.mockRestore();
@@ -90,6 +97,7 @@ describe("applyTimezone", () => {
       lang: "en-US",
       timezone: "Europe/Paris",
     });
+
     expect(adjustedDate.toISOString()).toBe("2025-01-07T14:40:00.000Z"); // Adjusted to GMT+1
   });
 
@@ -99,6 +107,7 @@ describe("applyTimezone", () => {
       lang: "fr-FR",
       timezone: "Europe/Paris",
     });
+
     expect(adjustedDate.toISOString()).toBe("2025-07-07T15:40:00.000Z"); // Adjusted to GMT+2
   });
 });

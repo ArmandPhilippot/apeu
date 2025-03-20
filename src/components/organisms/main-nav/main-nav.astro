@@ -11,6 +11,7 @@ const { class: className, items, ...attrs } = Astro.props;
 const { locale, route } = useI18n(Astro.currentLocale);
 const isCurrentRouteOrNested = (url: string) => {
   if (url === route("home")) return Astro.url.pathname === url;
+  /* eslint-disable-next-line no-magic-numbers -- When this is not the default locale, the slug is prefixed by the locale so we need to go further. */
   const parentSlugIndex = locale === CONFIG.LANGUAGES.DEFAULT ? 1 : 2;
   const parentPath = Astro.url.pathname.split("/")[parentSlugIndex];
   const slug = url.split("/")[parentSlugIndex];
@@ -88,7 +89,7 @@ const isCurrentRouteOrNested = (url: string) => {
         &:where(:has(> [data-selected="true"])) {
           background: transparent;
           box-shadow: inset 0 0 var(--border-size-sm) var(--border-size-sm)
-            oklch(from var(--color-shadow) l c h / 0.5);
+            oklch(from var(--color-shadow) l c h / 50%);
         }
       }
     }

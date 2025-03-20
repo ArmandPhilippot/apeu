@@ -4,9 +4,9 @@ import { getNote, getNotePreview } from "./notes";
 
 describe("get-note-preview", () => {
   it("returns a note preview from a notes collection entry", async () => {
-    const result = await getNotePreview(noteFixture);
-
     expect.assertions(1);
+
+    const result = await getNotePreview(noteFixture);
 
     expect(result).toMatchInlineSnapshot(`
       {
@@ -29,9 +29,9 @@ describe("get-note-preview", () => {
 
 describe("get-note", () => {
   it("returns a note from a notes collection entry", async () => {
-    const result = await getNote(noteFixture);
-
     expect.assertions(1);
+
+    const result = await getNote(noteFixture);
 
     expect(result).toMatchInlineSnapshot(`
       {

@@ -3,13 +3,17 @@ import type { ComponentProps } from "astro/types";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import CollectionMeta from "./collection-meta.astro";
 
-vi.mock("../../../utils/i18n", () => ({
-  useI18n: vi.fn(() => ({
-    translate: (key: string) => `translated_${key}`,
-    translatePlural: (key: string, { count }: { count: number }) =>
-      `translated_${key}_${count}`,
-  })),
-}));
+vi.mock("../../../utils/i18n", () => {
+  return {
+    useI18n: vi.fn(() => {
+      return {
+        translate: (key: string) => `translated_${key}`,
+        translatePlural: (key: string, { count }: { count: number }) =>
+          `translated_${key}_${count}`,
+      };
+    }),
+  };
+});
 
 type LocalTestContext = {
   container: AstroContainer;
@@ -23,6 +27,8 @@ describe("CollectionMeta", () => {
   it<LocalTestContext>("renders nothing when no data is provided", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       data: {},
     } satisfies ComponentProps<typeof CollectionMeta>;
@@ -30,14 +36,16 @@ describe("CollectionMeta", () => {
       props,
     });
 
-    const terms = [...result.matchAll(/<dt(?:.*?)<\/dt>/g)];
+    const terms = [...result.matchAll(/<dt.*?<\/dt>/g)];
 
-    expect(terms.length).toBe(0);
+    expect(terms).toHaveLength(0);
   });
 
   it<LocalTestContext>("renders kind metadata correctly", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       data: {
         kind: "site",
@@ -53,6 +61,8 @@ describe("CollectionMeta", () => {
   it<LocalTestContext>("renders date metadata correctly", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       data: {
         publishedOn: new Date("2024-01-01"),
@@ -68,6 +78,9 @@ describe("CollectionMeta", () => {
   it<LocalTestContext>("renders authors correctly with and without websites", async ({
     container,
   }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(4);
+
     const props = {
       data: {
         authors: [
@@ -94,6 +107,9 @@ describe("CollectionMeta", () => {
   it<LocalTestContext>("renders tags with correct links", async ({
     container,
   }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(4);
+
     const props = {
       data: {
         tags: [
@@ -115,6 +131,9 @@ describe("CollectionMeta", () => {
   it<LocalTestContext>("renders multiple metadata types together", async ({
     container,
   }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(4);
+
     const props = {
       data: {
         kind: "site",
@@ -142,6 +161,8 @@ describe("CollectionMeta", () => {
   it<LocalTestContext>("hides labels when hideLabel is true", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       data: {
         kind: "site",
@@ -158,6 +179,8 @@ describe("CollectionMeta", () => {
   it<LocalTestContext>("shows update date when different from publish date", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       data: {
         publishedOn: new Date("2024-01-01"),
@@ -169,12 +192,16 @@ describe("CollectionMeta", () => {
     });
 
     const timeMatches = result.match(/<time/g);
-    expect(timeMatches?.length).toBe(2);
+
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect(timeMatches).toHaveLength(2);
   });
 
   it<LocalTestContext>("does not show update date when equal to publish date", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       data: {
         publishedOn: new Date("2024-01-01"),
@@ -186,12 +213,16 @@ describe("CollectionMeta", () => {
     });
 
     const timeMatches = result.match(/<time/g);
-    expect(timeMatches?.length).toBe(1);
+
+    expect(timeMatches).toHaveLength(1);
   });
 
   it<LocalTestContext>("renders single language correctly", async ({
     container,
   }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(2);
+
     const props = {
       data: {
         inLanguage: "en",
@@ -208,6 +239,9 @@ describe("CollectionMeta", () => {
   it<LocalTestContext>("renders multiple languages correctly", async ({
     container,
   }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(4);
+
     const props = {
       data: {
         inLanguages: ["en", "fr", "es"],
@@ -226,6 +260,9 @@ describe("CollectionMeta", () => {
   it<LocalTestContext>("renders repository link correctly", async ({
     container,
   }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(2);
+
     const props = {
       data: {
         repository: {
@@ -245,6 +282,9 @@ describe("CollectionMeta", () => {
   it<LocalTestContext>("renders category with correct link", async ({
     container,
   }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(2);
+
     const props = {
       data: {
         category: {
@@ -264,6 +304,9 @@ describe("CollectionMeta", () => {
   it<LocalTestContext>("renders total metadata correctly", async ({
     container,
   }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(2);
+
     const props = {
       data: {
         total: "nobis sint error",
@@ -280,6 +323,9 @@ describe("CollectionMeta", () => {
   it<LocalTestContext>("renders reading time metadata correctly", async ({
     container,
   }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(3);
+
     const props = {
       data: {
         readingTime: {

@@ -4,7 +4,11 @@ import {
   type CollectionKey,
 } from "astro:content";
 import type { AvailableLanguage } from "../../../utils/i18n";
-import { formatEntry, type EntryFormat } from "./format-entry";
+import {
+  formatEntry,
+  type EntryFormat,
+  type FormatEntryReturnMap,
+} from "./format-entry";
 
 type QueryEntryOptions<C extends CollectionKey, F extends EntryFormat> = {
   collection: C;
@@ -13,6 +17,14 @@ type QueryEntryOptions<C extends CollectionKey, F extends EntryFormat> = {
   locale?: AvailableLanguage | undefined;
 };
 
+/**
+ * Query a single entry in any collection.
+ *
+ * @template C, F
+ * @param {QueryEntryOptions<C, F>} options - The options to query the entry.
+ * @returns {Promise<ReturnType<FormatEntryReturnMap<F>[C]>>} The formatted entry.
+ * @throws When the entry is not found.
+ */
 export const queryEntry = async <
   C extends CollectionKey,
   F extends EntryFormat = "full",
@@ -21,14 +33,17 @@ export const queryEntry = async <
   format,
   id,
   locale,
-}: QueryEntryOptions<C, F>) => {
+}: QueryEntryOptions<C, F>): Promise<
+  ReturnType<FormatEntryReturnMap<F>[C]>
+> => {
   const fullId = locale ? `${locale}/${id}` : id;
   const entry = await getEntry(collection, fullId);
 
-  if (!entry)
+  if (entry === undefined) {
     throw new Error(
-      `Couldn't find an entry in ${collection} for the given id: ${id}.`,
+      `Couldn't find an entry in ${collection} for the given id: ${id}.`
     );
+  }
 
   return formatEntry<C, F>(entry, format);
 };

@@ -5,7 +5,7 @@ import { isString } from "./type-checks";
  * Retrieve an image source from a path or an imported image.
  *
  * @param {Pick<Img, "src">} img - The image.
- * @returns {Promise<string>} The src.
+ * @returns {Promise<string>} The resolved image src.
  */
 export const getImgSrc = async (img: Pick<Img, "src">): Promise<string> => {
   if (isString(img.src)) return img.src;

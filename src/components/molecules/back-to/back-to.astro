@@ -19,10 +19,11 @@ type Props = Omit<
 
 const { anchor, class: className, label, ...attrs } = Astro.props;
 
-if (!anchor.startsWith("#"))
+if (!anchor.startsWith("#")) {
   throw new Error(
-    "The `anchor` property should be an anchor on the same page. It must start with `#`.",
+    "The `anchor` property should be an anchor on the same page. It must start with `#`."
   );
+}
 ---
 
 <Button {...attrs} as="a" class:list={["back-to", className]} href={anchor}>

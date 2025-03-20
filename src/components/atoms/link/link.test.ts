@@ -13,6 +13,9 @@ describe("Link", () => {
   });
 
   it<LocalTestContext>("renders a link", async ({ container }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(2);
+
     const props = {
       href: "#perferendis-omnis-atque",
     } satisfies ComponentProps<typeof Link>;
@@ -22,13 +25,13 @@ describe("Link", () => {
       slots: { default: anchor },
     });
 
-    expect.assertions(2);
-
     expect(result).toContain(anchor);
     expect(result).toContain(props.href);
   });
 
   it<LocalTestContext>("can render a download link", async ({ container }) => {
+    expect.assertions(1);
+
     const props = {
       href: "#perferendis-omnis-atque",
       isDownload: true,
@@ -39,14 +42,14 @@ describe("Link", () => {
       slots: { default: anchor },
     });
 
-    expect.assertions(1);
-
     expect(result).toContain("download");
   });
 
   it<LocalTestContext>("can render an external link using rel", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       href: "#perferendis-omnis-atque",
       rel: "external",
@@ -57,14 +60,14 @@ describe("Link", () => {
       slots: { default: anchor },
     });
 
-    expect.assertions(1);
-
     expect(result).toContain("external");
   });
 
   it<LocalTestContext>("can render an external link using isExternal", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       href: "#perferendis-omnis-atque",
       isExternal: true,
@@ -75,14 +78,14 @@ describe("Link", () => {
       slots: { default: anchor },
     });
 
-    expect.assertions(1);
-
     expect(result).toContain("external");
   });
 
   it<LocalTestContext>("can render an external link using isExternal and add rel external if missing", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       href: "#perferendis-omnis-atque",
       isExternal: true,
@@ -93,8 +96,6 @@ describe("Link", () => {
       props,
       slots: { default: anchor },
     });
-
-    expect.assertions(1);
 
     expect(result).toContain("external");
   });

@@ -19,6 +19,9 @@ describe("Layout", () => {
   it<LocalTestContext>("renders the website structure", async ({
     container,
   }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(4);
+
     const props = {
       seo: {
         title: "est et fugiat",
@@ -27,8 +30,6 @@ describe("Layout", () => {
     const result = await container.renderToString(Layout, {
       props,
     });
-
-    expect.assertions(4);
 
     expect(result).toContain("</head>");
     expect(result).toContain("</header>");
@@ -39,6 +40,8 @@ describe("Layout", () => {
   it<LocalTestContext>("can render its children using a slot", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       seo: {
         title: "est et fugiat",
@@ -50,14 +53,14 @@ describe("Layout", () => {
       slots: { default: body },
     });
 
-    expect.assertions(1);
-
     expect(result).toContain(body);
   });
 
   it<LocalTestContext>("can render a link to the design system in dev mode", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     vi.stubEnv("MODE", "development");
 
     const props = {
@@ -69,14 +72,14 @@ describe("Layout", () => {
       props,
     });
 
-    expect.assertions(1);
-
     expect(result).toContain("/design-system");
   });
 
   it<LocalTestContext>("does not render a link to the design system in other modes than dev", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     vi.stubEnv("MODE", "production");
     vi.stubEnv("DEV", false);
 
@@ -88,8 +91,6 @@ describe("Layout", () => {
     const result = await container.renderToString(Layout, {
       props,
     });
-
-    expect.assertions(1);
 
     expect(result).not.toContain("/design-system");
   });

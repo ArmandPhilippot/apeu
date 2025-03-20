@@ -4,9 +4,9 @@ import { getPage, getPagePreview } from "./pages";
 
 describe("get-page-preview", () => {
   it("returns a page preview from a pages collection entry", async () => {
-    const result = await getPagePreview(pageFixture);
-
     expect.assertions(1);
+
+    const result = await getPagePreview(pageFixture);
 
     expect(result).toMatchInlineSnapshot(`
       {
@@ -30,9 +30,9 @@ describe("get-page-preview", () => {
 
 describe("get-page", () => {
   it("returns a page from a pages collection entry", async () => {
-    const result = await getPage(pageFixture);
-
     expect.assertions(1);
+
+    const result = await getPage(pageFixture);
 
     expect(result).toMatchInlineSnapshot(`
       {

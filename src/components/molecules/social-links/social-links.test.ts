@@ -15,6 +15,8 @@ describe("SocialLinks", () => {
   it<LocalTestContext>("renders a list of social links", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       links: {
         diaspora: "https://diaspora.test",
@@ -25,9 +27,7 @@ describe("SocialLinks", () => {
       props,
     });
 
-    expect.assertions(1);
-
-    const listItems = [...result.matchAll(/<li(?:.*?)<\/li>/g)];
+    const listItems = [...result.matchAll(/<li.*?<\/li>/g)];
 
     expect(listItems).toHaveLength(Object.keys(props.links).length);
   });
@@ -35,6 +35,8 @@ describe("SocialLinks", () => {
   it<LocalTestContext>("does not render list items when the media are invalid", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       links: {
         foo: "https://foo.test",
@@ -45,9 +47,7 @@ describe("SocialLinks", () => {
       props,
     });
 
-    expect.assertions(1);
-
-    const listItems = [...result.matchAll(/<li(?:.*?)<\/li>/g)];
+    const listItems = [...result.matchAll(/<li.*?<\/li>/g)];
 
     expect(listItems).toHaveLength(0);
   });
@@ -55,6 +55,8 @@ describe("SocialLinks", () => {
   it<LocalTestContext>("does not render list items when a link is undefined", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       links: {
         diaspora: "https://diaspora.test",
@@ -65,9 +67,7 @@ describe("SocialLinks", () => {
       props,
     });
 
-    expect.assertions(1);
-
-    const listItems = [...result.matchAll(/<li(?:.*?)<\/li>/g)];
+    const listItems = [...result.matchAll(/<li.*?<\/li>/g)];
 
     // Only diaspora
     expect(listItems).toHaveLength(1);
@@ -76,6 +76,8 @@ describe("SocialLinks", () => {
   it<LocalTestContext>("can visually hide the labels", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       hideLabels: true,
       links: {
@@ -87,14 +89,14 @@ describe("SocialLinks", () => {
       props,
     });
 
-    expect.assertions(1);
-
     expect(result).toContain("sr-only");
   });
 
   it<LocalTestContext>("can add the rel me attribute", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       addRelMe: true,
       links: {
@@ -105,8 +107,6 @@ describe("SocialLinks", () => {
     const result = await container.renderToString(SocialLinks, {
       props,
     });
-
-    expect.assertions(1);
 
     expect(result).toContain('rel="me"');
   });

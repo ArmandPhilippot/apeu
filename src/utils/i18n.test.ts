@@ -9,9 +9,7 @@ import {
 } from "./i18n";
 
 vi.mock("./constants", async (importOriginal) => {
-  const mod =
-    // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-    await importOriginal<typeof import("./constants")>();
+  const mod = await importOriginal<typeof import("./constants")>();
   return {
     ...mod,
     CONFIG: {
@@ -69,6 +67,7 @@ describe("is-available-language", () => {
 describe("get-current-locale", () => {
   it("returns the given locale when it is a valid", () => {
     const locale = "en";
+
     expect(getCurrentLocale(locale)).toBe(locale);
   });
 
@@ -92,6 +91,7 @@ describe("use-i18n", () => {
     const i18n = useI18n("en");
 
     expect(i18n.locale).toMatchInlineSnapshot(`"en"`);
+
     expectTypeOf(i18n.route).toBeFunction();
     expectTypeOf(i18n.translate).toBeFunction();
     expectTypeOf(i18n.translatePlural).toBeFunction();
@@ -116,7 +116,7 @@ describe("use-i18n", () => {
 
     expect(
       // @ts-expect-error -- The key comes from the mock
-      translate("singular.with.interpolation", { name: "John" }),
+      translate("singular.with.interpolation", { name: "John" })
     ).toMatchInlineSnapshot(`"Hello, John!"`);
   });
 
@@ -125,7 +125,7 @@ describe("use-i18n", () => {
 
     // @ts-expect-error -- The key comes from the mock
     expect(translatePlural("plural.key", { count: 0 })).toMatchInlineSnapshot(
-      `"You have no items."`,
+      `"You have no items."`
     );
   });
 
@@ -134,7 +134,7 @@ describe("use-i18n", () => {
 
     // @ts-expect-error -- The key comes from the mock
     expect(translatePlural("plural.key", { count: 1 })).toMatchInlineSnapshot(
-      `"You have a single item."`,
+      `"You have a single item."`
     );
   });
 
@@ -143,7 +143,7 @@ describe("use-i18n", () => {
 
     // @ts-expect-error -- The key comes from the mock
     expect(translatePlural("plural.key", { count: 30 })).toMatchInlineSnapshot(
-      `"You have a lot of items."`,
+      `"You have a lot of items."`
     );
   });
 
@@ -155,7 +155,7 @@ describe("use-i18n", () => {
       translatePlural("plural.key.with.interpolation", {
         count: 3,
         name: "John",
-      }),
+      })
     ).toMatchInlineSnapshot(`"Hello, John! You have 3 items."`);
   });
 
@@ -177,7 +177,7 @@ describe("use-i18n", () => {
 describe("get-language-territory", () => {
   it("returns the language+territory code for the default locale", () => {
     expect(getLanguageTerritory()).toBe(
-      getLanguageTerritory(CONFIG.LANGUAGES.DEFAULT),
+      getLanguageTerritory(CONFIG.LANGUAGES.DEFAULT)
     );
   });
 
@@ -187,7 +187,7 @@ describe("get-language-territory", () => {
 
   it("throws an error if the given locale is not supported", () => {
     expect(() => getLanguageTerritory("ru")).toThrowErrorMatchingInlineSnapshot(
-      `[Error: Locale not supported. Received: ru]`,
+      `[Error: Locale not supported. Received: ru]`
     );
   });
 });

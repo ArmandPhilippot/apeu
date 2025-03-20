@@ -15,6 +15,9 @@ describe("MainNav", () => {
   it<LocalTestContext>("renders a list of navigation items", async ({
     container,
   }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(4);
+
     const props = {
       items: [
         { label: "quia voluptate atque", url: "#et-reprehenderit-et" },
@@ -26,8 +29,6 @@ describe("MainNav", () => {
       props,
       slots: { default: label },
     });
-
-    expect.assertions(4);
 
     expect(result).toContain(props.items[0].label);
     expect(result).toContain(props.items[0].url);

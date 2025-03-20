@@ -14,20 +14,20 @@ import { useI18n } from "../../../utils/i18n";
 import { renderPaginationLink } from "../../../utils/pagination";
 
 export const getStaticPaths = (async ({ paginate }) => {
-  const page = await queryEntry({
+  const currentPage = await queryEntry({
     collection: "pages",
     id: "blog/posts",
     locale: "fr",
   });
-  const { entries: posts, total } = await queryCollection("blogPosts", {
+  const { entries, total: totalEntries } = await queryCollection("blogPosts", {
     format: "preview",
     orderBy: { key: "publishedOn", order: "DESC" },
     where: { locale: "fr" },
   });
 
-  return paginate(posts, { pageSize: CONFIG.ITEMS_PER_PAGE }).map(
+  return paginate(entries, { pageSize: CONFIG.ITEMS_PER_PAGE }).map(
     (paginatedPosts) => {
-      const { data, url, ...pagination } = paginatedPosts.props.page;
+      const { data, url, ...remainingData } = paginatedPosts.props.page;
       return {
         ...paginatedPosts,
         params: {
@@ -36,13 +36,13 @@ export const getStaticPaths = (async ({ paginate }) => {
             : undefined,
         },
         props: {
-          ...page,
-          pagination,
+          ...currentPage,
+          pagination: remainingData,
           posts: data,
-          total,
+          total: totalEntries,
         },
       };
-    },
+    }
   );
 }) satisfies GetStaticPaths;
 
@@ -57,12 +57,12 @@ const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
   { label: translate("page.home.title"), url: route("home") },
   { label: translate("page.blog.title"), url: route("blog") },
   { label: page.title, url: Astro.url.href },
-  ...[isFirstPage ? null : { label: pageLabel, url: Astro.url.href }],
+  isFirstPage ? null : { label: pageLabel, url: Astro.url.href },
 ].filter((crumb) => !!crumb);
 const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
   await getWebPageGraph({ ...page, breadcrumb }),
 ];
-const title: ComponentProps<typeof PageLayout>["title"] = isFirstPage
+const pageTitle: ComponentProps<typeof PageLayout>["title"] = isFirstPage
   ? page.title
   : `${page.title} - ${pageLabel}`;
 
@@ -71,7 +71,7 @@ const seo: ComponentProps<typeof PageLayout>["seo"] = {
   title: isFirstPage ? page.seo.title : `${page.seo.title} - ${pageLabel}`,
 };
 const getCTA = (
-  title: string,
+  title: string
 ): ComponentProps<typeof CollectionCard>["cta"] => {
   return {
     ariaLabel: translate("cta.read.more.a11y", { title }),
@@ -87,7 +87,7 @@ const getCTA = (
   graphs={graphs}
   isIndex
   seo={seo}
-  title={title}
+  title={pageTitle}
 >
   <CollectionMeta
     data={{

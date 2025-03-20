@@ -15,6 +15,9 @@ describe("CollectionMetaItem", () => {
   it<LocalTestContext>("renders a label and its body", async ({
     container,
   }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(2);
+
     const props = {
       label: "Any label",
     } satisfies ComponentProps<typeof CollectionMetaItem>;
@@ -31,6 +34,8 @@ describe("CollectionMetaItem", () => {
   it<LocalTestContext>("hides labels when hideLabel is true", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       hideLabel: true,
       label: "Any label",

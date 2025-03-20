@@ -14,18 +14,18 @@ export const getStaticPaths = (async () => {
   });
 
   return pages
-    .filter((page) => {
-      const maybeStaticRoute = page.id
-        .replace(`${page.locale}/`, "")
+    .filter((entry) => {
+      const maybeStaticRoute = entry.id
+        .replace(`${entry.locale}/`, "")
         .replaceAll("/", ".")
         .replaceAll("-", ".");
 
       return !isAvailableRoute(maybeStaticRoute);
     })
-    .map(({ slug, ...page }) => {
+    .map(({ slug, ...entry }) => {
       return {
         params: { slug },
-        props: { ...page },
+        props: { ...entry },
       };
     });
 }) satisfies GetStaticPaths;

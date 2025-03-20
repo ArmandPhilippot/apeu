@@ -4,9 +4,9 @@ import { getBookmark } from "./bookmarks";
 
 describe("get-bookmark", () => {
   it("returns a bookmark from a bookmarks collection entry", async () => {
-    const result = await getBookmark(bookmarkFixture);
-
     expect.assertions(1);
+
+    const result = await getBookmark(bookmarkFixture);
 
     expect(result).toMatchInlineSnapshot(`
       {

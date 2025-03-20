@@ -15,12 +15,12 @@ describe("Logo", () => {
   it<LocalTestContext>("renders the website logo as SVG", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {} satisfies ComponentProps<typeof Logo>;
     const result = await container.renderToString(Logo, {
       props,
     });
-
-    expect.assertions(1);
 
     expect(result).toContain("</svg>");
   });

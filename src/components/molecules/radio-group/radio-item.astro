@@ -68,7 +68,7 @@ if (!Astro.slots.has("default")) throw new MissingSlotError("default");
 
       &:where(:has(.radio-item-field:checked)) {
         background: var(--color-primary);
-        box-shadow: inset 0 0 var(--border-size-lg) 0 hsl(0, 0%, 0%);
+        box-shadow: inset 0 0 var(--border-size-lg) 0 hsl(0deg 0% 0%);
         border-color: var(--color-primary-darker);
         color: var(--color-on-primary);
       }
@@ -89,7 +89,7 @@ if (!Astro.slots.has("default")) throw new MissingSlotError("default");
             )
         ) {
         background: var(--color-regular-darker);
-        box-shadow: inset 0 0 var(--border-size-lg) 0 hsla(0, 0%, 0%, 0.15);
+        box-shadow: inset 0 0 var(--border-size-lg) 0 hsl(0deg 0% 0% / 15%);
       }
 
       &:where(
@@ -99,7 +99,7 @@ if (!Astro.slots.has("default")) throw new MissingSlotError("default");
             )
         ) {
         background: var(--color-primary);
-        box-shadow: inset 0 0 var(--border-size-lg) 0 hsl(0, 0%, 0%);
+        box-shadow: inset 0 0 var(--border-size-lg) 0 hsl(0deg 0% 0%);
         color: var(--color-on-primary);
       }
     }

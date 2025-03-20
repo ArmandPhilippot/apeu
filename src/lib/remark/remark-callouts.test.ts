@@ -21,7 +21,7 @@ Natus inventore eveniet est nulla veritatis aut.
 
     expect(result.value).toContain('callout: "callout"');
     expect(result.value).toContain(
-      'children: "Natus inventore eveniet est nulla veritatis aut."',
+      'children: "Natus inventore eveniet est nulla veritatis aut."'
     );
   });
 
@@ -40,7 +40,7 @@ Natus inventore eveniet est nulla veritatis aut.
 
     expect(result.value).not.toContain('callout: "callout"');
     expect(result.value).toContain(
-      'children: "Natus inventore eveniet est nulla veritatis aut."',
+      'children: "Natus inventore eveniet est nulla veritatis aut."'
     );
   });
 
@@ -59,7 +59,7 @@ Natus inventore eveniet est nulla veritatis aut.
 
     expect(result.value).toContain('label: "A custom title"');
     expect(result.value).toContain(
-      'children: "Natus inventore eveniet est nulla veritatis aut."',
+      'children: "Natus inventore eveniet est nulla veritatis aut."'
     );
   });
 
@@ -78,7 +78,7 @@ Natus inventore eveniet est nulla veritatis aut.
 
     expect(result.value).toContain('label: "A custom title"');
     expect(result.value).toContain(
-      'children: "Natus inventore eveniet est nulla veritatis aut."',
+      'children: "Natus inventore eveniet est nulla veritatis aut."'
     );
   });
 

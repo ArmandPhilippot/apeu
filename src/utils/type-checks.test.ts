@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { isKeyExistIn, isObject, isString } from "./type-checks";
 
+const randomNumber = 42;
+
 describe("is-object", () => {
   it("returns true if the value is an object", () => {
     expect(isObject({})).toBe(true);
@@ -19,7 +21,7 @@ describe("is-object", () => {
   });
 
   it("returns false if the value is a number", () => {
-    expect(isObject(42)).toBe(false);
+    expect(isObject(randomNumber)).toBe(false);
   });
 
   it("returns false if the value is a string", () => {
@@ -34,17 +36,19 @@ describe("is-object", () => {
 describe("is-key-exist", () => {
   it("returns true if the key exists in the object", () => {
     const obj = { foo: "", bar: "" };
+
     expect(isKeyExistIn(obj, "foo")).toBe(true);
   });
 
   it("returns false if the key does not exist in the object", () => {
     const obj = { foo: "", bar: "" };
+
     expect(isKeyExistIn(obj, "baz")).toBe(false);
   });
 
   it("throws an error if the first argument is not an object", () => {
     expect(() => isKeyExistIn([], "foo")).toThrowError(
-      "First argument must be an object.",
+      "First argument must be an object."
     );
   });
 });
@@ -67,7 +71,7 @@ describe("is-string", () => {
   });
 
   it("returns false if the value is a number", () => {
-    expect(isString(42)).toBe(false);
+    expect(isString(randomNumber)).toBe(false);
   });
 
   it("returns true if the value is an object", () => {

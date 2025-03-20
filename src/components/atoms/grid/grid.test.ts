@@ -16,6 +16,8 @@ describe("Grid Component", () => {
     it<LocalTestContext>("should render its children", async ({
       container,
     }) => {
+      expect.assertions(1);
+
       const body = "dolor voluptatem tenetur";
       const result = await container.renderToString(Grid, {
         slots: { default: body },
@@ -27,6 +29,8 @@ describe("Grid Component", () => {
     it<LocalTestContext>("should render with default div tag", async ({
       container,
     }) => {
+      expect.assertions(1);
+
       const result = await container.renderToString(Grid, {
         slots: { default: "test" },
       });
@@ -37,6 +41,8 @@ describe("Grid Component", () => {
     it<LocalTestContext>("should support polymorphic rendering with different tags", async ({
       container,
     }) => {
+      expect.assertions(1);
+
       const props: ComponentProps<typeof Grid> = { as: "section" };
       const result = await container.renderToString(Grid, {
         props,
@@ -51,6 +57,8 @@ describe("Grid Component", () => {
     it<LocalTestContext>("should generate correct CSS variables for gap", async ({
       container,
     }) => {
+      expect.assertions(1);
+
       const props: ComponentProps<typeof Grid> = { gap: "md" };
       const result = await container.renderToString(Grid, {
         props,
@@ -63,6 +71,8 @@ describe("Grid Component", () => {
     it<LocalTestContext>("should generate correct CSS variables for row and column gaps", async ({
       container,
     }) => {
+      expect.assertions(1);
+
       const props: ComponentProps<typeof Grid> = {
         gap: { row: "sm", col: "lg" },
       };
@@ -77,6 +87,9 @@ describe("Grid Component", () => {
     it<LocalTestContext>("should apply alignment and justify props as CSS variables", async ({
       container,
     }) => {
+      /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+      expect.assertions(4);
+
       const props: ComponentProps<typeof Grid> = {
         alignContent: "center",
         alignItems: "start",
@@ -99,6 +112,8 @@ describe("Grid Component", () => {
     it<LocalTestContext>("should throw error when cols and templateCols are used together", async ({
       container,
     }) => {
+      expect.assertions(1);
+
       const body = "dolor voluptatem tenetur";
       const props: ComponentProps<typeof Grid> = {
         cols: 3,
@@ -109,15 +124,17 @@ describe("Grid Component", () => {
         container.renderToString(Grid, {
           props,
           slots: { default: body },
-        }),
+        })
       ).rejects.toThrowErrorMatchingInlineSnapshot(
-        `[Error: Invalid properties: \`cols\` and \`templateCols\` cannot be used together. Use \`templateCols\` for explicit column definitions, or \`cols\` for responsive defaults.]`,
+        `[InvalidPropsError: \`cols\` and \`templateCols\` cannot be used together. Use \`templateCols\` for explicit column definitions, or \`cols\` for responsive defaults.]`
       );
     });
 
     it<LocalTestContext>("should throw error when rows and templateRows are used together", async ({
       container,
     }) => {
+      expect.assertions(1);
+
       const body = "dolor voluptatem tenetur";
       const props: ComponentProps<typeof Grid> = {
         rows: 3,
@@ -128,15 +145,17 @@ describe("Grid Component", () => {
         container.renderToString(Grid, {
           props,
           slots: { default: body },
-        }),
+        })
       ).rejects.toThrowErrorMatchingInlineSnapshot(
-        `[Error: Invalid properties: \`rows\` and \`templateRows\` cannot be used together. Use \`templateRows\` for explicit row definitions, or \`rows\` for responsive defaults.]`,
+        `[InvalidPropsError: \`rows\` and \`templateRows\` cannot be used together. Use \`templateRows\` for explicit row definitions, or \`rows\` for responsive defaults.]`
       );
     });
 
     it<LocalTestContext>("should throw error when templateCols is used with sizeMinCols", async ({
       container,
     }) => {
+      expect.assertions(1);
+
       const body = "dolor voluptatem tenetur";
       const props: ComponentProps<typeof Grid> = {
         sizeMinCols: "200px",
@@ -147,15 +166,17 @@ describe("Grid Component", () => {
         container.renderToString(Grid, {
           props,
           slots: { default: body },
-        }),
+        })
       ).rejects.toThrowErrorMatchingInlineSnapshot(
-        `[Error: Invalid properties: \`templateCols\` cannot be used together with \`sizeMinCols\` or \`sizeMaxCols\`. Use \`templateCols\` for explicit column definitions, or \`sizeMinCols\` and \`sizeMaxCols\` for responsive defaults.]`,
+        `[InvalidPropsError: \`templateCols\` cannot be used together with \`sizeMinCols\` or \`sizeMaxCols\`. Use \`templateCols\` for explicit column definitions, or \`sizeMinCols\` and \`sizeMaxCols\` for responsive defaults.]`
       );
     });
 
     it<LocalTestContext>("should throw error when templateCols is used with sizeMaxCols", async ({
       container,
     }) => {
+      expect.assertions(1);
+
       const body = "dolor voluptatem tenetur";
       const props: ComponentProps<typeof Grid> = {
         sizeMaxCols: "200px",
@@ -166,9 +187,9 @@ describe("Grid Component", () => {
         container.renderToString(Grid, {
           props,
           slots: { default: body },
-        }),
+        })
       ).rejects.toThrowErrorMatchingInlineSnapshot(
-        `[Error: Invalid properties: \`templateCols\` cannot be used together with \`sizeMinCols\` or \`sizeMaxCols\`. Use \`templateCols\` for explicit column definitions, or \`sizeMinCols\` and \`sizeMaxCols\` for responsive defaults.]`,
+        `[InvalidPropsError: \`templateCols\` cannot be used together with \`sizeMinCols\` or \`sizeMaxCols\`. Use \`templateCols\` for explicit column definitions, or \`sizeMinCols\` and \`sizeMaxCols\` for responsive defaults.]`
       );
     });
   });
@@ -177,6 +198,8 @@ describe("Grid Component", () => {
     it<LocalTestContext>("should support 'auto-fill' for cols", async ({
       container,
     }) => {
+      expect.assertions(1);
+
       const props: ComponentProps<typeof Grid> = { cols: "auto-fill" };
       const result = await container.renderToString(Grid, {
         props,
@@ -189,6 +212,8 @@ describe("Grid Component", () => {
     it<LocalTestContext>("should support 'auto-fit' for cols", async ({
       container,
     }) => {
+      expect.assertions(1);
+
       const props: ComponentProps<typeof Grid> = { cols: "auto-fit" };
       const result = await container.renderToString(Grid, {
         props,
@@ -201,6 +226,9 @@ describe("Grid Component", () => {
     it<LocalTestContext>("should support custom min and max column sizes", async ({
       container,
     }) => {
+      /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+      expect.assertions(2);
+
       const props: ComponentProps<typeof Grid> = {
         sizeMinCols: "200px",
         sizeMaxCols: "1fr",
@@ -219,6 +247,9 @@ describe("Grid Component", () => {
     it<LocalTestContext>("should pass through additional attributes", async ({
       container,
     }) => {
+      /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+      expect.assertions(2);
+
       const props: ComponentProps<typeof Grid> = {
         "data-testid": "grid-test",
         id: "my-grid",

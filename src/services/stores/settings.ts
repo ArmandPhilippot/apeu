@@ -24,7 +24,7 @@ export const settings = persistentMap<Settings>(
     encode: JSON.stringify,
     decode: JSON.parse,
     listen: true,
-  },
+  }
 );
 
 /**

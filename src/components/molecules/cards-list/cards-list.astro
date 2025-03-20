@@ -20,10 +20,11 @@ const {
   ...attrs
 } = Astro.props;
 
-if (!Astro.slots.has("default"))
+if (!Astro.slots.has("default")) {
   throw new Error(
-    "CardsList requires a function that describes how to render a single item as child.",
+    "CardsList requires a function that describes how to render a single item as child."
   );
+}
 
 const tag = isOrdered ? "ol" : "ul";
 ---

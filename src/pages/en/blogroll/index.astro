@@ -10,7 +10,7 @@ import { getWebPageGraph } from "../../../lib/schema-dts/graphs/webpage-graph";
 import { useI18n } from "../../../utils/i18n";
 
 const { locale, route, translate, translatePlural } = useI18n(
-  Astro.currentLocale,
+  Astro.currentLocale
 );
 const { Content, ...page } = await queryEntry({
   collection: "pages",

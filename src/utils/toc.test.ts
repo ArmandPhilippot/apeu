@@ -13,12 +13,14 @@ describe("build-toc", () => {
     ] as const satisfies MarkdownHeading[];
     const toc = buildToc(markdownHeadings);
 
+    /* eslint-disable @typescript-eslint/no-magic-numbers -- Access to values in the array declared above */
     // We have 3 headings of level 2 so the length should be 3.
-    expect(toc.length).toBe(3);
+    expect(toc).toHaveLength(3);
     expect(toc[0]?.label).toBe(markdownHeadings[0].text);
     // The second heading is followed by two headings of level 3.
     expect(toc[1]?.label).toBe(markdownHeadings[1].text);
     expect(toc[1]?.children?.length).toBe(2);
     expect(toc[2]?.label).toBe(markdownHeadings[4].text);
+    /* eslint-enable @typescript-eslint/no-magic-numbers */
   });
 });

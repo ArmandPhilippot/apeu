@@ -15,6 +15,9 @@ describe("LabelledField", () => {
   it<LocalTestContext>("renders the label and field slots", async ({
     container,
   }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(2);
+
     const props = {} satisfies ComponentProps<typeof LabelledField>;
     const label = "nostrum magnam voluptas";
     const field = "pariatur omnis adipisci";
@@ -23,13 +26,13 @@ describe("LabelledField", () => {
       slots: { field, label },
     });
 
-    expect.assertions(2);
-
     expect(result).toContain(label);
     expect(result).toContain(field);
   });
 
   it<LocalTestContext>("can render a hint slot", async ({ container }) => {
+    expect.assertions(1);
+
     const props = {} satisfies ComponentProps<typeof LabelledField>;
     const label = "nostrum magnam voluptas";
     const field = "pariatur omnis adipisci";
@@ -39,12 +42,12 @@ describe("LabelledField", () => {
       slots: { field, hint, label },
     });
 
-    expect.assertions(1);
-
     expect(result).toContain(hint);
   });
 
   it<LocalTestContext>("can render an errors slot", async ({ container }) => {
+    expect.assertions(1);
+
     const props = {} satisfies ComponentProps<typeof LabelledField>;
     const label = "nostrum magnam voluptas";
     const field = "pariatur omnis adipisci";
@@ -54,44 +57,42 @@ describe("LabelledField", () => {
       slots: { errors, field, label },
     });
 
-    expect.assertions(1);
-
     expect(result).toContain(errors);
   });
 
   it<LocalTestContext>("throws an error if the label is missing", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const field = "pariatur omnis adipisci";
     const props = {} satisfies ComponentProps<typeof LabelledField>;
-
-    expect.assertions(1);
 
     await expect(async () =>
       container.renderToString(LabelledField, {
         props,
         slots: { field },
-      }),
+      })
     ).rejects.toThrowErrorMatchingInlineSnapshot(
-      `[Error: A label slot is required.]`,
+      `[MissingSlotError: A label slot is required.]`
     );
   });
 
   it<LocalTestContext>("throws an error if the field is missing", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const label = "nostrum magnam voluptas";
     const props = {} satisfies ComponentProps<typeof LabelledField>;
-
-    expect.assertions(1);
 
     await expect(async () =>
       container.renderToString(LabelledField, {
         props,
         slots: { label },
-      }),
+      })
     ).rejects.toThrowErrorMatchingInlineSnapshot(
-      `[Error: A field slot is required.]`,
+      `[MissingSlotError: A field slot is required.]`
     );
   });
 });

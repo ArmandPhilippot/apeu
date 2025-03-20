@@ -14,31 +14,31 @@ type HeadingNodeWithParentIndex = HeadingNode & {
  * @returns {HeadingNodeWithParentIndex[]} The indexed headings.
  */
 const addParentIndexToHeadings = (
-  headings: MarkdownHeading[],
+  headings: MarkdownHeading[]
 ): HeadingNodeWithParentIndex[] => {
   const depthLastIndexes = Array.from({ length: headingTags.length }, () => -1);
 
-  return Array.from(headings).map(
-    (heading, index): HeadingNodeWithParentIndex => {
-      const depth = headingTags.findIndex((tag) => tag === `h${heading.depth}`);
-      const parentDepthIndexes = depthLastIndexes.slice(0, depth);
+  return [...headings].map((heading, index): HeadingNodeWithParentIndex => {
+    const depth = (headingTags as readonly string[]).indexOf(
+      `h${heading.depth}`
+    );
+    const parentDepthIndexes = depthLastIndexes.slice(0, depth);
 
-      depthLastIndexes[depth] = index;
+    depthLastIndexes[depth] = index;
 
-      return {
-        children: [],
-        slug: `#${heading.slug}`,
-        label: heading.text,
-        parentIndex: Math.max(...parentDepthIndexes),
-      };
-    },
-  );
+    return {
+      children: [],
+      slug: `#${heading.slug}`,
+      label: heading.text,
+      parentIndex: Math.max(...parentDepthIndexes),
+    };
+  });
 };
 
 /**
  * Build a table of contents from markdown headings.
  *
- * @param {MarkdownHeading[]} headings - The headings.
+ * @param {MarkdownHeading[]} headings - The headings to use in the ToC.
  * @returns {HeadingNode[]} The table of contents.
  */
 export const buildToc = (headings: MarkdownHeading[]): HeadingNode[] => {
@@ -49,8 +49,11 @@ export const buildToc = (headings: MarkdownHeading[]): HeadingNode[] => {
     const { parentIndex, ...node } = heading;
     const parentHeading = headingsTree[parentIndex];
 
-    if (parentIndex >= 0 && parentHeading) parentHeading.children?.push(node);
-    else toc.push(node);
+    if (parentIndex >= 0 && parentHeading !== undefined) {
+      parentHeading.children?.push(node);
+    } else {
+      toc.push(node);
+    }
   }
 
   return toc;

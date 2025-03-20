@@ -2,9 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 import { blogroll } from "./blogroll";
 
 vi.mock("../../../../utils/dates", async (importOriginal) => {
-  const mod =
-    // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-    await importOriginal<typeof import("../../../../utils/dates")>();
+  const mod = await importOriginal<typeof import("../../../../utils/dates")>();
 
   return {
     ...mod,
@@ -26,18 +24,24 @@ describe("blogroll", () => {
       url: "https://example.test",
     };
 
-    if (!blogroll.schema || typeof blogroll.schema === "function")
+    if (
+      blogroll.schema === undefined ||
+      typeof blogroll.schema === "function"
+    ) {
       throw new Error("The schema is not accessible");
+    }
 
     const result = blogroll.schema.safeParse(blog);
 
     expect(result.success).toBe(true);
-    if (result.success) {
-      expect(result.data.meta.inLanguages).toStrictEqual(blog.inLanguages);
-      expect(result.data.meta.isDraft).toBe(true);
-      expect(result.data.meta.publishedOn).toEqual(new Date("2023-01-01"));
-      expect(result.data.meta.updatedOn).toEqual(new Date("2023-01-02"));
-    }
+
+    // This guards against TypeScript errors but won't execute if the test is passing
+    if (!result.success) return;
+
+    expect(result.data.meta.inLanguages).toStrictEqual(blog.inLanguages);
+    expect(result.data.meta.isDraft).toBe(true);
+    expect(result.data.meta.publishedOn).toStrictEqual(new Date("2023-01-01"));
+    expect(result.data.meta.updatedOn).toStrictEqual(new Date("2023-01-02"));
   });
 
   it("should apply default values as expected", () => {
@@ -51,15 +55,23 @@ describe("blogroll", () => {
       url: "https://example.test",
     };
 
-    if (!blogroll.schema || typeof blogroll.schema === "function")
+    if (
+      blogroll.schema === undefined ||
+      typeof blogroll.schema === "function"
+    ) {
       throw new Error("The schema is not accessible");
+    }
 
     const result = blogroll.schema.safeParse(blog);
 
     expect(result.success).toBe(true);
-    if (result.success) {
-      expect(result.data.meta.isDraft).toBe(false);
-      expect(result.data.meta.updatedOn).toEqual(result.data.meta.publishedOn);
-    }
+
+    // This guards against TypeScript errors but won't execute if the test is passing
+    if (!result.success) return;
+
+    expect(result.data.meta.isDraft).toBe(false);
+    expect(result.data.meta.updatedOn).toStrictEqual(
+      result.data.meta.publishedOn
+    );
   });
 });

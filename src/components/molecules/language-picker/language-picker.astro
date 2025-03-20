@@ -19,11 +19,11 @@ type Languages = Record<
 
 type Props = ComponentProps<typeof Fieldset> & {
   /**
-   * An object containing the a
+   * An object containing the alternative routes.
    */
   altRoutes?: Partial<Record<string, string>>;
   /**
-   * A locale key defined in `languages`
+   * A locale key defined in `languages`.
    */
   current: string;
   /**
@@ -51,10 +51,11 @@ const {
 } = Astro.props;
 const currentLanguage = languages[current];
 
-if (!currentLanguage)
+if (!currentLanguage) {
   throw new Error(
-    "The value for `current` does not match any key in `languages`.",
+    "The value for `current` does not match any key in `languages`."
   );
+}
 
 const { translate } = useI18n(Astro.currentLocale);
 const controllerId = `${id}-controller`;
@@ -151,7 +152,12 @@ const controllerId = `${id}-controller`;
     border: var(--border-size-sm) solid var(--color-border);
     border-radius: var(--border-radii-md);
     box-shadow: var(--shadow-elevated-to-top-center);
-    transition: all 0.3s ease-out 0s;
+    transform-origin: top center;
+    transition:
+      background-color 0.3s ease-out 0s,
+      opacity 0.3s ease-out 0s,
+      transform 0.3s ease-out 0s,
+      visibility 0.3s ease-out 0s;
   }
 
   :global(:where([data-inline="true"])) .language-picker-list {
@@ -180,7 +186,6 @@ const controllerId = `${id}-controller`;
 
   :where(.language-picker-controller:not(:checked)) ~ .language-picker-list {
     transform: rotateX(-90deg) translate3d(0, 0, 0);
-    transform-origin: top center;
     opacity: 0;
     visibility: hidden;
   }
@@ -215,27 +220,27 @@ const controllerId = `${id}-controller`;
 
     connectedCallback() {
       this.#controller = this.querySelector<HTMLInputElement>(
-        'input[type="checkbox"]',
+        'input[type="checkbox"]'
       );
 
       this.ownerDocument.addEventListener(
         "click",
-        this.handleClickOrFocusOutside,
+        this.handleClickOrFocusOutside
       );
       this.ownerDocument.addEventListener(
         "focusin",
-        this.handleClickOrFocusOutside,
+        this.handleClickOrFocusOutside
       );
     }
 
     disconnectedCallback() {
       this.ownerDocument.removeEventListener(
         "click",
-        this.handleClickOrFocusOutside,
+        this.handleClickOrFocusOutside
       );
       this.ownerDocument.removeEventListener(
         "focusin",
-        this.handleClickOrFocusOutside,
+        this.handleClickOrFocusOutside
       );
     }
 

@@ -8,12 +8,12 @@ describe("get-meta-from-remark-plugin-frontmatter", () => {
     };
     const result = getMetaFromRemarkPluginFrontmatter(
       remarkPluginFrontmatter,
-      "en",
+      "en"
     );
 
     expect(result.readingTime).toBeDefined();
     expect(result.readingTime?.wordsCount).toBe(
-      remarkPluginFrontmatter.wordsCount,
+      remarkPluginFrontmatter.wordsCount
     );
   });
 
@@ -21,7 +21,7 @@ describe("get-meta-from-remark-plugin-frontmatter", () => {
     const remarkPluginFrontmatter = {};
     const result = getMetaFromRemarkPluginFrontmatter(
       remarkPluginFrontmatter,
-      "en",
+      "en"
     );
 
     expect(result.readingTime).not.toBeDefined();

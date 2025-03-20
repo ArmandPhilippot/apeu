@@ -15,6 +15,9 @@ describe("BackTo", () => {
   it<LocalTestContext>("renders an anchor link with a visually hidden label", async ({
     container,
   }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(2);
+
     const props = {
       anchor: "#adipisci-non-odio",
       label: "dolor nam maiores",
@@ -22,8 +25,6 @@ describe("BackTo", () => {
     const result = await container.renderToString(BackTo, {
       props,
     });
-
-    expect.assertions(2);
 
     expect(result).toContain(`href="${props.anchor}"`);
     expect(result).toContain(props.label);
@@ -37,9 +38,9 @@ describe("BackTo", () => {
     await expect(async () =>
       container.renderToString(BackTo, {
         props: { anchor: "adipisci-non-odio", label: "aut ut libero" },
-      }),
+      })
     ).rejects.toThrowErrorMatchingInlineSnapshot(
-      `[Error: The \`anchor\` property should be an anchor on the same page. It must start with \`#\`.]`,
+      `[Error: The \`anchor\` property should be an anchor on the same page. It must start with \`#\`.]`
     );
   });
 });

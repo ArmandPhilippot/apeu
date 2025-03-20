@@ -17,7 +17,7 @@ const mockImage = vi.fn().mockReturnValue(
       z.literal("svg"),
       z.literal("avif"),
     ]),
-  }),
+  })
 );
 
 describe("authors", () => {
@@ -28,20 +28,23 @@ describe("authors", () => {
       isWebsiteOwner: true,
     };
 
-    if (typeof authors.schema !== "function")
-      throw new Error("The schema is not callable");
+    if (typeof authors.schema !== "function") {
+      throw new TypeError("The schema is not callable");
+    }
 
     const parsedSchema = authors.schema({ image: mockImage });
     const result = parsedSchema.safeParse(author);
 
     expect(result.success).toBe(true);
-    if (result.success) {
-      expect(result.data.isWebsiteOwner).toBe(true);
-      expect(result.data.name).toEqual(
-        `${author.firstName} ${author.lastName}`,
-      );
-      expect(result.data.nameIPA).not.toBeDefined();
-    }
+
+    // This guards against TypeScript errors but won't execute if the test is passing
+    if (!result.success) return;
+
+    expect(result.data.isWebsiteOwner).toBe(true);
+    expect(result.data.name).toStrictEqual(
+      `${author.firstName} ${author.lastName}`
+    );
+    expect(result.data.nameIPA).not.toBeDefined();
   });
 
   it("should apply default values as expected", () => {
@@ -50,16 +53,19 @@ describe("authors", () => {
       lastName: "Doe",
     };
 
-    if (typeof authors.schema !== "function")
-      throw new Error("The schema is not callable");
+    if (typeof authors.schema !== "function") {
+      throw new TypeError("The schema is not callable");
+    }
 
     const parsedSchema = authors.schema({ image: mockImage });
     const result = parsedSchema.safeParse(author);
 
     expect(result.success).toBe(true);
-    if (result.success) {
-      expect(result.data.isWebsiteOwner).toBe(false);
-    }
+
+    // This guards against TypeScript errors but won't execute if the test is passing
+    if (!result.success) return;
+
+    expect(result.data.isWebsiteOwner).toBe(false);
   });
 
   it("can combine both IPA transcriptions in the transformed output", () => {
@@ -72,17 +78,20 @@ describe("authors", () => {
       lastNameIPA: "/ˈdoʊ/",
     };
 
-    if (typeof authors.schema !== "function")
-      throw new Error("The schema is not callable");
+    if (typeof authors.schema !== "function") {
+      throw new TypeError("The schema is not callable");
+    }
 
     const parsedSchema = authors.schema({ image: mockImage });
     const result = parsedSchema.safeParse(author);
 
     expect(result.success).toBe(true);
-    if (result.success) {
-      expect(result.data.nameIPA).toEqual(
-        `${author.firstNameIPA} ${author.lastNameIPA}`,
-      );
-    }
+
+    // This guards against TypeScript errors but won't execute if the test is passing
+    if (!result.success) return;
+
+    expect(result.data.nameIPA).toStrictEqual(
+      `${author.firstNameIPA} ${author.lastNameIPA}`
+    );
   });
 });

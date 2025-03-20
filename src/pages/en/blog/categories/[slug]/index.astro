@@ -49,7 +49,7 @@ const relatedPosts = entries.map(({ meta, ...post }) => {
   };
 });
 const getCTA = (
-  title: string,
+  title: string
 ): ComponentProps<typeof CollectionCard>["cta"] => {
   return {
     ariaLabel: translate("cta.read.more.a11y", { title }),

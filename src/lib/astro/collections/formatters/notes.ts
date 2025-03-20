@@ -3,8 +3,14 @@ import type { Note, NotePreview } from "../../../../types/data";
 import { getMetaFromRemarkPluginFrontmatter } from "../../../../utils/frontmatter";
 import { getTagsFromReferences, resolveTranslations } from "./utils";
 
+/**
+ * Convert a note collection entry to a NotePreview object.
+ *
+ * @param {CollectionEntry<"notes">} note - The note collection entry.
+ * @returns {Promise<NotePreview>} An object describing the note preview.
+ */
 export const getNotePreview = async (
-  note: CollectionEntry<"notes">,
+  note: CollectionEntry<"notes">
 ): Promise<NotePreview> => {
   const { locale, meta, seo, slug, ...remainingData } = note.data;
   const { isDraft, tags, ...remainingMeta } = meta;
@@ -12,7 +18,7 @@ export const getNotePreview = async (
   const { remarkPluginFrontmatter } = await render(note);
   const { readingTime } = getMetaFromRemarkPluginFrontmatter(
     remarkPluginFrontmatter,
-    locale,
+    locale
   );
 
   return {
@@ -28,8 +34,14 @@ export const getNotePreview = async (
   };
 };
 
+/**
+ * Convert a note collection entry to a Note object.
+ *
+ * @param {CollectionEntry<"notes">} note - The note collection entry.
+ * @returns {Promise<Note>} An object describing the note.
+ */
 export const getNote = async (
-  note: CollectionEntry<"notes">,
+  note: CollectionEntry<"notes">
 ): Promise<Note> => {
   const preview = await getNotePreview(note);
   const { remarkPluginFrontmatter, ...renderResult } = await render(note);
@@ -38,7 +50,7 @@ export const getNote = async (
   return {
     ...preview,
     ...renderResult,
-    hasContent: !!note.body,
+    hasContent: note.body !== undefined && note.body !== "",
     seo: {
       ...note.data.seo,
       languages: altLanguages,

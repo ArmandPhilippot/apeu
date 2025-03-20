@@ -14,6 +14,9 @@ describe("TableOfContents", () => {
   it<LocalTestContext>("renders the a list of anchor links", async ({
     container,
   }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(2);
+
     const headings = [
       { label: "qui velit ratione", slug: "#rerum-velit-dolorem" },
       { label: "dolorem sit omnis", slug: "#quam-fuga-voluptas" },
@@ -22,8 +25,6 @@ describe("TableOfContents", () => {
     const result = await container.renderToString(TableOfContents, {
       props: { headings },
     });
-
-    expect.assertions(2);
 
     const listItems = [...result.matchAll(/<li/g)];
 
@@ -34,6 +35,9 @@ describe("TableOfContents", () => {
   it<LocalTestContext>("can render a nested list of anchor links", async ({
     container,
   }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(2);
+
     const headings = [
       { label: "dolorum nihil nobis", slug: "#dignissimos-ipsa-ex" },
       {
@@ -68,16 +72,15 @@ describe("TableOfContents", () => {
       props: { headings },
     });
     const flattenHeadings = (
-      nestedHeadings: typeof headings,
+      nestedHeadings: typeof headings
     ): typeof headings =>
       nestedHeadings.flatMap((heading) => {
-        if (heading.children)
+        if (heading.children !== undefined) {
           return [heading, ...flattenHeadings(heading.children)];
+        }
 
         return heading;
       });
-
-    expect.assertions(2);
 
     const listItems = [...result.matchAll(/<li/g)];
 

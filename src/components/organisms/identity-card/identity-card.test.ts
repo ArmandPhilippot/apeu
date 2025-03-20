@@ -16,6 +16,8 @@ describe("IdentityCard", () => {
   });
 
   it<LocalTestContext>("renders the author name", async ({ container }) => {
+    expect.assertions(1);
+
     const props = {
       author: {
         name: "John Doe",
@@ -25,14 +27,14 @@ describe("IdentityCard", () => {
       props,
     });
 
-    expect.assertions(1);
-
     expect(result).toContain(props.author.name);
   });
 
   it<LocalTestContext>("can render the pronunciation", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       author: {
         name: "John Doe",
@@ -43,12 +45,12 @@ describe("IdentityCard", () => {
       props,
     });
 
-    expect.assertions(1);
-
     expect(result).toContain(props.author.nameIPA);
   });
 
   it<LocalTestContext>("can render its avatar", async ({ container }) => {
+    expect.assertions(1);
+
     const props = {
       author: {
         name: "John Doe",
@@ -63,12 +65,12 @@ describe("IdentityCard", () => {
       props,
     });
 
-    expect.assertions(1);
-
     expect(result).toContain(props.author.avatar.src);
   });
 
   it<LocalTestContext>("can render its country", async ({ container }) => {
+    expect.assertions(1);
+
     const props = {
       author: {
         name: "John Doe",
@@ -79,16 +81,16 @@ describe("IdentityCard", () => {
       props,
     });
 
-    expect.assertions(1);
-
     expect(result).toContain(
       useI18n(CONFIG.LANGUAGES.DEFAULT).translate(
-        `meta.value.country.name.${toLowerCase(props.author.country)}`,
-      ),
+        `meta.value.country.name.${toLowerCase(props.author.country)}`
+      )
     );
   });
 
   it<LocalTestContext>("can render its job", async ({ container }) => {
+    expect.assertions(1);
+
     const props = {
       author: {
         name: "John Doe",
@@ -99,12 +101,12 @@ describe("IdentityCard", () => {
       props,
     });
 
-    expect.assertions(1);
-
     expect(result).toContain(props.author.job);
   });
 
   it<LocalTestContext>("can render its nationality", async ({ container }) => {
+    expect.assertions(1);
+
     const props = {
       author: {
         name: "John Doe",
@@ -115,18 +117,18 @@ describe("IdentityCard", () => {
       props,
     });
 
-    expect.assertions(1);
-
     expect(result).toContain(
       useI18n(CONFIG.LANGUAGES.DEFAULT).translate(
-        `meta.value.nationality.${toLowerCase(props.author.nationality)}`,
-      ),
+        `meta.value.nationality.${toLowerCase(props.author.nationality)}`
+      )
     );
   });
 
   it<LocalTestContext>("can render its spoken languages", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       author: {
         name: "John Doe",
@@ -137,16 +139,16 @@ describe("IdentityCard", () => {
       props,
     });
 
-    expect.assertions(1);
-
     expect(result).toContain(
       useI18n(CONFIG.LANGUAGES.DEFAULT).translate(
-        `language.name.${props.author.spokenLanguages[0]}`,
-      ),
+        `language.name.${props.author.spokenLanguages[0]}`
+      )
     );
   });
 
   it<LocalTestContext>("can render a heading", async ({ container }) => {
+    expect.assertions(1);
+
     const heading = "dicta hic rerum";
     const props = {
       author: {
@@ -157,8 +159,6 @@ describe("IdentityCard", () => {
       props,
       slots: { heading },
     });
-
-    expect.assertions(1);
 
     expect(result).toContain(heading);
   });

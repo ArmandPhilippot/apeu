@@ -13,12 +13,13 @@ describe("Spinner", () => {
   });
 
   it<LocalTestContext>("renders a spinner", async ({ container }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(2);
+
     const props = {} satisfies ComponentProps<typeof Spinner>;
     const result = await container.renderToString(Spinner, {
       props,
     });
-
-    expect.assertions(2);
 
     expect(result).toContain("spinner-icon");
     expect(result).toContain(`aria-hidden="true"`);
@@ -27,14 +28,15 @@ describe("Spinner", () => {
   it<LocalTestContext>("can render a message under the spinner", async ({
     container,
   }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(2);
+
     const props = {} satisfies ComponentProps<typeof Spinner>;
     const body = "totam excepturi voluptatem";
     const result = await container.renderToString(Spinner, {
       props,
       slots: { default: body },
     });
-
-    expect.assertions(2);
 
     expect(result).toContain(body);
     expect(result).toContain("--spinner-flow: column");
@@ -43,6 +45,9 @@ describe("Spinner", () => {
   it<LocalTestContext>("can render a message on top of the spinner", async ({
     container,
   }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(2);
+
     const props = {
       isReversed: true,
     } satisfies ComponentProps<typeof Spinner>;
@@ -51,8 +56,6 @@ describe("Spinner", () => {
       props,
       slots: { default: body },
     });
-
-    expect.assertions(2);
 
     expect(result).toContain(body);
     expect(result).toContain("--spinner-flow: column-reverse");
@@ -61,6 +64,9 @@ describe("Spinner", () => {
   it<LocalTestContext>("can render a message inlined after the spinner", async ({
     container,
   }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(2);
+
     const props = {
       isInline: true,
     } satisfies ComponentProps<typeof Spinner>;
@@ -70,8 +76,6 @@ describe("Spinner", () => {
       slots: { default: body },
     });
 
-    expect.assertions(2);
-
     expect(result).toContain(body);
     expect(result).toContain("--spinner-flow: row");
   });
@@ -79,6 +83,9 @@ describe("Spinner", () => {
   it<LocalTestContext>("can render a message inlined before the spinner", async ({
     container,
   }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(2);
+
     const props = {
       isInline: true,
       isReversed: true,
@@ -88,8 +95,6 @@ describe("Spinner", () => {
       props,
       slots: { default: body },
     });
-
-    expect.assertions(2);
 
     expect(result).toContain(body);
     expect(result).toContain("--spinner-flow: row-reverse");

@@ -15,6 +15,9 @@ describe("Head", () => {
   it<LocalTestContext>("renders the default meta in head", async ({
     container,
   }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(5);
+
     const props = {
       brand: "et a dolores",
       seo: {
@@ -25,20 +28,20 @@ describe("Head", () => {
       props,
     });
 
-    expect.assertions(5);
-
     expect(result).toContain("</head>");
     expect(result).toContain('<meta charset="utf-8">');
     expect(result).toContain(
-      '<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">',
+      '<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport">'
     );
     expect(result).toContain(`<title>${props.seo.title}</title>`);
-    expect(result).toContain('<meta name="robots" content="index, follow">');
+    expect(result).toContain('<meta content="index, follow" name="robots">');
   });
 
   it<LocalTestContext>("can add the brand name to the page title", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       addBrandToTitle: true,
       brand: "et a dolores",
@@ -50,16 +53,17 @@ describe("Head", () => {
       props,
     });
 
-    expect.assertions(1);
-
     expect(result).toContain(
-      `<title>${props.seo.title} | ${props.brand}</title>`,
+      `<title>${props.seo.title} | ${props.brand}</title>`
     );
   });
 
   it<LocalTestContext>("can render a meta description", async ({
     container,
   }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(2);
+
     const props = {
       brand: "et a dolores",
       seo: {
@@ -71,13 +75,13 @@ describe("Head", () => {
       props,
     });
 
-    expect.assertions(2);
-
-    expect(result).toContain('<meta name="description"');
+    expect(result).toContain('name="description"');
     expect(result).toContain(props.seo.description);
   });
 
   it<LocalTestContext>("can set robots nofollow", async ({ container }) => {
+    expect.assertions(1);
+
     const props = {
       brand: "et a dolores",
       seo: {
@@ -89,12 +93,12 @@ describe("Head", () => {
       props,
     });
 
-    expect.assertions(1);
-
-    expect(result).toContain(`<meta name="robots" content="index, nofollow">`);
+    expect(result).toContain(`<meta content="index, nofollow" name="robots">`);
   });
 
   it<LocalTestContext>("can set robots noindex", async ({ container }) => {
+    expect.assertions(1);
+
     const props = {
       brand: "et a dolores",
       seo: {
@@ -106,14 +110,15 @@ describe("Head", () => {
       props,
     });
 
-    expect.assertions(1);
-
-    expect(result).toContain(`<meta name="robots" content="noindex, follow">`);
+    expect(result).toContain(`<meta content="noindex, follow" name="robots">`);
   });
 
   it<LocalTestContext>("can update the meta related to page author", async ({
     container,
   }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(2);
+
     const props = {
       brand: "et a dolores",
       seo: {
@@ -125,19 +130,19 @@ describe("Head", () => {
       props,
     });
 
-    expect.assertions(2);
-
     expect(result).toContain(
-      `<meta name="author" content="${props.seo.author.name}">`,
+      `<meta content="${props.seo.author.name}" name="author">`
     );
     expect(result).toContain(
-      `<link rel="author" href="${props.seo.author.website}">`,
+      `<link href="${props.seo.author.website}" rel="author">`
     );
   });
 
   it<LocalTestContext>("can add a meta for the color scheme", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       brand: "et a dolores",
       colorScheme: "light",
@@ -149,16 +154,16 @@ describe("Head", () => {
       props,
     });
 
-    expect.assertions(1);
-
     expect(result).toContain(
-      `<meta name="color-scheme" content="${props.colorScheme}">`,
+      `<meta content="${props.colorScheme}" name="color-scheme">`
     );
   });
 
   it<LocalTestContext>("can add a meta for the theme color", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       brand: "et a dolores",
       seo: {
@@ -170,16 +175,16 @@ describe("Head", () => {
       props,
     });
 
-    expect.assertions(1);
-
     expect(result).toContain(
-      `<meta name="theme-color" content="${props.themeColor}">`,
+      `<meta content="${props.themeColor}" name="theme-color">`
     );
   });
 
   it<LocalTestContext>("can add a meta for the generator", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       brand: "et a dolores",
       generator: "enim",
@@ -191,16 +196,16 @@ describe("Head", () => {
       props,
     });
 
-    expect.assertions(1);
-
     expect(result).toContain(
-      `<meta name="generator" content="${props.generator}">`,
+      `<meta content="${props.generator}" name="generator">`
     );
   });
 
   it<LocalTestContext>("can render its children using a slot", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       brand: "et a dolores",
       seo: {
@@ -212,8 +217,6 @@ describe("Head", () => {
       props,
       slots: { default: body },
     });
-
-    expect.assertions(1);
 
     expect(result).toContain(body);
   });

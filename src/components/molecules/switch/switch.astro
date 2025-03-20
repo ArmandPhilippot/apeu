@@ -16,7 +16,7 @@ type Props = JSX.HTMLAttributes & {
   /**
    * Should we hide the items label?
    *
-   * @warning Only use this option if both items have an icon to keep the
+   * **Warning:** Only use this option if both items have an icon to keep the
    * switch visually understandable.
    *
    * @default false
@@ -25,7 +25,7 @@ type Props = JSX.HTMLAttributes & {
   /**
    * Should we hide the label visually?
    *
-   * @warning Only use this option if the items labels are visible.
+   * **Warning:** Only use this option if the items labels are visible.
    *
    * @default false
    */
@@ -62,15 +62,19 @@ const {
   ...attrs
 } = Astro.props;
 
-if (value !== item1.value && value !== item2.value)
+if (value !== item1.value && value !== item2.value) {
   throw new Error(
-    `The switch value should be the value of one of its items, received: ${value}.`,
+    `The switch value should be the value of one of its items, received: ${value}.`
   );
+}
 
-if (hideItemsLabel && !(item1.icon && item2.icon))
+if (hideItemsLabel && !(item1.icon && item2.icon)) {
   throw new Error(
-    `The hideItemsLabel option is invalid when items do not have icons.`,
+    `The hideItemsLabel option is invalid when items do not have icons.`
   );
+}
+
+const defaultIconSize = 24;
 ---
 
 <ap-switch {...attrs} class:list={["switch", className]}>
@@ -89,7 +93,7 @@ if (hideItemsLabel && !(item1.icon && item2.icon))
           item1.icon ? (
             <Icon
               name={item1.icon}
-              size={item1.iconSize ?? 24}
+              size={item1.iconSize ?? defaultIconSize}
               title={hideItemsLabel ? item1.label : ""}
             />
           ) : null
@@ -101,7 +105,7 @@ if (hideItemsLabel && !(item1.icon && item2.icon))
           item2.icon ? (
             <Icon
               name={item2.icon}
-              size={item1.iconSize ?? 24}
+              size={item1.iconSize ?? defaultIconSize}
               title={hideItemsLabel ? item2.label : ""}
             />
           ) : null
@@ -191,7 +195,9 @@ if (hideItemsLabel && !(item1.icon && item2.icon))
         inset 0 0 0 var(--border-size-md) var(--color-regular-light),
         var(--shadow-raised-to-top-left);
       transform: translateY(0);
-      transition: all 0.25s ease 0s;
+      transition:
+        box-shadow 0.25s ease 0s,
+        transform 0.25s ease 0s;
 
       @container (width >= 320px) {
         transform: translateX(0);

@@ -3,6 +3,7 @@ import {
   type CollectionEntry,
   type CollectionKey,
 } from "astro:content";
+import { isString } from "../../../utils/type-checks";
 import { formatEntry, type EntryFormat } from "./format-entry";
 import { applyCollectionFilters } from "./utils/filters";
 import { getOrderedEntries } from "./utils/ordering";
@@ -54,21 +55,21 @@ export type QueriedCollection<
 const paginateEntries = <C extends CollectionKey>(
   entries: CollectionEntry<C>[],
   after: number,
-  first?: number,
+  first?: number
 ): CollectionEntry<C>[] =>
-  first !== undefined
-    ? entries.slice(after, after + first)
-    : entries.slice(after);
+  first === undefined
+    ? entries.slice(after)
+    : entries.slice(after, after + first);
 
 const formatEntries = async <C extends CollectionKey, F extends EntryFormat>(
   entries: CollectionEntry<C>[],
-  format?: F,
+  format?: F
 ): Promise<Awaited<ReturnType<typeof formatEntry<C, F>>>[]> =>
-  Promise.all(entries.map((entry) => formatEntry(entry, format)));
+  Promise.all(entries.map(async (entry) => formatEntry(entry, format)));
 
 const processEntries = async <C extends CollectionKey, F extends EntryFormat>(
   entries: CollectionEntry<C>[],
-  options: Omit<QueryCollectionOptions<C, F>, "where"> = {},
+  options: Omit<QueryCollectionOptions<C, F>, "where"> = {}
 ): Promise<QueriedCollection<C, F>> => {
   const { after = 0, first, format, orderBy } = options;
   const orderedEntries = getOrderedEntries(entries, orderBy);
@@ -84,10 +85,10 @@ const processEntries = async <C extends CollectionKey, F extends EntryFormat>(
 /**
  * Query one or multiple collections at once using filters.
  *
- * @template C - CollectionKey
- * @template F - EntryFormat
+ * @template C - CollectionKey.
+ * @template F - EntryFormat.
  * @param {C | C[]} collections - The collections names.
- * @param {Partial<QueryCollectionOptions<C, F>>} options - The options.
+ * @param {Partial<QueryCollectionOptions<C, F>>} options - The options used to filter the queried entries.
  * @returns {Promise<QueriedCollection<C, F>>} The collection entries.
  */
 export const queryCollection = async <
@@ -95,24 +96,20 @@ export const queryCollection = async <
   F extends EntryFormat = "full",
 >(
   collections: C | C[],
-  options: QueryCollectionOptions<C, F> = {},
+  options: QueryCollectionOptions<C, F> = {}
 ): Promise<QueriedCollection<C, F>> => {
   const { where, ...remainingOptions } = options;
-  const collectionArray = Array.isArray(collections)
-    ? collections
-    : [collections];
+  const collectionArray = isString(collections) ? [collections] : collections;
 
-  const filteredEntries = (
-    await Promise.all(
-      collectionArray.map((collection) =>
-        getCollection(collection, applyCollectionFilters(where)),
-      ),
+  const filteredEntries = await Promise.all(
+    collectionArray.map(async (collection) =>
+      getCollection(collection, applyCollectionFilters(where))
     )
-  ).flat();
-
+  );
+  const flattenEntries = filteredEntries.flat();
   const transformedEntries = updateEntriesTagsForLocale(
-    filteredEntries,
-    options.where?.locale,
+    flattenEntries,
+    where?.locale
   );
 
   return processEntries(transformedEntries, remainingOptions);

@@ -8,7 +8,7 @@ import type {
   JustifyItems,
 } from "../../../types/css";
 import { getCSSVars, getSpacingVarFromGap } from "../../../utils/attributes";
-import { InvalidProps } from "../../../utils/exceptions";
+import { InvalidPropsError } from "../../../utils/exceptions";
 
 type Props<T extends HTMLTag = "div"> = Polymorphic<{ as: T }> & {
   alignContent?: AlignContent | null | undefined;
@@ -46,24 +46,24 @@ const errors: string[] = [];
 
 if (templateCols && cols) {
   errors.push(
-    "`cols` and `templateCols` cannot be used together. Use `templateCols` for explicit column definitions, or `cols` for responsive defaults.",
+    "`cols` and `templateCols` cannot be used together. Use `templateCols` for explicit column definitions, or `cols` for responsive defaults."
   );
 }
 
 if (templateRows && rows) {
   errors.push(
-    "`rows` and `templateRows` cannot be used together. Use `templateRows` for explicit row definitions, or `rows` for responsive defaults.",
+    "`rows` and `templateRows` cannot be used together. Use `templateRows` for explicit row definitions, or `rows` for responsive defaults."
   );
 }
 
 if (templateCols && (sizeMinCols || sizeMaxCols)) {
   errors.push(
-    "`templateCols` cannot be used together with `sizeMinCols` or `sizeMaxCols`. Use `templateCols` for explicit column definitions, or `sizeMinCols` and `sizeMaxCols` for responsive defaults.",
+    "`templateCols` cannot be used together with `sizeMinCols` or `sizeMaxCols`. Use `templateCols` for explicit column definitions, or `sizeMinCols` and `sizeMaxCols` for responsive defaults."
   );
 }
 
 if (errors.length > 0) {
-  throw new InvalidProps(errors.join("\n"));
+  throw new InvalidPropsError(errors.join("\n"));
 }
 
 const cssVars = getCSSVars({
@@ -88,10 +88,8 @@ const cssVars = getCSSVars({
 <style>
   .grid {
     display: grid;
-    align-content: var(--align-content);
-    align-items: var(--align-items);
-    justify-content: var(--justify-content);
-    justify-items: var(--justify-items);
+    place-content: var(--align-content) var(--justify-content);
+    place-items: var(--align-items) var(--justify-items);
     gap: var(--gap);
     grid-template-columns: var(
       --template-cols,

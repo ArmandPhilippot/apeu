@@ -35,6 +35,6 @@ export const blogroll = defineCollection({
             updatedOn: updatedOn ?? publishedOn,
           },
         };
-      },
+      }
     ),
 });

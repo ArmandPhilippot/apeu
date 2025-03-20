@@ -4,6 +4,8 @@ import { getImgSrc } from "./images";
 
 describe("get-img-src", () => {
   it("can return the src from an image path", async () => {
+    expect.assertions(1);
+
     const img = {
       alt: "",
       height: 480,
@@ -12,12 +14,12 @@ describe("get-img-src", () => {
     } satisfies Img;
     const src = await getImgSrc(img);
 
-    expect.assertions(1);
-
     expect(src).toBe(img.src);
   });
 
   it("can return the src from an imported image", async () => {
+    expect.assertions(1);
+
     const img = {
       alt: "",
       src: {
@@ -29,12 +31,12 @@ describe("get-img-src", () => {
     } satisfies Img;
     const src = await getImgSrc(img);
 
-    expect.assertions(1);
-
     expect(src).toBe(img.src.src);
   });
 
   it("can return the src from the promise of an imported image", async () => {
+    expect.assertions(1);
+
     const src = "https://picsum.photos/640/480";
     const img = {
       alt: "",
@@ -50,8 +52,6 @@ describe("get-img-src", () => {
       }),
     } satisfies Img;
     const result = await getImgSrc(img);
-
-    expect.assertions(1);
 
     expect(result).toBe(src);
   });

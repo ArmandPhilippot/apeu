@@ -14,6 +14,9 @@ describe("OpenGraphMeta", () => {
   });
 
   it<LocalTestContext>("renders the required meta", async ({ container }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(5);
+
     const props = {
       image: {
         url: "/quia-facere-facere",
@@ -26,22 +29,22 @@ describe("OpenGraphMeta", () => {
       props,
     });
 
-    expect.assertions(5);
-
-    const meta = [...result.matchAll(/<meta property(?:.*?)>/g)];
+    const meta = [...result.matchAll(/<meta.*?property.*?>/g)];
 
     expect(meta).toHaveLength(Object.keys(props).length);
-    expect(result).toContain(`property="og:title" content="${props.title}"`);
-    expect(result).toContain(`property="og:type" content="${props.type}"`);
+    expect(result).toContain(`content="${props.title}" property="og:title"`);
+    expect(result).toContain(`content="${props.type}" property="og:type"`);
     expect(result).toContain(
-      `property="og:image" content="${props.image.url}"`,
+      `content="${props.image.url}" property="og:image"`
     );
-    expect(result).toContain(`property="og:url" content="${props.url}"`);
+    expect(result).toContain(`content="${props.url}" property="og:url"`);
   });
 
   it<LocalTestContext>("can render a meta for the description", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       description: "Eos non quis voluptatem.",
       image: {
@@ -55,16 +58,16 @@ describe("OpenGraphMeta", () => {
       props,
     });
 
-    expect.assertions(1);
-
     expect(result).toContain(
-      `property="og:description" content="${props.description}"`,
+      `content="${props.description}" property="og:description"`
     );
   });
 
   it<LocalTestContext>("can render a meta for the determiner", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       determiner: "auto",
       image: {
@@ -78,16 +81,16 @@ describe("OpenGraphMeta", () => {
       props,
     });
 
-    expect.assertions(1);
-
     expect(result).toContain(
-      `property="og:determiner" content="${props.determiner}"`,
+      `content="${props.determiner}" property="og:determiner"`
     );
   });
 
   it<LocalTestContext>("can render a meta for the locale", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       image: {
         url: "/quia-facere-facere",
@@ -101,14 +104,14 @@ describe("OpenGraphMeta", () => {
       props,
     });
 
-    expect.assertions(1);
-
-    expect(result).toContain(`property="og:locale" content="${props.locale}"`);
+    expect(result).toContain(`content="${props.locale}" property="og:locale"`);
   });
 
   it<LocalTestContext>("can render a meta for the locale with partial code", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       image: {
         url: "/quia-facere-facere",
@@ -122,16 +125,17 @@ describe("OpenGraphMeta", () => {
       props,
     });
 
-    expect.assertions(1);
-
     expect(result).toContain(
-      `property="og:locale" content="${getLanguageTerritory(props.locale)}"`,
+      `content="${getLanguageTerritory(props.locale)}" property="og:locale"`
     );
   });
 
   it<LocalTestContext>("can render a meta for each alternate locale", async ({
     container,
   }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(3);
+
     const props = {
       image: {
         url: "/quia-facere-facere",
@@ -145,10 +149,8 @@ describe("OpenGraphMeta", () => {
       props,
     });
 
-    expect.assertions(3);
-
     const altMeta = [
-      ...result.matchAll(/<meta property="og:locale:alternate"/g),
+      ...result.matchAll(/<meta.*?property="og:locale:alternate"/g),
     ];
 
     expect(altMeta).toHaveLength(props.localesAlt.length);
@@ -159,6 +161,8 @@ describe("OpenGraphMeta", () => {
   it<LocalTestContext>("can render a meta for the site name", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       image: {
         url: "/quia-facere-facere",
@@ -172,16 +176,16 @@ describe("OpenGraphMeta", () => {
       props,
     });
 
-    expect.assertions(1);
-
     expect(result).toContain(
-      `property="og:site_name" content="${props.siteName}"`,
+      `content="${props.siteName}" property="og:site_name"`
     );
   });
 
   it<LocalTestContext>("can render additional meta using a slot", async ({
     container,
   }) => {
+    expect.assertions(1);
+
     const props = {
       image: {
         url: "/quia-facere-facere",
@@ -195,8 +199,6 @@ describe("OpenGraphMeta", () => {
       props,
       slots: { default: body },
     });
-
-    expect.assertions(1);
 
     expect(result).toContain(body);
   });

@@ -39,7 +39,7 @@ export const CONFIG = {
 } as const;
 
 /**
- * A partial list of country codes using the ISO 3166-1 alpha-2 codes
+ * A partial list of country codes using the ISO 3166-1 alpha-2 codes.
  *
  * I don't plan to support all the countries so this list will be updated only
  * when needed.
@@ -51,7 +51,7 @@ export const CONFIG = {
 export const COUNTRY_CODES = ["FR"] as const;
 
 /**
- * The HTTP status codes
+ * The HTTP status codes.
  *
  * @see https://www.rfc-editor.org/rfc/rfc9110#name-status-codes
  */
@@ -91,7 +91,7 @@ export const HTTP_STATUS = {
 } as const satisfies Record<Uppercase<string>, HTTPStatus>;
 
 /**
- * A partial list of language codes using the ISO 639-1 codes
+ * A partial list of language codes using the ISO 639-1 codes.
  *
  * I don't plan to support all the languages so this list will be updated only
  * when needed.
@@ -102,10 +102,12 @@ export const LANGUAGE_CODES = ["en", "es", "fr"] as const;
 
 export const STORIES_SUFFIX = "stories";
 
-/** The extension used for components stories.
+/**
+ * The extension used for components stories.
  *
  * `injectRoute` only supports `.astro`, `.js` and `.ts` extensions so
  * we cannot use `.mdx` for our stories.
+ *
  * @see https://docs.astro.build/en/reference/integrations-reference/#injectroute-option
  */
 export const STORIES_EXT = `${STORIES_SUFFIX}.astro`;
@@ -115,7 +117,8 @@ export const STORIES_EXT = `${STORIES_SUFFIX}.astro`;
  *
  * I peek those numbers in the following link.I don't know if this is accurate
  * but I didn't find another study as reference.
- * @link https://iovs.arvojournals.org/article.aspx?articleid=2166061
+ *
+ * @see https://iovs.arvojournals.org/article.aspx?articleid=2166061
  */
 export const WORDS_PER_MINUTE = {
   EN: 228,

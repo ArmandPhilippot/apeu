@@ -1,5 +1,5 @@
 import rss from "@astrojs/rss";
-import type { APIRoute } from "astro";
+import type { APIContext, APIRoute } from "astro";
 import { queryCollection } from "../../lib/astro/collections";
 import { MissingSiteConfigError } from "../../utils/exceptions";
 import {
@@ -8,8 +8,19 @@ import {
 } from "../../utils/feeds";
 import { useI18n } from "../../utils/i18n";
 
-export const GET: APIRoute = async ({ currentLocale, site, url }) => {
-  if (!site) throw new MissingSiteConfigError();
+/**
+ * Handles the `GET` request to generate the `feed.xml` file at build time.
+ *
+ * @param {APIContext} context - The Astro API context.
+ * @returns {Promise<Response>} The response containing the `feed.xml` file content.
+ */
+export const GET: APIRoute = async ({
+  currentLocale,
+  site,
+  url,
+}: APIContext): Promise<Response> => {
+  if (site === undefined) throw new MissingSiteConfigError();
+
   const { locale, translate } = useI18n(currentLocale);
   const { entries } = await queryCollection("bookmarks", {
     format: "full",

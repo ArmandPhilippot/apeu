@@ -17,7 +17,14 @@ export const bookmarks = defineCollection({
       url: z.string().url(),
     })
     .transform(
-      ({ inLanguage, isDraft, locale, publishedOn, tags, ...bookmark }) => {
+      ({
+        inLanguage,
+        isDraft,
+        locale: _locale,
+        publishedOn,
+        tags,
+        ...bookmark
+      }) => {
         return {
           ...bookmark,
           meta: {
@@ -27,6 +34,6 @@ export const bookmarks = defineCollection({
             tags,
           },
         };
-      },
+      }
     ),
 });

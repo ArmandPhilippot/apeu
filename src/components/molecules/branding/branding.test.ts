@@ -15,6 +15,9 @@ describe("Branding", () => {
   it<LocalTestContext>("renders the website logo and name", async ({
     container,
   }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(2);
+
     const props = {
       brand: "ut eum error",
       url: "#quam-at-provident",
@@ -22,8 +25,6 @@ describe("Branding", () => {
     const result = await container.renderToString(Branding, {
       props,
     });
-
-    expect.assertions(2);
 
     expect(result).toContain(props.brand);
     expect(result).toContain(props.url);

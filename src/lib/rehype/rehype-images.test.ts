@@ -8,15 +8,15 @@ const createVFile = (
   content: string,
   options: {
     path?: string;
-    imagePaths?: string[];
+    localImagePaths?: string[];
   } = {}
 ) => {
-  const { path = "file.mdx", imagePaths = [] } = options;
+  const { path = "file.mdx", localImagePaths = [] } = options;
 
   return new VFile({
     data: {
       astro: {
-        imagePaths,
+        localImagePaths,
       },
     },
     path,
@@ -146,12 +146,12 @@ describe("rehypeImages plugin", () => {
     it("should add local relative image paths to vFile data", () => {
       const imgSrc = "./some-img.jpg";
       const mdx = `<img alt="" src="${imgSrc}" />`;
-      const vFile = createVFile(mdx, { imagePaths: [] });
+      const vFile = createVFile(mdx, { localImagePaths: [] });
       const result = compileSync(vFile, {
         rehypePlugins: [rehypeImages],
       });
 
-      expect(result.data.astro?.imagePaths?.includes(imgSrc)).toBe(true);
+      expect(result.data.astro?.localImagePaths?.includes(imgSrc)).toBe(true);
     });
 
     it("should not add absolute path to image paths", () => {
@@ -160,7 +160,7 @@ describe("rehypeImages plugin", () => {
       const vFile = new VFile({
         data: {
           astro: {
-            imagePaths: [],
+            localImagePaths: [],
           },
         },
         path: "file.mdx",
@@ -171,7 +171,7 @@ describe("rehypeImages plugin", () => {
         rehypePlugins: [rehypeImages],
       });
 
-      expect(result.data.astro?.imagePaths?.includes(imgSrc)).toBe(false);
+      expect(result.data.astro?.localImagePaths?.includes(imgSrc)).toBe(false);
     });
 
     it("should not add remove images to image paths", () => {
@@ -180,7 +180,7 @@ describe("rehypeImages plugin", () => {
       const vFile = new VFile({
         data: {
           astro: {
-            imagePaths: [],
+            localImagePaths: [],
           },
         },
         path: "file.mdx",
@@ -191,7 +191,7 @@ describe("rehypeImages plugin", () => {
         rehypePlugins: [rehypeImages],
       });
 
-      expect(result.data.astro?.imagePaths?.includes(imgSrc)).toBe(false);
+      expect(result.data.astro?.localImagePaths?.includes(imgSrc)).toBe(false);
     });
   });
 

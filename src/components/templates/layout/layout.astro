@@ -2,6 +2,7 @@
 import type { ComponentProps, HTMLAttributes } from "astro/types";
 import "../../../styles/global.css";
 import { CONFIG } from "../../../utils/constants";
+import { useI18n } from "../../../utils/i18n";
 import Copyright from "../../atoms/copyright/copyright.astro";
 import Head from "../../atoms/head/head.astro";
 import License from "../../atoms/license/license.astro";
@@ -10,11 +11,11 @@ import Branding from "../../molecules/branding/branding.astro";
 import NavItem from "../../molecules/nav-item/nav-item.astro";
 import NavList from "../../molecules/nav-list/nav-list.astro";
 import SkipTo from "../../molecules/skip-to/skip-to.astro";
+import MainNav from "../../organisms/main-nav/main-nav.astro";
 import Navbar from "../../organisms/navbar/navbar.astro";
 import SearchForm from "../../organisms/search-form/search-form.astro";
-import MainNav from "../../organisms/main-nav/main-nav.astro";
 import SettingsForm from "../../organisms/settings-form/settings-form.astro";
-import { useI18n } from "../../../utils/i18n";
+import SvgFiltersProvider from "../../providers/svg-filters-provider.astro";
 
 type Props = Pick<ComponentProps<typeof Head>, "seo"> &
   Omit<HTMLAttributes<"div">, "id">;
@@ -143,96 +144,56 @@ const topId = translate("anchor.site.top");
   </Head>
   <body>
     <ap-website class="site" id={topId}>
-      <SkipTo anchor={`#${contentsId}`}>
-        {translate("cta.skip.to.content")}
-      </SkipTo>
-      <header class="site-header">
-        <div class="site-branding">
-          <Branding brand={CONFIG.BRAND} url={route("home")} />
+      <SvgFiltersProvider>
+        <SkipTo anchor={`#${contentsId}`}>
+          {translate("cta.skip.to.content")}
+        </SkipTo>
+        <header class="site-header">
+          <div class="site-branding">
+            <Branding brand={CONFIG.BRAND} url={route("home")} />
+          </div>
+          <Navbar
+            aria-label={translate("nav.label.primary")}
+            class="site-navbar"
+            id="site-navbar"
+          >
+            <MainNav items={mainNav} slot="nav" />
+            <SearchForm
+              id="site-search"
+              isInline
+              queryParam={CONFIG.SEARCH.QUERY_PARAM}
+              resultsPage={route("search")}
+              slot="search"
+            />
+            <SettingsForm
+              altLanguages={seo.languages}
+              id="site-settings"
+              slot="settings"
+            />
+          </Navbar>
+        </header>
+        <div {...attrs} class:list={["site-body", className]} id={contentsId}>
+          <slot />
         </div>
-        <Navbar
-          aria-label={translate("nav.label.primary")}
-          class="site-navbar"
-          id="site-navbar"
-        >
-          <MainNav items={mainNav} slot="nav" />
-          <SearchForm
-            id="site-search"
-            isInline
-            queryParam={CONFIG.SEARCH.QUERY_PARAM}
-            resultsPage={route("search")}
-            slot="search"
+        <footer class="site-footer">
+          <Copyright creationYear={CONFIG.CREATION_YEAR} owner={CONFIG.BRAND} />
+          <License />
+          <NavList class="site-footer-nav" isInline items={footerLinks}>
+            {
+              ({ label, url, ...item }) => (
+                <NavItem {...item} href={url}>
+                  {label}
+                </NavItem>
+              )
+            }
+          </NavList>
+          <BackTo
+            anchor={`#${topId}`}
+            class="site-back-to-top"
+            label={translate("cta.back.to.top")}
           />
-          <SettingsForm
-            altLanguages={seo.languages}
-            id="site-settings"
-            slot="settings"
-          />
-        </Navbar>
-      </header>
-      <div {...attrs} class:list={["site-body", className]} id={contentsId}>
-        <slot />
-      </div>
-      <footer class="site-footer">
-        <Copyright creationYear={CONFIG.CREATION_YEAR} owner={CONFIG.BRAND} />
-        <License />
-        <NavList class="site-footer-nav" isInline items={footerLinks}>
-          {
-            ({ label, url, ...item }) => (
-              <NavItem {...item} href={url}>
-                {label}
-              </NavItem>
-            )
-          }
-        </NavList>
-        <BackTo
-          anchor={`#${topId}`}
-          class="site-back-to-top"
-          label={translate("cta.back.to.top")}
-        />
-      </footer>
-      <svg
-        aria-hidden="true"
-        height="0"
-        viewBox="0 0 100 100"
-        width="0"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <defs>
-          <filter color-interpolation-filters="sRGB" id="paper-filter">
-            <feTurbulence
-              baseFrequency="0.020"
-              numOctaves="7"
-              result="noise"
-              seed="3"
-              type="fractalNoise"></feTurbulence>
-            <feDiffuseLighting
-              diffuseConstant="1.1"
-              in="noise"
-              lighting-color="var(--color-regular)"
-              surfaceScale="0.600"
-            >
-              <feDistantLight azimuth="60" elevation="65"></feDistantLight>
-            </feDiffuseLighting>
-          </filter>
-          <filter color-interpolation-filters="sRGB" id="dark-paper-filter">
-            <feTurbulence
-              baseFrequency="0.020"
-              numOctaves="7"
-              result="noise"
-              seed="3"
-              type="fractalNoise"></feTurbulence>
-            <feDiffuseLighting
-              diffuseConstant="1.2"
-              in="noise"
-              lighting-color="var(--color-regular)"
-              surfaceScale="1.1"
-            >
-              <feDistantLight azimuth="40" elevation="57"></feDistantLight>
-            </feDiffuseLighting>
-          </filter>
-        </defs>
-      </svg>
+        </footer>
+      </SvgFiltersProvider>
     </ap-website>
   </body>
 </html>

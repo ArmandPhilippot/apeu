@@ -1,0 +1,18 @@
+---
+
+---
+
+{/* This is intentionally inlined to avoid Flash Of Unstyled Content. */}
+{/* prettier-ignore */}
+<script is:inline>
+  !(function () {
+    const e = localStorage.getItem("settings:shiki"),
+      t = "string" == typeof e ? JSON.parse(e) : void 0,
+      o = document.documentElement.getAttribute("data-theme"),
+      s = window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light",
+      c = e && ["dark", "light"].includes(t) ? t : o === "auto" ? s : o;
+    document.documentElement.setAttribute("data-shiki", c);
+  })();
+</script>

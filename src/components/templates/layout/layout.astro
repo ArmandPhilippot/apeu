@@ -16,6 +16,9 @@ import Navbar from "../../organisms/navbar/navbar.astro";
 import SearchForm from "../../organisms/search-form/search-form.astro";
 import SettingsForm from "../../organisms/settings-form/settings-form.astro";
 import SvgFiltersProvider from "../../providers/svg-filters-provider.astro";
+import ThemeProvider from "../../providers/theme-provider.astro";
+import GlobalThemeInit from "../../utilities/global-theme-init.astro";
+import ShikiThemeInit from "../../utilities/shiki-theme-init.astro";
 
 type Props = Pick<ComponentProps<typeof Head>, "seo"> &
   Omit<HTMLAttributes<"div">, "id">;
@@ -110,29 +113,8 @@ const topId = translate("anchor.site.top");
       type="font/woff2"
     />
     <slot name="head" />
-    {/* This is intentionally inlined to avoid Flash Of Unstyled Content. */}
-    <script is:inline>
-      !(function () {
-        const e = localStorage.getItem("settings:theme"),
-          t = "string" == typeof e ? JSON.parse(e) : void 0,
-          o = window.matchMedia("(prefers-color-scheme: dark)").matches
-            ? "dark"
-            : "light",
-          c = e && ["dark", "light"].includes(t) ? t : o;
-        document.documentElement.setAttribute("data-theme", c),
-          (document.documentElement.style.colorScheme = c);
-      })();
-      !(function () {
-        const e = localStorage.getItem("settings:shiki"),
-          t = "string" == typeof e ? JSON.parse(e) : void 0,
-          o = document.documentElement.getAttribute("data-theme"),
-          s = window.matchMedia("(prefers-color-scheme: dark)").matches
-            ? "dark"
-            : "light",
-          c = e && ["dark", "light"].includes(t) ? t : o === "auto" ? s : o;
-        document.documentElement.setAttribute("data-shiki", c);
-      })();
-    </script>
+    <GlobalThemeInit />
+    <ShikiThemeInit />
     <noscript>
       <style>
         .js-only {
@@ -142,8 +124,8 @@ const topId = translate("anchor.site.top");
       </style>
     </noscript>
   </Head>
-  <body>
-    <ap-website class="site" id={topId}>
+  <body class="site" id={topId}>
+    <ThemeProvider>
       <SvgFiltersProvider>
         <SkipTo anchor={`#${contentsId}`}>
           {translate("cta.skip.to.content")}
@@ -194,7 +176,7 @@ const topId = translate("anchor.site.top");
           />
         </footer>
       </SvgFiltersProvider>
-    </ap-website>
+    </ThemeProvider>
   </body>
 </html>
 
@@ -355,80 +337,3 @@ const topId = translate("anchor.site.top");
     }
   }
 </style>
-
-<script>
-  import {
-    settings,
-    SHIKI_SETTING_KEY,
-    THEME_SETTING_KEY,
-    type Settings,
-  } from "../../../services/stores/settings";
-  import type { Theme } from "../../../types/tokens";
-  import { resolveCurrentColorScheme } from "../../../utils/themes";
-
-  class APWebsite extends HTMLElement {
-    constructor() {
-      super();
-      this.handlePreferDarkSchemeChange =
-        this.handlePreferDarkSchemeChange.bind(this);
-      this.listenSettings = this.listenSettings.bind(this);
-    }
-
-    connectedCallback() {
-      window
-        .matchMedia("(prefers-color-scheme: dark)")
-        .addEventListener("change", this.handlePreferDarkSchemeChange);
-
-      settings.subscribe(this.listenSettings);
-    }
-
-    disconnectedCallback() {
-      window
-        .matchMedia("(prefers-color-scheme: dark)")
-        .removeEventListener("change", this.handlePreferDarkSchemeChange);
-    }
-
-    #resolveTheme(theme: Theme, key: keyof Settings) {
-      if (key === SHIKI_SETTING_KEY && theme === "auto")
-        return settings.get().theme;
-
-      return theme;
-    }
-
-    #updateThemeAttrsOnDocument(theme: Theme, key: keyof Settings) {
-      const resolvedTheme = this.#resolveTheme(theme, key);
-      const colorScheme = resolveCurrentColorScheme(resolvedTheme);
-
-      window.document.documentElement.setAttribute(`data-${key}`, colorScheme);
-
-      if (key === THEME_SETTING_KEY)
-        window.document.documentElement.style.colorScheme = colorScheme;
-    }
-
-    listenSettings(
-      newSettings: Readonly<Settings>,
-      _oldSettings: Readonly<Settings> | undefined,
-      changedKey: keyof Settings | undefined
-    ): void {
-      if (!changedKey || typeof window === "undefined") return;
-
-      this.#updateThemeAttrsOnDocument(newSettings[changedKey], changedKey);
-
-      if (changedKey === THEME_SETTING_KEY && newSettings.shiki === "auto")
-        this.#updateThemeAttrsOnDocument(newSettings.theme, SHIKI_SETTING_KEY);
-    }
-
-    handlePreferDarkSchemeChange(e: MediaQueryListEvent) {
-      const currentSettings = settings.get();
-      const resolvedTheme = e.matches ? "dark" : "light";
-
-      if (currentSettings.shiki === "auto")
-        this.#updateThemeAttrsOnDocument(resolvedTheme, SHIKI_SETTING_KEY);
-
-      if (currentSettings.theme === "auto")
-        this.#updateThemeAttrsOnDocument(resolvedTheme, THEME_SETTING_KEY);
-    }
-  }
-
-  customElements.define("ap-website", APWebsite);
-</script>

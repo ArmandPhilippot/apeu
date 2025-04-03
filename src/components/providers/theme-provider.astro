@@ -1,0 +1,70 @@
+---
+
+---
+
+<slot />
+
+<script>
+  import {
+    settings,
+    SHIKI_SETTING_KEY,
+    THEME_SETTING_KEY,
+    type Settings,
+  } from "../../services/stores/settings";
+  import type { Theme } from "../../types/tokens";
+  import { resolveCurrentColorScheme } from "../../utils/themes";
+
+  function resolveTheme(theme: Theme, key: keyof Settings) {
+    if (key === SHIKI_SETTING_KEY && theme === "auto")
+      return settings.get().theme;
+
+    return theme;
+  }
+
+  function updateThemeAttrsOnDocument(theme: Theme, key: keyof Settings) {
+    const resolvedTheme = resolveTheme(theme, key);
+    const colorScheme = resolveCurrentColorScheme(resolvedTheme);
+
+    window.document.documentElement.setAttribute(`data-${key}`, colorScheme);
+
+    if (key === THEME_SETTING_KEY)
+      window.document.documentElement.style.colorScheme = colorScheme;
+  }
+
+  function listenSettings(
+    newSettings: Readonly<Settings>,
+    _oldSettings: Readonly<Settings> | undefined,
+    changedKey: keyof Settings | undefined
+  ): void {
+    if (!changedKey || typeof window === "undefined") return;
+
+    updateThemeAttrsOnDocument(newSettings[changedKey], changedKey);
+
+    if (changedKey === THEME_SETTING_KEY && newSettings.shiki === "auto")
+      updateThemeAttrsOnDocument(newSettings.theme, SHIKI_SETTING_KEY);
+  }
+
+  function handlePreferDarkSchemeChange(e: MediaQueryListEvent) {
+    const currentSettings = settings.get();
+    const resolvedTheme = e.matches ? "dark" : "light";
+
+    if (currentSettings.shiki === "auto")
+      updateThemeAttrsOnDocument(resolvedTheme, SHIKI_SETTING_KEY);
+
+    if (currentSettings.theme === "auto")
+      updateThemeAttrsOnDocument(resolvedTheme, THEME_SETTING_KEY);
+  }
+
+  window
+    .matchMedia("(prefers-color-scheme: dark)")
+    .addEventListener("change", handlePreferDarkSchemeChange);
+
+  settings.subscribe(listenSettings);
+
+  document.addEventListener("astro:before-swap", () => {
+    window
+      .matchMedia("(prefers-color-scheme: dark)")
+      .removeEventListener("change", handlePreferDarkSchemeChange);
+    settings.off();
+  });
+</script>

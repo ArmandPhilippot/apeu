@@ -102,16 +102,15 @@ const topId = translate("anchor.site.top");
     addBrandToTitle={!isHome}
     brand={CONFIG.BRAND}
     colorScheme="light dark"
+    fonts={[
+      {
+        href: "/fonts/Inter/Inter.woff2?v=3.18",
+        mimetype: "font/woff2",
+      },
+    ]}
     seo={seo}
     themeColor="#214769"
   >
-    <link
-      as="font"
-      crossorigin
-      href="/fonts/Inter/Inter.woff2?v=3.18"
-      rel="preload"
-      type="font/woff2"
-    />
     <slot name="head" />
     <GlobalThemeInit />
     <ShikiThemeInit />

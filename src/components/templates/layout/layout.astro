@@ -76,6 +76,9 @@ const mainNav = [
     url: route("contact"),
   },
 ] satisfies ComponentProps<typeof NavList>["items"];
+const devOnlyLinks = import.meta.env.DEV
+  ? [{ label: "Design system", url: "/design-system" }]
+  : [];
 const footerLinks = [
   { label: translate("page.legal.notice.title"), url: route("legal.notice") },
   {
@@ -84,9 +87,7 @@ const footerLinks = [
     label: translate("page.feeds.title"),
     url: route("feeds"),
   },
-  ...(import.meta.env.DEV
-    ? [{ label: "Design system", url: "/design-system" }]
-    : []),
+  ...devOnlyLinks,
 ] satisfies ComponentProps<typeof NavList>["items"];
 const contentsId = translate("anchor.site.content");
 const topId = translate("anchor.site.top");

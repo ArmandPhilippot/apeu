@@ -1,0 +1,79 @@
+---
+import type { ComponentProps } from "astro/types";
+import type { JSX } from "astro/jsx-runtime";
+import BackTo from "../back-to/back-to.astro";
+
+type Props = JSX.HTMLAttributes &
+  Pick<ComponentProps<typeof BackTo>, "anchor" | "label"> & {
+    scrollThreshold?: number | null | undefined;
+  };
+
+const {
+  anchor,
+  class: className,
+  label,
+  scrollThreshold,
+  ...attrs
+} = Astro.props;
+---
+
+<back-to-top
+  {...attrs}
+  class:list={["back-to-top", className]}
+  data-threshold={scrollThreshold}
+  data-visible="false"
+>
+  <BackTo anchor={anchor} label={label} />
+</back-to-top>
+
+<style>
+  .back-to-top {
+    &[data-visible="false"] {
+      opacity: 0;
+      visibility: hidden;
+      transition:
+        opacity 0.3s ease-in-out 0s,
+        visibility 0s ease-in-out 0.3s;
+    }
+
+    &[data-visible="true"] {
+      opacity: 1;
+      visibility: visible;
+      transition:
+        opacity 0.3s ease-in 0s,
+        visibility 0s ease-in 0s;
+    }
+  }
+</style>
+
+<script>
+  class BackToTop extends HTMLElement {
+    #threshold: number;
+
+    constructor() {
+      super();
+      this.#threshold = parseInt(this.dataset.threshold || "300", 10);
+      this.updateVisibility = this.updateVisibility.bind(this);
+    }
+
+    connectedCallback() {
+      this.updateVisibility();
+      window.addEventListener("scroll", this.updateVisibility);
+    }
+
+    disconnectedCallback() {
+      window.removeEventListener("scroll", this.updateVisibility);
+    }
+
+    updateVisibility() {
+      const shouldBeVisible = window.scrollY >= this.#threshold;
+      const isCurrentlyVisible = this.getAttribute("data-visible") === "true";
+
+      if (shouldBeVisible !== isCurrentlyVisible) {
+        this.setAttribute("data-visible", shouldBeVisible ? "true" : "false");
+      }
+    }
+  }
+
+  customElements.define("back-to-top", BackToTop);
+</script>

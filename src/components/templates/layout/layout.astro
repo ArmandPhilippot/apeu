@@ -6,7 +6,7 @@ import { useI18n } from "../../../utils/i18n";
 import Copyright from "../../atoms/copyright/copyright.astro";
 import Head from "../../atoms/head/head.astro";
 import License from "../../atoms/license/license.astro";
-import BackTo from "../../molecules/back-to/back-to.astro";
+import BackToTop from "../../molecules/back-to-top/back-to-top.astro";
 import Branding from "../../molecules/branding/branding.astro";
 import NavItem from "../../molecules/nav-item/nav-item.astro";
 import NavList from "../../molecules/nav-list/nav-list.astro";
@@ -187,7 +187,7 @@ const topId = translate("anchor.site.top");
               )
             }
           </NavList>
-          <BackTo
+          <BackToTop
             anchor={`#${topId}`}
             class="site-back-to-top"
             label={translate("cta.back.to.top")}
@@ -367,22 +367,14 @@ const topId = translate("anchor.site.top");
   import { resolveCurrentColorScheme } from "../../../utils/themes";
 
   class APWebsite extends HTMLElement {
-    #backToTopBtn: HTMLAnchorElement | null = null;
-
     constructor() {
       super();
       this.handlePreferDarkSchemeChange =
         this.handlePreferDarkSchemeChange.bind(this);
       this.listenSettings = this.listenSettings.bind(this);
-      this.updateBackToTopBtnVisibility =
-        this.updateBackToTopBtnVisibility.bind(this);
     }
 
     connectedCallback() {
-      this.#backToTopBtn = this.querySelector("a.site-back-to-top");
-
-      this.updateBackToTopBtnVisibility();
-      window.addEventListener("scroll", this.updateBackToTopBtnVisibility);
       window
         .matchMedia("(prefers-color-scheme: dark)")
         .addEventListener("change", this.handlePreferDarkSchemeChange);
@@ -391,29 +383,9 @@ const topId = translate("anchor.site.top");
     }
 
     disconnectedCallback() {
-      window.removeEventListener("scroll", this.updateBackToTopBtnVisibility);
       window
         .matchMedia("(prefers-color-scheme: dark)")
         .removeEventListener("change", this.handlePreferDarkSchemeChange);
-    }
-
-    hideEl(el: HTMLElement) {
-      el.style.opacity = "0";
-      el.style.visibility = "hidden";
-    }
-
-    showEl(el: HTMLElement) {
-      el.style.opacity = "1";
-      el.style.visibility = "visible";
-    }
-
-    updateBackToTopBtnVisibility() {
-      if (!this.#backToTopBtn) return;
-
-      const breakpoint = 300;
-
-      if (window.scrollY >= breakpoint) this.showEl(this.#backToTopBtn);
-      else this.hideEl(this.#backToTopBtn);
     }
 
     #resolveTheme(theme: Theme, key: keyof Settings) {

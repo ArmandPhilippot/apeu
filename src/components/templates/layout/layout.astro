@@ -2,19 +2,23 @@
 import type { ComponentProps, HTMLAttributes } from "astro/types";
 import "../../../styles/global.css";
 import { CONFIG } from "../../../utils/constants";
+import { useI18n } from "../../../utils/i18n";
 import Copyright from "../../atoms/copyright/copyright.astro";
 import Head from "../../atoms/head/head.astro";
 import License from "../../atoms/license/license.astro";
-import BackTo from "../../molecules/back-to/back-to.astro";
+import BackToTop from "../../molecules/back-to-top/back-to-top.astro";
 import Branding from "../../molecules/branding/branding.astro";
 import NavItem from "../../molecules/nav-item/nav-item.astro";
 import NavList from "../../molecules/nav-list/nav-list.astro";
 import SkipTo from "../../molecules/skip-to/skip-to.astro";
+import MainNav from "../../organisms/main-nav/main-nav.astro";
 import Navbar from "../../organisms/navbar/navbar.astro";
 import SearchForm from "../../organisms/search-form/search-form.astro";
-import MainNav from "../../organisms/main-nav/main-nav.astro";
 import SettingsForm from "../../organisms/settings-form/settings-form.astro";
-import { useI18n } from "../../../utils/i18n";
+import SvgFiltersProvider from "../../providers/svg-filters-provider.astro";
+import ThemeProvider from "../../providers/theme-provider.astro";
+import GlobalThemeInit from "../../utilities/global-theme-init.astro";
+import ShikiThemeInit from "../../utilities/shiki-theme-init.astro";
 
 type Props = Pick<ComponentProps<typeof Head>, "seo"> &
   Omit<HTMLAttributes<"div">, "id">;
@@ -72,6 +76,9 @@ const mainNav = [
     url: route("contact"),
   },
 ] satisfies ComponentProps<typeof NavList>["items"];
+const devOnlyLinks = import.meta.env.DEV
+  ? [{ label: "Design system", url: "/design-system" }]
+  : [];
 const footerLinks = [
   { label: translate("page.legal.notice.title"), url: route("legal.notice") },
   {
@@ -80,9 +87,7 @@ const footerLinks = [
     label: translate("page.feeds.title"),
     url: route("feeds"),
   },
-  ...(import.meta.env.DEV
-    ? [{ label: "Design system", url: "/design-system" }]
-    : []),
+  ...devOnlyLinks,
 ] satisfies ComponentProps<typeof NavList>["items"];
 const contentsId = translate("anchor.site.content");
 const topId = translate("anchor.site.top");
@@ -98,40 +103,18 @@ const topId = translate("anchor.site.top");
     addBrandToTitle={!isHome}
     brand={CONFIG.BRAND}
     colorScheme="light dark"
+    fonts={[
+      {
+        href: "/fonts/Inter/Inter.woff2?v=3.18",
+        mimetype: "font/woff2",
+      },
+    ]}
     seo={seo}
     themeColor="#214769"
   >
-    <link
-      as="font"
-      crossorigin
-      href="/fonts/Inter/Inter.woff2?v=3.18"
-      rel="preload"
-      type="font/woff2"
-    />
     <slot name="head" />
-    {/* This is intentionally inlined to avoid Flash Of Unstyled Content. */}
-    <script is:inline>
-      !(function () {
-        const e = localStorage.getItem("settings:theme"),
-          t = "string" == typeof e ? JSON.parse(e) : void 0,
-          o = window.matchMedia("(prefers-color-scheme: dark)").matches
-            ? "dark"
-            : "light",
-          c = e && ["dark", "light"].includes(t) ? t : o;
-        document.documentElement.setAttribute("data-theme", c),
-          (document.documentElement.style.colorScheme = c);
-      })();
-      !(function () {
-        const e = localStorage.getItem("settings:shiki"),
-          t = "string" == typeof e ? JSON.parse(e) : void 0,
-          o = document.documentElement.getAttribute("data-theme"),
-          s = window.matchMedia("(prefers-color-scheme: dark)").matches
-            ? "dark"
-            : "light",
-          c = e && ["dark", "light"].includes(t) ? t : o === "auto" ? s : o;
-        document.documentElement.setAttribute("data-shiki", c);
-      })();
-    </script>
+    <GlobalThemeInit />
+    <ShikiThemeInit />
     <noscript>
       <style>
         .js-only {
@@ -141,117 +124,63 @@ const topId = translate("anchor.site.top");
       </style>
     </noscript>
   </Head>
-  <body>
-    <ap-website class="site" id={topId}>
-      <SkipTo anchor={`#${contentsId}`}>
-        {translate("cta.skip.to.content")}
-      </SkipTo>
-      <header class="site-header">
-        <div class="site-branding">
-          <Branding brand={CONFIG.BRAND} url={route("home")} />
+  <body class="site" id={topId}>
+    <ThemeProvider>
+      <SvgFiltersProvider>
+        <SkipTo anchor={`#${contentsId}`}>
+          {translate("cta.skip.to.content")}
+        </SkipTo>
+        <header class="site-header">
+          <div class="site-branding">
+            <Branding brand={CONFIG.BRAND} url={route("home")} />
+          </div>
+          <Navbar
+            aria-label={translate("nav.label.primary")}
+            class="site-navbar"
+            id="site-navbar"
+          >
+            <MainNav items={mainNav} slot="nav" />
+            <SearchForm
+              id="site-search"
+              isInline
+              queryParam={CONFIG.SEARCH.QUERY_PARAM}
+              resultsPage={route("search")}
+              slot="search"
+            />
+            <SettingsForm
+              altLanguages={seo.languages}
+              id="site-settings"
+              slot="settings"
+            />
+          </Navbar>
+        </header>
+        <div {...attrs} class:list={["site-body", className]} id={contentsId}>
+          <slot />
         </div>
-        <Navbar
-          aria-label={translate("nav.label.primary")}
-          class="site-navbar"
-          id="site-navbar"
-        >
-          <MainNav items={mainNav} slot="nav" />
-          <SearchForm
-            id="site-search"
-            isInline
-            queryParam={CONFIG.SEARCH.QUERY_PARAM}
-            resultsPage={route("search")}
-            slot="search"
+        <footer class="site-footer">
+          <Copyright creationYear={CONFIG.CREATION_YEAR} owner={CONFIG.BRAND} />
+          <License />
+          <NavList class="site-footer-nav" isInline items={footerLinks}>
+            {
+              ({ label, url, ...item }) => (
+                <NavItem {...item} href={url}>
+                  {label}
+                </NavItem>
+              )
+            }
+          </NavList>
+          <BackToTop
+            anchor={`#${topId}`}
+            class="site-back-to-top"
+            label={translate("cta.back.to.top")}
           />
-          <SettingsForm
-            altLanguages={seo.languages}
-            id="site-settings"
-            slot="settings"
-          />
-        </Navbar>
-      </header>
-      <div {...attrs} class:list={["site-body", className]} id={contentsId}>
-        <slot />
-      </div>
-      <footer class="site-footer">
-        <Copyright creationYear={CONFIG.CREATION_YEAR} owner={CONFIG.BRAND} />
-        <License />
-        <NavList class="site-footer-nav" isInline items={footerLinks}>
-          {
-            ({ label, url, ...item }) => (
-              <NavItem {...item} href={url}>
-                {label}
-              </NavItem>
-            )
-          }
-        </NavList>
-        <BackTo
-          anchor={`#${topId}`}
-          class="site-back-to-top"
-          label={translate("cta.back.to.top")}
-        />
-      </footer>
-      <svg
-        aria-hidden="true"
-        height="0"
-        viewBox="0 0 100 100"
-        width="0"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <defs>
-          <filter color-interpolation-filters="sRGB" id="paper-filter">
-            <feTurbulence
-              baseFrequency="0.020"
-              numOctaves="7"
-              result="noise"
-              seed="3"
-              type="fractalNoise"></feTurbulence>
-            <feDiffuseLighting
-              diffuseConstant="1.1"
-              in="noise"
-              lighting-color="var(--color-regular)"
-              surfaceScale="0.600"
-            >
-              <feDistantLight azimuth="60" elevation="65"></feDistantLight>
-            </feDiffuseLighting>
-          </filter>
-          <filter color-interpolation-filters="sRGB" id="dark-paper-filter">
-            <feTurbulence
-              baseFrequency="0.020"
-              numOctaves="7"
-              result="noise"
-              seed="3"
-              type="fractalNoise"></feTurbulence>
-            <feDiffuseLighting
-              diffuseConstant="1.2"
-              in="noise"
-              lighting-color="var(--color-regular)"
-              surfaceScale="1.1"
-            >
-              <feDistantLight azimuth="40" elevation="57"></feDistantLight>
-            </feDiffuseLighting>
-          </filter>
-        </defs>
-      </svg>
-    </ap-website>
+        </footer>
+      </SvgFiltersProvider>
+    </ThemeProvider>
   </body>
 </html>
 
 <style>
-  body {
-    accent-color: var(--color-primary);
-    background: var(--color-regular);
-    color: var(--color-on-regular);
-    font-family: var(--font-family-regular);
-    font-size: var(--font-size-md);
-    line-height: var(--line-height);
-
-    ::selection {
-      background: var(--color-primary);
-      color: var(--color-on-primary);
-    }
-  }
-
   .site {
     display: flex;
     flex-flow: column;
@@ -408,108 +337,3 @@ const topId = translate("anchor.site.top");
     }
   }
 </style>
-
-<script>
-  import {
-    settings,
-    SHIKI_SETTING_KEY,
-    THEME_SETTING_KEY,
-    type Settings,
-  } from "../../../services/stores/settings";
-  import type { Theme } from "../../../types/tokens";
-  import { resolveCurrentColorScheme } from "../../../utils/themes";
-
-  class APWebsite extends HTMLElement {
-    #backToTopBtn: HTMLAnchorElement | null = null;
-
-    constructor() {
-      super();
-      this.handlePreferDarkSchemeChange =
-        this.handlePreferDarkSchemeChange.bind(this);
-      this.listenSettings = this.listenSettings.bind(this);
-      this.updateBackToTopBtnVisibility =
-        this.updateBackToTopBtnVisibility.bind(this);
-    }
-
-    connectedCallback() {
-      this.#backToTopBtn = this.querySelector("a.site-back-to-top");
-
-      this.updateBackToTopBtnVisibility();
-      window.addEventListener("scroll", this.updateBackToTopBtnVisibility);
-      window
-        .matchMedia("(prefers-color-scheme: dark)")
-        .addEventListener("change", this.handlePreferDarkSchemeChange);
-
-      settings.subscribe(this.listenSettings);
-    }
-
-    disconnectedCallback() {
-      window.removeEventListener("scroll", this.updateBackToTopBtnVisibility);
-      window
-        .matchMedia("(prefers-color-scheme: dark)")
-        .removeEventListener("change", this.handlePreferDarkSchemeChange);
-    }
-
-    hideEl(el: HTMLElement) {
-      el.style.opacity = "0";
-      el.style.visibility = "hidden";
-    }
-
-    showEl(el: HTMLElement) {
-      el.style.opacity = "1";
-      el.style.visibility = "visible";
-    }
-
-    updateBackToTopBtnVisibility() {
-      if (!this.#backToTopBtn) return;
-
-      const breakpoint = 300;
-
-      if (window.scrollY >= breakpoint) this.showEl(this.#backToTopBtn);
-      else this.hideEl(this.#backToTopBtn);
-    }
-
-    #resolveTheme(theme: Theme, key: keyof Settings) {
-      if (key === SHIKI_SETTING_KEY && theme === "auto")
-        return settings.get().theme;
-
-      return theme;
-    }
-
-    #updateThemeAttrsOnDocument(theme: Theme, key: keyof Settings) {
-      const resolvedTheme = this.#resolveTheme(theme, key);
-      const colorScheme = resolveCurrentColorScheme(resolvedTheme);
-
-      window.document.documentElement.setAttribute(`data-${key}`, colorScheme);
-
-      if (key === THEME_SETTING_KEY)
-        window.document.documentElement.style.colorScheme = colorScheme;
-    }
-
-    listenSettings(
-      newSettings: Readonly<Settings>,
-      _oldSettings: Readonly<Settings> | undefined,
-      changedKey: keyof Settings | undefined
-    ): void {
-      if (!changedKey || typeof window === "undefined") return;
-
-      this.#updateThemeAttrsOnDocument(newSettings[changedKey], changedKey);
-
-      if (changedKey === THEME_SETTING_KEY && newSettings.shiki === "auto")
-        this.#updateThemeAttrsOnDocument(newSettings.theme, SHIKI_SETTING_KEY);
-    }
-
-    handlePreferDarkSchemeChange(e: MediaQueryListEvent) {
-      const currentSettings = settings.get();
-      const resolvedTheme = e.matches ? "dark" : "light";
-
-      if (currentSettings.shiki === "auto")
-        this.#updateThemeAttrsOnDocument(resolvedTheme, SHIKI_SETTING_KEY);
-
-      if (currentSettings.theme === "auto")
-        this.#updateThemeAttrsOnDocument(resolvedTheme, THEME_SETTING_KEY);
-    }
-  }
-
-  customElements.define("ap-website", APWebsite);
-</script>

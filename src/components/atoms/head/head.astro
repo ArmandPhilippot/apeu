@@ -14,10 +14,16 @@ type ColorScheme =
   | "light dark"
   | "dark light";
 
+type Fonts = Array<{
+  href: string;
+  mimetype: string;
+}>;
+
 type Props = {
   addBrandToTitle?: boolean | null | undefined;
   brand: string;
   colorScheme?: ColorScheme | null | undefined;
+  fonts?: Fonts | null | undefined;
   generator?: string | null | undefined;
   seo: SEO;
   themeColor?: string | null | undefined;
@@ -27,6 +33,7 @@ const {
   addBrandToTitle = false,
   brand,
   colorScheme,
+  fonts,
   generator,
   seo,
   themeColor,
@@ -93,6 +100,17 @@ const feeds = await getCollectionsFeeds(locale);
   <link href={appleTouchIcon.src} rel="apple-touch-icon" />
   <link href="/manifest.json" rel="manifest" />
   <link href="/sitemap-index.xml" rel="sitemap" />
+  {
+    fonts?.map((font) => (
+      <link
+        as="font"
+        crossorigin
+        href={font.href}
+        rel="preload"
+        type={font.mimetype}
+      />
+    ))
+  }
   {
     Astro.site ? (
       <Fragment>

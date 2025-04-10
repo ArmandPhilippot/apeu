@@ -1,16 +1,14 @@
 import type { Theme } from "../types/tokens";
+import { THEMES } from "./constants";
 
 /**
  * Check if the given value is a valid theme.
  *
- * @param {unknown} value - A value to test.
+ * @param {unknown} value - A value to validate.
  * @returns {boolean} True if the value is a valid theme.
  */
-export const isValidTheme = (value: unknown): value is Theme => {
-  const validThemes: string[] = ["auto", "dark", "light"] satisfies Theme[];
-
-  return typeof value === "string" && validThemes.includes(value);
-};
+export const isValidTheme = (value: unknown): value is Theme =>
+  typeof value === "string" && (THEMES as string[]).includes(value);
 
 /**
  * Retrieve the preferred color scheme from the user's system preferences.

@@ -1,4 +1,5 @@
 import type { HTTPStatus } from "../types/data";
+import type { Theme } from "../types/tokens";
 
 export const API_ROUTES = {
   SEND_EMAIL: "/api/send-email",
@@ -111,6 +112,11 @@ export const STORIES_SUFFIX = "stories";
  * @see https://docs.astro.build/en/reference/integrations-reference/#injectroute-option
  */
 export const STORIES_EXT = `${STORIES_SUFFIX}.astro`;
+
+/**
+ * The available themes.
+ */
+export const THEMES = ["auto", "dark", "light"] as const satisfies Theme[];
 
 /**
  * The number of words read per minute depending on the lang.

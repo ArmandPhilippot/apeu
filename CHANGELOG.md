@@ -1,5 +1,13 @@
 # apeu
 
+## 1.1.0
+
+### Minor Changes
+
+- 80ad823: Prefixes local storage variables to avoid conflicts in dev mode.
+
+  If you have already define a theme for the website or for the code blocks, you'll need to configure it again because of the prefix change.
+
 ## 1.0.5
 
 ### Patch Changes
@@ -146,7 +154,7 @@
           tags,
         },
       };
-    }),
+    })
   );
   const orderedBlogPosts = blogPosts.sort(/* some method to sort posts */);
   const firstTenBlogPosts = orderedBlogPosts.slice(0, 10);

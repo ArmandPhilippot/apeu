@@ -121,7 +121,6 @@ const defaultValue =
     isValidSettingsKey,
     settings,
     SHIKI_SETTING_KEY,
-    THEME_DEFAULT,
     THEME_SETTING_KEY,
     type Settings,
   } from "../../../services/stores/settings";
@@ -135,23 +134,26 @@ const defaultValue =
     #isSwitch = false;
     #settingKey: keyof Settings = THEME_SETTING_KEY;
     #switchBtn: HTMLButtonElement | null = null;
-    #theme: Theme = THEME_DEFAULT;
+    #unsubscribe: (() => void) | null = null;
 
     constructor() {
       super();
       this.handleUpdate = this.handleUpdate.bind(this);
-      this.listenSettings = this.listenSettings.bind(this);
     }
 
     connectedCallback() {
       this.#isSwitch = this.dataset.variant === "switch";
       this.#switchBtn = this.querySelector("button");
-      this.#theme = settings.get().theme;
 
-      if (isValidSettingsKey(this.dataset.setting))
+      if (isValidSettingsKey(this.dataset.setting)) {
         this.#settingKey = this.dataset.setting;
+      }
 
-      settings.subscribe(this.listenSettings);
+      this.#unsubscribe = settings.subscribe(
+        (newSettings: Readonly<Settings>) => {
+          this.#updateSelectedTheme(newSettings);
+        }
+      );
 
       if (this.#isSwitch) {
         this.#switchBtn?.addEventListener("click", this.handleUpdate, {
@@ -170,10 +172,11 @@ const defaultValue =
       } else {
         this.removeEventListener("change", this.handleUpdate);
       }
-    }
 
-    #isCurrentTheme(theme: Theme): boolean {
-      return theme === this.#theme;
+      // Unsubscribe from store
+      if (this.#unsubscribe) {
+        this.#unsubscribe();
+      }
     }
 
     #updateSwitchValue(newSettings: Readonly<Settings>) {
@@ -202,20 +205,6 @@ const defaultValue =
       else this.#updateToggleValue(newSettings);
     }
 
-    listenSettings(
-      newSettings: Readonly<Settings>,
-      _oldSettings: Readonly<Settings> | undefined,
-      changedKey: keyof Settings | undefined
-    ) {
-      const newTheme = newSettings[this.#settingKey];
-      const isCurrentSetting = changedKey === this.#settingKey;
-
-      if (isCurrentSetting && this.#isCurrentTheme(newTheme)) return;
-
-      this.#theme = newTheme;
-      this.#updateSelectedTheme(newSettings);
-    }
-
     #getSelectedToggleTheme(option: HTMLInputElement): Theme | null {
       if (isValidTheme(option.value)) return option.value;
       return null;
@@ -225,22 +214,26 @@ const defaultValue =
       return btn.ariaChecked === "true" ? "light" : "dark";
     }
 
+    handleUpdate(e: Event) {
+      e.stopImmediatePropagation();
+
+      const newTheme = this.#getNewThemeFromEvent(e);
+
+      if (newTheme === null) return;
+
+      settings.setKey(this.#settingKey, newTheme);
+    }
+
     #getNewThemeFromEvent(e: Event): Theme | null {
       if (this.#isSwitch && e.currentTarget instanceof HTMLButtonElement) {
         return this.#getUnselectedSwitchTheme(e.currentTarget);
       }
+
       if (e.target instanceof HTMLInputElement) {
         return this.#getSelectedToggleTheme(e.target);
       }
+
       return null;
-    }
-
-    handleUpdate(e: Event) {
-      e.stopImmediatePropagation();
-      const newTheme = this.#getNewThemeFromEvent(e);
-
-      if (newTheme && !this.#isCurrentTheme(newTheme))
-        settings.setKey(this.#settingKey, newTheme);
     }
   }
 

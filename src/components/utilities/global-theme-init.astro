@@ -5,7 +5,7 @@
 {/* This is intentionally inlined to avoid Flash Of Unstyled Content. */}
 <script is:inline>
   !(function () {
-    const e = localStorage.getItem("settings:theme"),
+    const e = localStorage.getItem("apeu-settings:theme"),
       t = "string" == typeof e ? JSON.parse(e) : void 0,
       o = window.matchMedia("(prefers-color-scheme: dark)").matches
         ? "dark"

@@ -1,5 +1,7 @@
 import { persistentMap } from "@nanostores/persistent";
+import { computed } from "nanostores";
 import type { Theme } from "../../types/tokens";
+import { resolveCurrentColorScheme } from "../../utils/themes";
 
 export type Settings = {
   shiki: Theme;
@@ -15,7 +17,7 @@ export const SHIKI_SETTING_KEY = "shiki";
 export const THEME_SETTING_KEY = "theme";
 
 export const settings = persistentMap<Settings>(
-  "settings:",
+  "apeu-settings:",
   {
     shiki: SHIKI_DEFAULT,
     theme: THEME_DEFAULT,
@@ -41,3 +43,22 @@ export const isValidSettingsKey = (value: unknown): value is keyof Settings => {
 
   return typeof value === "string" && validKeys.includes(value);
 };
+
+/**
+ * The actual theme, considering system preferences.
+ */
+export const activeTheme = computed(settings, (activeSettings) =>
+  resolveCurrentColorScheme(activeSettings.theme)
+);
+
+/**
+ * The actual theme for code blocks, considering global theme and system
+ * preferences.
+ */
+export const activeShikiTheme = computed(
+  [settings, activeTheme],
+  (activeSettings, mainTheme) =>
+    activeSettings.shiki === "auto"
+      ? mainTheme
+      : resolveCurrentColorScheme(activeSettings.shiki)
+);

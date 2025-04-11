@@ -4,15 +4,15 @@ import type {
   Element as HastElement,
   Properties,
   Root,
-  RootContent,
 } from "hast";
 import type {
   MdxJsxAttribute,
   MdxJsxFlowElementHast,
 } from "mdast-util-mdx-jsx";
+import type { MdxjsEsmHast } from "mdast-util-mdxjs-esm";
 import type {
-  Transformer as UnifiedTransformer,
   Plugin as UnifiedPlugin,
+  Transformer as UnifiedTransformer,
 } from "unified";
 import { visit } from "unist-util-visit";
 import { isString } from "../../utils/type-checks";
@@ -131,7 +131,7 @@ const buildCodeBlockElement = (
   };
 };
 
-const createCodeBlockImportStatement = (): RootContent => {
+const createCodeBlockImportStatement = (): MdxjsEsmHast => {
   return {
     type: "mdxjsEsm",
     value: "",
@@ -142,6 +142,7 @@ const createCodeBlockImportStatement = (): RootContent => {
         body: [
           {
             type: "ImportDeclaration",
+            attributes: [],
             source: {
               type: "Literal",
               value: CODE_BLOCK_PATH,

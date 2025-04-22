@@ -129,6 +129,10 @@ You can choose to use a dark theme or light theme while browsing the website. Yo
 
 A global feed is available in each language. This projects also supports individual feeds for each collections.
 
+### View transitions
+
+While all browsers do not support view transitions yet, this project uses Astro built-in view transitions to provide a fallback. This feature avoids full-page navigation refresh which seems preferrable to some.
+
 ## Authoring
 
 The content directory located at the root of the project is used to store all the website contents. You can provide a custom relative path using an environment variable named `CONTENT_PATH`.

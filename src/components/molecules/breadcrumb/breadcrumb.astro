@@ -10,6 +10,25 @@ type Props = HTMLAttributes<"nav"> & {
 };
 
 const { class: className, isCentered = false, items, ...attrs } = Astro.props;
+
+const currentPageReveal = {
+  old: {
+    name: "breadcrumb-scale-to-right",
+    duration: "0.2s",
+    easing: "linear",
+    direction: "reverse",
+  },
+  new: {
+    name: "breadcrumb-scale-to-right",
+    duration: "0.3s",
+    easing: "linear",
+  },
+};
+
+const currentPageRevealTransition = {
+  forwards: currentPageReveal,
+  backwards: currentPageReveal,
+};
 ---
 
 <nav
@@ -20,18 +39,42 @@ const { class: className, isCentered = false, items, ...attrs } = Astro.props;
   <NavList class="breadcrumb-list" hideMarker isInline isOrdered items={items}>
     {
       ({ label, url, ...item }, index, crumbs) => {
+        const isFirstItem = index === 0;
         const isLastItem = index + 1 === crumbs.length;
 
         return isLastItem ? (
-          <span aria-current="page" class="breadcrumb-item">
+          <span
+            aria-current="page"
+            class="breadcrumb-item"
+            transition:animate={currentPageRevealTransition}
+            transition:name="breadcrumb-current"
+          >
             {label}
           </span>
         ) : (
           <Fragment>
-            <NavItem {...item} class="breadcrumb-item" href={url} isRounded>
+            <NavItem
+              {...item}
+              class="breadcrumb-item"
+              href={url}
+              isRounded
+              transition:animate={currentPageRevealTransition}
+              transition:name={
+                isFirstItem ? "breadcrumb-home" : `item-${index}`
+              }
+            >
               {label}
             </NavItem>
-            <span aria-hidden="true">&gt;</span>
+            <span
+              aria-hidden="true"
+              {...(isFirstItem
+                ? {}
+                : {
+                    "transition:animate": currentPageRevealTransition,
+                  })}
+            >
+              &gt;
+            </span>
           </Fragment>
         );
       }
@@ -75,6 +118,40 @@ const { class: className, isCentered = false, items, ...attrs } = Astro.props;
     &:where(span) {
       color: var(--color-muted-faded);
       font-weight: var(--font-weight-bold);
+    }
+  }
+</style>
+
+<style is:global>
+  ::view-transition-old(breadcrumb-home),
+  ::view-transition-new(breadcrumb-home) {
+    animation: none;
+    transform: none;
+    opacity: 1;
+  }
+
+  ::view-transition-old(breadcrumb-home) {
+    display: none;
+  }
+
+  ::view-transition-old(breadcrumb-current),
+  ::view-transition-new(breadcrumb-current),
+  [id^="::view-transition-old(breadcrumb-item-"],
+  [id^="::view-transition-new(breadcrumb-item-"] {
+    height: 100%;
+  }
+
+  @keyframes breadcrumb-scale-to-right {
+    0% {
+      transform: scaleX(0);
+      transform-origin: left center;
+      opacity: 0;
+    }
+
+    100% {
+      transform: scaleX(1);
+      transform-origin: left center;
+      opacity: 1;
     }
   }
 </style>

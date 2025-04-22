@@ -1,11 +1,13 @@
 ---
 import type { ComponentProps, HTMLAttributes } from "astro/types";
+import { ClientRouter } from "astro:transitions";
 import "../../../styles/global.css";
 import { CONFIG } from "../../../utils/constants";
 import { useI18n } from "../../../utils/i18n";
 import Copyright from "../../atoms/copyright/copyright.astro";
 import Head from "../../atoms/head/head.astro";
 import License from "../../atoms/license/license.astro";
+import ProgressBar from "../../atoms/progress-bar/progress-bar.astro";
 import BackToTop from "../../molecules/back-to-top/back-to-top.astro";
 import Branding from "../../molecules/branding/branding.astro";
 import NavItem from "../../molecules/nav-item/nav-item.astro";
@@ -112,6 +114,7 @@ const topId = translate("anchor.site.top");
     seo={seo}
     themeColor="#214769"
   >
+    <ClientRouter fallback="swap" />
     <slot name="head" />
     <GlobalThemeInit />
     <ShikiThemeInit />
@@ -127,6 +130,7 @@ const topId = translate("anchor.site.top");
   <body class="site" id={topId}>
     <ThemeProvider>
       <SvgFiltersProvider>
+        <ProgressBar class="site-loading" />
         <SkipTo anchor={`#${contentsId}`}>
           {translate("cta.skip.to.content")}
         </SkipTo>
@@ -206,6 +210,17 @@ const topId = translate("anchor.site.top");
       /* Fixes a Chromium bug where the SVG filter wasn't updated when
        * switching the theme... */
       transform: translate3d(0, 0, 0);
+    }
+  }
+
+  .site-loading {
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+    box-shadow: var(--shadow-floating-to-top-center);
+
+    &:not([data-visible]) {
+      display: none;
     }
   }
 
@@ -337,3 +352,15 @@ const topId = translate("anchor.site.top");
     }
   }
 </style>
+
+<script>
+  document.addEventListener("astro:before-preparation", () => {
+    // Show loading indicator when navigation starts
+    document.querySelector(".site-loading")?.setAttribute("data-visible", "");
+  });
+
+  document.addEventListener("astro:page-load", () => {
+    // Hide loading indicator when page is fully loaded
+    document.querySelector(".site-loading")?.removeAttribute("data-visible");
+  });
+</script>

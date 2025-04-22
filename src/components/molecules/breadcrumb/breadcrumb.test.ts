@@ -29,7 +29,7 @@ describe("Breadcrumb", () => {
       props,
     });
 
-    const listItems = [...result.matchAll(/<li.*?<\/li>/g)];
+    const listItems = [...result.matchAll(/<li[^>]*>[\S\s]*?<\/li>/g)];
 
     expect(listItems).toHaveLength(props.items.length);
     expect(result).toContain(props.items[0]?.url);

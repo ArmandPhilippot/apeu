@@ -11,7 +11,7 @@ type Props = HTMLAttributes<"nav"> & {
 
 const { class: className, isCentered = false, items, ...attrs } = Astro.props;
 
-const currentPageReveal = {
+const scaleToRight = {
   old: {
     name: "breadcrumb-scale-to-right",
     duration: "0.2s",
@@ -25,9 +25,9 @@ const currentPageReveal = {
   },
 };
 
-const currentPageRevealTransition = {
-  forwards: currentPageReveal,
-  backwards: currentPageReveal,
+const scaleToRightTransition = {
+  forwards: scaleToRight,
+  backwards: scaleToRight,
 };
 ---
 
@@ -46,7 +46,7 @@ const currentPageRevealTransition = {
           <span
             aria-current="page"
             class="breadcrumb-item"
-            transition:animate={currentPageRevealTransition}
+            transition:animate={scaleToRightTransition}
             transition:name="breadcrumb-current"
           >
             {label}
@@ -58,7 +58,7 @@ const currentPageRevealTransition = {
               class="breadcrumb-item"
               href={url}
               isRounded
-              transition:animate={currentPageRevealTransition}
+              transition:animate={scaleToRightTransition}
               transition:name={
                 isFirstItem ? "breadcrumb-home" : `item-${index}`
               }
@@ -70,7 +70,7 @@ const currentPageRevealTransition = {
               {...(isFirstItem
                 ? {}
                 : {
-                    "transition:animate": currentPageRevealTransition,
+                    "transition:animate": scaleToRightTransition,
                   })}
             >
               &gt;

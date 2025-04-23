@@ -130,7 +130,11 @@ const topId = translate("anchor.site.top");
   <body class="site" id={topId}>
     <ThemeProvider>
       <SvgFiltersProvider>
-        <ProgressBar class="site-loading" />
+        <ProgressBar
+          aria-label={translate("page.loading")}
+          aria-live="polite"
+          class="site-loading"
+        />
         <SkipTo anchor={`#${contentsId}`}>
           {translate("cta.skip.to.content")}
         </SkipTo>
@@ -218,7 +222,7 @@ const topId = translate("anchor.site.top");
     top: 0;
     z-index: 1000;
 
-    &:not([data-visible]) {
+    &:not([data-visible="true"]) {
       display: none;
     }
   }
@@ -353,13 +357,51 @@ const topId = translate("anchor.site.top");
 </style>
 
 <script>
-  document.addEventListener("astro:before-preparation", () => {
-    // Show loading indicator when navigation starts
-    document.querySelector(".site-loading")?.setAttribute("data-visible", "");
-  });
+  import {
+    TRANSITION_BEFORE_PREPARATION,
+    TRANSITION_PAGE_LOAD,
+  } from "astro:transitions/client";
 
-  document.addEventListener("astro:page-load", () => {
-    // Hide loading indicator when page is fully loaded
-    document.querySelector(".site-loading")?.removeAttribute("data-visible");
-  });
+  let progressBarTimer: NodeJS.Timeout | undefined;
+  const DELAY_IN_MS = 200;
+  const MIN_DISPLAY_TIME_IN_MS = 500;
+
+  const hideProgressBar = () => {
+    console.log(progressBarTimer);
+    clearTimeout(progressBarTimer);
+
+    // Get the time the progress bar has been visible
+    const showTime = Number(
+      document.querySelector(".site-loading")?.getAttribute("data-show-time") ||
+        0
+    );
+    const timeVisible = Date.now() - showTime;
+
+    // If we haven't shown it long enough, delay hiding
+    if (timeVisible < MIN_DISPLAY_TIME_IN_MS) {
+      setTimeout(() => {
+        document
+          .querySelector(".site-loading")
+          ?.setAttribute("data-visible", "false");
+      }, MIN_DISPLAY_TIME_IN_MS - timeVisible);
+    } else {
+      document
+        .querySelector(".site-loading")
+        ?.setAttribute("data-visible", "false");
+    }
+  };
+
+  const showProgressBar = () => {
+    // Only show progress after small delay to avoid flashing on fast loads
+    progressBarTimer = setTimeout(() => {
+      const progressBar = document.querySelector(".site-loading");
+      if (progressBar) {
+        progressBar.setAttribute("data-visible", "true");
+        progressBar.setAttribute("data-show-time", Date.now().toString());
+      }
+    }, DELAY_IN_MS);
+  };
+
+  document.addEventListener(TRANSITION_BEFORE_PREPARATION, showProgressBar);
+  document.addEventListener(TRANSITION_PAGE_LOAD, hideProgressBar);
 </script>

@@ -39,10 +39,12 @@ const progressValueFallback = current ? `${current}/${max}` : null;
 
 <style>
   .progress-wrapper {
+    --progress-bar-color: var(--color-primary-lighter);
+
     position: relative;
     width: 100%;
-    height: var(--spacing-2xs);
-    background-color: var(--color-muted-lighter);
+    height: var(--spacing-3xs);
+    background-color: oklch(from var(--color-muted-light) l c h / 50%);
     overflow: hidden;
   }
 
@@ -60,12 +62,9 @@ const progressValueFallback = current ? `${current}/${max}` : null;
       background-color: transparent;
     }
 
-    &::-webkit-progress-value {
-      background-color: var(--color-primary-lighter);
-    }
-
+    &::-webkit-progress-value,
     &:not(:indeterminate)::-moz-progress-bar {
-      background-color: var(--color-primary-lighter);
+      background-color: var(--progress-bar-color);
     }
 
     &:indeterminate::-moz-progress-bar {
@@ -80,7 +79,7 @@ const progressValueFallback = current ? `${current}/${max}` : null;
     left: 0;
     width: 30%;
     height: 100%;
-    background-color: var(--color-primary);
+    background-color: var(--progress-bar-color);
     animation: progress-bar-move-indeterminate 1.5s linear 0s infinite both
       alternate;
   }

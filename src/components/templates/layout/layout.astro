@@ -1,5 +1,6 @@
 ---
 import type { ComponentProps, HTMLAttributes } from "astro/types";
+import { ClientRouter } from "astro:transitions";
 import "../../../styles/global.css";
 import { CONFIG } from "../../../utils/constants";
 import { useI18n } from "../../../utils/i18n";
@@ -15,6 +16,7 @@ import MainNav from "../../organisms/main-nav/main-nav.astro";
 import Navbar from "../../organisms/navbar/navbar.astro";
 import SearchForm from "../../organisms/search-form/search-form.astro";
 import SettingsForm from "../../organisms/settings-form/settings-form.astro";
+import PageTransitionProvider from "../../providers/page-transition-provider.astro";
 import SvgFiltersProvider from "../../providers/svg-filters-provider.astro";
 import ThemeProvider from "../../providers/theme-provider.astro";
 import GlobalThemeInit from "../../utilities/global-theme-init.astro";
@@ -112,6 +114,7 @@ const topId = translate("anchor.site.top");
     seo={seo}
     themeColor="#214769"
   >
+    <ClientRouter fallback="swap" />
     <slot name="head" />
     <GlobalThemeInit />
     <ShikiThemeInit />
@@ -127,54 +130,59 @@ const topId = translate("anchor.site.top");
   <body class="site" id={topId}>
     <ThemeProvider>
       <SvgFiltersProvider>
-        <SkipTo anchor={`#${contentsId}`}>
-          {translate("cta.skip.to.content")}
-        </SkipTo>
-        <header class="site-header">
-          <div class="site-branding">
-            <Branding brand={CONFIG.BRAND} url={route("home")} />
+        <PageTransitionProvider>
+          <SkipTo anchor={`#${contentsId}`}>
+            {translate("cta.skip.to.content")}
+          </SkipTo>
+          <header class="site-header">
+            <div class="site-branding">
+              <Branding brand={CONFIG.BRAND} url={route("home")} />
+            </div>
+            <Navbar
+              aria-label={translate("nav.label.primary")}
+              class="site-navbar"
+              id="site-navbar"
+            >
+              <MainNav items={mainNav} slot="nav" />
+              <SearchForm
+                id="site-search"
+                isInline
+                queryParam={CONFIG.SEARCH.QUERY_PARAM}
+                resultsPage={route("search")}
+                slot="search"
+              />
+              <SettingsForm
+                altLanguages={seo.languages}
+                id="site-settings"
+                slot="settings"
+              />
+            </Navbar>
+          </header>
+          <div {...attrs} class:list={["site-body", className]} id={contentsId}>
+            <slot />
           </div>
-          <Navbar
-            aria-label={translate("nav.label.primary")}
-            class="site-navbar"
-            id="site-navbar"
-          >
-            <MainNav items={mainNav} slot="nav" />
-            <SearchForm
-              id="site-search"
-              isInline
-              queryParam={CONFIG.SEARCH.QUERY_PARAM}
-              resultsPage={route("search")}
-              slot="search"
+          <footer class="site-footer">
+            <Copyright
+              creationYear={CONFIG.CREATION_YEAR}
+              owner={CONFIG.BRAND}
             />
-            <SettingsForm
-              altLanguages={seo.languages}
-              id="site-settings"
-              slot="settings"
+            <License />
+            <NavList class="site-footer-nav" isInline items={footerLinks}>
+              {
+                ({ label, url, ...item }) => (
+                  <NavItem {...item} href={url}>
+                    {label}
+                  </NavItem>
+                )
+              }
+            </NavList>
+            <BackToTop
+              anchor={`#${topId}`}
+              class="site-back-to-top"
+              label={translate("cta.back.to.top")}
             />
-          </Navbar>
-        </header>
-        <div {...attrs} class:list={["site-body", className]} id={contentsId}>
-          <slot />
-        </div>
-        <footer class="site-footer">
-          <Copyright creationYear={CONFIG.CREATION_YEAR} owner={CONFIG.BRAND} />
-          <License />
-          <NavList class="site-footer-nav" isInline items={footerLinks}>
-            {
-              ({ label, url, ...item }) => (
-                <NavItem {...item} href={url}>
-                  {label}
-                </NavItem>
-              )
-            }
-          </NavList>
-          <BackToTop
-            anchor={`#${topId}`}
-            class="site-back-to-top"
-            label={translate("cta.back.to.top")}
-          />
-        </footer>
+          </footer>
+        </PageTransitionProvider>
       </SvgFiltersProvider>
     </ThemeProvider>
   </body>

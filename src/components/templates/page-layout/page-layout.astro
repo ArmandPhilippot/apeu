@@ -64,7 +64,12 @@ const socialImg = getOpenGraphImg({ locale, slug: Astro.url.pathname });
   }
   <div class="page-layout-content">
     <main class="page-layout-main" data-pagefind-body>
-      <Page {...attrs} heading={isHome ? null : title}>
+      <Page
+        {...attrs}
+        heading={isHome ? null : title}
+        transition:animate="fade"
+        transition:name="page"
+      >
         <slot name="meta" slot={Astro.slots.has("meta") ? "meta" : ""} />
         <slot name="body" slot={Astro.slots.has("body") ? "body" : ""} />
         <slot

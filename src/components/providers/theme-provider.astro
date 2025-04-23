@@ -29,18 +29,38 @@
     );
   }
 
-  const prefersColorScheme = window.matchMedia("(prefers-color-scheme: dark)");
-  prefersColorScheme.addEventListener("change", updateThemes);
+  let prefersColorScheme: MediaQueryList | undefined;
+  let mainThemeUnsubscribe: () => void | undefined;
+  let codeThemeUnsubscribe: () => void | undefined;
 
-  const mainThemeUnsubscribe = activeTheme.subscribe(updateThemes);
-  const codeThemeUnsubscribe = activeShikiTheme.subscribe(updateThemes);
+  function cleanupThemeListeners() {
+    if (prefersColorScheme !== undefined) {
+      prefersColorScheme.removeEventListener("change", updateThemes);
+    }
 
-  updateThemes();
+    if (mainThemeUnsubscribe !== undefined) {
+      mainThemeUnsubscribe();
+    }
 
-  // Clean up event listeners when the component is destroyed
-  document.addEventListener("astro:before-swap", () => {
-    prefersColorScheme.removeEventListener("change", updateThemes);
-    mainThemeUnsubscribe();
-    codeThemeUnsubscribe();
-  });
+    if (codeThemeUnsubscribe !== undefined) {
+      codeThemeUnsubscribe();
+    }
+  }
+
+  function setupThemeListeners() {
+    // Clean up existing listeners if they exist to prevent edge cases where setup could happen before a previous cleanup completes (e.g. rapid clicks, back/forward navigation).
+    cleanupThemeListeners();
+
+    prefersColorScheme = window.matchMedia("(prefers-color-scheme: dark)");
+    prefersColorScheme.addEventListener("change", updateThemes);
+
+    mainThemeUnsubscribe = activeTheme.subscribe(updateThemes);
+    codeThemeUnsubscribe = activeShikiTheme.subscribe(updateThemes);
+
+    updateThemes();
+  }
+
+  setupThemeListeners();
+  document.addEventListener("astro:before-swap", cleanupThemeListeners);
+  document.addEventListener("astro:after-swap", setupThemeListeners);
 </script>

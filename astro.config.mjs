@@ -3,7 +3,7 @@ import mdx from "@astrojs/mdx";
 import node from "@astrojs/node";
 import sitemap from "@astrojs/sitemap";
 import icon from "astro-icon";
-import { defineConfig } from "astro/config";
+import { defineConfig, fontProviders } from "astro/config";
 import remarkDirective from "remark-directive";
 import { componentsStories } from "./src/lib/astro/integrations/components-stories";
 import { devOnlyPages } from "./src/lib/astro/integrations/dev-only-pages";
@@ -23,6 +23,63 @@ export default defineConfig({
   }),
   experimental: {
     contentIntellisense: true,
+    fonts: [
+      {
+        cssVariable: "--font-inter",
+        display: "swap",
+        fallbacks: [
+          "Roboto",
+          "Helvetica Neue",
+          "Arial Nova",
+          "Nimbus Sans",
+          "Arial",
+          "sans-serif",
+        ],
+        name: "Inter",
+        provider: fontProviders.fontsource(),
+        styles: ["italic", "normal", "oblique"],
+        subsets: ["latin"],
+        unicodeRange: [
+          "U+0000-00FF",
+          "U+0131",
+          "U+0152-0153",
+          "U+02BB-02BC",
+          "U+02C6",
+          "U+02DA",
+          "U+02DC",
+          "U+0304",
+          "U+0308",
+          "U+0329",
+          "U+2000-206F",
+          "U+20AC",
+          "U+2122",
+          "U+2191",
+          "U+2193",
+          "U+2212",
+          "U+2215",
+          "U+FEFF",
+          "U+FFFD",
+        ],
+        weights: ["100", "900"],
+      },
+      {
+        cssVariable: "--font-cousine",
+        display: "swap",
+        fallbacks: [
+          "Menlo",
+          "Consolas",
+          "Monaco",
+          "Liberation Mono",
+          "Lucida Console",
+          "monospace",
+        ],
+        name: "Cousine",
+        provider: fontProviders.fontsource(),
+        styles: ["italic", "normal", "oblique"],
+        subsets: ["latin"],
+        weights: ["400", "700"],
+      },
+    ],
     responsiveImages: true,
   },
   i18n: {

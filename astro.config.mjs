@@ -60,7 +60,7 @@ export default defineConfig({
           "U+FEFF",
           "U+FFFD",
         ],
-        weights: ["100", "900"],
+        weights: ["100 900"],
       },
       {
         cssVariable: "--font-cousine",

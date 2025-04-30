@@ -87,7 +87,7 @@ export default defineConfig({
     locales: [...CONFIG.LANGUAGES.AVAILABLE],
   },
   image: {
-    experimentalLayout: "responsive",
+    experimentalLayout: "constrained",
     experimentalObjectFit: "cover",
     experimentalObjectPosition: "top",
   },

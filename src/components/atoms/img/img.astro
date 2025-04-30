@@ -90,11 +90,6 @@ const pictureClass = pictureAttributes?.class
   img {
     display: block;
     max-width: 100%;
-    /* Astro's responsiveImages feature adds `width: 100%`` to images which is
-     * messing up with some of my images. It seems the only way to revert this
-     * is by adding `revert-layer`. Unfortunately, postcss logs a warning
-     * regarding onRevertLayerKeyword... */
-    width: revert-layer;
   }
 
   :global(:where([data-theme="dark"])) .picture {

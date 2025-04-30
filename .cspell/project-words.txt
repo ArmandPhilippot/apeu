@@ -20,5 +20,6 @@ stackoverflow
 stylelint
 tsconfigs
 tseslint
+unrs
 unstub
 vitest

@@ -67,7 +67,7 @@ export const { getStaticPaths, GET } = oGImageRoute({
           lineHeight: 1.5,
         },
       },
-      fonts: ["./public/fonts/Inter/Inter.woff2"],
+      fonts: ["./src/pages/og/_fonts/Inter/Inter.woff2"],
       padding: 50,
     };
   },

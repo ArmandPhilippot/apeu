@@ -1,5 +1,6 @@
 ---
 import type { ComponentProps, HTMLAttributes } from "astro/types";
+import { Font } from "astro:assets";
 import { ClientRouter } from "astro:transitions";
 import "../../../styles/global.css";
 import { CONFIG } from "../../../utils/constants";
@@ -105,16 +106,12 @@ const topId = translate("anchor.site.top");
     addBrandToTitle={!isHome}
     brand={CONFIG.BRAND}
     colorScheme="light dark"
-    fonts={[
-      {
-        href: "/fonts/Inter/Inter.woff2?v=3.18",
-        mimetype: "font/woff2",
-      },
-    ]}
     seo={seo}
     themeColor="#214769"
   >
     <ClientRouter fallback="swap" />
+    <Font cssVariable="--font-inter" preload />
+    <Font cssVariable="--font-cousine" preload />
     <slot name="head" />
     <GlobalThemeInit />
     <ShikiThemeInit />

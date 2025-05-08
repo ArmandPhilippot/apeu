@@ -1,6 +1,6 @@
 import { spawn } from "node:child_process";
 import { access } from "node:fs/promises";
-import { dirname, join, relative } from "node:path";
+import { join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 import type { AstroIntegration } from "astro";
 import sirv from "sirv";
@@ -61,7 +61,7 @@ export const pagefind = (() => {
       },
       "astro:build:done": async ({ dir, logger }) => {
         const targetDir = fileURLToPath(dir);
-        const cwd = dirname(fileURLToPath(import.meta.url));
+        const cwd = import.meta.dirname;
         const relativeDir = relative(cwd, targetDir);
 
         logger.info("Building the search index...");

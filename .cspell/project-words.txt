@@ -14,6 +14,7 @@ Mdxjs
 nanostores
 nlcst
 pagefind
+pnpmDedupe
 rehype
 shiki
 stackoverflow

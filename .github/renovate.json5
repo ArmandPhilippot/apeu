@@ -1,0 +1,19 @@
+{
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  extends: [
+    "config:recommended",
+    ":semanticCommitTypeAll(ci)",
+    "schedule:weekly",
+    "group:allNonMajor",
+  ],
+  labels: ["dependencies"],
+  postUpdateOptions: ["pnpmDedupe"],
+  semanticCommits: "enabled",
+  semanticCommitType: "ci",
+  rangeStrategy: "bump",
+  ignorePaths: ["**/node_modules/**"],
+  ignoreDeps: [
+    // ignore "engines" update
+    "node",
+  ],
+}

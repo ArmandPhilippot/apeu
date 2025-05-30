@@ -1,5 +1,23 @@
 # apeu
 
+## 1.1.0
+
+### Minor Changes
+
+- 5466b80: Drops support for Node v18.
+
+  Node v18 reaches end of life today (2025-04-30) and some other packages, like nanostores, have already dropped its supports. A version greater or equal to v20 is now required.
+
+- 80ad823: Prefixes local storage variables to avoid conflicts in dev mode.
+
+  If you have already define a theme for the website or for the code blocks, you'll need to configure it again because of the prefix change.
+
+- ad1cd30: Enables Astro experimental fonts API to manage fonts.
+
+  The fallback used when the fonts can't be loaded could be different than before. Other than that, I choose to use a minor mostly because this is an experimental API.
+
+- a180ed8: Adds View Transitions to avoid full-page navigation refresh.
+
 ## 1.0.5
 
 ### Patch Changes
@@ -146,7 +164,7 @@
           tags,
         },
       };
-    }),
+    })
   );
   const orderedBlogPosts = blogPosts.sort(/* some method to sort posts */);
   const firstTenBlogPosts = orderedBlogPosts.slice(0, 10);

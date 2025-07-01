@@ -5,6 +5,7 @@ blogroll
 bluesky
 canvaskit
 commitlint
+esbuild
 Français
 frontmatter
 globby

@@ -80,16 +80,16 @@ export default defineConfig({
         weights: ["400", "700"],
       },
     ],
-    responsiveImages: true,
   },
   i18n: {
     defaultLocale: CONFIG.LANGUAGES.DEFAULT,
     locales: [...CONFIG.LANGUAGES.AVAILABLE],
   },
   image: {
-    experimentalLayout: "constrained",
-    experimentalObjectFit: "cover",
-    experimentalObjectPosition: "top",
+    layout: "constrained",
+    objectFit: "cover",
+    objectPosition: "top",
+    responsiveStyles: true,
   },
   integrations: [
     componentsStories({

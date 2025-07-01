@@ -74,30 +74,30 @@ if (!Astro.slots.has("default")) throw new MissingSlotError("default");
       }
 
       &:where(
-          :has(.radio-item-field:checked):has(
-              .radio-item-field:is(:hover, :focus),
-              .radio-item-label:hover
-            )
-        ) {
+        :has(.radio-item-field:checked):has(
+          .radio-item-field:is(:hover, :focus),
+          .radio-item-label:hover
+        )
+      ) {
         background: var(--color-primary-dark);
       }
 
       &:where(
-          :has(.radio-item-field:not(:checked)):has(
-              .radio-item-field:is(:hover, :focus),
-              .radio-item-label:hover
-            )
-        ) {
+        :has(.radio-item-field:not(:checked)):has(
+          .radio-item-field:is(:hover, :focus),
+          .radio-item-label:hover
+        )
+      ) {
         background: var(--color-regular-darker);
         box-shadow: inset 0 0 var(--border-size-lg) 0 hsl(0deg 0% 0% / 15%);
       }
 
       &:where(
-          :has(.radio-item-field:not(:checked)):has(
-              .radio-item-field:active,
-              .radio-item-label:active
-            )
-        ) {
+        :has(.radio-item-field:not(:checked)):has(
+          .radio-item-field:active,
+          .radio-item-label:active
+        )
+      ) {
         background: var(--color-primary);
         box-shadow: inset 0 0 var(--border-size-lg) 0 hsl(0deg 0% 0%);
         color: var(--color-on-primary);

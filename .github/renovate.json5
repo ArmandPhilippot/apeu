@@ -15,5 +15,7 @@
   ignoreDeps: [
     // ignore "engines" update
     "node",
+    // there is a bug with Renovate when a pnpm update is available and it uses pnpmDedupe at the same time. In the meantime, a manual bump seems preferable.
+    "pnpm",
   ],
 }

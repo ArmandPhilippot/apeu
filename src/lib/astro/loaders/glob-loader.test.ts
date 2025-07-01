@@ -82,6 +82,7 @@ const createMockContext = ({
     parseData: vi.fn(),
     generateDigest: vi.fn(),
     refreshContextData: {},
+    renderMarkdown: vi.fn(),
   };
 };
 

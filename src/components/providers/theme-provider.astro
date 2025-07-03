@@ -8,6 +8,7 @@
   import {
     activeTheme,
     activeShikiTheme,
+    updateSystemColorScheme,
     THEME_SETTING_KEY,
     SHIKI_SETTING_KEY,
   } from "../../services/stores/settings";
@@ -29,13 +30,16 @@
     );
   }
 
-  let prefersColorScheme: MediaQueryList | undefined;
+  let prefersDarkColorScheme: MediaQueryList | undefined;
   let mainThemeUnsubscribe: () => void | undefined;
   let codeThemeUnsubscribe: () => void | undefined;
 
   function cleanupThemeListeners() {
-    if (prefersColorScheme !== undefined) {
-      prefersColorScheme.removeEventListener("change", updateThemes);
+    if (prefersDarkColorScheme !== undefined) {
+      prefersDarkColorScheme.removeEventListener(
+        "change",
+        updateSystemColorScheme
+      );
     }
 
     if (mainThemeUnsubscribe !== undefined) {
@@ -51,8 +55,8 @@
     // Clean up existing listeners if they exist to prevent edge cases where setup could happen before a previous cleanup completes (e.g. rapid clicks, back/forward navigation).
     cleanupThemeListeners();
 
-    prefersColorScheme = window.matchMedia("(prefers-color-scheme: dark)");
-    prefersColorScheme.addEventListener("change", updateThemes);
+    prefersDarkColorScheme = window.matchMedia("(prefers-color-scheme: dark)");
+    prefersDarkColorScheme.addEventListener("change", updateSystemColorScheme);
 
     mainThemeUnsubscribe = activeTheme.subscribe(updateThemes);
     codeThemeUnsubscribe = activeShikiTheme.subscribe(updateThemes);

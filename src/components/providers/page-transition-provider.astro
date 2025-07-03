@@ -35,7 +35,6 @@ const { translate } = useI18n(Astro.currentLocale);
   const MIN_DISPLAY_TIME_IN_MS = 500;
 
   const hideProgressBar = () => {
-    console.log(progressBarTimer);
     clearTimeout(progressBarTimer);
 
     // Get the time the progress bar has been visible

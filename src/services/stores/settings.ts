@@ -1,7 +1,10 @@
 import { persistentMap } from "@nanostores/persistent";
-import { computed } from "nanostores";
+import { atom, computed } from "nanostores";
 import type { Theme } from "../../types/tokens";
-import { resolveCurrentColorScheme } from "../../utils/themes";
+import {
+  getPreferredColorScheme,
+  resolveCurrentColorScheme,
+} from "../../utils/themes";
 
 export type Settings = {
   shiki: Theme;
@@ -45,10 +48,24 @@ export const isValidSettingsKey = (value: unknown): value is keyof Settings => {
 };
 
 /**
+ * Atom that tracks system color scheme preference.
+ */
+export const systemColorScheme = atom<Exclude<Theme, "auto">>("light");
+
+/**
+ * Update the value stored for the system color scheme.
+ */
+export const updateSystemColorScheme = () => {
+  systemColorScheme.set(getPreferredColorScheme());
+};
+
+/**
  * The actual theme, considering system preferences.
  */
-export const activeTheme = computed(settings, (activeSettings) =>
-  resolveCurrentColorScheme(activeSettings.theme)
+export const activeTheme = computed(
+  [settings, systemColorScheme],
+  (activeSettings, systemTheme) =>
+    activeSettings.theme === "auto" ? systemTheme : activeSettings.theme
 );
 
 /**

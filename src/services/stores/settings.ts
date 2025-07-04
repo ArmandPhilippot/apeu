@@ -50,7 +50,9 @@ export const isValidSettingsKey = (value: unknown): value is keyof Settings => {
 /**
  * Atom that tracks system color scheme preference.
  */
-export const systemColorScheme = atom<Exclude<Theme, "auto">>("light");
+export const systemColorScheme = atom<Exclude<Theme, "auto">>(
+  getPreferredColorScheme()
+);
 
 /**
  * Update the value stored for the system color scheme.

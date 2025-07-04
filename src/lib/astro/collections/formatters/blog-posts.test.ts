@@ -3,14 +3,14 @@ import { blogPostFixture } from "../../../../../tests/fixtures/collections";
 import { getBlogPost, getBlogPostPreview } from "./blog-posts";
 
 describe("get-blog-post-preview", () => {
-  it("returns a blog post preview from a blogPosts collection entry", async () => {
+  it("returns a blog post preview from a blog.posts collection entry", async () => {
     expect.assertions(1);
 
     const result = await getBlogPostPreview(blogPostFixture);
 
     expect(result).toMatchInlineSnapshot(`
       {
-        "collection": "blogPosts",
+        "collection": "blog.posts",
         "cover": null,
         "description": "The blog post description.",
         "id": "en/my-awesome-post",
@@ -30,7 +30,7 @@ describe("get-blog-post-preview", () => {
 });
 
 describe("get-blog-post", () => {
-  it("returns a blog post from a blogPosts collection entry", async () => {
+  it("returns a blog post from a blog.posts collection entry", async () => {
     expect.assertions(1);
 
     const result = await getBlogPost(blogPostFixture);
@@ -38,7 +38,7 @@ describe("get-blog-post", () => {
     expect(result).toMatchInlineSnapshot(`
       {
         "Content": [Function],
-        "collection": "blogPosts",
+        "collection": "blog.posts",
         "cover": null,
         "description": "The blog post description.",
         "hasContent": false,

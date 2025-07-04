@@ -29,13 +29,13 @@ const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
   await getWebPageGraph({ ...page, breadcrumb }),
   await getBlogGraph(page),
 ];
-const { entries: categories } = await queryCollection("blogCategories", {
+const { entries: categories } = await queryCollection("blog.categories", {
   format: "preview",
   orderBy: { key: "title", order: "ASC" },
   where: { locale },
 });
 const { entries: recentPosts, total: totalPosts } = await queryCollection(
-  "blogPosts",
+  "blog.posts",
   {
     first: 2,
     format: "preview",

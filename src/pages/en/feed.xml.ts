@@ -23,7 +23,7 @@ export const GET: APIRoute = async ({
 
   const { locale, translate } = useI18n(currentLocale);
   const { entries } = await queryCollection(
-    ["blogPosts", "blogroll", "bookmarks", "guides", "projects"],
+    ["blog.posts", "blogroll", "bookmarks", "guides", "projects"],
     {
       format: "full",
       orderBy: { key: "publishedOn", order: "ASC" },

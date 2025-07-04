@@ -11,7 +11,7 @@ import { getWebPageGraph } from "../../../../lib/schema-dts/graphs/webpage-graph
 import { useI18n } from "../../../../utils/i18n";
 
 export const getStaticPaths = (async () => {
-  const { entries: categories } = await queryCollection("blogCategories", {
+  const { entries: categories } = await queryCollection("blog.categories", {
     where: { locale: "fr" },
   });
 
@@ -37,7 +37,7 @@ const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
 const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
   await getWebPageGraph({ ...page, breadcrumb }),
 ];
-const { entries, total: totalPosts } = await queryCollection("blogPosts", {
+const { entries, total: totalPosts } = await queryCollection("blog.posts", {
   orderBy: { key: "publishedOn", order: "DESC" },
   where: { categories: [page.id] },
 });

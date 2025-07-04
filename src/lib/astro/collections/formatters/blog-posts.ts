@@ -13,11 +13,11 @@ import {
 /**
  * Convert a blog post collection entry to a BlogPostPreview object.
  *
- * @param {CollectionEntry<"blogPosts">} post - The blog post collection entry.
+ * @param {CollectionEntry<"blog.posts">} post - The blog post collection entry.
  * @returns {Promise<BlogPostPreview>} An object describing the blog post preview.
  */
 export const getBlogPostPreview = async (
-  post: CollectionEntry<"blogPosts">
+  post: CollectionEntry<"blog.posts">
 ): Promise<BlogPostPreview> => {
   const { cover, locale, meta, seo, slug, ...postData } = post.data;
   const { authors, category, isDraft, tags, ...postMeta } = meta;
@@ -52,11 +52,11 @@ export const getBlogPostPreview = async (
 /**
  * Convert a blog post collection entry to a BlogPost object.
  *
- * @param {CollectionEntry<"blogPosts">} post - The blog post collection entry.
+ * @param {CollectionEntry<"blog.posts">} post - The blog post collection entry.
  * @returns {Promise<BlogPost>} An object describing the blog post.
  */
 export const getBlogPost = async (
-  post: CollectionEntry<"blogPosts">
+  post: CollectionEntry<"blog.posts">
 ): Promise<BlogPost> => {
   const preview = await getBlogPostPreview(post);
   const resolvedAuthors = await resolveReferences(post.data.meta.authors);

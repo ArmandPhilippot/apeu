@@ -12,7 +12,7 @@ export const blogCategories = defineCollection({
         i18n: z
           .record(
             z.string().refine(isAvailableLanguage),
-            reference("blogCategories")
+            reference("blog.categories")
           )
           .optional(),
       })

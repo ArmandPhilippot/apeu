@@ -14,7 +14,7 @@ describe("get-rss-items-from-entries", () => {
     expect.assertions(2);
 
     const entries: FeedCompatibleEntry[] = [
-      await formatEntry<"blogPosts">(blogPostFixture),
+      await formatEntry<"blog.posts">(blogPostFixture),
       await formatEntry<"blogroll">(blogrollFixture),
     ];
     const result = await getRSSItemsFromEntries(

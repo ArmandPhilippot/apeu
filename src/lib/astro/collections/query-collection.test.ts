@@ -31,7 +31,7 @@ const mockEntries = [
       meta: {
         ...blogPostFixture.data.meta,
         authors: [{ collection: "authors", id: "author2" }],
-        category: { collection: "blogCategories", id: "category1" },
+        category: { collection: "blog.categories", id: "category1" },
         publishedOn: new Date(
           blogPostFixture.data.meta.publishedOn.getTime() + ONE_DAY_IN_MS
         ),
@@ -73,7 +73,7 @@ const mockEntries = [
     },
   },
 ] satisfies astro.CollectionEntry<
-  "authors" | "blogPosts" | "blogroll" | "guides" | "projects"
+  "authors" | "blog.posts" | "blogroll" | "guides" | "projects"
 >[];
 
 vi.mock("astro:content", async () => {
@@ -101,7 +101,7 @@ describe("queryCollection", () => {
     /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
     expect.assertions(2);
 
-    const result = await queryCollection("blogPosts", {
+    const result = await queryCollection("blog.posts", {
       where: { authors: ["author2"] },
     });
 
@@ -113,7 +113,7 @@ describe("queryCollection", () => {
     /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
     expect.assertions(2);
 
-    const result = await queryCollection("blogPosts", {
+    const result = await queryCollection("blog.posts", {
       where: { categories: ["category1"] },
     });
 
@@ -125,7 +125,7 @@ describe("queryCollection", () => {
     /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
     expect.assertions(2);
 
-    const result = await queryCollection("blogPosts", {
+    const result = await queryCollection("blog.posts", {
       where: { tags: ["tag1"] },
     });
 
@@ -136,7 +136,7 @@ describe("queryCollection", () => {
   it("can filter entries by locale", async () => {
     expect.assertions(1);
 
-    const result = await queryCollection("blogPosts", {
+    const result = await queryCollection("blog.posts", {
       where: { locale: "en" },
     });
 
@@ -147,7 +147,7 @@ describe("queryCollection", () => {
   it("can order the entries using the given key", async () => {
     expect.assertions(1);
 
-    const result = await queryCollection("blogPosts", {
+    const result = await queryCollection("blog.posts", {
       orderBy: { key: "publishedOn", order: "DESC" },
     });
 
@@ -160,7 +160,7 @@ describe("queryCollection", () => {
   it("should support pagination", async () => {
     expect.assertions(1);
 
-    const result = await queryCollection("blogPosts", {
+    const result = await queryCollection("blog.posts", {
       first: 1,
       after: 1,
     });
@@ -216,9 +216,9 @@ describe("queryCollection", () => {
   it("can query multiple collections", async () => {
     expect.assertions(1);
 
-    const result = await queryCollection(["blogPosts", "guides", "projects"]);
+    const result = await queryCollection(["blog.posts", "guides", "projects"]);
     const filteredMockedEntries = mockEntries.filter((entry) =>
-      ["blogPosts", "guides", "projects"].includes(entry.collection)
+      ["blog.posts", "guides", "projects"].includes(entry.collection)
     );
 
     expect(result.entries).toHaveLength(filteredMockedEntries.length);
@@ -228,7 +228,7 @@ describe("queryCollection", () => {
     /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
     expect.assertions(2);
 
-    const result = await queryCollection(["blogPosts", "guides"], {
+    const result = await queryCollection(["blog.posts", "guides"], {
       where: { authors: ["author2"] },
     });
 

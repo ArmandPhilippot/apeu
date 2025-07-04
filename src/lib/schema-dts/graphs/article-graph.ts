@@ -37,7 +37,7 @@ export const getArticleGraph = async ({
   const url = `${websiteUrl}${articleRoute}`;
   const coverUrl =
     cover === null || cover === undefined ? null : await getImgSrc(cover);
-  const isBlogPost = collection === "blogPosts";
+  const isBlogPost = collection === "blog.posts";
   const authors =
     "authors" in meta
       ? await Promise.all(

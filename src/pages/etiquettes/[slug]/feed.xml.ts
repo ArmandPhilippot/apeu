@@ -38,7 +38,7 @@ export const GET: APIRoute<TaxonomyPreview> = async ({
 
   const { locale, translate } = useI18n(currentLocale);
   const { entries } = await queryCollection(
-    ["blogPosts", "blogroll", "bookmarks", "guides", "notes", "projects"],
+    ["blog.posts", "blogroll", "bookmarks", "guides", "notes", "projects"],
     {
       format: "full",
       orderBy: { key: "publishedOn", order: "ASC" },

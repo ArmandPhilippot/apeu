@@ -251,7 +251,7 @@ describe("getArticleGraph", () => {
       expect.assertions(3);
 
       const graph = await getArticleGraph({
-        collection: "blogPosts",
+        collection: "blog.posts",
         cover: null,
         description: "Blog description",
         locale: CONFIG.LANGUAGES.DEFAULT,

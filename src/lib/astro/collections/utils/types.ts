@@ -26,7 +26,7 @@ export type QueryCollectionWhere = {
   /**
    * Retrieve only entries attached to the given blog categories.
    */
-  categories: LooseAutocomplete<CollectionEntry<"blogCategories">["id"]>[];
+  categories: LooseAutocomplete<CollectionEntry<"blog.categories">["id"]>[];
   /**
    * Retrieve only entries with a matching id.
    */

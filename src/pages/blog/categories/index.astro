@@ -17,11 +17,14 @@ const { Content, ...page } = await queryEntry({
   id: "blog/categories",
   locale,
 });
-const { entries: categories, total } = await queryCollection("blogCategories", {
-  format: "preview",
-  orderBy: { key: "title", order: "ASC" },
-  where: { locale },
-});
+const { entries: categories, total } = await queryCollection(
+  "blog.categories",
+  {
+    format: "preview",
+    orderBy: { key: "title", order: "ASC" },
+    where: { locale },
+  }
+);
 const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
   { label: translate("page.home.title"), url: route("home") },
   { label: translate("page.blog.title"), url: route("blog") },

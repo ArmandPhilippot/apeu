@@ -96,7 +96,7 @@ export type Blog = Pick<CollectionEntry<"blogroll">, "collection" | "id"> &
   };
 
 export type BlogPostMetaData = Omit<
-  CollectionEntry<"blogPosts">["data"]["meta"],
+  CollectionEntry<"blog.posts">["data"]["meta"],
   "authors" | "category" | "isDraft" | "tags"
 > &
   RemarkPluginFrontmatterMeta & {
@@ -105,9 +105,12 @@ export type BlogPostMetaData = Omit<
     tags?: TaxonomyLink[] | null | undefined;
   };
 
-export type BlogPost = Pick<CollectionEntry<"blogPosts">, "collection" | "id"> &
+export type BlogPost = Pick<
+  CollectionEntry<"blog.posts">,
+  "collection" | "id"
+> &
   Omit<RenderedContent, "remarkPluginFrontmatter"> &
-  Omit<CollectionEntry<"blogPosts">["data"], "cover" | "i18n" | "meta"> & {
+  Omit<CollectionEntry<"blog.posts">["data"], "cover" | "i18n" | "meta"> & {
     cover?: Img | null | undefined;
     meta: BlogPostMetaData;
     seo: SEO;
@@ -216,7 +219,7 @@ export type ProjectPreview = Omit<
   keyof RenderedContent | "i18n" | "seo" | "slug"
 >;
 
-export type RawTaxonomyEntry = CollectionEntry<"blogCategories" | "tags">;
+export type RawTaxonomyEntry = CollectionEntry<"blog.categories" | "tags">;
 
 export type TaxonomyMetaData = Omit<
   RawTaxonomyEntry["data"]["meta"],

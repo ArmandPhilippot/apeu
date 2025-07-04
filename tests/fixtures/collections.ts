@@ -12,7 +12,7 @@ export const authorFixture = {
 } as const satisfies CollectionEntry<"authors">;
 
 export const blogCategoryFixture = {
-  collection: "blogCategories",
+  collection: "blog.categories",
   data: {
     description: "The category description.",
     locale: "en",
@@ -30,17 +30,17 @@ export const blogCategoryFixture = {
     title: "The category title",
   },
   id: "en/micro-blog",
-} as const satisfies CollectionEntry<"blogCategories">;
+} as const satisfies CollectionEntry<"blog.categories">;
 
 export const blogPostFixture = {
-  collection: "blogPosts",
+  collection: "blog.posts",
   data: {
     description: "The blog post description.",
     locale: "en",
     meta: {
       authors: [{ collection: "authors", id: "john-doe" }],
       category: {
-        collection: "blogCategories",
+        collection: "blog.categories",
         id: "micro-blog",
       },
       isDraft: false,
@@ -57,7 +57,7 @@ export const blogPostFixture = {
     title: "The blog post title",
   },
   id: "en/my-awesome-post",
-} as const satisfies CollectionEntry<"blogPosts">;
+} as const satisfies CollectionEntry<"blog.posts">;
 
 export const blogrollFixture = {
   collection: "blogroll",

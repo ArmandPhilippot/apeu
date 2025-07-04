@@ -451,7 +451,7 @@ Instead of using directly the `getCollection` helper from Astro, you should use 
 ---
 import { queryCollection } from "src/lib/astro/collections";
 
-const { entries, total } = await queryCollection("blogPosts", {
+const { entries, total } = await queryCollection("blog.posts", {
   first: 10,
   orderBy: { key: "publishedOn", order: "DESC" },
 });
@@ -466,7 +466,7 @@ const { entries, total } = await queryCollection("blogPosts", {
 ---
 import { getCollection, getEntries, getEntry } from "astro:content";
 
-const rawBlogPosts = await getCollection("blogPosts");
+const rawBlogPosts = await getCollection("blog.posts");
 const blogPosts = await Promise.all(
   rawBlogPosts.map(async (blogPost) => {
     const category = blogPost.data.category

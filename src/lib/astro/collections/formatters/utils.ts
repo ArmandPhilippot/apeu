@@ -34,13 +34,13 @@ export const resolveReferences = async <C extends CollectionKey>(
 };
 
 /**
- * Retrieve a category link from a `blogCategories` reference.
+ * Retrieve a category link from a `blog.categories` reference.
  *
- * @param {CollectionReference<"blogCategories"> | undefined} reference - A `blogCategories` reference.
+ * @param {CollectionReference<"blog.categories"> | undefined} reference - A `blog.categories` reference.
  * @returns {Promise<TaxonomyLink | null>} An object describing the category link or null.
  */
 export const getCategoryFromReference = async (
-  reference: CollectionReference<"blogCategories"> | undefined
+  reference: CollectionReference<"blog.categories"> | undefined
 ): Promise<TaxonomyLink | null> => {
   if (reference === undefined) return null;
 

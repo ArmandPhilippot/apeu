@@ -36,7 +36,7 @@ const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
   await getWebPageGraph({ ...page, breadcrumb }),
 ];
 const { entries: relatedEntries, total } = await queryCollection(
-  ["blogPosts", "blogroll", "bookmarks", "guides", "notes", "projects"],
+  ["blog.posts", "blogroll", "bookmarks", "guides", "notes", "projects"],
   {
     format: "preview",
     orderBy: { key: "publishedOn", order: "DESC" },
@@ -47,7 +47,7 @@ const getCTA = (
   entry: (typeof relatedEntries)[number]
 ): ComponentProps<typeof CollectionCard>["cta"] => {
   switch (entry.collection) {
-    case "blogPosts":
+    case "blog.posts":
     case "guides":
     case "notes":
       return {

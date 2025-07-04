@@ -22,7 +22,7 @@ export const GET: APIRoute = async ({
   if (site === undefined) throw new MissingSiteConfigError();
 
   const { locale, translate } = useI18n(currentLocale);
-  const { entries } = await queryCollection("blogCategories", {
+  const { entries } = await queryCollection("blog.categories", {
     format: "full",
     orderBy: { key: "publishedOn", order: "ASC" },
     where: { locale },

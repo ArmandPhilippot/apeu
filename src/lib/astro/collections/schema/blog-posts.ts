@@ -9,12 +9,12 @@ export const blogPosts = defineCollection({
     contentsBaseSchema
       .extend({
         authors: z.array(reference("authors")),
-        category: reference("blogCategories"),
+        category: reference("blog.categories"),
         cover: coverSchema(image).optional(),
         i18n: z
           .record(
             z.string().refine(isAvailableLanguage),
-            reference("blogPosts")
+            reference("blog.posts")
           )
           .optional(),
         tags: z.array(reference("tags")).optional(),

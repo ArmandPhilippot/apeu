@@ -17,10 +17,12 @@ export type EntryFormat = "full" | "preview";
 
 export type FormatEntryReturnMap<F extends EntryFormat | undefined> = {
   authors: F extends "full" ? typeof getAuthor : typeof getAuthorPreview;
-  blogCategories: F extends "full"
+  "blog.categories": F extends "full"
     ? typeof getTaxonomy
     : typeof getTaxonomyPreview;
-  blogPosts: F extends "full" ? typeof getBlogPost : typeof getBlogPostPreview;
+  "blog.posts": F extends "full"
+    ? typeof getBlogPost
+    : typeof getBlogPostPreview;
   blogroll: typeof getBlog;
   bookmarks: typeof getBookmark;
   guides: F extends "full" ? typeof getGuide : typeof getGuidePreview;
@@ -61,10 +63,10 @@ export async function formatEntry<
   switch (entry.collection) {
     case "authors":
       return isFullVersion ? getAuthor(entry) : getAuthorPreview(entry);
-    case "blogCategories":
+    case "blog.categories":
     case "tags":
       return isFullVersion ? getTaxonomy(entry) : getTaxonomyPreview(entry);
-    case "blogPosts":
+    case "blog.posts":
       return isFullVersion ? getBlogPost(entry) : getBlogPostPreview(entry);
     case "blogroll":
       return getBlog(entry);

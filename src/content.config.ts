@@ -11,8 +11,8 @@ import { tags } from "./lib/astro/collections/schema/tags";
 
 export const collections = {
   authors,
-  blogCategories,
-  blogPosts,
+  "blog.categories": blogCategories,
+  "blog.posts": blogPosts,
   blogroll,
   bookmarks,
   guides,

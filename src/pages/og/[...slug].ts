@@ -2,8 +2,8 @@ import { OGImageRoute as oGImageRoute } from "astro-og-canvas";
 import { queryCollection } from "../../lib/astro/collections";
 
 const collections = await queryCollection([
-  "blogCategories",
-  "blogPosts",
+  "blog.categories",
+  "blog.posts",
   "guides",
   "notes",
   "pages",

@@ -10,7 +10,7 @@ import {
 import { useI18n } from "../../../../../utils/i18n";
 
 export const getStaticPaths = (async () => {
-  const { entries } = await queryCollection("blogCategories", {
+  const { entries } = await queryCollection("blog.categories", {
     where: { locale: "en" },
   });
 
@@ -37,7 +37,7 @@ export const GET: APIRoute<TaxonomyPreview> = async ({
   if (site === undefined) throw new MissingSiteConfigError();
 
   const { locale, translate } = useI18n(currentLocale);
-  const { entries } = await queryCollection("blogPosts", {
+  const { entries } = await queryCollection("blog.posts", {
     format: "full",
     orderBy: { key: "publishedOn", order: "ASC" },
     where: { locale, categories: [props.id] },

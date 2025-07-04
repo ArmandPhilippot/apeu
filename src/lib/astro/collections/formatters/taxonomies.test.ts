@@ -33,7 +33,7 @@ describe("get-taxonomy-preview", () => {
   it("returns a taxonomy preview from a blog category entry", () => {
     expect(getTaxonomyPreview(blogCategoryFixture)).toMatchInlineSnapshot(`
       {
-        "collection": "blogCategories",
+        "collection": "blog.categories",
         "cover": null,
         "description": "The category description.",
         "id": "en/micro-blog",
@@ -76,7 +76,7 @@ describe("get-taxonomy", () => {
     expect(result).toMatchInlineSnapshot(`
       {
         "Content": [Function],
-        "collection": "blogCategories",
+        "collection": "blog.categories",
         "cover": null,
         "description": "The category description.",
         "hasContent": false,

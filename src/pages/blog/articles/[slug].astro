@@ -11,7 +11,7 @@ import { getWebPageGraph } from "../../../lib/schema-dts/graphs/webpage-graph";
 import { useI18n } from "../../../utils/i18n";
 
 export const getStaticPaths = (async () => {
-  const { entries: posts } = await queryCollection("blogPosts", {
+  const { entries: posts } = await queryCollection("blog.posts", {
     where: { locale: "fr" },
   });
 

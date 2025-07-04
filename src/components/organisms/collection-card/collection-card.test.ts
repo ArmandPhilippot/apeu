@@ -35,7 +35,7 @@ describe("CollectionCard", () => {
 
     const props = {
       entry: {
-        collection: "blogPosts",
+        collection: "blog.posts",
         id: "blog-post",
         description: "Test description",
         locale: "en",
@@ -59,7 +59,7 @@ describe("CollectionCard", () => {
 
     const props = {
       entry: {
-        collection: "blogPosts",
+        collection: "blog.posts",
         description: "Test description",
         id: "blog-post",
         locale: "en",
@@ -91,7 +91,7 @@ describe("CollectionCard", () => {
         icon: "arrow-right",
       },
       entry: {
-        collection: "blogPosts",
+        collection: "blog.posts",
         description: "Test description",
         id: "blog-post",
         locale: "en",
@@ -113,7 +113,7 @@ describe("CollectionCard", () => {
 
     const props = {
       entry: {
-        collection: "blogPosts",
+        collection: "blog.posts",
         cover: {
           src: {
             format: "webp",
@@ -195,7 +195,7 @@ describe("CollectionCard", () => {
 
     const props = {
       entry: {
-        collection: "blogPosts",
+        collection: "blog.posts",
         description: "Test description",
         id: "post",
         locale: "en",
@@ -240,7 +240,7 @@ describe("CollectionCard", () => {
 
     const props = {
       entry: {
-        collection: "blogPosts",
+        collection: "blog.posts",
         description: "Test description",
         id: "post",
         locale: "en",
@@ -267,7 +267,7 @@ describe("CollectionCard", () => {
 
     const props = {
       entry: {
-        collection: "blogPosts",
+        collection: "blog.posts",
         description: "Test description",
         id: "post",
         locale: "en",
@@ -291,7 +291,7 @@ describe("CollectionCard", () => {
 
     const props = {
       entry: {
-        collection: "blogPosts",
+        collection: "blog.posts",
         description: "Test description",
         id: "post",
         locale: "en",

@@ -139,8 +139,8 @@ const getItemCategoryFromCollection = (
 ) => {
   const { translate } = useI18n(locale);
   const categories = {
-    blogCategories: translate("meta.value.content.kind.blog.category"),
-    blogPosts: translate("meta.value.content.kind.blog.post"),
+    "blog.categories": translate("meta.value.content.kind.blog.category"),
+    "blog.posts": translate("meta.value.content.kind.blog.post"),
     blogroll: translate("meta.value.content.kind.blogroll"),
     bookmarks: translate("meta.value.content.kind.bookmark"),
     guides: translate("meta.value.content.kind.guide"),
@@ -257,7 +257,7 @@ export const getCollectionsFeeds = async (
     where: { ids: pagesWithFeed },
   });
   const { entries: entriesWithDynamicFeed } = await queryCollection(
-    ["blogCategories", "tags"],
+    ["blog.categories", "tags"],
     {
       format: "preview",
       orderBy: { key: "title", order: "ASC" },

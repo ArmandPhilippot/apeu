@@ -179,6 +179,28 @@ export type NotePreview = Omit<
   keyof RenderedContent | "i18n" | "seo" | "slug"
 >;
 
+export type IndexPageMetaData = Omit<
+  CollectionEntry<"index.pages">["data"]["meta"],
+  "isDraft"
+> &
+  RemarkPluginFrontmatterMeta;
+
+export type IndexPage = Pick<
+  CollectionEntry<"index.pages">,
+  "collection" | "id"
+> &
+  Omit<RenderedContent, "remarkPluginFrontmatter"> &
+  Omit<CollectionEntry<"index.pages">["data"], "i18n" | "cover" | "meta"> & {
+    cover?: Img | null | undefined;
+    meta: PageMetaData;
+    seo: SEO;
+  };
+
+export type IndexPagePreview = Omit<
+  IndexPage,
+  keyof RenderedContent | "i18n" | "seo" | "slug"
+>;
+
 export type PageMetaData = Omit<
   CollectionEntry<"pages">["data"]["meta"],
   "isDraft"

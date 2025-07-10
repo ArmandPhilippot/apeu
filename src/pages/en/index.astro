@@ -28,23 +28,26 @@ const author = await queryEntry({
   collection: "authors",
   id: "armand-philippot",
 });
-const { entries: collections } = await queryCollection("pages", {
-  format: "preview",
-  orderBy: { key: "title", order: "ASC" },
-  where: {
-    ids: [
-      `${locale}/blog`,
-      `${locale}/blogroll`,
-      `${locale}/bookmarks`,
-      `${locale}/contributions`,
-      `${locale}/guides`,
-      `${locale}/notes`,
-      `${locale}/projects`,
-      `${locale}/tags`,
-    ],
-    locale,
-  },
-});
+const { entries: collections } = await queryCollection(
+  ["index.pages", "pages"],
+  {
+    format: "preview",
+    orderBy: { key: "title", order: "ASC" },
+    where: {
+      ids: [
+        `${locale}/blog`,
+        `${locale}/blogroll`,
+        `${locale}/bookmarks`,
+        `${locale}/contributions`,
+        `${locale}/guides`,
+        `${locale}/notes`,
+        `${locale}/projects`,
+        `${locale}/tags`,
+      ],
+      locale,
+    },
+  }
+);
 const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
   await getPersonGraph(author, locale),
   getWebSiteGraph({

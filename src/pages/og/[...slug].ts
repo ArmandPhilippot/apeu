@@ -5,6 +5,7 @@ const collections = await queryCollection([
   "blog.categories",
   "blog.posts",
   "guides",
+  "index.pages",
   "notes",
   "pages",
   "projects",

@@ -13,7 +13,7 @@ const { locale, route, translate, translatePlural } = useI18n(
   Astro.currentLocale
 );
 const { Content, ...page } = await queryEntry({
-  collection: "pages",
+  collection: "index.pages",
   id: "projects",
   locale,
 });

@@ -12,6 +12,7 @@ import { getNote, getNotePreview } from "./formatters/notes";
 import { getPage, getPagePreview } from "./formatters/pages";
 import { getProject, getProjectPreview } from "./formatters/projects";
 import { getTaxonomy, getTaxonomyPreview } from "./formatters/taxonomies";
+import { getIndexPage, getIndexPagePreview } from "./formatters/index-pages";
 
 export type EntryFormat = "full" | "preview";
 
@@ -26,6 +27,9 @@ export type FormatEntryReturnMap<F extends EntryFormat | undefined> = {
   blogroll: typeof getBlog;
   bookmarks: typeof getBookmark;
   guides: F extends "full" ? typeof getGuide : typeof getGuidePreview;
+  "index.pages": F extends "full"
+    ? typeof getIndexPage
+    : typeof getIndexPagePreview;
   notes: F extends "full" ? typeof getNote : typeof getNotePreview;
   pages: F extends "full" ? typeof getPage : typeof getPagePreview;
   projects: F extends "full" ? typeof getProject : typeof getProjectPreview;
@@ -74,6 +78,8 @@ export async function formatEntry<
       return getBookmark(entry);
     case "guides":
       return isFullVersion ? getGuide(entry) : getGuidePreview(entry);
+    case "index.pages":
+      return isFullVersion ? getIndexPage(entry) : getIndexPagePreview(entry);
     case "notes":
       return isFullVersion ? getNote(entry) : getNotePreview(entry);
     case "pages":

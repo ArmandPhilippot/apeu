@@ -144,6 +144,7 @@ const getItemCategoryFromCollection = (
     blogroll: translate("meta.value.content.kind.blogroll"),
     bookmarks: translate("meta.value.content.kind.bookmark"),
     guides: translate("meta.value.content.kind.guide"),
+    "index.pages": translate("meta.value.content.kind.page"),
     notes: translate("meta.value.content.kind.note"),
     pages: translate("meta.value.content.kind.page"),
     projects: translate("meta.value.content.kind.project"),

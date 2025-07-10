@@ -6,6 +6,7 @@ import {
   blogrollFixture,
   bookmarkFixture,
   guideFixture,
+  indexPageFixture,
   noteFixture,
   pageFixture,
   projectFixture,
@@ -21,6 +22,7 @@ import { getNote, getNotePreview } from "./formatters/notes";
 import { getPage, getPagePreview } from "./formatters/pages";
 import { getProject, getProjectPreview } from "./formatters/projects";
 import { getTaxonomy, getTaxonomyPreview } from "./formatters/taxonomies";
+import { getIndexPage, getIndexPagePreview } from "./formatters/index-pages";
 
 describe("format-entry", () => {
   it("can format an author using default full format", async () => {
@@ -94,6 +96,24 @@ describe("format-entry", () => {
 
     expect(JSON.stringify(result)).toStrictEqual(JSON.stringify(guidePreview));
   });
+
+    it("can format an index page using default full format", async () => {
+      expect.assertions(1);
+
+      const result = await formatEntry(indexPageFixture);
+      const fullPage = await getIndexPage(indexPageFixture);
+
+      expect(JSON.stringify(result)).toStrictEqual(JSON.stringify(fullPage));
+    });
+
+    it("can format an index page using preview format", async () => {
+      expect.assertions(1);
+
+      const result = await formatEntry(indexPageFixture, "preview");
+      const pagePreview = await getIndexPagePreview(indexPageFixture);
+
+      expect(JSON.stringify(result)).toStrictEqual(JSON.stringify(pagePreview));
+    });
 
   it("can format a note using default full format", async () => {
     expect.assertions(1);

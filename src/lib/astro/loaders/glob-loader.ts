@@ -37,8 +37,9 @@ const collectionsPattern = {
   blogroll: "blogroll/*.json",
   bookmarks: "bookmarks/*.json",
   guides: getLocalizedPattern("/guides/**/!(index).{md,mdx}"),
+  "index.pages": getLocalizedPattern("/!(pages)/**/index.{md,mdx}"),
   notes: getLocalizedPattern("/notes/**/!(index).{md,mdx}"),
-  pages: `{${getLocalizedPattern("/pages/**/*.{md,mdx}")},${getLocalizedPattern("/!(pages)/**/index.{md,mdx}")}}`,
+  pages: getLocalizedPattern("/pages/**/*.{md,mdx}"),
   projects: getLocalizedPattern("/projects/**/!(index).{md,mdx}"),
   tags: getLocalizedPattern("/tags/**/!(index).{md,mdx}"),
 };
@@ -58,7 +59,9 @@ const getCollectionEntryRoute = ({
 }: GetCollectionEntrySlugConfig) => {
   const { route } = useI18n(locale);
 
-  if (collection !== "pages") return `${route(collection)}/${slug}`;
+  if (collection !== "pages" && collection !== "index.pages") {
+    return `${route(collection)}/${slug}`;
+  }
 
   const id = slug.replaceAll("/", ".").replaceAll("-", ".");
   return isAvailableRoute(id) ? route(id) : `/${slug}`;

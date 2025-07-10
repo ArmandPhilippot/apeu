@@ -118,6 +118,27 @@ export const guideFixture = {
   id: "en/in-depth-guide",
 } as const satisfies CollectionEntry<"guides">;
 
+export const indexPageFixture = {
+  collection: "index.pages",
+  data: {
+    description: "The page description.",
+    locale: "en",
+    meta: {
+      isDraft: false,
+      publishedOn: new Date("2024-09-22T20:54:19.962Z"),
+      updatedOn: new Date("2024-09-22T20:54:19.962Z"),
+    },
+    route: "/generic-page",
+    seo: {
+      description: "The page description for search engines.",
+      title: "The page title for search engines",
+    },
+    slug: "generic-page",
+    title: "The page title",
+  },
+  id: "en/generic-page",
+} as const satisfies CollectionEntry<"index.pages">;
+
 export const noteFixture = {
   collection: "notes",
   data: {

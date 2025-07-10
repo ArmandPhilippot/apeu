@@ -15,7 +15,7 @@ import { renderPaginationLink } from "../../utils/pagination";
 
 export const getStaticPaths = (async ({ paginate }) => {
   const currentPage = await queryEntry({
-    collection: "pages",
+    collection: "index.pages",
     id: "bookmarks",
     locale: "fr",
   });

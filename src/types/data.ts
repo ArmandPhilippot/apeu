@@ -1,5 +1,6 @@
 import type { LocalImageProps, RemoteImageProps } from "astro:assets";
 import type { CollectionEntry, RenderResult } from "astro:content";
+import type { AvailableLanguage } from "../utils/i18n";
 
 type RenderedContent = RenderResult & {
   hasContent: boolean;
@@ -281,3 +282,10 @@ export type FeedCompatibleEntry =
   | Note
   | Project
   | Taxonomy;
+
+export type RouteIndexItem = {
+  route: string;
+  id: string;
+  locale: AvailableLanguage;
+  title: string;
+};

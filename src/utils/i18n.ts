@@ -1,6 +1,7 @@
 import { translations } from "../translations";
 import type { KeyOfType, LooseAutocomplete } from "../types/utilities";
 import { CONFIG } from "./constants";
+import { normalizeRoute } from "./routes";
 import { isString } from "./type-checks";
 
 export type AvailableLanguage = keyof typeof translations;
@@ -152,8 +153,8 @@ export const useI18n: UseI18n = (
         : translations[localeOverride].routes;
     const slug = localizedRoutes[key];
 
-    if (isDefaultLanguage(localeOverride)) return slug;
-    return `/${localeOverride}${slug}`;
+    if (isDefaultLanguage(localeOverride)) return normalizeRoute(slug);
+    return normalizeRoute(`/${localeOverride}${slug}`);
   };
 
   const translate: TranslateSingularKeys = (key, interpolations) => {

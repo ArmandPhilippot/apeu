@@ -7,6 +7,7 @@ import {
   type AvailableLanguage,
 } from "../../../utils/i18n";
 import { isString } from "../../../utils/type-checks";
+import { normalizeRoute } from "../../../utils/routes";
 
 /* This is not a supported usage, so it could break. Currently `import.meta.
  * env` doesn't work anymore when using a path outside the project's root (ie.
@@ -115,7 +116,9 @@ export const globLoader = (collection: Collection): Loader => {
             collection,
             originalId
           );
-          const route = getCollectionEntryRoute({ collection, locale, slug });
+          const route = normalizeRoute(
+            getCollectionEntryRoute({ collection, locale, slug })
+          );
           ctx.store.set({
             ...entry,
             data: {

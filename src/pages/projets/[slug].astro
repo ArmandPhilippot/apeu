@@ -6,9 +6,10 @@ import { components } from "../../components/mdx";
 import CollectionMeta from "../../components/organisms/collection-meta/collection-meta.astro";
 import PageLayout from "../../components/templates/page-layout/page-layout.astro";
 import { queryCollection } from "../../lib/astro/collections";
+import { getRouteIndex } from "../../lib/astro/route-index";
 import { getArticleGraph } from "../../lib/schema-dts/graphs/article-graph";
 import { getWebPageGraph } from "../../lib/schema-dts/graphs/webpage-graph";
-import { useI18n } from "../../utils/i18n";
+import { getBreadcrumb } from "../../utils/breadcrumb";
 
 export const getStaticPaths = (async () => {
   const { entries: projects } = await queryCollection("projects", {
@@ -24,12 +25,11 @@ export const getStaticPaths = (async () => {
 }) satisfies GetStaticPaths;
 
 const { Content, ...page } = Astro.props;
-const { route, translate } = useI18n(Astro.currentLocale);
-const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
-  { label: translate("page.home.title"), url: route("home") },
-  { label: translate("page.projects.title"), url: route("projects") },
-  { label: page.title, url: Astro.url.href },
-];
+const routeIndex = await getRouteIndex();
+const breadcrumb = getBreadcrumb({
+  route: Astro.url.pathname,
+  routeIndex,
+});
 const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
   await getWebPageGraph({ ...page, breadcrumb }),
   await getArticleGraph(page),

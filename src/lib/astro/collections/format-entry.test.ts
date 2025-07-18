@@ -97,23 +97,23 @@ describe("format-entry", () => {
     expect(JSON.stringify(result)).toStrictEqual(JSON.stringify(guidePreview));
   });
 
-    it("can format an index page using default full format", async () => {
-      expect.assertions(1);
+  it("can format an index page using default full format", async () => {
+    expect.assertions(1);
 
-      const result = await formatEntry(indexPageFixture);
-      const fullPage = await getIndexPage(indexPageFixture);
+    const result = await formatEntry(indexPageFixture);
+    const fullPage = await getIndexPage(indexPageFixture);
 
-      expect(JSON.stringify(result)).toStrictEqual(JSON.stringify(fullPage));
-    });
+    expect(JSON.stringify(result)).toStrictEqual(JSON.stringify(fullPage));
+  });
 
-    it("can format an index page using preview format", async () => {
-      expect.assertions(1);
+  it("can format an index page using preview format", async () => {
+    expect.assertions(1);
 
-      const result = await formatEntry(indexPageFixture, "preview");
-      const pagePreview = await getIndexPagePreview(indexPageFixture);
+    const result = await formatEntry(indexPageFixture, "preview");
+    const pagePreview = await getIndexPagePreview(indexPageFixture);
 
-      expect(JSON.stringify(result)).toStrictEqual(JSON.stringify(pagePreview));
-    });
+    expect(JSON.stringify(result)).toStrictEqual(JSON.stringify(pagePreview));
+  });
 
   it("can format a note using default full format", async () => {
     expect.assertions(1);

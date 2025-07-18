@@ -6,7 +6,9 @@ import CollectionCard from "../../components/organisms/collection-card/collectio
 import CollectionMeta from "../../components/organisms/collection-meta/collection-meta.astro";
 import PageLayout from "../../components/templates/page-layout/page-layout.astro";
 import { queryCollection, queryEntry } from "../../lib/astro/collections";
+import { getRouteIndex } from "../../lib/astro/route-index";
 import { getWebPageGraph } from "../../lib/schema-dts/graphs/webpage-graph";
+import { getBreadcrumb } from "../../utils/breadcrumb";
 import { useI18n } from "../../utils/i18n";
 
 const { locale, route, translate, translatePlural } = useI18n(
@@ -22,10 +24,11 @@ const { entries: notes, total } = await queryCollection("notes", {
   orderBy: { key: "publishedOn", order: "DESC" },
   where: { locale: "fr" },
 });
-const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
-  { label: translate("page.home.title"), url: route("home") },
-  { label: page.title, url: Astro.url.href },
-];
+const routeIndex = await getRouteIndex();
+const breadcrumb = getBreadcrumb({
+  route: Astro.url.pathname,
+  routeIndex,
+});
 const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
   await getWebPageGraph({ ...page, breadcrumb }),
 ];

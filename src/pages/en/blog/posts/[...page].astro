@@ -8,7 +8,9 @@ import CollectionMeta from "../../../../components/organisms/collection-meta/col
 import Pagination from "../../../../components/organisms/pagination/pagination.astro";
 import PageLayout from "../../../../components/templates/page-layout/page-layout.astro";
 import { queryCollection, queryEntry } from "../../../../lib/astro/collections";
+import { getRouteIndex } from "../../../../lib/astro/route-index";
 import { getWebPageGraph } from "../../../../lib/schema-dts/graphs/webpage-graph";
+import { getBreadcrumb } from "../../../../utils/breadcrumb";
 import { CONFIG } from "../../../../utils/constants";
 import { useI18n } from "../../../../utils/i18n";
 import { renderPaginationLink } from "../../../../utils/pagination";
@@ -53,12 +55,12 @@ const pageLabel = translate("page.paginated.label", {
   number: pagination.currentPage,
 });
 
-const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
-  { label: translate("page.home.title"), url: route("home") },
-  { label: translate("page.blog.title"), url: route("blog") },
-  { label: page.title, url: Astro.url.href },
-  isFirstPage ? null : { label: pageLabel, url: Astro.url.href },
-].filter((crumb) => !!crumb);
+const routeIndex = await getRouteIndex();
+const breadcrumb = getBreadcrumb({
+  paginationLabel: isFirstPage ? undefined : pageLabel,
+  route: Astro.url.pathname,
+  routeIndex,
+});
 const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
   await getWebPageGraph({ ...page, breadcrumb }),
 ];

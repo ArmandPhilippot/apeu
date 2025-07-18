@@ -7,7 +7,9 @@ import CollectionCard from "../../../../../components/organisms/collection-card/
 import CollectionMeta from "../../../../../components/organisms/collection-meta/collection-meta.astro";
 import PageLayout from "../../../../../components/templates/page-layout/page-layout.astro";
 import { queryCollection } from "../../../../../lib/astro/collections";
+import { getRouteIndex } from "../../../../../lib/astro/route-index";
 import { getWebPageGraph } from "../../../../../lib/schema-dts/graphs/webpage-graph";
+import { getBreadcrumb } from "../../../../../utils/breadcrumb";
 import { useI18n } from "../../../../../utils/i18n";
 
 export const getStaticPaths = (async () => {
@@ -24,16 +26,12 @@ export const getStaticPaths = (async () => {
 }) satisfies GetStaticPaths;
 
 const { Content, ...page } = Astro.props;
-const { route, translate, translatePlural } = useI18n(Astro.currentLocale);
-const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
-  { label: translate("page.home.title"), url: route("home") },
-  { label: translate("page.blog.title"), url: route("blog") },
-  {
-    label: translate("page.blog.categories.title"),
-    url: route("blog.categories"),
-  },
-  { label: page.title, url: Astro.url.href },
-];
+const { translate, translatePlural } = useI18n(Astro.currentLocale);
+const routeIndex = await getRouteIndex();
+const breadcrumb = getBreadcrumb({
+  route: Astro.url.pathname,
+  routeIndex,
+});
 const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
   await getWebPageGraph({ ...page, breadcrumb }),
 ];

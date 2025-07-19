@@ -87,7 +87,7 @@
     "unist-util-visit": "^5.0.0",
     "unist-util-visit-parents": "^6.0.1",
     "vfile": "^6.0.3",
-    "zod": "^3.25.76",
+    "zod": "^4.0.5",
     "zod-form-data": "^2.0.7"
   },
   "devDependencies": {

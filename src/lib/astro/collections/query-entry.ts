@@ -4,13 +4,10 @@ import {
   type CollectionKey,
 } from "astro:content";
 import type { AvailableLanguage } from "../../../utils/i18n";
-import {
-  formatEntry,
-  type EntryFormat,
-  type FormatEntryReturnMap,
-} from "./format-entry";
+import type { QueryMode } from "../../../types/data";
+import { formatEntry, type FormatEntryReturnMap } from "./format-entry";
 
-type QueryEntryOptions<C extends CollectionKey, F extends EntryFormat> = {
+type QueryEntryOptions<C extends CollectionKey, F extends QueryMode> = {
   collection: C;
   format?: F;
   id: CollectionEntry<C>["id"];
@@ -27,7 +24,7 @@ type QueryEntryOptions<C extends CollectionKey, F extends EntryFormat> = {
  */
 export const queryEntry = async <
   C extends CollectionKey,
-  F extends EntryFormat = "full",
+  F extends QueryMode = "full",
 >({
   collection,
   format,
@@ -46,4 +43,4 @@ export const queryEntry = async <
   }
 
   return formatEntry<C, F>(entry, format);
-};
+};;

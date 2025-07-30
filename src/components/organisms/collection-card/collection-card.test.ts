@@ -40,6 +40,7 @@ describe("CollectionCard", () => {
         description: "Test description",
         locale: "en",
         route: "/test",
+        slug: "test",
         title: "Test Post",
       },
     } satisfies ComponentProps<typeof CollectionCard>;
@@ -67,6 +68,7 @@ describe("CollectionCard", () => {
           publishedOn: new Date("2024-01-01"),
         },
         route: "/test",
+        slug: "test",
         title: "Test Post",
       },
       featuredMeta: {
@@ -96,6 +98,7 @@ describe("CollectionCard", () => {
         id: "blog-post",
         locale: "en",
         route: "/test",
+        slug: "test",
         title: "Test Post",
       },
     } satisfies ComponentProps<typeof CollectionCard>;
@@ -127,6 +130,7 @@ describe("CollectionCard", () => {
         id: "post",
         locale: "en",
         route: "/test",
+        slug: "test",
         title: "Test Post",
       },
     } satisfies ComponentProps<typeof CollectionCard>;
@@ -200,6 +204,7 @@ describe("CollectionCard", () => {
         id: "post",
         locale: "en",
         route: "/test",
+        slug: "test",
         title: "Test Post",
       },
       headingLvl: "h3",
@@ -245,6 +250,7 @@ describe("CollectionCard", () => {
         id: "post",
         locale: "en",
         route: "/test",
+        slug: "test",
         title: "Test Post",
       },
       cta: {
@@ -272,6 +278,7 @@ describe("CollectionCard", () => {
         id: "post",
         locale: "en",
         route: "/test",
+        slug: "test",
         title: "Test Post",
       },
       showCollection: true,
@@ -296,6 +303,7 @@ describe("CollectionCard", () => {
         id: "post",
         locale: "en",
         route: "/test",
+        slug: "test",
         title: "Test Post",
       },
     } satisfies ComponentProps<typeof CollectionCard>;

@@ -37,6 +37,7 @@ describe("getArticleGraph", () => {
         description: "Quam omnis in temporibus.",
         locale: CONFIG.LANGUAGES.DEFAULT,
         meta: {
+          
           publishedOn: new Date("2024-10-09T13:55:57.813Z"),
           updatedOn: new Date("2024-10-09T13:55:57.813Z"),
         },

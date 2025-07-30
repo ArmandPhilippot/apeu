@@ -17,6 +17,7 @@ nlcst
 pagefind
 pnpmDedupe
 rehype
+routability
 shiki
 stackoverflow
 stylelint

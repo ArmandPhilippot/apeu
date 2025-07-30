@@ -4,14 +4,32 @@ import {
   type CollectionEntry,
   type CollectionKey,
 } from "astro:content";
-import type { AltLanguage, TaxonomyLink } from "../../../../types/data";
+import type {
+  AltLanguage,
+  RawTaxonomyEntry,
+  TaxonomyLink,
+} from "../../../../types/data";
 import type { CollectionReference } from "../../../../types/utilities";
 import {
   isAvailableLanguage,
   type AvailableLanguage,
 } from "../../../../utils/i18n";
 import { isObject, isString } from "../../../../utils/type-checks";
-import { getTaxonomyLink } from "./taxonomies";
+
+/**
+ * Convert a taxonomy collection entry to a TaxonomyLink object.
+ *
+ * @param {RawTaxonomyEntry} taxonomy - The taxonomy collection entry.
+ * @returns {Promise<TaxonomyLink>} An object describing the taxonomy link.
+ */
+export const getTaxonomyLink = (taxonomy: RawTaxonomyEntry): TaxonomyLink => {
+  const { route, title } = taxonomy.data;
+
+  return {
+    route,
+    title,
+  };
+};
 
 /**
  * Retrieve full entries from content collection references.

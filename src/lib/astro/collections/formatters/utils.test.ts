@@ -1,6 +1,10 @@
 import { getEntry } from "astro:content";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { resolveTranslations } from "./utils";
+import {
+  blogCategoryFixture,
+  tagFixture,
+} from "../../../../../tests/fixtures/collections";
+import { getTaxonomyLink, resolveTranslations } from "./utils";
 
 vi.mock("astro:content", async () => {
   const originalModule = await vi.importActual("astro:content");
@@ -30,6 +34,30 @@ type GetEntryMock = (ref: {
   | Promise<{ id: string; data: { route: string } } | null>
   | { id: string; data: { route: string } }
   | null;
+
+describe("get-taxonomy-link", () => {
+  it("returns a taxonomy link from a blog category entry", () => {
+    const result = getTaxonomyLink(blogCategoryFixture);
+
+    expect(result).toMatchInlineSnapshot(`
+      {
+        "route": "/blog/category/micro-blog",
+        "title": "The category title",
+      }
+    `);
+  });
+
+  it("returns a taxonomy link from a tag entry", () => {
+    const result = getTaxonomyLink(tagFixture);
+
+    expect(result).toMatchInlineSnapshot(`
+      {
+        "route": "/tags/catchall-tag",
+        "title": "The tag title",
+      }
+    `);
+  });
+});
 
 describe("resolveTranslations", () => {
   beforeEach(() => {

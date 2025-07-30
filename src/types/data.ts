@@ -1,6 +1,42 @@
 import type { LocalImageProps, RemoteImageProps } from "astro:assets";
-import type { CollectionEntry, RenderResult } from "astro:content";
+import type {
+  CollectionEntry,
+  CollectionKey,
+  RenderResult,
+} from "astro:content";
 import type { AvailableLanguage } from "../utils/i18n";
+import type { RoutableCollectionKey } from "./routing";
+import type { ConditionallyExtend, PatchExistingProperties } from "./utilities";
+
+export type AltLanguage = {
+  locale: string;
+  route: string;
+};
+
+export type Crumb = {
+  label: string;
+  url: string;
+};
+
+export type HeadingNode = {
+  children?: HeadingNode[] | null | undefined;
+  label: string;
+  slug: string;
+};
+
+export type HTTPStatus = {
+  CODE: number;
+  TEXT: string;
+};
+
+export type Img = Omit<
+  LocalImageProps | RemoteImageProps,
+  "alt" | "width" | "height"
+> & {
+  alt?: string | null | undefined;
+  height?: number | undefined;
+  width?: number | undefined;
+};
 
 type RenderedContent = RenderResult & {
   hasContent: boolean;
@@ -32,11 +68,6 @@ export type RemarkPluginFrontmatterMeta = {
   readingTime?: ReadingTime | undefined;
 };
 
-export type AltLanguage = {
-  locale: string;
-  route: string;
-};
-
 export type SEO = {
   author?: Omit<AuthorLink, "isWebsiteOwner"> | null | undefined;
   canonical?: string | null | undefined;
@@ -47,222 +78,239 @@ export type SEO = {
   title: string;
 };
 
-export type Author = Pick<CollectionEntry<"authors">, "collection" | "id"> &
-  Omit<CollectionEntry<"authors">["data"], "avatar"> & {
-    avatar?: Img | null | undefined;
-  };
+type ComputedFields = {
+  locale: string;
+  route: string;
+  slug: string;
+};
 
-export type AuthorLink = Pick<Author, "isWebsiteOwner" | "name" | "website">;
+/**
+ * Add ComputedFields to a type only if the collection key is routable.
+ *
+ * @template T - The base type to potentially extend with computed fields.
+ * @template K - The collection key to check for routability.
+ *
+ * @example
+ * ```typescript
+ * // Usage in your FormattedEntry type
+ * export type FormattedEntry<
+ *   T extends CollectionKey,
+ *   Mode extends QueryMode = "preview",
+ * > = AddComputedFieldsIfRoutable<
+ *   Pick<CollectionEntry<T>, "collection" | "id"> & {
+ *     data: PatchMeta<CollectionEntry<T>["data"]>;
+ *   },
+ *   T
+ * > & (Mode extends "full"
+ *   ? Omit<RenderedContent, "remarkPluginFrontmatter">
+ *   : unknown);
+ * ```
+ */
+type AddComputedFieldsIfRoutable<T, K> = ConditionallyExtend<
+  T,
+  K,
+  RoutableCollectionKey,
+  ComputedFields
+>;
 
+export type QueryMode = "full" | "preview";
+
+/**
+ * Determine valid query modes based on collection routability. Only routable
+ * collections can use query modes; non-routable collections return never.
+ *
+ * @template K - The collection key to check for routability.
+ *
+ * @example
+ * ```typescript
+ * type BlogModes = ValidQueryMode<"blog">; // "preview" | "full"
+ * type AuthorModes = ValidQueryMode<"authors">; // never
+ * ```
+ */
+export type ValidQueryMode<K> = K extends RoutableCollectionKey
+  ? QueryMode
+  : never;
+
+/**
+ * Add rendered content fields only if the collection is routable and mode is "full".
+ *
+ * @template T - The base type to potentially extend with rendered content.
+ * @template K - The collection key to check for routability.
+ * @template Mode - The query mode to check.
+ *
+ * @example
+ * ```typescript
+ * // For routable collection in full mode: adds RenderedContent
+ * type BlogFull = AddRenderedContentIfApplicable<BaseType, "blog", "full">;
+ *
+ * // For non-routable collection: never adds RenderedContent regardless of mode
+ * type AuthorFull = AddRenderedContentIfApplicable<BaseType, "authors", "full">;
+ *
+ * // For routable collection in preview mode: doesn't add RenderedContent
+ * type BlogPreview = AddRenderedContentIfApplicable<BaseType, "blog", "preview">;
+ * ```
+ */
+type AddRenderedContentIfApplicable<T, K, Mode> =
+  K extends RoutableCollectionKey
+    ? Mode extends "full"
+      ? T & Omit<RenderedContent, "remarkPluginFrontmatter"> & { seo: SEO }
+      : T
+    : T;
+
+/**
+ * Add both computed fields (if routable) and rendered content (if routable +
+ * full mode).
+ *
+ * @template T - The base type to extend.
+ * @template K - The collection key to check for routability.
+ * @template Mode - The query mode to check.
+ */
+type AddCollectionFeatures<T, K, Mode> = AddRenderedContentIfApplicable<
+  AddComputedFieldsIfRoutable<T, K>,
+  K,
+  Mode
+>;
+
+type UpdatedMetaPropertiesTypes = {
+  authors: AuthorLink[];
+  category: TaxonomyLink | null;
+  tags: TaxonomyLink[] | null;
+};
+
+type UpdatedRootPropertiesTypes = {
+  avatar: Img | null | undefined;
+  cover: Img | null | undefined;
+};
+
+/**
+ * Transform the meta object of a collection entry data.
+ * Removes specific fields, patches existing properties, and adds remark plugin data.
+ *
+ * @template T - The collection entry data type to transform.
+ */
+type TransformMeta<T extends CollectionEntry<CollectionKey>["data"]> =
+  "meta" extends keyof T
+    ? {
+        meta: PatchExistingProperties<
+          Omit<T["meta"], "isDraft"> & RemarkPluginFrontmatterMeta,
+          UpdatedMetaPropertiesTypes,
+          true
+        >;
+      }
+    : unknown;
+
+/**
+ * Transform root data for preview mode (excludes seo).
+ *
+ * @template T - The collection entry data type to transform.
+ */
+type TransformRootDataPreview<
+  T extends CollectionEntry<CollectionKey>["data"],
+> = PatchExistingProperties<
+  Omit<T, "i18n" | "meta" | "seo">,
+  UpdatedRootPropertiesTypes
+>;
+
+/**
+ * Transform root data for full mode (includes seo).
+ *
+ * @template T - The collection entry data type to transform.
+ */
+type TransformRootDataFull<T extends CollectionEntry<CollectionKey>["data"]> =
+  PatchExistingProperties<Omit<T, "i18n" | "meta">, UpdatedRootPropertiesTypes>;
+
+/**
+ * Conditionally transform root data based on collection type and mode.
+ * Non-routable collections always get the "full" treatment (including seo).
+ *
+ * @template T - The collection entry data type to transform.
+ * @template K - The collection key.
+ * @template Mode - The query mode to check.
+ */
+type TransformRootDataConditional<
+  T extends CollectionEntry<CollectionKey>["data"],
+  K extends CollectionKey,
+  Mode extends QueryMode,
+> = K extends RoutableCollectionKey
+  ? Mode extends "full"
+    ? TransformRootDataFull<T>
+    : TransformRootDataPreview<T>
+  : TransformRootDataFull<T>; // Non-routable collections always get full data
+
+/**
+ * The main entry type that represents a queried and transformed collection entry.
+ * Applies all transformations and conditionally adds routable collection features.
+ *
+ * @template T - The collection key type.
+ * @template Mode - The query mode ("preview" or "full" for routable collections).
+ *
+ * @example
+ * ```typescript
+ * // Routable collection with full content
+ * type BlogPost = FormattedEntry<"blog.posts", "full">;
+ *
+ * // Routable collection with preview (no rendered content)
+ * type BlogPreview = FormattedEntry<"blog.posts", "preview">;
+ *
+ * // Non-routable collection (mode not applicable)
+ * type Author = FormattedEntry<"authors">;
+ * ```
+ */
+export type FormattedEntry<
+  T extends CollectionKey,
+  Mode extends ValidQueryMode<T> = T extends RoutableCollectionKey
+    ? "preview"
+    : never,
+> = AddCollectionFeatures<
+  Pick<CollectionEntry<T>, "collection" | "id"> &
+    TransformRootDataConditional<CollectionEntry<T>["data"], T, Mode> &
+    TransformMeta<CollectionEntry<T>["data"]>,
+  T,
+  Mode
+>;
+
+export type Author = FormattedEntry<"authors">;
 export type AuthorPreview = Omit<
   Author,
   "email" | "firstName" | "firstNameIPA" | "lastName" | "lastNameIPA"
 >;
+export type AuthorLink = Pick<Author, "isWebsiteOwner" | "name" | "website">;
 
-export type Crumb = {
-  label: string;
-  url: string;
-};
+export type BlogPost = FormattedEntry<"blog.posts", "full">;
+export type BlogPostPreview = FormattedEntry<"blog.posts">;
+export type BlogPostMetaData = BlogPost["meta"];
 
-export type HeadingNode = {
-  children?: HeadingNode[] | null | undefined;
-  label: string;
-  slug: string;
-};
+export type Blog = FormattedEntry<"blogroll">;
+export type BlogMetaData = Blog["meta"];
 
-export type HTTPStatus = {
-  CODE: number;
-  TEXT: string;
-};
+export type Bookmark = FormattedEntry<"bookmarks">;
+export type BookmarkMetaData = Bookmark["meta"];
 
-export type Img = Omit<
-  LocalImageProps | RemoteImageProps,
-  "alt" | "width" | "height"
-> & {
-  alt?: string | null | undefined;
-  height?: number | undefined;
-  width?: number | undefined;
-};
+export type Guide = FormattedEntry<"guides", "full">;
+export type GuidePreview = FormattedEntry<"guides">;
+export type GuideMetaData = Guide["meta"];
 
-export type BlogMetaData = Omit<
-  CollectionEntry<"blogroll">["data"]["meta"],
-  "isDraft" | "tags"
-> & {
-  tags?: TaxonomyLink[] | null | undefined;
-};
+export type IndexPage = FormattedEntry<"index.pages", "full">;
+export type IndexPagePreview = FormattedEntry<"index.pages">;
+export type IndexPageMetaData = IndexPage["meta"];
 
-export type Blog = Pick<CollectionEntry<"blogroll">, "collection" | "id"> &
-  Omit<CollectionEntry<"blogroll">["data"], "meta"> & {
-    meta: BlogMetaData;
-  };
+export type Note = FormattedEntry<"notes", "full">;
+export type NotePreview = FormattedEntry<"notes">;
+export type NoteMetaData = Note["meta"];
 
-export type BlogPostMetaData = Omit<
-  CollectionEntry<"blog.posts">["data"]["meta"],
-  "authors" | "category" | "isDraft" | "tags"
-> &
-  RemarkPluginFrontmatterMeta & {
-    authors: AuthorLink[];
-    category?: TaxonomyLink | null | undefined;
-    tags?: TaxonomyLink[] | null | undefined;
-  };
+export type Page = FormattedEntry<"pages", "full">;
+export type PagePreview = FormattedEntry<"pages">;
+export type PageMetaData = Page["meta"];
 
-export type BlogPost = Pick<
-  CollectionEntry<"blog.posts">,
-  "collection" | "id"
-> &
-  Omit<RenderedContent, "remarkPluginFrontmatter"> &
-  Omit<CollectionEntry<"blog.posts">["data"], "cover" | "i18n" | "meta"> & {
-    cover?: Img | null | undefined;
-    meta: BlogPostMetaData;
-    seo: SEO;
-  };
-
-export type BlogPostPreview = Omit<
-  BlogPost,
-  keyof RenderedContent | "i18n" | "meta" | "seo" | "slug"
-> & {
-  meta: Omit<BlogPostMetaData, "authors">;
-};
-
-export type BookmarkMetaData = Omit<
-  CollectionEntry<"bookmarks">["data"]["meta"],
-  "isDraft" | "tags"
-> & {
-  tags?: TaxonomyLink[] | null | undefined;
-};
-
-export type Bookmark = Pick<CollectionEntry<"bookmarks">, "collection" | "id"> &
-  Omit<CollectionEntry<"bookmarks">["data"], "meta"> & {
-    meta: BookmarkMetaData;
-  };
-
-export type GuideMetaData = Omit<
-  CollectionEntry<"guides">["data"]["meta"],
-  "authors" | "isDraft" | "tags"
-> &
-  RemarkPluginFrontmatterMeta & {
-    authors: AuthorLink[];
-    tags?: TaxonomyLink[] | null | undefined;
-  };
-
-export type Guide = Pick<CollectionEntry<"guides">, "collection" | "id"> &
-  Omit<RenderedContent, "remarkPluginFrontmatter"> &
-  Omit<CollectionEntry<"guides">["data"], "i18n" | "cover" | "meta"> & {
-    cover?: Img | null | undefined;
-    meta: GuideMetaData;
-    seo: SEO;
-  };
-
-export type GuidePreview = Omit<
-  Guide,
-  keyof RenderedContent | "i18n" | "meta" | "seo" | "slug"
-> & {
-  meta: Omit<GuideMetaData, "authors">;
-};
-
-export type NoteMetaData = Omit<
-  CollectionEntry<"notes">["data"]["meta"],
-  "isDraft" | "tags"
-> &
-  RemarkPluginFrontmatterMeta & {
-    tags?: TaxonomyLink[] | null | undefined;
-  };
-
-export type Note = Pick<CollectionEntry<"notes">, "collection" | "id"> &
-  Omit<RenderedContent, "remarkPluginFrontmatter"> &
-  Omit<CollectionEntry<"notes">["data"], "i18n" | "meta"> & {
-    meta: NoteMetaData;
-    seo: SEO;
-  };
-
-export type NotePreview = Omit<
-  Note,
-  keyof RenderedContent | "i18n" | "seo" | "slug"
->;
-
-export type IndexPageMetaData = Omit<
-  CollectionEntry<"index.pages">["data"]["meta"],
-  "isDraft"
-> &
-  RemarkPluginFrontmatterMeta;
-
-export type IndexPage = Pick<
-  CollectionEntry<"index.pages">,
-  "collection" | "id"
-> &
-  Omit<RenderedContent, "remarkPluginFrontmatter"> &
-  Omit<CollectionEntry<"index.pages">["data"], "i18n" | "cover" | "meta"> & {
-    cover?: Img | null | undefined;
-    meta: PageMetaData;
-    seo: SEO;
-  };
-
-export type IndexPagePreview = Omit<
-  IndexPage,
-  keyof RenderedContent | "i18n" | "seo" | "slug"
->;
-
-export type PageMetaData = Omit<
-  CollectionEntry<"pages">["data"]["meta"],
-  "isDraft"
-> &
-  RemarkPluginFrontmatterMeta;
-
-export type Page = Pick<CollectionEntry<"pages">, "collection" | "id"> &
-  Omit<RenderedContent, "remarkPluginFrontmatter"> &
-  Omit<CollectionEntry<"pages">["data"], "i18n" | "cover" | "meta"> & {
-    cover?: Img | null | undefined;
-    meta: PageMetaData;
-    seo: SEO;
-  };
-
-export type PagePreview = Omit<
-  Page,
-  keyof RenderedContent | "i18n" | "seo" | "slug"
->;
-
-export type ProjectMetaData = Omit<
-  CollectionEntry<"projects">["data"]["meta"],
-  "isDraft" | "tags"
-> &
-  RemarkPluginFrontmatterMeta & {
-    tags?: TaxonomyLink[] | null | undefined;
-  };
-
-export type Project = Pick<CollectionEntry<"projects">, "collection" | "id"> &
-  Omit<RenderedContent, "remarkPluginFrontmatter"> &
-  Omit<CollectionEntry<"projects">["data"], "i18n" | "cover" | "meta"> & {
-    cover?: Img | null | undefined;
-    meta: ProjectMetaData;
-    seo: SEO;
-  };
-
-export type ProjectPreview = Omit<
-  Project,
-  keyof RenderedContent | "i18n" | "seo" | "slug"
->;
+export type Project = FormattedEntry<"projects", "full">;
+export type ProjectPreview = FormattedEntry<"projects">;
+export type ProjectMetaData = Project["meta"];
 
 export type RawTaxonomyEntry = CollectionEntry<"blog.categories" | "tags">;
-
-export type TaxonomyMetaData = Omit<
-  RawTaxonomyEntry["data"]["meta"],
-  "isDraft"
->;
-
-export type Taxonomy = Pick<RawTaxonomyEntry, "collection" | "id"> &
-  Omit<RenderedContent, "remarkPluginFrontmatter"> &
-  Omit<RawTaxonomyEntry["data"], "i18n" | "cover" | "meta"> & {
-    cover?: Img | null | undefined;
-    meta: TaxonomyMetaData;
-    seo: SEO;
-  };
-
-export type TaxonomyLink = Pick<Taxonomy, "route" | "title">;
-
-export type TaxonomyPreview = Omit<
-  Taxonomy,
-  keyof RenderedContent | "i18n" | "seo" | "slug"
->;
+export type Taxonomy = FormattedEntry<"blog.categories" | "tags", "full">;
+export type TaxonomyPreview = FormattedEntry<"blog.categories" | "tags">;
+export type TaxonomyMetaData = Taxonomy["meta"];
+export type TaxonomyLink = Pick<Taxonomy, "title"> & { route: string };
 
 export type CollectionMetaData =
   | BlogMetaData

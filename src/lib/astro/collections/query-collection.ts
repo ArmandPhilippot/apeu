@@ -4,7 +4,8 @@ import {
   type CollectionKey,
 } from "astro:content";
 import { isString } from "../../../utils/type-checks";
-import { formatEntry, type EntryFormat } from "./format-entry";
+import type { QueryMode } from "../../../types/data";
+import { formatEntry } from "./format-entry";
 import { applyCollectionFilters } from "./utils/filters";
 import { getOrderedEntries } from "./utils/ordering";
 import { updateEntriesTagsForLocale } from "./utils/transformations";
@@ -13,7 +14,7 @@ import type {
   QueryCollectionWhere,
 } from "./utils/types";
 
-type QueryCollectionOptions<C extends CollectionKey, F extends EntryFormat> = {
+type QueryCollectionOptions<C extends CollectionKey, F extends QueryMode> = {
   /**
    * Return only the given number of entries.
    */
@@ -38,10 +39,7 @@ type QueryCollectionOptions<C extends CollectionKey, F extends EntryFormat> = {
   where?: Partial<QueryCollectionWhere>;
 };
 
-export type QueriedCollection<
-  C extends CollectionKey,
-  F extends EntryFormat,
-> = {
+export type QueriedCollection<C extends CollectionKey, F extends QueryMode> = {
   /**
    * The queried collection entries.
    */
@@ -61,13 +59,13 @@ const paginateEntries = <C extends CollectionKey>(
     ? entries.slice(after)
     : entries.slice(after, after + first);
 
-const formatEntries = async <C extends CollectionKey, F extends EntryFormat>(
+const formatEntries = async <C extends CollectionKey, F extends QueryMode>(
   entries: CollectionEntry<C>[],
   format?: F
 ): Promise<Awaited<ReturnType<typeof formatEntry<C, F>>>[]> =>
   Promise.all(entries.map(async (entry) => formatEntry(entry, format)));
 
-const processEntries = async <C extends CollectionKey, F extends EntryFormat>(
+const processEntries = async <C extends CollectionKey, F extends QueryMode>(
   entries: CollectionEntry<C>[],
   options: Omit<QueryCollectionOptions<C, F>, "where"> = {}
 ): Promise<QueriedCollection<C, F>> => {
@@ -86,14 +84,14 @@ const processEntries = async <C extends CollectionKey, F extends EntryFormat>(
  * Query one or multiple collections at once using filters.
  *
  * @template C - CollectionKey.
- * @template F - EntryFormat.
+ * @template F - QueryMode.
  * @param {C | C[]} collections - The collections names.
  * @param {Partial<QueryCollectionOptions<C, F>>} options - The options used to filter the queried entries.
  * @returns {Promise<QueriedCollection<C, F>>} The collection entries.
  */
 export const queryCollection = async <
   C extends CollectionKey,
-  F extends EntryFormat = "full",
+  F extends QueryMode = "full",
 >(
   collections: C | C[],
   options: QueryCollectionOptions<C, F> = {}

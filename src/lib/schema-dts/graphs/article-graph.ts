@@ -5,14 +5,21 @@ import { getImgSrc } from "../../../utils/images";
 import { getWebsiteUrl } from "../../../utils/url";
 import { getDurationFromReadingTime } from "../values/duration";
 import { isString } from "../../../utils/type-checks";
+import type { Blend, RequireOnly } from "../../../types/utilities";
 import { getLanguageGraph } from "./language-graph";
 import { getPersonGraph } from "./person-graph";
 
+type ArticleCompatible = BlogPost | Guide | Note | Project;
+
 type ArticleData = Pick<
-  BlogPost | Guide | Note | Project,
-  "collection" | "description" | "locale" | "meta" | "route" | "title"
+  ArticleCompatible,
+  "collection" | "description" | "locale" | "route" | "title"
 > & {
   cover?: Img | null | undefined;
+  meta: RequireOnly<
+    Blend<ArticleCompatible["meta"]>,
+    "publishedOn" | "updatedOn"
+  >;
 };
 
 /**

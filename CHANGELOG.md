@@ -1,5 +1,31 @@
 # apeu
 
+## 1.1.0
+
+### Minor Changes
+
+- 5466b80: Drops support for Node v18.
+
+  Node v18 reaches end of life today (2025-04-30) and some other packages, like nanostores, have already dropped its supports. A version greater or equal to v20 is now required.
+
+- 80ad823: Prefixes local storage variables to avoid conflicts in dev mode.
+
+  If you have already define a theme for the website or for the code blocks, you'll need to configure it again because of the prefix change.
+
+- ad1cd30: Enables Astro experimental fonts API to manage fonts.
+
+  The fallback used when the fonts can't be loaded could be different than before. Other than that, I choose to use a minor mostly because this is an experimental API.
+
+- a180ed8: Adds View Transitions to avoid full-page navigation refresh.
+
+### Patch Changes
+
+- e7e3eb1: Removes the Logo component.
+
+  Astro now has a built-in feature to support SVG as component. So duplicating the logo to have inline styles working is no longer necessary, and the `Logo.astro` component can safely be removed.
+
+- e7e3eb1: Fixes the favicon rendering in Firefox quick links and, hopefully, in Google search results by increasing the size of the logo rounded corners.
+
 ## 1.0.5
 
 ### Patch Changes
@@ -146,7 +172,7 @@
           tags,
         },
       };
-    }),
+    })
   );
   const orderedBlogPosts = blogPosts.sort(/* some method to sort posts */);
   const firstTenBlogPosts = orderedBlogPosts.slice(0, 10);
@@ -263,14 +289,12 @@
   ```
 
   There are two types of pages available:
-
   - the pages co-located with your collection (to provide meta and optional content for the index page) named `index.md`
   - the ones located in the `pages` directory and that can use any filename
 
 - 15a3611: Adds support for i18n.
 
   This project now exports a `useI18n()` function to help you translating all the UI strings and routes. It accepts a locale as argument and returns a validated `locale` (which fallback to default locale) and three methods:
-
   - `translate()`: to help you translate UI strings
   - `translatePlural()`: to help you translate UI strings while dealing with pluralization
   - `route()`: to help you localize the routes.
@@ -303,7 +327,6 @@
 - 6556bab: Adds a custom CodeBlock component.
 
   The `CodeBlock` component should be used instead of the Astro default one. It provides the following features:
-
   - snippet file path
   - prompt for shell and sql sessions with custom user/host
   - line numbers with custom line start if needed
@@ -335,7 +358,6 @@
 - 9d143b2: Adds support for MDX files in content directory.
 
   With Astro, it is not possible to use custom components while using `.md` extension. So this adds support for `.mdx` files in content collections. However, I don't want to rely on imports inside the content directory so a few customizations have been added:
-
   - both Markdown syntax and HTML tags are supported with custom components,
   - images using relative paths will automatically be imported,
   - images wrapped in a link pointing to the image source will automatically be updated with the built image path.
@@ -380,7 +402,6 @@
   ```
 
   You can now define stories for your components using the `.stories.astro` extension. Your story file should look like any Astro page. The only differences are:
-
   - they can be injected under a parent slug (e.g. `/design-system`),
   - their purpose is to show your component variants and to give advices about their use.
 
@@ -406,7 +427,6 @@
   ```
 
   Those structures will be available with the following slugs:
-
   - /button
   - /button/primary-button
   - /button/secondary-button
@@ -416,7 +436,6 @@
   - /link
 
   You can use the `baseSlug` option to injects those route under another route. For example, using `baseSlug: '/design-system'`, the previous slugs would be updated to:
-
   - /design-system/button
   - /design-system/button/primary-button
   - /design-system/button/secondary-button

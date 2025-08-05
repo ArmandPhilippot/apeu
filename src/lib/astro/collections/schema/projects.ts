@@ -18,6 +18,7 @@ export const projects = defineCollection({
           z.literal("site"),
           z.literal("theme"),
         ]),
+        permaslug: z.string().optional(),
         repository: z
           .object({
             name: z.string(),

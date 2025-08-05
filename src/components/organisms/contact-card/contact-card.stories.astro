@@ -46,7 +46,7 @@ const socialMedia = {
     >
       <Heading>Default</Heading>
     </Box>
-    <ContactCardComponent isCentered />
+    <ContactCardComponent contactPageRoute="#contact" isCentered />
     <Box
       elevation="raised"
       isBordered
@@ -58,7 +58,11 @@ const socialMedia = {
     >
       <Heading>With social links</Heading>
     </Box>
-    <ContactCardComponent isCentered socialMedia={socialMedia} />
+    <ContactCardComponent
+      contactPageRoute="#contact"
+      isCentered
+      socialMedia={socialMedia}
+    />
     <Box
       elevation="raised"
       isBordered
@@ -70,7 +74,11 @@ const socialMedia = {
     >
       <Heading>With heading</Heading>
     </Box>
-    <ContactCardComponent isCentered socialMedia={socialMedia}>
+    <ContactCardComponent
+      contactPageRoute="#contact"
+      isCentered
+      socialMedia={socialMedia}
+    >
       <Heading as="h3" slot="heading">Contact</Heading>
     </ContactCardComponent>
   </Fragment>

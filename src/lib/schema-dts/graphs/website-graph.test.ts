@@ -1,6 +1,20 @@
-import { describe, expect, it, vi } from "vitest";
+import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 import { CONFIG } from "../../../utils/constants";
+import {
+  createMockEntries,
+  setupCollectionMocks,
+} from "../../../../tests/helpers/astro-content";
+import { clearEntriesIndexCache } from "../../astro/collections/indexes";
 import { getWebSiteGraph } from "./website-graph";
+
+vi.mock("astro:content", async (importOriginal) => {
+  const mod = await importOriginal<typeof import("astro:content")>();
+  return {
+    ...mod,
+    getCollection: vi.fn(() => []),
+    getEntry: vi.fn(),
+  };
+});
 
 vi.mock("../../../utils/constants", async (importOriginal) => {
   const mod = await importOriginal<typeof import("../../../utils/constants")>();
@@ -25,8 +39,22 @@ vi.mock("../../../utils/url", async (importOriginal) => {
 });
 
 describe("get-website-graph", () => {
-  it("returns an object describing the website", () => {
-    const graph = getWebSiteGraph({
+  beforeAll(() => {
+    const mockEntries = createMockEntries([
+      { collection: "pages", id: "en/home" },
+      { collection: "pages", id: "en/search" },
+    ]);
+    setupCollectionMocks(mockEntries);
+  });
+
+  afterAll(() => {
+    clearEntriesIndexCache();
+  });
+
+  it("returns an object describing the website", async () => {
+    expect.assertions(1);
+
+    const graph = await getWebSiteGraph({
       description: "minus perspiciatis voluptatem",
       locale: CONFIG.LANGUAGES.DEFAULT,
       logo: "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/899.jpg",

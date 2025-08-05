@@ -3,10 +3,9 @@ import type { ComponentProps } from "astro/types";
 import { components } from "../components/mdx";
 import PagefindSearch from "../components/organisms/pagefind-search/pagefind-search.astro";
 import PageLayout from "../components/templates/page-layout/page-layout.astro";
-import { queryEntry } from "../lib/astro/collections";
-import { getRouteIndex } from "../lib/astro/route-index";
 import { getWebPageGraph } from "../lib/schema-dts/graphs/webpage-graph";
-import { getBreadcrumb } from "../utils/breadcrumb";
+import { getBreadcrumb } from "../services/breadcrumb";
+import { queryEntry } from "../services/collections";
 import { CONFIG } from "../utils/constants";
 import { useI18n } from "../utils/i18n";
 
@@ -16,13 +15,16 @@ const { Content, ...page } = await queryEntry({
   id: "search",
   locale,
 });
-const routeIndex = await getRouteIndex();
-const breadcrumb = getBreadcrumb({
+const breadcrumb = await getBreadcrumb({
   route: Astro.url.pathname,
-  routeIndex,
 });
 const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
-  await getWebPageGraph({ ...page, breadcrumb, type: "SearchResultsPage" }),
+  await getWebPageGraph({
+    ...page,
+    breadcrumb,
+    route: Astro.url.pathname,
+    type: "SearchResultsPage",
+  }),
 ];
 ---
 

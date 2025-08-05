@@ -6,7 +6,7 @@ import { contentsBaseSchema } from "./partials";
 export const bookmarks = defineCollection({
   loader: globLoader("bookmarks"),
   schema: contentsBaseSchema
-    .omit({ route: true, seo: true, slug: true, updatedOn: true })
+    .omit({ seo: true, updatedOn: true })
     .extend({
       inLanguage: z.string().refine(isValidLanguageCode),
       /**

@@ -1,17 +1,43 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
+import type { CollectionEntry } from "astro:content";
 import {
   blogCategoryFixture,
   blogPostFixture,
   guideFixture,
   noteFixture,
 } from "../../../../../tests/fixtures/collections";
+import { createMockEntries } from "../../../../../tests/helpers/astro-content";
 import { getRoutableEntry, getRoutableEntryPreview } from "./routable-entries";
+
+vi.mock("astro:content", async () => {
+  const originalModule = await vi.importActual("astro:content");
+  return {
+    ...originalModule,
+    getCollection: vi.fn(),
+    getEntry: vi.fn(),
+  };
+});
 
 describe("get-routable-entry-preview", () => {
   it("returns a routable entry preview from a collection entry", async () => {
     expect.assertions(1);
 
-    const result = await getRoutableEntryPreview(blogPostFixture);
+    const mockEntries = createMockEntries([blogPostFixture]);
+    const mockEntriesIndex = new Map(
+      mockEntries.map((entry) => [
+        entry.id,
+        { raw: entry, route: entry.id, slug: entry.id },
+      ])
+    );
+
+    const result = await getRoutableEntryPreview(
+      {
+        raw: blogPostFixture,
+        route: "/blog/post/my-awesome-post",
+        slug: "my-awesome-post",
+      },
+      mockEntriesIndex
+    );
 
     expect(result).toMatchInlineSnapshot(`
       {
@@ -28,7 +54,6 @@ describe("get-routable-entry-preview", () => {
           "updatedOn": 2024-09-22T21:10:11.400Z,
         },
         "route": "/blog/post/my-awesome-post",
-        "slug": "my-awesome-post",
         "title": "The blog post title",
       }
     `);
@@ -37,7 +62,22 @@ describe("get-routable-entry-preview", () => {
   it("handles collection entry without authors", async () => {
     expect.assertions(1);
 
-    const result = await getRoutableEntryPreview(noteFixture);
+    const mockEntries = createMockEntries([noteFixture]);
+    const mockEntriesIndex = new Map(
+      mockEntries.map((entry) => [
+        entry.id,
+        { raw: entry, route: entry.id, slug: entry.id },
+      ])
+    );
+
+    const result = await getRoutableEntryPreview(
+      {
+        raw: noteFixture,
+        route: "/notes/some-note",
+        slug: "some-note",
+      },
+      mockEntriesIndex
+    );
 
     expect(result.meta).not.toHaveProperty("authors");
   });
@@ -45,7 +85,22 @@ describe("get-routable-entry-preview", () => {
   it("handles collection entry without category", async () => {
     expect.assertions(1);
 
-    const result = await getRoutableEntryPreview(guideFixture);
+    const mockEntries = createMockEntries([guideFixture]);
+    const mockEntriesIndex = new Map(
+      mockEntries.map((entry) => [
+        entry.id,
+        { raw: entry, route: entry.id, slug: entry.id },
+      ])
+    );
+
+    const result = await getRoutableEntryPreview(
+      {
+        raw: guideFixture,
+        route: "/guides/in-depth-guide",
+        slug: "in-depth-guide",
+      },
+      mockEntriesIndex
+    );
 
     expect(result.meta).not.toHaveProperty("category");
   });
@@ -54,7 +109,7 @@ describe("get-routable-entry-preview", () => {
     /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self explanatory. */
     expect.assertions(2);
 
-    const result = await getRoutableEntryPreview({
+    const guideWithCover: CollectionEntry<"guides"> = {
       ...guideFixture,
       data: {
         ...guideFixture.data,
@@ -67,7 +122,23 @@ describe("get-routable-entry-preview", () => {
           },
         },
       },
-    });
+    };
+    const mockEntries = createMockEntries([guideWithCover]);
+    const mockEntriesIndex = new Map(
+      mockEntries.map((entry) => [
+        entry.id,
+        { raw: entry, route: entry.id, slug: entry.id },
+      ])
+    );
+
+    const result = await getRoutableEntryPreview(
+      {
+        raw: guideWithCover,
+        route: "/guides/in-depth-guide",
+        slug: "in-depth-guide",
+      },
+      mockEntriesIndex
+    );
 
     expect(result).toHaveProperty("cover");
 
@@ -90,13 +161,29 @@ describe("get-routable-entry-preview", () => {
   it("handles collection entry with a cover explicitly set as undefined", async () => {
     expect.assertions(1);
 
-    const result = await getRoutableEntryPreview({
+    const guideWithUndefinedCover: CollectionEntry<"guides"> = {
       ...guideFixture,
       data: {
         ...guideFixture.data,
         cover: undefined,
       },
-    });
+    };
+    const mockEntries = createMockEntries([guideWithUndefinedCover]);
+    const mockEntriesIndex = new Map(
+      mockEntries.map((entry) => [
+        entry.id,
+        { raw: entry, route: entry.id, slug: entry.id },
+      ])
+    );
+
+    const result = await getRoutableEntryPreview(
+      {
+        raw: guideWithUndefinedCover,
+        route: "/guides/in-depth-guide",
+        slug: "in-depth-guide",
+      },
+      mockEntriesIndex
+    );
 
     expect(result).toMatchObject({ cover: null });
   });
@@ -104,7 +191,22 @@ describe("get-routable-entry-preview", () => {
   it("handles collection entry without tags", async () => {
     expect.assertions(1);
 
-    const result = await getRoutableEntryPreview(blogCategoryFixture);
+    const mockEntries = createMockEntries([blogCategoryFixture]);
+    const mockEntriesIndex = new Map(
+      mockEntries.map((entry) => [
+        entry.id,
+        { raw: entry, route: entry.id, slug: entry.id },
+      ])
+    );
+
+    const result = await getRoutableEntryPreview(
+      {
+        raw: blogCategoryFixture,
+        route: "/blog/category/astro",
+        slug: "astro",
+      },
+      mockEntriesIndex
+    );
 
     expect(result.meta).not.toHaveProperty("tags");
   });
@@ -114,7 +216,22 @@ describe("get-routable-entry", () => {
   it("returns a routable entry from a collection entry", async () => {
     expect.assertions(1);
 
-    const result = await getRoutableEntry(blogPostFixture);
+    const mockEntries = createMockEntries([blogPostFixture]);
+    const mockEntriesIndex = new Map(
+      mockEntries.map((entry) => [
+        entry.id,
+        { raw: entry, route: entry.id, slug: entry.id },
+      ])
+    );
+
+    const result = await getRoutableEntry(
+      {
+        raw: blogPostFixture,
+        route: blogPostFixture.id,
+        slug: blogPostFixture.id,
+      },
+      mockEntriesIndex
+    );
 
     expect(result).toMatchInlineSnapshot(`
       {
@@ -133,13 +250,13 @@ describe("get-routable-entry", () => {
           "tags": null,
           "updatedOn": 2024-09-22T21:10:11.400Z,
         },
-        "route": "/blog/post/my-awesome-post",
+        "route": "en/my-awesome-post",
         "seo": {
           "description": "The blog post description for search engines.",
           "languages": null,
           "title": "The blog post title for search engines",
         },
-        "slug": "my-awesome-post",
+        "slug": "en/my-awesome-post",
         "title": "The blog post title",
       }
     `);

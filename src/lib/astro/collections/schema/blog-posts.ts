@@ -17,6 +17,7 @@ export const blogPosts = defineCollection({
             reference("blog.posts")
           )
           .optional(),
+        permaslug: z.string().optional(),
         tags: z.array(reference("tags")).optional(),
       })
       .transform(

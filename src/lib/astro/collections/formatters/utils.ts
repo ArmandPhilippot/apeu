@@ -1,33 +1,54 @@
-import {
-  getEntries,
-  getEntry,
-  type CollectionEntry,
-  type CollectionKey,
-} from "astro:content";
+import type { CollectionKey } from "astro:content";
 import type {
   AltLanguage,
-  RawTaxonomyEntry,
+  RemarkPluginFrontmatterMeta,
   TaxonomyLink,
 } from "../../../../types/data";
+import type { IndexedEntry } from "../../../../types/routing";
 import type { CollectionReference } from "../../../../types/utilities";
 import {
   isAvailableLanguage,
   type AvailableLanguage,
 } from "../../../../utils/i18n";
-import { isObject, isString } from "../../../../utils/type-checks";
+import { getReadingTime } from "../../../../utils/reading-time";
+import { isNumber, isString } from "../../../../utils/type-checks";
+import type { EntryByIdIndex } from "../indexes";
+import { isInCollection, isRoutableIndexedEntry } from "../type-guards";
 
 /**
- * Convert a taxonomy collection entry to a TaxonomyLink object.
+ * Retrieve the meta from Astro's remarkPluginFrontmatter.
  *
- * @param {RawTaxonomyEntry} taxonomy - The taxonomy collection entry.
+ * @param {Record<string, unknown>} remarkPluginFrontmatter - The Markdown frontmatter.
+ * @param {AvailableLanguage} locale - The current locale.
+ * @returns {RemarkPluginFrontmatterMeta} The meta stored in the frontmatter.
+ */
+export const getMetaFromRemarkPluginFrontmatter = (
+  remarkPluginFrontmatter: Record<string, unknown>,
+  locale: AvailableLanguage
+): RemarkPluginFrontmatterMeta => {
+  const readingTime = isNumber(remarkPluginFrontmatter.wordsCount)
+    ? getReadingTime(remarkPluginFrontmatter.wordsCount, locale)
+    : undefined;
+
+  return {
+    readingTime,
+  };
+};
+
+/**
+ * Convert a taxonomy indexed entry to a TaxonomyLink object.
+ *
+ * @param {IndexedEntry<"blog.categories" | "tags">} taxonomy - The taxonomy indexed entry.
  * @returns {Promise<TaxonomyLink>} An object describing the taxonomy link.
  */
-export const getTaxonomyLink = (taxonomy: RawTaxonomyEntry): TaxonomyLink => {
-  const { route, title } = taxonomy.data;
+export const getTaxonomyLink = (
+  taxonomy: IndexedEntry<"blog.categories" | "tags">
+): TaxonomyLink => {
+  const { route, raw } = taxonomy;
 
   return {
     route,
-    title,
+    title: raw.data.title,
   };
 };
 
@@ -36,97 +57,87 @@ export const getTaxonomyLink = (taxonomy: RawTaxonomyEntry): TaxonomyLink => {
  *
  * @template C
  * @param {CollectionReference<C>[] | undefined} references - The content collection references.
- * @returns {Promise<CollectionEntry<C>[] | null>} The resolved references or null.
+ * @param {EntryByIdIndex} indexById - A map of indexed entries by id.
+ * @returns {IndexedEntry<C>[] | null} The resolved references or null.
  */
-export const resolveReferences = async <C extends CollectionKey>(
-  references: CollectionReference<C>[] | undefined
-): Promise<CollectionEntry<C>[] | null> => {
+export const resolveReferences = <C extends CollectionKey>(
+  references: CollectionReference<C>[] | undefined,
+  indexById: EntryByIdIndex
+): IndexedEntry<C>[] | null => {
   if (references === undefined || references.length === 0) return null;
 
-  const entries = await getEntries(references);
+  const entries = references
+    .map((reference) => {
+      const entry = indexById.get(reference.id);
+      return entry !== undefined && isInCollection(entry, reference.collection)
+        ? entry
+        : null;
+    })
+    .filter((entry) => entry !== null);
 
-  /* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition --
-   * The type returned from `getEntries` is wrong: when the id does not match
-   * an entry, it returns an array with `undefined` as child. */
-  return entries.filter((entry) => entry !== undefined);
+  return entries;
 };
 
 /**
  * Retrieve a category link from a `blog.categories` reference.
  *
  * @param {CollectionReference<"blog.categories"> | undefined} reference - A `blog.categories` reference.
- * @returns {Promise<TaxonomyLink | null>} An object describing the category link or null.
+ * @param {EntryByIdIndex} indexById - A map of indexed entries by id.
+ * @returns {TaxonomyLink | null} An object describing the category link or null.
  */
-export const getCategoryFromReference = async (
-  reference: CollectionReference<"blog.categories"> | undefined
-): Promise<TaxonomyLink | null> => {
+export const getCategoryFromReference = (
+  reference: CollectionReference<"blog.categories"> | undefined,
+  indexById: EntryByIdIndex
+): TaxonomyLink | null => {
   if (reference === undefined) return null;
 
-  const category = await getEntry(reference);
+  const category = indexById.get(reference.id);
 
-  return isObject(category) ? getTaxonomyLink(category) : null;
+  return category !== undefined &&
+    isInCollection(category, reference.collection)
+    ? getTaxonomyLink(category)
+    : null;
 };
 
 /**
  * Retrieve the tags links from a list of `tags` references.
  *
  * @param {CollectionReference<"tags">[] | undefined} references - An array of `tags` references.
- * @returns {Promise<TaxonomyLink[] | null>} An array of objects describing the tags links.
+ * @param {EntryByIdIndex} indexById - A map of indexed entries by id.
+ * @returns {TaxonomyLink[] | null} An array of objects describing the tags links.
  */
-export const getTagsFromReferences = async (
-  references: CollectionReference<"tags">[] | undefined
-): Promise<TaxonomyLink[] | null> => {
-  const resolvedTags = await resolveReferences(references);
+export const getTagsFromReferences = (
+  references: CollectionReference<"tags">[] | undefined,
+  indexById: EntryByIdIndex
+): TaxonomyLink[] | null => {
+  const resolvedTags = resolveReferences(references, indexById);
 
   return resolvedTags?.map(getTaxonomyLink) ?? null;
 };
 
 /**
- * Type guard to check if an entry has required data properties.
- *
- * @param {unknown} entry - A collection entry.
- * @returns {boolean} True when the entry have a route.
- */
-const hasRouteData = (entry: unknown): entry is { data: { route: string } } =>
-  entry !== null &&
-  typeof entry === "object" &&
-  "data" in entry &&
-  typeof entry.data === "object" &&
-  entry.data !== null &&
-  "route" in entry.data;
-
-/**
- * Resolve the route of a single translation reference.
- *
- * @template C
- * @param {CollectionReference<C> | undefined} reference - A reference.
- * @returns {Promise<string | null>} The route of the entry or null.
- */
-const getTranslationRoute = async <C extends CollectionKey>(
-  reference: CollectionReference<C> | undefined
-): Promise<string | null> => {
-  if (reference === undefined) return null;
-  const entry = await getEntry(reference);
-
-  return hasRouteData(entry) ? entry.data.route : null;
-};
-
-/**
  * Transform a single translation entry into a typed key-value pair.
  *
- * @template C
- * @param {[AvailableLanguage, CollectionReference<C>]} kv - A key-value pair.
- * @returns {Promise<AltLanguage | null>} An alternative language.
+ * @template C - The collection key.
+ * @param {EntryByIdIndex} indexById - A map of indexed entries by id.
+ * @returns {(kv: [string, CollectionReference<C>]) => AltLanguage | null} An alternative language.
  */
-const resolveTranslationEntry = async <C extends CollectionKey>([
-  lang,
-  reference,
-]: [string, CollectionReference<C>]): Promise<AltLanguage | null> => {
-  if (!isAvailableLanguage(lang)) return null;
+const resolveTranslationEntry =
+  (
+    indexById: EntryByIdIndex
+  ): (<C extends CollectionKey>(
+    kv: [string, CollectionReference<C>]
+  ) => AltLanguage | null) =>
+  ([lang, reference]): AltLanguage | null => {
+    if (!isAvailableLanguage(lang)) return null;
 
-  const route = await getTranslationRoute(reference);
-  return isString(route) ? { locale: lang, route } : null;
-};
+    const translation = indexById.get(reference.id);
+    const route =
+      translation !== undefined && isRoutableIndexedEntry(translation)
+        ? translation.route
+        : null;
+    return isString(route) ? { locale: lang, route } : null;
+  };
 
 type Translations<C extends CollectionKey> = Partial<
   Record<AvailableLanguage, CollectionReference<C>>
@@ -137,15 +148,17 @@ type Translations<C extends CollectionKey> = Partial<
  *
  * @template C
  * @param {Translations<C> | undefined} translations - An object.
+ * @param {EntryByIdIndex} indexById - A map of indexed entries by id.
  * @returns {Promise<AltLanguage[] | null>} The resolved translations.
  */
 export const resolveTranslations = async <C extends CollectionKey>(
-  translations: Translations<C> | undefined
+  translations: Translations<C> | undefined,
+  indexById: EntryByIdIndex
 ): Promise<AltLanguage[] | null> => {
   if (translations === undefined) return null;
 
   const resolvedEntries = await Promise.all(
-    Object.entries(translations).map(resolveTranslationEntry)
+    Object.entries(translations).map(resolveTranslationEntry(indexById))
   );
   const validEntries = resolvedEntries.filter(
     (entry): entry is AltLanguage => entry !== null

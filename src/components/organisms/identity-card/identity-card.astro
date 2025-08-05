@@ -1,6 +1,6 @@
 ---
 import type { ComponentProps } from "astro/types";
-import type { AuthorPreview } from "../../../types/data";
+import type { Author } from "../../../types/data";
 import { useI18n } from "../../../utils/i18n";
 import { toLowerCase } from "../../../utils/strings";
 import DescriptionList from "../../atoms/description-list/description-list.astro";
@@ -10,9 +10,15 @@ import Img from "../../atoms/img/img.astro";
 import Card from "../../molecules/card/card.astro";
 
 type Props = ComponentProps<typeof Card> & {
-  author: Omit<
-    AuthorPreview,
-    "collection" | "id" | "isWebsiteOwner" | "socialMedia"
+  author: Pick<
+    Author,
+    | "avatar"
+    | "country"
+    | "job"
+    | "name"
+    | "nameIPA"
+    | "nationality"
+    | "spokenLanguages"
   >;
 };
 

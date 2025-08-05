@@ -1,10 +1,9 @@
 import { translations } from "../translations";
 import type { KeyOfType, LooseAutocomplete } from "../types/utilities";
 import { CONFIG } from "./constants";
-import { normalizeRoute } from "./routes";
 import { isString } from "./type-checks";
 
-export type AvailableLanguage = keyof typeof translations;
+export type AvailableLanguage = (typeof CONFIG.LANGUAGES.AVAILABLE)[number];
 
 export const availableNamedLanguages = {
   en: "English",
@@ -22,7 +21,7 @@ type I18nMessages = (typeof translations)[typeof CONFIG.LANGUAGES.DEFAULT];
 export const isAvailableLanguage = (
   language: string
 ): language is AvailableLanguage =>
-  Object.keys(translations).includes(language);
+  (CONFIG.LANGUAGES.AVAILABLE as readonly string[]).includes(language);
 
 /**
  * Check if the given language is the default one.
@@ -69,23 +68,9 @@ const replaceInterpolationsInMsg = (
   return updatedMsg;
 };
 
-type AvailableRoute = keyof I18nMessages["routes"];
-type UIKey = I18nMessages["ui"];
-export type PluralUIKey = KeyOfType<UIKey, Interpolations>;
-type QuantifierKeys = keyof UIKey[PluralUIKey];
-export type SingularUIKey = KeyOfType<UIKey, string>;
-
-/**
- * Check if a route is available from its id.
- *
- * @param {string} id - The id of the route to check.
- * @returns {boolean} True if the id match an available route.
- */
-export const isAvailableRoute = (id: string): id is AvailableRoute => {
-  const availableRoutes = translations[CONFIG.LANGUAGES.DEFAULT].routes;
-
-  return Object.keys(availableRoutes).includes(id);
-};
+export type PluralUIKey = KeyOfType<I18nMessages, Interpolations>;
+type QuantifierKeys = keyof I18nMessages[PluralUIKey];
+export type SingularUIKey = KeyOfType<I18nMessages, string>;
 
 const getQuantifierKeyFromCount = (count: number): QuantifierKeys => {
   if (!count) return "zero";
@@ -103,11 +88,6 @@ export type TranslatePluralKeys = (
   interpolations: TranslatePluralKeysParams
 ) => string;
 
-export type TranslateRoute = (
-  key: AvailableRoute,
-  localeOverride?: LooseAutocomplete<AvailableLanguage>
-) => string;
-
 export type TranslateSingularKeys = (
   key: SingularUIKey,
   interpolations?: Interpolations
@@ -120,10 +100,6 @@ type UseI18n = (
    * The locale used for translations.
    */
   locale: AvailableLanguage;
-  /**
-   * A method to retrieve a localized route for a given key.
-   */
-  route: TranslateRoute;
   /**
    * A method to retrieve a translated message for a given key.
    */
@@ -146,19 +122,8 @@ export const useI18n: UseI18n = (
   const locale = getCurrentLocale(currentLocale);
   const messages = translations[locale];
 
-  const route: TranslateRoute = (key, localeOverride = locale) => {
-    const localizedRoutes =
-      localeOverride === locale || !isAvailableLanguage(localeOverride)
-        ? messages.routes
-        : translations[localeOverride].routes;
-    const slug = localizedRoutes[key];
-
-    if (isDefaultLanguage(localeOverride)) return normalizeRoute(slug);
-    return normalizeRoute(`/${localeOverride}${slug}`);
-  };
-
   const translate: TranslateSingularKeys = (key, interpolations) => {
-    const message = messages.ui[key];
+    const message = messages[key];
 
     if (interpolations === undefined) return message;
     return replaceInterpolationsInMsg(message, interpolations);
@@ -169,7 +134,7 @@ export const useI18n: UseI18n = (
     { count, ...interpolations }
   ) => {
     const quantifier = getQuantifierKeyFromCount(count);
-    const message = messages.ui[key][quantifier];
+    const message = messages[key][quantifier];
 
     return replaceInterpolationsInMsg(message, {
       ...interpolations,
@@ -177,7 +142,7 @@ export const useI18n: UseI18n = (
     });
   };
 
-  return { locale, route, translate, translatePlural };
+  return { locale, translate, translatePlural };
 };
 
 /**

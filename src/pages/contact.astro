@@ -4,10 +4,9 @@ import Callout from "../components/atoms/callout/callout.astro";
 import { components } from "../components/mdx";
 import ContactForm from "../components/organisms/contact-form/contact-form.astro";
 import PageLayout from "../components/templates/page-layout/page-layout.astro";
-import { queryEntry } from "../lib/astro/collections";
-import { getRouteIndex } from "../lib/astro/route-index";
 import { getWebPageGraph } from "../lib/schema-dts/graphs/webpage-graph";
-import { getBreadcrumb } from "../utils/breadcrumb";
+import { getBreadcrumb } from "../services/breadcrumb";
+import { queryEntry } from "../services/collections";
 import { useI18n } from "../utils/i18n";
 
 const { locale, translate } = useI18n(Astro.currentLocale);
@@ -16,13 +15,16 @@ const { Content, ...page } = await queryEntry({
   id: "contact",
   locale,
 });
-const routeIndex = await getRouteIndex();
-const breadcrumb = getBreadcrumb({
+const breadcrumb = await getBreadcrumb({
   route: Astro.url.pathname,
-  routeIndex,
 });
 const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
-  await getWebPageGraph({ ...page, breadcrumb, type: "ContactPage" }),
+  await getWebPageGraph({
+    ...page,
+    breadcrumb,
+    route: Astro.url.pathname,
+    type: "ContactPage",
+  }),
 ];
 ---
 

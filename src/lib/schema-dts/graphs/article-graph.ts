@@ -1,11 +1,12 @@
 import type { Article, BlogPosting } from "schema-dts";
+import { useRouting } from "../../../services/routing";
 import type { BlogPost, Guide, Img, Note, Project } from "../../../types/data";
+import type { Blend, RequireOnly } from "../../../types/utilities";
 import { useI18n } from "../../../utils/i18n";
 import { getImgSrc } from "../../../utils/images";
+import { isString } from "../../../utils/type-checks";
 import { getWebsiteUrl } from "../../../utils/url";
 import { getDurationFromReadingTime } from "../values/duration";
-import { isString } from "../../../utils/type-checks";
-import type { Blend, RequireOnly } from "../../../types/utilities";
 import { getLanguageGraph } from "./language-graph";
 import { getPersonGraph } from "./person-graph";
 
@@ -38,7 +39,8 @@ export const getArticleGraph = async ({
   route: articleRoute,
   title,
 }: ArticleData): Promise<Article | BlogPosting> => {
-  const { route, translate } = useI18n(locale);
+  const { translate } = useI18n(locale);
+  const { routeById } = await useRouting();
   const websiteUrl = getWebsiteUrl();
   const websiteAuthor = `${websiteUrl}#author` as const;
   const url = `${websiteUrl}${articleRoute}`;
@@ -70,7 +72,7 @@ export const getArticleGraph = async ({
     inLanguage: getLanguageGraph(locale, locale),
     isAccessibleForFree: true,
     ...(isBlogPost && {
-      isPartOf: { "@id": `${websiteUrl}${route("blog")}#blog` },
+      isPartOf: { "@id": `${websiteUrl}${routeById(`${locale}/blog`)}#blog` },
     }),
     ...(meta.tags !== null &&
       meta.tags !== undefined &&

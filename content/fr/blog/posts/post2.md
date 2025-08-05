@@ -2,7 +2,7 @@
 title: Article 2
 description: "C'est un extrait de l'article 2."
 publishedOn: "2024-12-19T14:52"
-category: "fr/category2"
+category: "fr/blog/categories/category2"
 authors:
   - "armand-philippot"
 seo:

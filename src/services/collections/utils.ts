@@ -1,5 +1,6 @@
-import type { CollectionEntry, CollectionKey } from "astro:content";
-import type { CollectionReference } from "../../../../types/utilities";
+import type { CollectionKey } from "astro:content";
+import type { IndexedEntry } from "../../types/routing";
+import type { CollectionReference } from "../../types/utilities";
 
 /**
  * Filter the given tags references by locale.
@@ -18,35 +19,38 @@ const filterTagsReferencesByLocale = (
  * Transform an entry to filter tags based on the provided locale.
  *
  * @template C - CollectionKey.
- * @param {CollectionEntry<C>} entry - The collection entry.
+ * @param {IndexedEntry<C>} entry - The collection entry.
  * @param {string} locale - The locale to filter tags by.
- * @returns {CollectionEntry<C>} The transformed entry.
+ * @returns {IndexedEntry<C>} The transformed entry.
  */
 export const updateEntryTagsForLocale = <C extends CollectionKey>(
-  entry: CollectionEntry<C>,
+  entry: IndexedEntry<C>,
   locale: string
-): CollectionEntry<C> => {
+): IndexedEntry<C> => {
   if (
-    !("meta" in entry.data) ||
-    !("tags" in entry.data.meta) ||
-    entry.data.meta.tags === undefined ||
-    entry.data.meta.tags.length === 0
+    !("meta" in entry.raw.data) ||
+    !("tags" in entry.raw.data.meta) ||
+    entry.raw.data.meta.tags === undefined ||
+    entry.raw.data.meta.tags.length === 0
   ) {
     return entry;
   }
 
   const filteredTags = filterTagsReferencesByLocale(
-    entry.data.meta.tags,
+    entry.raw.data.meta.tags,
     locale
   );
 
   return {
     ...entry,
-    data: {
-      ...entry.data,
-      meta: {
-        ...entry.data.meta,
-        tags: filteredTags,
+    raw: {
+      ...entry.raw,
+      data: {
+        ...entry.raw.data,
+        meta: {
+          ...entry.raw.data.meta,
+          tags: filteredTags,
+        },
       },
     },
   };
@@ -56,14 +60,14 @@ export const updateEntryTagsForLocale = <C extends CollectionKey>(
  * Transform the entries to filter tags based on the provided locale.
  *
  * @template C - CollectionKey.
- * @param {CollectionEntry<C>[]} entries - The collection entries.
+ * @param {IndexedEntry<C>[]} entries - The collection entries.
  * @param {string} [locale] - The locale to filter tags by.
- * @returns {CollectionEntry<C>[]} The transformed entries.
+ * @returns {IndexedEntry<C>[]} The transformed entries.
  */
 export const updateEntriesTagsForLocale = <C extends CollectionKey>(
-  entries: CollectionEntry<C>[],
+  entries: IndexedEntry<C>[],
   locale?: string
-): CollectionEntry<C>[] => {
+): IndexedEntry<C>[] => {
   if (locale === undefined) return entries;
 
   return entries.map((entry) => updateEntryTagsForLocale(entry, locale));

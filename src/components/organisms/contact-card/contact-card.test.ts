@@ -18,17 +18,16 @@ describe("ContactCard", () => {
     /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
     expect.assertions(2);
 
-    const props = {} satisfies ComponentProps<typeof ContactCard>;
+    const props = { contactPageRoute: "#contact" } satisfies ComponentProps<
+      typeof ContactCard
+    >;
     const result = await container.renderToString(ContactCard, {
       props,
     });
+    const { translate } = useI18n(CONFIG.LANGUAGES.DEFAULT);
 
-    expect(result).toContain(
-      useI18n(CONFIG.LANGUAGES.DEFAULT).translate("cta.contact.me")
-    );
-    expect(result).toContain(
-      `href="${useI18n(CONFIG.LANGUAGES.DEFAULT).route("contact")}"`
-    );
+    expect(result).toContain(translate("cta.contact.me"));
+    expect(result).toContain(`href="${props.contactPageRoute}"`);
   });
 
   it<LocalTestContext>("can render a list of social links", async ({
@@ -37,6 +36,7 @@ describe("ContactCard", () => {
     expect.assertions(1);
 
     const props = {
+      contactPageRoute: "#contact",
       socialMedia: {
         diaspora: "#diaspora",
         github: "#github",
@@ -57,7 +57,9 @@ describe("ContactCard", () => {
     expect.assertions(1);
 
     const heading = "nobis in ullam";
-    const props = {} satisfies ComponentProps<typeof ContactCard>;
+    const props = { contactPageRoute: "#contact" } satisfies ComponentProps<
+      typeof ContactCard
+    >;
     const result = await container.renderToString(ContactCard, {
       props,
       slots: { heading },

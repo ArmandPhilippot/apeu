@@ -1,30 +1,21 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
   authorFixture,
-  blogPostFixture,
-  bookmarkFixture,
   guideFixture,
-  projectFixture,
-} from "../../../../tests/fixtures/collections";
+} from "../../../tests/fixtures/collections";
+import {
+  createMockEntry,
+  setupCollectionMocks,
+} from "../../../tests/helpers/astro-content";
+import { clearEntriesIndexCache } from "../../lib/astro/collections/indexes";
 import { queryEntry } from "./query-entry";
 
-const mockEntries = [
-  authorFixture,
-  blogPostFixture,
-  bookmarkFixture,
-  guideFixture,
-  projectFixture,
-];
-
-vi.mock("astro:content", async () => {
-  const originalModule = await vi.importActual("astro:content");
+vi.mock("astro:content", async (importOriginal) => {
+  const mod = await importOriginal<typeof import("astro:content")>();
   return {
-    ...originalModule,
-    getEntry: vi.fn((collection, id) =>
-      mockEntries.find(
-        (entry) => entry.collection === collection && entry.id === id
-      )
-    ),
+    ...mod,
+    getCollection: vi.fn(() => []),
+    getEntry: vi.fn(),
   };
 });
 
@@ -33,9 +24,22 @@ describe("query-entry", () => {
     vi.clearAllMocks();
   });
 
+  afterEach(() => {
+    vi.restoreAllMocks();
+    clearEntriesIndexCache();
+  });
+
   it("can return an entry by id", async () => {
     /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
     expect.assertions(3);
+
+    const author = createMockEntry({
+      collection: "authors",
+      id: authorFixture.id,
+      data: authorFixture.data,
+    });
+
+    setupCollectionMocks([author]);
 
     const result = await queryEntry({
       collection: "authors",
@@ -50,6 +54,14 @@ describe("query-entry", () => {
   it("can return a localized entry by id", async () => {
     /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
     expect.assertions(3);
+
+    const guide = createMockEntry({
+      collection: "guides",
+      id: guideFixture.id,
+      data: guideFixture.data,
+    });
+
+    setupCollectionMocks([guide]);
 
     const result = await queryEntry({
       collection: "guides",
@@ -70,6 +82,24 @@ describe("query-entry", () => {
       queryEntry({ collection: "foo", id: "bar" })
     ).rejects.toThrowErrorMatchingInlineSnapshot(
       `[Error: Couldn't find an entry in foo for the given id: bar.]`
+    );
+  });
+
+  it("throws an error when the requested entry exists but in another collection", async () => {
+    expect.assertions(1);
+
+    const guide = createMockEntry({
+      collection: "guides",
+      id: guideFixture.id,
+      data: guideFixture.data,
+    });
+
+    setupCollectionMocks([guide]);
+
+    await expect(async () =>
+      queryEntry({ collection: "blog.posts", id: guideFixture.id })
+    ).rejects.toThrowErrorMatchingInlineSnapshot(
+      `[Error: Found an entry for en/in-depth-guide but it wasn't in blog.posts, received: guides.]`
     );
   });
 });

@@ -1,5 +1,5 @@
 import { OGImageRoute as oGImageRoute } from "astro-og-canvas";
-import { queryCollection } from "../../lib/astro/collections";
+import { queryCollection } from "../../services/collections";
 
 const collections = await queryCollection([
   "blog.categories",

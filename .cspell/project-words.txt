@@ -15,6 +15,7 @@ Mdxjs
 nanostores
 nlcst
 pagefind
+permaslug
 pnpmDedupe
 rehype
 routability

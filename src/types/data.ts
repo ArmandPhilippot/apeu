@@ -4,7 +4,6 @@ import type {
   CollectionKey,
   RenderResult,
 } from "astro:content";
-import type { AvailableLanguage } from "../utils/i18n";
 import type { RoutableCollectionKey } from "./routing";
 import type { ConditionallyExtend, PatchExistingProperties } from "./utilities";
 
@@ -71,7 +70,7 @@ export type RemarkPluginFrontmatterMeta = {
 export type SEO = {
   author?: Omit<AuthorLink, "isWebsiteOwner"> | null | undefined;
   canonical?: string | null | undefined;
-  description?: string | undefined;
+  description?: string;
   languages?: AltLanguage[] | null | undefined;
   nofollow?: boolean | null | undefined;
   noindex?: boolean | null | undefined;
@@ -330,10 +329,3 @@ export type FeedCompatibleEntry =
   | Note
   | Project
   | Taxonomy;
-
-export type RouteIndexItem = {
-  route: string;
-  id: string;
-  locale: AvailableLanguage;
-  title: string;
-};

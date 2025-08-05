@@ -16,12 +16,12 @@ import {
 import sanitize, {
   type SanitizeOptions,
 } from "ultrahtml/transformers/sanitize";
-import { queryCollection } from "../lib/astro/collections";
+import { queryCollection } from "../services/collections";
 import type { FeedCompatibleEntry } from "../types/data";
 import { UnsupportedLocaleError } from "./exceptions";
 import { isAvailableLanguage, useI18n, type AvailableLanguage } from "./i18n";
-import { getWebsiteUrl } from "./url";
 import { isString } from "./type-checks";
+import { getWebsiteUrl } from "./url";
 
 /* eslint-disable no-param-reassign -- The file do a lot of node transformations to create the feed content, so it's expected that parameters will be reassigned. */
 

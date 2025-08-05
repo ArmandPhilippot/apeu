@@ -15,6 +15,7 @@ export const indexPages = defineCollection({
             reference("index.pages")
           )
           .optional(),
+        permaslug: z.string().optional(),
       })
       .transform(({ isDraft, publishedOn, updatedOn, ...page }) => {
         return {

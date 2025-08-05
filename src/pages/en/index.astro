@@ -12,13 +12,15 @@ import CollectionCard from "../../components/organisms/collection-card/collectio
 import ContactCard from "../../components/organisms/contact-card/contact-card.astro";
 import IdentityCard from "../../components/organisms/identity-card/identity-card.astro";
 import PageLayout from "../../components/templates/page-layout/page-layout.astro";
-import { queryCollection, queryEntry } from "../../lib/astro/collections";
 import { getPersonGraph } from "../../lib/schema-dts/graphs/person-graph";
 import { getWebPageGraph } from "../../lib/schema-dts/graphs/webpage-graph";
 import { getWebSiteGraph } from "../../lib/schema-dts/graphs/website-graph";
+import { queryCollection, queryEntry } from "../../services/collections";
+import { useRouting } from "../../services/routing";
 import { useI18n } from "../../utils/i18n";
 
-const { locale, route, translate } = useI18n(Astro.currentLocale);
+const { locale, translate } = useI18n(Astro.currentLocale);
+const { routeById } = await useRouting();
 const { Content, ...page } = await queryEntry({
   collection: "pages",
   id: "home",
@@ -50,12 +52,16 @@ const { entries: collections } = await queryCollection(
 );
 const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
   await getPersonGraph(author, locale),
-  getWebSiteGraph({
+  await getWebSiteGraph({
     description: page.seo.description,
     locale,
     logo: logo.src,
   }),
-  await getWebPageGraph({ ...page, title: page.seo.title }),
+  await getWebPageGraph({
+    ...page,
+    route: Astro.url.pathname,
+    title: page.seo.title,
+  }),
 ];
 ---
 
@@ -91,6 +97,7 @@ const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
             addRelMe
             as="section"
             class="homepage-contact"
+            contactPageRoute={routeById("en/contact")}
             elevation="raised"
             isSpaced
             socialMedia={author.socialMedia}
@@ -137,7 +144,7 @@ const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
             <Button
               aria-label={translate("cta.subscribe.to.website")}
               as="a"
-              href={`${route("home")}feed.xml`}
+              href={`${page.route}/feed.xml`}
             >
               <Icon aria-hidden="true" name="feed" />
               {translate("cta.subscribe")}

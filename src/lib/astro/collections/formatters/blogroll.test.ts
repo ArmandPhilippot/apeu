@@ -1,12 +1,27 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { blogrollFixture } from "../../../../../tests/fixtures/collections";
+import { createMockEntries } from "../../../../../tests/helpers/astro-content";
 import { getBlog } from "./blogroll";
 
-describe("get-blog", () => {
-  it("returns a blog from a blogroll collection entry", async () => {
-    expect.assertions(1);
+vi.mock("astro:content", async () => {
+  const originalModule = await vi.importActual("astro:content");
+  return {
+    ...originalModule,
+    getCollection: vi.fn(),
+    getEntry: vi.fn(),
+  };
+});
 
-    const result = await getBlog(blogrollFixture);
+describe("get-blog", () => {
+  it("returns a blog from a blogroll collection entry", () => {
+    const mockEntries = createMockEntries([blogrollFixture]);
+    const mockEntriesIndex = new Map(
+      mockEntries.map((entry) => [
+        entry.id,
+        { raw: entry, route: entry.id, slug: entry.id },
+      ])
+    );
+    const result = getBlog({ raw: blogrollFixture }, mockEntriesIndex);
 
     expect(result).toMatchInlineSnapshot(`
       {

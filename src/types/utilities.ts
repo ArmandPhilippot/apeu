@@ -20,15 +20,72 @@ export type CollectionReference<C extends DataCollectionKey> = {
   id: ValidDataEntryId<C>;
 };
 
-export type HasKey<T, K extends PropertyKey> =
-  T extends Record<K, unknown> ? T : never;
-
-export type HasNestedKey<U, K1 extends PropertyKey, K2 extends PropertyKey> =
-  U extends HasKey<U, K1>
-    ? U[K1] extends HasKey<U[K1], K2>
-      ? U
+/**
+ * Navigate through a nested property path and return the final value type.
+ * Returns `never` if any part of the path is invalid or doesn't exist.
+ *
+ * This utility recursively traverses object properties following the given
+ * path. When the path is exhausted, it returns the type at that location.
+ *
+ * @template T - The type to navigate through.
+ * @template Keys - A readonly tuple of property keys representing the path to follow.
+ *
+ * @example
+ * ```typescript
+ * type User = {
+ *   profile: {
+ *     settings: {
+ *       theme: 'light' | 'dark';
+ *       notifications: boolean;
+ *     }
+ *   }
+ * };
+ *
+ * // Returns 'light' | 'dark'
+ * type Theme = GetNestedValue<User, ["profile", "settings", "theme"]>;
+ *
+ * // Returns boolean
+ * type Notifications = GetNestedValue<User, ["profile", "settings", "notifications"]>;
+ *
+ * // Returns never (invalid path)
+ * type Invalid = GetNestedValue<User, ["profile", "nonexistent", "theme"]>;
+ * ```
+ */
+type GetNestedValue<T, Keys extends readonly PropertyKey[]> = Keys extends [
+  infer K,
+  ...infer Rest,
+]
+  ? K extends keyof T
+    ? Rest extends PropertyKey[]
+      ? GetNestedValue<T[K], Rest>
       : never
-    : never;
+    : never
+  : T;
+
+/**
+ * Check if a type has a nested property path and return the original type if
+ * it exists. Returns `never` if any part of the path doesn't exist.
+ *
+ * This is useful for conditional types where you only want to operate on
+ * objects that have a specific nested structure.
+ *
+ * @template T - The type to check for the nested property path.
+ * @template Keys - A readonly tuple of property keys representing the path to check.
+ *
+ * @example
+ * ```typescript
+ * type User = { profile: { settings: { theme: string } } };
+ * type Post = { title: string; content: string };
+ *
+ * // Returns User (the path exists)
+ * type UserWithSettings = HasNestedKey<User, ["profile", "settings", "theme"]>;
+ *
+ * // Returns never (the path doesn't exist)
+ * type PostWithSettings = HasNestedKey<Post, ["profile", "settings", "theme"]>;
+ * ```
+ */
+export type HasNestedKey<T, Keys extends readonly PropertyKey[]> =
+  GetNestedValue<T, Keys> extends never ? never : T;
 
 /**
  * Create an union of object keys where the value matches the given type.

@@ -8,26 +8,25 @@ import List from "../../components/atoms/list/list.astro";
 import { components } from "../../components/mdx";
 import CollectionMeta from "../../components/organisms/collection-meta/collection-meta.astro";
 import PageLayout from "../../components/templates/page-layout/page-layout.astro";
-import { queryEntry } from "../../lib/astro/collections";
-import { getRouteIndex } from "../../lib/astro/route-index";
 import { getWebPageGraph } from "../../lib/schema-dts/graphs/webpage-graph";
-import { getBreadcrumb } from "../../utils/breadcrumb";
+import { getBreadcrumb } from "../../services/breadcrumb";
+import { queryEntry } from "../../services/collections";
+import { useRouting } from "../../services/routing";
 import { getCollectionsFeeds } from "../../utils/feeds";
 import { useI18n } from "../../utils/i18n";
 
-const { locale, route, translate } = useI18n(Astro.currentLocale);
+const { locale, translate } = useI18n(Astro.currentLocale);
+const { routeById } = await useRouting();
 const { Content, ...page } = await queryEntry({
   collection: "pages",
   id: "feeds",
   locale,
 });
-const routeIndex = await getRouteIndex();
-const breadcrumb = getBreadcrumb({
+const breadcrumb = await getBreadcrumb({
   route: Astro.url.pathname,
-  routeIndex,
 });
 const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
-  await getWebPageGraph({ ...page, breadcrumb }),
+  await getWebPageGraph({ ...page, breadcrumb, route: Astro.url.pathname }),
 ];
 
 const feeds = await getCollectionsFeeds(locale);
@@ -46,7 +45,7 @@ const feeds = await getCollectionsFeeds(locale);
     <Content components={components} />
     <p>{translate("page.feeds.global.feed.introduction")}</p>
     <p>
-      <Button as="a" href={`${route("home")}feed.xml`}>
+      <Button as="a" href={`${routeById(`${locale}/home`)}feed.xml`}>
         <Icon aria-hidden="true" name="feed" />
         {translate("cta.subscribe.to.website")}
       </Button>

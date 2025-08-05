@@ -1,5 +1,13 @@
-import type { Crumb, RouteIndexItem } from "../types/data";
-import { getCumulativePaths, isLocalizedRoute, normalizeRoute } from "./routes";
+import {
+  getEntriesIndex,
+  type EntryByRouteIndex,
+} from "../../lib/astro/collections/indexes";
+import type { Crumb } from "../../types/data";
+import {
+  getCumulativePaths,
+  isLocalizedRoute,
+  normalizeRoute,
+} from "../../utils/routes";
 
 /**
  * Breaks a route into cumulative path steps.
@@ -17,7 +25,7 @@ const getRouteHierarchy = (route: string): string[] => {
 
 const getRouteCrumbs = (
   route: string,
-  routeIndex: Map<string, RouteIndexItem>
+  routeIndex: EntryByRouteIndex
 ): Crumb[] => {
   const segments = getRouteHierarchy(route);
 
@@ -25,29 +33,28 @@ const getRouteCrumbs = (
     .map((segment) => routeIndex.get(segment))
     .filter((entry) => entry !== undefined)
     .map((entry) => {
-      return { label: entry.title, url: entry.route };
+      return { label: entry.raw.data.title, url: entry.route };
     });
 };
 
 type BreadcrumbConfig = {
   paginationLabel?: string | undefined;
   route: string;
-  routeIndex: Map<string, RouteIndexItem>;
 };
 
 /**
  * Retrieve the breadcrumb for the given page.
  *
  * @param {BreadcrumbConfig} config - A configuration object.
- * @returns {Crumb[]} - The breadcrumb parts.
+ * @returns {Promise<Crumb[]>} - The breadcrumb parts.
  */
-export const getBreadcrumb = ({
+export const getBreadcrumb = async ({
   paginationLabel,
   route,
-  routeIndex,
-}: BreadcrumbConfig): Crumb[] => {
+}: BreadcrumbConfig): Promise<Crumb[]> => {
+  const { byRoute } = await getEntriesIndex();
   const normalizedRoute = normalizeRoute(route);
-  const crumbs = getRouteCrumbs(normalizedRoute, routeIndex);
+  const crumbs = getRouteCrumbs(normalizedRoute, byRoute);
 
   if (paginationLabel !== undefined) {
     crumbs.push({

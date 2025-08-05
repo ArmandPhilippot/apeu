@@ -1,6 +1,7 @@
 ---
 import type { ComponentProps } from "astro/types";
 import type { Graph } from "schema-dts";
+import { useRouting } from "../../../services/routing";
 import { getJsonLdSchema } from "../../../lib/schema-dts/schema";
 import { useI18n } from "../../../utils/i18n";
 import { getOpenGraphImg } from "../../../utils/open-graph";
@@ -19,9 +20,10 @@ type Props = Pick<ComponentProps<typeof Layout>, "seo"> &
   };
 
 const { breadcrumb, description, graphs, seo, title, ...attrs } = Astro.props;
-const { locale, route, translate } = useI18n(Astro.currentLocale);
-const isHome = Astro.url.pathname === route("home");
-const socialImg = getOpenGraphImg({ locale, slug: Astro.url.pathname });
+const { locale, translate } = useI18n(Astro.currentLocale);
+const { routeById } = await useRouting();
+const isHome = Astro.url.pathname === routeById(`${locale}/home`);
+const socialImg = await getOpenGraphImg({ locale, slug: Astro.url.pathname });
 ---
 
 <Layout class="page-layout" seo={seo}>

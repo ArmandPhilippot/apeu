@@ -5,15 +5,14 @@ import CardsList from "../../components/molecules/cards-list/cards-list.astro";
 import CollectionCard from "../../components/organisms/collection-card/collection-card.astro";
 import CollectionMeta from "../../components/organisms/collection-meta/collection-meta.astro";
 import PageLayout from "../../components/templates/page-layout/page-layout.astro";
-import { queryCollection, queryEntry } from "../../lib/astro/collections";
-import { getRouteIndex } from "../../lib/astro/route-index";
 import { getWebPageGraph } from "../../lib/schema-dts/graphs/webpage-graph";
-import { getBreadcrumb } from "../../utils/breadcrumb";
+import { getBreadcrumb } from "../../services/breadcrumb";
+import { queryCollection, queryEntry } from "../../services/collections";
+import { useRouting } from "../../services/routing";
 import { useI18n } from "../../utils/i18n";
 
-const { locale, route, translate, translatePlural } = useI18n(
-  Astro.currentLocale
-);
+const { locale, translate, translatePlural } = useI18n(Astro.currentLocale);
+const { routeById } = await useRouting();
 const { Content, ...page } = await queryEntry({
   collection: "pages",
   id: "blogroll",
@@ -23,13 +22,11 @@ const { entries: blogroll, total } = await queryCollection("blogroll", {
   orderBy: { key: "title", order: "ASC" },
   where: { locale },
 });
-const routeIndex = await getRouteIndex();
-const breadcrumb = getBreadcrumb({
+const breadcrumb = await getBreadcrumb({
   route: Astro.url.pathname,
-  routeIndex,
 });
 const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
-  await getWebPageGraph({ ...page, breadcrumb }),
+  await getWebPageGraph({ ...page, breadcrumb, route: Astro.url.pathname }),
 ];
 const cta: ComponentProps<typeof CollectionCard>["cta"] = {
   ariaLabel: translate("cta.open.website.a11y"),
@@ -42,7 +39,7 @@ const cta: ComponentProps<typeof CollectionCard>["cta"] = {
 <PageLayout
   breadcrumb={breadcrumb}
   description={page.description}
-  feed={`${route("blogroll")}/feed.xml`}
+  feed={`${routeById(`${locale}/blogroll`)}/feed.xml`}
   graphs={graphs}
   isIndex
   seo={page.seo}

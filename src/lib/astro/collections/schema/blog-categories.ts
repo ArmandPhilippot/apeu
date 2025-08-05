@@ -15,6 +15,7 @@ export const blogCategories = defineCollection({
             reference("blog.categories")
           )
           .optional(),
+        permaslug: z.string().optional(),
       })
       .transform(({ isDraft, publishedOn, updatedOn, ...category }) => {
         return {

@@ -4,42 +4,29 @@ import type { ComponentProps } from "astro/types";
 import { components } from "../../components/mdx";
 import CollectionMeta from "../../components/organisms/collection-meta/collection-meta.astro";
 import PageLayout from "../../components/templates/page-layout/page-layout.astro";
-import { queryCollection } from "../../lib/astro/collections";
-import { getRouteIndex } from "../../lib/astro/route-index";
 import { getWebPageGraph } from "../../lib/schema-dts/graphs/webpage-graph";
-import { getBreadcrumb } from "../../utils/breadcrumb";
-import { isAvailableRoute } from "../../utils/i18n";
+import { getBreadcrumb } from "../../services/breadcrumb";
+import { queryCollection } from "../../services/collections";
 
 export const getStaticPaths = (async () => {
   const { entries: pages } = await queryCollection("pages", {
     where: { locale: "en" },
   });
 
-  return pages
-    .filter((entry) => {
-      const maybeStaticRoute = entry.id
-        .replace(`${entry.locale}/`, "")
-        .replaceAll("/", ".")
-        .replaceAll("-", ".");
-
-      return !isAvailableRoute(maybeStaticRoute);
-    })
-    .map(({ slug, ...entry }) => {
-      return {
-        params: { slug },
-        props: { ...entry },
-      };
-    });
+  return pages.map(({ slug, ...entry }) => {
+    return {
+      params: { slug },
+      props: { ...entry },
+    };
+  });
 }) satisfies GetStaticPaths;
 
 const { Content, ...page } = Astro.props;
-const routeIndex = await getRouteIndex();
-const breadcrumb = getBreadcrumb({
+const breadcrumb = await getBreadcrumb({
   route: Astro.url.pathname,
-  routeIndex,
 });
 const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
-  await getWebPageGraph({ ...page, breadcrumb }),
+  await getWebPageGraph({ ...page, breadcrumb, route: Astro.url.pathname }),
 ];
 ---
 

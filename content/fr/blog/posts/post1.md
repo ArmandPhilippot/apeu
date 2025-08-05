@@ -2,11 +2,13 @@
 title: Article 1
 description: "C'est un extrait de l'article 1."
 publishedOn: "2024-12-19T14:51"
-category: "fr/category1"
+category: "fr/blog/categories/category1"
 authors:
   - "armand-philippot"
 tags:
-  - "fr/tag1"
+  - "fr/tags/tag1"
+i18n:
+ en: en/blog/posts/post1
 seo:
   title: "Article 1"
   description: "Il s'agit d'une description utilisée par les moteurs de recherche."

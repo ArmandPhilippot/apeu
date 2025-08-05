@@ -8,28 +8,25 @@ import { components } from "../../../components/mdx";
 import CardsList from "../../../components/molecules/cards-list/cards-list.astro";
 import CollectionCard from "../../../components/organisms/collection-card/collection-card.astro";
 import PageLayout from "../../../components/templates/page-layout/page-layout.astro";
-import { queryCollection, queryEntry } from "../../../lib/astro/collections";
-import { getRouteIndex } from "../../../lib/astro/route-index";
 import { getBlogGraph } from "../../../lib/schema-dts/graphs/blog-graph";
 import { getWebPageGraph } from "../../../lib/schema-dts/graphs/webpage-graph";
-import { getBreadcrumb } from "../../../utils/breadcrumb";
+import { getBreadcrumb } from "../../../services/breadcrumb";
+import { queryCollection, queryEntry } from "../../../services/collections";
+import { useRouting } from "../../../services/routing";
 import { useI18n } from "../../../utils/i18n";
 
-const { locale, route, translate, translatePlural } = useI18n(
-  Astro.currentLocale
-);
+const { locale, translate, translatePlural } = useI18n(Astro.currentLocale);
+const { routeById } = await useRouting();
 const { Content, ...page } = await queryEntry({
   collection: "index.pages",
   id: "blog",
   locale,
 });
-const routeIndex = await getRouteIndex();
-const breadcrumb = getBreadcrumb({
+const breadcrumb = await getBreadcrumb({
   route: Astro.url.pathname,
-  routeIndex,
 });
 const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
-  await getWebPageGraph({ ...page, breadcrumb }),
+  await getWebPageGraph({ ...page, breadcrumb, route: Astro.url.pathname }),
   await getBlogGraph(page),
 ];
 const { entries: categories } = await queryCollection("blog.categories", {
@@ -78,7 +75,7 @@ const getPostCTA = (
     >
       <Heading>{translate("page.blog.section.recent.posts.heading")}</Heading>
       <div class="blog-section-cta">
-        <Button as="a" href={route("blog.posts")}>
+        <Button as="a" href={routeById(`${locale}/blog/posts`)}>
           {translatePlural("cta.see.all.posts", { count: totalPosts })}
         </Button>
         <Button
@@ -86,7 +83,7 @@ const getPostCTA = (
             title: translate("page.blog.posts.title"),
           })}
           as="a"
-          href={`${route("blog.posts")}/feed.xml`}
+          href={`${routeById(`${locale}/blog/posts`)}/feed.xml`}
         >
           <Icon aria-hidden="true" name="feed" />
           {translate("cta.subscribe")}

@@ -12,6 +12,7 @@ export const pages = defineCollection({
         i18n: z
           .record(z.string().refine(isAvailableLanguage), reference("pages"))
           .optional(),
+        permaslug: z.string().optional(),
       })
       .transform(({ isDraft, publishedOn, updatedOn, ...page }) => {
         return {

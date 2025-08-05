@@ -3,22 +3,26 @@ import {
   type CollectionEntry,
   type ReferenceDataEntry,
 } from "astro:content";
-import type { RoutableCollectionKey } from "../../../../types/routing";
 import type {
   AuthorLink,
   FormattedEntry,
   Img,
   QueryMode,
 } from "../../../../types/data";
-import { getMetaFromRemarkPluginFrontmatter } from "../../../../utils/frontmatter";
+import type {
+  IndexedEntry,
+  RoutableCollectionKey,
+} from "../../../../types/routing";
 import type { Blend } from "../../../../types/utilities";
+import type { EntryByIdIndex } from "../indexes";
+import { getAuthorLink } from "./authors";
 import {
   getCategoryFromReference,
+  getMetaFromRemarkPluginFrontmatter,
   getTagsFromReferences,
   resolveReferences,
   resolveTranslations,
 } from "./utils";
-import { getAuthorLink } from "./authors";
 
 function processCover(
   cover: Blend<CollectionEntry<RoutableCollectionKey>["data"]>["cover"]
@@ -31,11 +35,12 @@ function processCover(
       };
 }
 
-async function resolveAndMapAuthors(
-  authors: ReferenceDataEntry<"authors">[]
-): Promise<AuthorLink[]> {
-  const resolved = await resolveReferences(authors);
-  return resolved?.map(getAuthorLink) ?? [];
+function resolveAndMapAuthors(
+  authors: ReferenceDataEntry<"authors">[],
+  indexById: EntryByIdIndex
+): AuthorLink[] {
+  const resolved = resolveReferences(authors, indexById);
+  return resolved?.map((author) => getAuthorLink(author.raw)) ?? [];
 }
 
 export type FormatEntryReturnMap<F extends QueryMode> = {
@@ -53,25 +58,27 @@ export type FormatEntryReturnMap<F extends QueryMode> = {
  * Transform a collection entry to obtain a formatted preview.
  *
  * @template T - The routable collection key.
- * @param {CollectionEntry<T>} entry - The collection entry.
+ * @param {IndexedEntry<T>} entry - The collection entry.
+ * @param {EntryByIdIndex} indexById - A map of indexed entries by id.
  * @returns {Promise<FormatEntryReturnMap<"preview">[T]>} The formatted preview.
  */
 export async function getRoutableEntryPreview<T extends RoutableCollectionKey>(
-  entry: CollectionEntry<T>
+  entry: IndexedEntry<T>,
+  indexById: EntryByIdIndex
 ): Promise<FormatEntryReturnMap<"preview">[T]>;
 export async function getRoutableEntryPreview<T extends RoutableCollectionKey>(
-  entry: CollectionEntry<T>
+  entry: IndexedEntry<T>,
+  indexById: EntryByIdIndex
 ) {
-  const { locale, meta, seo, ...remainingData } = entry.data;
+  const { locale, meta, seo, ...remainingData } = entry.raw.data;
   const { isDraft, ...remainingMeta } = meta;
 
-  const { remarkPluginFrontmatter } = await render(entry);
+  const { remarkPluginFrontmatter } = await render(entry.raw);
   const { readingTime } = getMetaFromRemarkPluginFrontmatter(
     remarkPluginFrontmatter,
     locale
   );
 
-  // Handle cover conditionally if it exists
   const processedData = {
     ...remainingData,
     ...("cover" in remainingData
@@ -85,22 +92,27 @@ export async function getRoutableEntryPreview<T extends RoutableCollectionKey>(
     ...remainingMeta,
     readingTime,
     ...("authors" in remainingMeta
-      ? { authors: await resolveAndMapAuthors(remainingMeta.authors) }
+      ? {
+          authors: resolveAndMapAuthors(remainingMeta.authors, indexById),
+        }
       : {}),
     ...("category" in remainingMeta
-      ? { category: await getCategoryFromReference(remainingMeta.category) }
+      ? {
+          category: getCategoryFromReference(remainingMeta.category, indexById),
+        }
       : {}),
     ...("tags" in remainingMeta
-      ? { tags: await getTagsFromReferences(remainingMeta.tags) }
+      ? { tags: getTagsFromReferences(remainingMeta.tags, indexById) }
       : {}),
   };
 
   return {
     ...processedData,
-    collection: entry.collection,
-    id: entry.id,
+    collection: entry.raw.collection,
+    id: entry.raw.id,
     locale,
     meta: transformedMeta,
+    ...("route" in entry ? { route: entry.route } : {}),
   };
 }
 
@@ -108,27 +120,33 @@ export async function getRoutableEntryPreview<T extends RoutableCollectionKey>(
  * Transform a collection entry to obtain a full formatted entry.
  *
  * @template T - The routable collection key.
- * @param {CollectionEntry<T>} entry - The collection entry.
+ * @param {IndexedEntry<T>} entry - The collection entry.
+ * @param {EntryByIdIndex} indexById - A map of indexed entries by id.
  * @returns {Promise<FormatEntryReturnMap<"preview">[T]>} The formatted entry.
  */
 export async function getRoutableEntry<T extends RoutableCollectionKey>(
-  entry: CollectionEntry<T>
+  entry: IndexedEntry<T>,
+  indexById: EntryByIdIndex
 ): Promise<FormatEntryReturnMap<"full">[T]>;
 export async function getRoutableEntry<T extends RoutableCollectionKey>(
-  entry: CollectionEntry<T>
+  entry: IndexedEntry<T>,
+  indexById: EntryByIdIndex
 ) {
-  const preview = await getRoutableEntryPreview(entry);
-  const { remarkPluginFrontmatter, ...renderResult } = await render(entry);
-  const altLanguages = await resolveTranslations(entry.data.i18n);
+  const preview = await getRoutableEntryPreview(entry, indexById);
+  const { remarkPluginFrontmatter, ...renderResult } = await render(entry.raw);
+  const altLanguages = await resolveTranslations(
+    entry.raw.data.i18n,
+    indexById
+  );
 
   return {
     ...preview,
     ...renderResult,
-    hasContent: entry.body !== undefined && entry.body !== "",
+    hasContent: entry.raw.body !== undefined && entry.raw.body !== "",
     seo: {
-      ...entry.data.seo,
+      ...entry.raw.data.seo,
       languages: altLanguages,
     },
-    slug: entry.data.slug,
+    slug: entry.slug,
   };
 }

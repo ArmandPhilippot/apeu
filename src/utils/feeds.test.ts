@@ -3,8 +3,9 @@ import {
   blogPostFixture,
   blogrollFixture,
 } from "../../tests/fixtures/collections";
-import { formatEntry } from "../lib/astro/collections/format-entry";
+import { formatEntry } from "../lib/astro/collections/formatters";
 import type { FeedCompatibleEntry } from "../types/data";
+import type { IndexedEntry } from "../types/routing";
 import { CONFIG } from "./constants";
 import { getFeedLanguageFromLocale, getRSSItemsFromEntries } from "./feeds";
 
@@ -13,9 +14,22 @@ describe("get-rss-items-from-entries", () => {
     /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
     expect.assertions(2);
 
+    const blogPostEntry: IndexedEntry<"blog.posts"> = {
+      raw: blogPostFixture,
+      route: "/blog/posts/post-1",
+      slug: "post-1",
+    };
+    const blogrollEntry: IndexedEntry<"blogroll"> = {
+      raw: blogrollFixture,
+    };
+    const entriesIndex = new Map(
+      [blogPostEntry, blogrollEntry].map((entry) => [entry.raw.id, entry])
+    );
     const entries: FeedCompatibleEntry[] = [
-      await formatEntry<"blog.posts">(blogPostFixture),
-      await formatEntry<"blogroll">(blogrollFixture),
+      await formatEntry<"blog.posts">(blogPostEntry, {
+        indexById: entriesIndex,
+      }),
+      await formatEntry<"blogroll">(blogrollEntry, { indexById: entriesIndex }),
     ];
     const result = await getRSSItemsFromEntries(
       entries,
@@ -30,7 +44,15 @@ describe("get-rss-items-from-entries", () => {
     /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
     expect.assertions(2);
 
-    const tagBaseFixture = await formatEntry<"blogroll">(blogrollFixture);
+    const blogrollEntry: IndexedEntry<"blogroll"> = {
+      raw: blogrollFixture,
+    };
+    const entriesIndex = new Map(
+      [blogrollEntry].map((entry) => [entry.raw.id, entry])
+    );
+    const tagBaseFixture = await formatEntry<"blogroll">(blogrollEntry, {
+      indexById: entriesIndex,
+    });
     const tag = {
       ...tagBaseFixture,
       meta: {

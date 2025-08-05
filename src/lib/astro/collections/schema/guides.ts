@@ -13,6 +13,7 @@ export const guides = defineCollection({
         i18n: z
           .record(z.string().refine(isAvailableLanguage), reference("guides"))
           .optional(),
+        permaslug: z.string().optional(),
         tags: z.array(reference("tags")).optional(),
       })
       .transform(

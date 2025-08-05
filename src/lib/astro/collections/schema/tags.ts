@@ -12,6 +12,7 @@ export const tags = defineCollection({
         i18n: z
           .record(z.string().refine(isAvailableLanguage), reference("tags"))
           .optional(),
+        permaslug: z.string().optional(),
       })
       .transform(({ isDraft, publishedOn, updatedOn, ...tag }) => {
         return {

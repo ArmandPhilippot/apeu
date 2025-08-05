@@ -1,4 +1,5 @@
 import type { WebPage } from "schema-dts";
+import { useRouting } from "../../../services/routing";
 import type { Crumb, Page } from "../../../types/data";
 import { useI18n } from "../../../utils/i18n";
 import { getImgSrc } from "../../../utils/images";
@@ -30,7 +31,8 @@ export const getWebPageGraph = async ({
   title,
   type,
 }: PageData): Promise<WebPage> => {
-  const { route, translate } = useI18n(locale);
+  const { translate } = useI18n(locale);
+  const { routeById } = await useRouting();
   const websiteUrl = getWebsiteUrl();
   const websiteAuthor = `${websiteUrl}#author` as const;
   const url = `${websiteUrl}${pageRoute}`;
@@ -51,7 +53,7 @@ export const getWebPageGraph = async ({
     editor: { "@id": websiteAuthor },
     headline: title,
     isAccessibleForFree: true,
-    isPartOf: { "@id": `${websiteUrl}${route("home")}` },
+    isPartOf: { "@id": `${websiteUrl}${routeById(`${locale}/home`)}` },
     lastReviewed: meta.updatedOn.toISOString(),
     license: translate("license.url"),
     name: title,

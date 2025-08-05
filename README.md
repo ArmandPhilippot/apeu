@@ -449,7 +449,7 @@ Instead of using directly the `getCollection` helper from Astro, you should use 
 
 ```astro
 ---
-import { queryCollection } from "src/lib/astro/collections";
+import { queryCollection } from "src/services/collections";
 
 const { entries, total } = await queryCollection("blog.posts", {
   first: 10,

@@ -1,7 +1,21 @@
-import { describe, expect, it, vi } from "vitest";
+import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 import type { Person } from "schema-dts";
 import { CONFIG } from "../../../utils/constants";
+import { clearEntriesIndexCache } from "../../astro/collections/indexes";
+import {
+  createMockEntries,
+  setupCollectionMocks,
+} from "../../../../tests/helpers/astro-content";
 import { getArticleGraph } from "./article-graph";
+
+vi.mock("astro:content", async (importOriginal) => {
+  const mod = await importOriginal<typeof import("astro:content")>();
+  return {
+    ...mod,
+    getCollection: vi.fn(() => []),
+    getEntry: vi.fn(),
+  };
+});
 
 vi.mock("../../../utils/constants", async (importOriginal) => {
   const mod = await importOriginal<typeof import("../../../utils/constants")>();
@@ -26,6 +40,18 @@ vi.mock("../../../utils/url", async (importOriginal) => {
 });
 
 describe("getArticleGraph", () => {
+  beforeAll(() => {
+    const mockEntries = createMockEntries([
+      { collection: "pages", id: "en/home" },
+      { collection: "pages", id: "en/blog" },
+    ]);
+    setupCollectionMocks(mockEntries);
+  });
+
+  afterAll(() => {
+    clearEntriesIndexCache();
+  });
+
   describe("Basic article structure", () => {
     it("returns an Article with correct type and identifiers", async () => {
       // eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory.
@@ -37,7 +63,6 @@ describe("getArticleGraph", () => {
         description: "Quam omnis in temporibus.",
         locale: CONFIG.LANGUAGES.DEFAULT,
         meta: {
-          
           publishedOn: new Date("2024-10-09T13:55:57.813Z"),
           updatedOn: new Date("2024-10-09T13:55:57.813Z"),
         },

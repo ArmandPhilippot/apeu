@@ -35,11 +35,11 @@ The following pattern is not supported because it does not make sense:
 
 To access the page in your browser, you need to remove the prefix from the slug. For example, the existing `src/pages/_dev_design-system` folder can be accessed in your browser with the following url `http://localhost:4321/design-system`.
 
-### Component stories
+### Stories
 
 Currently, it is not possible to use [Storybook with Astro](https://github.com/storybookjs/storybook/issues/18356). So I added an Astro integration to be able to test the components in isolation. This is not a Storybook replacement: you can't play with props, dynamically generate a table of available props, etc.
 
-To create stories for your components, use the following structure:
+To create stories for your components or views, use the following structure:
 
 ```text
 /src/components
@@ -51,15 +51,15 @@ To create stories for your components, use the following structure:
     └── link.stories.astro
 ```
 
-About this structure:
+Where:
 
-- `button.astro`: your Astro component
-- `button.stories.astro`: your component's stories
+- `button.astro` is your Astro component
+- `button.stories.astro` is your component's stories
 
-The `button.stories.astro` file is treated as a regular Astro page: import the component, use a layout if needed, and use some HTML markup to add explanations regarding the component behavior.
+The `button.stories.astro` file is treated as a regular Astro page: import the component, use a layout if needed, and use some HTML markup to document the component.
 
 > [!NOTE]
-> The VS Code extension will infer the file name as `Button`, so to import your component you'll need to rename the import (e.g. `ButtonComponent`) to avoid conflicts.
+> The VS Code extension will infer the component name inside the `stories.astro` file as `Button` because of the filename. To import your component you'll need to rename the import (e.g. `ButtonComponent`) to avoid conflicts.
 
 The integration supports a base path to inject the stories. So with the current configuration and using the previous structure, you can access your stories in a browser with the following slugs:
 
@@ -95,9 +95,9 @@ Only `.astro` extension is supported for stories. I'd like to use `.mdx` but if 
 
 This project is i18n-ready and it is available in English and in French right now.
 
-All UI strings are stored as a key/value pair in a JSON file located in `src/translations`. Note that for routes, except for the homepage, the translations should match the names used in `src/pages`.
+All UI strings are stored as a key/value pair in a JSON file located in `src/translations`.
 
-Then each templates use some methods to translate those messages in the current locale. It also supports pluralization and route localization.
+Then each templates use some helpers to translate those messages in the current locale. It also supports pluralization and route localization.
 
 ### Mailer
 
@@ -261,59 +261,16 @@ Before starting, please follow the instructions in [Setup](#setup).
 │   │   ├── _dev_design-system/
 │   │   │   ├── components/
 │   │   │   ├── tokens/
+│   │   │   ├── views/
+│   │   │   └── index.astro
+│   │   ├── [...page]/
+│   │   │   ├── feed.xml.ts
 │   │   │   └── index.astro
 │   │   ├── api/
-│   │   ├── blog/
-│   │   │   ├── categories/
-│   │   │   │   └── index.astro
-│   │   │   ├── articles/
-│   │   │   │   └── index.astro
-│   │   │   └── index.astro
-│   │   ├── blogroll/
-│   │   │   └── index.astro
-│   │   ├── en/
-│   │   │   ├── blog/
-│   │   │   │   ├── categories/
-│   │   │   │   │   └── index.astro
-│   │   │   │   ├── posts/
-│   │   │   │   │   └── index.astro
-│   │   │   │   └── index.astro
-│   │   │   ├── blogroll/
-│   │   │   │   └── index.astro
-│   │   │   ├── bookmarks/
-│   │   │   │   └── index.astro
-│   │   │   ├── guides/
-│   │   │   │   └── index.astro
-│   │   │   ├── notes/
-│   │   │   │   └── index.astro
-│   │   │   ├── projects/
-│   │   │   │   └── index.astro
-│   │   │   ├── tags/
-│   │   │   │   └── index.astro
-│   │   │   ├── [slug].astro
-│   │   │   ├── 404.astro
-│   │   │   ├── contact.astro
-│   │   │   ├── feeds.astro
-│   │   │   ├── index.astro
-│   │   │   ├── legal-notice.astro
-│   │   │   └── search.astro
-│   │   ├── etiquettes/
-│   │   │   └── index.astro
-│   │   ├── guides/
-│   │   │   └── index.astro
-│   │   ├── notes/
-│   │   │   └── index.astro
-│   │   ├── projets/
-│   │   │   └── index.astro
-│   │   ├── signets/
-│   │   │   └── index.astro
-│   │   ├── [slug].astro
-│   │   ├── 404.astro
-│   │   ├── contact.astro
-│   │   ├── flux.astro
-│   │   ├── index.astro
-│   │   ├── mentions-legales.astro
-│   │   └── recherche.astro
+│   │   ├── og/
+│   │   ├── favicon.ico.ts
+│   │   ├── manifest.json.ts
+│   │   └── robots.txt.ts
 │   ├── services/
 │   │   └── mailer/
 │   ├── styles/
@@ -341,7 +298,7 @@ In details:
 - `src/utils/`: all the utilities (constants, helpers, etc.) to build the project.
 
 > [!IMPORTANT]
-> All the `index.md` files in the `content` directory are required. These files are used in `src/pages` to add metadata and optional content to the index pages of your collections. Pages created in `content/pages` can use any filename but some pages are required: `404.md`, `blogroll.md`, `bookmarks.md`, `contact.md`, `feeds.md`, `home.md`, `legal-notice.md` and `search.md`. You can also use the `.mdx` extension.
+> All the `index.md` files in the `content` directory are required and the directory names must be the same. These files are used in `src/pages` to add metadata and optional content to the index pages of your collections. Pages created in `content/pages` can use any filename but some pages are required: `404.md`, `blogroll.md`, `bookmarks.md`, `contact.md`, `feeds.md`, `home.md`, `legal-notice.md` and `search.md`. You can also use the `.mdx` extension.
 
 ### Design system
 
@@ -395,6 +352,33 @@ When creating new design elements, you should use them. For example:
 
 You can find all the available tokens in the design system (accessible under `/design-system` in your browser).
 
+#### Views
+
+The views are located in the `src/views` directory:
+
+```text
+/src/views/
+├── blog-index-view/
+├── collection-listing-view/
+├── contact-view/
+└── ...
+```
+
+When creating a new view you should also create stories for it and use the following structure:
+
+```text
+/src/views/
+├── view-name/
+│   ├── view-name.astro
+│   ├── view-name.stories.astro
+│   └── view-name.test.ts
+└── other views
+```
+
+The view stories will be collected when your start the dev server and will be available in the design system (accessible under `/design-system` in your browser).
+
+This way you can test them in isolation both visually through stories and with Vitest tests.
+
 ### Add a new language
 
 To add a new language for this website, you need to create a new JSON file in `src/translations` using the locale as filename. Here are the required steps:
@@ -403,27 +387,28 @@ To add a new language for this website, you need to create a new JSON file in `s
 2. `cp src/translations/en.json src/translations/es.json`,
 3. `nano src/translations/es.json`, translate all the keys in your language then save the file,
 4. `nano src/translations/index.ts`: in that file, import then reexport your new language,
-5. Copy the pages in `src/pages` in a new directory matching the locale you're adding (e.g. `src/pages/es`) and translates the filename so that they match your translations in `src/translations`,
-6. The new language is now available!
+5. The new language is now available!
 
-### Use localized UI strings in templates
+### Use localization in templates
 
 If you need to use UI strings or routes in your templates:
 
 1. Make sure the key exist in the translations files or add a new key,
-2. Import the `useI18n()` helper,
+2. Import the `useI18n()` helper for UI strings or `useRouting()` for routes,
 3. Use one the provided methods to display your UI string or route.
 
 **DO:**
 
 ```astro
 ---
+import { useRouting } from "src/services/routing";
 import { useI18n } from "src/utils/helpers/i18n";
 
-const { locale, route, translate, translatePlural } = useI18n(Astro.currentLocale);
+const { locale, translate, translatePlural } = useI18n(Astro.currentLocale);
+const { routeById } = await useRouting();
 ---
 
-<a href={route("a.route.key")}>
+<a href={routeById(`${locale}/contact`)}>
   {translate("some.key.available.in.translations")}
 </a>
 <div>
@@ -438,7 +423,7 @@ const { locale, route, translate, translatePlural } = useI18n(Astro.currentLocal
 
 ---
 
-<div>Some hardcoded string.</div>
+<a href="/hardcoded-route">Some hardcoded string.</a>
 ```
 
 ### Writing templates for collection pages

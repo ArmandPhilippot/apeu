@@ -266,8 +266,11 @@ Before starting, please follow the instructions in [Setup](#setup).
 │   │   ├── [...page]/
 │   │   │   ├── feed.xml.ts
 │   │   │   └── index.astro
+│   │   ├── [locale]/
+│   │   │   └── 404.astro
 │   │   ├── api/
 │   │   ├── og/
+│   │   ├── 404.astro
 │   │   ├── favicon.ico.ts
 │   │   ├── manifest.json.ts
 │   │   └── robots.txt.ts

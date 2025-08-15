@@ -16,12 +16,20 @@ import ContactView from "../../views/contact-view/contact-view.astro";
 import DefaultPageView from "../../views/default-page-view/default-page-view.astro";
 import FeedsView from "../../views/feeds-view/feeds-view.astro";
 import HomepageView from "../../views/homepage-view/homepage-view.astro";
-import NotFoundView from "../../views/not-found-view/not-found-view.astro";
 import SearchView from "../../views/search-view/search-view.astro";
 
 export const getStaticPaths = (async ({ paginate }) => {
   const { entries } = await queryCollection(ROUTABLE_COLLECTIONS);
-  const [paginated, regular] = partitionByType(entries, isPageableEntry);
+  const filteredEntries = entries.filter((entry) => {
+    if (entry.collection === "pages") {
+      return entry.id !== `${entry.locale}/404`;
+    }
+    return true;
+  });
+  const [paginated, regular] = partitionByType(
+    filteredEntries,
+    isPageableEntry
+  );
   const enrichedPaginatedPages = await addRelatedItemsToPages(paginated, {
     format: "preview",
   });
@@ -69,7 +77,6 @@ type PageComponent = AstroComponentFactory | null;
 
 const getPagesView = (currentPage: typeof page): PageComponent => {
   const pagesViews: Record<string, PageComponent> = {
-    [`${currentPage.locale}/404`]: NotFoundView,
     [`${currentPage.locale}/blogroll`]: CollectionListingView,
     [`${currentPage.locale}/bookmarks`]: CollectionListingView,
     [`${currentPage.locale}/contact`]: ContactView,

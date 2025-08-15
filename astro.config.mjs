@@ -21,6 +21,9 @@ export default defineConfig({
   adapter: node({
     mode: "standalone",
   }),
+  build: {
+    format: "preserve",
+  },
   experimental: {
     contentIntellisense: true,
     fonts: [

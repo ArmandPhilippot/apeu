@@ -277,8 +277,6 @@ describe("addRelatedItemsToPage", () => {
     });
     const result = await addRelatedItemsToPage(entry);
 
-    console.log(result.related.entries);
-
     expect(result.related.collection).toBe("projects");
     // eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory.
     expect(result.related.total).toBe(2);

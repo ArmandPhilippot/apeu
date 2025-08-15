@@ -1,0 +1,62 @@
+---
+import { Icon } from "astro-icon/components";
+import type { ComponentProps } from "astro/types";
+import Button from "../../components/atoms/button/button.astro";
+import ListItem from "../../components/atoms/list/list-item.astro";
+import List from "../../components/atoms/list/list.astro";
+import Link from "../../components/mdx/link.astro";
+import PageLayout from "../../components/templates/page-layout/page-layout.astro";
+import { getWebPageGraph } from "../../lib/schema-dts/graphs/webpage-graph";
+import { getBreadcrumb } from "../../services/breadcrumb";
+import type { QueriedEntry } from "../../services/collections";
+import { useRouting } from "../../services/routing";
+import { getCollectionsFeeds } from "../../utils/feeds";
+import { useI18n } from "../../utils/i18n";
+
+type Props = Partial<ComponentProps<typeof PageLayout>> & {
+  entry: QueriedEntry<"pages">;
+};
+
+const {
+  entry: { Content, hasContent, ...page },
+  ...props
+} = Astro.props;
+const { translate } = useI18n(page.locale);
+const { routeById } = await useRouting();
+const feeds = await getCollectionsFeeds(page.locale);
+const breadcrumb = await getBreadcrumb({ route: Astro.url.pathname });
+const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
+  await getWebPageGraph({ ...page, breadcrumb }),
+];
+---
+
+<PageLayout
+  breadcrumb={breadcrumb}
+  description={page.description}
+  graphs={graphs}
+  headings={page.headings}
+  seo={page.seo}
+  title={page.title}
+  {...props}
+>
+  <Fragment slot="body">
+    {hasContent && <Content />}
+    <p>{translate("page.feeds.global.feed.introduction")}</p>
+    <p>
+      <Button as="a" href={`${routeById(`${page.locale}/home`)}feed.xml`}>
+        <Icon aria-hidden="true" name="feed" />
+        {translate("cta.subscribe.to.website")}
+      </Button>
+    </p>
+    <p>{translate("page.feeds.individual.feeds.introduction")}</p>
+    <List>
+      {
+        feeds?.map((feed) => (
+          <ListItem>
+            <Link href={feed.slug}>{feed.label}</Link>
+          </ListItem>
+        ))
+      }
+    </List>
+  </Fragment>
+</PageLayout>

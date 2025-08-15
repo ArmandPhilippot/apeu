@@ -7,13 +7,19 @@ import {
 import { vi } from "vitest";
 import { isObject } from "../../src/utils/type-checks";
 
+type DeepPartial<T extends Record<string, unknown>> = {
+  [K in keyof T]?: T[K] extends Record<string, unknown>
+    ? DeepPartial<T[K]>
+    : T[K];
+};
+
 type MockEntry<T extends CollectionKey> = {
   id: string;
   collection: T;
-  data?: Partial<CollectionEntry<T>["data"]>;
+  data?: DeepPartial<CollectionEntry<T>["data"]>;
 };
 
-type EntriesByCollection = Partial<
+export type EntriesByCollection = Partial<
   Record<CollectionKey, CollectionEntry<CollectionKey>[]>
 >;
 
@@ -21,10 +27,7 @@ type EntriesByCollection = Partial<
  * Creates a mock Astro collection entry with default values.
  *
  * @template T - The collection key type (e.g., "pages", "posts").
- * @param {object} params - The mock entry parameters.
- * @param {string} params.id - The unique identifier for the entry (e.g., "en/pages/about").
- * @param {T} params.collection - The collection this entry belongs to.
- * @param {Partial<CollectionEntry<T>["data"]>} [params.data] - Optional partial data to override defaults.
+ * @param {Partial<CollectionEntry<T>>} [config] - The mock entry configuration.
  * @returns {CollectionEntry<T>} A complete mock collection entry with merged default values.
  *
  * @example
@@ -41,21 +44,39 @@ export const createMockEntry = <T extends CollectionKey>({
   data,
   id,
 }: MockEntry<T>): CollectionEntry<T> =>
-  ({
-    id,
-    collection,
-    data: {
-      locale: "en",
-      ...data,
-      meta:
-        data !== undefined && "meta" in data && isObject(data.meta)
-          ? {
-              ...data.meta,
-              isDraft: false,
-            }
-          : {},
-    },
-  }) as CollectionEntry<T>;
+  collection === "authors"
+    ? ({
+        collection,
+        id,
+        data: {
+          firstName: "John",
+          isWebsiteOwner: true,
+          lastName: "Doe",
+          name: "John Doe",
+          ...data,
+        },
+      } as CollectionEntry<T>)
+    : ({
+        collection,
+        id,
+        data: {
+          description: "Test entry description",
+          locale: "en",
+          meta: {
+            publishedOn: new Date("2024-01-01"),
+            updatedOn: new Date("2024-01-01"),
+            ...(data !== undefined && "meta" in data && isObject(data.meta)
+              ? data.meta
+              : null),
+          },
+          seo: {
+            description: "A SEO description",
+            title: "A SEO title",
+          },
+          title: "Test Entry Title",
+          ...data,
+        },
+      } as CollectionEntry<T>);
 
 /**
  * Creates an array of mock Astro collection entries from a simplified configuration.
@@ -73,7 +94,7 @@ export const createMockEntry = <T extends CollectionKey>({
  */
 export const createMockEntries = <T extends CollectionKey>(
   entries: MockEntry<T>[]
-): CollectionEntry<T>[] => entries.map(createMockEntry);
+): CollectionEntry<T>[] => entries.map(createMockEntry) as CollectionEntry<T>[];
 
 const groupEntriesByCollection = (
   entries: CollectionEntry<CollectionKey>[]
@@ -129,6 +150,29 @@ export const createMockEntriesByCollection = <
 
   return result;
 };
+
+/**
+ * Deep merge two EntriesByCollection objects.
+ *
+ * @param {EntriesByCollection} base - The base object.
+ * @param {EntriesByCollection} override - The overrides object.
+ * @returns {EntriesByCollection} The merged entries.
+ */
+export function mergeEntriesByCollection(
+  base: EntriesByCollection,
+  override: EntriesByCollection
+): EntriesByCollection {
+  const result: EntriesByCollection = { ...base };
+
+  for (const [collection, entries] of Object.entries(override)) {
+    if (Array.isArray(entries)) {
+      const key = collection as CollectionKey;
+      result[key] = [...(result[key] ?? []), ...entries];
+    }
+  }
+
+  return result;
+}
 
 /**
  * Sets up Vitest mocks for Astro's content functions with collection-specific data.
@@ -199,4 +243,69 @@ export const setupCollectionMocks = (
         (collectionEntry) => collectionEntry.id === id
       )
   );
+};
+
+/**
+ * Create mock entries matching the pages used in the Layout component.
+ *
+ * @param {string[]} locales - The website locales.
+ * @returns {EntriesByCollection} The mock collection entries.
+ */
+export const createLayoutMockEntries = (
+  locales: string[]
+): EntriesByCollection => {
+  const mockEntries = createMockEntriesByCollection({
+    "index.pages": locales.flatMap((locale) => [
+      {
+        collection: "index.pages",
+        id: `${locale}/blog`,
+        data: { title: "Blog" },
+      },
+      {
+        collection: "index.pages",
+        id: `${locale}/guides`,
+        data: { title: "Guides" },
+      },
+      {
+        collection: "index.pages",
+        id: `${locale}/notes`,
+        data: { title: "Notes" },
+      },
+      {
+        collection: "index.pages",
+        id: `${locale}/projects`,
+        data: { title: "Projects" },
+      },
+    ]),
+    pages: locales.flatMap((locale) => [
+      { collection: "pages", id: `${locale}/home`, data: { title: "Home" } },
+      {
+        collection: "pages",
+        id: `${locale}/blogroll`,
+        data: { title: "Blogroll" },
+      },
+      {
+        collection: "pages",
+        id: `${locale}/bookmarks`,
+        data: { title: "Bookmarks" },
+      },
+      {
+        collection: "pages",
+        id: `${locale}/contact`,
+        data: { title: "Contact" },
+      },
+      { collection: "pages", id: `${locale}/feeds`, data: { title: "Feeds" } },
+      {
+        collection: "pages",
+        id: `${locale}/legal-notice`,
+        data: { title: "Legal notice" },
+      },
+      {
+        collection: "pages",
+        id: `${locale}/search`,
+        data: { title: "Search" },
+      },
+    ]),
+  });
+  return mockEntries;
 };

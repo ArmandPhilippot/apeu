@@ -96,6 +96,10 @@ export default defineConfig({
       baseSlug: "/design-system/components",
       components: "./src/components",
     }),
+    componentsStories({
+      baseSlug: "/design-system/views",
+      components: "./src/views",
+    }),
     devOnlyPages({ prefix: "_dev_" }),
     icon({
       iconDir: "src/assets/icons",

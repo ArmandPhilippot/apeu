@@ -1,19 +1,10 @@
 import type { CollectionEntry, CollectionKey } from "astro:content";
 import type {
   IndexedEntry,
+  NonRoutableCollectionKey,
   RoutableCollectionKey,
 } from "../../../../types/routing";
-
-const ROUTABLE_COLLECTIONS = [
-  "blog.categories",
-  "blog.posts",
-  "guides",
-  "index.pages",
-  "notes",
-  "pages",
-  "projects",
-  "tags",
-] as const satisfies RoutableCollectionKey[];
+import { NON_ROUTABLE_COLLECTIONS, ROUTABLE_COLLECTIONS } from "../constants";
 
 /**
  * Check if the given collection is routable.
@@ -23,8 +14,30 @@ const ROUTABLE_COLLECTIONS = [
  */
 export const isRoutableCollection = (
   collection: string
-): collection is CollectionEntry<RoutableCollectionKey>["collection"] =>
+): collection is RoutableCollectionKey =>
   (ROUTABLE_COLLECTIONS as string[]).includes(collection);
+
+/**
+ * Check if the given collection is non routable.
+ *
+ * @param {string} collection - The collection key to test.
+ * @returns {boolean} True if the collection is non routable.
+ */
+export const isNonRoutableCollection = (
+  collection: string
+): collection is NonRoutableCollectionKey =>
+  (NON_ROUTABLE_COLLECTIONS as string[]).includes(collection);
+
+/**
+ * Check if the given collection exists.
+ *
+ * @param {string} collection - The collection key to test.
+ * @returns {boolean} True if the collection exists.
+ */
+export const isValidCollection = (
+  collection: string
+): collection is RoutableCollectionKey | NonRoutableCollectionKey =>
+  isRoutableCollection(collection) || isNonRoutableCollection(collection);
 
 /**
  * Check if the given entry is a routable entry.

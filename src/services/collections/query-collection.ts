@@ -2,6 +2,7 @@ import type { CollectionEntry, CollectionKey } from "astro:content";
 import {
   formatEntry,
   type FormatEntryConfig,
+  type FormatEntryReturnMap,
 } from "../../lib/astro/collections/formatters";
 import { getEntriesIndex } from "../../lib/astro/collections/indexes";
 import type { QueryMode } from "../../types/data";
@@ -255,11 +256,16 @@ type QueryCollectionOptions<C extends CollectionKey, F extends QueryMode> = {
   where?: Partial<QueryCollectionWhere>;
 };
 
+export type QueriedCollectionEntry<
+  C extends CollectionKey,
+  F extends QueryMode,
+> = Awaited<ReturnType<FormatEntryReturnMap<F>[C]>>;
+
 export type QueriedCollection<C extends CollectionKey, F extends QueryMode> = {
   /**
    * The queried collection entries.
    */
-  entries: Awaited<ReturnType<typeof formatEntry<C, F>>>[];
+  entries: QueriedCollectionEntry<C, F>[];
   /**
    * The total entries count before applying `first` and/or `after`.
    */

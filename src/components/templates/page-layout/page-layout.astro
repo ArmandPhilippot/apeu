@@ -1,8 +1,10 @@
 ---
 import type { ComponentProps } from "astro/types";
 import type { Graph } from "schema-dts";
-import { useRouting } from "../../../services/routing";
 import { getJsonLdSchema } from "../../../lib/schema-dts/schema";
+import type { QueriedEntry } from "../../../services/collections";
+import { useRouting } from "../../../services/routing";
+import type { RoutableCollectionKey } from "../../../types/routing";
 import { useI18n } from "../../../utils/i18n";
 import { getOpenGraphImg } from "../../../utils/open-graph";
 import OpenGraphMeta from "../../atoms/open-graph-meta/open-graph-meta.astro";
@@ -11,15 +13,19 @@ import Breadcrumb from "../../molecules/breadcrumb/breadcrumb.astro";
 import Page from "../../organisms/page/page.astro";
 import Layout from "../layout/layout.astro";
 
-type Props = Pick<ComponentProps<typeof Layout>, "seo"> &
-  Omit<ComponentProps<typeof Page>, "heading"> & {
+type Props = Omit<ComponentProps<typeof Page>, "heading" | "title" | "toc"> &
+  Pick<QueriedEntry<RoutableCollectionKey>, "seo" | "title"> & {
     breadcrumb?: ComponentProps<typeof Breadcrumb>["items"] | null | undefined;
     description?: string | null | undefined;
     graphs?: Graph["@graph"] | null | undefined;
-    title: string;
+    headings?:
+      | QueriedEntry<RoutableCollectionKey>["headings"]
+      | null
+      | undefined;
   };
 
-const { breadcrumb, description, graphs, seo, title, ...attrs } = Astro.props;
+const { breadcrumb, description, headings, graphs, seo, title, ...attrs } =
+  Astro.props;
 const { locale, translate } = useI18n(Astro.currentLocale);
 const { routeById } = await useRouting();
 const isHome = Astro.url.pathname === routeById(`${locale}/home`);
@@ -69,6 +75,7 @@ const socialImg = await getOpenGraphImg({ locale, slug: Astro.url.pathname });
       <Page
         {...attrs}
         heading={isHome ? null : title}
+        toc={headings}
         transition:animate="fade"
         transition:name="page"
       >

@@ -152,7 +152,7 @@ export type ValidQueryMode<K> = K extends RoutableCollectionKey
 type AddRenderedContentIfApplicable<T, K, Mode> =
   K extends RoutableCollectionKey
     ? Mode extends "full"
-      ? T & Omit<RenderedContent, "remarkPluginFrontmatter"> & { seo: SEO }
+      ? T & Omit<RenderedContent, "remarkPluginFrontmatter">
       : T
     : T;
 
@@ -179,6 +179,7 @@ type UpdatedMetaPropertiesTypes = {
 type UpdatedRootPropertiesTypes = {
   avatar: Img | null | undefined;
   cover: Img | null | undefined;
+  seo: SEO;
 };
 
 /**

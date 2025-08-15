@@ -246,17 +246,19 @@ export const getCollectionsFeeds = async (
     `${locale}/blog/posts`,
     `${locale}/blogroll`,
     `${locale}/bookmarks`,
-    `${locale}/contributions`,
     `${locale}/guides`,
     `${locale}/notes`,
     `${locale}/projects`,
     `${locale}/tags`,
   ];
-  const { entries: entriesWithStaticFeed } = await queryCollection("pages", {
-    format: "preview",
-    orderBy: { key: "title", order: "ASC" },
-    where: { ids: pagesWithFeed },
-  });
+  const { entries: entriesWithStaticFeed } = await queryCollection(
+    ["index.pages", "pages"],
+    {
+      format: "preview",
+      orderBy: { key: "title", order: "ASC" },
+      where: { ids: pagesWithFeed },
+    }
+  );
   const { entries: entriesWithDynamicFeed } = await queryCollection(
     ["blog.categories", "tags"],
     {

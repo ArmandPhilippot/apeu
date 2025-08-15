@@ -19,13 +19,18 @@ type QueryEntryOptions<
   locale?: AvailableLanguage | undefined;
 };
 
+export type QueriedEntry<
+  C extends CollectionKey,
+  F extends QueryMode = "full",
+> = Awaited<ReturnType<FormatEntryReturnMap<F>[C]>>;
+
 /**
  * Query a single entry in any collection.
  *
  * @template C - The collection key.
  * @template F - The entry format.
  * @param {QueryEntryOptions<C, F>} options - The options to query the entry.
- * @returns {Promise<ReturnType<FormatEntryReturnMap<F>[C]>>} The formatted entry.
+ * @returns {Promise<QueriedEntry<C, F>>} The formatted entry.
  * @throws When the entry is not found.
  */
 export const queryEntry = async <
@@ -36,9 +41,7 @@ export const queryEntry = async <
   format,
   id,
   locale,
-}: QueryEntryOptions<C, F>): Promise<
-  ReturnType<FormatEntryReturnMap<F>[C]>
-> => {
+}: QueryEntryOptions<C, F>): Promise<QueriedEntry<C, F>> => {
   const fullId = locale ? `${locale}/${id}` : id;
   const { byId } = await getEntriesIndex();
   const queriedEntry = byId.get(fullId);
@@ -59,5 +62,14 @@ export const queryEntry = async <
     ? updateEntryTagsForLocale(queriedEntry, locale)
     : queriedEntry;
 
-  return formatEntry<C, F>(updatedEntry, { format, indexById: byId });
+  /*
+   * This cast seems necessary because TypeScript can't infer the exact
+   * return type of `formatEntry` due to its generic overload and
+   * dynamic branching. But, the runtime logic should be enough to
+   * ensure that the correct formatter is selected.
+   */
+  return formatEntry<C, F>(updatedEntry, {
+    format,
+    indexById: byId,
+  }) as QueriedEntry<C, F>;
 };

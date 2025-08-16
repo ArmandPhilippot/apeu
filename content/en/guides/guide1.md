@@ -5,7 +5,7 @@ publishedOn: "2024-11-09T23:13"
 authors:
   - "armand-philippot"
 tags:
-  - "en/tag1"
+  - "en/tags/tag1"
 seo:
   description: "This is a description used by search engines."
   title: "Guide 1"

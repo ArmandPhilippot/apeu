@@ -1,11 +1,31 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
-import { isDefaultLanguage, useI18n } from "./i18n";
+import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
+import { clearEntriesIndexCache } from "../lib/astro/collections/indexes";
+import {
+  createMockEntries,
+  setupCollectionMocks,
+} from "../../tests/helpers/astro-content";
 import { getOpenGraphImg } from "./open-graph";
 
-vi.mock("./i18n", () => {
+vi.mock("astro:content", async (importOriginal) => {
+  const mod = await importOriginal<typeof import("astro:content")>();
   return {
-    useI18n: vi.fn(),
-    isDefaultLanguage: vi.fn(),
+    ...mod,
+    getCollection: vi.fn(() => []),
+    getEntry: vi.fn(),
+  };
+});
+
+vi.mock("./constants", async (importOriginal) => {
+  const mod = await importOriginal<typeof import("./constants")>();
+  return {
+    ...mod,
+    CONFIG: {
+      ...mod.CONFIG,
+      LANGUAGES: {
+        DEFAULT: "en",
+        AVAILABLE: ["en", "fr"],
+      },
+    },
   };
 });
 
@@ -18,20 +38,25 @@ vi.mock("./url", async (importOriginal) => {
 });
 
 describe("getOpenGraphImg", () => {
-  beforeEach(() => {
-    vi.resetAllMocks();
+  beforeAll(() => {
+    // cSpell:ignore Accueil propos
+    const mockEntries = createMockEntries([
+      { collection: "pages", id: "en/home", data: { title: "Home" } },
+      { collection: "pages", id: "en/about", data: { title: "About" } },
+      { collection: "pages", id: "fr/home", data: { title: "Accueil" } },
+      { collection: "pages", id: "fr/about", data: { title: "A propos" } },
+    ]);
+    setupCollectionMocks(mockEntries);
   });
 
-  it("should generate og image for default language home page", () => {
-    vi.mocked(useI18n).mockReturnValue({
-      locale: "en",
-      route: vi.fn().mockReturnValue("/"),
-      translate: vi.fn(),
-      translatePlural: vi.fn(),
-    });
-    vi.mocked(isDefaultLanguage).mockReturnValue(true);
+  afterAll(() => {
+    clearEntriesIndexCache();
+  });
 
-    const result = getOpenGraphImg({ locale: "en", slug: "/" });
+  it("should generate og image for default language home page", async () => {
+    expect.assertions(1);
+
+    const result = await getOpenGraphImg({ locale: "en", slug: "/" });
 
     expect(result).toStrictEqual({
       height: 630,
@@ -41,16 +66,10 @@ describe("getOpenGraphImg", () => {
     });
   });
 
-  it("should generate og image for non-default language home page", () => {
-    vi.mocked(useI18n).mockReturnValue({
-      locale: "en",
-      route: vi.fn().mockReturnValue("/"),
-      translate: vi.fn(),
-      translatePlural: vi.fn(),
-    });
-    vi.mocked(isDefaultLanguage).mockReturnValue(false);
+  it("should generate og image for non-default language home page", async () => {
+    expect.assertions(1);
 
-    const result = getOpenGraphImg({ locale: "fr", slug: "/" });
+    const result = await getOpenGraphImg({ locale: "fr", slug: "/fr" });
 
     expect(result).toStrictEqual({
       height: 630,
@@ -60,19 +79,10 @@ describe("getOpenGraphImg", () => {
     });
   });
 
-  it("should generate og image for a specific page in default language", () => {
-    vi.mocked(useI18n).mockReturnValue({
-      locale: "en",
-      route: vi.fn((key: string) => {
-        if (key === "home") return "/";
-        return "/about";
-      }),
-      translate: vi.fn(),
-      translatePlural: vi.fn(),
-    });
-    vi.mocked(isDefaultLanguage).mockReturnValue(true);
+  it("should generate og image for a specific page in default language", async () => {
+    expect.assertions(1);
 
-    const result = getOpenGraphImg({ locale: "en", slug: "/about" });
+    const result = await getOpenGraphImg({ locale: "en", slug: "/about" });
 
     expect(result).toStrictEqual({
       height: 630,
@@ -82,19 +92,10 @@ describe("getOpenGraphImg", () => {
     });
   });
 
-  it("should generate og image for a specific page in non-default language", () => {
-    vi.mocked(useI18n).mockReturnValue({
-      locale: "en",
-      route: vi.fn((key: string) => {
-        if (key === "home") return "/";
-        return "/fr/about";
-      }),
-      translate: vi.fn(),
-      translatePlural: vi.fn(),
-    });
-    vi.mocked(isDefaultLanguage).mockReturnValue(false);
+  it("should generate og image for a specific page in non-default language", async () => {
+    expect.assertions(1);
 
-    const result = getOpenGraphImg({ locale: "fr", slug: "/fr/about" });
+    const result = await getOpenGraphImg({ locale: "fr", slug: "/fr/about" });
 
     expect(result).toStrictEqual({
       height: 630,

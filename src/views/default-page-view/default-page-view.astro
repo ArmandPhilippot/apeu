@@ -1,0 +1,35 @@
+---
+import type { ComponentProps } from "astro/types";
+import PageLayout from "../../components/templates/page-layout/page-layout.astro";
+import { getWebPageGraph } from "../../lib/schema-dts/graphs/webpage-graph";
+import { getBreadcrumb } from "../../services/breadcrumb";
+import type { QueriedEntry } from "../../services/collections";
+import type { RoutableCollectionKey } from "../../types/routing";
+import CollectionMeta from "../../components/organisms/collection-meta/collection-meta.astro";
+
+type Props = Partial<ComponentProps<typeof PageLayout>> & {
+  entry: QueriedEntry<RoutableCollectionKey>;
+};
+
+const {
+  entry: { Content, hasContent, ...page },
+  ...props
+} = Astro.props;
+const breadcrumb = await getBreadcrumb({ route: Astro.url.pathname });
+const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
+  await getWebPageGraph({ ...page, breadcrumb }),
+];
+---
+
+<PageLayout
+  breadcrumb={breadcrumb}
+  description={page.description}
+  graphs={graphs}
+  headings={page.headings}
+  seo={page.seo}
+  title={page.title}
+  {...props}
+>
+  <CollectionMeta data={page.meta} slot="meta" />
+  {hasContent && <Content slot={hasContent ? "body" : ""} />}
+</PageLayout>

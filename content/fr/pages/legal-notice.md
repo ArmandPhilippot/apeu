@@ -7,6 +7,7 @@ seo:
   description: "Il s'agit d'une description utilisée par les moteurs de recherche."
 i18n:
   en: "en/legal-notice"
+permaslug: "mentions-legales"
 ---
 
 Vos mentions légales...

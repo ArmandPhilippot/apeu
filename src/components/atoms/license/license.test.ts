@@ -13,6 +13,7 @@ vi.mock("../../../utils/constants", async (importOriginal) => {
       ...mod.CONFIG,
       LANGUAGES: {
         DEFAULT: "en",
+        AVAILABLE: ["en", "fr"],
       },
     },
   };

@@ -1,0 +1,32 @@
+---
+import type { GetStaticPaths } from "astro";
+import { queryEntry } from "../../services/collections";
+import NotFoundView from "../../views/not-found-view/not-found-view.astro";
+import { CONFIG } from "../../utils/constants";
+
+export const getStaticPaths = (async () => {
+  const altLocales = CONFIG.LANGUAGES.AVAILABLE.filter(
+    (locale) => locale !== CONFIG.LANGUAGES.DEFAULT
+  );
+  const localizedErrorPages = await Promise.all(
+    altLocales.map(async (locale) => {
+      const errorPage = await queryEntry({
+        collection: "pages",
+        id: "404",
+        locale,
+      });
+      return errorPage;
+    })
+  );
+  return localizedErrorPages.map((errorPage) => {
+    return {
+      params: { locale: errorPage.locale },
+      props: errorPage,
+    };
+  });
+}) satisfies GetStaticPaths;
+
+const page = Astro.props;
+---
+
+<NotFoundView entry={page} />

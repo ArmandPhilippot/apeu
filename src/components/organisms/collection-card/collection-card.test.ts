@@ -35,11 +35,12 @@ describe("CollectionCard", () => {
 
     const props = {
       entry: {
-        collection: "blogPosts",
+        collection: "blog.posts",
         id: "blog-post",
         description: "Test description",
         locale: "en",
         route: "/test",
+        slug: "test",
         title: "Test Post",
       },
     } satisfies ComponentProps<typeof CollectionCard>;
@@ -59,7 +60,7 @@ describe("CollectionCard", () => {
 
     const props = {
       entry: {
-        collection: "blogPosts",
+        collection: "blog.posts",
         description: "Test description",
         id: "blog-post",
         locale: "en",
@@ -67,6 +68,7 @@ describe("CollectionCard", () => {
           publishedOn: new Date("2024-01-01"),
         },
         route: "/test",
+        slug: "test",
         title: "Test Post",
       },
       featuredMeta: {
@@ -91,11 +93,12 @@ describe("CollectionCard", () => {
         icon: "arrow-right",
       },
       entry: {
-        collection: "blogPosts",
+        collection: "blog.posts",
         description: "Test description",
         id: "blog-post",
         locale: "en",
         route: "/test",
+        slug: "test",
         title: "Test Post",
       },
     } satisfies ComponentProps<typeof CollectionCard>;
@@ -113,7 +116,7 @@ describe("CollectionCard", () => {
 
     const props = {
       entry: {
-        collection: "blogPosts",
+        collection: "blog.posts",
         cover: {
           src: {
             format: "webp",
@@ -127,6 +130,7 @@ describe("CollectionCard", () => {
         id: "post",
         locale: "en",
         route: "/test",
+        slug: "test",
         title: "Test Post",
       },
     } satisfies ComponentProps<typeof CollectionCard>;
@@ -195,11 +199,12 @@ describe("CollectionCard", () => {
 
     const props = {
       entry: {
-        collection: "blogPosts",
+        collection: "blog.posts",
         description: "Test description",
         id: "post",
         locale: "en",
         route: "/test",
+        slug: "test",
         title: "Test Post",
       },
       headingLvl: "h3",
@@ -240,11 +245,12 @@ describe("CollectionCard", () => {
 
     const props = {
       entry: {
-        collection: "blogPosts",
+        collection: "blog.posts",
         description: "Test description",
         id: "post",
         locale: "en",
         route: "/test",
+        slug: "test",
         title: "Test Post",
       },
       cta: {
@@ -267,11 +273,12 @@ describe("CollectionCard", () => {
 
     const props = {
       entry: {
-        collection: "blogPosts",
+        collection: "blog.posts",
         description: "Test description",
         id: "post",
         locale: "en",
         route: "/test",
+        slug: "test",
         title: "Test Post",
       },
       showCollection: true,
@@ -291,11 +298,12 @@ describe("CollectionCard", () => {
 
     const props = {
       entry: {
-        collection: "blogPosts",
+        collection: "blog.posts",
         description: "Test description",
         id: "post",
         locale: "en",
         route: "/test",
+        slug: "test",
         title: "Test Post",
       },
     } satisfies ComponentProps<typeof CollectionCard>;

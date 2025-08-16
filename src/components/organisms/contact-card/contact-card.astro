@@ -1,7 +1,7 @@
 ---
 import { Icon } from "astro-icon/components";
 import type { ComponentProps } from "astro/types";
-import type { AuthorPreview } from "../../../types/data";
+import type { Author } from "../../../types/data";
 import { useI18n } from "../../../utils/i18n";
 import Button from "../../atoms/button/button.astro";
 import Card from "../../molecules/card/card.astro";
@@ -9,21 +9,24 @@ import SocialLinks from "../../molecules/social-links/social-links.astro";
 
 type Props = ComponentProps<typeof Card> &
   Pick<ComponentProps<typeof SocialLinks>, "addRelMe"> &
-  Pick<AuthorPreview, "socialMedia">;
+  Pick<Author, "socialMedia"> & {
+    contactPageRoute: string;
+  };
 
 const {
   addRelMe = false,
   class: className,
+  contactPageRoute,
   socialMedia,
   ...attrs
 } = Astro.props;
-const { route, translate } = useI18n(Astro.currentLocale);
+const { translate } = useI18n(Astro.currentLocale);
 ---
 
 <Card {...attrs} class:list={["contact-card", className]}>
   <slot name="heading" slot={Astro.slots.has("heading") ? "heading" : ""} />
   <p>{translate("card.contact.cta.intro")}</p>
-  <Button as="a" href={route("contact")}>
+  <Button as="a" href={contactPageRoute}>
     <Icon aria-hidden="true" name="contact" size={24} />
     {translate("cta.contact.me")}
   </Button>

@@ -55,6 +55,7 @@ describe("IdentityCard", () => {
       author: {
         name: "John Doe",
         avatar: {
+          format: "jpg",
           height: 200,
           src: "https://picsum.photos/150/200",
           width: 150,

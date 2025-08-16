@@ -21,6 +21,9 @@ export default defineConfig({
   adapter: node({
     mode: "standalone",
   }),
+  build: {
+    format: "preserve",
+  },
   experimental: {
     contentIntellisense: true,
     fonts: [
@@ -95,6 +98,10 @@ export default defineConfig({
     componentsStories({
       baseSlug: "/design-system/components",
       components: "./src/components",
+    }),
+    componentsStories({
+      baseSlug: "/design-system/views",
+      components: "./src/views",
     }),
     devOnlyPages({ prefix: "_dev_" }),
     icon({

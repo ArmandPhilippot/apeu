@@ -67,6 +67,4 @@ export const contentsBaseSchema = z.object({
   updatedOn: dateSchema.optional(),
   seo,
   locale,
-  slug: z.string().default(""),
-  route: z.string().default(""),
 });

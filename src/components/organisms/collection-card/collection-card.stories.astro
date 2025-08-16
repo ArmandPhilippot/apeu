@@ -29,6 +29,7 @@ const basicCard = {
   id: "basic-card",
   locale: "en",
   route: "#libero-est-aut",
+  slug: "libero-est-aut",
   title: "The page title",
 } satisfies ComponentProps<typeof CollectionCardComponent>["entry"];
 
@@ -48,16 +49,17 @@ const blog = {
 } satisfies ComponentProps<typeof CollectionCardComponent>["entry"];
 
 const blogCategory = {
-  collection: "blogCategories",
+  collection: "blog.categories",
   description: "An excerpt about the blog category.",
   id: "category-card",
   locale: "en",
   route: "#et-perferendis-qui",
+  slug: "et-perferendis-qui",
   title: "The blog category title",
 } satisfies ComponentProps<typeof CollectionCardComponent>["entry"];
 
 const blogPost = {
-  collection: "blogPosts",
+  collection: "blog.posts",
   description: "An excerpt about the blog post.",
   id: "post-card",
   locale: "en",
@@ -70,6 +72,7 @@ const blogPost = {
     updatedOn: new Date(),
   },
   route: "#et-perferendis-qui",
+  slug: "et-perferendis-qui",
   title: "The blog post title",
 } satisfies ComponentProps<typeof CollectionCardComponent>["entry"];
 
@@ -96,6 +99,7 @@ const guide = {
     updatedOn: new Date("2024-09-16"),
   },
   route: "#et-perferendis-qui",
+  slug: "et-perferendis-qui",
   title: "The guide title",
 } satisfies ComponentProps<typeof CollectionCardComponent>["entry"];
 
@@ -109,6 +113,7 @@ const note = {
     updatedOn: new Date("2024-09-16"),
   },
   route: "#et-perferendis-qui",
+  slug: "et-perferendis-qui",
   title: "The note title",
 } satisfies ComponentProps<typeof CollectionCardComponent>["entry"];
 
@@ -118,6 +123,7 @@ const page = {
   id: "page-card",
   locale: "en",
   route: "#et-perferendis-qui",
+  slug: "et-perferendis-qui",
   title: "The page title",
 } satisfies ComponentProps<typeof CollectionCardComponent>["entry"];
 
@@ -136,6 +142,7 @@ const project = {
     updatedOn: new Date("2024-09-16"),
   },
   route: "#et-perferendis-qui",
+  slug: "et-perferendis-qui",
   title: "The project title",
 } satisfies ComponentProps<typeof CollectionCardComponent>["entry"];
 
@@ -145,6 +152,7 @@ const tag = {
   id: "tag-card",
   locale: "en",
   route: "#et-perferendis-qui",
+  slug: "et-perferendis-qui",
   title: "The tag title",
 } satisfies ComponentProps<typeof CollectionCardComponent>["entry"];
 ---

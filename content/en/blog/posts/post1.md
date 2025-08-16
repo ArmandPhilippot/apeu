@@ -2,11 +2,13 @@
 title: Post 1
 description: "This is an excerpt of post 1."
 publishedOn: "2024-11-10T17:32"
-category: "en/category1"
+category: "en/blog/categories/category1"
 authors:
   - "armand-philippot"
 tags:
-  - "en/tag1"
+  - "en/tags/tag1"
+i18n:
+ fr: fr/blog/posts/post1
 seo:
   title: "Post 1"
   description: "This is a description used by search engines."

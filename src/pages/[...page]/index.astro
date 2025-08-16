@@ -1,0 +1,122 @@
+---
+import type { GetStaticPaths } from "astro";
+import type { AstroComponentFactory } from "astro/runtime/server/index.js";
+import type { CollectionKey } from "astro:content";
+import { ROUTABLE_COLLECTIONS } from "../../lib/astro/collections/constants";
+import {
+  addRelatedItemsToPages,
+  isPageableEntry,
+  queryCollection,
+} from "../../services/collections";
+import { partitionByType } from "../../utils/arrays";
+import { CONFIG } from "../../utils/constants";
+import BlogIndexView from "../../views/blog-index-view/blog-index-view.astro";
+import CollectionListingView from "../../views/collection-listing-view/collection-listing-view.astro";
+import ContactView from "../../views/contact-view/contact-view.astro";
+import DefaultPageView from "../../views/default-page-view/default-page-view.astro";
+import FeedsView from "../../views/feeds-view/feeds-view.astro";
+import HomepageView from "../../views/homepage-view/homepage-view.astro";
+import SearchView from "../../views/search-view/search-view.astro";
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const { entries } = await queryCollection(ROUTABLE_COLLECTIONS);
+  const filteredEntries = entries.filter((entry) => {
+    if (entry.collection === "pages") {
+      return entry.id !== `${entry.locale}/404`;
+    }
+    return true;
+  });
+  const [paginated, regular] = partitionByType(
+    filteredEntries,
+    isPageableEntry
+  );
+  const enrichedPaginatedPages = await addRelatedItemsToPages(paginated, {
+    format: "preview",
+  });
+  const paginatedPaths = enrichedPaginatedPages.flatMap(
+    (enrichedPaginatedPage) =>
+      paginate(enrichedPaginatedPage.related.entries, {
+        pageSize: CONFIG.ITEMS_PER_PAGE,
+      }).map((paginatedItem) => {
+        const { data, url, ...paginationData } = paginatedItem.props.page;
+        return {
+          params: {
+            page: paginatedItem.params.page
+              ? `${enrichedPaginatedPage.route}/page/${paginatedItem.params.page}`
+              : enrichedPaginatedPage.route,
+          },
+          props: {
+            ...enrichedPaginatedPage,
+            pagination: paginationData,
+            related: {
+              ...enrichedPaginatedPage.related,
+              entries: data,
+            },
+          },
+        };
+      })
+  );
+  const regularPaths = regular.map((regularPage) => {
+    const isDefaultLanguageHome =
+      regularPage.id === `${regularPage.locale}/home` &&
+      CONFIG.LANGUAGES.DEFAULT === regularPage.locale;
+    return {
+      params: {
+        page: isDefaultLanguageHome ? undefined : regularPage.route.slice(1),
+      },
+      props: regularPage,
+    };
+  });
+
+  return [...paginatedPaths, ...regularPaths];
+}) satisfies GetStaticPaths;
+
+const { pagination, ...page } = Astro.props;
+
+type PageComponent = AstroComponentFactory | null;
+
+const getPagesView = (currentPage: typeof page): PageComponent => {
+  const pagesViews: Record<string, PageComponent> = {
+    [`${currentPage.locale}/blogroll`]: CollectionListingView,
+    [`${currentPage.locale}/bookmarks`]: CollectionListingView,
+    [`${currentPage.locale}/contact`]: ContactView,
+    [`${currentPage.locale}/feeds`]: FeedsView,
+    [`${currentPage.locale}/home`]: HomepageView,
+    [`${currentPage.locale}/search`]: SearchView,
+  };
+
+  return pagesViews[page.id] ?? null;
+};
+
+const getListingPagesView = (path: string): PageComponent => {
+  const indexViews: Record<string, PageComponent> = {
+    blog: BlogIndexView,
+  };
+
+  return indexViews[path] ?? CollectionListingView;
+};
+
+const getPageConfig = (currentPage: typeof page): PageComponent => {
+  const { collection, id, locale } = currentPage;
+  const path = id.replace(`${locale}/`, "");
+  const listingPages = new Set<CollectionKey>([
+    "blog.categories",
+    "index.pages",
+    "tags",
+  ]);
+
+  if (collection === "pages") return getPagesView(currentPage);
+  if (listingPages.has(collection)) return getListingPagesView(path);
+  return null;
+};
+
+const SpecialPageView = getPageConfig(page);
+---
+
+{
+  SpecialPageView ? (
+    <SpecialPageView entry={page} pagination={pagination} />
+  ) : (
+    <DefaultPageView entry={page} />
+  )
+}

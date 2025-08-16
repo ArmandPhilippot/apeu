@@ -1,12 +1,27 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { bookmarkFixture } from "../../../../../tests/fixtures/collections";
+import { createMockEntries } from "../../../../../tests/helpers/astro-content";
 import { getBookmark } from "./bookmarks";
 
-describe("get-bookmark", () => {
-  it("returns a bookmark from a bookmarks collection entry", async () => {
-    expect.assertions(1);
+vi.mock("astro:content", async () => {
+  const originalModule = await vi.importActual("astro:content");
+  return {
+    ...originalModule,
+    getCollection: vi.fn(),
+    getEntry: vi.fn(),
+  };
+});
 
-    const result = await getBookmark(bookmarkFixture);
+describe("get-bookmark", () => {
+  it("returns a bookmark from a bookmarks collection entry", () => {
+    const mockEntries = createMockEntries([bookmarkFixture]);
+    const mockEntriesIndex = new Map(
+      mockEntries.map((entry) => [
+        entry.id,
+        { raw: entry, route: entry.id, slug: entry.id },
+      ])
+    );
+    const result = getBookmark({ raw: bookmarkFixture }, mockEntriesIndex);
 
     expect(result).toMatchInlineSnapshot(`
       {

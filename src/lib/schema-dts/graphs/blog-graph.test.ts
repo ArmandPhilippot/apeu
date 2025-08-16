@@ -1,6 +1,20 @@
-import { describe, expect, it, vi } from "vitest";
+import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 import { CONFIG } from "../../../utils/constants";
+import { clearEntriesIndexCache } from "../../astro/collections/indexes";
+import {
+  createMockEntries,
+  setupCollectionMocks,
+} from "../../../../tests/helpers/astro-content";
 import { getBlogGraph } from "./blog-graph";
+
+vi.mock("astro:content", async (importOriginal) => {
+  const mod = await importOriginal<typeof import("astro:content")>();
+  return {
+    ...mod,
+    getCollection: vi.fn(() => []),
+    getEntry: vi.fn(),
+  };
+});
 
 vi.mock("../../../utils/constants", async (importOriginal) => {
   const mod = await importOriginal<typeof import("../../../utils/constants")>();
@@ -25,6 +39,18 @@ vi.mock("../../../utils/url", async (importOriginal) => {
 });
 
 describe("get-blog-graph", () => {
+  beforeAll(() => {
+    const mockEntries = createMockEntries([
+      { collection: "pages", id: "en/home" },
+      { collection: "pages", id: "en/blog" },
+    ]);
+    setupCollectionMocks(mockEntries);
+  });
+
+  afterAll(() => {
+    clearEntriesIndexCache();
+  });
+
   it("returns an object describing the blog", async () => {
     expect.assertions(1);
 

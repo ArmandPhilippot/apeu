@@ -16,12 +16,12 @@ import {
 import sanitize, {
   type SanitizeOptions,
 } from "ultrahtml/transformers/sanitize";
-import { queryCollection } from "../lib/astro/collections";
+import { queryCollection } from "../services/collections";
 import type { FeedCompatibleEntry } from "../types/data";
 import { UnsupportedLocaleError } from "./exceptions";
 import { isAvailableLanguage, useI18n, type AvailableLanguage } from "./i18n";
-import { getWebsiteUrl } from "./url";
 import { isString } from "./type-checks";
+import { getWebsiteUrl } from "./url";
 
 /* eslint-disable no-param-reassign -- The file do a lot of node transformations to create the feed content, so it's expected that parameters will be reassigned. */
 
@@ -139,11 +139,12 @@ const getItemCategoryFromCollection = (
 ) => {
   const { translate } = useI18n(locale);
   const categories = {
-    blogCategories: translate("meta.value.content.kind.blog.category"),
-    blogPosts: translate("meta.value.content.kind.blog.post"),
+    "blog.categories": translate("meta.value.content.kind.blog.category"),
+    "blog.posts": translate("meta.value.content.kind.blog.post"),
     blogroll: translate("meta.value.content.kind.blogroll"),
     bookmarks: translate("meta.value.content.kind.bookmark"),
     guides: translate("meta.value.content.kind.guide"),
+    "index.pages": translate("meta.value.content.kind.page"),
     notes: translate("meta.value.content.kind.note"),
     pages: translate("meta.value.content.kind.page"),
     projects: translate("meta.value.content.kind.project"),
@@ -245,19 +246,21 @@ export const getCollectionsFeeds = async (
     `${locale}/blog/posts`,
     `${locale}/blogroll`,
     `${locale}/bookmarks`,
-    `${locale}/contributions`,
     `${locale}/guides`,
     `${locale}/notes`,
     `${locale}/projects`,
     `${locale}/tags`,
   ];
-  const { entries: entriesWithStaticFeed } = await queryCollection("pages", {
-    format: "preview",
-    orderBy: { key: "title", order: "ASC" },
-    where: { ids: pagesWithFeed },
-  });
+  const { entries: entriesWithStaticFeed } = await queryCollection(
+    ["index.pages", "pages"],
+    {
+      format: "preview",
+      orderBy: { key: "title", order: "ASC" },
+      where: { ids: pagesWithFeed },
+    }
+  );
   const { entries: entriesWithDynamicFeed } = await queryCollection(
-    ["blogCategories", "tags"],
+    ["blog.categories", "tags"],
     {
       format: "preview",
       orderBy: { key: "title", order: "ASC" },

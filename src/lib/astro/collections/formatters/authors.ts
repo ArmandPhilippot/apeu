@@ -1,9 +1,10 @@
 import type { CollectionEntry } from "astro:content";
 import type { Author, AuthorLink, AuthorPreview } from "../../../../types/data";
+import type { IndexedEntry } from "../../../../types/routing";
 
 /**
- * Retrieve the data necessary to display an author link from a collection
- * entry.
+ * Retrieve the data necessary to display an author link from a
+ * collection entry.
  *
  * @param {CollectionEntry<"authors">} author - The author data.
  * @returns {AuthorLink} An object describing an author link.
@@ -19,17 +20,15 @@ export const getAuthorLink = ({
 };
 
 /**
- * Retrieve the data necessary to display an author preview from a collection
- * entry.
+ * Retrieve the data necessary to display an author preview from a
+ * collection entry.
  *
- * @param {CollectionEntry<"authors">} author - The author data.
+ * @param {IndexedEntry<"authors">} author - The author data.
  * @returns {AuthorPreview} An object describing an author preview.
  */
 export const getAuthorPreview = ({
-  collection,
-  data,
-  id,
-}: CollectionEntry<"authors">): AuthorPreview => {
+  raw,
+}: IndexedEntry<"authors">): AuthorPreview => {
   const {
     email,
     firstName,
@@ -37,29 +36,25 @@ export const getAuthorPreview = ({
     lastName,
     lastNameIPA,
     ...remainingData
-  } = data;
+  } = raw.data;
 
   return {
     ...remainingData,
-    collection,
-    id,
+    collection: raw.collection,
+    id: raw.id,
   };
 };
 
 /**
  * Convert an author collection entry to a formatted Author object.
  *
- * @param {CollectionEntry<"authors">} author - The author data.
+ * @param {IndexedEntry<"authors">} author - The author data.
  * @returns {Author} An object describing an author.
  */
-export const getAuthor = ({
-  collection,
-  data,
-  id,
-}: CollectionEntry<"authors">): Author => {
+export const getAuthor = (author: IndexedEntry<"authors">): Author => {
   return {
-    ...data,
-    collection,
-    id,
+    ...author.raw.data,
+    collection: author.raw.collection,
+    id: author.raw.id,
   };
 };

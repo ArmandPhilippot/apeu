@@ -4,6 +4,7 @@ import { blogPosts } from "./lib/astro/collections/schema/blog-posts";
 import { blogroll } from "./lib/astro/collections/schema/blogroll";
 import { bookmarks } from "./lib/astro/collections/schema/bookmarks";
 import { guides } from "./lib/astro/collections/schema/guides";
+import { indexPages } from "./lib/astro/collections/schema/index-pages";
 import { notes } from "./lib/astro/collections/schema/notes";
 import { pages } from "./lib/astro/collections/schema/pages";
 import { projects } from "./lib/astro/collections/schema/projects";
@@ -11,11 +12,12 @@ import { tags } from "./lib/astro/collections/schema/tags";
 
 export const collections = {
   authors,
-  blogCategories,
-  blogPosts,
+  "blog.categories": blogCategories,
+  "blog.posts": blogPosts,
   blogroll,
   bookmarks,
   guides,
+  "index.pages": indexPages,
   notes,
   pages,
   projects,

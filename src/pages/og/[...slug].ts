@@ -1,10 +1,12 @@
 import { OGImageRoute as oGImageRoute } from "astro-og-canvas";
-import { queryCollection } from "../../lib/astro/collections";
+import { queryCollection } from "../../services/collections";
+import { CONFIG } from "../../utils/constants";
 
 const collections = await queryCollection([
-  "blogCategories",
-  "blogPosts",
+  "blog.categories",
+  "blog.posts",
   "guides",
+  "index.pages",
   "notes",
   "pages",
   "projects",
@@ -13,9 +15,13 @@ const collections = await queryCollection([
 const getPageIdFromRoute = (route: string) => {
   const routeWithoutLeadingSlash = route.slice(1);
   const isDefaultHomePage = !routeWithoutLeadingSlash;
+  const isLocalizedHomePage = (
+    CONFIG.LANGUAGES.AVAILABLE as readonly string[]
+  ).includes(routeWithoutLeadingSlash);
   const homeId = "home";
 
   if (isDefaultHomePage) return homeId;
+  if (isLocalizedHomePage) return `${routeWithoutLeadingSlash}/${homeId}`;
 
   const isOtherLocaleHomePage = routeWithoutLeadingSlash.endsWith("/");
 

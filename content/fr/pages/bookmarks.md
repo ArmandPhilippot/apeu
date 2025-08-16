@@ -7,6 +7,7 @@ seo:
   description: "Il s'agit d'une description utilisée par les moteurs de recherche."
 i18n:
   en: "en/bookmarks"
+permaslug: "signets"
 ---
 
 Du contenu optionnel pour présenter les signets.

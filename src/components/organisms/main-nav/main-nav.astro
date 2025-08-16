@@ -8,9 +8,11 @@ import NavList from "../../molecules/nav-list/nav-list.astro";
 type Props = Omit<ComponentProps<typeof NavList>, "children" | "hideMarker">;
 
 const { class: className, items, ...attrs } = Astro.props;
-const { locale, route } = useI18n(Astro.currentLocale);
+const { locale } = useI18n(Astro.currentLocale);
+const isHomePage = (url: string) =>
+  url === "/" || CONFIG.LANGUAGES.AVAILABLE.some((lang) => url === `/${lang}`);
 const isCurrentRouteOrNested = (url: string) => {
-  if (url === route("home")) return Astro.url.pathname === url;
+  if (isHomePage(url)) return Astro.url.pathname === url;
   /* eslint-disable-next-line no-magic-numbers -- When this is not the default locale, the slug is prefixed by the locale so we need to go further. */
   const parentSlugIndex = locale === CONFIG.LANGUAGES.DEFAULT ? 1 : 2;
   const parentPath = Astro.url.pathname.split("/")[parentSlugIndex];

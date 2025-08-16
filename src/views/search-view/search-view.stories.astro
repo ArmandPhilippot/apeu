@@ -1,0 +1,47 @@
+---
+import type { ComponentProps } from "astro/types";
+import PageLayout from "../../components/templates/page-layout/page-layout.astro";
+import SearchViewComponent from "./search-view.astro";
+
+const title = "SearchView";
+
+const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
+  { label: "Home", url: "/" },
+  { label: "Design system", url: "/design-system" },
+  { label: "Views", url: "/design-system/views" },
+  { label: title, url: Astro.url.href },
+];
+
+const seo: ComponentProps<typeof PageLayout>["seo"] = {
+  nofollow: true,
+  noindex: true,
+  title: breadcrumb
+    .slice(1)
+    .reverse()
+    .map((crumb) => crumb.label)
+    .join(" | "),
+};
+
+const fakePage: ComponentProps<typeof SearchViewComponent>["entry"] = {
+  Content: Fragment,
+  collection: "pages",
+  description: "The search page.",
+  hasContent: false,
+  headings: [],
+  id: "en/search",
+  locale: "en",
+  meta: {
+    publishedOn: new Date(),
+    updatedOn: new Date(),
+  },
+  route: "/search",
+  seo: {
+    description: "",
+    title,
+  },
+  slug: "search",
+  title,
+};
+---
+
+<SearchViewComponent breadcrumb={breadcrumb} entry={fakePage} seo={seo} />

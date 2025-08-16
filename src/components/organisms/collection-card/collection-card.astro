@@ -7,6 +7,7 @@ import type {
   Bookmark,
   CollectionMetaData,
   GuidePreview,
+  IndexPagePreview,
   NotePreview,
   PagePreview,
   ProjectPreview,
@@ -37,6 +38,7 @@ type CollectionCardEntry =
   | WithOptionalKey<BlogPostPreview, "meta">
   | WithOptionalKey<Bookmark, "meta">
   | WithOptionalKey<GuidePreview, "meta">
+  | WithOptionalKey<IndexPagePreview, "meta">
   | WithOptionalKey<NotePreview, "meta">
   | WithOptionalKey<PagePreview, "meta">
   | WithOptionalKey<ProjectPreview, "meta">
@@ -93,11 +95,11 @@ const entryLocale =
     ? entry.meta.inLanguage
     : null;
 const collectionIcon = {
-  blogCategories: {
+  "blog.categories": {
     icon: "folder",
     label: translate("meta.value.content.kind.blog.category"),
   },
-  blogPosts: {
+  "blog.posts": {
     icon: "blog",
     label: translate("meta.value.content.kind.blog.post"),
   },
@@ -112,6 +114,10 @@ const collectionIcon = {
   guides: {
     icon: "guide",
     label: translate("meta.value.content.kind.guide"),
+  },
+  "index.pages": {
+    icon: "page",
+    label: translate("meta.value.content.kind.page"),
   },
   notes: {
     icon: "notepad",

@@ -1,4 +1,5 @@
 import type { SearchAction, WebSite } from "schema-dts";
+import { useRouting } from "../../../services/routing";
 import { CONFIG } from "../../../utils/constants";
 import { useI18n, type AvailableLanguage } from "../../../utils/i18n";
 import { getWebsiteUrl } from "../../../utils/url";
@@ -19,26 +20,27 @@ type WebSiteGraphData = {
  * Retrieve a Website graph from the given data.
  *
  * @param {WebSiteGraphData} data - The website data.
- * @returns {WebSite} The Website graph.
+ * @returns {Promise<WebSite>} The Website graph.
  */
-export const getWebSiteGraph = ({
+export const getWebSiteGraph = async ({
   description,
   locale,
   logo,
-}: WebSiteGraphData): WebSite => {
-  const { route, translate } = useI18n(locale);
+}: WebSiteGraphData): Promise<WebSite> => {
+  const { translate } = useI18n(locale);
+  const { routeById } = await useRouting();
   const websiteUrl = getWebsiteUrl();
   const websiteAuthor = `${websiteUrl}#author` as const;
   const searchAction: CustomSearchAction = {
     "@type": "SearchAction",
     query: "required",
     "query-input": "required name=query",
-    target: `${websiteUrl}${route("search")}?${CONFIG.SEARCH.QUERY_PARAM}={query}`,
+    target: `${websiteUrl}${routeById(`${locale}/search`)}?${CONFIG.SEARCH.QUERY_PARAM}={query}`,
   };
 
   return {
     "@type": "WebSite",
-    "@id": `${websiteUrl}${route("home")}`,
+    "@id": `${websiteUrl}${routeById(`${locale}/home`)}`,
     author: { "@id": websiteAuthor },
     copyrightHolder: { "@id": websiteAuthor },
     copyrightYear: CONFIG.CREATION_YEAR,
@@ -53,6 +55,6 @@ export const getWebSiteGraph = ({
     potentialAction: searchAction,
     publisher: { "@id": websiteAuthor },
     thumbnailUrl: logo,
-    url: `${websiteUrl}${route("home")}`,
+    url: `${websiteUrl}${routeById(`${locale}/home`)}`,
   };
 };

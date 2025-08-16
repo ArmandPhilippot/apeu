@@ -1,7 +1,29 @@
 import { experimental_AstroContainer as AstroContainer } from "astro/container";
 import type { ComponentProps } from "astro/types";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import {
+  afterAll,
+  beforeAll,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi,
+} from "vitest";
+import {
+  createMockEntries,
+  setupCollectionMocks,
+} from "../../../../tests/helpers/astro-content";
+import { clearEntriesIndexCache } from "../../../lib/astro/collections/indexes";
 import SettingsForm from "./settings-form.astro";
+
+vi.mock("astro:content", async (importOriginal) => {
+  const mod = await importOriginal<typeof import("astro:content")>();
+  return {
+    ...mod,
+    getCollection: vi.fn(() => []),
+    getEntry: vi.fn(),
+  };
+});
 
 vi.mock("../../../utils/constants", async (importOriginal) => {
   const mod = await importOriginal<typeof import("../../../utils/constants")>();
@@ -11,6 +33,7 @@ vi.mock("../../../utils/constants", async (importOriginal) => {
       ...mod.CONFIG,
       LANGUAGES: {
         DEFAULT: "en",
+        AVAILABLE: ["en", "fr"],
       },
     },
   };
@@ -21,10 +44,13 @@ vi.mock("../../../utils/i18n", async (importOriginal) => {
 
   return {
     ...mod,
+    availableNamedLanguages: {
+      en: "English",
+      fr: "Français",
+    },
     useI18n: vi.fn(() => {
       return {
         locale: "en",
-        route: vi.fn(),
         translate: (key: string) => `translated_${key}`,
         translatePlural: (key: string, { count }: { count: number }) =>
           `translated_${key}_${count}`,
@@ -38,8 +64,21 @@ type LocalTestContext = {
 };
 
 describe("SettingsForm", () => {
+  beforeAll(() => {
+    // cSpell:ignore Accueil
+    const mockEntries = createMockEntries([
+      { collection: "pages", id: "en/home", data: { title: "Home" } },
+      { collection: "pages", id: "fr/home", data: { title: "Accueil" } },
+    ]);
+    setupCollectionMocks(mockEntries);
+  });
+
   beforeEach<LocalTestContext>(async (context) => {
     context.container = await AstroContainer.create();
+  });
+
+  afterAll(() => {
+    clearEntriesIndexCache();
   });
 
   it<LocalTestContext>("renders a settings form", async ({ container }) => {

@@ -14,9 +14,12 @@ mdast
 Mdxjs
 nanostores
 nlcst
+Pageable
 pagefind
+permaslug
 pnpmDedupe
 rehype
+routability
 shiki
 stackoverflow
 stylelint

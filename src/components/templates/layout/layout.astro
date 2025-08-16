@@ -2,6 +2,7 @@
 import type { ComponentProps, HTMLAttributes } from "astro/types";
 import { Font } from "astro:assets";
 import { ClientRouter } from "astro:transitions";
+import { useRouting } from "../../../services/routing";
 import "../../../styles/global.css";
 import { CONFIG } from "../../../utils/constants";
 import { useI18n } from "../../../utils/i18n";
@@ -27,68 +28,72 @@ type Props = Pick<ComponentProps<typeof Head>, "seo"> &
   Omit<HTMLAttributes<"div">, "id">;
 
 const { class: className, seo, ...attrs } = Astro.props;
-const { locale, route, translate } = useI18n(Astro.currentLocale);
-const isHome = Astro.url.pathname === route("home");
+const { locale, translate } = useI18n(Astro.currentLocale);
+const { routeById } = await useRouting();
+const isHome = Astro.url.pathname === routeById(`${locale}/home`);
 const mainNav = [
   {
     icon: "home",
     iconSize: 28,
     label: translate("page.home.title"),
-    url: route("home"),
+    url: routeById(`${locale}/home`),
   },
   {
     icon: "blog",
     iconSize: 28,
     label: translate("page.blog.title"),
-    url: route("blog"),
+    url: routeById(`${locale}/blog`),
   },
   {
     icon: "guide",
     iconSize: 28,
     label: translate("page.guides.title"),
-    url: route("guides"),
+    url: routeById(`${locale}/guides`),
   },
   {
     icon: "notepad",
     iconSize: 28,
     label: translate("page.notes.title"),
-    url: route("notes"),
+    url: routeById(`${locale}/notes`),
   },
   {
     icon: "project",
     iconSize: 28,
     label: translate("page.projects.title"),
-    url: route("projects"),
+    url: routeById(`${locale}/projects`),
   },
   {
     icon: "bookmark",
     iconSize: 28,
     label: translate("page.bookmarks.title"),
-    url: route("bookmarks"),
+    url: routeById(`${locale}/bookmarks`),
   },
   {
     icon: "globe",
     iconSize: 28,
     label: translate("page.blogroll.title"),
-    url: route("blogroll"),
+    url: routeById(`${locale}/blogroll`),
   },
   {
     icon: "contact",
     iconSize: 28,
     label: translate("page.contact.title"),
-    url: route("contact"),
+    url: routeById(`${locale}/contact`),
   },
 ] satisfies ComponentProps<typeof NavList>["items"];
 const devOnlyLinks = import.meta.env.DEV
   ? [{ label: "Design system", url: "/design-system" }]
   : [];
 const footerLinks = [
-  { label: translate("page.legal.notice.title"), url: route("legal.notice") },
+  {
+    label: translate("page.legal.notice.title"),
+    url: routeById(`${locale}/legal-notice`),
+  },
   {
     icon: "feed",
     iconSize: 17,
     label: translate("page.feeds.title"),
-    url: route("feeds"),
+    url: routeById(`${locale}/feeds`),
   },
   ...devOnlyLinks,
 ] satisfies ComponentProps<typeof NavList>["items"];
@@ -133,7 +138,10 @@ const topId = translate("anchor.site.top");
           </SkipTo>
           <header class="site-header">
             <div class="site-branding">
-              <Branding brand={CONFIG.BRAND} url={route("home")} />
+              <Branding
+                brand={CONFIG.BRAND}
+                url={routeById(`${locale}/home`)}
+              />
             </div>
             <Navbar
               aria-label={translate("nav.label.primary")}
@@ -145,7 +153,7 @@ const topId = translate("anchor.site.top");
                 id="site-search"
                 isInline
                 queryParam={CONFIG.SEARCH.QUERY_PARAM}
-                resultsPage={route("search")}
+                resultsPage={routeById(`${locale}/search`)}
                 slot="search"
               />
               <SettingsForm

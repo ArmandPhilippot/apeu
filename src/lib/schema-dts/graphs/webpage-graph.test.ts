@@ -1,6 +1,28 @@
-import { describe, expect, it, vi } from "vitest";
+import {
+  afterAll,
+  beforeAll,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi,
+} from "vitest";
 import { CONFIG } from "../../../utils/constants";
+import {
+  createMockEntries,
+  setupCollectionMocks,
+} from "../../../../tests/helpers/astro-content";
+import { clearEntriesIndexCache } from "../../astro/collections/indexes";
 import { getWebPageGraph } from "./webpage-graph";
+
+vi.mock("astro:content", async (importOriginal) => {
+  const mod = await importOriginal<typeof import("astro:content")>();
+  return {
+    ...mod,
+    getCollection: vi.fn(() => []),
+    getEntry: vi.fn(),
+  };
+});
 
 vi.mock("../../../utils/constants", async (importOriginal) => {
   const mod = await importOriginal<typeof import("../../../utils/constants")>();
@@ -30,30 +52,52 @@ vi.mock("../../../utils/images", () => {
   };
 });
 
-vi.mock("../../../utils/i18n", () => {
+vi.mock("../../../utils/i18n", async (importOriginal) => {
+  const mod = await importOriginal<typeof import("../../../utils/i18n")>();
+
   return {
+    ...mod,
     useI18n: () => {
       return {
-        route: (path: string) => (path === "home" ? "/" : `/${path}`),
         translate: () => "https://creativecommons.org/licenses/by-sa/4.0/deed",
       };
     },
   };
 });
 
-describe("getWebPageGraph", () => {
-  const basePageData = {
-    description: "Page description",
-    locale: CONFIG.LANGUAGES.DEFAULT,
-    meta: {
-      publishedOn: new Date("2024-10-09T13:00:00.000Z"),
-      updatedOn: new Date("2024-10-09T13:00:00.000Z"),
-    },
-    route: "/test-route",
-    title: "Test Page Title",
-  };
+type LocalTestContext = {
+  basePageData: Parameters<typeof getWebPageGraph>[0];
+};
 
-  it("should generate WebPage with required properties", async () => {
+describe("getWebPageGraph", () => {
+  beforeAll(() => {
+    const mockEntries = createMockEntries([
+      { collection: "pages", id: "en/home" },
+      { collection: "pages", id: "en/search" },
+    ]);
+    setupCollectionMocks(mockEntries);
+  });
+
+  beforeEach<LocalTestContext>((context) => {
+    context.basePageData = {
+      description: "Page description",
+      locale: CONFIG.LANGUAGES.DEFAULT,
+      meta: {
+        publishedOn: new Date("2024-10-09T13:00:00.000Z"),
+        updatedOn: new Date("2024-10-09T13:00:00.000Z"),
+      },
+      route: "/test-route",
+      title: "Test Page Title",
+    };
+  });
+
+  afterAll(() => {
+    clearEntriesIndexCache();
+  });
+
+  it<LocalTestContext>("should generate WebPage with required properties", async ({
+    basePageData,
+  }) => {
     expect.assertions(1);
 
     const graph = await getWebPageGraph(basePageData);
@@ -94,7 +138,9 @@ describe("getWebPageGraph", () => {
     `);
   });
 
-  it("should support custom page type", async () => {
+  it<LocalTestContext>("should support custom page type", async ({
+    basePageData,
+  }) => {
     expect.assertions(1);
 
     const graph = await getWebPageGraph({
@@ -105,7 +151,9 @@ describe("getWebPageGraph", () => {
     expect(graph["@type"]).toBe("ItemPage");
   });
 
-  it("should add breadcrumb when provided", async () => {
+  it<LocalTestContext>("should add breadcrumb when provided", async ({
+    basePageData,
+  }) => {
     // eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory.
     expect.assertions(2);
 
@@ -145,7 +193,9 @@ describe("getWebPageGraph", () => {
     `);
   });
 
-  it("should add reading time when provided", async () => {
+  it<LocalTestContext>("should add reading time when provided", async ({
+    basePageData,
+  }) => {
     expect.assertions(1);
 
     const graph = await getWebPageGraph({
@@ -164,7 +214,9 @@ describe("getWebPageGraph", () => {
     expect(graph.timeRequired).toBe("PT1M55S");
   });
 
-  it("should add cover image when provided", async () => {
+  it<LocalTestContext>("should add cover image when provided", async ({
+    basePageData,
+  }) => {
     expect.assertions(1);
 
     const cover = {
@@ -182,7 +234,9 @@ describe("getWebPageGraph", () => {
     expect(graph.thumbnailUrl).toBe("https://example.test/image.jpg");
   });
 
-  it("should combine all optional properties correctly", async () => {
+  it<LocalTestContext>("should combine all optional properties correctly", async ({
+    basePageData,
+  }) => {
     // eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory.
     expect.assertions(4);
 

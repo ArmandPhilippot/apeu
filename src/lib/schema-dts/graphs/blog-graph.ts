@@ -1,4 +1,5 @@
 import type { Blog } from "schema-dts";
+import { useRouting } from "../../../services/routing";
 import type { Page } from "../../../types/data";
 import { useI18n } from "../../../utils/i18n";
 import { getImgSrc } from "../../../utils/images";
@@ -22,10 +23,11 @@ export const getBlogGraph = async ({
   meta,
   title,
 }: BlogData): Promise<Blog> => {
-  const { route, translate } = useI18n(locale);
+  const { translate } = useI18n(locale);
+  const { routeById } = await useRouting();
   const websiteUrl = getWebsiteUrl();
   const websiteAuthor = `${websiteUrl}#author` as const;
-  const blogUrl = `${websiteUrl}${route("blog")}`;
+  const blogUrl = `${websiteUrl}${routeById(`${locale}/blog`)}`;
 
   return {
     "@id": `${blogUrl}#blog`,
@@ -39,7 +41,7 @@ export const getBlogGraph = async ({
     editor: { "@id": websiteAuthor },
     headline: title,
     isAccessibleForFree: true,
-    isPartOf: { "@id": `${websiteUrl}${route("home")}` },
+    isPartOf: { "@id": `${websiteUrl}${routeById(`${locale}/home`)}` },
     license: translate("license.url"),
     mainEntityOfPage: blogUrl,
     name: title,

@@ -7,7 +7,7 @@ import { contentsBaseSchema } from "./partials";
 export const blogroll = defineCollection({
   loader: globLoader("blogroll"),
   schema: contentsBaseSchema
-    .omit({ description: true, route: true, seo: true, slug: true })
+    .omit({ description: true, seo: true })
     .extend({
       description: z.record(z.string().refine(isAvailableLanguage), z.string()),
       feed: z.string().url().optional(),

@@ -4,7 +4,6 @@ import {
   getCurrentLocale,
   getLanguageTerritory,
   isAvailableLanguage,
-  isAvailableRoute,
   useI18n,
 } from "./i18n";
 
@@ -26,30 +25,20 @@ vi.mock("../translations", () => {
   return {
     translations: {
       en: {
-        routes: {
-          foo: "/foo",
+        singular: "Hello!",
+        "plural.key": {
+          zero: "You have no items.",
+          one: "You have a single item.",
+          more: "You have a lot of items.",
         },
-        ui: {
-          singular: "Hello!",
-          "plural.key": {
-            zero: "You have no items.",
-            one: "You have a single item.",
-            more: "You have a lot of items.",
-          },
-          "plural.key.with.interpolation": {
-            zero: "Hello, {name}! You have no items.",
-            one: "Hello, {name}! You have a single item.",
-            more: "Hello, {name}! You have {count} items.",
-          },
-          "singular.with.interpolation": "Hello, {name}!",
+        "plural.key.with.interpolation": {
+          zero: "Hello, {name}! You have no items.",
+          one: "Hello, {name}! You have a single item.",
+          more: "Hello, {name}! You have {count} items.",
         },
+        "singular.with.interpolation": "Hello, {name}!",
       },
-      fr: {
-        routes: {
-          foo: "/bar",
-        },
-        ui: {},
-      },
+      fr: {},
     },
   };
 });
@@ -76,23 +65,12 @@ describe("get-current-locale", () => {
   });
 });
 
-describe("is-available-route", () => {
-  it("returns true if the given route is valid", () => {
-    expect(isAvailableRoute("foo")).toBe(true);
-  });
-
-  it("returns false if the given route is invalid", () => {
-    expect(isAvailableRoute("bar")).toBe(false);
-  });
-});
-
 describe("use-i18n", () => {
-  it("returns an object with the locale and methods to translate UI and routes", () => {
+  it("returns an object with the locale and methods to translate the UI", () => {
     const i18n = useI18n("en");
 
     expect(i18n.locale).toMatchInlineSnapshot(`"en"`);
 
-    expectTypeOf(i18n.route).toBeFunction();
     expectTypeOf(i18n.translate).toBeFunction();
     expectTypeOf(i18n.translatePlural).toBeFunction();
   });
@@ -157,20 +135,6 @@ describe("use-i18n", () => {
         name: "John",
       })
     ).toMatchInlineSnapshot(`"Hello, John! You have 3 items."`);
-  });
-
-  it("can return a localized route from a key", () => {
-    const { route } = useI18n("en");
-
-    // @ts-expect-error -- The key comes from the mock
-    expect(route("foo")).toMatchInlineSnapshot(`"/foo"`);
-  });
-
-  it("can return a localized route from a key using a locale argument", () => {
-    const { route } = useI18n("en");
-
-    // @ts-expect-error -- The key comes from the mock
-    expect(route("foo", "fr")).toMatchInlineSnapshot(`"/fr/bar"`);
   });
 });
 

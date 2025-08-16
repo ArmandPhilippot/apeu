@@ -1,21 +1,23 @@
-import type { CollectionEntry } from "astro:content";
 import type { Blog } from "../../../../types/data";
+import type { IndexedEntry } from "../../../../types/routing";
+import type { EntryByIdIndex } from "../indexes";
 import { getTagsFromReferences } from "./utils";
 
 /**
- * Convert a blogroll collection entry to a Blog object.
+ * Convert a blogroll collection entry to a formatted blogroll object.
  *
- * @param {CollectionEntry<"blogroll">} blog - The blogroll collection entry.
- * @returns {Promise<Blog>} An object describing a blog.
+ * @param {IndexedEntry<"blogroll">} blog - The blogroll collection entry.
+ * @param {EntryByIdIndex} indexById - A map of indexed entries by id.
+ * @returns {Blog} An object describing a blog.
  */
-export const getBlog = async ({
-  collection,
-  data,
-  id,
-}: CollectionEntry<"blogroll">): Promise<Blog> => {
+export const getBlog = (
+  blog: IndexedEntry<"blogroll">,
+  indexById: EntryByIdIndex
+): Blog => {
+  const { collection, data, id } = blog.raw;
   const { meta, ...remainingData } = data;
   const { isDraft, tags, ...remainingMeta } = meta;
-  const resolvedTags = await getTagsFromReferences(tags);
+  const resolvedTags = getTagsFromReferences(tags, indexById);
 
   return {
     ...remainingData,

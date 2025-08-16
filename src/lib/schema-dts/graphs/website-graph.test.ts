@@ -1,9 +1,9 @@
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
-import { CONFIG } from "../../../utils/constants";
 import {
   createMockEntries,
   setupCollectionMocks,
 } from "../../../../tests/helpers/astro-content";
+import { CONFIG } from "../../../utils/constants";
 import { clearEntriesIndexCache } from "../../astro/collections/indexes";
 import { getWebSiteGraph } from "./website-graph";
 

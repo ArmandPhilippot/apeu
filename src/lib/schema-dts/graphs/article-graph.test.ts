@@ -1,11 +1,11 @@
-import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 import type { Person } from "schema-dts";
-import { CONFIG } from "../../../utils/constants";
-import { clearEntriesIndexCache } from "../../astro/collections/indexes";
+import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 import {
   createMockEntries,
   setupCollectionMocks,
 } from "../../../../tests/helpers/astro-content";
+import { CONFIG } from "../../../utils/constants";
+import { clearEntriesIndexCache } from "../../astro/collections/indexes";
 import { getArticleGraph } from "./article-graph";
 
 vi.mock("astro:content", async (importOriginal) => {

@@ -1,8 +1,8 @@
 ---
 import type { GetStaticPaths } from "astro";
 import { queryEntry } from "../../services/collections";
-import NotFoundView from "../../views/not-found-view/not-found-view.astro";
 import { CONFIG } from "../../utils/constants";
+import NotFoundView from "../../views/not-found-view/not-found-view.astro";
 
 export const getStaticPaths = (async () => {
   const altLocales = CONFIG.LANGUAGES.AVAILABLE.filter(

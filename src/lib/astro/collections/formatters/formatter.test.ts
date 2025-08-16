@@ -6,11 +6,11 @@ import {
   bookmarkFixture,
 } from "../../../../../tests/fixtures/collections";
 import type { IndexedEntry } from "../../../../types/routing";
-import { formatEntry } from "./formatter";
 import { getAuthor, getAuthorPreview } from "./authors";
-import { getRoutableEntry, getRoutableEntryPreview } from "./routable-entries";
 import { getBlog } from "./blogroll";
 import { getBookmark } from "./bookmarks";
+import { formatEntry } from "./formatter";
+import { getRoutableEntry, getRoutableEntryPreview } from "./routable-entries";
 
 describe("format-entry", () => {
   it("can format an author using default full format", async () => {

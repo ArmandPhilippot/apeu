@@ -1,9 +1,9 @@
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
-import { clearEntriesIndexCache } from "../lib/astro/collections/indexes";
 import {
   createMockEntries,
   setupCollectionMocks,
 } from "../../tests/helpers/astro-content";
+import { clearEntriesIndexCache } from "../lib/astro/collections/indexes";
 import { getOpenGraphImg } from "./open-graph";
 
 vi.mock("astro:content", async (importOriginal) => {

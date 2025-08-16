@@ -1,12 +1,12 @@
 ---
 import type { ComponentProps } from "astro/types";
 import SearchForm from "../../components/organisms/search-form/search-form.astro";
+import PageLayout from "../../components/templates/page-layout/page-layout.astro";
 import { getWebPageGraph } from "../../lib/schema-dts/graphs/webpage-graph";
 import { getBreadcrumb } from "../../services/breadcrumb";
 import type { QueriedEntry } from "../../services/collections";
 import { useRouting } from "../../services/routing";
 import { CONFIG } from "../../utils/constants";
-import PageLayout from "../../components/templates/page-layout/page-layout.astro";
 
 type Props = Partial<ComponentProps<typeof PageLayout>> & {
   entry: QueriedEntry<"pages">;

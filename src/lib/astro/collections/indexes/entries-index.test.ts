@@ -6,8 +6,8 @@ import {
   setupCollectionMocks,
 } from "../../../../../tests/helpers/astro-content";
 import { collections } from "../../../../content.config";
-import { normalizePagesId } from "./utils";
 import { clearEntriesIndexCache, getEntriesIndex } from "./entries-index";
+import { normalizePagesId } from "./utils";
 
 vi.mock("astro:content", async (importOriginal) => {
   const mod = await importOriginal<typeof import("astro:content")>();

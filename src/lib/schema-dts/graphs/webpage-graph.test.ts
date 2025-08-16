@@ -7,11 +7,11 @@ import {
   it,
   vi,
 } from "vitest";
-import { CONFIG } from "../../../utils/constants";
 import {
   createMockEntries,
   setupCollectionMocks,
 } from "../../../../tests/helpers/astro-content";
+import { CONFIG } from "../../../utils/constants";
 import { clearEntriesIndexCache } from "../../astro/collections/indexes";
 import { getWebPageGraph } from "./webpage-graph";
 

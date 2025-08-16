@@ -1,9 +1,9 @@
-import { vi } from "vitest";
 import type {
   AstroConfig,
   AstroIntegrationLogger,
   HookParameters,
 } from "astro";
+import { vi } from "vitest";
 import { isObject } from "../../src/utils/type-checks";
 
 const logger = {

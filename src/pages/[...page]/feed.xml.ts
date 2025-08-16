@@ -1,5 +1,6 @@
 import rss from "@astrojs/rss";
 import type { APIContext, APIRoute, GetStaticPaths } from "astro";
+import { collections } from "../../content.config";
 import {
   addRelatedItemsToPages,
   queryCollection,
@@ -14,7 +15,6 @@ import {
   getRSSItemsFromEntries,
 } from "../../utils/feeds";
 import { useI18n } from "../../utils/i18n";
-import { collections } from "../../content.config";
 
 export const getStaticPaths = (async () => {
   const { entries } = await queryCollection(

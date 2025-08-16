@@ -10,11 +10,11 @@ import {
   it,
   vi,
 } from "vitest";
-import { clearEntriesIndexCache } from "../../../lib/astro/collections/indexes";
 import {
   createMockEntries,
   setupCollectionMocks,
 } from "../../../../tests/helpers/astro-content";
+import { clearEntriesIndexCache } from "../../../lib/astro/collections/indexes";
 import Layout from "./layout.astro";
 
 vi.mock("astro:content", async (importOriginal) => {

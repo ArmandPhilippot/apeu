@@ -2,8 +2,8 @@
 import mdx from "@astrojs/mdx";
 import node from "@astrojs/node";
 import sitemap from "@astrojs/sitemap";
-import icon from "astro-icon";
 import { defineConfig, fontProviders } from "astro/config";
+import icon from "astro-icon";
 import remarkDirective from "remark-directive";
 import { componentsStories } from "./src/lib/astro/integrations/components-stories";
 import { devOnlyPages } from "./src/lib/astro/integrations/dev-only-pages";

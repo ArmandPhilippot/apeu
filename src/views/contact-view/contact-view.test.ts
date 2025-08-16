@@ -1,13 +1,13 @@
 import { experimental_AstroContainer as AstroContainer } from "astro/container";
 import type { ComponentProps } from "astro/types";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { clearEntriesIndexCache } from "../../lib/astro/collections/indexes";
 import {
   createLayoutMockEntries,
   createMockEntriesByCollection,
   mergeEntriesByCollection,
   setupCollectionMocks,
 } from "../../../tests/helpers/astro-content";
+import { clearEntriesIndexCache } from "../../lib/astro/collections/indexes";
 import ContactView from "./contact-view.astro";
 
 vi.mock("astro:content", async (importOriginal) => {

@@ -1,10 +1,10 @@
 ---
-import { Icon } from "astro-icon/components";
 import type { JSX } from "astro/jsx-runtime";
+import { Icon } from "astro-icon/components";
+import { useI18n } from "../../../utils/i18n";
 import Button from "../../atoms/button/button.astro";
 import Label from "../../atoms/label/label.astro";
 import TextField from "../../atoms/text-field/text-field.astro";
-import { useI18n } from "../../../utils/i18n";
 
 type Props = JSX.HTMLAttributes & {
   id: string;

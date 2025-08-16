@@ -1,10 +1,10 @@
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
-import { CONFIG } from "../../../utils/constants";
-import { clearEntriesIndexCache } from "../../astro/collections/indexes";
 import {
   createMockEntries,
   setupCollectionMocks,
 } from "../../../../tests/helpers/astro-content";
+import { CONFIG } from "../../../utils/constants";
+import { clearEntriesIndexCache } from "../../astro/collections/indexes";
 import { getBlogGraph } from "./blog-graph";
 
 vi.mock("astro:content", async (importOriginal) => {

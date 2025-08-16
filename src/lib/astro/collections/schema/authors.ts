@@ -3,8 +3,8 @@ import {
   isValidCountryCode,
   isValidLanguageCode,
 } from "../../../../utils/locales";
-import { globLoader } from "../../loaders/glob-loader";
 import { isString } from "../../../../utils/type-checks";
+import { globLoader } from "../../loaders/glob-loader";
 
 export const authors = defineCollection({
   loader: globLoader("authors"),

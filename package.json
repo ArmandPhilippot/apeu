@@ -136,5 +136,10 @@
   },
   "optionalDependencies": {
     "husky": "^9.1.7"
+  },
+  "pnpm": {
+    "overrides": {
+      "vite": "^6.3.5"
+    }
   }
 }

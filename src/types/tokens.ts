@@ -1,4 +1,4 @@
-import type { CALLOUT_TYPES } from "../utils/constants";
+import type { CALLOUT_TYPES, THEMES } from "../utils/constants";
 
 export type CalloutType = (typeof CALLOUT_TYPES)[number];
 
@@ -73,4 +73,4 @@ export type Spacing =
   | "xl"
   | "2xl";
 
-export type Theme = "auto" | "dark" | "light";
+export type Theme = (typeof THEMES)[number];

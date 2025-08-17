@@ -2,14 +2,16 @@
 "apeu": major
 ---
 
-Moves i18n helpers.
+Moves feeds and i18n helpers.
 
-The i18n helpers were previously located in `src/utils/i18n.ts` and has been moved to `src/services/i18n`. This seems semantically better and make splitting the file easier.
+The feeds and i18n helpers were previously located respectively in `src/utils/feeds` and `src/utils/i18n.ts`. They have been moved to `src/services/feeds` and `src/services/i18n`. This seems semantically better and make splitting the files easier.
 
-If you had templates relying on `useI18n` or others i18n helpers, you need to update your code:
+If you had templates relying on those helpers, you need to update your code:
 ```diff
 ---
+-import { getFeedLanguageFromLocale, getRSSItemsFromEntries } from "../utils/feeds";
 -import { isAvailableLanguage, useI18n, type AvailableLanguage } from "../utils/i18n";
++import { getFeedLanguageFromLocale, getRSSItemsFromEntries } from "../services/feeds";
 +import { isAvailableLanguage, useI18n } from "../services/i18n";
 +import type { AvailableLanguage } from "../types/tokens";
 ---

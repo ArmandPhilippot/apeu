@@ -16,13 +16,12 @@ import {
 import sanitize, {
   type SanitizeOptions,
 } from "ultrahtml/transformers/sanitize";
-import { queryCollection } from "../services/collections";
-import { isAvailableLanguage, useI18n } from "../services/i18n";
-import type { FeedCompatibleEntry } from "../types/data";
-import type { AvailableLanguage } from "../types/tokens";
-import { UnsupportedLocaleError } from "./exceptions";
-import { isString } from "./type-checks";
-import { getWebsiteUrl } from "./url";
+import type { FeedCompatibleEntry } from "../../types/data";
+import type { AvailableLanguage } from "../../types/tokens";
+import { UnsupportedLocaleError } from "../../utils/exceptions";
+import { isString } from "../../utils/type-checks";
+import { getWebsiteUrl } from "../../utils/url";
+import { isAvailableLanguage, useI18n } from "../i18n";
 
 /* eslint-disable no-param-reassign -- The file do a lot of node transformations to create the feed content, so it's expected that parameters will be reassigned. */
 
@@ -228,52 +227,4 @@ export const getFeedLanguageFromLocale = (locale: string): string => {
   } as const satisfies Record<AvailableLanguage, string>;
 
   return availableLocales[locale];
-};
-
-type FeedLink = { label: string; slug: string };
-
-/**
- * Retrieve the feeds data for each collection having a feed.
- *
- * @param {AvailableLanguage} language - The feed language.
- * @returns {Promise<FeedLink[]>} The label and slug for each feed.
- */
-export const getCollectionsFeeds = async (
-  language: AvailableLanguage
-): Promise<FeedLink[]> => {
-  const { locale, translate } = useI18n(language);
-  const pagesWithFeed = [
-    `${locale}/blog/categories`,
-    `${locale}/blog/posts`,
-    `${locale}/blogroll`,
-    `${locale}/bookmarks`,
-    `${locale}/guides`,
-    `${locale}/notes`,
-    `${locale}/projects`,
-    `${locale}/tags`,
-  ];
-  const { entries: entriesWithStaticFeed } = await queryCollection(
-    ["index.pages", "pages"],
-    {
-      format: "preview",
-      orderBy: { key: "title", order: "ASC" },
-      where: { ids: pagesWithFeed },
-    }
-  );
-  const { entries: entriesWithDynamicFeed } = await queryCollection(
-    ["blog.categories", "tags"],
-    {
-      format: "preview",
-      orderBy: { key: "title", order: "ASC" },
-      where: { locale },
-    }
-  );
-  const entriesWithFeed = [...entriesWithStaticFeed, ...entriesWithDynamicFeed];
-
-  return entriesWithFeed.map((entry) => {
-    return {
-      label: translate("feed.link.title", { title: entry.title }),
-      slug: `${entry.route}/feed.xml`,
-    };
-  });
 };

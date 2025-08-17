@@ -1,8 +1,15 @@
-import type { CALLOUT_TYPES, CONFIG, THEMES } from "../utils/constants";
+import type {
+  CALLOUT_TYPES,
+  CONFIG,
+  COUNTRY_CODES,
+  THEMES,
+} from "../utils/constants";
 
 export type AvailableLanguage = (typeof CONFIG.LANGUAGES.AVAILABLE)[number];
 
 export type CalloutType = (typeof CALLOUT_TYPES)[number];
+
+export type CountryCode = (typeof COUNTRY_CODES)[number];
 
 export type Direction = "bottom" | "left" | "right" | "top";
 

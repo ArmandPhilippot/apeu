@@ -2,7 +2,7 @@ import { defineCollection, z } from "astro:content";
 import {
   isValidCountryCode,
   isValidLanguageCode,
-} from "../../../../utils/locales";
+} from "../../../../services/i18n";
 import { isString } from "../../../../utils/type-checks";
 import { globLoader } from "../../loaders/glob-loader";
 

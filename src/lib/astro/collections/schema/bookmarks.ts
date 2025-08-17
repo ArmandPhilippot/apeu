@@ -1,5 +1,5 @@
 import { defineCollection, reference, z } from "astro:content";
-import { isValidLanguageCode } from "../../../../utils/locales";
+import { isValidLanguageCode } from "../../../../services/i18n";
 import { globLoader } from "../../loaders/glob-loader";
 import { contentsBaseSchema } from "./partials";
 

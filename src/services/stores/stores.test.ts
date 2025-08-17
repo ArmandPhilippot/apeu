@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { isValidSettingsKey, type Settings } from "./settings";
+import { isValidSettingsKey, type Settings } from "./stores";
 
 describe("is-valid-settings-key", () => {
   it("returns true when the given string matches a setting key", () => {

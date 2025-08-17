@@ -1,10 +1,7 @@
 import { persistentMap } from "@nanostores/persistent";
 import { atom, computed } from "nanostores";
 import type { Theme } from "../../types/tokens";
-import {
-  getPreferredColorScheme,
-  resolveCurrentColorScheme,
-} from "../../utils/themes";
+import { getPreferredColorScheme, resolveCurrentColorScheme } from "./themes";
 
 export type Settings = {
   shiki: Theme;

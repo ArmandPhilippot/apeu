@@ -1,5 +1,5 @@
-import type { Theme } from "../types/tokens";
-import { THEMES } from "./constants";
+import type { Theme } from "../../types/tokens";
+import { THEMES } from "../../utils/constants";
 
 /**
  * Check if the given value is a valid theme.

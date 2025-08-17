@@ -6,12 +6,12 @@
 
 <script>
   import {
-    activeTheme,
     activeShikiTheme,
-    updateSystemColorScheme,
-    THEME_SETTING_KEY,
+    activeTheme,
     SHIKI_SETTING_KEY,
-  } from "../../services/stores/settings";
+    THEME_SETTING_KEY,
+    updateSystemColorScheme,
+  } from "../../services/stores";
 
   function updateThemes() {
     const mainTheme = activeTheme.get();

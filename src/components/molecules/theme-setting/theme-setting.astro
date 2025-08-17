@@ -3,13 +3,13 @@ import type { JSX } from "astro/jsx-runtime";
 import type { ComponentProps } from "astro/types";
 import { useI18n } from "../../../services/i18n";
 import {
+  resolveCurrentColorScheme,
   SHIKI_DEFAULT,
   SHIKI_SETTING_KEY,
   THEME_DEFAULT,
   type Settings,
-} from "../../../services/stores/settings";
+} from "../../../services/stores";
 import type { Theme } from "../../../types/tokens";
-import { resolveCurrentColorScheme } from "../../../utils/themes";
 import Switch from "../switch/switch.astro";
 import Toggle from "../toggle/toggle.astro";
 
@@ -119,16 +119,14 @@ const defaultValue =
 <script>
   import {
     isValidSettingsKey,
+    isValidTheme,
+    resolveCurrentColorScheme,
     settings,
     SHIKI_SETTING_KEY,
     THEME_SETTING_KEY,
     type Settings,
-  } from "../../../services/stores/settings";
+  } from "../../../services/stores";
   import type { Theme } from "../../../types/tokens";
-  import {
-    isValidTheme,
-    resolveCurrentColorScheme,
-  } from "../../../utils/themes";
 
   class APThemeSetting extends HTMLElement {
     #isSwitch = false;

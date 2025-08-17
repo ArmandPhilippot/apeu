@@ -2,8 +2,8 @@
 import type { MarkdownHeading } from "astro";
 import type { HTMLAttributes } from "astro/types";
 import { Icon } from "astro-icon/components";
+import { useI18n } from "../../../services/i18n";
 import type { Img as ImgType } from "../../../types/data";
-import { useI18n } from "../../../utils/i18n";
 import { buildToc } from "../../../utils/toc";
 import Box from "../../atoms/box/box.astro";
 import Button from "../../atoms/button/button.astro";

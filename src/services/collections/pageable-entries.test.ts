@@ -6,7 +6,7 @@ import {
   setupCollectionMocks,
 } from "../../../tests/helpers/astro-content";
 import { clearEntriesIndexCache } from "../../lib/astro/collections/indexes";
-import type { AvailableLanguage } from "../../utils/i18n";
+import type { AvailableLanguage } from "../../types/tokens";
 import {
   addRelatedItemsToPage,
   getDisplayedCollectionName,

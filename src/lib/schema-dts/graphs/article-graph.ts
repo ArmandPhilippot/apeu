@@ -1,8 +1,8 @@
 import type { Article, BlogPosting } from "schema-dts";
+import { useI18n } from "../../../services/i18n";
 import { useRouting } from "../../../services/routing";
 import type { BlogPost, Guide, Img, Note, Project } from "../../../types/data";
 import type { Blend, RequireOnly } from "../../../types/utilities";
-import { useI18n } from "../../../utils/i18n";
 import { getImgSrc } from "../../../utils/images";
 import { isString } from "../../../utils/type-checks";
 import { getWebsiteUrl } from "../../../utils/url";

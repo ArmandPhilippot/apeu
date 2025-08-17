@@ -13,7 +13,7 @@ import {
   queryEntry,
   type PageableCollection,
 } from "../../services/collections";
-import type { AvailableLanguage } from "../../utils/i18n";
+import type { AvailableLanguage } from "../../types/tokens";
 import CollectionListingView from "./collection-listing-view.astro";
 
 vi.mock("astro:content", async (importOriginal) => {
@@ -39,8 +39,8 @@ vi.mock("../../utils/constants", async (importOriginal) => {
   };
 });
 
-vi.mock("../../utils/i18n", async (importOriginal) => {
-  const mod = await importOriginal<typeof import("../../utils/i18n")>();
+vi.mock("../../services/i18n", async (importOriginal) => {
+  const mod = await importOriginal<typeof import("../../services/i18n")>();
   return {
     ...mod,
     useI18n: () => {

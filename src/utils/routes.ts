@@ -1,4 +1,4 @@
-import { isAvailableLanguage } from "./i18n";
+import { isAvailableLanguage } from "../services/i18n";
 
 /**
  * Normalizes a route by removing the trailing slash.

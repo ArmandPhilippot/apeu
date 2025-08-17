@@ -2,10 +2,10 @@
 import type { ComponentProps, HTMLAttributes } from "astro/types";
 import { Font } from "astro:assets";
 import { ClientRouter } from "astro:transitions";
+import { useI18n } from "../../../services/i18n";
 import { useRouting } from "../../../services/routing";
 import "../../../styles/global.css";
 import { CONFIG } from "../../../utils/constants";
-import { useI18n } from "../../../utils/i18n";
 import Copyright from "../../atoms/copyright/copyright.astro";
 import Head from "../../atoms/head/head.astro";
 import License from "../../atoms/license/license.astro";

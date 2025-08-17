@@ -10,8 +10,8 @@ If you need to display a route in your templates, you'll need to import and use 
 
 ```diff
 ---
+import { useI18n } from "../../../services/i18n";
 +import { useRouting } from "../../../services/routing";
-import { useI18n } from "../../../utils/i18n";
 
 -const { locale, route, translate } = useI18n(Astro.currentLocale);
 +const { locale, translate } = useI18n(Astro.currentLocale);

@@ -1,6 +1,7 @@
 ---
 import type { JSX } from "astro/jsx-runtime";
 import type { ComponentProps } from "astro/types";
+import { useI18n } from "../../../services/i18n";
 import {
   SHIKI_DEFAULT,
   SHIKI_SETTING_KEY,
@@ -8,7 +9,6 @@ import {
   type Settings,
 } from "../../../services/stores/settings";
 import type { Theme } from "../../../types/tokens";
-import { useI18n } from "../../../utils/i18n";
 import { resolveCurrentColorScheme } from "../../../utils/themes";
 import Switch from "../switch/switch.astro";
 import Toggle from "../toggle/toggle.astro";

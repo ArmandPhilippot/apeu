@@ -22,8 +22,8 @@ vi.mock("./constants", async (importOriginal) => {
   };
 });
 
-vi.mock("./i18n", async (importOriginal) => {
-  const mod = await importOriginal<typeof import("./i18n")>();
+vi.mock("../services/i18n", async (importOriginal) => {
+  const mod = await importOriginal<typeof import("../services/i18n")>();
 
   return {
     ...mod,

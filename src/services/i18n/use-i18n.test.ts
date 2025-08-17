@@ -1,14 +1,8 @@
 import { describe, expect, expectTypeOf, it, vi } from "vitest";
-import { CONFIG } from "./constants";
-import {
-  getCurrentLocale,
-  getLanguageTerritory,
-  isAvailableLanguage,
-  useI18n,
-} from "./i18n";
+import { useI18n } from "./use-i18n";
 
-vi.mock("./constants", async (importOriginal) => {
-  const mod = await importOriginal<typeof import("./constants")>();
+vi.mock("../../utils/constants", async (importOriginal) => {
+  const mod = await importOriginal<typeof import("../../utils/constants")>();
   return {
     ...mod,
     CONFIG: {
@@ -21,8 +15,10 @@ vi.mock("./constants", async (importOriginal) => {
   };
 });
 
-vi.mock("../translations", () => {
+vi.mock("../../translations", async (importOriginal) => {
+  const mod = await importOriginal<typeof import("../../translations")>();
   return {
+    ...mod,
     translations: {
       en: {
         singular: "Hello!",
@@ -41,28 +37,6 @@ vi.mock("../translations", () => {
       fr: {},
     },
   };
-});
-
-describe("is-available-language", () => {
-  it("returns true if the given language is valid", () => {
-    expect(isAvailableLanguage(CONFIG.LANGUAGES.DEFAULT)).toBe(true);
-  });
-
-  it("returns false if the given language is invalid", () => {
-    expect(isAvailableLanguage("et")).toBe(false);
-  });
-});
-
-describe("get-current-locale", () => {
-  it("returns the given locale when it is a valid", () => {
-    const locale = "en";
-
-    expect(getCurrentLocale(locale)).toBe(locale);
-  });
-
-  it("returns the default locale when it is invalid", () => {
-    expect(getCurrentLocale("foo")).toBe(CONFIG.LANGUAGES.DEFAULT);
-  });
 });
 
 describe("use-i18n", () => {
@@ -135,23 +109,5 @@ describe("use-i18n", () => {
         name: "John",
       })
     ).toMatchInlineSnapshot(`"Hello, John! You have 3 items."`);
-  });
-});
-
-describe("get-language-territory", () => {
-  it("returns the language+territory code for the default locale", () => {
-    expect(getLanguageTerritory()).toBe(
-      getLanguageTerritory(CONFIG.LANGUAGES.DEFAULT)
-    );
-  });
-
-  it("returns the language+territory code for the given locale", () => {
-    expect(getLanguageTerritory("en")).toMatchInlineSnapshot(`"en_US"`);
-  });
-
-  it("throws an error if the given locale is not supported", () => {
-    expect(() => getLanguageTerritory("ru")).toThrowErrorMatchingInlineSnapshot(
-      `[Error: Locale not supported. Received: ru]`
-    );
   });
 });

@@ -20,8 +20,8 @@ import {
   queryEntry,
   type QueriedEntry,
 } from "../../services/collections";
+import { useI18n } from "../../services/i18n";
 import { useRouting } from "../../services/routing";
-import { useI18n } from "../../utils/i18n";
 
 type Props = Partial<ComponentProps<typeof PageLayout>> & {
   entry: QueriedEntry<"pages">;

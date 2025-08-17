@@ -1,8 +1,8 @@
 ---
 import type { HTMLAttributes } from "astro/types";
+import { availableNamedLanguages, useI18n } from "../../../services/i18n";
 import { useRouting } from "../../../services/routing";
 import type { AltLanguage } from "../../../types/data";
-import { availableNamedLanguages, useI18n } from "../../../utils/i18n";
 import LanguagePicker from "../../molecules/language-picker/language-picker.astro";
 import ThemeSetting from "../../molecules/theme-setting/theme-setting.astro";
 

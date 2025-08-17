@@ -1,7 +1,8 @@
 import { join, parse } from "node:path";
 import slash from "slash";
+import { isAvailableLanguage } from "../services/i18n";
+import type { AvailableLanguage } from "../types/tokens";
 import { CONFIG } from "./constants";
-import { isAvailableLanguage, type AvailableLanguage } from "./i18n";
 import { isString } from "./type-checks";
 
 /**

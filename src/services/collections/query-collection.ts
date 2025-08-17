@@ -7,13 +7,12 @@ import {
 import { getEntriesIndex } from "../../lib/astro/collections/indexes";
 import type { QueryMode } from "../../types/data";
 import type { IndexedEntry } from "../../types/routing";
-import type { Order } from "../../types/tokens";
+import type { AvailableLanguage, Order } from "../../types/tokens";
 import type {
   HasNestedKey,
   KeyOfType,
   LooseAutocomplete,
 } from "../../types/utilities";
-import type { AvailableLanguage } from "../../utils/i18n";
 import { hasCommonKey } from "../../utils/objects";
 import { sortByKey } from "../../utils/sort";
 import { isObject, isString } from "../../utils/type-checks";

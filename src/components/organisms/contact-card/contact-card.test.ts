@@ -1,8 +1,8 @@
 import { experimental_AstroContainer as AstroContainer } from "astro/container";
 import type { ComponentProps } from "astro/types";
 import { beforeEach, describe, expect, it } from "vitest";
+import { useI18n } from "../../../services/i18n";
 import { CONFIG } from "../../../utils/constants";
-import { useI18n } from "../../../utils/i18n";
 import ContactCard from "./contact-card.astro";
 
 type LocalTestContext = {

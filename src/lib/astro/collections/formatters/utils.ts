@@ -1,15 +1,13 @@
 import type { CollectionKey } from "astro:content";
+import { isAvailableLanguage } from "../../../../services/i18n";
 import type {
   AltLanguage,
   RemarkPluginFrontmatterMeta,
   TaxonomyLink,
 } from "../../../../types/data";
 import type { IndexedEntry } from "../../../../types/routing";
+import type { AvailableLanguage } from "../../../../types/tokens";
 import type { CollectionReference } from "../../../../types/utilities";
-import {
-  isAvailableLanguage,
-  type AvailableLanguage,
-} from "../../../../utils/i18n";
 import { getReadingTime } from "../../../../utils/reading-time";
 import { isNumber, isString } from "../../../../utils/type-checks";
 import type { EntryByIdIndex } from "../indexes";

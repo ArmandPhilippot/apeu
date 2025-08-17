@@ -1,6 +1,7 @@
 import type { Language } from "schema-dts";
+import { useI18n } from "../../../services/i18n";
+import type { AvailableLanguage } from "../../../types/tokens";
 import type { LANGUAGE_CODES } from "../../../utils/constants";
-import { useI18n, type AvailableLanguage } from "../../../utils/i18n";
 
 /**
  * Retrieve a Language graph from a code.

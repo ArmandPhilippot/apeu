@@ -3,10 +3,10 @@ import type { ComponentProps } from "astro/types";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import SocialLink from "./social-link.astro";
 
-vi.mock("../../../utils/i18n", async () => {
-  const originalModule = await vi.importActual("../../../utils/i18n");
+vi.mock("../../../services/i18n", async (importOriginal) => {
+  const mod = await importOriginal<typeof import("../../../services/i18n")>();
   return {
-    ...originalModule,
+    ...mod,
     useI18n: vi.fn(() => {
       return {
         locale: "en",

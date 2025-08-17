@@ -17,9 +17,10 @@ import sanitize, {
   type SanitizeOptions,
 } from "ultrahtml/transformers/sanitize";
 import { queryCollection } from "../services/collections";
+import { isAvailableLanguage, useI18n } from "../services/i18n";
 import type { FeedCompatibleEntry } from "../types/data";
+import type { AvailableLanguage } from "../types/tokens";
 import { UnsupportedLocaleError } from "./exceptions";
-import { isAvailableLanguage, useI18n, type AvailableLanguage } from "./i18n";
 import { isString } from "./type-checks";
 import { getWebsiteUrl } from "./url";
 

@@ -8,13 +8,13 @@ import {
   type ListingPageCollection,
   type RelatedEntries,
 } from "../../services/collections";
+import { useI18n } from "../../services/i18n";
 import { CONFIG } from "../../utils/constants";
 import { MissingSiteConfigError } from "../../utils/exceptions";
 import {
   getFeedLanguageFromLocale,
   getRSSItemsFromEntries,
 } from "../../utils/feeds";
-import { useI18n } from "../../utils/i18n";
 
 export const getStaticPaths = (async () => {
   const { entries } = await queryCollection(

@@ -1,8 +1,8 @@
 import type { ImageFunction } from "astro:content";
 import { z } from "astro:schema";
+import { isAvailableLanguage } from "../../../../services/i18n";
 import { CONFIG } from "../../../../utils/constants";
 import { applyTimezone } from "../../../../utils/dates";
-import { isAvailableLanguage } from "../../../../utils/i18n";
 
 const objectPosition = z.enum([
   "top",

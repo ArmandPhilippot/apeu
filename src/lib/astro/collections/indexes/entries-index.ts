@@ -4,6 +4,10 @@ import {
   type CollectionKey,
 } from "astro:content";
 import { collections } from "../../../../content.config";
+import {
+  isAvailableLanguage,
+  isDefaultLanguage,
+} from "../../../../services/i18n";
 import type {
   IndexedEntry,
   NonRoutableCollectionKey,
@@ -11,11 +15,7 @@ import type {
   RoutableCollectionKey,
   RoutableIndexedEntry,
 } from "../../../../types/routing";
-import {
-  isAvailableLanguage,
-  isDefaultLanguage,
-  type AvailableLanguage,
-} from "../../../../utils/i18n";
+import type { AvailableLanguage } from "../../../../types/tokens";
 import { getCumulativePaths } from "../../../../utils/routes";
 import { removeTrailingSlash } from "../../../../utils/strings";
 import { isRoutableEntry } from "../type-guards";

@@ -1,8 +1,8 @@
 import { describe, expect, it, vi } from "vitest";
-import * as i18n from "./i18n";
+import * as i18n from "../services/i18n";
 import { getCumulativePaths, isLocalizedRoute, normalizeRoute } from "./routes";
 
-vi.mock("./i18n", () => {
+vi.mock("../services/i18n", () => {
   return {
     isAvailableLanguage: vi.fn((locale: string) =>
       ["en", "fr", "es"].includes(locale)

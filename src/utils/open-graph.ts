@@ -1,6 +1,6 @@
+import { isDefaultLanguage } from "../services/i18n";
 import { useRouting } from "../services/routing";
 import type { MimeTypeImage } from "../types/mime-type";
-import { isDefaultLanguage } from "./i18n";
 import { removeTrailingSlash } from "./strings";
 import { getWebsiteUrl } from "./url";
 

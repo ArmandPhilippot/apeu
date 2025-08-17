@@ -1,7 +1,7 @@
 import type { Blog } from "schema-dts";
+import { useI18n } from "../../../services/i18n";
 import { useRouting } from "../../../services/routing";
 import type { Page } from "../../../types/data";
-import { useI18n } from "../../../utils/i18n";
 import { getImgSrc } from "../../../utils/images";
 import { getWebsiteUrl } from "../../../utils/url";
 

@@ -1,7 +1,7 @@
 import type { WebPage } from "schema-dts";
+import { useI18n } from "../../../services/i18n";
 import { useRouting } from "../../../services/routing";
 import type { Crumb, Page } from "../../../types/data";
-import { useI18n } from "../../../utils/i18n";
 import { getImgSrc } from "../../../utils/images";
 import { getWebsiteUrl } from "../../../utils/url";
 import { getDurationFromReadingTime } from "../values/duration";

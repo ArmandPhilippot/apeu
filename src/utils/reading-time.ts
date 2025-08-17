@@ -1,6 +1,6 @@
 import type { ReadingTime } from "../types/data";
+import type { AvailableLanguage } from "../types/tokens";
 import { WORDS_PER_MINUTE } from "./constants";
-import type { AvailableLanguage } from "./i18n";
 import { toUpperCase } from "./strings";
 
 /**

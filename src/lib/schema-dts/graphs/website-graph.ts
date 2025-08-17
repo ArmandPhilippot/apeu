@@ -1,7 +1,8 @@
 import type { SearchAction, WebSite } from "schema-dts";
+import { useI18n } from "../../../services/i18n";
 import { useRouting } from "../../../services/routing";
+import type { AvailableLanguage } from "../../../types/tokens";
 import { CONFIG } from "../../../utils/constants";
-import { useI18n, type AvailableLanguage } from "../../../utils/i18n";
 import { getWebsiteUrl } from "../../../utils/url";
 import { getLanguageGraph } from "./language-graph";
 

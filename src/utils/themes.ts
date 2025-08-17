@@ -8,7 +8,7 @@ import { THEMES } from "./constants";
  * @returns {boolean} True if the value is a valid theme.
  */
 export const isValidTheme = (value: unknown): value is Theme =>
-  typeof value === "string" && (THEMES as string[]).includes(value);
+  typeof value === "string" && (THEMES as readonly string[]).includes(value);
 
 /**
  * Retrieve the preferred color scheme from the user's system preferences.

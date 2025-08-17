@@ -1,6 +1,6 @@
 import type { Person } from "schema-dts";
 import type { Author } from "../../../types/data";
-import type { AvailableLanguage } from "../../../utils/i18n";
+import type { AvailableLanguage } from "../../../types/tokens";
 import { getImgSrc } from "../../../utils/images";
 import { getWebsiteUrl } from "../../../utils/url";
 import { getCountryGraph } from "./country-graph";

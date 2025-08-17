@@ -1,7 +1,7 @@
 import { experimental_AstroContainer as AstroContainer } from "astro/container";
 import type { ComponentProps } from "astro/types";
 import { beforeEach, describe, expect, it } from "vitest";
-import { getLanguageTerritory } from "../../../utils/i18n";
+import { getLanguageTerritory } from "../../../services/i18n";
 import OpenGraphMeta from "./open-graph-meta.astro";
 
 type LocalTestContext = {

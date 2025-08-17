@@ -8,7 +8,7 @@ import {
   type ZodTooBigIssue,
   type ZodTooSmallIssue,
 } from "zod";
-import { useI18n, type TranslateSingularKeys } from "../../utils/i18n";
+import { useI18n, type TranslateSingularKeys } from "../../services/i18n";
 
 const atLeastOrMoreThan = (
   isInclusive: boolean,

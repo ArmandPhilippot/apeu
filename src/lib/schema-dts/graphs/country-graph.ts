@@ -1,6 +1,7 @@
 import type { Country } from "schema-dts";
+import { useI18n } from "../../../services/i18n";
+import type { AvailableLanguage } from "../../../types/tokens";
 import type { COUNTRY_CODES } from "../../../utils/constants";
-import { useI18n, type AvailableLanguage } from "../../../utils/i18n";
 import { toLowerCase } from "../../../utils/strings";
 
 /**

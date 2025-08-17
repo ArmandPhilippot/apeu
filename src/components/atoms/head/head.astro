@@ -2,9 +2,9 @@
 import { getImage } from "astro:assets";
 import faviconPng from "../../../assets/favicon.png";
 import faviconSvg from "../../../assets/logo.svg";
+import { useI18n } from "../../../services/i18n";
 import type { SEO } from "../../../types/data";
 import { getCollectionsFeeds } from "../../../utils/feeds";
-import { useI18n } from "../../../utils/i18n";
 
 type ColorScheme =
   | "normal"

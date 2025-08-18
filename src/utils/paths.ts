@@ -57,3 +57,23 @@ export const getLocaleFromPath = (path: string): AvailableLanguage => {
     ? currentLocale
     : CONFIG.LANGUAGES.DEFAULT;
 };
+
+/**
+ * Returns cumulative path steps for a given path.
+ *
+ * @example "/en/blog/posts" → ["/en", "/en/blog", "/en/blog/posts"]
+ * @param {string} path - The path to parse.
+ * @returns {string[]} An array of cumulative paths.
+ */
+export const getCumulativePaths = (path: string): string[] => {
+  const parts = path.split("/").filter((part) => part !== "");
+  const steps: string[] = [];
+
+  let current = "";
+  for (const part of parts) {
+    current += `/${part}`;
+    steps.push(current);
+  }
+
+  return steps;
+};

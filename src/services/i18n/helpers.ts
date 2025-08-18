@@ -44,6 +44,18 @@ export const getCurrentLocale = (
 };
 
 /**
+ * Checks if the route is localized by matching the first segment.
+ *
+ * @param {string} route - The route to test.
+ * @returns {boolean} True if the route starts with a supported locale.
+ */
+export const isLocalizedRoute = (route: string): boolean => {
+  const [_, firstSegment] = route.split("/");
+  return isAvailableLanguage(firstSegment ?? "");
+};
+
+
+/**
  * Check if the given string is a valid country code.
  *
  * @param {string} code - An ISO 3166-1 alpha-2 code.

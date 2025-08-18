@@ -1,7 +1,7 @@
 import { isDefaultLanguage } from "../services/i18n";
 import { useRouting } from "../services/routing";
 import type { MimeTypeImage } from "../types/mime-type";
-import { removeTrailingSlash } from "./strings";
+import { removeTrailingSlashes } from "./strings";
 import { getWebsiteUrl } from "./url";
 
 type GetOpenGraphImgConfig = {
@@ -34,7 +34,7 @@ export const getOpenGraphImg = async ({
   return {
     height: 630,
     type: "image/png",
-    url: new URL(`/og/${removeTrailingSlash(ogImgPath)}.png`, getWebsiteUrl())
+    url: new URL(`/og/${removeTrailingSlashes(ogImgPath)}.png`, getWebsiteUrl())
       .href,
     width: 1200,
   };

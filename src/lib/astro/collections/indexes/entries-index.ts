@@ -16,8 +16,8 @@ import type {
   RoutableIndexedEntry,
 } from "../../../../types/routing";
 import type { AvailableLanguage } from "../../../../types/tokens";
-import { getCumulativePaths } from "../../../../utils/routes";
-import { removeTrailingSlash } from "../../../../utils/strings";
+import { getCumulativePaths } from "../../../../utils/paths";
+import { removeTrailingSlashes } from "../../../../utils/strings";
 import { isRoutableEntry } from "../type-guards";
 import { flattenAndSortByHierarchy, normalizeEntryId } from "./utils";
 
@@ -166,7 +166,7 @@ const buildEntryRoute = (
     .filter((segment) => segment !== null);
   const route = `/${localizedSegments.join("/")}`;
 
-  return route === "/" ? route : removeTrailingSlash(route);
+  return route === "/" ? route : removeTrailingSlashes(route);
 };
 
 type RouteInfo = {

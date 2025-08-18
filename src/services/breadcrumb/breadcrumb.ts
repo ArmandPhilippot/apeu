@@ -3,11 +3,9 @@ import {
   type EntryByRouteIndex,
 } from "../../lib/astro/collections/indexes";
 import type { Crumb } from "../../types/data";
-import {
-  getCumulativePaths,
-  isLocalizedRoute,
-  normalizeRoute,
-} from "../../utils/routes";
+import { getCumulativePaths } from "../../utils/paths";
+import { removeTrailingSlashes } from "../../utils/strings";
+import { isLocalizedRoute } from "../i18n";
 
 /**
  * Breaks a route into cumulative path steps.
@@ -36,6 +34,15 @@ const getRouteCrumbs = (
       return { label: entry.raw.data.title, url: entry.route };
     });
 };
+
+/**
+ * Normalizes a route by removing the trailing slash.
+ *
+ * @param {string} route - The route to format.
+ * @returns {string} The normalized route.
+ */
+const normalizeRoute = (route: string): string =>
+  removeTrailingSlashes(route) || "/";
 
 type BreadcrumbConfig = {
   paginationLabel?: string | undefined;

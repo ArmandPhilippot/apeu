@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 import {
   getCurrentLocale,
   isAvailableLanguage,
+  isLocalizedRoute,
   isValidCountryCode,
   isValidLanguageCode,
 } from "./helpers";
@@ -39,6 +40,23 @@ describe("get-current-locale", () => {
 
   it("returns the default locale when it is invalid", () => {
     expect(getCurrentLocale("foo")).toBe("en");
+  });
+});
+
+describe("isLocalizedRoute", () => {
+  it("detects a known locale at root", () => {
+    expect(isLocalizedRoute("/en/blog")).toBe(true);
+    expect(isLocalizedRoute("/fr")).toBe(true);
+  });
+
+  it("rejects an unknown locale", () => {
+    expect(isLocalizedRoute("/de/blog")).toBe(false);
+    expect(isLocalizedRoute("/xx")).toBe(false);
+  });
+
+  it("returns false for route without segments", () => {
+    expect(isLocalizedRoute("/")).toBe(false);
+    expect(isLocalizedRoute("")).toBe(false);
   });
 });
 

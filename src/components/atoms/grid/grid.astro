@@ -7,11 +7,11 @@ import type {
   JustifyContent,
   JustifyItems,
 } from "../../../types/css";
+import { InvalidPropsError } from "../../../utils/exceptions";
 import {
   getCSSVars,
   getSpacingVarFromGap,
 } from "../../../utils/html-attributes";
-import { InvalidPropsError } from "../../../utils/exceptions";
 
 type Props<T extends HTMLTag = "div"> = Polymorphic<{ as: T }> & {
   alignContent?: AlignContent | null | undefined;

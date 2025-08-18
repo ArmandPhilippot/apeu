@@ -13,7 +13,9 @@ import { isAvailableLocale, isString } from "../../utils/type-guards";
  * @param {string | undefined} locale - Maybe a valid locale.
  * @returns {AvailableLocale} A valid locale.
  */
-export const getCurrentLocale = (locale: string | undefined): AvailableLocale => {
+export const getCurrentLocale = (
+  locale: string | undefined
+): AvailableLocale => {
   if (isString(locale) && isAvailableLocale(locale)) return locale;
 
   return CONFIG.LANGUAGES.DEFAULT;

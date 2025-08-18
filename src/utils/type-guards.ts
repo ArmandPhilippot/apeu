@@ -64,24 +64,24 @@ export const isString = (value: unknown): value is string =>
   typeof value === "string";
 
 /**
- * Check if the given language is an available language.
+ * Check if the given locale is an available locale.
  *
- * @param {string} language - The language to validate.
- * @returns {boolean} True if it is a valid language.
+ * @param {string} locale - The locale to validate.
+ * @returns {boolean} True if it is a valid locale.
  */
-export const isAvailableLocale = (language: string): language is AvailableLocale =>
-  (CONFIG.LANGUAGES.AVAILABLE as readonly string[]).includes(language);
+export const isAvailableLocale = (locale: string): locale is AvailableLocale =>
+  (CONFIG.LANGUAGES.AVAILABLE as readonly string[]).includes(locale);
 
 /**
- * Check if the given language is the default one.
+ * Check if the given locale is the default one.
  *
- * @param {string} language - A locale.
- * @returns {boolean} True if it is the default language.
+ * @param {string} locale - A locale.
+ * @returns {boolean} True if it is the default locale.
  */
 export const isDefaultLocale = (
-  language: string
-): language is typeof CONFIG.LANGUAGES.DEFAULT =>
-  language === CONFIG.LANGUAGES.DEFAULT;
+  locale: string
+): locale is typeof CONFIG.LANGUAGES.DEFAULT =>
+  locale === CONFIG.LANGUAGES.DEFAULT;
 
 /**
  * Check if the given value matches a callout type.

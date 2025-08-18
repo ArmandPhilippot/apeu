@@ -1,6 +1,6 @@
-import { STORIES_EXT, STORIES_SUFFIX } from "./constants";
-import { getParentDirPath, joinPaths } from "./paths";
-import { capitalizeFirstLetter } from "./strings";
+import { STORIES_EXT, STORIES_SUFFIX } from "../../utils/constants";
+import { getParentDirPath, joinPaths } from "../../utils/paths";
+import { capitalizeFirstLetter } from "../../utils/strings";
 
 const isSubStory = (path: string) => path.endsWith(`/${STORIES_SUFFIX}`);
 

@@ -7,12 +7,12 @@ import Link from "../../../components/atoms/link/link.astro";
 import ListItem from "../../../components/atoms/list/list-item.astro";
 import List from "../../../components/atoms/list/list.astro";
 import PageLayout from "../../../components/templates/page-layout/page-layout.astro";
+import { getStoryNameFromSlug, getStoryRoute } from "../../../services/stories";
 import {
   COMPONENT_KINDS,
   STORIES_EXT,
   STORIES_SUFFIX,
 } from "../../../utils/constants";
-import { getStoryNameFromSlug, getStoryRoute } from "../../../utils/stories";
 import { capitalizeFirstLetter } from "../../../utils/strings";
 
 export const getStaticPaths = (() =>

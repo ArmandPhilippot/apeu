@@ -107,8 +107,9 @@ vi.mock("../../lib/schema-dts/graphs/webpage-graph", async (importOriginal) => {
   };
 });
 
-vi.mock("../../utils/pagination", async (importOriginal) => {
-  const mod = await importOriginal<typeof import("../../utils/pagination")>();
+vi.mock("../../services/pagination", async (importOriginal) => {
+  const mod =
+    await importOriginal<typeof import("../../services/pagination")>();
   return {
     ...mod,
     renderPaginationLink: vi.fn().mockReturnValue(

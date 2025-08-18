@@ -15,8 +15,9 @@ For example, feeds and i18n helpers were previously located respectively in `src
 -import { isAvailableLanguage, useI18n, type AvailableLanguage } from "../utils/i18n";
 -import { getWebsiteUrl } from "../utils/url";
 +import { getFeedLanguageFromLocale, getRSSItemsFromEntries } from "../services/feeds";
++import { useI18n } from "../services/i18n";
 +import type { AvailableLocale } from "../types/tokens";
 +import { WEBSITE_URL } from "../utils/constants";
-+import { isAvailableLocale, useI18n } from "../utils/type-guards";
++import { isAvailableLocale } from "../utils/type-guards";
 ---
 ```

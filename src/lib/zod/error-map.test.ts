@@ -43,8 +43,10 @@ const mockTranslate = (key: string, params?: Record<string, string>) => {
   return translation;
 };
 
-vi.mock("../../utils/i18n", () => {
+vi.mock("../../services/i18n", async (importOriginal) => {
+  const mod = await importOriginal<typeof import("../../services/i18n")>();
   return {
+    ...mod,
     useI18n: () => {
       return {
         translate: mockTranslate,

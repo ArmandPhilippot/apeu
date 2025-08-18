@@ -1,9 +1,9 @@
 ---
 import type { HTMLAttributes } from "astro/types";
 import { Icon } from "astro-icon/components";
+import { useI18n } from "../../../services/i18n";
 import type { CalloutType } from "../../../types/tokens";
-import { isValidCalloutType } from "../../../utils/callouts";
-import { useI18n } from "../../../utils/i18n";
+import { isValidCalloutType } from "../../../utils/type-guards";
 
 type Props = HTMLAttributes<"div"> & {
   label?: string | null | undefined;

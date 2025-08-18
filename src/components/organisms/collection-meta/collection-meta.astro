@@ -1,14 +1,14 @@
 ---
 import type { JSX } from "astro/jsx-runtime";
 import type { ComponentProps } from "astro/types";
-import type { CollectionMetaData } from "../../../types/data";
-import type { IconName } from "../../../types/tokens";
-import type { AllKeysOf, Blend } from "../../../types/utilities";
 import {
   useI18n,
   type PluralUIKey,
   type SingularUIKey,
-} from "../../../utils/i18n";
+} from "../../../services/i18n";
+import type { CollectionMetaData } from "../../../types/data";
+import type { IconName } from "../../../types/tokens";
+import type { AllKeysOf, Blend } from "../../../types/utilities";
 import DescriptionList from "../../atoms/description-list/description-list.astro";
 import Link from "../../atoms/link/link.astro";
 import Time from "../../atoms/time/time.astro";

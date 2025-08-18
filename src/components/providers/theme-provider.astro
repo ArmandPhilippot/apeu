@@ -6,18 +6,17 @@
 
 <script>
   import {
-    activeTheme,
     activeShikiTheme,
+    activeTheme,
+    SETTING_KEYS,
     updateSystemColorScheme,
-    THEME_SETTING_KEY,
-    SHIKI_SETTING_KEY,
-  } from "../../services/stores/settings";
+  } from "../../services/stores";
 
   function updateThemes() {
     const mainTheme = activeTheme.get();
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- window can be undefined, at least while running Vitest.
     globalThis.window?.document.documentElement.setAttribute(
-      `data-${THEME_SETTING_KEY}`,
+      `data-${SETTING_KEYS.THEME}`,
       mainTheme
     );
     document.documentElement.style.colorScheme = mainTheme;
@@ -25,7 +24,7 @@
     const codeTheme = activeShikiTheme.get();
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- window can be undefined, at least while running Vitest.
     globalThis.window?.document.documentElement.setAttribute(
-      `data-${SHIKI_SETTING_KEY}`,
+      `data-${SETTING_KEYS.SHIKI}`,
       codeTheme
     );
   }

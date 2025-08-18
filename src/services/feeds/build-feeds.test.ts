@@ -2,12 +2,15 @@ import { describe, expect, it } from "vitest";
 import {
   blogPostFixture,
   blogrollFixture,
-} from "../../tests/fixtures/collections";
-import { formatEntry } from "../lib/astro/collections/formatters";
-import type { FeedCompatibleEntry } from "../types/data";
-import type { IndexedEntry } from "../types/routing";
-import { CONFIG } from "./constants";
-import { getFeedLanguageFromLocale, getRSSItemsFromEntries } from "./feeds";
+} from "../../../tests/fixtures/collections";
+import { formatEntry } from "../../lib/astro/collections/formatters";
+import type { FeedCompatibleEntry } from "../../types/data";
+import type { IndexedEntry } from "../../types/routing";
+import { CONFIG } from "../../utils/constants";
+import {
+  getFeedLanguageFromLocale,
+  getRSSItemsFromEntries,
+} from "./build-feeds";
 
 describe("get-rss-items-from-entries", () => {
   it("converts the given entries to RSS items", async () => {

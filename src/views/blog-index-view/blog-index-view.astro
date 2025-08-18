@@ -10,8 +10,8 @@ import PageLayout from "../../components/templates/page-layout/page-layout.astro
 import { getWebPageGraph } from "../../lib/schema-dts/graphs/webpage-graph";
 import { getBreadcrumb } from "../../services/breadcrumb";
 import { queryCollection, type QueriedEntry } from "../../services/collections";
+import { useI18n } from "../../services/i18n";
 import { useRouting } from "../../services/routing";
-import { useI18n } from "../../utils/i18n";
 
 type Props = Partial<ComponentProps<typeof PageLayout>> & {
   entry: QueriedEntry<"index.pages">;

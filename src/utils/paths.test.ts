@@ -1,6 +1,7 @@
 import { afterAll, describe, expect, it, vi } from "vitest";
 import { CONFIG } from "./constants";
 import {
+  getCumulativePaths,
   getLocaleFromPath,
   getParentDirPath,
   joinPaths,
@@ -22,12 +23,12 @@ vi.mock("./constants", async (importOriginal) => {
   };
 });
 
-vi.mock("./i18n", async (importOriginal) => {
-  const mod = await importOriginal<typeof import("./i18n")>();
+vi.mock("./type-guards", async (importOriginal) => {
+  const mod = await importOriginal<typeof import("./type-guards")>();
 
   return {
     ...mod,
-    isAvailableLanguage: vi
+    isAvailableLocale: vi
       .fn()
       .mockImplementation((locale: string) =>
         ["en", "es", "fr"].includes(locale)
@@ -113,5 +114,39 @@ describe("get-locale-from-path", () => {
     const locale = getLocaleFromPath(path);
 
     expect(locale).toBe(CONFIG.LANGUAGES.DEFAULT);
+  });
+});
+
+describe("getCumulativePaths", () => {
+  it("splits a multi-segment path", () => {
+    expect(getCumulativePaths("en/blog/posts")).toStrictEqual([
+      "/en",
+      "/en/blog",
+      "/en/blog/posts",
+    ]);
+  });
+
+  it("filters out the first segment when the path starts with a slash", () => {
+    expect(getCumulativePaths("/en/blog/posts")).toStrictEqual([
+      "/en",
+      "/en/blog",
+      "/en/blog/posts",
+    ]);
+  });
+
+  it("splits a single-segment route", () => {
+    expect(getCumulativePaths("en")).toStrictEqual(["/en"]);
+  });
+
+  it("handles route with trailing slashes", () => {
+    expect(getCumulativePaths("en/blog/")).toStrictEqual(["/en", "/en/blog"]);
+  });
+
+  it("returns empty array for '/'", () => {
+    expect(getCumulativePaths("/")).toStrictEqual([]);
+  });
+
+  it("returns empty array for empty string", () => {
+    expect(getCumulativePaths("")).toStrictEqual([]);
   });
 });

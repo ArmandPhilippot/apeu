@@ -4,7 +4,7 @@ import type { Transformer as UnifiedTransformer } from "unified";
 import { visit } from "unist-util-visit";
 import { VFile } from "vfile";
 import { describe, expect, it } from "vitest";
-import { isString } from "../../utils/type-checks";
+import { isString } from "../../utils/type-guards";
 import {
   CODE_BLOCK_NAME,
   CODE_BLOCK_PATH,

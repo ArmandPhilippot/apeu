@@ -7,7 +7,7 @@ import type {
   Plugin as UnifiedPlugin,
 } from "unified";
 import { visit } from "unist-util-visit";
-import { isValidCalloutType } from "../../utils/callouts";
+import { isValidCalloutType } from "../../utils/type-guards";
 
 /**
  * Remark plugin to transform directives to a callout element that matches our

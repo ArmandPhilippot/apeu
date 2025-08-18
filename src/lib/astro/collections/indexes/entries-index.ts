@@ -11,13 +11,13 @@ import type {
   RoutableCollectionKey,
   RoutableIndexedEntry,
 } from "../../../../types/routing";
+import type { AvailableLocale } from "../../../../types/tokens";
+import { getCumulativePaths } from "../../../../utils/paths";
+import { removeTrailingSlashes } from "../../../../utils/strings";
 import {
-  isAvailableLanguage,
-  isDefaultLanguage,
-  type AvailableLanguage,
-} from "../../../../utils/i18n";
-import { getCumulativePaths } from "../../../../utils/routes";
-import { removeTrailingSlash } from "../../../../utils/strings";
+  isAvailableLocale,
+  isDefaultLocale,
+} from "../../../../utils/type-guards";
 import { isRoutableEntry } from "../type-guards";
 import { flattenAndSortByHierarchy, normalizeEntryId } from "./utils";
 
@@ -77,11 +77,11 @@ const buildNonRoutableIndexedEntry = <C extends NonRoutableCollectionKey>(
  * Ensure the given locale is both defined and a configured locale.
  *
  * @param {string | undefined} locale - A locale to check.
- * @returns {AvailableLanguage} A supported locale.
+ * @returns {AvailableLocale} A supported locale.
  * @throws {Error} When the given locale is not supported.
  */
-const getLocale = (locale: string | undefined): AvailableLanguage => {
-  if (locale === undefined || !isAvailableLanguage(locale)) {
+const getLocale = (locale: string | undefined): AvailableLocale => {
+  if (locale === undefined || !isAvailableLocale(locale)) {
     throw new Error(`"${locale}" is not a supported locale.`);
   }
 
@@ -145,20 +145,20 @@ const removeLeadingSlash = (path: string) => path.slice(1);
 /**
  * Builds a localized route for a content entry using cumulative slugs.
  *
- * @param {AvailableLanguage} locale - A supported entry's locale.
+ * @param {AvailableLocale} locale - A supported entry's locale.
  * @param {string[]} segments - Path segments extracted from the entry ID.
  * @param {SlugInfoByIdMap} slugById - A map of entry IDs to slugs.
  * @returns {string} A route like `/fr/section/article`.
  */
 const buildEntryRoute = (
-  locale: AvailableLanguage,
+  locale: AvailableLocale,
   segments: string[],
   slugById: SlugInfoByIdMap
 ): string => {
   const routes = getCumulativePaths(`${locale}/${segments.join("/")}`);
   const localizedSegments = routes
     .map((route, idx) => {
-      const shouldRemoveLocale = idx === 0 && isDefaultLanguage(locale);
+      const shouldRemoveLocale = idx === 0 && isDefaultLocale(locale);
       if (shouldRemoveLocale) return null;
       const id = removeLeadingSlash(route);
       return slugById.get(id)?.slug ?? id.split("/").at(-1) ?? null;
@@ -166,11 +166,11 @@ const buildEntryRoute = (
     .filter((segment) => segment !== null);
   const route = `/${localizedSegments.join("/")}`;
 
-  return route === "/" ? route : removeTrailingSlash(route);
+  return route === "/" ? route : removeTrailingSlashes(route);
 };
 
 type RouteInfo = {
-  locale: AvailableLanguage;
+  locale: AvailableLocale;
   route: string;
   slug: string;
 };
@@ -203,12 +203,12 @@ const getRoutableEntryInfo = (
  *
  * @template C - The routable collection key.
  * @param {CollectionEntry<C>} entry - A routable entry.
- * @param {AvailableLanguage} locale - The expected locale.
+ * @param {AvailableLocale} locale - The expected locale.
  * @returns {CollectionEntry<C>} A normalized entry.
  */
 const prepareEntry = <C extends RoutableCollectionKey>(
   entry: CollectionEntry<C>,
-  locale: AvailableLanguage
+  locale: AvailableLocale
 ): CollectionEntry<C> => {
   if (entry.data.locale === locale) return entry;
 

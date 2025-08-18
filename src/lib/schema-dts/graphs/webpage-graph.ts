@@ -1,9 +1,9 @@
 import type { WebPage } from "schema-dts";
+import { useI18n } from "../../../services/i18n";
 import { useRouting } from "../../../services/routing";
 import type { Crumb, Page } from "../../../types/data";
-import { useI18n } from "../../../utils/i18n";
+import { WEBSITE_URL } from "../../../utils/constants";
 import { getImgSrc } from "../../../utils/images";
-import { getWebsiteUrl } from "../../../utils/url";
 import { getDurationFromReadingTime } from "../values/duration";
 import { getBreadcrumbListGraph } from "./breadcrumb-list-graph";
 
@@ -33,9 +33,8 @@ export const getWebPageGraph = async ({
 }: PageData): Promise<WebPage> => {
   const { translate } = useI18n(locale);
   const { routeById } = await useRouting();
-  const websiteUrl = getWebsiteUrl();
-  const websiteAuthor = `${websiteUrl}#author` as const;
-  const url = `${websiteUrl}${pageRoute}`;
+  const websiteAuthor = `${WEBSITE_URL}#author` as const;
+  const url = `${WEBSITE_URL}${pageRoute}`;
 
   return {
     "@id": url,
@@ -53,7 +52,7 @@ export const getWebPageGraph = async ({
     editor: { "@id": websiteAuthor },
     headline: title,
     isAccessibleForFree: true,
-    isPartOf: { "@id": `${websiteUrl}${routeById(`${locale}/home`)}` },
+    isPartOf: { "@id": `${WEBSITE_URL}${routeById(`${locale}/home`)}` },
     lastReviewed: meta.updatedOn.toISOString(),
     license: translate("license.url"),
     name: title,

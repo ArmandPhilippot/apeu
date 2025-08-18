@@ -1,7 +1,7 @@
 import { remark } from "remark";
 import { VFile } from "vfile";
 import { afterAll, describe, expect, it, vi } from "vitest";
-import { isObject } from "../../utils/type-checks";
+import { isObject } from "../../utils/type-guards";
 import { remarkWordsCount } from "./remark-words-count";
 
 vi.mock("../../utils/helpers/paths", async (importOriginal) => {

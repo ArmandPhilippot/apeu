@@ -1,7 +1,7 @@
 import type { Element as HastElement } from "hast";
 import type { ShikiTransformerContext } from "shiki";
 import { describe, expect, it } from "vitest";
-import { isString } from "../../../utils/type-checks";
+import { isString } from "../../../utils/type-guards";
 import { shikiDiffNotation } from "./diff-notation";
 
 /**

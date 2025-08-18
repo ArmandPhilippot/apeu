@@ -1,6 +1,3 @@
-import type { HTTPStatus } from "../types/data";
-import type { Theme } from "../types/tokens";
-
 export const API_ROUTES = {
   SEND_EMAIL: "/api/send-email",
 } as const;
@@ -39,6 +36,16 @@ export const CONFIG = {
   TIMEZONE: "Europe/Paris",
 } as const;
 
+export const LOCALE_DISPLAY_NAMES = {
+  en: "English",
+  fr: "Français",
+} as const satisfies Record<
+  (typeof CONFIG.LANGUAGES.AVAILABLE)[number],
+  string
+>;
+
+export const WEBSITE_URL = `${CONFIG.PROTOCOL}${CONFIG.HOST}` as const;
+
 /**
  * A partial list of country codes using the ISO 3166-1 alpha-2 codes.
  *
@@ -50,6 +57,13 @@ export const CONFIG = {
  * @see https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
  */
 export const COUNTRY_CODES = ["FR"] as const;
+
+export const HEADING_TAGS = ["h1", "h2", "h3", "h4", "h5", "h6"] as const;
+
+type HTTPStatus = {
+  CODE: number;
+  TEXT: string;
+};
 
 /**
  * The HTTP status codes.
@@ -114,9 +128,27 @@ export const STORIES_SUFFIX = "stories";
 export const STORIES_EXT = `${STORIES_SUFFIX}.astro`;
 
 /**
+ * The supported social media.
+ */
+export const SOCIAL_MEDIA = [
+  "bluesky",
+  "diaspora",
+  "email",
+  "facebook",
+  "github",
+  "gitlab",
+  "linkedin",
+  "mastodon",
+  "reddit",
+  "stackoverflow",
+  "whatsapp",
+  "x",
+] as const;
+
+/**
  * The available themes.
  */
-export const THEMES = ["auto", "dark", "light"] as const satisfies Theme[];
+export const THEMES = ["auto", "dark", "light"] as const;
 
 /**
  * The number of words read per minute depending on the lang.

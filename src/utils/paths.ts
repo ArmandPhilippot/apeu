@@ -1,8 +1,8 @@
 import { join, parse } from "node:path";
 import slash from "slash";
+import type { AvailableLocale } from "../types/tokens";
 import { CONFIG } from "./constants";
-import { isAvailableLanguage, type AvailableLanguage } from "./i18n";
-import { isString } from "./type-checks";
+import { isAvailableLocale, isString } from "./type-guards";
 
 /**
  * Retrieve a path with forward slashes from a list of paths to join.
@@ -41,9 +41,9 @@ export const removeExtFromPath = (filePath: string): string => {
  * if no locale was found.
  *
  * @param {string} path - The file path.
- * @returns {AvailableLanguage} The computed locale if valid or the default locale.
+ * @returns {AvailableLocale} The computed locale if valid or the default locale.
  */
-export const getLocaleFromPath = (path: string): AvailableLanguage => {
+export const getLocaleFromPath = (path: string): AvailableLocale => {
   // Get each `/[locale]/` directory encountered.
   const regex = new RegExp(
     `(?<=\\/)(?:${CONFIG.LANGUAGES.AVAILABLE.join("|")})(?=\\/|$)`,
@@ -52,7 +52,27 @@ export const getLocaleFromPath = (path: string): AvailableLanguage => {
   const result = path.match(regex);
   const currentLocale = result === null ? null : result[0];
 
-  return isString(currentLocale) && isAvailableLanguage(currentLocale)
+  return isString(currentLocale) && isAvailableLocale(currentLocale)
     ? currentLocale
     : CONFIG.LANGUAGES.DEFAULT;
+};
+
+/**
+ * Returns cumulative path steps for a given path.
+ *
+ * @example "/en/blog/posts" → ["/en", "/en/blog", "/en/blog/posts"]
+ * @param {string} path - The path to parse.
+ * @returns {string[]} An array of cumulative paths.
+ */
+export const getCumulativePaths = (path: string): string[] => {
+  const parts = path.split("/").filter((part) => part !== "");
+  const steps: string[] = [];
+
+  let current = "";
+  for (const part of parts) {
+    current += `/${part}`;
+    steps.push(current);
+  }
+
+  return steps;
 };

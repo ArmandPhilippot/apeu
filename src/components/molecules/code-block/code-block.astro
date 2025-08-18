@@ -3,10 +3,10 @@ import type { ComponentProps } from "astro/types";
 import { Code } from "astro:components";
 import { shikiTheme } from "../../../lib/shiki/theme";
 import { shikiDiffNotation } from "../../../lib/shiki/transformers/diff-notation";
-import { SHIKI_SETTING_KEY } from "../../../services/stores/settings";
-import { getCSSVars } from "../../../utils/attributes";
+import { useI18n } from "../../../services/i18n";
+import { SETTING_KEYS } from "../../../services/stores";
 import { InvalidPropsError } from "../../../utils/exceptions";
-import { useI18n } from "../../../utils/i18n";
+import { getCSSVars } from "../../../utils/html-attributes";
 import Figure from "../../atoms/figure/figure.astro";
 import CopyToClipboard from "../copy-to-clipboard/copy-to-clipboard.astro";
 import ThemeSetting from "../theme-setting/theme-setting.astro";
@@ -132,7 +132,7 @@ const cssVars = getCSSVars({
   <div class:list={["code-block-toolbar", "js-only"]}>
     <ThemeSetting
       label={translate("code.block.toolbar.theme.switch.label")}
-      setting={SHIKI_SETTING_KEY}
+      setting={SETTING_KEYS.SHIKI}
       variant="switch"
     />
     <CopyToClipboard

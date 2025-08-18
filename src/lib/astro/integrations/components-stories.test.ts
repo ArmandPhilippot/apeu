@@ -14,8 +14,10 @@ vi.mock("globby", () => {
   };
 });
 
-vi.mock("../../../utils/stories", () => {
+vi.mock("../../../utils/stories", async (importOriginal) => {
+  const mod = await importOriginal<typeof import("../../../utils/stories")>();
   return {
+    ...mod,
     getStoryRoute: vi.fn(),
   };
 });

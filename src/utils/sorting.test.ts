@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { sortByKey } from "./sort";
+import { sortByKey } from "./sorting";
 
 describe("sort-by-key", () => {
   it("can be used to sort an array of objects by Date", () => {

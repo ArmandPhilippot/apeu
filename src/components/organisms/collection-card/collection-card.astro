@@ -1,6 +1,7 @@
 ---
 import type { ComponentProps } from "astro/types";
 import { Icon } from "astro-icon/components";
+import { useI18n } from "../../../services/i18n";
 import type {
   Blog,
   BlogPostPreview,
@@ -15,9 +16,8 @@ import type {
 } from "../../../types/data";
 import type { HeadingLvl, IconName } from "../../../types/tokens";
 import type { AllKeysOf, WithOptionalKey } from "../../../types/utilities";
-import { useI18n } from "../../../utils/i18n";
 import { splitObject } from "../../../utils/objects";
-import { isString } from "../../../utils/type-checks";
+import { isString } from "../../../utils/type-guards";
 import Button from "../../atoms/button/button.astro";
 import DescriptionList from "../../atoms/description-list/description-list.astro";
 import Heading from "../../atoms/heading/heading.astro";

@@ -28,14 +28,7 @@ vi.mock("../../../utils/constants", async (importOriginal) => {
         DEFAULT: "en",
       },
     },
-  };
-});
-
-vi.mock("../../../utils/url", async (importOriginal) => {
-  const mod = await importOriginal<typeof import("../../../utils/url")>();
-  return {
-    ...mod,
-    getWebsiteUrl: () => "https://example.test",
+    WEBSITE_URL: "https://example.test",
   };
 });
 

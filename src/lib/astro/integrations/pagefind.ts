@@ -4,7 +4,7 @@ import { join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 import type { AstroIntegration } from "astro";
 import sirv from "sirv";
-import { isString } from "../../../utils/type-checks";
+import { isString } from "../../../utils/type-guards";
 
 // `sirv` will most likely only be used in this file so:
 // cSpell:ignore -- sirv

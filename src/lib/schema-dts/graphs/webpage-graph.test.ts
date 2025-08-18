@@ -35,14 +35,7 @@ vi.mock("../../../utils/constants", async (importOriginal) => {
         DEFAULT: "en",
       },
     },
-  };
-});
-
-vi.mock("../../../utils/url", async (importOriginal) => {
-  const mod = await importOriginal<typeof import("../../../utils/url")>();
-  return {
-    ...mod,
-    getWebsiteUrl: () => "https://example.test",
+    WEBSITE_URL: "https://example.test",
   };
 });
 
@@ -52,8 +45,8 @@ vi.mock("../../../utils/images", () => {
   };
 });
 
-vi.mock("../../../utils/i18n", async (importOriginal) => {
-  const mod = await importOriginal<typeof import("../../../utils/i18n")>();
+vi.mock("../../../services/i18n", async (importOriginal) => {
+  const mod = await importOriginal<typeof import("../../../services/i18n")>();
 
   return {
     ...mod,

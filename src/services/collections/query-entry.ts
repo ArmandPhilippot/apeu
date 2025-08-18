@@ -6,7 +6,7 @@ import {
 import { getEntriesIndex } from "../../lib/astro/collections/indexes";
 import { isInCollection } from "../../lib/astro/collections/type-guards";
 import type { QueryMode } from "../../types/data";
-import type { AvailableLanguage } from "../../utils/i18n";
+import type { AvailableLocale } from "../../types/tokens";
 import { updateEntryTagsForLocale } from "./utils";
 
 type QueryEntryOptions<
@@ -16,7 +16,7 @@ type QueryEntryOptions<
   collection: C;
   format?: F;
   id: CollectionEntry<C>["id"];
-  locale?: AvailableLanguage | undefined;
+  locale?: AvailableLocale | undefined;
 };
 
 export type QueriedEntry<

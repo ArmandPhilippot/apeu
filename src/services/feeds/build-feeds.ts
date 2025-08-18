@@ -16,12 +16,12 @@ import {
 import sanitize, {
   type SanitizeOptions,
 } from "ultrahtml/transformers/sanitize";
-import { queryCollection } from "../services/collections";
-import type { FeedCompatibleEntry } from "../types/data";
-import { UnsupportedLocaleError } from "./exceptions";
-import { isAvailableLanguage, useI18n, type AvailableLanguage } from "./i18n";
-import { isString } from "./type-checks";
-import { getWebsiteUrl } from "./url";
+import type { FeedCompatibleEntry } from "../../types/data";
+import type { AvailableLocale } from "../../types/tokens";
+import { WEBSITE_URL } from "../../utils/constants";
+import { UnsupportedLocaleError } from "../../utils/exceptions";
+import { isAvailableLocale, isString } from "../../utils/type-guards";
+import { useI18n } from "../i18n";
 
 /* eslint-disable no-param-reassign -- The file do a lot of node transformations to create the feed content, so it's expected that parameters will be reassigned. */
 
@@ -58,14 +58,12 @@ const clearNode = (node: AstNode): void => {
   node.value = "";
 };
 
-const createUrlTransformer = () => {
-  const websiteUrl = getWebsiteUrl();
-
-  return (path: string): string =>
+const createUrlTransformer =
+  () =>
+  (path: string): string =>
     path.startsWith("/") || path.startsWith("#")
-      ? `${websiteUrl}${path}`
+      ? `${WEBSITE_URL}${path}`
       : path;
-};
 
 const transformCalloutToDiv = (node: ElementNode): void => {
   node.name = "div";
@@ -135,7 +133,7 @@ const renderEntryContent = async (
 
 const getItemCategoryFromCollection = (
   collection: CollectionWithFeed,
-  locale: AvailableLanguage
+  locale: AvailableLocale
 ) => {
   const { translate } = useI18n(locale);
   const categories = {
@@ -171,7 +169,7 @@ const getItemCategories = (entry: FeedCompatibleEntry) => {
 
 const getItemDescription = (
   entry: FeedCompatibleEntry,
-  locale: AvailableLanguage
+  locale: AvailableLocale
 ) => {
   if (entry.collection === "blogroll") return entry.description[locale];
 
@@ -179,7 +177,7 @@ const getItemDescription = (
 };
 
 const getRSSItem =
-  (locale: AvailableLanguage) =>
+  (locale: AvailableLocale) =>
   async (entry: FeedCompatibleEntry): Promise<RSSFeedItem> => {
     const content = await renderEntryContent(entry);
 
@@ -197,12 +195,12 @@ const getRSSItem =
  * Convert the given entries to valid RSS items.
  *
  * @param {FeedCompatibleEntry[]} entries - The collections entries.
- * @param {AvailableLanguage} locale - The feed locale.
+ * @param {AvailableLocale} locale - The feed locale.
  * @returns {Promise<RSSFeedItem[]>} The feed items.
  */
 export const getRSSItemsFromEntries = async (
   entries: FeedCompatibleEntry[],
-  locale: AvailableLanguage
+  locale: AvailableLocale
 ): Promise<RSSFeedItem[]> => {
   const rssItems: (RSSFeedItem | null)[] = await Promise.all(
     entries.map(getRSSItem(locale))
@@ -214,65 +212,17 @@ export const getRSSItemsFromEntries = async (
 /**
  * Retrieve the language to display between `<language>` tag in your feed.
  *
- * @param {AvailableLanguage} locale - The current locale.
+ * @param {AvailableLocale} locale - The current locale.
  * @returns {string} The feeds language.
  * @throws {UnsupportedLocaleError} When the given locale is not supported.
  */
 export const getFeedLanguageFromLocale = (locale: string): string => {
-  if (!isAvailableLanguage(locale)) throw new UnsupportedLocaleError(locale);
+  if (!isAvailableLocale(locale)) throw new UnsupportedLocaleError(locale);
 
   const availableLocales = {
     en: "en-us",
     fr: "fr-fr",
-  } as const satisfies Record<AvailableLanguage, string>;
+  } as const satisfies Record<AvailableLocale, string>;
 
   return availableLocales[locale];
-};
-
-type FeedLink = { label: string; slug: string };
-
-/**
- * Retrieve the feeds data for each collection having a feed.
- *
- * @param {AvailableLanguage} language - The feed language.
- * @returns {Promise<FeedLink[]>} The label and slug for each feed.
- */
-export const getCollectionsFeeds = async (
-  language: AvailableLanguage
-): Promise<FeedLink[]> => {
-  const { locale, translate } = useI18n(language);
-  const pagesWithFeed = [
-    `${locale}/blog/categories`,
-    `${locale}/blog/posts`,
-    `${locale}/blogroll`,
-    `${locale}/bookmarks`,
-    `${locale}/guides`,
-    `${locale}/notes`,
-    `${locale}/projects`,
-    `${locale}/tags`,
-  ];
-  const { entries: entriesWithStaticFeed } = await queryCollection(
-    ["index.pages", "pages"],
-    {
-      format: "preview",
-      orderBy: { key: "title", order: "ASC" },
-      where: { ids: pagesWithFeed },
-    }
-  );
-  const { entries: entriesWithDynamicFeed } = await queryCollection(
-    ["blog.categories", "tags"],
-    {
-      format: "preview",
-      orderBy: { key: "title", order: "ASC" },
-      where: { locale },
-    }
-  );
-  const entriesWithFeed = [...entriesWithStaticFeed, ...entriesWithDynamicFeed];
-
-  return entriesWithFeed.map((entry) => {
-    return {
-      label: translate("feed.link.title", { title: entry.title }),
-      slug: `${entry.route}/feed.xml`,
-    };
-  });
 };

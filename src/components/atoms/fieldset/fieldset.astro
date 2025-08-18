@@ -1,8 +1,11 @@
 ---
 import type { HTMLAttributes } from "astro/types";
-import type { Gap } from "../../../types/css";
-import { getCSSVars, getSpacingVarFromGap } from "../../../utils/attributes";
+import type { Gap } from "../../../types/tokens";
 import { InvalidPropsError, MissingSlotError } from "../../../utils/exceptions";
+import {
+  getCSSVars,
+  getSpacingVarFromGap,
+} from "../../../utils/html-attributes";
 
 type Props = HTMLAttributes<"fieldset"> & {
   gap?: Gap | null | undefined;

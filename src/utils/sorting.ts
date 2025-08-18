@@ -1,5 +1,5 @@
 import type { SharedShape } from "../types/utilities";
-import { isString } from "./type-checks";
+import { isString } from "./type-guards";
 
 /**
  * Method to compare two Date. This should be used in `Array.sort()`.

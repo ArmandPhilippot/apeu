@@ -13,9 +13,9 @@ import type {
   ListingPageCollection,
   QueriedCollectionEntry,
 } from "../../services/collections";
+import { useI18n } from "../../services/i18n";
+import { renderPaginationLink } from "../../services/pagination";
 import type { WithOptionalKey } from "../../types/utilities";
-import { useI18n } from "../../utils/i18n";
-import { renderPaginationLink } from "../../utils/pagination";
 
 type Props = Partial<ComponentProps<typeof PageLayout>> & {
   entry: EnrichedPage<ListingPageCollection, "preview">;

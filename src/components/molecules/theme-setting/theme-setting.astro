@@ -1,15 +1,13 @@
 ---
 import type { JSX } from "astro/jsx-runtime";
 import type { ComponentProps } from "astro/types";
+import { useI18n } from "../../../services/i18n";
 import {
-  SHIKI_DEFAULT,
-  SHIKI_SETTING_KEY,
-  THEME_DEFAULT,
+  getSettingDefault,
+  resolveCurrentColorScheme,
   type Settings,
-} from "../../../services/stores/settings";
+} from "../../../services/stores";
 import type { Theme } from "../../../types/tokens";
-import { useI18n } from "../../../utils/i18n";
-import { resolveCurrentColorScheme } from "../../../utils/themes";
 import Switch from "../switch/switch.astro";
 import Toggle from "../toggle/toggle.astro";
 
@@ -77,8 +75,7 @@ const toggleThemes = [
     value: "light" satisfies Theme,
   },
 ] satisfies ComponentProps<typeof Toggle>["items"];
-const defaultValue =
-  setting === SHIKI_SETTING_KEY ? SHIKI_DEFAULT : THEME_DEFAULT;
+const defaultValue = getSettingDefault(setting);
 ---
 
 <ap-theme-setting
@@ -119,20 +116,17 @@ const defaultValue =
 <script>
   import {
     isValidSettingsKey,
-    settings,
-    SHIKI_SETTING_KEY,
-    THEME_SETTING_KEY,
-    type Settings,
-  } from "../../../services/stores/settings";
-  import type { Theme } from "../../../types/tokens";
-  import {
-    isValidTheme,
     resolveCurrentColorScheme,
-  } from "../../../utils/themes";
+    SETTING_KEYS,
+    settings,
+    type Settings,
+  } from "../../../services/stores";
+  import type { Theme } from "../../../types/tokens";
+  import { isValidTheme } from "../../../utils/type-guards";
 
   class APThemeSetting extends HTMLElement {
     #isSwitch = false;
-    #settingKey: keyof Settings = THEME_SETTING_KEY;
+    #settingKey: keyof Settings = SETTING_KEYS.THEME;
     #switchBtn: HTMLButtonElement | null = null;
     #unsubscribe: (() => void) | null = null;
 
@@ -184,7 +178,7 @@ const defaultValue =
 
       const newTheme = newSettings[this.#settingKey];
       const themeToResolve =
-        this.#settingKey === SHIKI_SETTING_KEY && newTheme === "auto"
+        this.#settingKey === SETTING_KEYS.SHIKI && newTheme === "auto"
           ? newSettings.theme
           : newTheme;
       const theme = resolveCurrentColorScheme(themeToResolve);

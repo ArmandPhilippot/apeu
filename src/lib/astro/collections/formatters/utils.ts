@@ -1,30 +1,101 @@
 import type { CollectionKey } from "astro:content";
 import type {
   AltLanguage,
+  ReadingTime,
   RemarkPluginFrontmatterMeta,
   TaxonomyLink,
 } from "../../../../types/data";
 import type { IndexedEntry } from "../../../../types/routing";
+import type { AvailableLocale } from "../../../../types/tokens";
 import type { CollectionReference } from "../../../../types/utilities";
+import { WORDS_PER_MINUTE } from "../../../../utils/constants";
+import { toUpperCase } from "../../../../utils/strings";
 import {
-  isAvailableLanguage,
-  type AvailableLanguage,
-} from "../../../../utils/i18n";
-import { getReadingTime } from "../../../../utils/reading-time";
-import { isNumber, isString } from "../../../../utils/type-checks";
+  isAvailableLocale,
+  isNumber,
+  isString,
+} from "../../../../utils/type-guards";
 import type { EntryByIdIndex } from "../indexes";
 import { isInCollection, isRoutableIndexedEntry } from "../type-guards";
+
+/**
+ * Retrieve the reading time rounded in minutes and seconds.
+ *
+ * @param {number} wordsCount - The number of words.
+ * @param {number} wordsPerMinute - The reading fluency.
+ * @returns {{minutes: number, seconds: number}} The reading time as object.
+ */
+const getReadingTimeInMinutesAndSeconds = (
+  wordsCount: number,
+  wordsPerMinute: number
+): { minutes: number; seconds: number } => {
+  const oneMinuteInSeconds = 60;
+  const wordsPerSecond = wordsPerMinute / oneMinuteInSeconds;
+  const estimatedTimeInSeconds = wordsCount / wordsPerSecond;
+  const estimatedTimeInMinutes = Math.floor(
+    estimatedTimeInSeconds / oneMinuteInSeconds
+  );
+
+  return {
+    minutes: estimatedTimeInMinutes,
+    seconds: Math.round(
+      estimatedTimeInSeconds - estimatedTimeInMinutes * oneMinuteInSeconds
+    ),
+  };
+};
+
+const twoDecimals = 2;
+
+/**
+ * Retrieve the reading time rounded in minutes.
+ *
+ * @param {number} wordsCount - The number of words.
+ * @param {number} wordsPerMinute - The reading fluency.
+ * @returns {number} A number representing the reading time in minutes.
+ */
+const getReadingTimeInMinutes = (
+  wordsCount: number,
+  wordsPerMinute: number
+): number =>
+  Math.round(
+    Number.parseFloat((wordsCount / wordsPerMinute).toFixed(twoDecimals))
+  );
+
+/**
+ * Retrieve the reading time depending on a words count.
+ *
+ * @template T - Should the seconds be included?
+ * @param {number} wordsCount - The number of words.
+ * @param {AvailableLocale} locale - The current language.
+ * @returns {ReadingTime} A detailed reading time object.
+ */
+const getReadingTime = (
+  wordsCount: number,
+  locale: AvailableLocale
+): ReadingTime => {
+  const wordsPerMinute = WORDS_PER_MINUTE[toUpperCase(locale)];
+
+  return {
+    inMinutes: getReadingTimeInMinutes(wordsCount, wordsPerMinute),
+    inMinutesAndSeconds: getReadingTimeInMinutesAndSeconds(
+      wordsCount,
+      wordsPerMinute
+    ),
+    wordsCount,
+    wordsPerMinute,
+  };
+};
 
 /**
  * Retrieve the meta from Astro's remarkPluginFrontmatter.
  *
  * @param {Record<string, unknown>} remarkPluginFrontmatter - The Markdown frontmatter.
- * @param {AvailableLanguage} locale - The current locale.
+ * @param {AvailableLocale} locale - The current locale.
  * @returns {RemarkPluginFrontmatterMeta} The meta stored in the frontmatter.
  */
 export const getMetaFromRemarkPluginFrontmatter = (
   remarkPluginFrontmatter: Record<string, unknown>,
-  locale: AvailableLanguage
+  locale: AvailableLocale
 ): RemarkPluginFrontmatterMeta => {
   const readingTime = isNumber(remarkPluginFrontmatter.wordsCount)
     ? getReadingTime(remarkPluginFrontmatter.wordsCount, locale)
@@ -129,7 +200,7 @@ const resolveTranslationEntry =
     kv: [string, CollectionReference<C>]
   ) => AltLanguage | null) =>
   ([lang, reference]): AltLanguage | null => {
-    if (!isAvailableLanguage(lang)) return null;
+    if (!isAvailableLocale(lang)) return null;
 
     const translation = indexById.get(reference.id);
     const route =
@@ -140,7 +211,7 @@ const resolveTranslationEntry =
   };
 
 type Translations<C extends CollectionKey> = Partial<
-  Record<AvailableLanguage, CollectionReference<C>>
+  Record<AvailableLocale, CollectionReference<C>>
 >;
 
 /**

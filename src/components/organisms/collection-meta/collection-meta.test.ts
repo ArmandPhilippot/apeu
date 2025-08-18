@@ -3,8 +3,10 @@ import type { ComponentProps } from "astro/types";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import CollectionMeta from "./collection-meta.astro";
 
-vi.mock("../../../utils/i18n", () => {
+vi.mock("../../../services/i18n", async (importOriginal) => {
+  const mod = await importOriginal<typeof import("../../../services/i18n")>();
   return {
+    ...mod,
     useI18n: vi.fn(() => {
       return {
         translate: (key: string) => `translated_${key}`,

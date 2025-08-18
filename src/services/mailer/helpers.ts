@@ -1,5 +1,5 @@
 import type { z } from "astro:schema";
-import { isKeyExistIn, isObject, isString } from "../../utils/type-checks";
+import { isKeyExistIn, isObject, isString } from "../../utils/type-guards";
 import type { mailData } from "./schema";
 
 export type MailSuccess = {

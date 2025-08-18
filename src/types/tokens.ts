@@ -1,6 +1,38 @@
-import type { CALLOUT_TYPES } from "../utils/constants";
+import type {
+  CALLOUT_TYPES,
+  CONFIG,
+  COUNTRY_CODES,
+  HEADING_TAGS,
+  SOCIAL_MEDIA,
+  THEMES,
+} from "../utils/constants";
+
+export type AvailableLocale = (typeof CONFIG.LANGUAGES.AVAILABLE)[number];
 
 export type CalloutType = (typeof CALLOUT_TYPES)[number];
+
+export type CSSAlignment =
+  | "baseline"
+  | "center"
+  | "end"
+  | "first baseline"
+  | "last baseline"
+  | "left"
+  | "normal"
+  | "right"
+  | "start"
+  | "space-around"
+  | "space-between"
+  | "space-evenly"
+  | "stretch";
+
+type CSSDecompoundGap = {
+  row?: Spacing | null | undefined;
+  col?: Spacing | null | undefined;
+};
+export type Gap = CSSDecompoundGap | Spacing;
+
+export type CountryCode = (typeof COUNTRY_CODES)[number];
 
 export type Direction = "bottom" | "left" | "right" | "top";
 
@@ -9,7 +41,7 @@ export type Direction = "bottom" | "left" | "right" | "top";
  */
 export type Elevation = "raised" | "elevated" | "floating";
 
-export type HeadingLvl = "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
+export type HeadingLvl = (typeof HEADING_TAGS)[number];
 
 /**
  * The filenames available in `src/assets/icons` directory.
@@ -44,19 +76,7 @@ export type IconName =
 
 export type Order = "ASC" | "DESC";
 
-export type SocialMedium =
-  | "bluesky"
-  | "diaspora"
-  | "email"
-  | "facebook"
-  | "github"
-  | "gitlab"
-  | "linkedin"
-  | "mastodon"
-  | "reddit"
-  | "stackoverflow"
-  | "whatsapp"
-  | "x";
+export type SocialMedium = (typeof SOCIAL_MEDIA)[number];
 
 /**
  * Those tokens should match the ones defined in `spacing_levels` in
@@ -73,4 +93,4 @@ export type Spacing =
   | "xl"
   | "2xl";
 
-export type Theme = "auto" | "dark" | "light";
+export type Theme = (typeof THEMES)[number];

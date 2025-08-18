@@ -1,10 +1,10 @@
 import type { APIContext, APIRoute } from "astro";
 import { zodErrorMap } from "../../lib/zod/error-map";
+import { useI18n } from "../../services/i18n";
 import type { MailError, MailSuccess } from "../../services/mailer/helpers";
 import { sendMail } from "../../services/mailer/mailer";
 import { mailData } from "../../services/mailer/schema";
 import { HTTP_STATUS } from "../../utils/constants";
-import { useI18n } from "../../utils/i18n";
 
 export const prerender = false;
 

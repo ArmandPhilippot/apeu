@@ -6,7 +6,7 @@ import {
   setupCollectionMocks,
 } from "../../../tests/helpers/astro-content";
 import { clearEntriesIndexCache } from "../../lib/astro/collections/indexes";
-import type { AvailableLanguage } from "../../utils/i18n";
+import type { AvailableLocale } from "../../types/tokens";
 import {
   addRelatedItemsToPage,
   getDisplayedCollectionName,
@@ -42,7 +42,7 @@ type SetupTestWithMockEntryConfig = {
   pageQuery: {
     collection: CollectionKey;
     id: string;
-    locale?: AvailableLanguage;
+    locale?: AvailableLocale;
   };
 };
 
@@ -180,7 +180,7 @@ type SetupTestWithMockEntriesConfig<T extends CollectionKey> = {
   pageQuery: {
     collection: T;
     id: string;
-    locale?: AvailableLanguage;
+    locale?: AvailableLocale;
   };
 };
 

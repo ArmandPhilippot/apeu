@@ -7,16 +7,15 @@ import {
 import { getEntriesIndex } from "../../lib/astro/collections/indexes";
 import type { QueryMode } from "../../types/data";
 import type { IndexedEntry } from "../../types/routing";
-import type { Order } from "../../types/tokens";
+import type { AvailableLocale, Order } from "../../types/tokens";
 import type {
   HasNestedKey,
   KeyOfType,
   LooseAutocomplete,
 } from "../../types/utilities";
-import type { AvailableLanguage } from "../../utils/i18n";
 import { hasCommonKey } from "../../utils/objects";
-import { sortByKey } from "../../utils/sort";
-import { isObject, isString } from "../../utils/type-checks";
+import { sortByKey } from "../../utils/sorting";
+import { isObject, isString } from "../../utils/type-guards";
 import { updateEntriesTagsForLocale } from "./utils";
 
 type QueryCollectionOrderBy<C extends CollectionKey> = {
@@ -50,7 +49,7 @@ type QueryCollectionWhere = {
   /**
    * Retrieve only entries in the given locale.
    */
-  locale: LooseAutocomplete<AvailableLanguage>;
+  locale: LooseAutocomplete<AvailableLocale>;
   /**
    * Retrieve only entries attached to the given tags.
    */

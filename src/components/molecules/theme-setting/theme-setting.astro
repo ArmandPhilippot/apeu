@@ -3,10 +3,8 @@ import type { JSX } from "astro/jsx-runtime";
 import type { ComponentProps } from "astro/types";
 import { useI18n } from "../../../services/i18n";
 import {
+  getSettingDefault,
   resolveCurrentColorScheme,
-  SHIKI_DEFAULT,
-  SHIKI_SETTING_KEY,
-  THEME_DEFAULT,
   type Settings,
 } from "../../../services/stores";
 import type { Theme } from "../../../types/tokens";
@@ -77,8 +75,7 @@ const toggleThemes = [
     value: "light" satisfies Theme,
   },
 ] satisfies ComponentProps<typeof Toggle>["items"];
-const defaultValue =
-  setting === SHIKI_SETTING_KEY ? SHIKI_DEFAULT : THEME_DEFAULT;
+const defaultValue = getSettingDefault(setting);
 ---
 
 <ap-theme-setting
@@ -119,18 +116,17 @@ const defaultValue =
 <script>
   import {
     isValidSettingsKey,
-    isValidTheme,
     resolveCurrentColorScheme,
+    SETTING_KEYS,
     settings,
-    SHIKI_SETTING_KEY,
-    THEME_SETTING_KEY,
     type Settings,
   } from "../../../services/stores";
   import type { Theme } from "../../../types/tokens";
+  import { isValidTheme } from "../../../utils/type-guards";
 
   class APThemeSetting extends HTMLElement {
     #isSwitch = false;
-    #settingKey: keyof Settings = THEME_SETTING_KEY;
+    #settingKey: keyof Settings = SETTING_KEYS.THEME;
     #switchBtn: HTMLButtonElement | null = null;
     #unsubscribe: (() => void) | null = null;
 
@@ -182,7 +178,7 @@ const defaultValue =
 
       const newTheme = newSettings[this.#settingKey];
       const themeToResolve =
-        this.#settingKey === SHIKI_SETTING_KEY && newTheme === "auto"
+        this.#settingKey === SETTING_KEYS.SHIKI && newTheme === "auto"
           ? newSettings.theme
           : newTheme;
       const theme = resolveCurrentColorScheme(themeToResolve);

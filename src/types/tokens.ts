@@ -2,6 +2,7 @@ import type {
   CALLOUT_TYPES,
   CONFIG,
   COUNTRY_CODES,
+  HEADING_TAGS,
   SOCIAL_MEDIA,
   THEMES,
 } from "../utils/constants";
@@ -40,7 +41,7 @@ export type Direction = "bottom" | "left" | "right" | "top";
  */
 export type Elevation = "raised" | "elevated" | "floating";
 
-export type HeadingLvl = "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
+export type HeadingLvl = (typeof HEADING_TAGS)[number];
 
 /**
  * The filenames available in `src/assets/icons` directory.

@@ -36,6 +36,14 @@ export const CONFIG = {
   TIMEZONE: "Europe/Paris",
 } as const;
 
+export const LOCALE_DISPLAY_NAMES = {
+  en: "English",
+  fr: "Français",
+} as const satisfies Record<
+  (typeof CONFIG.LANGUAGES.AVAILABLE)[number],
+  string
+>;
+
 export const WEBSITE_URL = `${CONFIG.PROTOCOL}${CONFIG.HOST}` as const;
 
 /**
@@ -49,6 +57,8 @@ export const WEBSITE_URL = `${CONFIG.PROTOCOL}${CONFIG.HOST}` as const;
  * @see https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
  */
 export const COUNTRY_CODES = ["FR"] as const;
+
+export const HEADING_TAGS = ["h1", "h2", "h3", "h4", "h5", "h6"] as const;
 
 type HTTPStatus = {
   CODE: number;

@@ -3,6 +3,7 @@ import type {
   CalloutType,
   CountryCode,
   SocialMedium,
+  Theme,
 } from "../types/tokens";
 import {
   CALLOUT_TYPES,
@@ -10,6 +11,7 @@ import {
   COUNTRY_CODES,
   LANGUAGE_CODES,
   SOCIAL_MEDIA,
+  THEMES,
 } from "./constants";
 
 /**
@@ -128,3 +130,12 @@ export const isValidSocialMedium = (
 
   return (SOCIAL_MEDIA as readonly string[]).includes(medium);
 };
+
+/**
+ * Check if the given value is a valid theme.
+ *
+ * @param {unknown} value - A value to validate.
+ * @returns {boolean} True if the value is a valid theme.
+ */
+export const isValidTheme = (value: unknown): value is Theme =>
+  typeof value === "string" && (THEMES as readonly string[]).includes(value);

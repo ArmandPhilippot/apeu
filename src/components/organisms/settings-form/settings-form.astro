@@ -1,8 +1,9 @@
 ---
 import type { HTMLAttributes } from "astro/types";
-import { availableNamedLanguages, useI18n } from "../../../services/i18n";
+import { useI18n } from "../../../services/i18n";
 import { useRouting } from "../../../services/routing";
 import type { AltLanguage } from "../../../types/data";
+import { LOCALE_DISPLAY_NAMES } from "../../../utils/constants";
 import LanguagePicker from "../../molecules/language-picker/language-picker.astro";
 import ThemeSetting from "../../molecules/theme-setting/theme-setting.astro";
 
@@ -14,7 +15,7 @@ const { altLanguages, class: className, id, ...attrs } = Astro.props;
 const { routeById } = await useRouting();
 const { locale, translate } = useI18n(Astro.currentLocale);
 const languages = Object.fromEntries(
-  Object.entries(availableNamedLanguages).map(([lang, langName]) => [
+  Object.entries(LOCALE_DISPLAY_NAMES).map(([lang, langName]) => [
     lang,
     {
       name: langName,

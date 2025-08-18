@@ -44,10 +44,6 @@ vi.mock("../../../services/i18n", async (importOriginal) => {
 
   return {
     ...mod,
-    availableNamedLanguages: {
-      en: "English",
-      fr: "Français",
-    },
     useI18n: vi.fn(() => {
       return {
         locale: "en",

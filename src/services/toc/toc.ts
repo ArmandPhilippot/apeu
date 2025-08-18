@@ -1,7 +1,6 @@
 import type { MarkdownHeading } from "astro";
 import type { HeadingNode } from "../../types/data";
-
-const headingTags = ["h1", "h2", "h3", "h4", "h5", "h6"] as const;
+import { HEADING_TAGS } from "../../utils/constants";
 
 type HeadingNodeWithParentIndex = HeadingNode & {
   parentIndex: number;
@@ -16,10 +15,13 @@ type HeadingNodeWithParentIndex = HeadingNode & {
 const addParentIndexToHeadings = (
   headings: MarkdownHeading[]
 ): HeadingNodeWithParentIndex[] => {
-  const depthLastIndexes = Array.from({ length: headingTags.length }, () => -1);
+  const depthLastIndexes = Array.from(
+    { length: HEADING_TAGS.length },
+    () => -1
+  );
 
   return [...headings].map((heading, index): HeadingNodeWithParentIndex => {
-    const depth = (headingTags as readonly string[]).indexOf(
+    const depth = (HEADING_TAGS as readonly string[]).indexOf(
       `h${heading.depth}`
     );
     const parentDepthIndexes = depthLastIndexes.slice(0, depth);

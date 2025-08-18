@@ -1,6 +1,7 @@
 import { persistentMap } from "@nanostores/persistent";
 import { atom, computed } from "nanostores";
 import type { Theme } from "../../types/tokens";
+import { isString } from "../../utils/type-guards";
 import { getPreferredColorScheme, resolveCurrentColorScheme } from "./themes";
 
 export type Settings = {
@@ -8,19 +9,30 @@ export type Settings = {
   theme: Theme;
 };
 
-export const SHIKI_DEFAULT = "auto" as const satisfies Theme;
-export const THEME_DEFAULT = "auto" as const satisfies Theme;
+export const SETTING_KEYS = {
+  SHIKI: "shiki",
+  THEME: "theme",
+} as const;
 
-/* The value should match the key used for shiki in `settings`. */
-export const SHIKI_SETTING_KEY = "shiki";
-/* The value should match the key used for theme in `settings`. */
-export const THEME_SETTING_KEY = "theme";
+export const SETTING_DEFAULTS = {
+  [SETTING_KEYS.SHIKI]: "auto",
+  [SETTING_KEYS.THEME]: "auto",
+} as const;
+
+/**
+ * Retrieve the default value for the given setting key.
+ *
+ * @param {keyof Settings} key - The settings key.
+ * @returns {Theme} The default value.
+ */
+export const getSettingDefault = (key: keyof Settings): Theme =>
+  SETTING_DEFAULTS[key];
 
 export const settings = persistentMap<Settings>(
   "apeu-settings:",
   {
-    shiki: SHIKI_DEFAULT,
-    theme: THEME_DEFAULT,
+    [SETTING_KEYS.SHIKI]: SETTING_DEFAULTS[SETTING_KEYS.SHIKI],
+    [SETTING_KEYS.THEME]: SETTING_DEFAULTS[SETTING_KEYS.THEME],
   },
   {
     encode: JSON.stringify,
@@ -35,14 +47,8 @@ export const settings = persistentMap<Settings>(
  * @param {unknown} value - Any value.
  * @returns {boolean} True if the value is a valid key.
  */
-export const isValidSettingsKey = (value: unknown): value is keyof Settings => {
-  const validKeys: string[] = [
-    SHIKI_SETTING_KEY,
-    THEME_SETTING_KEY,
-  ] satisfies (keyof Settings)[];
-
-  return typeof value === "string" && validKeys.includes(value);
-};
+export const isValidSettingsKey = (value: unknown): value is keyof Settings =>
+  isString(value) && Object.values<string>(SETTING_KEYS).includes(value);
 
 /**
  * Atom that tracks system color scheme preference.

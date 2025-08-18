@@ -7,13 +7,13 @@ type FeedLink = { label: string; slug: string };
 /**
  * Retrieve the feeds data for each collection having a feed.
  *
- * @param {AvailableLanguage} language - The feed language.
+ * @param {AvailableLanguage} locale - The feed locale.
  * @returns {Promise<FeedLink[]>} The label and slug for each feed.
  */
 export const getCollectionsFeeds = async (
-  language: AvailableLanguage
+  locale: AvailableLanguage
 ): Promise<FeedLink[]> => {
-  const { locale, translate } = useI18n(language);
+  const { translate } = useI18n(locale);
   const pagesWithFeed = [
     `${locale}/blog/categories`,
     `${locale}/blog/posts`,

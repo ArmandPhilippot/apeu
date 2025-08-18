@@ -36,14 +36,7 @@ vi.mock("../../../utils/constants", async (importOriginal) => {
         AVAILABLE: ["en"],
       },
     },
-  };
-});
-
-vi.mock("../../../services/i18n", async (importOriginal) => {
-  const mod = await importOriginal<typeof import("../../../services/i18n")>();
-  return {
-    ...mod,
-    availableNamedLanguages: {
+    LOCALE_DISPLAY_NAMES: {
       en: "English",
     },
   };

@@ -3,9 +3,9 @@ import { useI18n } from "../../../services/i18n";
 import { useRouting } from "../../../services/routing";
 import type { BlogPost, Guide, Img, Note, Project } from "../../../types/data";
 import type { Blend, RequireOnly } from "../../../types/utilities";
+import { WEBSITE_URL } from "../../../utils/constants";
 import { getImgSrc } from "../../../utils/images";
 import { isString } from "../../../utils/type-checks";
-import { getWebsiteUrl } from "../../../utils/url";
 import { getDurationFromReadingTime } from "../values/duration";
 import { getLanguageGraph } from "./language-graph";
 import { getPersonGraph } from "./person-graph";
@@ -41,9 +41,8 @@ export const getArticleGraph = async ({
 }: ArticleData): Promise<Article | BlogPosting> => {
   const { translate } = useI18n(locale);
   const { routeById } = await useRouting();
-  const websiteUrl = getWebsiteUrl();
-  const websiteAuthor = `${websiteUrl}#author` as const;
-  const url = `${websiteUrl}${articleRoute}`;
+  const websiteAuthor = `${WEBSITE_URL}#author` as const;
+  const url = `${WEBSITE_URL}${articleRoute}`;
   const coverUrl =
     cover === null || cover === undefined ? null : await getImgSrc(cover);
   const isBlogPost = collection === "blog.posts";
@@ -72,7 +71,7 @@ export const getArticleGraph = async ({
     inLanguage: getLanguageGraph(locale, locale),
     isAccessibleForFree: true,
     ...(isBlogPost && {
-      isPartOf: { "@id": `${websiteUrl}${routeById(`${locale}/blog`)}#blog` },
+      isPartOf: { "@id": `${WEBSITE_URL}${routeById(`${locale}/blog`)}#blog` },
     }),
     ...(meta.tags !== null &&
       meta.tags !== undefined &&

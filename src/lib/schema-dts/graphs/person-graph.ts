@@ -1,8 +1,8 @@
 import type { Person } from "schema-dts";
 import type { Author } from "../../../types/data";
 import type { AvailableLanguage } from "../../../types/tokens";
+import { WEBSITE_URL } from "../../../utils/constants";
 import { getImgSrc } from "../../../utils/images";
-import { getWebsiteUrl } from "../../../utils/url";
 import { getCountryGraph } from "./country-graph";
 import { getLanguageGraph } from "./language-graph";
 
@@ -17,8 +17,7 @@ export const getPersonGraph = async (
   author: Partial<Author> & Pick<Author, "name">,
   locale: AvailableLanguage
 ): Promise<Person> => {
-  const websiteUrl = getWebsiteUrl();
-  const websiteAuthor = `${websiteUrl}#author` as const;
+  const websiteAuthor = `${WEBSITE_URL}#author` as const;
 
   return {
     "@type": "Person",

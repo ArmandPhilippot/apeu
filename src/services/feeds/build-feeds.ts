@@ -18,9 +18,9 @@ import sanitize, {
 } from "ultrahtml/transformers/sanitize";
 import type { FeedCompatibleEntry } from "../../types/data";
 import type { AvailableLanguage } from "../../types/tokens";
+import { WEBSITE_URL } from "../../utils/constants";
 import { UnsupportedLocaleError } from "../../utils/exceptions";
 import { isString } from "../../utils/type-checks";
-import { getWebsiteUrl } from "../../utils/url";
 import { isAvailableLanguage, useI18n } from "../i18n";
 
 /* eslint-disable no-param-reassign -- The file do a lot of node transformations to create the feed content, so it's expected that parameters will be reassigned. */
@@ -58,14 +58,12 @@ const clearNode = (node: AstNode): void => {
   node.value = "";
 };
 
-const createUrlTransformer = () => {
-  const websiteUrl = getWebsiteUrl();
-
-  return (path: string): string =>
+const createUrlTransformer =
+  () =>
+  (path: string): string =>
     path.startsWith("/") || path.startsWith("#")
-      ? `${websiteUrl}${path}`
+      ? `${WEBSITE_URL}${path}`
       : path;
-};
 
 const transformCalloutToDiv = (node: ElementNode): void => {
   node.name = "div";

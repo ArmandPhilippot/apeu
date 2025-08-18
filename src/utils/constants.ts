@@ -38,6 +38,8 @@ export const CONFIG = {
   TIMEZONE: "Europe/Paris",
 } as const;
 
+export const WEBSITE_URL = `${CONFIG.PROTOCOL}${CONFIG.HOST}` as const;
+
 /**
  * A partial list of country codes using the ISO 3166-1 alpha-2 codes.
  *

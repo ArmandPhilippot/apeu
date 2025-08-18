@@ -2,8 +2,8 @@ import type { Blog } from "schema-dts";
 import { useI18n } from "../../../services/i18n";
 import { useRouting } from "../../../services/routing";
 import type { Page } from "../../../types/data";
+import { WEBSITE_URL } from "../../../utils/constants";
 import { getImgSrc } from "../../../utils/images";
-import { getWebsiteUrl } from "../../../utils/url";
 
 type BlogData = Pick<
   Page,
@@ -25,9 +25,8 @@ export const getBlogGraph = async ({
 }: BlogData): Promise<Blog> => {
   const { translate } = useI18n(locale);
   const { routeById } = await useRouting();
-  const websiteUrl = getWebsiteUrl();
-  const websiteAuthor = `${websiteUrl}#author` as const;
-  const blogUrl = `${websiteUrl}${routeById(`${locale}/blog`)}`;
+  const websiteAuthor = `${WEBSITE_URL}#author` as const;
+  const blogUrl = `${WEBSITE_URL}${routeById(`${locale}/blog`)}`;
 
   return {
     "@id": `${blogUrl}#blog`,
@@ -41,7 +40,7 @@ export const getBlogGraph = async ({
     editor: { "@id": websiteAuthor },
     headline: title,
     isAccessibleForFree: true,
-    isPartOf: { "@id": `${websiteUrl}${routeById(`${locale}/home`)}` },
+    isPartOf: { "@id": `${WEBSITE_URL}${routeById(`${locale}/home`)}` },
     license: translate("license.url"),
     mainEntityOfPage: blogUrl,
     name: title,

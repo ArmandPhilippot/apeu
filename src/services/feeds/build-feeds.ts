@@ -20,8 +20,8 @@ import type { FeedCompatibleEntry } from "../../types/data";
 import type { AvailableLanguage } from "../../types/tokens";
 import { WEBSITE_URL } from "../../utils/constants";
 import { UnsupportedLocaleError } from "../../utils/exceptions";
-import { isString } from "../../utils/type-guards";
-import { isAvailableLanguage, useI18n } from "../i18n";
+import { isAvailableLocale, isString } from "../../utils/type-guards";
+import { useI18n } from "../i18n";
 
 /* eslint-disable no-param-reassign -- The file do a lot of node transformations to create the feed content, so it's expected that parameters will be reassigned. */
 
@@ -217,7 +217,7 @@ export const getRSSItemsFromEntries = async (
  * @throws {UnsupportedLocaleError} When the given locale is not supported.
  */
 export const getFeedLanguageFromLocale = (locale: string): string => {
-  if (!isAvailableLanguage(locale)) throw new UnsupportedLocaleError(locale);
+  if (!isAvailableLocale(locale)) throw new UnsupportedLocaleError(locale);
 
   const availableLocales = {
     en: "en-us",

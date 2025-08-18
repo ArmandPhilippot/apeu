@@ -2,12 +2,34 @@ import type {
   CALLOUT_TYPES,
   CONFIG,
   COUNTRY_CODES,
+  SOCIAL_MEDIA,
   THEMES,
 } from "../utils/constants";
 
 export type AvailableLanguage = (typeof CONFIG.LANGUAGES.AVAILABLE)[number];
 
 export type CalloutType = (typeof CALLOUT_TYPES)[number];
+
+export type CSSAlignment =
+  | "baseline"
+  | "center"
+  | "end"
+  | "first baseline"
+  | "last baseline"
+  | "left"
+  | "normal"
+  | "right"
+  | "start"
+  | "space-around"
+  | "space-between"
+  | "space-evenly"
+  | "stretch";
+
+type CSSDecompoundGap = {
+  row?: Spacing | null | undefined;
+  col?: Spacing | null | undefined;
+};
+export type Gap = CSSDecompoundGap | Spacing;
 
 export type CountryCode = (typeof COUNTRY_CODES)[number];
 
@@ -53,19 +75,7 @@ export type IconName =
 
 export type Order = "ASC" | "DESC";
 
-export type SocialMedium =
-  | "bluesky"
-  | "diaspora"
-  | "email"
-  | "facebook"
-  | "github"
-  | "gitlab"
-  | "linkedin"
-  | "mastodon"
-  | "reddit"
-  | "stackoverflow"
-  | "whatsapp"
-  | "x";
+export type SocialMedium = (typeof SOCIAL_MEDIA)[number];
 
 /**
  * Those tokens should match the ones defined in `spacing_levels` in

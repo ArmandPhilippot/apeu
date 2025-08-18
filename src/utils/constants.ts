@@ -1,5 +1,3 @@
-import type { HTTPStatus } from "../types/data";
-
 export const API_ROUTES = {
   SEND_EMAIL: "/api/send-email",
 } as const;
@@ -51,6 +49,11 @@ export const WEBSITE_URL = `${CONFIG.PROTOCOL}${CONFIG.HOST}` as const;
  * @see https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
  */
 export const COUNTRY_CODES = ["FR"] as const;
+
+type HTTPStatus = {
+  CODE: number;
+  TEXT: string;
+};
 
 /**
  * The HTTP status codes.
@@ -113,6 +116,24 @@ export const STORIES_SUFFIX = "stories";
  * @see https://docs.astro.build/en/reference/integrations-reference/#injectroute-option
  */
 export const STORIES_EXT = `${STORIES_SUFFIX}.astro`;
+
+/**
+ * The supported social media.
+ */
+export const SOCIAL_MEDIA = [
+  "bluesky",
+  "diaspora",
+  "email",
+  "facebook",
+  "github",
+  "gitlab",
+  "linkedin",
+  "mastodon",
+  "reddit",
+  "stackoverflow",
+  "whatsapp",
+  "x",
+] as const;
 
 /**
  * The available themes.

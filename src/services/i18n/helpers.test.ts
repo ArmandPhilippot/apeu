@@ -1,11 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import {
-  getCurrentLocale,
-  isAvailableLanguage,
-  isLocalizedRoute,
-  isValidCountryCode,
-  isValidLanguageCode,
-} from "./helpers";
+import { getCurrentLocale, isLocalizedRoute } from "./helpers";
 
 vi.mock("../../utils/constants", async (importOriginal) => {
   const mod = await importOriginal<typeof import("../../utils/constants")>();
@@ -19,16 +13,6 @@ vi.mock("../../utils/constants", async (importOriginal) => {
       },
     },
   };
-});
-
-describe("is-available-language", () => {
-  it("returns true if the given language is valid", () => {
-    expect(isAvailableLanguage("en")).toBe(true);
-  });
-
-  it("returns false if the given language is invalid", () => {
-    expect(isAvailableLanguage("et")).toBe(false);
-  });
 });
 
 describe("get-current-locale", () => {
@@ -57,45 +41,5 @@ describe("isLocalizedRoute", () => {
   it("returns false for route without segments", () => {
     expect(isLocalizedRoute("/")).toBe(false);
     expect(isLocalizedRoute("")).toBe(false);
-  });
-});
-
-describe("is-valid-country-code", () => {
-  it("returns true when the given code exists", () => {
-    const code = "FR";
-
-    expect(isValidCountryCode(code)).toBe(true);
-  });
-
-  it("returns false when a valid code is not supported", () => {
-    const code = "ES";
-
-    expect(isValidCountryCode(code)).toBe(false);
-  });
-
-  it("returns false when the given code does not exist", () => {
-    const code = "foo";
-
-    expect(isValidCountryCode(code)).toBe(false);
-  });
-});
-
-describe("is-valid-language-code", () => {
-  it("returns true when the given code exists", () => {
-    const code = "en";
-
-    expect(isValidLanguageCode(code)).toBe(true);
-  });
-
-  it("returns false when a valid code is not supported", () => {
-    const code = "ru";
-
-    expect(isValidLanguageCode(code)).toBe(false);
-  });
-
-  it("returns false when the given code does not exist", () => {
-    const code = "foo";
-
-    expect(isValidLanguageCode(code)).toBe(false);
   });
 });

@@ -1,5 +1,16 @@
-import type { CalloutType, SocialMedium } from "../types/tokens";
-import { CALLOUT_TYPES } from "./constants";
+import type {
+  AvailableLanguage,
+  CalloutType,
+  CountryCode,
+  SocialMedium,
+} from "../types/tokens";
+import {
+  CALLOUT_TYPES,
+  CONFIG,
+  COUNTRY_CODES,
+  LANGUAGE_CODES,
+  SOCIAL_MEDIA,
+} from "./constants";
 
 /**
  * Check if a value is an object.
@@ -51,6 +62,28 @@ export const isString = (value: unknown): value is string =>
   typeof value === "string";
 
 /**
+ * Check if the given language is an available language.
+ *
+ * @param {string} language - The language to validate.
+ * @returns {boolean} True if it is a valid language.
+ */
+export const isAvailableLocale = (
+  language: string
+): language is AvailableLanguage =>
+  (CONFIG.LANGUAGES.AVAILABLE as readonly string[]).includes(language);
+
+/**
+ * Check if the given language is the default one.
+ *
+ * @param {string} language - A locale.
+ * @returns {boolean} True if it is the default language.
+ */
+export const isDefaultLocale = (
+  language: string
+): language is typeof CONFIG.LANGUAGES.DEFAULT =>
+  language === CONFIG.LANGUAGES.DEFAULT;
+
+/**
  * Check if the given value matches a callout type.
  *
  * @param {unknown} value - Any value.
@@ -63,6 +96,26 @@ export const isValidCalloutType = (value: unknown): value is CalloutType => {
 };
 
 /**
+ * Check if the given string is a valid country code.
+ *
+ * @param {string} code - An ISO 3166-1 alpha-2 code.
+ * @returns {boolean} True if the code is valid.
+ */
+export const isValidCountryCode = (code: string): code is CountryCode =>
+  (COUNTRY_CODES as readonly string[]).includes(code);
+
+export type LanguageCode = (typeof LANGUAGE_CODES)[number];
+
+/**
+ * Check if the given string is valid language code.
+ *
+ * @param {string} code - An ISO 639-1 code.
+ * @returns {boolean} True if the code is valid.
+ */
+export const isValidLanguageCode = (code: string): code is LanguageCode =>
+  (LANGUAGE_CODES as readonly string[]).includes(code);
+
+/**
  * Check if the given medium is a valid social medium.
  *
  * @param {unknown} medium - The medium to validate.
@@ -71,22 +124,7 @@ export const isValidCalloutType = (value: unknown): value is CalloutType => {
 export const isValidSocialMedium = (
   medium: unknown
 ): medium is SocialMedium => {
-  if (typeof medium !== "string") return false;
+  if (!isString(medium)) return false;
 
-  const validMedia: string[] = [
-    "bluesky",
-    "diaspora",
-    "email",
-    "facebook",
-    "github",
-    "gitlab",
-    "linkedin",
-    "mastodon",
-    "reddit",
-    "stackoverflow",
-    "whatsapp",
-    "x",
-  ] satisfies SocialMedium[];
-
-  return validMedia.includes(medium);
+  return (SOCIAL_MEDIA as readonly string[]).includes(medium);
 };

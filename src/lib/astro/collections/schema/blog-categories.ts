@@ -1,5 +1,5 @@
 import { defineCollection, reference, z } from "astro:content";
-import { isAvailableLanguage } from "../../../../services/i18n";
+import { isAvailableLocale } from "../../../../utils/type-guards";
 import { globLoader } from "../../loaders/glob-loader";
 import { contentsBaseSchema, coverSchema } from "./partials";
 
@@ -11,7 +11,7 @@ export const blogCategories = defineCollection({
         cover: coverSchema(image).optional(),
         i18n: z
           .record(
-            z.string().refine(isAvailableLanguage),
+            z.string().refine(isAvailableLocale),
             reference("blog.categories")
           )
           .optional(),

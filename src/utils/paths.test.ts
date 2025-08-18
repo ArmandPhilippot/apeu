@@ -23,12 +23,12 @@ vi.mock("./constants", async (importOriginal) => {
   };
 });
 
-vi.mock("../services/i18n", async (importOriginal) => {
-  const mod = await importOriginal<typeof import("../services/i18n")>();
+vi.mock("./type-guards", async (importOriginal) => {
+  const mod = await importOriginal<typeof import("./type-guards")>();
 
   return {
     ...mod,
-    isAvailableLanguage: vi
+    isAvailableLocale: vi
       .fn()
       .mockImplementation((locale: string) =>
         ["en", "es", "fr"].includes(locale)

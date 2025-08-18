@@ -1,5 +1,4 @@
-import type { Gap } from "../types/css";
-import type { Spacing } from "../types/tokens";
+import type { Gap, Spacing } from "../types/tokens";
 import { isNumber, isObject, isString } from "./type-guards";
 
 const isValidCssVar = (

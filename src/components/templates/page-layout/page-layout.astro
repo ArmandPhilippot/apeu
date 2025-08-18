@@ -3,11 +3,12 @@ import type { ComponentProps } from "astro/types";
 import type { Graph } from "schema-dts";
 import { getJsonLdSchema } from "../../../lib/schema-dts/schema";
 import type { QueriedEntry } from "../../../services/collections";
-import { isDefaultLanguage, useI18n } from "../../../services/i18n";
+import { useI18n } from "../../../services/i18n";
 import { useRouting } from "../../../services/routing";
 import type { RoutableCollectionKey } from "../../../types/routing";
 import { WEBSITE_URL } from "../../../utils/constants";
 import { removeTrailingSlashes } from "../../../utils/strings";
+import { isDefaultLocale } from "../../../utils/type-guards";
 import OpenGraphMeta from "../../atoms/open-graph-meta/open-graph-meta.astro";
 import TwitterMeta from "../../atoms/twitter-meta/twitter-meta.astro";
 import Breadcrumb from "../../molecules/breadcrumb/breadcrumb.astro";
@@ -31,7 +32,7 @@ const { locale, translate } = useI18n(Astro.currentLocale);
 const { routeById } = await useRouting();
 const homeRouteId = `${locale}/home`;
 const isHome = Astro.url.pathname === routeById(homeRouteId);
-const ogHomeImgPath = isDefaultLanguage(locale) ? "home" : homeRouteId;
+const ogHomeImgPath = isDefaultLocale(locale) ? "home" : homeRouteId;
 const ogImgPath = isHome ? ogHomeImgPath : Astro.url.pathname.slice(1);
 const socialImg = {
   height: 630,

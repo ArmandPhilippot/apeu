@@ -30,11 +30,10 @@ export const getStaticPaths = (async () => {
   const enrichedEntries = await addRelatedItemsToPages(filteredEntries);
   return enrichedEntries.map((entry) => {
     const isHomepage = entry.id === `${entry.locale}/home`;
-    const isDefaultLanguage = CONFIG.LANGUAGES.DEFAULT === entry.locale;
+    const isDefaultLocale = CONFIG.LANGUAGES.DEFAULT === entry.locale;
     return {
       params: {
-        page:
-          isHomepage && isDefaultLanguage ? undefined : entry.route.slice(1),
+        page: isHomepage && isDefaultLocale ? undefined : entry.route.slice(1),
       },
       props: entry,
     };

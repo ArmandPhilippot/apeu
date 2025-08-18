@@ -57,12 +57,12 @@ export const getStaticPaths = (async ({ paginate }) => {
       })
   );
   const regularPaths = regular.map((regularPage) => {
-    const isDefaultLanguageHome =
+    const isDefaultLocaleHome =
       regularPage.id === `${regularPage.locale}/home` &&
       CONFIG.LANGUAGES.DEFAULT === regularPage.locale;
     return {
       params: {
-        page: isDefaultLanguageHome ? undefined : regularPage.route.slice(1),
+        page: isDefaultLocaleHome ? undefined : regularPage.route.slice(1),
       },
       props: regularPage,
     };

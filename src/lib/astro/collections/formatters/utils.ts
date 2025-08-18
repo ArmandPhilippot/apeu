@@ -1,5 +1,4 @@
 import type { CollectionKey } from "astro:content";
-import { isAvailableLanguage } from "../../../../services/i18n";
 import type {
   AltLanguage,
   ReadingTime,
@@ -11,7 +10,11 @@ import type { AvailableLanguage } from "../../../../types/tokens";
 import type { CollectionReference } from "../../../../types/utilities";
 import { WORDS_PER_MINUTE } from "../../../../utils/constants";
 import { toUpperCase } from "../../../../utils/strings";
-import { isNumber, isString } from "../../../../utils/type-guards";
+import {
+  isAvailableLocale,
+  isNumber,
+  isString,
+} from "../../../../utils/type-guards";
 import type { EntryByIdIndex } from "../indexes";
 import { isInCollection, isRoutableIndexedEntry } from "../type-guards";
 
@@ -197,7 +200,7 @@ const resolveTranslationEntry =
     kv: [string, CollectionReference<C>]
   ) => AltLanguage | null) =>
   ([lang, reference]): AltLanguage | null => {
-    if (!isAvailableLanguage(lang)) return null;
+    if (!isAvailableLocale(lang)) return null;
 
     const translation = indexById.get(reference.id);
     const route =

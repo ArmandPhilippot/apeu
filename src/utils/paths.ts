@@ -1,9 +1,8 @@
 import { join, parse } from "node:path";
 import slash from "slash";
-import { isAvailableLanguage } from "../services/i18n";
 import type { AvailableLanguage } from "../types/tokens";
 import { CONFIG } from "./constants";
-import { isString } from "./type-guards";
+import { isAvailableLocale, isString } from "./type-guards";
 
 /**
  * Retrieve a path with forward slashes from a list of paths to join.
@@ -53,7 +52,7 @@ export const getLocaleFromPath = (path: string): AvailableLanguage => {
   const result = path.match(regex);
   const currentLocale = result === null ? null : result[0];
 
-  return isString(currentLocale) && isAvailableLanguage(currentLocale)
+  return isString(currentLocale) && isAvailableLocale(currentLocale)
     ? currentLocale
     : CONFIG.LANGUAGES.DEFAULT;
 };

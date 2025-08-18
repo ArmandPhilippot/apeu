@@ -23,11 +23,6 @@ export type HeadingNode = {
   slug: string;
 };
 
-export type HTTPStatus = {
-  CODE: number;
-  TEXT: string;
-};
-
 export type Img = Omit<
   LocalImageProps | RemoteImageProps,
   "alt" | "width" | "height"

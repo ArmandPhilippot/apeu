@@ -1,28 +1,6 @@
-import type { AvailableLanguage, CountryCode } from "../../types/tokens";
-import { CONFIG, COUNTRY_CODES, LANGUAGE_CODES } from "../../utils/constants";
-import { isString } from "../../utils/type-guards";
-
-/**
- * Check if the given language is an available language.
- *
- * @param {string} language - The language to validate.
- * @returns {boolean} True if it is a valid language.
- */
-export const isAvailableLanguage = (
-  language: string
-): language is AvailableLanguage =>
-  (CONFIG.LANGUAGES.AVAILABLE as readonly string[]).includes(language);
-
-/**
- * Check if the given language is the default one.
- *
- * @param {string} language - A locale.
- * @returns {boolean} True if it is the default language.
- */
-export const isDefaultLanguage = (
-  language: string
-): language is typeof CONFIG.LANGUAGES.DEFAULT =>
-  language === CONFIG.LANGUAGES.DEFAULT;
+import type { AvailableLanguage } from "../../types/tokens";
+import { CONFIG } from "../../utils/constants";
+import { isAvailableLocale, isString } from "../../utils/type-guards";
 
 /**
  * Retrieve the current locale from an unknown locale.
@@ -38,7 +16,7 @@ export const isDefaultLanguage = (
 export const getCurrentLocale = (
   locale: string | undefined
 ): AvailableLanguage => {
-  if (isString(locale) && isAvailableLanguage(locale)) return locale;
+  if (isString(locale) && isAvailableLocale(locale)) return locale;
 
   return CONFIG.LANGUAGES.DEFAULT;
 };
@@ -51,25 +29,5 @@ export const getCurrentLocale = (
  */
 export const isLocalizedRoute = (route: string): boolean => {
   const [_, firstSegment] = route.split("/");
-  return isAvailableLanguage(firstSegment ?? "");
+  return isAvailableLocale(firstSegment ?? "");
 };
-
-/**
- * Check if the given string is a valid country code.
- *
- * @param {string} code - An ISO 3166-1 alpha-2 code.
- * @returns {boolean} True if the code is valid.
- */
-export const isValidCountryCode = (code: string): code is CountryCode =>
-  (COUNTRY_CODES as readonly string[]).includes(code);
-
-export type LanguageCode = (typeof LANGUAGE_CODES)[number];
-
-/**
- * Check if the given string is valid language code.
- *
- * @param {string} code - An ISO 639-1 code.
- * @returns {boolean} True if the code is valid.
- */
-export const isValidLanguageCode = (code: string): code is LanguageCode =>
-  (LANGUAGE_CODES as readonly string[]).includes(code);

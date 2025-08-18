@@ -1,5 +1,5 @@
 import { defineCollection, reference, z } from "astro:content";
-import { isAvailableLanguage } from "../../../../services/i18n";
+import { isAvailableLocale } from "../../../../utils/type-guards";
 import { globLoader } from "../../loaders/glob-loader";
 import { contentsBaseSchema, coverSchema } from "./partials";
 
@@ -10,7 +10,7 @@ export const pages = defineCollection({
       .extend({
         cover: coverSchema(image).optional(),
         i18n: z
-          .record(z.string().refine(isAvailableLanguage), reference("pages"))
+          .record(z.string().refine(isAvailableLocale), reference("pages"))
           .optional(),
         permaslug: z.string().optional(),
       })

@@ -1,11 +1,28 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import {
+  isAvailableLocale,
   isKeyExistIn,
   isObject,
   isString,
   isValidCalloutType,
+  isValidCountryCode,
+  isValidLanguageCode,
   isValidSocialMedium,
 } from "./type-guards";
+
+vi.mock("./constants", async (importOriginal) => {
+  const mod = await importOriginal<typeof import("./constants")>();
+  return {
+    ...mod,
+    CONFIG: {
+      ...mod.CONFIG,
+      LANGUAGES: {
+        AVAILABLE: ["en", "fr"],
+        DEFAULT: "en",
+      },
+    },
+  };
+});
 
 const randomNumber = 42;
 
@@ -89,6 +106,16 @@ describe("is-string", () => {
   });
 });
 
+describe("is-available-language", () => {
+  it("returns true if the given language is valid", () => {
+    expect(isAvailableLocale("en")).toBe(true);
+  });
+
+  it("returns false if the given language is invalid", () => {
+    expect(isAvailableLocale("et")).toBe(false);
+  });
+});
+
 describe("is-valid-callout-type", () => {
   it("returns true when the medium is valid", () => {
     expect(isValidCalloutType("critical")).toBe(true);
@@ -100,6 +127,46 @@ describe("is-valid-callout-type", () => {
 
   it("returns false when the medium is not a string", () => {
     expect(isValidCalloutType(randomNumber)).toBe(false);
+  });
+});
+
+describe("is-valid-country-code", () => {
+  it("returns true when the given code exists", () => {
+    const code = "FR";
+
+    expect(isValidCountryCode(code)).toBe(true);
+  });
+
+  it("returns false when a valid code is not supported", () => {
+    const code = "ES";
+
+    expect(isValidCountryCode(code)).toBe(false);
+  });
+
+  it("returns false when the given code does not exist", () => {
+    const code = "foo";
+
+    expect(isValidCountryCode(code)).toBe(false);
+  });
+});
+
+describe("is-valid-language-code", () => {
+  it("returns true when the given code exists", () => {
+    const code = "en";
+
+    expect(isValidLanguageCode(code)).toBe(true);
+  });
+
+  it("returns false when a valid code is not supported", () => {
+    const code = "ru";
+
+    expect(isValidLanguageCode(code)).toBe(false);
+  });
+
+  it("returns false when the given code does not exist", () => {
+    const code = "foo";
+
+    expect(isValidLanguageCode(code)).toBe(false);
   });
 });
 

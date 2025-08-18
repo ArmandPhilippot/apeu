@@ -3,9 +3,9 @@ import { fileURLToPath } from "node:url";
 import type { AstroIntegration } from "astro";
 import { globbySync } from "globby";
 import slash from "slash";
-import { getStoryRoute } from "../../../services/stories";
 import { STORIES_EXT } from "../../../utils/constants";
 import { joinPaths } from "../../../utils/paths";
+import { getStoryRoute } from "../../../utils/stories";
 
 /**
  * Retrieve a message displaying the number of routes found and eventually a

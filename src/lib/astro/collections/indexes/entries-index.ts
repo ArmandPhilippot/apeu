@@ -4,10 +4,6 @@ import {
   type CollectionKey,
 } from "astro:content";
 import { collections } from "../../../../content.config";
-import {
-  isAvailableLanguage,
-  isDefaultLanguage,
-} from "../../../../services/i18n";
 import type {
   IndexedEntry,
   NonRoutableCollectionKey,
@@ -18,6 +14,10 @@ import type {
 import type { AvailableLanguage } from "../../../../types/tokens";
 import { getCumulativePaths } from "../../../../utils/paths";
 import { removeTrailingSlashes } from "../../../../utils/strings";
+import {
+  isAvailableLocale,
+  isDefaultLocale,
+} from "../../../../utils/type-guards";
 import { isRoutableEntry } from "../type-guards";
 import { flattenAndSortByHierarchy, normalizeEntryId } from "./utils";
 
@@ -81,7 +81,7 @@ const buildNonRoutableIndexedEntry = <C extends NonRoutableCollectionKey>(
  * @throws {Error} When the given locale is not supported.
  */
 const getLocale = (locale: string | undefined): AvailableLanguage => {
-  if (locale === undefined || !isAvailableLanguage(locale)) {
+  if (locale === undefined || !isAvailableLocale(locale)) {
     throw new Error(`"${locale}" is not a supported locale.`);
   }
 
@@ -158,7 +158,7 @@ const buildEntryRoute = (
   const routes = getCumulativePaths(`${locale}/${segments.join("/")}`);
   const localizedSegments = routes
     .map((route, idx) => {
-      const shouldRemoveLocale = idx === 0 && isDefaultLanguage(locale);
+      const shouldRemoveLocale = idx === 0 && isDefaultLocale(locale);
       if (shouldRemoveLocale) return null;
       const id = removeLeadingSlash(route);
       return slugById.get(id)?.slug ?? id.split("/").at(-1) ?? null;

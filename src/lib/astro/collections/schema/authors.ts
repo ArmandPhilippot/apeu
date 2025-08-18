@@ -1,9 +1,9 @@
 import { defineCollection, z } from "astro:content";
 import {
+  isString,
   isValidCountryCode,
   isValidLanguageCode,
-} from "../../../../services/i18n";
-import { isString } from "../../../../utils/type-guards";
+} from "../../../../utils/type-guards";
 import { globLoader } from "../../loaders/glob-loader";
 
 export const authors = defineCollection({

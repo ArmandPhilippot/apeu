@@ -1,8 +1,8 @@
 import type { ImageFunction } from "astro:content";
 import { z } from "astro:schema";
-import { isAvailableLanguage } from "../../../../services/i18n";
 import { CONFIG } from "../../../../utils/constants";
 import { applyTimezone } from "../../../../utils/dates";
+import { isAvailableLocale } from "../../../../utils/type-guards";
 
 const objectPosition = z.enum([
   "top",
@@ -46,7 +46,7 @@ const dateSchema = z.coerce
 
 export const locale = z
   .string()
-  .refine(isAvailableLanguage)
+  .refine(isAvailableLocale)
   .optional()
   .default(CONFIG.LANGUAGES.DEFAULT);
 

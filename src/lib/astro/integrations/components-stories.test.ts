@@ -4,8 +4,8 @@ import { globbySync } from "globby";
 import slash from "slash";
 import { describe, expect, it, vi } from "vitest";
 import { createAstroConfigSetupMockContext } from "../../../../tests/mocks/integrations";
-import { getStoryRoute } from "../../../services/stories";
 import { STORIES_EXT } from "../../../utils/constants";
+import { getStoryRoute } from "../../../utils/stories";
 import { componentsStories } from "./components-stories";
 
 vi.mock("globby", () => {
@@ -14,9 +14,8 @@ vi.mock("globby", () => {
   };
 });
 
-vi.mock("../../../services/stories", async (importOriginal) => {
-  const mod =
-    await importOriginal<typeof import("../../../services/stories")>();
+vi.mock("../../../utils/stories", async (importOriginal) => {
+  const mod = await importOriginal<typeof import("../../../utils/stories")>();
   return {
     ...mod,
     getStoryRoute: vi.fn(),

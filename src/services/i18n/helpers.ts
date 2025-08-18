@@ -54,7 +54,6 @@ export const isLocalizedRoute = (route: string): boolean => {
   return isAvailableLanguage(firstSegment ?? "");
 };
 
-
 /**
  * Check if the given string is a valid country code.
  *

@@ -1,7 +1,7 @@
 import type { SearchAction, WebSite } from "schema-dts";
 import { useI18n } from "../../../services/i18n";
 import { useRouting } from "../../../services/routing";
-import type { AvailableLanguage } from "../../../types/tokens";
+import type { AvailableLocale } from "../../../types/tokens";
 import { CONFIG, WEBSITE_URL } from "../../../utils/constants";
 import { getLanguageGraph } from "./language-graph";
 
@@ -12,7 +12,7 @@ export type CustomSearchAction = SearchAction & {
 
 type WebSiteGraphData = {
   description: string;
-  locale: AvailableLanguage;
+  locale: AvailableLocale;
   logo: string;
 };
 

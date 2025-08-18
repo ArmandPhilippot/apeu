@@ -1,6 +1,6 @@
 import { join, parse } from "node:path";
 import slash from "slash";
-import type { AvailableLanguage } from "../types/tokens";
+import type { AvailableLocale } from "../types/tokens";
 import { CONFIG } from "./constants";
 import { isAvailableLocale, isString } from "./type-guards";
 
@@ -41,9 +41,9 @@ export const removeExtFromPath = (filePath: string): string => {
  * if no locale was found.
  *
  * @param {string} path - The file path.
- * @returns {AvailableLanguage} The computed locale if valid or the default locale.
+ * @returns {AvailableLocale} The computed locale if valid or the default locale.
  */
-export const getLocaleFromPath = (path: string): AvailableLanguage => {
+export const getLocaleFromPath = (path: string): AvailableLocale => {
   // Get each `/[locale]/` directory encountered.
   const regex = new RegExp(
     `(?<=\\/)(?:${CONFIG.LANGUAGES.AVAILABLE.join("|")})(?=\\/|$)`,

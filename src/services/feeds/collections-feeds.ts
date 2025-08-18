@@ -1,4 +1,4 @@
-import type { AvailableLanguage } from "../../types/tokens";
+import type { AvailableLocale } from "../../types/tokens";
 import { queryCollection } from "../collections";
 import { useI18n } from "../i18n";
 
@@ -7,11 +7,11 @@ type FeedLink = { label: string; slug: string };
 /**
  * Retrieve the feeds data for each collection having a feed.
  *
- * @param {AvailableLanguage} locale - The feed locale.
+ * @param {AvailableLocale} locale - The feed locale.
  * @returns {Promise<FeedLink[]>} The label and slug for each feed.
  */
 export const getCollectionsFeeds = async (
-  locale: AvailableLanguage
+  locale: AvailableLocale
 ): Promise<FeedLink[]> => {
   const { translate } = useI18n(locale);
   const pagesWithFeed = [

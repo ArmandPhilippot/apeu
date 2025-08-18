@@ -17,7 +17,7 @@ import sanitize, {
   type SanitizeOptions,
 } from "ultrahtml/transformers/sanitize";
 import type { FeedCompatibleEntry } from "../../types/data";
-import type { AvailableLanguage } from "../../types/tokens";
+import type { AvailableLocale } from "../../types/tokens";
 import { WEBSITE_URL } from "../../utils/constants";
 import { UnsupportedLocaleError } from "../../utils/exceptions";
 import { isAvailableLocale, isString } from "../../utils/type-guards";
@@ -133,7 +133,7 @@ const renderEntryContent = async (
 
 const getItemCategoryFromCollection = (
   collection: CollectionWithFeed,
-  locale: AvailableLanguage
+  locale: AvailableLocale
 ) => {
   const { translate } = useI18n(locale);
   const categories = {
@@ -169,7 +169,7 @@ const getItemCategories = (entry: FeedCompatibleEntry) => {
 
 const getItemDescription = (
   entry: FeedCompatibleEntry,
-  locale: AvailableLanguage
+  locale: AvailableLocale
 ) => {
   if (entry.collection === "blogroll") return entry.description[locale];
 
@@ -177,7 +177,7 @@ const getItemDescription = (
 };
 
 const getRSSItem =
-  (locale: AvailableLanguage) =>
+  (locale: AvailableLocale) =>
   async (entry: FeedCompatibleEntry): Promise<RSSFeedItem> => {
     const content = await renderEntryContent(entry);
 
@@ -195,12 +195,12 @@ const getRSSItem =
  * Convert the given entries to valid RSS items.
  *
  * @param {FeedCompatibleEntry[]} entries - The collections entries.
- * @param {AvailableLanguage} locale - The feed locale.
+ * @param {AvailableLocale} locale - The feed locale.
  * @returns {Promise<RSSFeedItem[]>} The feed items.
  */
 export const getRSSItemsFromEntries = async (
   entries: FeedCompatibleEntry[],
-  locale: AvailableLanguage
+  locale: AvailableLocale
 ): Promise<RSSFeedItem[]> => {
   const rssItems: (RSSFeedItem | null)[] = await Promise.all(
     entries.map(getRSSItem(locale))
@@ -212,7 +212,7 @@ export const getRSSItemsFromEntries = async (
 /**
  * Retrieve the language to display between `<language>` tag in your feed.
  *
- * @param {AvailableLanguage} locale - The current locale.
+ * @param {AvailableLocale} locale - The current locale.
  * @returns {string} The feeds language.
  * @throws {UnsupportedLocaleError} When the given locale is not supported.
  */
@@ -222,7 +222,7 @@ export const getFeedLanguageFromLocale = (locale: string): string => {
   const availableLocales = {
     en: "en-us",
     fr: "fr-fr",
-  } as const satisfies Record<AvailableLanguage, string>;
+  } as const satisfies Record<AvailableLocale, string>;
 
   return availableLocales[locale];
 };

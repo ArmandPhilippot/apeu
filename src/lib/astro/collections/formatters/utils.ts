@@ -6,7 +6,7 @@ import type {
   TaxonomyLink,
 } from "../../../../types/data";
 import type { IndexedEntry } from "../../../../types/routing";
-import type { AvailableLanguage } from "../../../../types/tokens";
+import type { AvailableLocale } from "../../../../types/tokens";
 import type { CollectionReference } from "../../../../types/utilities";
 import { WORDS_PER_MINUTE } from "../../../../utils/constants";
 import { toUpperCase } from "../../../../utils/strings";
@@ -66,12 +66,12 @@ const getReadingTimeInMinutes = (
  *
  * @template T - Should the seconds be included?
  * @param {number} wordsCount - The number of words.
- * @param {AvailableLanguage} locale - The current language.
+ * @param {AvailableLocale} locale - The current language.
  * @returns {ReadingTime} A detailed reading time object.
  */
 const getReadingTime = (
   wordsCount: number,
-  locale: AvailableLanguage
+  locale: AvailableLocale
 ): ReadingTime => {
   const wordsPerMinute = WORDS_PER_MINUTE[toUpperCase(locale)];
 
@@ -90,12 +90,12 @@ const getReadingTime = (
  * Retrieve the meta from Astro's remarkPluginFrontmatter.
  *
  * @param {Record<string, unknown>} remarkPluginFrontmatter - The Markdown frontmatter.
- * @param {AvailableLanguage} locale - The current locale.
+ * @param {AvailableLocale} locale - The current locale.
  * @returns {RemarkPluginFrontmatterMeta} The meta stored in the frontmatter.
  */
 export const getMetaFromRemarkPluginFrontmatter = (
   remarkPluginFrontmatter: Record<string, unknown>,
-  locale: AvailableLanguage
+  locale: AvailableLocale
 ): RemarkPluginFrontmatterMeta => {
   const readingTime = isNumber(remarkPluginFrontmatter.wordsCount)
     ? getReadingTime(remarkPluginFrontmatter.wordsCount, locale)
@@ -211,7 +211,7 @@ const resolveTranslationEntry =
   };
 
 type Translations<C extends CollectionKey> = Partial<
-  Record<AvailableLanguage, CollectionReference<C>>
+  Record<AvailableLocale, CollectionReference<C>>
 >;
 
 /**

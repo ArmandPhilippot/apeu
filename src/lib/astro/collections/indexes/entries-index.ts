@@ -11,7 +11,7 @@ import type {
   RoutableCollectionKey,
   RoutableIndexedEntry,
 } from "../../../../types/routing";
-import type { AvailableLanguage } from "../../../../types/tokens";
+import type { AvailableLocale } from "../../../../types/tokens";
 import { getCumulativePaths } from "../../../../utils/paths";
 import { removeTrailingSlashes } from "../../../../utils/strings";
 import {
@@ -77,10 +77,10 @@ const buildNonRoutableIndexedEntry = <C extends NonRoutableCollectionKey>(
  * Ensure the given locale is both defined and a configured locale.
  *
  * @param {string | undefined} locale - A locale to check.
- * @returns {AvailableLanguage} A supported locale.
+ * @returns {AvailableLocale} A supported locale.
  * @throws {Error} When the given locale is not supported.
  */
-const getLocale = (locale: string | undefined): AvailableLanguage => {
+const getLocale = (locale: string | undefined): AvailableLocale => {
   if (locale === undefined || !isAvailableLocale(locale)) {
     throw new Error(`"${locale}" is not a supported locale.`);
   }
@@ -145,13 +145,13 @@ const removeLeadingSlash = (path: string) => path.slice(1);
 /**
  * Builds a localized route for a content entry using cumulative slugs.
  *
- * @param {AvailableLanguage} locale - A supported entry's locale.
+ * @param {AvailableLocale} locale - A supported entry's locale.
  * @param {string[]} segments - Path segments extracted from the entry ID.
  * @param {SlugInfoByIdMap} slugById - A map of entry IDs to slugs.
  * @returns {string} A route like `/fr/section/article`.
  */
 const buildEntryRoute = (
-  locale: AvailableLanguage,
+  locale: AvailableLocale,
   segments: string[],
   slugById: SlugInfoByIdMap
 ): string => {
@@ -170,7 +170,7 @@ const buildEntryRoute = (
 };
 
 type RouteInfo = {
-  locale: AvailableLanguage;
+  locale: AvailableLocale;
   route: string;
   slug: string;
 };
@@ -203,12 +203,12 @@ const getRoutableEntryInfo = (
  *
  * @template C - The routable collection key.
  * @param {CollectionEntry<C>} entry - A routable entry.
- * @param {AvailableLanguage} locale - The expected locale.
+ * @param {AvailableLocale} locale - The expected locale.
  * @returns {CollectionEntry<C>} A normalized entry.
  */
 const prepareEntry = <C extends RoutableCollectionKey>(
   entry: CollectionEntry<C>,
-  locale: AvailableLanguage
+  locale: AvailableLocale
 ): CollectionEntry<C> => {
   if (entry.data.locale === locale) return entry;
 

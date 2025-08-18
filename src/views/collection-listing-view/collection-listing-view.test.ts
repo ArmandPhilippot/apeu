@@ -13,7 +13,7 @@ import {
   queryEntry,
   type PageableCollection,
 } from "../../services/collections";
-import type { AvailableLanguage } from "../../types/tokens";
+import type { AvailableLocale } from "../../types/tokens";
 import CollectionListingView from "./collection-listing-view.astro";
 
 vi.mock("astro:content", async (importOriginal) => {
@@ -125,7 +125,7 @@ type SetupTestWithMockEntriesConfig = {
   pageQuery: {
     collection: PageableCollection;
     id: string;
-    locale?: AvailableLanguage;
+    locale?: AvailableLocale;
   };
 };
 

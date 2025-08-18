@@ -1,16 +1,16 @@
-import type { AvailableLanguage } from "../../types/tokens";
+import type { AvailableLocale } from "../../types/tokens";
 import type { LooseAutocomplete } from "../../types/utilities";
 import { CONFIG } from "../../utils/constants";
 
 /**
  * Retrieve a `language_TERRITORY` code for a locale.
  *
- * @param {LooseAutocomplete<AvailableLanguage> | null | undefined} locale - The current locale.
+ * @param {LooseAutocomplete<AvailableLocale> | null | undefined} locale - The current locale.
  * @returns {string} The language territory code.
  * @throws {Error} When the locale is not supported.
  */
 export const getLanguageTerritory = (
-  locale: LooseAutocomplete<AvailableLanguage> | null | undefined = CONFIG
+  locale: LooseAutocomplete<AvailableLocale> | null | undefined = CONFIG
     .LANGUAGES.DEFAULT
 ): string => {
   switch (locale) {

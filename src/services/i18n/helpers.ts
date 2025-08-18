@@ -1,4 +1,4 @@
-import type { AvailableLanguage } from "../../types/tokens";
+import type { AvailableLocale } from "../../types/tokens";
 import { CONFIG } from "../../utils/constants";
 import { isAvailableLocale, isString } from "../../utils/type-guards";
 
@@ -11,11 +11,9 @@ import { isAvailableLocale, isString } from "../../utils/type-guards";
  * if `undefined`.
  *
  * @param {string | undefined} locale - Maybe a valid locale.
- * @returns {AvailableLanguage} A valid locale.
+ * @returns {AvailableLocale} A valid locale.
  */
-export const getCurrentLocale = (
-  locale: string | undefined
-): AvailableLanguage => {
+export const getCurrentLocale = (locale: string | undefined): AvailableLocale => {
   if (isString(locale) && isAvailableLocale(locale)) return locale;
 
   return CONFIG.LANGUAGES.DEFAULT;

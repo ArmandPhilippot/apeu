@@ -7,7 +7,7 @@ import {
 import { getEntriesIndex } from "../../lib/astro/collections/indexes";
 import type { QueryMode } from "../../types/data";
 import type { IndexedEntry } from "../../types/routing";
-import type { AvailableLanguage, Order } from "../../types/tokens";
+import type { AvailableLocale, Order } from "../../types/tokens";
 import type {
   HasNestedKey,
   KeyOfType,
@@ -49,7 +49,7 @@ type QueryCollectionWhere = {
   /**
    * Retrieve only entries in the given locale.
    */
-  locale: LooseAutocomplete<AvailableLanguage>;
+  locale: LooseAutocomplete<AvailableLocale>;
   /**
    * Retrieve only entries attached to the given tags.
    */

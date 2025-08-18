@@ -1,5 +1,5 @@
 import type {
-  AvailableLanguage,
+  AvailableLocale,
   CalloutType,
   CountryCode,
   SocialMedium,
@@ -69,9 +69,7 @@ export const isString = (value: unknown): value is string =>
  * @param {string} language - The language to validate.
  * @returns {boolean} True if it is a valid language.
  */
-export const isAvailableLocale = (
-  language: string
-): language is AvailableLanguage =>
+export const isAvailableLocale = (language: string): language is AvailableLocale =>
   (CONFIG.LANGUAGES.AVAILABLE as readonly string[]).includes(language);
 
 /**

@@ -1,5 +1,5 @@
 import { translations } from "../../translations";
-import type { AvailableLanguage } from "../../types/tokens";
+import type { AvailableLocale } from "../../types/tokens";
 import type { KeyOfType, LooseAutocomplete } from "../../types/utilities";
 import { CONFIG } from "../../utils/constants";
 import { getCurrentLocale } from "./helpers";
@@ -47,12 +47,12 @@ export type TranslateSingularKeys = (
 ) => string;
 
 type UseI18n = (
-  currentLocale: LooseAutocomplete<AvailableLanguage> | undefined
+  currentLocale: LooseAutocomplete<AvailableLocale> | undefined
 ) => {
   /**
    * The locale used for translations.
    */
-  locale: AvailableLanguage;
+  locale: AvailableLocale;
   /**
    * A method to retrieve a translated message for a given key.
    */
@@ -66,11 +66,11 @@ type UseI18n = (
 /**
  * Init translation functions and return the locale.
  *
- * @param {LooseAutocomplete<AvailableLanguage> | undefined} currentLocale - A possibly valid locale.
+ * @param {LooseAutocomplete<AvailableLocale> | undefined} currentLocale - A possibly valid locale.
  * @returns {ReturnType<UseI18n>} An object containing translation functions and the locale.
  */
 export const useI18n: UseI18n = (
-  currentLocale: LooseAutocomplete<AvailableLanguage> | undefined
+  currentLocale: LooseAutocomplete<AvailableLocale> | undefined
 ): ReturnType<UseI18n> => {
   const locale = getCurrentLocale(currentLocale);
   const messages = translations[locale];

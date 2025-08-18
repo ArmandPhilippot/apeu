@@ -7,7 +7,7 @@ import type {
   THEMES,
 } from "../utils/constants";
 
-export type AvailableLanguage = (typeof CONFIG.LANGUAGES.AVAILABLE)[number];
+export type AvailableLocale = (typeof CONFIG.LANGUAGES.AVAILABLE)[number];
 
 export type CalloutType = (typeof CALLOUT_TYPES)[number];
 

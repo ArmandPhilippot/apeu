@@ -1,7 +1,7 @@
 import type SMTPTransport from "nodemailer/lib/smtp-transport";
 import { createSMTPTransporter } from "../../lib/nodemailer";
 import { CONFIG } from "../../utils/constants";
-import { isString } from "../../utils/type-checks";
+import { isString } from "../../utils/type-guards";
 import type { MailDataSchema } from "./schema";
 
 const getRecipientFromEnv = () => {

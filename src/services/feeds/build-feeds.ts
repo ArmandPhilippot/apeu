@@ -20,7 +20,7 @@ import type { FeedCompatibleEntry } from "../../types/data";
 import type { AvailableLanguage } from "../../types/tokens";
 import { WEBSITE_URL } from "../../utils/constants";
 import { UnsupportedLocaleError } from "../../utils/exceptions";
-import { isString } from "../../utils/type-checks";
+import { isString } from "../../utils/type-guards";
 import { isAvailableLanguage, useI18n } from "../i18n";
 
 /* eslint-disable no-param-reassign -- The file do a lot of node transformations to create the feed content, so it's expected that parameters will be reassigned. */

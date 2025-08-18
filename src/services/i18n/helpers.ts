@@ -1,6 +1,6 @@
 import type { AvailableLanguage, CountryCode } from "../../types/tokens";
 import { CONFIG, COUNTRY_CODES, LANGUAGE_CODES } from "../../utils/constants";
-import { isString } from "../../utils/type-checks";
+import { isString } from "../../utils/type-guards";
 
 /**
  * Check if the given language is an available language.

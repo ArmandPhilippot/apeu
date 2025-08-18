@@ -5,7 +5,7 @@ import {
   type CollectionKey,
 } from "astro:content";
 import { vi } from "vitest";
-import { isObject } from "../../src/utils/type-checks";
+import { isObject } from "../../src/utils/type-guards";
 
 type DeepPartial<T extends Record<string, unknown>> = {
   [K in keyof T]?: T[K] extends Record<string, unknown>

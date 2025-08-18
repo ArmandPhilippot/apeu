@@ -15,7 +15,7 @@ import type {
   Transformer as UnifiedTransformer,
 } from "unified";
 import { visit } from "unist-util-visit";
-import { isString } from "../../utils/type-checks";
+import { isString } from "../../utils/type-guards";
 
 // cSpell:ignore metastring
 

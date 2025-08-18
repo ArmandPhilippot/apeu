@@ -1,5 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { isKeyExistIn, isObject, isString } from "./type-checks";
+import {
+  isKeyExistIn,
+  isObject,
+  isString,
+  isValidCalloutType,
+  isValidSocialMedium,
+} from "./type-guards";
 
 const randomNumber = 42;
 
@@ -80,5 +86,33 @@ describe("is-string", () => {
 
   it("returns false if the value is undefined", () => {
     expect(isString(undefined)).toBe(false);
+  });
+});
+
+describe("is-valid-callout-type", () => {
+  it("returns true when the medium is valid", () => {
+    expect(isValidCalloutType("critical")).toBe(true);
+  });
+
+  it("returns false when the medium is invalid", () => {
+    expect(isValidCalloutType("foo")).toBe(false);
+  });
+
+  it("returns false when the medium is not a string", () => {
+    expect(isValidCalloutType(randomNumber)).toBe(false);
+  });
+});
+
+describe("is-valid-social-medium", () => {
+  it("returns true when the medium is valid", () => {
+    expect(isValidSocialMedium("facebook")).toBe(true);
+  });
+
+  it("returns false when the medium is invalid", () => {
+    expect(isValidSocialMedium("foo")).toBe(false);
+  });
+
+  it("returns false when the medium is not a string", () => {
+    expect(isValidSocialMedium(randomNumber)).toBe(false);
   });
 });

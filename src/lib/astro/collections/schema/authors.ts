@@ -3,7 +3,7 @@ import {
   isValidCountryCode,
   isValidLanguageCode,
 } from "../../../../services/i18n";
-import { isString } from "../../../../utils/type-checks";
+import { isString } from "../../../../utils/type-guards";
 import { globLoader } from "../../loaders/glob-loader";
 
 export const authors = defineCollection({

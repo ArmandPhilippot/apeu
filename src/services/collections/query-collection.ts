@@ -14,8 +14,8 @@ import type {
   LooseAutocomplete,
 } from "../../types/utilities";
 import { hasCommonKey } from "../../utils/objects";
-import { sortByKey } from "../../utils/sort";
-import { isObject, isString } from "../../utils/type-checks";
+import { sortByKey } from "../../utils/sorting";
+import { isObject, isString } from "../../utils/type-guards";
 import { updateEntriesTagsForLocale } from "./utils";
 
 type QueryCollectionOrderBy<C extends CollectionKey> = {

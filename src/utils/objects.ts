@@ -1,5 +1,5 @@
 import type { OneOf, SharedShape } from "../types/utilities";
-import { isKeyExistIn, isString } from "./type-checks";
+import { isKeyExistIn, isString } from "./type-guards";
 
 /**
  * Check if the given key is present in both objects.

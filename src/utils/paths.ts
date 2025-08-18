@@ -3,7 +3,7 @@ import slash from "slash";
 import { isAvailableLanguage } from "../services/i18n";
 import type { AvailableLanguage } from "../types/tokens";
 import { CONFIG } from "./constants";
-import { isString } from "./type-checks";
+import { isString } from "./type-guards";
 
 /**
  * Retrieve a path with forward slashes from a list of paths to join.

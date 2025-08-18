@@ -3,7 +3,7 @@ import {
   getCSSVars,
   getSpacingVarFromGap,
   getSpacingVarValue,
-} from "./attributes";
+} from "./html-attributes";
 
 describe("get-css-vars", () => {
   it("stringifies the given object as css variables", () => {

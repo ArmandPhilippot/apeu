@@ -5,7 +5,7 @@ import type { BlogPost, Guide, Img, Note, Project } from "../../../types/data";
 import type { Blend, RequireOnly } from "../../../types/utilities";
 import { WEBSITE_URL } from "../../../utils/constants";
 import { getImgSrc } from "../../../utils/images";
-import { isString } from "../../../utils/type-checks";
+import { isString } from "../../../utils/type-guards";
 import { getDurationFromReadingTime } from "../values/duration";
 import { getLanguageGraph } from "./language-graph";
 import { getPersonGraph } from "./person-graph";

@@ -3,10 +3,11 @@ import type { ComponentProps } from "astro/types";
 import type { Graph } from "schema-dts";
 import { getJsonLdSchema } from "../../../lib/schema-dts/schema";
 import type { QueriedEntry } from "../../../services/collections";
-import { useI18n } from "../../../services/i18n";
+import { isDefaultLanguage, useI18n } from "../../../services/i18n";
 import { useRouting } from "../../../services/routing";
 import type { RoutableCollectionKey } from "../../../types/routing";
-import { getOpenGraphImg } from "../../../utils/open-graph";
+import { WEBSITE_URL } from "../../../utils/constants";
+import { removeTrailingSlashes } from "../../../utils/strings";
 import OpenGraphMeta from "../../atoms/open-graph-meta/open-graph-meta.astro";
 import TwitterMeta from "../../atoms/twitter-meta/twitter-meta.astro";
 import Breadcrumb from "../../molecules/breadcrumb/breadcrumb.astro";
@@ -28,8 +29,16 @@ const { breadcrumb, description, headings, graphs, seo, title, ...attrs } =
   Astro.props;
 const { locale, translate } = useI18n(Astro.currentLocale);
 const { routeById } = await useRouting();
-const isHome = Astro.url.pathname === routeById(`${locale}/home`);
-const socialImg = await getOpenGraphImg({ locale, slug: Astro.url.pathname });
+const homeRouteId = `${locale}/home`;
+const isHome = Astro.url.pathname === routeById(homeRouteId);
+const ogHomeImgPath = isDefaultLanguage(locale) ? "home" : homeRouteId;
+const ogImgPath = isHome ? ogHomeImgPath : Astro.url.pathname.slice(1);
+const socialImg = {
+  height: 630,
+  type: "image/png",
+  url: new URL(`/og/${removeTrailingSlashes(ogImgPath)}.png`, WEBSITE_URL).href,
+  width: 1200,
+} as const;
 ---
 
 <Layout class="page-layout" seo={seo}>

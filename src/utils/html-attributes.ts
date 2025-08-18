@@ -1,8 +1,8 @@
 import type { Gap } from "../types/css";
 import type { Spacing } from "../types/tokens";
-import { isNumber, isObject, isString } from "./type-checks";
+import { isNumber, isObject, isString } from "./type-guards";
 
-const isValidCssValue = (
+const isValidCssVar = (
   entry: [string, unknown]
 ): entry is [string, number | string] => {
   const [_key, value] = entry;
@@ -22,7 +22,7 @@ const isValidCssValue = (
  */
 export const getCSSVars = (cssVars: Record<string, unknown>): string =>
   Object.entries(cssVars)
-    .filter(isValidCssValue)
+    .filter(isValidCssVar)
     .map(([key, value]) => `--${key}: ${value};`)
     .join(" ");
 

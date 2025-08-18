@@ -1,5 +1,5 @@
 import type { Img } from "../types/data";
-import { isString } from "./type-checks";
+import { isString } from "./type-guards";
 
 /**
  * Retrieve an image source from a path or an imported image.

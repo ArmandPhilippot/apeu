@@ -18,7 +18,7 @@ import type {
 } from "unified";
 import { visitParents } from "unist-util-visit-parents";
 import type { VFile } from "vfile";
-import { isString } from "../../utils/type-checks";
+import { isString } from "../../utils/type-guards";
 
 const isImgElement = (
   node: Root | Doctype | MdxjsEsmHast | ElementContent

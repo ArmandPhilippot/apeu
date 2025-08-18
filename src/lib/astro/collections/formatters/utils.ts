@@ -11,7 +11,7 @@ import type { AvailableLanguage } from "../../../../types/tokens";
 import type { CollectionReference } from "../../../../types/utilities";
 import { WORDS_PER_MINUTE } from "../../../../utils/constants";
 import { toUpperCase } from "../../../../utils/strings";
-import { isNumber, isString } from "../../../../utils/type-checks";
+import { isNumber, isString } from "../../../../utils/type-guards";
 import type { EntryByIdIndex } from "../indexes";
 import { isInCollection, isRoutableIndexedEntry } from "../type-guards";
 

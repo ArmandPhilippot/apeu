@@ -4,7 +4,7 @@ import type {
   HookParameters,
 } from "astro";
 import { vi } from "vitest";
-import { isObject } from "../../src/utils/type-checks";
+import { isObject } from "../../src/utils/type-guards";
 
 const logger = {
   error: vi.fn(),

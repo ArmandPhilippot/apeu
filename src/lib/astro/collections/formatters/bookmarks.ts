@@ -1,5 +1,5 @@
 import type { Bookmark } from "../../../../types/data";
-import type { IndexedEntry } from "../../../../types/routing";
+import type { IndexedEntry } from "../types";
 import type { EntryByIdIndex } from "../indexes";
 import { getTagsFromReferences } from "./utils";
 

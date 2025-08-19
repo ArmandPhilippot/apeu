@@ -7,7 +7,7 @@ import {
   createMockEntries,
   setupCollectionMocks,
 } from "../../../../../tests/helpers/astro-content";
-import type { IndexedEntry } from "../../../../types/routing";
+import type { IndexedEntry } from "../types";
 import {
   getMetaFromRemarkPluginFrontmatter,
   getTaxonomyLink,

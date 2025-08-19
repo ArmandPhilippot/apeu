@@ -5,8 +5,8 @@ import {
   type FormatEntryReturnMap,
 } from "../../lib/astro/collections/formatters";
 import { getEntriesIndex } from "../../lib/astro/collections/indexes";
+import type { IndexedEntry } from "../../lib/astro/collections/types";
 import type { QueryMode } from "../../types/data";
-import type { IndexedEntry } from "../../types/routing";
 import type { AvailableLocale, Order } from "../../types/tokens";
 import type {
   HasNestedKey,

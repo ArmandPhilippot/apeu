@@ -5,7 +5,7 @@ import type {
   RemarkPluginFrontmatterMeta,
   TaxonomyLink,
 } from "../../../../types/data";
-import type { IndexedEntry } from "../../../../types/routing";
+import type { IndexedEntry } from "../types";
 import type { AvailableLocale } from "../../../../types/tokens";
 import type { CollectionReference } from "../../../../types/utilities";
 import { WORDS_PER_MINUTE } from "../../../../utils/constants";

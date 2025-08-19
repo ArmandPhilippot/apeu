@@ -1,6 +1,6 @@
 import type { CollectionEntry } from "astro:content";
 import type { Author, AuthorLink, AuthorPreview } from "../../../../types/data";
-import type { IndexedEntry } from "../../../../types/routing";
+import type { IndexedEntry } from "../types";
 
 /**
  * Retrieve the data necessary to display an author link from a

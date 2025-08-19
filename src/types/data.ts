@@ -4,7 +4,7 @@ import type {
   CollectionKey,
   RenderResult,
 } from "astro:content";
-import type { RoutableCollectionKey } from "./routing";
+import type { RoutableCollectionKey } from "../lib/astro/collections/types";
 import type { ConditionallyExtend, PatchExistingProperties } from "./utilities";
 
 export type AltLanguage = {

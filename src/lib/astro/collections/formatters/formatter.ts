@@ -1,9 +1,6 @@
 import type { CollectionKey } from "astro:content";
 import type { QueryMode } from "../../../../types/data";
-import type {
-  IndexedEntry,
-  RoutableCollectionKey,
-} from "../../../../types/routing";
+import type { IndexedEntry, RoutableCollectionKey } from "../types";
 import type { EntryByIdIndex } from "../indexes";
 import { isRoutableIndexedEntry } from "../type-guards";
 import { getAuthor, getAuthorPreview } from "./authors";

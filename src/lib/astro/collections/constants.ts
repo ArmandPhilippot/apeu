@@ -1,7 +1,4 @@
-import type {
-  NonRoutableCollectionKey,
-  RoutableCollectionKey,
-} from "../../../types/routing";
+import type { NonRoutableCollectionKey, RoutableCollectionKey } from "./types";
 
 export const ROUTABLE_COLLECTIONS = [
   "blog.categories",

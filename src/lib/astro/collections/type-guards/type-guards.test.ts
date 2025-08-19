@@ -4,7 +4,7 @@ import type {
   IndexedEntry,
   NonRoutableCollectionKey,
   RoutableCollectionKey,
-} from "../../../../types/routing";
+} from "../types";
 import {
   isRoutableCollection,
   isRoutableEntry,

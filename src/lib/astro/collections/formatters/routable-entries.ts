@@ -9,10 +9,7 @@ import type {
   Img,
   QueryMode,
 } from "../../../../types/data";
-import type {
-  IndexedEntry,
-  RoutableCollectionKey,
-} from "../../../../types/routing";
+import type { IndexedEntry, RoutableCollectionKey } from "../types";
 import type { Blend } from "../../../../types/utilities";
 import type { EntryByIdIndex } from "../indexes";
 import { getAuthorLink } from "./authors";

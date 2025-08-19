@@ -1,5 +1,5 @@
 import type { CollectionKey } from "astro:content";
-import type { IndexedEntry } from "../../types/routing";
+import type { IndexedEntry } from "../../lib/astro/collections/types";
 import type { CollectionReference } from "../../types/utilities";
 
 /**

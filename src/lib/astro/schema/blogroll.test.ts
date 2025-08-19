@@ -1,17 +1,23 @@
 import { describe, expect, it, vi } from "vitest";
+import { createImageMock } from "../../../../tests/mocks/schema";
 import { blogroll } from "./blogroll";
 
-vi.mock("../../../../utils/dates", async (importOriginal) => {
-  const mod = await importOriginal<typeof import("../../../../utils/dates")>();
+vi.mock("../../../utils/dates", async (importOriginal) => {
+  const mod = await importOriginal<typeof import("../../../utils/dates")>();
 
   return {
     ...mod,
-    applyTimezone: vi.fn((date) => date), // Mocked to return the input date
+    applyTimezone: vi.fn((date) => date),
   };
 });
 
+const mockImage = createImageMock();
+
 describe("blogroll", () => {
-  it("should include the meta in the transformed output", () => {
+  it("should include the meta in the transformed output", async () => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(5);
+
     const blog = {
       title: "The title of the blog",
       description: {
@@ -24,14 +30,12 @@ describe("blogroll", () => {
       url: "https://example.test",
     };
 
-    if (
-      blogroll.schema === undefined ||
-      typeof blogroll.schema === "function"
-    ) {
-      throw new Error("The schema is not accessible");
+    if (typeof blogroll.schema !== "function") {
+      throw new TypeError("The schema is not callable");
     }
 
-    const result = blogroll.schema.safeParse(blog);
+    const parsedSchema = blogroll.schema({ image: mockImage });
+    const result = await parsedSchema.safeParseAsync(blog);
 
     expect(result.success).toBe(true);
 
@@ -44,7 +48,10 @@ describe("blogroll", () => {
     expect(result.data.meta.updatedOn).toStrictEqual(new Date("2023-01-02"));
   });
 
-  it("should apply default values as expected", () => {
+  it("should apply default values as expected", async () => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(3);
+
     const blog = {
       title: "The title of the blog",
       description: {
@@ -55,14 +62,12 @@ describe("blogroll", () => {
       url: "https://example.test",
     };
 
-    if (
-      blogroll.schema === undefined ||
-      typeof blogroll.schema === "function"
-    ) {
-      throw new Error("The schema is not accessible");
+    if (typeof blogroll.schema !== "function") {
+      throw new TypeError("The schema is not callable");
     }
 
-    const result = blogroll.schema.safeParse(blog);
+    const parsedSchema = blogroll.schema({ image: mockImage });
+    const result = await parsedSchema.safeParseAsync(blog);
 
     expect(result.success).toBe(true);
 

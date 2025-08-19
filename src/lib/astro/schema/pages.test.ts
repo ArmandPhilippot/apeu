@@ -1,9 +1,10 @@
 import { describe, expect, it, vi } from "vitest";
-import { CONFIG } from "../../../../utils/constants";
-import { notes } from "./notes";
+import { createImageMock } from "../../../../tests/mocks/schema";
+import { CONFIG } from "../../../utils/constants";
+import { pages } from "./pages";
 
-vi.mock("../../../../utils/dates", async (importOriginal) => {
-  const mod = await importOriginal<typeof import("../../../../utils/dates")>();
+vi.mock("../../../utils/dates", async (importOriginal) => {
+  const mod = await importOriginal<typeof import("../../../utils/dates")>();
 
   return {
     ...mod,
@@ -11,11 +12,13 @@ vi.mock("../../../../utils/dates", async (importOriginal) => {
   };
 });
 
-describe("notes", () => {
+const mockImage = createImageMock();
+
+describe("pages", () => {
   it("should include the meta in the transformed output", () => {
-    const note = {
-      title: "The title of the note",
-      description: "A description of the note.",
+    const page = {
+      title: "The title of the page",
+      description: "A description of the page.",
       isDraft: true,
       publishedOn: new Date("2023-01-01"),
       seo: {
@@ -25,11 +28,12 @@ describe("notes", () => {
       updatedOn: new Date("2023-01-02"),
     };
 
-    if (notes.schema === undefined || typeof notes.schema === "function") {
-      throw new Error("The schema is not accessible");
+    if (typeof pages.schema !== "function") {
+      throw new TypeError("The schema is not callable");
     }
 
-    const result = notes.schema.safeParse(note);
+    const parsedSchema = pages.schema({ image: mockImage });
+    const result = parsedSchema.safeParse(page);
 
     expect(result.success).toBe(true);
 
@@ -42,9 +46,9 @@ describe("notes", () => {
   });
 
   it("should apply default values as expected", () => {
-    const note = {
-      title: "The title of the note",
-      description: "A description of the note.",
+    const page = {
+      title: "The title of the page",
+      description: "A description of the page.",
       publishedOn: new Date("2023-01-01"),
       seo: {
         title: "qui sit vero",
@@ -52,11 +56,12 @@ describe("notes", () => {
       },
     };
 
-    if (notes.schema === undefined || typeof notes.schema === "function") {
-      throw new Error("The schema is not accessible");
+    if (typeof pages.schema !== "function") {
+      throw new TypeError("The schema is not callable");
     }
 
-    const result = notes.schema.safeParse(note);
+    const parsedSchema = pages.schema({ image: mockImage });
+    const result = parsedSchema.safeParse(page);
 
     expect(result.success).toBe(true);
 

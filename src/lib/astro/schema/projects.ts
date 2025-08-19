@@ -1,24 +1,19 @@
 import { defineCollection, reference, z } from "astro:content";
-import { isAvailableLocale } from "../../../../utils/type-guards";
-import { globLoader } from "../../loaders/glob-loader";
-import { contentsBaseSchema, coverSchema } from "./partials";
+import { globLoader } from "../loaders";
+import { contentsBaseSchema, i18nSchema } from "./partials";
 
 export const projects = defineCollection({
   loader: globLoader("projects"),
   schema: ({ image }) =>
-    contentsBaseSchema
+    contentsBaseSchema(image)
       .extend({
+        i18n: i18nSchema("projects").optional(),
         isArchived: z.boolean().optional().default(false),
-        cover: coverSchema(image).optional(),
-        i18n: z
-          .record(z.string().refine(isAvailableLocale), reference("projects"))
-          .optional(),
         kind: z.union([
           z.literal("app"),
           z.literal("site"),
           z.literal("theme"),
         ]),
-        permaslug: z.string().optional(),
         repository: z
           .object({
             name: z.string(),

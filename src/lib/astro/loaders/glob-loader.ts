@@ -1,9 +1,8 @@
 import { glob, type Loader } from "astro/loaders";
 import { CONFIG } from "../../../utils/constants";
 
-/* This is not a supported usage, so it could break. Currently `import.meta.
- * env` doesn't work anymore when using a path outside the project's root (ie.
- * when I'm using a Git submodules). Using `process.env` seems to fix that. */
+/* This is not a supported usage, so it could break but I need this to be able
+ * to separate the code from the contents (ie. when using a Git submodules). */
 const CONTENT_DIR: string = process.env.CONTENT_PATH ?? "./content";
 
 const getLocalesPattern = () => {

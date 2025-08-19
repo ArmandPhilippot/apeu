@@ -1,10 +1,10 @@
 import { describe, expect, it, vi } from "vitest";
-import { createImageMock } from "../../../../../tests/mocks/schema";
-import { CONFIG } from "../../../../utils/constants";
-import { pages } from "./pages";
+import { createImageMock } from "../../../../tests/mocks/schema";
+import { CONFIG } from "../../../utils/constants";
+import { indexPages } from "./index-pages";
 
-vi.mock("../../../../utils/dates", async (importOriginal) => {
-  const mod = await importOriginal<typeof import("../../../../utils/dates")>();
+vi.mock("../../../utils/dates", async (importOriginal) => {
+  const mod = await importOriginal<typeof import("../../../utils/dates")>();
 
   return {
     ...mod,
@@ -14,7 +14,7 @@ vi.mock("../../../../utils/dates", async (importOriginal) => {
 
 const mockImage = createImageMock();
 
-describe("pages", () => {
+describe("index-pages", () => {
   it("should include the meta in the transformed output", () => {
     const page = {
       title: "The title of the page",
@@ -28,11 +28,11 @@ describe("pages", () => {
       updatedOn: new Date("2023-01-02"),
     };
 
-    if (typeof pages.schema !== "function") {
+    if (typeof indexPages.schema !== "function") {
       throw new TypeError("The schema is not callable");
     }
 
-    const parsedSchema = pages.schema({ image: mockImage });
+    const parsedSchema = indexPages.schema({ image: mockImage });
     const result = parsedSchema.safeParse(page);
 
     expect(result.success).toBe(true);
@@ -56,11 +56,11 @@ describe("pages", () => {
       },
     };
 
-    if (typeof pages.schema !== "function") {
+    if (typeof indexPages.schema !== "function") {
       throw new TypeError("The schema is not callable");
     }
 
-    const parsedSchema = pages.schema({ image: mockImage });
+    const parsedSchema = indexPages.schema({ image: mockImage });
     const result = parsedSchema.safeParse(page);
 
     expect(result.success).toBe(true);

@@ -18,9 +18,9 @@ export const POST: APIRoute = async ({
   currentLocale,
   request,
 }: APIContext): Promise<Response> => {
-  const { locale, translate } = useI18n(currentLocale);
+  const { translate } = useI18n(currentLocale);
   const result = mailData.safeParse(await request.formData(), {
-    errorMap: zodErrorMap(locale),
+    errorMap: zodErrorMap(translate),
   });
 
   if (!result.success) {

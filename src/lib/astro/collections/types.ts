@@ -1,4 +1,15 @@
-import type { CollectionEntry, CollectionKey } from "astro:content";
+import type {
+  CollectionEntry,
+  CollectionKey,
+  DataCollectionKey,
+} from "astro:content";
+
+type ValidDataEntryId<C extends CollectionKey> = CollectionEntry<C>["id"];
+
+export type CollectionReference<C extends DataCollectionKey> = {
+  collection: C;
+  id: ValidDataEntryId<C>;
+};
 
 export type NonRoutableCollectionKey = Extract<
   CollectionKey,

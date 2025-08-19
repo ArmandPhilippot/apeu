@@ -1,6 +1,8 @@
 import type { CollectionKey } from "astro:content";
-import type { IndexedEntry } from "../../lib/astro/collections/types";
-import type { CollectionReference } from "../../types/utilities";
+import type {
+  CollectionReference,
+  IndexedEntry,
+} from "../../lib/astro/collections/types";
 
 /**
  * Filter the given tags references by locale.

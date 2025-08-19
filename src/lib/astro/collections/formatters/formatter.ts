@@ -1,8 +1,8 @@
 import type { CollectionKey } from "astro:content";
 import type { QueryMode } from "../../../../types/data";
-import type { IndexedEntry, RoutableCollectionKey } from "../types";
 import type { EntryByIdIndex } from "../indexes";
 import { isRoutableIndexedEntry } from "../type-guards";
+import type { IndexedEntry, RoutableCollectionKey } from "../types";
 import { getAuthor, getAuthorPreview } from "./authors";
 import { getBlog } from "./blogroll";
 import { getBookmark } from "./bookmarks";

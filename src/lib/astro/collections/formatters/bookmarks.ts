@@ -1,6 +1,6 @@
 import type { Bookmark } from "../../../../types/data";
-import type { IndexedEntry } from "../types";
 import type { EntryByIdIndex } from "../indexes";
+import type { IndexedEntry } from "../types";
 import { getTagsFromReferences } from "./utils";
 
 /**

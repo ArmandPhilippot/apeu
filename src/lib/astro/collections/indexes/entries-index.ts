@@ -4,13 +4,6 @@ import {
   type CollectionKey,
 } from "astro:content";
 import { collections } from "../../../../content.config";
-import type {
-  IndexedEntry,
-  NonRoutableCollectionKey,
-  NonRoutableIndexedEntry,
-  RoutableCollectionKey,
-  RoutableIndexedEntry,
-} from "../../../../types/routing";
 import type { AvailableLocale } from "../../../../types/tokens";
 import { getCumulativePaths } from "../../../../utils/paths";
 import { removeTrailingSlashes } from "../../../../utils/strings";
@@ -19,6 +12,13 @@ import {
   isDefaultLocale,
 } from "../../../../utils/type-guards";
 import { isRoutableEntry } from "../type-guards";
+import type {
+  IndexedEntry,
+  NonRoutableCollectionKey,
+  NonRoutableIndexedEntry,
+  RoutableCollectionKey,
+  RoutableIndexedEntry,
+} from "../types";
 import { flattenAndSortByHierarchy, normalizeEntryId } from "./utils";
 
 /**

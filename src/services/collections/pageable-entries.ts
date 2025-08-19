@@ -1,10 +1,10 @@
 import type { CollectionKey } from "astro:content";
 import { isValidCollection } from "../../lib/astro/collections/type-guards";
-import type { QueryMode } from "../../types/data";
 import type {
   NonRoutableCollectionKey,
   RoutableCollectionKey,
-} from "../../types/routing";
+} from "../../lib/astro/collections/types";
+import type { QueryMode } from "../../types/data";
 import { CONFIG } from "../../utils/constants";
 import {
   queryCollection,

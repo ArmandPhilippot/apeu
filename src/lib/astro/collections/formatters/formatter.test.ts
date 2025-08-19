@@ -5,7 +5,7 @@ import {
   blogrollFixture,
   bookmarkFixture,
 } from "../../../../../tests/fixtures/collections";
-import type { IndexedEntry } from "../../../../types/routing";
+import type { IndexedEntry } from "../types";
 import { getAuthor, getAuthorPreview } from "./authors";
 import { getBlog } from "./blogroll";
 import { getBookmark } from "./bookmarks";

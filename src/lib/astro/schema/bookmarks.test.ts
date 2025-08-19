@@ -1,17 +1,23 @@
 import { describe, expect, it, vi } from "vitest";
+import { createImageMock } from "../../../../tests/mocks/schema";
 import { bookmarks } from "./bookmarks";
 
-vi.mock("../../../../utils/dates", async (importOriginal) => {
-  const mod = await importOriginal<typeof import("../../../../utils/dates")>();
+vi.mock("../../../utils/dates", async (importOriginal) => {
+  const mod = await importOriginal<typeof import("../../../utils/dates")>();
 
   return {
     ...mod,
-    applyTimezone: vi.fn((date) => date), // Mocked to return the input date
+    applyTimezone: vi.fn((date) => date),
   };
 });
 
+const mockImage = createImageMock();
+
 describe("bookmarks", () => {
-  it("should include the meta in the transformed output", () => {
+  it("should include the meta in the transformed output", async () => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(4);
+
     const bookmark = {
       title: "The title of the bookmark",
       description: "A description of the bookmark.",
@@ -21,14 +27,12 @@ describe("bookmarks", () => {
       url: "https://example.test",
     };
 
-    if (
-      bookmarks.schema === undefined ||
-      typeof bookmarks.schema === "function"
-    ) {
-      throw new Error("The schema is not accessible");
+    if (typeof bookmarks.schema !== "function") {
+      throw new TypeError("The schema is not callable");
     }
 
-    const result = bookmarks.schema.safeParse(bookmark);
+    const parsedSchema = bookmarks.schema({ image: mockImage });
+    const result = await parsedSchema.safeParseAsync(bookmark);
 
     expect(result.success).toBe(true);
 
@@ -40,7 +44,10 @@ describe("bookmarks", () => {
     expect(result.data.meta.publishedOn).toStrictEqual(new Date("2023-01-01"));
   });
 
-  it("should apply default values as expected", () => {
+  it("should apply default values as expected", async () => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(3);
+
     const bookmark = {
       title: "The title of the bookmark",
       description: "A description of the bookmark.",
@@ -49,14 +56,12 @@ describe("bookmarks", () => {
       inLanguage: "en",
     };
 
-    if (
-      bookmarks.schema === undefined ||
-      typeof bookmarks.schema === "function"
-    ) {
-      throw new Error("The schema is not accessible");
+    if (typeof bookmarks.schema !== "function") {
+      throw new TypeError("The schema is not callable");
     }
 
-    const result = bookmarks.schema.safeParse(bookmark);
+    const parsedSchema = bookmarks.schema({ image: mockImage });
+    const result = await parsedSchema.safeParseAsync(bookmark);
 
     expect(result.success).toBe(true);
 

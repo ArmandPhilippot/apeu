@@ -1,11 +1,11 @@
 ---
 import type { ComponentProps } from "astro/types";
 import type { Graph } from "schema-dts";
+import type { RoutableCollectionKey } from "../../../lib/astro/collections/types";
 import { getJsonLdSchema } from "../../../lib/schema-dts/schema";
 import type { QueriedEntry } from "../../../services/collections";
 import { useI18n } from "../../../services/i18n";
 import { useRouting } from "../../../services/routing";
-import type { RoutableCollectionKey } from "../../../types/routing";
 import { WEBSITE_URL } from "../../../utils/constants";
 import { removeTrailingSlashes } from "../../../utils/strings";
 import { isDefaultLocale } from "../../../utils/type-guards";

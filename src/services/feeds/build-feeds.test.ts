@@ -4,8 +4,8 @@ import {
   blogrollFixture,
 } from "../../../tests/fixtures/collections";
 import { formatEntry } from "../../lib/astro/collections/formatters";
+import type { IndexedEntry } from "../../lib/astro/collections/types";
 import type { FeedCompatibleEntry } from "../../types/data";
-import type { IndexedEntry } from "../../types/routing";
 import { CONFIG } from "../../utils/constants";
 import {
   getFeedLanguageFromLocale,

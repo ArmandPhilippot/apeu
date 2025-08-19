@@ -1,11 +1,11 @@
 import { describe, expect, it, vi } from "vitest";
-import { createReferenceMock } from "../../../../../tests/mocks/references";
-import { createImageMock } from "../../../../../tests/mocks/schema";
-import { CONFIG } from "../../../../utils/constants";
-import { blogPosts } from "./blog-posts";
+import { createReferenceMock } from "../../../../tests/mocks/references";
+import { createImageMock } from "../../../../tests/mocks/schema";
+import { CONFIG } from "../../../utils/constants";
+import { guides } from "./guides";
 
-vi.mock("../../../../utils/dates", async (importOriginal) => {
-  const mod = await importOriginal<typeof import("../../../../utils/dates")>();
+vi.mock("../../../utils/dates", async (importOriginal) => {
+  const mod = await importOriginal<typeof import("../../../utils/dates")>();
 
   return {
     ...mod,
@@ -23,18 +23,17 @@ vi.mock("astro:content", async () => {
 
 const mockImage = createImageMock();
 
-describe("blogPosts", () => {
+describe("guides", () => {
   it("should include the meta in the transformed output", async () => {
     /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
     expect.assertions(4);
 
-    const post = {
-      title: "The title of the post",
-      description: "A description of the post.",
+    const guide = {
+      title: "The title of the guide",
+      description: "A description of the guide.",
       isDraft: true,
       publishedOn: new Date("2023-01-01"),
       authors: ["john-doe"],
-      category: "foo-bar",
       seo: {
         title: "qui sit vero",
         description: "Vel voluptatem laboriosam.",
@@ -42,12 +41,12 @@ describe("blogPosts", () => {
       updatedOn: new Date("2023-01-02"),
     };
 
-    if (typeof blogPosts.schema !== "function") {
+    if (typeof guides.schema !== "function") {
       throw new TypeError("The schema is not callable");
     }
 
-    const parsedSchema = blogPosts.schema({ image: mockImage });
-    const result = await parsedSchema.safeParseAsync(post);
+    const parsedSchema = guides.schema({ image: mockImage });
+    const result = await parsedSchema.safeParseAsync(guide);
 
     expect(result.success).toBe(true);
 
@@ -63,24 +62,23 @@ describe("blogPosts", () => {
     /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
     expect.assertions(4);
 
-    const post = {
-      title: "The title of the post",
-      description: "A description of the post.",
+    const guide = {
+      title: "The title of the guide",
+      description: "A description of the guide.",
       publishedOn: new Date("2023-01-01"),
       authors: ["john-doe"],
-      category: "foo-bar",
       seo: {
         title: "qui sit vero",
         description: "Vel voluptatem laboriosam.",
       },
     };
 
-    if (typeof blogPosts.schema !== "function") {
+    if (typeof guides.schema !== "function") {
       throw new TypeError("The schema is not callable");
     }
 
-    const parsedSchema = blogPosts.schema({ image: mockImage });
-    const result = await parsedSchema.safeParseAsync(post);
+    const parsedSchema = guides.schema({ image: mockImage });
+    const result = await parsedSchema.safeParseAsync(guide);
 
     expect(result.success).toBe(true);
 

@@ -1,10 +1,10 @@
 import { describe, expect, it, vi } from "vitest";
-import { createImageMock } from "../../../../../tests/mocks/schema";
-import { CONFIG } from "../../../../utils/constants";
-import { indexPages } from "./index-pages";
+import { createImageMock } from "../../../../tests/mocks/schema";
+import { CONFIG } from "../../../utils/constants";
+import { notes } from "./notes";
 
-vi.mock("../../../../utils/dates", async (importOriginal) => {
-  const mod = await importOriginal<typeof import("../../../../utils/dates")>();
+vi.mock("../../../utils/dates", async (importOriginal) => {
+  const mod = await importOriginal<typeof import("../../../utils/dates")>();
 
   return {
     ...mod,
@@ -14,11 +14,14 @@ vi.mock("../../../../utils/dates", async (importOriginal) => {
 
 const mockImage = createImageMock();
 
-describe("index-pages", () => {
-  it("should include the meta in the transformed output", () => {
-    const page = {
-      title: "The title of the page",
-      description: "A description of the page.",
+describe("notes", () => {
+  it("should include the meta in the transformed output", async () => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(4);
+
+    const note = {
+      title: "The title of the note",
+      description: "A description of the note.",
       isDraft: true,
       publishedOn: new Date("2023-01-01"),
       seo: {
@@ -28,12 +31,12 @@ describe("index-pages", () => {
       updatedOn: new Date("2023-01-02"),
     };
 
-    if (typeof indexPages.schema !== "function") {
+    if (typeof notes.schema !== "function") {
       throw new TypeError("The schema is not callable");
     }
 
-    const parsedSchema = indexPages.schema({ image: mockImage });
-    const result = parsedSchema.safeParse(page);
+    const parsedSchema = notes.schema({ image: mockImage });
+    const result = await parsedSchema.safeParseAsync(note);
 
     expect(result.success).toBe(true);
 
@@ -45,10 +48,13 @@ describe("index-pages", () => {
     expect(result.data.meta.updatedOn).toStrictEqual(new Date("2023-01-02"));
   });
 
-  it("should apply default values as expected", () => {
-    const page = {
-      title: "The title of the page",
-      description: "A description of the page.",
+  it("should apply default values as expected", async () => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(4);
+
+    const note = {
+      title: "The title of the note",
+      description: "A description of the note.",
       publishedOn: new Date("2023-01-01"),
       seo: {
         title: "qui sit vero",
@@ -56,12 +62,12 @@ describe("index-pages", () => {
       },
     };
 
-    if (typeof indexPages.schema !== "function") {
+    if (typeof notes.schema !== "function") {
       throw new TypeError("The schema is not callable");
     }
 
-    const parsedSchema = indexPages.schema({ image: mockImage });
-    const result = parsedSchema.safeParse(page);
+    const parsedSchema = notes.schema({ image: mockImage });
+    const result = await parsedSchema.safeParseAsync(note);
 
     expect(result.success).toBe(true);
 

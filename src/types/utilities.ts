@@ -1,24 +1,9 @@
-import type {
-  AllValuesOf,
-  DataCollectionKey,
-  DataEntryMap,
-} from "astro:content";
-
 export type AllKeysOf<T> = T extends unknown ? keyof T : never;
 
 export type AllowOnly<T, K extends keyof T> = Pick<T, K> & {
   [P in keyof Omit<T, K>]?: never;
 };
 export type OneOf<T, K = keyof T> = K extends keyof T ? AllowOnly<T, K> : never;
-
-type ValidDataEntryId<C extends keyof DataEntryMap> = AllValuesOf<
-  DataEntryMap[C]
->["id"];
-
-export type CollectionReference<C extends DataCollectionKey> = {
-  collection: C;
-  id: ValidDataEntryId<C>;
-};
 
 /**
  * Navigate through a nested property path and return the final value type.

@@ -1,19 +1,14 @@
 import { defineCollection, reference, z } from "astro:content";
-import { isAvailableLocale } from "../../../../utils/type-guards";
-import { globLoader } from "../../loaders/glob-loader";
-import { contentsBaseSchema, coverSchema } from "./partials";
+import { globLoader } from "../loaders";
+import { contentsBaseSchema, i18nSchema } from "./partials";
 
 export const guides = defineCollection({
   loader: globLoader("guides"),
   schema: ({ image }) =>
-    contentsBaseSchema
+    contentsBaseSchema(image)
       .extend({
         authors: z.array(reference("authors")),
-        cover: coverSchema(image).optional(),
-        i18n: z
-          .record(z.string().refine(isAvailableLocale), reference("guides"))
-          .optional(),
-        permaslug: z.string().optional(),
+        i18n: i18nSchema("guides").optional(),
         tags: z.array(reference("tags")).optional(),
       })
       .transform(

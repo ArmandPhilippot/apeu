@@ -1,10 +1,10 @@
 import type { CollectionEntry, CollectionKey } from "astro:content";
+import { NON_ROUTABLE_COLLECTIONS, ROUTABLE_COLLECTIONS } from "../constants";
 import type {
   IndexedEntry,
   NonRoutableCollectionKey,
   RoutableCollectionKey,
-} from "../../../../types/routing";
-import { NON_ROUTABLE_COLLECTIONS, ROUTABLE_COLLECTIONS } from "../constants";
+} from "../types";
 
 /**
  * Check if the given collection is routable.

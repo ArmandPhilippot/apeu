@@ -5,9 +5,7 @@ import type {
   RemarkPluginFrontmatterMeta,
   TaxonomyLink,
 } from "../../../../types/data";
-import type { IndexedEntry } from "../../../../types/routing";
 import type { AvailableLocale } from "../../../../types/tokens";
-import type { CollectionReference } from "../../../../types/utilities";
 import { WORDS_PER_MINUTE } from "../../../../utils/constants";
 import { toUpperCase } from "../../../../utils/strings";
 import {
@@ -17,6 +15,7 @@ import {
 } from "../../../../utils/type-guards";
 import type { EntryByIdIndex } from "../indexes";
 import { isInCollection, isRoutableIndexedEntry } from "../type-guards";
+import type { CollectionReference, IndexedEntry } from "../types";
 
 /**
  * Retrieve the reading time rounded in minutes and seconds.

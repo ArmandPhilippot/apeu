@@ -1,10 +1,10 @@
 import { describe, expect, it, vi } from "vitest";
-import { createImageMock } from "../../../../../tests/mocks/schema";
-import { CONFIG } from "../../../../utils/constants";
+import { createImageMock } from "../../../../tests/mocks/schema";
+import { CONFIG } from "../../../utils/constants";
 import { projects } from "./projects";
 
-vi.mock("../../../../utils/dates", async (importOriginal) => {
-  const mod = await importOriginal<typeof import("../../../../utils/dates")>();
+vi.mock("../../../utils/dates", async (importOriginal) => {
+  const mod = await importOriginal<typeof import("../../../utils/dates")>();
 
   return {
     ...mod,

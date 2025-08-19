@@ -8,7 +8,7 @@ import {
   type ZodTooBigIssue,
   type ZodTooSmallIssue,
 } from "zod";
-import { useI18n, type TranslateSingularKeys } from "../../services/i18n";
+import type { TranslateSingularKeys } from "../../services/i18n";
 
 const atLeastOrMoreThan = (
   isInclusive: boolean,
@@ -224,17 +224,16 @@ const getTooBigMessage = (
   }
 };
 
-/* eslint-disable complexity -- I should probably refactor this some day... */
+/* eslint-disable complexity -- I should probably refactor this... but zod v4 provides localized strings, so I think I'll wait for Astro to support that version to remove all this logic. */
 /**
  * Custom error map to translate zod messages.
  *
- * @param {string} currentLocale - A supported locale (fallback to the default locale if not supported).
+ * @param {TranslateSingularKeys} translate - A function to translate strings.
  * @returns {ZodErrorMap} The custom Zod error map.
  */
 export const zodErrorMap =
-  (currentLocale: string): ZodErrorMap =>
+  (translate: TranslateSingularKeys): ZodErrorMap =>
   (issue, ctx) => {
-    const { translate } = useI18n(currentLocale);
     let message = ctx.defaultError;
 
     switch (issue.code) {

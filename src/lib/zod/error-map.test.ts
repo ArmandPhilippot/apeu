@@ -1,5 +1,6 @@
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
 import { z } from "zod";
+import type { TranslateSingularKeys } from "../../services/i18n";
 import { zodErrorMap } from "./error-map";
 
 const mockTranslations: Record<string, string> = {
@@ -31,29 +32,20 @@ const mockTranslations: Record<string, string> = {
   "zod.validation.date.must.be": "Date must be {constraint} {value}",
 };
 
-const mockTranslate = (key: string, params?: Record<string, string>) => {
+const mockTranslate: TranslateSingularKeys = (
+  key: string,
+  params?: Record<string, string | number>
+) => {
   let translation = mockTranslations[key] ?? "Invalid input";
 
   if (params !== undefined) {
     for (const [paramKey, paramValue] of Object.entries(params)) {
-      translation = translation.replace(`{${paramKey}}`, paramValue);
+      translation = translation.replace(`{${paramKey}}`, `${paramValue}`);
     }
   }
 
   return translation;
 };
-
-vi.mock("../../services/i18n", async (importOriginal) => {
-  const mod = await importOriginal<typeof import("../../services/i18n")>();
-  return {
-    ...mod,
-    useI18n: () => {
-      return {
-        translate: mockTranslate,
-      };
-    },
-  };
-});
 
 const testErrorMapping = (schema: z.ZodType, input: unknown) => {
   const result = schema.safeParse(input);
@@ -63,7 +55,7 @@ const testErrorMapping = (schema: z.ZodType, input: unknown) => {
   if (!result.success) {
     const [issue] = result.error.issues;
     if (issue !== undefined) {
-      const errorMap = zodErrorMap("en");
+      const errorMap = zodErrorMap(mockTranslate);
 
       const ctx: z.ErrorMapCtx = {
         defaultError: "Default error",

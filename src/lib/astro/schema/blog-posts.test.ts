@@ -1,10 +1,11 @@
 import { describe, expect, it, vi } from "vitest";
-import { createImageMock } from "../../../../../tests/mocks/schema";
-import { CONFIG } from "../../../../utils/constants";
-import { tags } from "./tags";
+import { createReferenceMock } from "../../../../tests/mocks/references";
+import { createImageMock } from "../../../../tests/mocks/schema";
+import { CONFIG } from "../../../utils/constants";
+import { blogPosts } from "./blog-posts";
 
-vi.mock("../../../../utils/dates", async (importOriginal) => {
-  const mod = await importOriginal<typeof import("../../../../utils/dates")>();
+vi.mock("../../../utils/dates", async (importOriginal) => {
+  const mod = await importOriginal<typeof import("../../../utils/dates")>();
 
   return {
     ...mod,
@@ -12,18 +13,28 @@ vi.mock("../../../../utils/dates", async (importOriginal) => {
   };
 });
 
+vi.mock("astro:content", async () => {
+  const actual = await vi.importActual("astro:content");
+  return {
+    ...actual,
+    reference: vi.fn((collection: string) => createReferenceMock(collection)),
+  };
+});
+
 const mockImage = createImageMock();
 
-describe("tags", () => {
+describe("blogPosts", () => {
   it("should include the meta in the transformed output", async () => {
     /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
     expect.assertions(4);
 
-    const tag = {
-      title: "The title of the tag",
-      description: "A description of the tag.",
+    const post = {
+      title: "The title of the post",
+      description: "A description of the post.",
       isDraft: true,
       publishedOn: new Date("2023-01-01"),
+      authors: ["john-doe"],
+      category: "foo-bar",
       seo: {
         title: "qui sit vero",
         description: "Vel voluptatem laboriosam.",
@@ -31,12 +42,12 @@ describe("tags", () => {
       updatedOn: new Date("2023-01-02"),
     };
 
-    if (typeof tags.schema !== "function") {
+    if (typeof blogPosts.schema !== "function") {
       throw new TypeError("The schema is not callable");
     }
 
-    const parsedSchema = tags.schema({ image: mockImage });
-    const result = await parsedSchema.safeParseAsync(tag);
+    const parsedSchema = blogPosts.schema({ image: mockImage });
+    const result = await parsedSchema.safeParseAsync(post);
 
     expect(result.success).toBe(true);
 
@@ -52,22 +63,24 @@ describe("tags", () => {
     /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
     expect.assertions(4);
 
-    const tag = {
-      title: "The title of the tag",
-      description: "A description of the tag.",
+    const post = {
+      title: "The title of the post",
+      description: "A description of the post.",
       publishedOn: new Date("2023-01-01"),
+      authors: ["john-doe"],
+      category: "foo-bar",
       seo: {
         title: "qui sit vero",
         description: "Vel voluptatem laboriosam.",
       },
     };
 
-    if (typeof tags.schema !== "function") {
+    if (typeof blogPosts.schema !== "function") {
       throw new TypeError("The schema is not callable");
     }
 
-    const parsedSchema = tags.schema({ image: mockImage });
-    const result = await parsedSchema.safeParseAsync(tag);
+    const parsedSchema = blogPosts.schema({ image: mockImage });
+    const result = await parsedSchema.safeParseAsync(post);
 
     expect(result.success).toBe(true);
 

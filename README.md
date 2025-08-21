@@ -7,39 +7,137 @@ The source code of [my personal website](https://armand.philippot.eu).
 1. Clone the repository.
 2. Install the dependencies.
 3. Create an `.env` file and fill it with your own configuration based on `.env.example` placeholders
-4. (Recommended) To enable search feature you'll need to perform a first build of the website, so run `pnpm run build`.
+4. (Recommended) To enable the search feature you'll need to perform a first build with `pnpm run build`.
 
 ## Features
 
 ### Dev-only pages
 
-This project supports and uses dev-only pages. Those pages are accessible in your browser in dev mode but they won't be built (so they are not available in preview mode). You can find them thanks to their `_dev_` prefix.
+This project uses a custom Astro integration to support dev-only pages. Those pages are accessible in your browser in dev mode but they won't be built and are not available in preview mode. You can find them thanks to their `_dev_` prefix.
 
 Why `_dev_`? Because [Astro already uses a single underscore](https://docs.astro.build/en/guides/routing/#excluding-pages) to exclude the pages from being built so we need a different prefix to differentiate them and a double underscore could be confusing.
 
-> [!Note]
-> This integration only supports directories or pages with Astro extension (e.g. `_dev_tokens.astro`). You won't be able to build dev-only pages from Markdown files.
+> [!NOTE]
+> This integration only supports directories or pages using the Astro extension (e.g. `_dev_tokens.astro`). You won't be able to build dev-only pages from Markdown files.
 
 The following patterns are supported:
 
-- a dev-only page anywhere inside the pages directory
-- a dev-only folder containing regular pages anywhere inside the pages directory.
-
-The following pattern is not supported because it does not make sense:
-
-- a dev-only page inside a dev-only folder (eg. `src/pages/_dev_design-system/_dev_non-accessible-page.astro` is not accessible in your browser but `src/pages/_dev_design-system/accessible-page.astro`) is accessible.
+- a dev-only folder containing regular pages anywhere inside the pages directory,
+- a dev-only page anywhere inside the pages directory, except in a dev-only folder (eg. `src/pages/_dev_design-system/_dev_non-accessible-page.astro` is not accessible in your browser but `src/pages/_dev_design-system/accessible-page.astro` is).
 
 > [!IMPORTANT]
-> The pages are injected right after reading the configuration file. So if you create a new dev-only page (or rename an existing one), the page will not be recognized. You'll need to reload the Astro dev server.
-> Also, it seems the Astro Dev Toolbar can't be displayed in some dev pages so you do not have access to the Audit app for example. I'm not sure why.
+> The pages are injected right after reading the configuration file. So if you create a new dev-only page (or rename an existing one), the page will not be recognized. You'll need to reload the Astro dev server first.
+>
+> I'm not sure why but, the Astro Dev Toolbar can't be displayed in some dev pages. This prevents access to its applications like the Audit app for example.
 
-To access the page in your browser, you need to remove the prefix from the slug. For example, the existing `src/pages/_dev_design-system` folder can be accessed in your browser with the following url `http://localhost:4321/design-system`.
+To access a dev-only page in your browser, you need to remove the prefix from the slug. For example, the existing `src/pages/_dev_design-system` folder can be accessed in your browser with the following url `http://localhost:4321/design-system`.
+
+### i18n
+
+This project is i18n-ready and currently supports both English and French.
+
+#### Translations
+
+The translations are stored as a key/value pair in a JSON file per locale and are located in `src/translations`.
+
+When you need to localize UI strings in your components or templates, you can import the `useI18n()` helper. This returns two functions (`translate()` and `translatePlural()`) allowing you to deal with pluralization and interpolations.
+
+```astro
+---
+import { useI18n } from "../services/i18n";
+
+const {locale, translate, translatePlural } = useI18n(Astro.currentLocale);
+console.log(locale); // "en" or "fr", `locale` is a type-safe union
+translate("singular.key");
+translate("singular.key.with.interpolation", { name: "John" });
+translatePlural("plural.key", { count: 42 });
+translatePlural("plural.key.with.interpolation", { count: 3, name: "John" });
+---
+```
+
+#### Routing
+
+Localized routes provide a better UX. This projects supports a custom frontmatter property named `permaslug` allowing you to define the localized slug for the current file. This way, you can use the same filenames for each locale while using localized routes.
+
+Given the following structure:
+```
+content/
+├── en/
+│   ├── projects/
+│   │   ├── first-project.md // no permaslug
+│   │   └── index.md // no permaslug
+│   └── other contents
+└── fr/
+    ├── projects/
+    │   ├── first-project.md // using `permaslug: "premier-projet"`
+    │   └── index.md // using `permaslug: "projets"`
+    └── other contents
+```
+
+The computed route for `first-project.md` will be `/projets/premier-projet` when `fr` is the default locale, or `/fr/projets/premier-projet` otherwise.
+
+To use localized routing in your templates and components, you can import the `useRouting()` helper. This returns a single `routeById()` function allowing you to display a route using the content id. For example, using the previous structure and French as default locale:
+
+```astro
+---
+import { useRouting } from "../services/routing";
+
+const { routeById } = await useRouting();
+console.log(routeById("en/projects")) // "/en/projects"
+console.log(routeById("en/projects/first-project")) // "/en/projects/first-project"
+console.log(routeById("fr/projects")) // "/projets"
+console.log(routeById("fr/projects/first-project")) // "/projets/premier-projet"
+---
+```
+
+The `useRouting()` helper returns a `routeById()` function which is convenient when you use the same id in every locales for your contents. For example, You can then use the following: ``routeById(`${locale}/contact`)`` to display the contact page route in the current locale.
+
+#### Switching between languages
+
+By default, the language switcher will redirect the user to the selected language homepage even when browsing another page. To redirect to the same page in the selected language, you need to opt in by using the `i18n` property in your Markdown frontmatter. This property takes an object with a supported locale as key and the id of the localized entry as value.
+
+For example, assuming the French version exists, a `content/en/projects/first-project.md` file could define:
+
+```md
+---
+title: First project
+i18n:
+  fr: fr/projects/first-project
+---
+
+Project description.
+```
+
+This allows you to use different file names between the two locales while making the relationship explicit.
+
+### Mailer
+
+This project uses [Nodemailer](https://nodemailer.com/) to send emails through the contact form. Make sure to [configure your SMTP options](#setup) using a `.env` file.
+
+> [!NOTE]
+> If you want to test sending emails from `localhost` using your own mail server, you might need to add some permissions in your firewall.
+
+### RSS feeds
+
+Each [supported languages](#i18n) provides a global feed and individual feeds per collections. Individual tags and blog categories also provide their own feeds. This allows the user to choose which contents they want to subscribe to.
+
+### Search
+
+The search is powered by [Pagefind](https://pagefind.app/), a fully static search library. It needs to index the contents in advance to be able to work.
+
+Therefore, there are some caveats in dev mode:
+
+- You need to run `pnpm build` once before executing `pnpm dev` to build the search index and to be able to use the search form.
+- If you change the Pagefind config (like adding data attributes to filter the contents), the index will not be automatically rebuilt. You need to perform another build and to execute `pnpm dev` again.
+- The indexed images use the built URLs (the ones processed by Astro) so they can't be displayed in dev environment (so at the moment, they are fully deactivated).
 
 ### Stories
 
-Currently, it is not possible to use [Storybook with Astro](https://github.com/storybookjs/storybook/issues/18356). So I added an Astro integration to be able to test the components in isolation. This is not a Storybook replacement: you can't play with props, dynamically generate a table of available props, etc.
+Storybook is [currently not supported with Astro](https://github.com/storybookjs/storybook/issues/18356). This projects uses a custom Astro integration to bring support for testing components and views in isolation. This is not a Storybook replacement: you can't play with props, dynamically generate a table of available props, etc.
 
-To create stories for your components or views, use the following structure:
+Astro integrations can only inject routes for `.astro`, `.js` and `.ts` files. So, stories only supports the `.astro` extension and you can't use an `.mdx` file for them.
+
+To create stories for your components (`src/components`) or views (`src/views`), use the following structure:
 
 ```text
 /src/components
@@ -61,12 +159,12 @@ The `button.stories.astro` file is treated as a regular Astro page: import the c
 > [!NOTE]
 > The VS Code extension will infer the component name inside the `stories.astro` file as `Button` because of the filename. To import your component you'll need to rename the import (e.g. `ButtonComponent`) to avoid conflicts.
 
-The integration supports a base path to inject the stories. So with the current configuration and using the previous structure, you can access your stories in a browser with the following slugs:
+The integration supports a base path to inject the stories. Using [dev-only pages](#dev-only-pages) and the previous structure, stories are currently accessible in a browser under `/design-system`. The previous example gives the following slugs:
 
 - `/design-system/components/button`
 - `/design-system/components/link`
 
-If you need to divide your stories in multiple files, you can use a `stories` directory in your component directory. For example, both the following structures are supported:
+If you need to divide your stories in multiple files, you can use a `stories` directory inside your component directory. For example, both the following structures are supported:
 
 ```text
 /src/components
@@ -84,50 +182,14 @@ If you need to divide your stories in multiple files, you can use a `stories` di
     └── link.astro
 ```
 
-It is up to you to define links to your sub-stories in `index.stories.astro` or `button.stories.astro`.
+When you need multiple stories files, it is up to you to define the links to your sub-stories in an "index" file. In the previous example, this file would be `index.stories.astro` or `button.stories.astro`.
 
 > [!IMPORTANT]
-> If you create a new story file (ie. `.stories.astro`), you'll need to restart the dev server to be able to access it in your browser.
+> Because the stories are injected earlier in the build steps, if you create a new story file (ie. `.stories.astro`), you'll have to restart the dev server to be able to access it in your browser.
 
-Only `.astro` extension is supported for stories. I'd like to use `.mdx` but if I'm right, Astro integrations can only inject routes for `.astro`, `.js` and `.ts` files.
+### Themes
 
-### i18n
-
-This project is i18n-ready and it is available in English and in French right now.
-
-All UI strings are stored as a key/value pair in a JSON file located in `src/translations`.
-
-Then each templates use some helpers to translate those messages in the current locale. It also supports pluralization and route localization.
-
-### Mailer
-
-This project uses [Nodemailer](https://nodemailer.com/) to allow sending emails with the contact form (through an API route). Make sure to configure your SMTP options using a `.env` file.
-
-The easiest way to get started is:
-
-1. `cp .env.example .env`
-2. Replace the placeholders in `.env` with your own configuration
-
-> [!NOTE]
-> If you want to test sending emails from `localhost` using your own mail server, you might need to add some permissions in your firewall.
-
-### Search
-
-The search is powered by [Pagefind](https://pagefind.app/), a fully static search library. It needs to index the contents in advance to be able to work.
-
-There are some caveats in dev mode:
-
-- You need to run `pnpm build` once before executing `pnpm dev` to build the search index and to be able to use the search form.
-- If you change the Pagefind config (like adding data attributes to filter the contents), the index will not be automatically rebuilt. You need to perform another build and to execute `pnpm dev` again.
-- The indexed images use the built URLs (the ones processed by Astro) so they can't be displayed in dev environment (so for now, I decided to deactivated them).
-
-### Dark and Light themes
-
-You can choose to use a dark theme or light theme while browsing the website. You can also choose to set the theme as `auto`. In this case, the website theme will be updated according to your operating system preferences. This is especially useful when you want to change the theme depending on the time of day.
-
-### RSS feeds
-
-A global feed is available in each language. This projects also supports individual feeds for each collections.
+You can choose to use a dark theme or light theme while browsing the website. You can also choose to set the theme as `auto`. When using that setting, the website theme will be updated according to your operating system preferences. This is especially useful when you want to change the theme depending on the time of day.
 
 ### View transitions
 
@@ -150,11 +212,11 @@ The available content types are:
 - projects
 - tags
 
-To check the expected fields in the frontmatter, please consult the files in `src/lib/astro/collections/schema`.
+To check the expected fields in the frontmatter, please consult the files in `src/lib/astro/schema`.
 
-Both `.md` and `.mdx` extensions are supported. However, because of technologies limitations, the `.mdx` format is recommended if you want to be able to use extra features like callouts and code blocks.
+Both `.md` and `.mdx` extensions are supported. However, because of technologies limitations, the `.mdx` format is recommended to be able to use extra features like callouts and code blocks.
 
-This project is designed to avoid imports in your `content` directory. Elements (even HTML tags) are automatically mapped to custom components when you use the `.mdx` extension.
+This project is designed to avoid imports in your `content` directory. Elements (including HTML tags) are automatically mapped to custom components when you use the `.mdx` extension.
 
 ### Automatic meta: Words count / Reading time
 
@@ -178,7 +240,7 @@ The contents of the tip.
 :::
 ```
 
-Here are the supported callouts type: "critical", "discovery", "idea", "info", "success" and "warning".
+Here are the supported callouts type: `critical`, `discovery`, `idea`, `info`, `success` and `warning`.
 
 ### Code blocks
 
@@ -201,6 +263,8 @@ When using `.mdx` format:
 
 - you can use local image paths without the need to import them,
 - if you don't specify the images dimensions, they will be inferred for you even with remote images.
+
+Images can be colocated with your content. You can, for example use `contents/en/guides/assets` to store your English guides images, and then use `[my image](./assets/any-image.jpg)` in `contents/en/guides/your-guide.mdx`.
 
 ## Development
 
@@ -282,6 +346,7 @@ Before starting, please follow the instructions in [Setup](#setup).
 │   ├── types/
 │   ├── utils/
 │   └── content.config.ts
+├── tests
 ├── package.json
 └── config files
 ```
@@ -299,9 +364,12 @@ In details:
 - `src/translations/`: the JSON files used to store all UI strings and routes for one language,
 - `src/types/`: the Typescript types shared across the application,
 - `src/utils/`: all the utilities (constants, helpers, etc.) to build the project.
+- `tests/`: fixtures, utilities and mocks for testing-purposes.
 
 > [!IMPORTANT]
-> All the `index.md` files in the `content` directory are required and the directory names must be the same. These files are used in `src/pages` to add metadata and optional content to the index pages of your collections. Pages created in `content/pages` can use any filename but some pages are required: `404.md`, `blogroll.md`, `bookmarks.md`, `contact.md`, `feeds.md`, `home.md`, `legal-notice.md` and `search.md`. You can also use the `.mdx` extension.
+> The current layout expects some files (`.md` or `.mdx`) to exist in the `content` directory:
+> * In `content/[locale]/pages`, the following filenames are expected: `404`, `blogroll`, `bookmarks`, `contact`, `feeds`, `home`, `legal-notice` and `search`.
+> * In the other collections located in `content/[locale]` (including nested directories), an `index.md` or `index.mdx` is expected.
 
 ### Design system
 
@@ -330,7 +398,7 @@ When creating a new component you should also create stories for it and use the 
 └── other components
 ```
 
-The component stories will be collected when your start the dev server and will be available in the design system (accessible under `/design-system` in your browser).
+The component stories will be collected when you start the dev server and will be available in the design system.
 
 This way you can test them in isolation both visually through stories and with Vitest tests.
 
@@ -353,7 +421,7 @@ When creating new design elements, you should use them. For example:
 }
 ```
 
-You can find all the available tokens in the design system (accessible under `/design-system` in your browser).
+You can find all the available tokens in the design system.
 
 #### Views
 
@@ -378,11 +446,11 @@ When creating a new view you should also create stories for it and use the follo
 └── other views
 ```
 
-The view stories will be collected when your start the dev server and will be available in the design system (accessible under `/design-system` in your browser).
+The view stories will be collected when your start the dev server and will be available in the design system.
 
 This way you can test them in isolation both visually through stories and with Vitest tests.
 
-### Add a new language
+### Adding a new language
 
 To add a new language for this website, you need to create a new JSON file in `src/translations` using the locale as filename. Here are the required steps:
 
@@ -392,7 +460,7 @@ To add a new language for this website, you need to create a new JSON file in `s
 4. `nano src/translations/index.ts`: in that file, import then reexport your new language,
 5. The new language is now available!
 
-### Use localization in templates
+### Using localization in templates
 
 If you need to use UI strings or routes in your templates:
 
@@ -431,7 +499,7 @@ const { routeById } = await useRouting();
 
 ### Writing templates for collection pages
 
-Instead of using directly the `getCollection` helper from Astro, you should use the `queryCollection` helper declared in this project. This function helps you query a collection with filters, offset and ordering. `queryCollection` will also resolves every references!
+Instead of using directly the `getCollection` helper from Astro, you should use the `queryCollection` helper defined in this project. This function helps you query a collection with filters, offset and ordering. `queryCollection` will also resolves every references!
 
 **DO:**
 
@@ -481,7 +549,7 @@ const firstTenBlogPosts = orderedBlogPosts.slice(0, 10);
 // Your template here
 ```
 
-As you can see, `queryCollection` helps reduce a lot of boilerplate code and it can also be used to resolve multiple collections! If you only need to resolve one entry, you can use `queryEntry` instead.
+As you can see, `queryCollection` helps reduce a lot of boilerplate code and it can also be used to resolve multiple collections at once by providing an array! If you only need to resolve one entry, you can use `queryEntry` instead.
 
 ### Workflow
 

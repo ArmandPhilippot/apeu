@@ -2,11 +2,11 @@
 "apeu": major
 ---
 
-Moves routing utilities from `useI18n` to `useRouting`.
+Replaces the `route` helper from `useI18n` with `useRouting`.
 
-Routes are no longer handled statically in a translation file but dynamically in an index built from data provided in your content directory. Because of that, the `route` property has been removed from the object returned by `useI18n`.
+Routes are no longer handled statically in a translation file but dynamically in an index built from data provided in your content directory. Because of that, the `route` property has been removed from the object returned by `useI18n()`.
 
-If you need to display a route in your templates, you'll need to import and use the `useRouting` utility instead. This returns an object containing a `routeById` helper.
+If you need to display a route in your templates, you'll need to import and use the `useRouting()` utility instead. This returns an object containing a `routeById()` helper.
 
 ```diff
 ---

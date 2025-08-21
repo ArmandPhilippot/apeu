@@ -1,8 +1,10 @@
 ---
-"apeu": major
+"apeu": minor
 ---
 
 Moves some helpers from `utils` to `services` and renames some of them.
+
+Those changes are mostly internals and shouldn't break anything, but if you were using this project as a template you might be interested in the following changes because of the paths update.
 
 Some helpers were defined in `src/utils` and have been moved to `src/services` to make the distinction between generic and feature-specific helpers clearer. This will also make splitting the files easier if needed in the future when a feature grows.
 

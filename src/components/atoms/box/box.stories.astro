@@ -25,6 +25,7 @@ const { breadcrumb, seo } = getStoryMeta({
     <CodePreview
       code={`import Box from "./components/atoms/box/box.astro"`}
       label="How to import"
+      lang="ts"
     />
     <CodePreview code={`<Box>The box contents.</Box>`} label="Basic use">
       <BoxComponent>The box contents.</BoxComponent>
@@ -38,6 +39,7 @@ const { breadcrumb, seo } = getStoryMeta({
 <br />
 <Box elevation="floating">The box contents.</Box>`}
       label="Using elevation"
+      lang="astro"
     >
       <BoxComponent elevation="raised">The box contents.</BoxComponent>
       <br />
@@ -49,6 +51,7 @@ const { breadcrumb, seo } = getStoryMeta({
     <CodePreview
       code={`<Box isBordered>The box contents.</Box>`}
       label="With borders"
+      lang="astro"
     >
       <BoxComponent isBordered>The box contents.</BoxComponent>
     </CodePreview>
@@ -56,6 +59,7 @@ const { breadcrumb, seo } = getStoryMeta({
     <CodePreview
       code={`<Box isBordered isRounded>The box contents.</Box>`}
       label="With rounded borders"
+      lang="astro"
     >
       <BoxComponent isBordered isRounded>The box contents.</BoxComponent>
     </CodePreview>
@@ -63,6 +67,7 @@ const { breadcrumb, seo } = getStoryMeta({
     <CodePreview
       code={`<Box isBordered isPadded>The box contents.</Box>`}
       label="With padding"
+      lang="astro"
     >
       <BoxComponent isBordered isPadded>The box contents.</BoxComponent>
     </CodePreview>
@@ -76,6 +81,7 @@ const { breadcrumb, seo } = getStoryMeta({
   <p>The last child should not have a bottom margin.</p>
 </Box>`}
       label="Using prose"
+      lang="astro"
     >
       <BoxComponent isBordered isProse>
         <p>The first child should not have a top margin.</p>
@@ -93,6 +99,7 @@ const { breadcrumb, seo } = getStoryMeta({
     <CodePreview
       code={`<Box isBordered isCentered>The box contents.</Box>`}
       label="With centering"
+      lang="astro"
     >
       <BoxComponent isBordered isCentered style="width: 15rem;"
         >The box contents.</BoxComponent

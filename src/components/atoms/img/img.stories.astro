@@ -22,6 +22,7 @@ const { breadcrumb, seo } = getStoryMeta({
     <CodePreview
       code={`import Img from "./components/atoms/img/img.astro"`}
       label="How to import"
+      lang="ts"
     />
     <Heading>Imported local image</Heading>
     <CodePreview
@@ -30,6 +31,7 @@ import logo from "../../../assets/logo.svg";
 ---
 <Img alt="The logo" src={logo} />`}
       label="Basic use"
+      lang="astro"
     >
       <ImgComponent alt="The logo" src={logo} />
     </CodePreview>
@@ -43,7 +45,8 @@ import logo from "../../../assets/logo.svg";
 import logo from "../../../assets/logo.svg";
 ---
 <Img alt="The logo" data-clickable="true" src={logo} />`}
-      label="Basic use"
+      label="Using a clickable image"
+      lang="astro"
     >
       <ImgComponent alt="The logo" data-clickable="true" src={logo} />
     </CodePreview>
@@ -55,7 +58,8 @@ import logo from "../../../assets/logo.svg";
   src="https://picsum.photos/640/480"
   width={640}
 />`}
-      label="Basic use"
+      label="Using a remote image"
+      lang="astro"
     >
       <ImgComponent
         alt="An example"

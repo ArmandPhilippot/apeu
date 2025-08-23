@@ -22,10 +22,12 @@ const { breadcrumb, seo } = getStoryMeta({
     <CodePreview
       code={`import Blockquote from "./components/atoms/blockquote/blockquote.astro"`}
       label="How to import"
+      lang="ts"
     />
     <CodePreview
       code={`<Blockquote lang="en">This is a quotation.</Blockquote>`}
       label="Basic use"
+      lang="astro"
     >
       <BlockquoteComponent lang="en">This is a quotation.</BlockquoteComponent>
     </CodePreview>
@@ -45,6 +47,7 @@ const { breadcrumb, seo } = getStoryMeta({
 </p>
 </Blockquote>`}
       label="Using multiple paragraphs"
+      lang="astro"
     >
       <BlockquoteComponent>
         <p>
@@ -67,6 +70,7 @@ const { breadcrumb, seo } = getStoryMeta({
   <Fragment slot="caption">In <cite>Lorem ipsum</cite></Fragment>
 </Blockquote>`}
       label="Using a caption"
+      lang="astro"
     >
       <BlockquoteComponent>
         Necessitatibus repudiandae voluptates accusantium architecto sint.

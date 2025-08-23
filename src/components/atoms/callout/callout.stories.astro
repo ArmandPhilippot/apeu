@@ -22,6 +22,7 @@ const { breadcrumb, seo } = getStoryMeta({
     <CodePreview
       code={`import Callout from "./components/atoms/callout/callout.astro"`}
       label="How to import"
+      lang="ts"
     />
     <CodePreview code={`<Callout>The contents.</Callout>`} label="Basic use">
       <CalloutComponent>The contents.</CalloutComponent>
@@ -40,6 +41,7 @@ const { breadcrumb, seo } = getStoryMeta({
 <br />
 <Callout type="warning">The contents.</Callout>`}
       label="Using different types of callouts"
+      lang="astro"
     >
       <CalloutComponent type="critical">The contents.</CalloutComponent>
       <br />
@@ -62,6 +64,7 @@ const { breadcrumb, seo } = getStoryMeta({
   The contents.
 </Callout>`}
       label="Using a custom label"
+      lang="astro"
     >
       <CalloutComponent
         label="A custom label a bit long to check small devices"

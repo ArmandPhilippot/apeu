@@ -22,6 +22,7 @@ const { breadcrumb, seo } = getStoryMeta({
     <CodePreview
       code={`import Grid from "./components/atoms/grid/grid.astro"`}
       label="How to import"
+      lang="ts"
     />
     <CodePreview
       code={`<Grid>
@@ -33,6 +34,7 @@ const { breadcrumb, seo } = getStoryMeta({
   <div>Item 6</div>
 </Grid>`}
       label="Basic use"
+      lang="astro"
     >
       <GridComponent>
         <div>Item 1</div>
@@ -59,6 +61,7 @@ const { breadcrumb, seo } = getStoryMeta({
   <div>Item 6</div>
 </Grid>`}
       label="Setting a number of columns"
+      lang="astro"
     >
       <GridComponent cols={2}>
         <div>Item 1</div>
@@ -84,6 +87,7 @@ const { breadcrumb, seo } = getStoryMeta({
   <div>Item 6</div>
 </Grid>`}
       label="Setting a number of rows"
+      lang="astro"
     >
       <GridComponent rows={3}>
         <div>Item 1</div>
@@ -106,6 +110,7 @@ const { breadcrumb, seo } = getStoryMeta({
   <div>Item 6</div>
 </Grid>`}
       label="Setting a unique gap both for columns and rows"
+      lang="astro"
     >
       <GridComponent gap="md">
         <div>Item 1</div>
@@ -127,6 +132,7 @@ const { breadcrumb, seo } = getStoryMeta({
   <div>Item 6</div>
 </Grid>`}
       label="Setting a gap for the columns only"
+      lang="astro"
     >
       <GridComponent gap={{ col: "md" }}>
         <div>Item 1</div>
@@ -148,6 +154,7 @@ const { breadcrumb, seo } = getStoryMeta({
   <div>Item 6</div>
 </Grid>`}
       label="Setting a gap for the rows only"
+      lang="astro"
     >
       <GridComponent gap={{ row: "md" }}>
         <div>Item 1</div>
@@ -169,6 +176,7 @@ const { breadcrumb, seo } = getStoryMeta({
   <div>Item 6</div>
 </Grid>`}
       label="Setting a different gap for columns and rows"
+      lang="astro"
     >
       <GridComponent gap={{ col: "md", row: "xs" }}>
         <div>Item 1</div>
@@ -194,6 +202,7 @@ const { breadcrumb, seo } = getStoryMeta({
   <div>Item 6</div>
 </Grid>`}
       label="Setting a minimal size for columns"
+      lang="astro"
     >
       <GridComponent sizeMinCols="400px">
         <div>Item 1</div>
@@ -219,6 +228,7 @@ const { breadcrumb, seo } = getStoryMeta({
   <div>Item 6</div>
 </Grid>`}
       label="Setting a maximal size for columns"
+      lang="astro"
     >
       <GridComponent sizeMaxCols="200px">
         <div>Item 1</div>
@@ -244,6 +254,7 @@ const { breadcrumb, seo } = getStoryMeta({
   <div>Item 6</div>
 </Grid>`}
       label="Setting a custom template for columns"
+      lang="astro"
     >
       <GridComponent templateCols="1fr auto 1fr">
         <div>Item 1</div>
@@ -269,6 +280,7 @@ const { breadcrumb, seo } = getStoryMeta({
   <div>Item 6</div>
 </Grid>`}
       label="Setting a custom template for rows"
+      lang="astro"
     >
       <GridComponent templateRows="auto 3rem auto">
         <div>Item 1</div>

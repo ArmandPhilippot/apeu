@@ -25,10 +25,12 @@ const { breadcrumb, seo } = getStoryMeta({
     <CodePreview
       code={`import Copyright from "./components/atoms/copyright/copyright.astro"`}
       label="How to import"
+      lang="ts"
     />
     <CodePreview
       code={`<Copyright creationYear={2025} owner="John Doe" />`}
       label="Basic use"
+      lang="astro"
     >
       <CopyrightComponent creationYear={2025} owner="John Doe" />
     </CodePreview>
@@ -40,6 +42,7 @@ const { breadcrumb, seo } = getStoryMeta({
     <CodePreview
       code={`<Copyright creationYear={2020} owner="John Doe" />`}
       label="Automatic handling of dates"
+      lang="astro"
     >
       <CopyrightComponent creationYear={2020} owner="John Doe" />
     </CodePreview>

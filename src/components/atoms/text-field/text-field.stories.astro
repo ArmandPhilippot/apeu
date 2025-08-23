@@ -1,5 +1,6 @@
 ---
 import { getStoryMeta } from "../../../utils/stories";
+import CodePreview from "../../molecules/code-preview/code-preview.astro";
 import PageLayout from "../../templates/page-layout/page-layout.astro";
 import Heading from "../heading/heading.astro";
 import TextFieldComponent from "./text-field.astro";
@@ -16,39 +17,90 @@ const { breadcrumb, seo } = getStoryMeta({
 
 <PageLayout breadcrumb={breadcrumb} seo={seo} title={title}>
   <Fragment slot="body">
-    <Heading as="h2">Type</Heading>
-    <Heading as="h3">Date</Heading>
-    <TextFieldComponent type="date" />
-    <Heading as="h3">Datetime</Heading>
-    <TextFieldComponent type="datetime-local" />
-    <Heading as="h3">Email</Heading>
-    <TextFieldComponent type="email" />
-    <Heading as="h3">Month</Heading>
-    <TextFieldComponent type="month" />
-    <Heading as="h3">Password</Heading>
-    <TextFieldComponent type="password" />
-    <Heading as="h3">Search</Heading>
-    <TextFieldComponent type="search" />
-    <Heading as="h3">Tel</Heading>
-    <TextFieldComponent type="tel" />
-    <Heading as="h3">Text</Heading>
-    <TextFieldComponent type="text" />
-    <Heading as="h3">Textarea</Heading>
-    <TextFieldComponent type="textarea" />
-    <Heading as="h3">Time</Heading>
-    <TextFieldComponent type="time" />
-    <Heading as="h3">URL</Heading>
-    <TextFieldComponent type="url" />
-    <Heading as="h3">Week</Heading>
-    <TextFieldComponent type="week" />
-    <Heading as="h2">State</Heading>
-    <Heading as="h3">Editable</Heading>
-    <TextFieldComponent type="text" />
-    <Heading as="h3">Read-only</Heading>
-    <TextFieldComponent readonly="true" type="text" />
-    <Heading as="h3">Disabled</Heading>
-    <TextFieldComponent disabled="true" type="text" />
-    <Heading as="h3">With placeholder</Heading>
-    <TextFieldComponent placeholder="Some placeholder..." type="text" />
+    <Heading>Introduction</Heading>
+    <CodePreview
+      code={`import TextField from "./components/atoms/text-field/text-field.astro";`}
+      label="How to import"
+      lang="ts"
+    />
+    <CodePreview
+      code={`<TextField type="text" />`}
+      label="Basic use"
+      lang="astro"
+    >
+      <TextFieldComponent type="text" />
+    </CodePreview>
+    <Heading as="h2">Types</Heading>
+    <CodePreview
+      code={`<TextFieldComponent type="date" />
+<br />
+<TextFieldComponent type="datetime-local" />
+<br />
+<TextFieldComponent type="email" />
+<br />
+<TextFieldComponent type="month" />
+<br />
+<TextFieldComponent type="password" />
+<br />
+<TextFieldComponent type="search" />
+<br />
+<TextFieldComponent type="tel" />
+<br />
+<TextFieldComponent type="text" />
+<br />
+<TextFieldComponent type="textarea" />
+<br />
+<TextFieldComponent type="time" />
+<br />
+<TextFieldComponent type="url" />
+<br />
+<TextFieldComponent type="week" />`}
+      label="Using different types of text fields"
+      lang="astro"
+    >
+      <TextFieldComponent type="date" />
+      <br />
+      <TextFieldComponent type="datetime-local" />
+      <br />
+      <TextFieldComponent type="email" />
+      <br />
+      <TextFieldComponent type="month" />
+      <br />
+      <TextFieldComponent type="password" />
+      <br />
+      <TextFieldComponent type="search" />
+      <br />
+      <TextFieldComponent type="tel" />
+      <br />
+      <TextFieldComponent type="text" />
+      <br />
+      <TextFieldComponent type="textarea" />
+      <br />
+      <TextFieldComponent type="time" />
+      <br />
+      <TextFieldComponent type="url" />
+      <br />
+      <TextFieldComponent type="week" />
+    </CodePreview>
+    <Heading as="h2">States</Heading>
+    <CodePreview
+      code={`<TextFieldComponent type="text" />
+<br />
+<TextFieldComponent readonly="true" type="text" />
+<br />
+<TextFieldComponent disabled="true" type="text" />
+<br />
+<TextFieldComponent placeholder="Some placeholder..." type="text" />`}
+      label="Basic use"
+      lang="astro"
+    >
+      <TextFieldComponent type="text" />
+      <br />
+      <TextFieldComponent readonly="true" type="text" />
+      <br />
+      <TextFieldComponent disabled="true" type="text" />
+      <br />
+      <TextFieldComponent placeholder="Some placeholder..." type="text" />
+    </CodePreview>
   </Fragment>
 </PageLayout>

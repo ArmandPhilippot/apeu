@@ -1,5 +1,6 @@
 ---
 import { getStoryMeta } from "../../../utils/stories";
+import CodePreview from "../../molecules/code-preview/code-preview.astro";
 import PageLayout from "../../templates/page-layout/page-layout.astro";
 import Heading from "../heading/heading.astro";
 import ListItem from "./list-item.astro";
@@ -17,56 +18,145 @@ const { breadcrumb, seo } = getStoryMeta({
 
 <PageLayout breadcrumb={breadcrumb} seo={seo} title={title}>
   <Fragment slot="body">
-    <Heading as="h2">Usage</Heading>
+    <Heading as="h2">Introduction</Heading>
     <p>
       This component is usually used to define a list of related items, either
       ordered or unordered.
     </p>
+    <CodePreview
+      code={`import List from "./components/atoms/list/list.astro";
+import ListItem from "./components/atoms/list-item/list-item.astro";`}
+      label="How to import"
+      lang="ts"
+    />
+    <CodePreview
+      code={`<List>
+  <ListItem>Item 1</ListItem>
+  <ListItem>Item 2</ListItem>
+  <ListItem>Item 3</ListItem>
+</List>`}
+      label="Basic use"
+      lang="astro"
+    >
+      <ListComponent>
+        <ListItem>Item 1</ListItem>
+        <ListItem>Item 2</ListItem>
+        <ListItem>Item 3</ListItem>
+      </ListComponent>
+    </CodePreview>
     <Heading as="h2">Kind</Heading>
     <Heading as="h3">Unordered</Heading>
-    <ListComponent>
-      <ListItem>Item 1</ListItem>
-      <ListItem>Item 2</ListItem>
-      <ListItem>Item 3</ListItem>
-    </ListComponent>
+    <CodePreview
+      code={`<List>
+  <ListItem>Item 1</ListItem>
+  <ListItem>Item 2</ListItem>
+  <ListItem>Item 3</ListItem>
+</List>`}
+      label="Using an unordered list"
+      lang="astro"
+    >
+      <ListComponent>
+        <ListItem>Item 1</ListItem>
+        <ListItem>Item 2</ListItem>
+        <ListItem>Item 3</ListItem>
+      </ListComponent>
+    </CodePreview>
     <Heading as="h3">Ordered</Heading>
-    <ListComponent as="ol">
-      <ListItem>Item 1</ListItem>
-      <ListItem>Item 2</ListItem>
-      <ListItem>Item 3</ListItem>
-    </ListComponent>
+    <CodePreview
+      code={`<List as="ol">
+  <ListItem>Item 1</ListItem>
+  <ListItem>Item 2</ListItem>
+  <ListItem>Item 3</ListItem>
+</List>`}
+      label="Using an ordered list"
+      lang="astro"
+    >
+      <ListComponent as="ol">
+        <ListItem>Item 1</ListItem>
+        <ListItem>Item 2</ListItem>
+        <ListItem>Item 3</ListItem>
+      </ListComponent>
+    </CodePreview>
     <Heading as="h3">Nesting and mixing</Heading>
-    <ListComponent>
-      <ListItem>Item 1</ListItem>
-      <ListItem>
-        Item 2
-        <ListComponent as="ol">
-          <ListItem>Subitem 1</ListItem>
-          <ListItem>Subitem 2</ListItem>
-          <ListItem>Subitem 3</ListItem>
-        </ListComponent>
-      </ListItem>
-      <ListItem>Item 3</ListItem>
-      <ListItem>Item 4</ListItem>
-    </ListComponent>
+    <CodePreview
+      code={`<List>
+  <ListItem>Item 1</ListItem>
+  <ListItem>
+    Item 2
+    <List as="ol">
+      <ListItem>Subitem 1</ListItem>
+      <ListItem>Subitem 2</ListItem>
+      <ListItem>Subitem 3</ListItem>
+    </List>
+  </ListItem>
+  <ListItem>Item 3</ListItem>
+  <ListItem>Item 4</ListItem>
+</List>`}
+      label="Using mixed and nested lists"
+      lang="astro"
+    >
+      <ListComponent>
+        <ListItem>Item 1</ListItem>
+        <ListItem>
+          Item 2
+          <ListComponent as="ol">
+            <ListItem>Subitem 1</ListItem>
+            <ListItem>Subitem 2</ListItem>
+            <ListItem>Subitem 3</ListItem>
+          </ListComponent>
+        </ListItem>
+        <ListItem>Item 3</ListItem>
+        <ListItem>Item 4</ListItem>
+      </ListComponent>
+    </CodePreview>
     <Heading as="h2">Options</Heading>
     <Heading as="h3"><code>isInline</code></Heading>
-    <ListComponent isInline>
-      <ListItem>Item 1</ListItem>
-      <ListItem>Item 2</ListItem>
-      <ListItem>Item 3</ListItem>
-    </ListComponent>
+    <CodePreview
+      code={`<List isInline>
+  <ListItem>Item 1</ListItem>
+  <ListItem>Item 2</ListItem>
+  <ListItem>Item 3</ListItem>
+</List>`}
+      label="Using an inlined list"
+      lang="astro"
+    >
+      <ListComponent isInline>
+        <ListItem>Item 1</ListItem>
+        <ListItem>Item 2</ListItem>
+        <ListItem>Item 3</ListItem>
+      </ListComponent>
+    </CodePreview>
     <Heading as="h3"><code>hideMarker</code></Heading>
-    <ListComponent hideMarker>
-      <ListItem>Item 1</ListItem>
-      <ListItem>Item 2</ListItem>
-      <ListItem>Item 3</ListItem>
-    </ListComponent>
+    <CodePreview
+      code={`<List hideMarker>
+  <ListItem>Item 1</ListItem>
+  <ListItem>Item 2</ListItem>
+  <ListItem>Item 3</ListItem>
+</List>`}
+      label="Using a list without marker"
+      lang="astro"
+    >
+      <ListComponent hideMarker>
+        <ListItem>Item 1</ListItem>
+        <ListItem>Item 2</ListItem>
+        <ListItem>Item 3</ListItem>
+      </ListComponent>
+    </CodePreview>
     <Heading as="h3"><code>hideMarker</code> on a specific item</Heading>
-    <ListComponent>
-      <ListItem>Item 1</ListItem>
-      <ListItem hideMarker>Item 2</ListItem>
-      <ListItem>Item 3</ListItem>
-    </ListComponent>
+    <CodePreview
+      code={`<List>
+  <ListItem>Item 1</ListItem>
+  <ListItem hideMarker>Item 2</ListItem>
+  <ListItem>Item 3</ListItem>
+</List>`}
+      label="Using a list while hiding a specific marker"
+      lang="astro"
+    >
+      <ListComponent>
+        <ListItem>Item 1</ListItem>
+        <ListItem hideMarker>Item 2</ListItem>
+        <ListItem>Item 3</ListItem>
+      </ListComponent>
+    </CodePreview>
   </Fragment>
 </PageLayout>

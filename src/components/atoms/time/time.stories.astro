@@ -1,5 +1,6 @@
 ---
 import { getStoryMeta } from "../../../utils/stories";
+import CodePreview from "../../molecules/code-preview/code-preview.astro";
 import PageLayout from "../../templates/page-layout/page-layout.astro";
 import Heading from "../heading/heading.astro";
 import TimeComponent from "./time.astro";
@@ -18,21 +19,80 @@ const date = new Date();
 
 <PageLayout breadcrumb={breadcrumb} seo={seo} title={title}>
   <Fragment slot="body">
-    <Heading>Default</Heading>
-    <TimeComponent date={date} />
+    <Heading>Introduction</Heading>
+    <CodePreview
+      code={`import Time from "./components/atoms/time/time.astro";`}
+      label="How to import"
+      lang="ts"
+    />
+    <CodePreview
+      code={`---
+const date = new Date();
+---
+<Time date={date} />`}
+      label="Basic use"
+      lang="astro"
+    >
+      <TimeComponent date={date} />
+    </CodePreview>
     <Heading>With time</Heading>
-    <TimeComponent date={date} showTime />
+    <CodePreview
+      code={`---
+const date = new Date();
+---
+<Time date={date} showTime /> />`}
+      label="Showing the time"
+      lang="astro"
+    >
+      <TimeComponent date={date} showTime />
+    </CodePreview>
     <Heading>Without day</Heading>
-    <TimeComponent date={date} hideDay />
+    <CodePreview
+      code={`---
+const date = new Date();
+---
+<Time date={date} hideDay /> />`}
+      label="Hiding the day"
+      lang="astro"
+    >
+      <TimeComponent date={date} hideDay />
+    </CodePreview>
     <Heading>Without month</Heading>
     <p>
-      It does not make sense to use the day and the year without month, but you
-      can do it:
+      You shouldn't hide the month alone because it does not make sense to use
+      the day and the year without a month, but this is supported:
     </p>
-    <TimeComponent date={date} hideMonth />
+    <CodePreview
+      code={`---
+const date = new Date();
+---
+<Time date={date} hideMonth /> />`}
+      label="Hiding the month"
+      lang="astro"
+    >
+      <TimeComponent date={date} hideMonth />
+    </CodePreview>
     <Heading>Without year</Heading>
-    <TimeComponent date={date} hideYear />
+    <CodePreview
+      code={`---
+const date = new Date();
+---
+<Time date={date} hideYear /> />`}
+      label="Hiding the year"
+      lang="astro"
+    >
+      <TimeComponent date={date} hideYear />
+    </CodePreview>
     <Heading>Without day and month</Heading>
-    <TimeComponent date={date} hideDay hideMonth />
+    <CodePreview
+      code={`---
+const date = new Date();
+---
+<Time date={date} hideDay hideMonth /> />`}
+      label="Hiding the day and the month"
+      lang="astro"
+    >
+      <TimeComponent date={date} hideDay hideMonth />
+    </CodePreview>
   </Fragment>
 </PageLayout>

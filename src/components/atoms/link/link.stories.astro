@@ -26,10 +26,12 @@ const { breadcrumb, seo } = getStoryMeta({
     <CodePreview
       code={`import Link from "./components/atoms/link/link.astro"`}
       label="How to import"
+      lang="ts"
     />
     <CodePreview
       code={`<Link href="/target">Text used as anchor</Link>`}
       label="Basic use"
+      lang="astro"
     >
       <LinkComponent href="/target"> Text used as anchor </LinkComponent>
     </CodePreview>
@@ -42,6 +44,7 @@ const { breadcrumb, seo } = getStoryMeta({
     <CodePreview
       code={`<Link href="/destination" hreflang="fr">Text used as anchor</Link>`}
       label="Defining a language"
+      lang="astro"
     >
       <LinkComponent href="/destination" hreflang="fr">
         Text used as anchor
@@ -55,6 +58,7 @@ const { breadcrumb, seo } = getStoryMeta({
     <CodePreview
       code={`<Link href="/target" isExternal>Text used as anchor</Link>`}
       label="Using an external link"
+      lang="astro"
     >
       <LinkComponent href="/target" isExternal>
         Text used as anchor
@@ -68,6 +72,7 @@ const { breadcrumb, seo } = getStoryMeta({
     <CodePreview
       code={`<Link href="/target.pdf" isDownload>Text used as anchor</Link>`}
       label="Using a download link"
+      lang="astro"
     >
       <LinkComponent href="/target.pdf" isDownload>
         Text used as anchor
@@ -87,6 +92,7 @@ const { breadcrumb, seo } = getStoryMeta({
 <br />
 <Link href="/destination.pdf" hreflang="fr" isDownload isExternal>Text used as anchor</Link>`}
       label="Using multiple options"
+      lang="astro"
     >
       <LinkComponent href="/destination.pdf" hreflang="fr" isDownload
         >Text used as anchor</LinkComponent
@@ -114,6 +120,7 @@ const { breadcrumb, seo } = getStoryMeta({
   <img alt="" src="https://picsum.photos/640/480" />
 </Link>`}
       label="Using an image inside a link"
+      lang="astro"
     >
       <LinkComponent href="/target">
         <img alt="" src="https://picsum.photos/640/480" />

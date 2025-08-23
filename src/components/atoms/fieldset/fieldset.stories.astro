@@ -29,6 +29,7 @@ const { breadcrumb, seo } = getStoryMeta({
       code={`import Fieldset from "./components/atoms/fieldset/fieldset.astro";
 import Legend from "./components/atoms/fieldset/legend.astro";`}
       label="How to import"
+      lang="ts"
     />
     <CodePreview
       code={`<Fieldset>
@@ -36,6 +37,7 @@ import Legend from "./components/atoms/fieldset/legend.astro";`}
   The fieldset contents
 </Fieldset>`}
       label="Basic use"
+      lang="astro"
     >
       <FieldsetComponent>
         <Legend slot="legend">The fieldset legend</Legend>
@@ -50,6 +52,7 @@ import Legend from "./components/atoms/fieldset/legend.astro";`}
   The fieldset contents
 </Fieldset>`}
       label="Using borders on fieldset"
+      lang="astro"
     >
       <FieldsetComponent isBordered>
         <Legend slot="legend">The fieldset legend</Legend>
@@ -63,6 +66,7 @@ import Legend from "./components/atoms/fieldset/legend.astro";`}
   The fieldset contents
 </Fieldset>`}
       label="Using borders on legend"
+      lang="astro"
     >
       <FieldsetComponent>
         <Legend isBordered slot="legend">The fieldset legend</Legend>
@@ -79,6 +83,7 @@ import Legend from "./components/atoms/fieldset/legend.astro";`}
   The fieldset contents
 </Fieldset>`}
       label="Using borders both on fieldset and legend"
+      lang="astro"
     >
       <FieldsetComponent isBordered>
         <Legend isBordered slot="legend">The fieldset legend</Legend>
@@ -114,6 +119,7 @@ import Legend from "./components/atoms/fieldset/legend.astro";`}
   </div>
 </Fieldset>`}
       label="Comparing isInline effect on fieldset"
+      lang="astro"
     >
       <FieldsetComponent>
         <Legend slot="legend">The fieldset legend</Legend>

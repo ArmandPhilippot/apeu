@@ -1,5 +1,6 @@
 ---
 import { getStoryMeta } from "../../../utils/stories";
+import CodePreview from "../../molecules/code-preview/code-preview.astro";
 import PageLayout from "../../templates/page-layout/page-layout.astro";
 import Heading from "../heading/heading.astro";
 import LicenseComponent from "./license.astro";
@@ -16,8 +17,16 @@ const { breadcrumb, seo } = getStoryMeta({
 
 <PageLayout breadcrumb={breadcrumb} seo={seo} title={title}>
   <Fragment slot="body">
-    <Heading as="h2">Usage</Heading>
+    <Heading as="h2">Introduction</Heading>
     <p>This component is used to display an icon of the website license.</p>
+    <CodePreview
+      code={`import License from "./components/atoms/license/license.astro"`}
+      label="How to import"
+      lang="ts"
+    />
+    <CodePreview code={`<License />`} label="Basic use" lang="astro">
+      <LicenseComponent />
+    </CodePreview>
     <LicenseComponent />
   </Fragment>
 </PageLayout>

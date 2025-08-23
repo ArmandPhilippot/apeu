@@ -24,8 +24,13 @@ const { breadcrumb, seo } = getStoryMeta({
     <CodePreview
       code={`import Heading from "./components/atoms/heading/heading.astro"`}
       label="How to import"
+      lang="ts"
     />
-    <CodePreview code={`<Heading>A heading</Heading>`} label="Basic use">
+    <CodePreview
+      code={`<Heading>A heading</Heading>`}
+      label="Basic use"
+      lang="astro"
+    >
       <HeadingComponent>A heading</HeadingComponent>
     </CodePreview>
     <HeadingComponent>Levels</HeadingComponent>
@@ -42,6 +47,7 @@ const { breadcrumb, seo } = getStoryMeta({
 <Heading as="h5">A heading of level 5</Heading>
 <Heading as="h6">A heading of level 6</Heading>`}
       label="Using different heading levels"
+      lang="astro"
     >
       <HeadingComponent as="h1">A heading of level 1</HeadingComponent>
       <HeadingComponent as="h2">A heading of level 2</HeadingComponent>

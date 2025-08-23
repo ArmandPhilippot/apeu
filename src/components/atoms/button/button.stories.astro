@@ -22,8 +22,13 @@ const { breadcrumb, seo } = getStoryMeta({
     <CodePreview
       code={`import Button from "./components/atoms/button/button.astro"`}
       label="How to import"
+      lang="ts"
     />
-    <CodePreview code={`<Button>A label</Button>`} label="Basic use">
+    <CodePreview
+      code={`<Button>A label</Button>`}
+      label="Basic use"
+      lang="astro"
+    >
       <ButtonComponent>A label</ButtonComponent>
     </CodePreview>
     <Heading as="h2">Button kinds</Heading>
@@ -32,14 +37,15 @@ const { breadcrumb, seo } = getStoryMeta({
       call to actions.
     </p>
     <CodePreview
-      code={`<ButtonComponent kind="primary">A primary button</ButtonComponent>
+      code={`<Button kind="primary">A primary button</Button>
 <br />
-<ButtonComponent kind="secondary">A secondary button</ButtonComponent>
+<Button kind="secondary">A secondary button</Button>
 <br />
-<ButtonComponent kind="discreet">A discreet button</ButtonComponent>
+<Button kind="discreet">A discreet button</Button>
 <br />
-<ButtonComponent kind="neutral">A neutral button</ButtonComponent>`}
+<Button kind="neutral">A neutral button</Button>`}
       label="Using different kinds of buttons"
+      lang="astro"
     >
       <ButtonComponent kind="primary">A primary button</ButtonComponent>
       <br />
@@ -52,14 +58,15 @@ const { breadcrumb, seo } = getStoryMeta({
     <Heading as="h2">States</Heading>
     <Heading as="h3">Busy</Heading>
     <CodePreview
-      code={`<ButtonComponent aria-busy="true" kind="primary">A primary button</ButtonComponent>
+      code={`<Button aria-busy="true" kind="primary">A primary button</Button>
 <br />
-<ButtonComponent aria-busy="true" kind="secondary">A secondary button</ButtonComponent>
+<Button aria-busy="true" kind="secondary">A secondary button</Button>
 <br />
-<ButtonComponent aria-busy="true" kind="discreet">A discreet button</ButtonComponent>
+<Button aria-busy="true" kind="discreet">A discreet button</Button>
 <br />
-<ButtonComponent aria-busy="true" kind="neutral">A neutral button</ButtonComponent>`}
+<Button aria-busy="true" kind="neutral">A neutral button</Button>`}
       label="Using aria-busy on different kinds of buttons"
+      lang="astro"
     >
       <ButtonComponent aria-busy="true" kind="primary"
         >A primary button</ButtonComponent
@@ -79,14 +86,15 @@ const { breadcrumb, seo } = getStoryMeta({
     </CodePreview>
     <Heading as="h3">Disabled</Heading>
     <CodePreview
-      code={`<ButtonComponent disabled="true" kind="primary">A primary button</ButtonComponent>
+      code={`<Button disabled="true" kind="primary">A primary button</Button>
 <br />
-<ButtonComponent disabled="true" kind="secondary">A secondary button</ButtonComponent>
+<Button disabled="true" kind="secondary">A secondary button</Button>
 <br />
-<ButtonComponent disabled="true" kind="discreet">A discreet button</ButtonComponent>
+<Button disabled="true" kind="discreet">A discreet button</Button>
 <br />
-<ButtonComponent disabled="true" kind="neutral">A neutral button</ButtonComponent>`}
+<Button disabled="true" kind="neutral">A neutral button</Button>`}
       label="Using disabled on different kinds of buttons"
+      lang="astro"
     >
       <ButtonComponent disabled="true" kind="primary"
         >A primary button</ButtonComponent
@@ -106,12 +114,13 @@ const { breadcrumb, seo } = getStoryMeta({
     </CodePreview>
     <Heading as="h3"><code>isExternal</code></Heading>
     <CodePreview
-      code={`<ButtonComponent isExternal kind="secondary">A secondary button</ButtonComponent>
+      code={`<Button isExternal kind="secondary">A secondary button</Button>
 <br />
-<ButtonComponent isExternal kind="discreet">A discreet button</ButtonComponent>
+<Button isExternal kind="discreet">A discreet button</Button>
 <br />
-<ButtonComponent isExternal kind="neutral">A neutral button</ButtonComponent>`}
+<Button isExternal kind="neutral">A neutral button</Button>`}
       label="Using isExternal on different kinds of buttons"
+      lang="astro"
     >
       <ButtonComponent isExternal kind="secondary"
         >A secondary button</ButtonComponent
@@ -135,12 +144,13 @@ const { breadcrumb, seo } = getStoryMeta({
       > button an error will be thrown.
     </p>
     <CodePreview
-      code={`<ButtonComponent as="a" href="#link" kind="secondary">A secondary button</ButtonComponent>
+      code={`<Button as="a" href="#link" kind="secondary">A secondary button</Button>
 <br />
-<ButtonComponent as="a" href="#link" kind="discreet">A discreet button</ButtonComponent>
+<Button as="a" href="#link" kind="discreet">A discreet button</Button>
 <br />
-<ButtonComponent as="a" href="#link" kind="neutral">A neutral button</ButtonComponent>`}
+<Button as="a" href="#link" kind="neutral">A neutral button</Button>`}
       label="Using a link instead of a button"
+      lang="astro"
     >
       <ButtonComponent as="a" href="#link" kind="secondary"
         >A secondary button</ButtonComponent
@@ -160,12 +170,13 @@ const { breadcrumb, seo } = getStoryMeta({
     </p>
     <Heading as="h3">Busy links</Heading>
     <CodePreview
-      code={`<ButtonComponent aria-busy="true" as="a" href="#link" kind="secondary">A secondary button</ButtonComponent>
+      code={`<Button aria-busy="true" as="a" href="#link" kind="secondary">A secondary button</Button>
 <br />
-<ButtonComponent aria-busy="true" as="a" href="#link" kind="discreet">A discreet button</ButtonComponent>
+<Button aria-busy="true" as="a" href="#link" kind="discreet">A discreet button</Button>
 <br />
-<ButtonComponent aria-busy="true" as="a" href="#link" kind="neutral">A neutral button</ButtonComponent>`}
+<Button aria-busy="true" as="a" href="#link" kind="neutral">A neutral button</Button>`}
       label="Using a busy link instead of a button"
+      lang="astro"
     >
       <ButtonComponent aria-busy="true" as="a" href="#link" kind="secondary"
         >A secondary button</ButtonComponent
@@ -181,12 +192,13 @@ const { breadcrumb, seo } = getStoryMeta({
     </CodePreview>
     <Heading as="h3">External links</Heading>
     <CodePreview
-      code={`<ButtonComponent as="a" href="#link" isExternal kind="secondary">A secondary button</ButtonComponent>
+      code={`<Button as="a" href="#link" isExternal kind="secondary">A secondary button</Button>
 <br />
-<ButtonComponent as="a" href="#link" isExternal kind="discreet">A discreet button</ButtonComponent>
+<Button as="a" href="#link" isExternal kind="discreet">A discreet button</Button>
 <br />
-<ButtonComponent as="a" href="#link" isExternal kind="neutral">A neutral button</ButtonComponent>`}
+<Button as="a" href="#link" isExternal kind="neutral">A neutral button</Button>`}
       label="Using an external link instead of a button"
+      lang="astro"
     >
       <ButtonComponent as="a" href="#link" isExternal kind="secondary"
         >A secondary button</ButtonComponent

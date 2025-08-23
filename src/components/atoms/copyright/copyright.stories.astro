@@ -1,47 +1,47 @@
 ---
-import type { ComponentProps } from "astro/types";
+import { getStoryMeta } from "../../../utils/stories";
+import CodePreview from "../../molecules/code-preview/code-preview.astro";
 import PageLayout from "../../templates/page-layout/page-layout.astro";
 import Heading from "../heading/heading.astro";
 import CopyrightComponent from "./copyright.astro";
 
 const title = "Copyright";
-const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
-  { label: "Home", url: "/" },
-  { label: "Design system", url: "/design-system" },
-  { label: "Components", url: "/design-system/components" },
-  { label: "Atoms", url: "/design-system/components/atoms" },
-  { label: title, url: Astro.url.href },
-];
-const seo: ComponentProps<typeof PageLayout>["seo"] = {
-  nofollow: true,
-  noindex: true,
-  title: breadcrumb
-    .slice(1)
-    .reverse()
-    .map((crumb) => crumb.label)
-    .join(" | "),
-};
+const { breadcrumb, seo } = getStoryMeta({
+  breadcrumb: {
+    kind: "atoms",
+    route: Astro.url.pathname,
+    title,
+  },
+});
 ---
 
 <PageLayout breadcrumb={breadcrumb} seo={seo} title={title}>
   <Fragment slot="body">
-    <Heading as="h2">Usage</Heading>
+    <Heading>Introduction</Heading>
     <p>
-      This component is usually used in the website's footer to display the
-      copyright.
+      A Copyright component is usually used in the website's footer to display
+      the copyright.
     </p>
+    <CodePreview
+      code={`import Copyright from "./components/atoms/copyright/copyright.astro"`}
+      label="How to import"
+    />
+    <CodePreview
+      code={`<Copyright creationYear={2025} owner="John Doe" />`}
+      label="Basic use"
+    >
+      <CopyrightComponent creationYear={2025} owner="John Doe" />
+    </CodePreview>
+    <Heading>Different current and creation years</Heading>
     <p>
-      <CopyrightComponent
-        creationYear={new Date().getFullYear()}
-        owner="John Doe"
-      />
+      When the creation year is different from the current one, both years will
+      be displayed.
     </p>
-    <p>
-      When the <code>creationYear</code> is different from the current year, then
-      the output will look like this:
-    </p>
-    <p>
-      <CopyrightComponent creationYear={2010} owner="John Doe" />
-    </p>
+    <CodePreview
+      code={`<Copyright creationYear={2020} owner="John Doe" />`}
+      label="Automatic handling of dates"
+    >
+      <CopyrightComponent creationYear={2020} owner="John Doe" />
+    </CodePreview>
   </Fragment>
 </PageLayout>

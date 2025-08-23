@@ -1,51 +1,74 @@
 ---
-import type { ComponentProps } from "astro/types";
+import { getStoryMeta } from "../../../utils/stories";
+import CodePreview from "../../molecules/code-preview/code-preview.astro";
 import PageLayout from "../../templates/page-layout/page-layout.astro";
 import Heading from "../heading/heading.astro";
 import CalloutComponent from "./callout.astro";
 
 const title = "Callout";
-const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
-  { label: "Home", url: "/" },
-  { label: "Design system", url: "/design-system" },
-  { label: "Components", url: "/design-system/components" },
-  { label: "Atoms", url: "/design-system/components/atoms" },
-  { label: title, url: Astro.url.href },
-];
-const seo: ComponentProps<typeof PageLayout>["seo"] = {
-  nofollow: true,
-  noindex: true,
-  title: breadcrumb
-    .slice(1)
-    .reverse()
-    .map((crumb) => crumb.label)
-    .join(" | "),
-};
+const { breadcrumb, seo } = getStoryMeta({
+  breadcrumb: {
+    kind: "atoms",
+    route: Astro.url.pathname,
+    title,
+  },
+});
 ---
 
 <PageLayout breadcrumb={breadcrumb} seo={seo} title={title}>
   <Fragment slot="body">
-    <Heading as="h2">Usage</Heading>
+    <Heading as="h2">Introduction</Heading>
     <p>This component is used to show important information to the reader.</p>
-    <Heading as="h2">Type</Heading>
-    <Heading as="h3">Critical</Heading>
-    <CalloutComponent type="critical"> The contents. </CalloutComponent>
-    <Heading as="h3">Discovery</Heading>
-    <CalloutComponent type="discovery"> The contents. </CalloutComponent>
-    <Heading as="h3">Idea</Heading>
-    <CalloutComponent type="idea"> The contents. </CalloutComponent>
-    <Heading as="h3">Info</Heading>
-    <CalloutComponent type="info"> The contents. </CalloutComponent>
-    <Heading as="h3">Success</Heading>
-    <CalloutComponent type="success"> The contents. </CalloutComponent>
-    <Heading as="h3">Warning</Heading>
-    <CalloutComponent type="warning"> The contents. </CalloutComponent>
-    <Heading as="h2">With a custom label</Heading>
-    <CalloutComponent
-      label="A custom label a bit long for small devices"
-      type="critical"
+    <CodePreview
+      code={`import Callout from "./components/atoms/callout/callout.astro"`}
+      label="How to import"
+    />
+    <CodePreview code={`<Callout>The contents.</Callout>`} label="Basic use">
+      <CalloutComponent>The contents.</CalloutComponent>
+    </CodePreview>
+    <Heading as="h2">Types</Heading>
+    <CodePreview
+      code={`<Callout type="critical">The contents.</Callout>
+<br />
+<Callout type="discovery">The contents.</Callout>
+<br />
+<Callout type="idea">The contents.</Callout>
+<br />
+<Callout type="info">The contents.</Callout>
+<br />
+<Callout type="success">The contents.</Callout>
+<br />
+<Callout type="warning">The contents.</Callout>`}
+      label="Using different types of callouts"
     >
-      The contents.
-    </CalloutComponent>
+      <CalloutComponent type="critical">The contents.</CalloutComponent>
+      <br />
+      <CalloutComponent type="discovery">The contents.</CalloutComponent>
+      <br />
+      <CalloutComponent type="idea">The contents.</CalloutComponent>
+      <br />
+      <CalloutComponent type="info">The contents.</CalloutComponent>
+      <br />
+      <CalloutComponent type="success">The contents.</CalloutComponent>
+      <br />
+      <CalloutComponent type="warning">The contents.</CalloutComponent>
+    </CodePreview>
+    <Heading as="h2">With a custom label</Heading>
+    <CodePreview
+      code={`<Callout
+  label="A custom label a bit long to check small devices"
+  type="critical"
+>
+  The contents.
+</Callout>`}
+      label="Using a custom label"
+    >
+      <CalloutComponent
+        label="A custom label a bit long to check small devices"
+        type="critical"
+      >
+        The contents.
+      </CalloutComponent>
+    </CodePreview>
   </Fragment>
 </PageLayout>

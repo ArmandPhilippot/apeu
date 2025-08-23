@@ -1,45 +1,68 @@
 ---
-import type { ComponentProps } from "astro/types";
 import logo from "../../../assets/logo.svg";
+import { getStoryMeta } from "../../../utils/stories";
+import CodePreview from "../../molecules/code-preview/code-preview.astro";
 import PageLayout from "../../templates/page-layout/page-layout.astro";
 import Heading from "../heading/heading.astro";
 import ImgComponent from "./img.astro";
 
 const title = "Img";
-const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
-  { label: "Home", url: "/" },
-  { label: "Design system", url: "/design-system" },
-  { label: "Components", url: "/design-system/components" },
-  { label: "Atoms", url: "/design-system/components/atoms" },
-  { label: title, url: Astro.url.href },
-];
-const seo: ComponentProps<typeof PageLayout>["seo"] = {
-  nofollow: true,
-  noindex: true,
-  title: breadcrumb
-    .slice(1)
-    .reverse()
-    .map((crumb) => crumb.label)
-    .join(" | "),
-};
+const { breadcrumb, seo } = getStoryMeta({
+  breadcrumb: {
+    kind: "atoms",
+    route: Astro.url.pathname,
+    title,
+  },
+});
 ---
 
 <PageLayout breadcrumb={breadcrumb} seo={seo} title={title}>
   <Fragment slot="body">
+    <Heading>Introduction</Heading>
+    <CodePreview
+      code={`import Img from "./components/atoms/img/img.astro"`}
+      label="How to import"
+    />
     <Heading>Imported local image</Heading>
-    <ImgComponent alt="The logo" src={logo} />
+    <CodePreview
+      code={`---
+import logo from "../../../assets/logo.svg";
+---
+<Img alt="The logo" src={logo} />`}
+      label="Basic use"
+    >
+      <ImgComponent alt="The logo" src={logo} />
+    </CodePreview>
     <Heading>Imported local image with link</Heading>
     <p>
       The image can be linked to its source with the <code>data-clickable</code>
       attribute.
     </p>
-    <ImgComponent alt="The logo" data-clickable="true" src={logo} />
+    <CodePreview
+      code={`---
+import logo from "../../../assets/logo.svg";
+---
+<Img alt="The logo" data-clickable="true" src={logo} />`}
+      label="Basic use"
+    >
+      <ImgComponent alt="The logo" data-clickable="true" src={logo} />
+    </CodePreview>
     <Heading>Remote image</Heading>
-    <ImgComponent
-      alt="An example"
-      height={480}
-      src="https://picsum.photos/640/480"
-      width={640}
-    />
+    <CodePreview
+      code={`<Img
+  alt="An example"
+  height={480}
+  src="https://picsum.photos/640/480"
+  width={640}
+/>`}
+      label="Basic use"
+    >
+      <ImgComponent
+        alt="An example"
+        height={480}
+        src="https://picsum.photos/640/480"
+        width={640}
+      />
+    </CodePreview>
   </Fragment>
 </PageLayout>

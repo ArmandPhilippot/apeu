@@ -1,22 +1,17 @@
 ---
-import type { ComponentProps } from "astro/types";
+import { getStoryMeta } from "../../../utils/stories";
 import Heading from "../../atoms/heading/heading.astro";
 import PageLayout from "../../templates/page-layout/page-layout.astro";
 import TOC from "./table-of-contents.astro";
 
 const title = "TableOfContents";
-const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
-  { label: "Home", url: "/" },
-  { label: "Design system", url: "/design-system" },
-  { label: "Components", url: "/design-system/components" },
-  { label: "Molecules", url: "/design-system/components/molecules" },
-  { label: title, url: Astro.url.href },
-];
-const seo: ComponentProps<typeof PageLayout>["seo"] = {
-  nofollow: true,
-  noindex: true,
-  title: `Design system / Components / Molecules / ${title}`,
-};
+const { breadcrumb, seo } = getStoryMeta({
+  breadcrumb: {
+    kind: "organisms",
+    route: Astro.url.pathname,
+    title,
+  },
+});
 ---
 
 <PageLayout breadcrumb={breadcrumb} seo={seo} title={title}>

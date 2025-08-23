@@ -1,125 +1,139 @@
 ---
-import type { ComponentProps } from "astro/types";
+import { getStoryMeta } from "../../../utils/stories";
+import CodePreview from "../../molecules/code-preview/code-preview.astro";
 import PageLayout from "../../templates/page-layout/page-layout.astro";
 import Heading from "../heading/heading.astro";
-import ListItem from "../list/list-item.astro";
-import List from "../list/list.astro";
 import LinkComponent from "./link.astro";
 
 const title = "Link";
-const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
-  { label: "Home", url: "/" },
-  { label: "Design system", url: "/design-system" },
-  { label: "Components", url: "/design-system/components" },
-  { label: "Atoms", url: "/design-system/components/atoms" },
-  { label: title, url: Astro.url.href },
-];
-const seo: ComponentProps<typeof PageLayout>["seo"] = {
-  nofollow: true,
-  noindex: true,
-  title: breadcrumb
-    .slice(1)
-    .reverse()
-    .map((crumb) => crumb.label)
-    .join(" | "),
-};
+const { breadcrumb, seo } = getStoryMeta({
+  breadcrumb: {
+    kind: "atoms",
+    route: Astro.url.pathname,
+    title,
+  },
+});
 ---
 
 <PageLayout breadcrumb={breadcrumb} seo={seo} title={title}>
   <Fragment slot="body">
-    <Heading as="h2">Usage</Heading>
+    <Heading>Introduction</Heading>
+    <p>
+      A link can be used as internal or external navigation. It can provide
+      extra information such as the target language or if this is an external or
+      download link.
+    </p>
+    <CodePreview
+      code={`import Link from "./components/atoms/link/link.astro"`}
+      label="How to import"
+    />
+    <CodePreview
+      code={`<Link href="/target">Text used as anchor</Link>`}
+      label="Basic use"
+    >
+      <LinkComponent href="/target"> Text used as anchor </LinkComponent>
+    </CodePreview>
+    <Heading>Options</Heading>
+    <Heading as="h3"><code>hreflang</code></Heading>
+    <p>
+      Use this to define the target language and to visually show that
+      information.
+    </p>
+    <CodePreview
+      code={`<Link href="/destination" hreflang="fr">Text used as anchor</Link>`}
+      label="Defining a language"
+    >
+      <LinkComponent href="/destination" hreflang="fr">
+        Text used as anchor
+      </LinkComponent>
+    </CodePreview>
+    <Heading as="h3"><code>isExternal</code></Heading>
+    <p>
+      Use this to visually show that the following the link would lead to an
+      external website.
+    </p>
+    <CodePreview
+      code={`<Link href="/target" isExternal>Text used as anchor</Link>`}
+      label="Using an external link"
+    >
+      <LinkComponent href="/target" isExternal>
+        Text used as anchor
+      </LinkComponent>
+    </CodePreview>
+    <Heading as="h3"><code>isDownload</code></Heading>
+    <p>
+      Use this to visually show that the following the link targets a file that
+      can be downloaded.
+    </p>
+    <CodePreview
+      code={`<Link href="/target.pdf" isDownload>Text used as anchor</Link>`}
+      label="Using a download link"
+    >
+      <LinkComponent href="/target.pdf" isDownload>
+        Text used as anchor
+      </LinkComponent>
+    </CodePreview>
+    <Heading as="h3">Mixing options</Heading>
+    <p>
+      Sometimes you might need to mix the previous options to represent an
+      external link in French or an external download link for example.
+    </p>
+    <CodePreview
+      code={`<Link href="/destination.pdf" hreflang="fr" isDownload>Text used as anchor</Link>
+<br />
+<Link href="/destination" hreflang="fr" isExternal>Text used as anchor</Link>
+<br />
+<Link href="/target.pdf" isDownload isExternal>Text used as anchor</Link>
+<br />
+<Link href="/destination.pdf" hreflang="fr" isDownload isExternal>Text used as anchor</Link>`}
+      label="Using multiple options"
+    >
+      <LinkComponent href="/destination.pdf" hreflang="fr" isDownload
+        >Text used as anchor</LinkComponent
+      >
+      <br />
+      <LinkComponent href="/destination" hreflang="fr" isExternal
+        >Text used as anchor</LinkComponent
+      >
+      <br />
+      <LinkComponent href="/target.pdf" isDownload isExternal>
+        Text used as anchor
+      </LinkComponent>
+      <br />
+      <LinkComponent href="/destination.pdf" hreflang="fr" isDownload isExternal
+        >Text used as anchor</LinkComponent
+      >
+    </CodePreview>
+    <Heading>Wrapping an image in a link</Heading>
+    <p>
+      When creating a gallery, it is common to wrap images with a link. This
+      component also supports this.
+    </p>
+    <CodePreview
+      code={`<Link href="/target">
+  <img alt="" src="https://picsum.photos/640/480" />
+</Link>`}
+      label="Using an image inside a link"
+    >
+      <LinkComponent href="/target">
+        <img alt="" src="https://picsum.photos/640/480" />
+      </LinkComponent>
+    </CodePreview>
+    <Heading>HTML spacing handling</Heading>
     <p>
       When used at the beginning or at the end of a sentence, a link should not
       display an extra space before or after.
     </p>
-    <p>
-      <LinkComponent href="#destination">A link</LinkComponent> at the beginning
-      of a sentence.
-    </p>
-    <p>
-      A sentence ending with <LinkComponent href="#destination"
-        >a link</LinkComponent
-      >.
-    </p>
-    <Heading as="h2">Adding target information</Heading>
-    <Heading as="h3">Language</Heading>
-    <p>
-      A link can indicate the language used in the linked resource by using the <code
-        >hreflang</code
-      > attribute.
-    </p>
-    <List>
-      <ListItem>
-        <LinkComponent href="#destination" hreflang="fr"
-          >A French link</LinkComponent
-        >
-      </ListItem>
-    </List>
-    <Heading as="h3">External link</Heading>
-    <p>
-      A link can visually indicate that it leads to an external resource either
-      by using the <code>isExternal</code> property or by defining <code
-        >external</code
-      > in the <code>rel</code> attribute.
-    </p>
-    <List>
-      <ListItem>
-        <LinkComponent href="#destination" isExternal
-          >An external link</LinkComponent
-        >
-      </ListItem>
-      <ListItem>
-        <LinkComponent href="#destination" rel="external"
-          >An external link using rel</LinkComponent
-        >
-      </ListItem>
-    </List>
-    <Heading as="h3">Download link</Heading>
-    <p>
-      A link can visually indicate that it leads to a file (e.g. a PDF) by using
-      the <code>isDownload</code> property.
-    </p>
-    <List>
-      <ListItem>
-        <LinkComponent href="#destination" isDownload
-          >A download link</LinkComponent
-        >
-      </ListItem>
-    </List>
-    <Heading as="h3">Mixing information</Heading>
-    <p>It is also possible to mix the previous information on a same link:</p>
-    <List>
-      <ListItem>
-        <LinkComponent href="#destination" hreflang="fr" isExternal
-          >An external French link</LinkComponent
-        >
-      </ListItem>
-      <ListItem>
-        <LinkComponent href="#destination" hreflang="fr" isDownload
-          >A French download link</LinkComponent
-        >
-      </ListItem>
-      <ListItem>
-        <LinkComponent href="#destination" isDownload isExternal
-          >An external download link</LinkComponent
-        >
-      </ListItem>
-      <ListItem>
-        <LinkComponent href="#destination" hreflang="fr" isDownload isExternal
-          >An external download link in French</LinkComponent
-        >
-      </ListItem>
-    </List>
-    <Heading as="h2">Wrapping an image</Heading>
-    <p>
-      Sometimes links are used to wrap an image (e.g. a gallery). This should
-      also be supported:
-    </p>
-    <LinkComponent href="#destination"
-      ><img
-        alt="An example"
-        src="https://picsum.photos/100/100"
-      /></LinkComponent
-    >
+    <CodePreview label="No extra spaces">
+      <p>
+        <LinkComponent href="#destination">A link</LinkComponent> at the beginning
+        of a sentence.
+      </p>
+      <p>
+        A sentence ending with <LinkComponent href="#destination"
+          >a link</LinkComponent
+        >.
+      </p>
+    </CodePreview>
   </Fragment>
 </PageLayout>

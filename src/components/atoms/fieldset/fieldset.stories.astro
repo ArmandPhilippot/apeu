@@ -1,5 +1,6 @@
 ---
-import type { ComponentProps } from "astro/types";
+import { getStoryMeta } from "../../../utils/stories";
+import CodePreview from "../../molecules/code-preview/code-preview.astro";
 import PageLayout from "../../templates/page-layout/page-layout.astro";
 import Heading from "../heading/heading.astro";
 import Label from "../label/label.astro";
@@ -8,70 +9,134 @@ import FieldsetComponent from "./fieldset.astro";
 import Legend from "./legend.astro";
 
 const title = "Fieldset";
-const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
-  { label: "Home", url: "/" },
-  { label: "Design system", url: "/design-system" },
-  { label: "Components", url: "/design-system/components" },
-  { label: "Atoms", url: "/design-system/components/atoms" },
-  { label: title, url: Astro.url.href },
-];
-const seo: ComponentProps<typeof PageLayout>["seo"] = {
-  nofollow: true,
-  noindex: true,
-  title: breadcrumb
-    .slice(1)
-    .reverse()
-    .map((crumb) => crumb.label)
-    .join(" | "),
-};
+const { breadcrumb, seo } = getStoryMeta({
+  breadcrumb: {
+    kind: "atoms",
+    route: Astro.url.pathname,
+    title,
+  },
+});
 ---
 
 <PageLayout breadcrumb={breadcrumb} seo={seo} title={title}>
   <Fragment slot="body">
+    <Heading>Introduction</Heading>
     <p>
       A fieldset requires a slot named <code>legend</code>. You should use the
       available <code>Legend</code> component to provide one.
     </p>
-    <Heading as="h2">Default</Heading>
-    <FieldsetComponent>
-      <Legend slot="legend">The fieldset legend</Legend>
-      The fieldset contents
-    </FieldsetComponent>
+    <CodePreview
+      code={`import Fieldset from "./components/atoms/fieldset/fieldset.astro";
+import Legend from "./components/atoms/fieldset/legend.astro";`}
+      label="How to import"
+    />
+    <CodePreview
+      code={`<Fieldset>
+  <Legend slot="legend">The fieldset legend</Legend>
+  The fieldset contents
+</Fieldset>`}
+      label="Basic use"
+    >
+      <FieldsetComponent>
+        <Legend slot="legend">The fieldset legend</Legend>
+        The fieldset contents
+      </FieldsetComponent>
+    </CodePreview>
     <Heading as="h2">Options</Heading>
     <Heading as="h3">Fieldset <code>isBordered</code></Heading>
-    <FieldsetComponent isBordered>
-      <Legend slot="legend">The fieldset legend</Legend>
-      <Label for="option-fieldset-bordered1">Field 1:</Label>
-      <TextField id="option-fieldset-bordered1" type="text" />
-      <Label for="option-fieldset-bordered2">Field 2:</Label>
-      <TextField id="option-fieldset-bordered2" type="text" />
-    </FieldsetComponent>
+    <CodePreview
+      code={`<Fieldset isBordered>
+  <Legend slot="legend">The fieldset legend</Legend>
+  The fieldset contents
+</Fieldset>`}
+      label="Using borders on fieldset"
+    >
+      <FieldsetComponent isBordered>
+        <Legend slot="legend">The fieldset legend</Legend>
+        The fieldset contents
+      </FieldsetComponent>
+    </CodePreview>
     <Heading as="h3">Legend <code>isBordered</code></Heading>
-    <FieldsetComponent>
-      <Legend isBordered slot="legend">The fieldset legend</Legend>
-      <Label for="option-legend-bordered1">Field 1:</Label>
-      <TextField id="option-legend-bordered1" type="text" />
-      <Label for="option-legend-bordered2">Field 2:</Label>
-      <TextField id="option-legend-bordered2" type="text" />
-    </FieldsetComponent>
+    <CodePreview
+      code={`<Fieldset>
+  <Legend isBordered slot="legend">The fieldset legend</Legend>
+  The fieldset contents
+</Fieldset>`}
+      label="Using borders on legend"
+    >
+      <FieldsetComponent>
+        <Legend isBordered slot="legend">The fieldset legend</Legend>
+        The fieldset contents
+      </FieldsetComponent>
+    </CodePreview>
     <Heading as="h3"
       >Fieldset <code>isBordered</code> and Legend <code>isBordered</code
       ></Heading
     >
-    <FieldsetComponent isBordered>
-      <Legend isBordered slot="legend">The fieldset legend</Legend>
-      <Label for="option-fieldset-legend-bordered1">Field 1:</Label>
-      <TextField id="option-fieldset-legend-bordered1" type="text" />
-      <Label for="option-fieldset-legend-bordered2">Field 2:</Label>
-      <TextField id="option-fieldset-legend-bordered2" type="text" />
-    </FieldsetComponent>
+    <CodePreview
+      code={`<Fieldset isBordered>
+  <Legend isBordered slot="legend">The fieldset legend</Legend>
+  The fieldset contents
+</Fieldset>`}
+      label="Using borders both on fieldset and legend"
+    >
+      <FieldsetComponent isBordered>
+        <Legend isBordered slot="legend">The fieldset legend</Legend>
+        The fieldset contents
+      </FieldsetComponent>
+    </CodePreview>
     <Heading as="h3">Fieldset <code>isInline</code></Heading>
-    <FieldsetComponent gap="md" isInline>
-      <Legend slot="legend">The fieldset legend</Legend>
-      <Label for="option-fieldset-bordered1">Field 1:</Label>
-      <TextField id="option-fieldset-bordered1" type="text" />
-      <Label for="option-fieldset-bordered2">Field 2:</Label>
-      <TextField id="option-fieldset-bordered2" type="text" />
-    </FieldsetComponent>
+    <p>
+      When using <code>isInline</code>, you can also pass a <code>gap</code> property
+      to control the spacing between elements.
+    </p>
+    <CodePreview
+      code={`<Fieldset>
+  <Legend slot="legend">The fieldset legend</Legend>
+  <div>
+    <Label for="option-fieldset-default1">Field 1:</Label>
+    <TextField id="option-fieldset-default1" type="text" />
+  </div>
+  <div>
+    <Label for="option-fieldset-default2">Field 2:</Label>
+    <TextField id="option-fieldset-default2" type="text" />
+  </div>
+</Fieldset>
+<Fieldset gap="md" isInline>
+  <Legend slot="legend">The fieldset legend</Legend>
+  <div>
+    <Label for="option-fieldset-inline1">Field 1:</Label>
+    <TextField id="option-fieldset-inline1" type="text" />
+  </div>
+  <div>
+    <Label for="option-fieldset-inline2">Field 2:</Label>
+    <TextField id="option-fieldset-inline2" type="text" />
+  </div>
+</Fieldset>`}
+      label="Comparing isInline effect on fieldset"
+    >
+      <FieldsetComponent>
+        <Legend slot="legend">The fieldset legend</Legend>
+        <div>
+          <Label for="option-fieldset-default1">Field 1:</Label>
+          <TextField id="option-fieldset-default1" type="text" />
+        </div>
+        <div>
+          <Label for="option-fieldset-default2">Field 2:</Label>
+          <TextField id="option-fieldset-default2" type="text" />
+        </div>
+      </FieldsetComponent>
+      <FieldsetComponent gap="md" isInline>
+        <Legend slot="legend">The fieldset legend</Legend>
+        <div>
+          <Label for="option-fieldset-inline1">Field 1:</Label>
+          <TextField id="option-fieldset-inline1" type="text" />
+        </div>
+        <div>
+          <Label for="option-fieldset-inline2">Field 2:</Label>
+          <TextField id="option-fieldset-inline2" type="text" />
+        </div>
+      </FieldsetComponent>
+    </CodePreview>
   </Fragment>
 </PageLayout>

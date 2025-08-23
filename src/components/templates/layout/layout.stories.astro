@@ -1,15 +1,16 @@
 ---
-import type { ComponentProps } from "astro/types";
+import { getStoryMeta } from "../../../utils/stories";
 import Heading from "../../atoms/heading/heading.astro";
 import LayoutComponent from "./layout.astro";
 
 const title = "Layout";
-
-const seo: ComponentProps<typeof LayoutComponent>["seo"] = {
-  nofollow: true,
-  noindex: true,
-  title: `${title} | Templates | Components | Design system`,
-};
+const { seo } = getStoryMeta({
+  breadcrumb: {
+    kind: "templates",
+    route: Astro.url.pathname,
+    title,
+  },
+});
 ---
 
 <LayoutComponent seo={seo}>

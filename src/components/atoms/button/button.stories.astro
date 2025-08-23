@@ -1,107 +1,204 @@
 ---
-import type { ComponentProps } from "astro/types";
+import { getStoryMeta } from "../../../utils/stories";
+import CodePreview from "../../molecules/code-preview/code-preview.astro";
 import PageLayout from "../../templates/page-layout/page-layout.astro";
 import Heading from "../heading/heading.astro";
 import ButtonComponent from "./button.astro";
 
 const title = "Button";
-const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
-  { label: "Home", url: "/" },
-  { label: "Design system", url: "/design-system" },
-  { label: "Components", url: "/design-system/components" },
-  { label: "Atoms", url: "/design-system/components/atoms" },
-  { label: title, url: Astro.url.href },
-];
-const seo: ComponentProps<typeof PageLayout>["seo"] = {
-  nofollow: true,
-  noindex: true,
-  title: breadcrumb
-    .slice(1)
-    .reverse()
-    .map((crumb) => crumb.label)
-    .join(" | "),
-};
+const { breadcrumb, seo } = getStoryMeta({
+  breadcrumb: {
+    kind: "atoms",
+    route: Astro.url.pathname,
+    title,
+  },
+});
 ---
 
 <PageLayout breadcrumb={breadcrumb} seo={seo} title={title}>
   <Fragment slot="body">
-    <Heading as="h2">Usage</Heading>
+    <Heading as="h2">Introduction</Heading>
     <p>A button is usually used to encourage a user to take action.</p>
-    <Heading as="h2">Primary buttons</Heading>
-    <Heading as="h3">States</Heading>
-    <Heading as="h4">Default</Heading>
-    <ButtonComponent kind="primary">Call to action</ButtonComponent>
-    <Heading as="h4">Busy</Heading>
-    <ButtonComponent aria-busy="true" kind="primary">
-      Call to action
-    </ButtonComponent>
-    <Heading as="h4">Disabled</Heading>
-    <ButtonComponent disabled="true" kind="primary">
-      Call to action
-    </ButtonComponent>
-    <Heading as="h2">Secondary buttons</Heading>
+    <CodePreview
+      code={`import Button from "./components/atoms/button/button.astro"`}
+      label="How to import"
+    />
+    <CodePreview code={`<Button>A label</Button>`} label="Basic use">
+      <ButtonComponent>A label</ButtonComponent>
+    </CodePreview>
+    <Heading as="h2">Button kinds</Heading>
     <p>
-      When using the <code>secondary</code> kind (default), you can choose to use
-      either a button or a link with the <code>as</code> property.
+      Buttons comes with 4 variants. You should use <code>primary</code> for important
+      call to actions.
     </p>
-    <Heading as="h3">States</Heading>
-    <Heading as="h4">Default</Heading>
-    <ButtonComponent>Call to action</ButtonComponent>
-    <Heading as="h4">Busy</Heading>
-    <ButtonComponent aria-busy="true">Call to action</ButtonComponent>
-    <Heading as="h4">Disabled</Heading>
-    <ButtonComponent disabled="true">Call to action</ButtonComponent>
+    <CodePreview
+      code={`<ButtonComponent kind="primary">A primary button</ButtonComponent>
+<br />
+<ButtonComponent kind="secondary">A secondary button</ButtonComponent>
+<br />
+<ButtonComponent kind="discreet">A discreet button</ButtonComponent>
+<br />
+<ButtonComponent kind="neutral">A neutral button</ButtonComponent>`}
+      label="Using different kinds of buttons"
+    >
+      <ButtonComponent kind="primary">A primary button</ButtonComponent>
+      <br />
+      <ButtonComponent kind="secondary">A secondary button</ButtonComponent>
+      <br />
+      <ButtonComponent kind="discreet">A discreet button</ButtonComponent>
+      <br />
+      <ButtonComponent kind="neutral">A neutral button</ButtonComponent>
+    </CodePreview>
+    <Heading as="h2">States</Heading>
+    <Heading as="h3">Busy</Heading>
+    <CodePreview
+      code={`<ButtonComponent aria-busy="true" kind="primary">A primary button</ButtonComponent>
+<br />
+<ButtonComponent aria-busy="true" kind="secondary">A secondary button</ButtonComponent>
+<br />
+<ButtonComponent aria-busy="true" kind="discreet">A discreet button</ButtonComponent>
+<br />
+<ButtonComponent aria-busy="true" kind="neutral">A neutral button</ButtonComponent>`}
+      label="Using aria-busy on different kinds of buttons"
+    >
+      <ButtonComponent aria-busy="true" kind="primary"
+        >A primary button</ButtonComponent
+      >
+      <br />
+      <ButtonComponent aria-busy="true" kind="secondary"
+        >A secondary button</ButtonComponent
+      >
+      <br />
+      <ButtonComponent aria-busy="true" kind="discreet"
+        >A discreet button</ButtonComponent
+      >
+      <br />
+      <ButtonComponent aria-busy="true" kind="neutral"
+        >A neutral button</ButtonComponent
+      >
+    </CodePreview>
+    <Heading as="h3">Disabled</Heading>
+    <CodePreview
+      code={`<ButtonComponent disabled="true" kind="primary">A primary button</ButtonComponent>
+<br />
+<ButtonComponent disabled="true" kind="secondary">A secondary button</ButtonComponent>
+<br />
+<ButtonComponent disabled="true" kind="discreet">A discreet button</ButtonComponent>
+<br />
+<ButtonComponent disabled="true" kind="neutral">A neutral button</ButtonComponent>`}
+      label="Using disabled on different kinds of buttons"
+    >
+      <ButtonComponent disabled="true" kind="primary"
+        >A primary button</ButtonComponent
+      >
+      <br />
+      <ButtonComponent disabled="true" kind="secondary"
+        >A secondary button</ButtonComponent
+      >
+      <br />
+      <ButtonComponent disabled="true" kind="discreet"
+        >A discreet button</ButtonComponent
+      >
+      <br />
+      <ButtonComponent disabled="true" kind="neutral"
+        >A neutral button</ButtonComponent
+      >
+    </CodePreview>
     <Heading as="h3"><code>isExternal</code></Heading>
-    <ButtonComponent isExternal>Call to action</ButtonComponent>
-    <Heading as="h2">Discreet buttons</Heading>
-    <p>
-      When using the <code>discreet</code> kind, you can choose to use either a button
-      or a link with the <code>as</code> property. This is a variant of the secondary
-      kind.
-    </p>
-    <Heading as="h3">States</Heading>
-    <Heading as="h4">Default</Heading>
-    <ButtonComponent kind="discreet">Call to action</ButtonComponent>
-    <Heading as="h4">Busy</Heading>
-    <ButtonComponent aria-busy="true" kind="discreet">
-      Call to action
-    </ButtonComponent>
-    <Heading as="h4">Disabled</Heading>
-    <ButtonComponent disabled="true" kind="discreet">
-      Call to action
-    </ButtonComponent>
-    <Heading as="h3"><code>isExternal</code></Heading>
-    <ButtonComponent isExternal kind="discreet">Call to action</ButtonComponent>
-    <Heading as="h2">Neutral buttons</Heading>
-    <p>
-      When using the <code>neutral</code> kind, you can choose to use either a button
-      or a link with the <code>as</code> property and you are free the style as you'd
-      like.
-    </p>
-    <Heading as="h3">States</Heading>
-    <Heading as="h4">Default</Heading>
-    <ButtonComponent kind="neutral">Call to action</ButtonComponent>
-    <Heading as="h4">Busy</Heading>
-    <ButtonComponent aria-busy="true" kind="neutral">
-      Call to action
-    </ButtonComponent>
-    <Heading as="h4">Disabled</Heading>
-    <ButtonComponent disabled="true" kind="neutral">
-      Call to action
-    </ButtonComponent>
-    <Heading as="h3"><code>isExternal</code></Heading>
-    <ButtonComponent isExternal kind="neutral">Call to action</ButtonComponent>
+    <CodePreview
+      code={`<ButtonComponent isExternal kind="secondary">A secondary button</ButtonComponent>
+<br />
+<ButtonComponent isExternal kind="discreet">A discreet button</ButtonComponent>
+<br />
+<ButtonComponent isExternal kind="neutral">A neutral button</ButtonComponent>`}
+      label="Using isExternal on different kinds of buttons"
+    >
+      <ButtonComponent isExternal kind="secondary"
+        >A secondary button</ButtonComponent
+      >
+      <br />
+      <ButtonComponent isExternal kind="discreet"
+        >A discreet button</ButtonComponent
+      >
+      <br />
+      <ButtonComponent isExternal kind="neutral"
+        >A neutral button</ButtonComponent
+      >
+    </CodePreview>
     <Heading as="h2">Links as button</Heading>
-    <Heading as="h3">States</Heading>
-    <Heading as="h4">Default</Heading>
-    <ButtonComponent as="a" href="#link">Call to action</ButtonComponent>
-    <Heading as="h4">Busy</Heading>
-    <ButtonComponent aria-busy="true" as="a" href="#link">
-      Call to action
-    </ButtonComponent>
-    <Heading as="h3"><code>isExternal</code></Heading>
-    <ButtonComponent as="a" href="#link" isExternal>
-      Call to action
-    </ButtonComponent>
+    <p>
+      Sometimes, links can be designed as a button. This component handles this
+      with the <code>as</code> property for <code>secondary</code>, <code
+        >discreet</code
+      > and <code>neutral</code> buttons. If you try to use a link with a <code
+        >primary</code
+      > button an error will be thrown.
+    </p>
+    <CodePreview
+      code={`<ButtonComponent as="a" href="#link" kind="secondary">A secondary button</ButtonComponent>
+<br />
+<ButtonComponent as="a" href="#link" kind="discreet">A discreet button</ButtonComponent>
+<br />
+<ButtonComponent as="a" href="#link" kind="neutral">A neutral button</ButtonComponent>`}
+      label="Using a link instead of a button"
+    >
+      <ButtonComponent as="a" href="#link" kind="secondary"
+        >A secondary button</ButtonComponent
+      >
+      <br />
+      <ButtonComponent as="a" href="#link" kind="discreet"
+        >A discreet button</ButtonComponent
+      >
+      <br />
+      <ButtonComponent as="a" href="#link" kind="neutral"
+        >A neutral button</ButtonComponent
+      >
+    </CodePreview>
+    <p>
+      States should behave the same when using a link instead of a button.
+      However, note that a link can't be disabled.
+    </p>
+    <Heading as="h3">Busy links</Heading>
+    <CodePreview
+      code={`<ButtonComponent aria-busy="true" as="a" href="#link" kind="secondary">A secondary button</ButtonComponent>
+<br />
+<ButtonComponent aria-busy="true" as="a" href="#link" kind="discreet">A discreet button</ButtonComponent>
+<br />
+<ButtonComponent aria-busy="true" as="a" href="#link" kind="neutral">A neutral button</ButtonComponent>`}
+      label="Using a busy link instead of a button"
+    >
+      <ButtonComponent aria-busy="true" as="a" href="#link" kind="secondary"
+        >A secondary button</ButtonComponent
+      >
+      <br />
+      <ButtonComponent aria-busy="true" as="a" href="#link" kind="discreet"
+        >A discreet button</ButtonComponent
+      >
+      <br />
+      <ButtonComponent aria-busy="true" as="a" href="#link" kind="neutral"
+        >A neutral button</ButtonComponent
+      >
+    </CodePreview>
+    <Heading as="h3">External links</Heading>
+    <CodePreview
+      code={`<ButtonComponent as="a" href="#link" isExternal kind="secondary">A secondary button</ButtonComponent>
+<br />
+<ButtonComponent as="a" href="#link" isExternal kind="discreet">A discreet button</ButtonComponent>
+<br />
+<ButtonComponent as="a" href="#link" isExternal kind="neutral">A neutral button</ButtonComponent>`}
+      label="Using an external link instead of a button"
+    >
+      <ButtonComponent as="a" href="#link" isExternal kind="secondary"
+        >A secondary button</ButtonComponent
+      >
+      <br />
+      <ButtonComponent as="a" href="#link" isExternal kind="discreet"
+        >A discreet button</ButtonComponent
+      >
+      <br />
+      <ButtonComponent as="a" href="#link" isExternal kind="neutral"
+        >A neutral button</ButtonComponent
+      >
+    </CodePreview>
   </Fragment>
 </PageLayout>

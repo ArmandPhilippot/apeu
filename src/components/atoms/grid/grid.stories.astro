@@ -1,160 +1,284 @@
 ---
-import type { ComponentProps } from "astro/types";
+import { getStoryMeta } from "../../../utils/stories";
+import CodePreview from "../../molecules/code-preview/code-preview.astro";
 import PageLayout from "../../templates/page-layout/page-layout.astro";
 import Heading from "../heading/heading.astro";
 import GridComponent from "./grid.astro";
 
 const title = "Grid";
-const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
-  { label: "Home", url: "/" },
-  { label: "Design system", url: "/design-system" },
-  { label: "Components", url: "/design-system/components" },
-  { label: "Atoms", url: "/design-system/components/atoms" },
-  { label: title, url: Astro.url.href },
-];
-const seo: ComponentProps<typeof PageLayout>["seo"] = {
-  nofollow: true,
-  noindex: true,
-  title: breadcrumb
-    .slice(1)
-    .reverse()
-    .map((crumb) => crumb.label)
-    .join(" | "),
-};
+const { breadcrumb, seo } = getStoryMeta({
+  breadcrumb: {
+    kind: "atoms",
+    route: Astro.url.pathname,
+    title,
+  },
+});
 ---
 
 <PageLayout breadcrumb={breadcrumb} seo={seo} title={title}>
   <Fragment slot="body">
-    <Heading as="h2">Usage</Heading>
+    <Heading as="h2">Introduction</Heading>
     <p>This component can be used to create a CSS grid.</p>
-    <GridComponent>
-      <div>Item 1</div>
-      <div>Item 2</div>
-      <div>Item 3</div>
-      <div>Item 4</div>
-      <div>Item 5</div>
-      <div>Item 6</div>
-    </GridComponent>
+    <CodePreview
+      code={`import Grid from "./components/atoms/grid/grid.astro"`}
+      label="How to import"
+    />
+    <CodePreview
+      code={`<Grid>
+  <div>Item 1</div>
+  <div>Item 2</div>
+  <div>Item 3</div>
+  <div>Item 4</div>
+  <div>Item 5</div>
+  <div>Item 6</div>
+</Grid>`}
+      label="Basic use"
+    >
+      <GridComponent>
+        <div>Item 1</div>
+        <div>Item 2</div>
+        <div>Item 3</div>
+        <div>Item 4</div>
+        <div>Item 5</div>
+        <div>Item 6</div>
+      </GridComponent>
+    </CodePreview>
     <Heading as="h2">Options</Heading>
     <Heading as="h3"><code>cols</code></Heading>
     <p>
       The <code>cols</code> property lets you define an explicit columns number.
       Caveat: You'll need to handle yourself small viewports.
     </p>
-    <GridComponent cols={2}>
-      <div>Item 1</div>
-      <div>Item 2</div>
-      <div>Item 3</div>
-      <div>Item 4</div>
-      <div>Item 5</div>
-      <div>Item 6</div>
-    </GridComponent>
+    <CodePreview
+      code={`<Grid cols={2}>
+  <div>Item 1</div>
+  <div>Item 2</div>
+  <div>Item 3</div>
+  <div>Item 4</div>
+  <div>Item 5</div>
+  <div>Item 6</div>
+</Grid>`}
+      label="Setting a number of columns"
+    >
+      <GridComponent cols={2}>
+        <div>Item 1</div>
+        <div>Item 2</div>
+        <div>Item 3</div>
+        <div>Item 4</div>
+        <div>Item 5</div>
+        <div>Item 6</div>
+      </GridComponent>
+    </CodePreview>
     <Heading as="h3"><code>rows</code></Heading>
     <p>
       The <code>rows</code> property lets you define an explicit rows number. Caveat:
       This is not useful by itself.
     </p>
-    <GridComponent rows={3}>
-      <div>Item 1</div>
-      <div>Item 2</div>
-      <div>Item 3</div>
-      <div>Item 4</div>
-      <div>Item 5</div>
-      <div>Item 6</div>
-    </GridComponent>
+    <CodePreview
+      code={`<Grid rows={3}>
+  <div>Item 1</div>
+  <div>Item 2</div>
+  <div>Item 3</div>
+  <div>Item 4</div>
+  <div>Item 5</div>
+  <div>Item 6</div>
+</Grid>`}
+      label="Setting a number of rows"
+    >
+      <GridComponent rows={3}>
+        <div>Item 1</div>
+        <div>Item 2</div>
+        <div>Item 3</div>
+        <div>Item 4</div>
+        <div>Item 5</div>
+        <div>Item 6</div>
+      </GridComponent>
+    </CodePreview>
     <Heading as="h3"><code>gap</code></Heading>
-    <p>
-      The <code>gap</code> property lets you define an explicit columns number. Caveat:
-      You'll need to handle yourself small viewports.
-    </p>
     <Heading as="h4">Unique gap</Heading>
-    <GridComponent gap="md">
-      <div>Item 1</div>
-      <div>Item 2</div>
-      <div>Item 3</div>
-      <div>Item 4</div>
-      <div>Item 5</div>
-      <div>Item 6</div>
-    </GridComponent>
+    <CodePreview
+      code={`<Grid gap="md">
+  <div>Item 1</div>
+  <div>Item 2</div>
+  <div>Item 3</div>
+  <div>Item 4</div>
+  <div>Item 5</div>
+  <div>Item 6</div>
+</Grid>`}
+      label="Setting a unique gap both for columns and rows"
+    >
+      <GridComponent gap="md">
+        <div>Item 1</div>
+        <div>Item 2</div>
+        <div>Item 3</div>
+        <div>Item 4</div>
+        <div>Item 5</div>
+        <div>Item 6</div>
+      </GridComponent>
+    </CodePreview>
     <Heading as="h4">Col gap</Heading>
-    <GridComponent gap={{ col: "md" }}>
-      <div>Item 1</div>
-      <div>Item 2</div>
-      <div>Item 3</div>
-      <div>Item 4</div>
-      <div>Item 5</div>
-      <div>Item 6</div>
-    </GridComponent>
+    <CodePreview
+      code={`<Grid gap={{ col: "md" }}>
+  <div>Item 1</div>
+  <div>Item 2</div>
+  <div>Item 3</div>
+  <div>Item 4</div>
+  <div>Item 5</div>
+  <div>Item 6</div>
+</Grid>`}
+      label="Setting a gap for the columns only"
+    >
+      <GridComponent gap={{ col: "md" }}>
+        <div>Item 1</div>
+        <div>Item 2</div>
+        <div>Item 3</div>
+        <div>Item 4</div>
+        <div>Item 5</div>
+        <div>Item 6</div>
+      </GridComponent>
+    </CodePreview>
     <Heading as="h4">Row gap</Heading>
-    <GridComponent gap={{ row: "md" }}>
-      <div>Item 1</div>
-      <div>Item 2</div>
-      <div>Item 3</div>
-      <div>Item 4</div>
-      <div>Item 5</div>
-      <div>Item 6</div>
-    </GridComponent>
+    <CodePreview
+      code={`<Grid gap={{ row: "md" }}>
+  <div>Item 1</div>
+  <div>Item 2</div>
+  <div>Item 3</div>
+  <div>Item 4</div>
+  <div>Item 5</div>
+  <div>Item 6</div>
+</Grid>`}
+      label="Setting a gap for the rows only"
+    >
+      <GridComponent gap={{ row: "md" }}>
+        <div>Item 1</div>
+        <div>Item 2</div>
+        <div>Item 3</div>
+        <div>Item 4</div>
+        <div>Item 5</div>
+        <div>Item 6</div>
+      </GridComponent>
+    </CodePreview>
     <Heading as="h4">Both gaps with different value</Heading>
-    <GridComponent gap={{ col: "md", row: "xs" }}>
-      <div>Item 1</div>
-      <div>Item 2</div>
-      <div>Item 3</div>
-      <div>Item 4</div>
-      <div>Item 5</div>
-      <div>Item 6</div>
-    </GridComponent>
+    <CodePreview
+      code={`<Grid gap={{ col: "md", row: "xs" }}>
+  <div>Item 1</div>
+  <div>Item 2</div>
+  <div>Item 3</div>
+  <div>Item 4</div>
+  <div>Item 5</div>
+  <div>Item 6</div>
+</Grid>`}
+      label="Setting a different gap for columns and rows"
+    >
+      <GridComponent gap={{ col: "md", row: "xs" }}>
+        <div>Item 1</div>
+        <div>Item 2</div>
+        <div>Item 3</div>
+        <div>Item 4</div>
+        <div>Item 5</div>
+        <div>Item 6</div>
+      </GridComponent>
+    </CodePreview>
     <Heading as="h3"><code>sizeMinCols</code></Heading>
     <p>
       The <code>sizeMinCols</code> property lets you override the default minimal
       size for columns.
     </p>
-    <GridComponent sizeMinCols="400px">
-      <div>Item 1</div>
-      <div>Item 2</div>
-      <div>Item 3</div>
-      <div>Item 4</div>
-      <div>Item 5</div>
-      <div>Item 6</div>
-    </GridComponent>
+    <CodePreview
+      code={`<Grid sizeMinCols="400px">
+  <div>Item 1</div>
+  <div>Item 2</div>
+  <div>Item 3</div>
+  <div>Item 4</div>
+  <div>Item 5</div>
+  <div>Item 6</div>
+</Grid>`}
+      label="Setting a minimal size for columns"
+    >
+      <GridComponent sizeMinCols="400px">
+        <div>Item 1</div>
+        <div>Item 2</div>
+        <div>Item 3</div>
+        <div>Item 4</div>
+        <div>Item 5</div>
+        <div>Item 6</div>
+      </GridComponent>
+    </CodePreview>
     <Heading as="h3"><code>sizeMaxCols</code></Heading>
     <p>
       The <code>sizeMaxCols</code> property lets you override the default maximal
       size for columns.
     </p>
-    <GridComponent sizeMaxCols="200px">
-      <div>Item 1</div>
-      <div>Item 2</div>
-      <div>Item 3</div>
-      <div>Item 4</div>
-      <div>Item 5</div>
-      <div>Item 6</div>
-    </GridComponent>
+    <CodePreview
+      code={`<Grid sizeMaxCols="200px">
+  <div>Item 1</div>
+  <div>Item 2</div>
+  <div>Item 3</div>
+  <div>Item 4</div>
+  <div>Item 5</div>
+  <div>Item 6</div>
+</Grid>`}
+      label="Setting a maximal size for columns"
+    >
+      <GridComponent sizeMaxCols="200px">
+        <div>Item 1</div>
+        <div>Item 2</div>
+        <div>Item 3</div>
+        <div>Item 4</div>
+        <div>Item 5</div>
+        <div>Item 6</div>
+      </GridComponent>
+    </CodePreview>
     <Heading as="h3"><code>templateCols</code></Heading>
     <p>
       The <code>templateCols</code> property lets you override the default template
       for columns.
     </p>
-    <GridComponent templateCols="1fr auto 1fr">
-      <div>Item 1</div>
-      <div>Item 2</div>
-      <div>Item 3</div>
-      <div>Item 4</div>
-      <div>Item 5</div>
-      <div>Item 6</div>
-    </GridComponent>
+    <CodePreview
+      code={`<Grid templateCols="1fr auto 1fr">
+  <div>Item 1</div>
+  <div>Item 2</div>
+  <div>Item 3</div>
+  <div>Item 4</div>
+  <div>Item 5</div>
+  <div>Item 6</div>
+</Grid>`}
+      label="Setting a custom template for columns"
+    >
+      <GridComponent templateCols="1fr auto 1fr">
+        <div>Item 1</div>
+        <div>Item 2</div>
+        <div>Item 3</div>
+        <div>Item 4</div>
+        <div>Item 5</div>
+        <div>Item 6</div>
+      </GridComponent>
+    </CodePreview>
     <Heading as="h3"><code>templateRows</code></Heading>
     <p>
       The <code>templateRows</code> property lets you override the default template
       for rows.
     </p>
-    <GridComponent templateRows="auto 3rem auto">
-      <div>Item 1</div>
-      <div>Item 2</div>
-      <div>Item 3</div>
-      <div>Item 4</div>
-      <div>Item 5</div>
-      <div>Item 6</div>
-    </GridComponent>
+    <CodePreview
+      code={`<Grid templateRows="auto 3rem auto">
+  <div>Item 1</div>
+  <div>Item 2</div>
+  <div>Item 3</div>
+  <div>Item 4</div>
+  <div>Item 5</div>
+  <div>Item 6</div>
+</Grid>`}
+      label="Setting a custom template for rows"
+    >
+      <GridComponent templateRows="auto 3rem auto">
+        <div>Item 1</div>
+        <div>Item 2</div>
+        <div>Item 3</div>
+        <div>Item 4</div>
+        <div>Item 5</div>
+        <div>Item 6</div>
+      </GridComponent>
+    </CodePreview>
     <Heading as="h3">Other CSS grid properties</Heading>
     <p>
       You can also use <code>alignContent</code>, <code>alignItems</code>, <code

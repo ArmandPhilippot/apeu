@@ -1,5 +1,6 @@
 ---
-import type { ComponentProps } from "astro/types";
+import { getStoryMeta } from "../../../utils/stories";
+import CodePreview from "../../molecules/code-preview/code-preview.astro";
 import PageLayout from "../../templates/page-layout/page-layout.astro";
 import Heading from "../heading/heading.astro";
 import ListItem from "../list/list-item.astro";
@@ -8,26 +9,18 @@ import DescriptionListComponent from "./description-list.astro";
 import Item from "./item.astro";
 
 const title = "DescriptionList";
-const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
-  { label: "Home", url: "/" },
-  { label: "Design system", url: "/design-system" },
-  { label: "Components", url: "/design-system/components" },
-  { label: "Atoms", url: "/design-system/components/atoms" },
-  { label: title, url: Astro.url.href },
-];
-const seo: ComponentProps<typeof PageLayout>["seo"] = {
-  nofollow: true,
-  noindex: true,
-  title: breadcrumb
-    .slice(1)
-    .reverse()
-    .map((crumb) => crumb.label)
-    .join(" | "),
-};
+const { breadcrumb, seo } = getStoryMeta({
+  breadcrumb: {
+    kind: "atoms",
+    route: Astro.url.pathname,
+    title,
+  },
+});
 ---
 
 <PageLayout breadcrumb={breadcrumb} seo={seo} title={title}>
   <Fragment slot="body">
+    <Heading>Introduction</Heading>
     <p>In a description list, you can:</p>
     <List>
       <ListItem>Use a single term associated to a single description</ListItem>
@@ -35,6 +28,34 @@ const seo: ComponentProps<typeof PageLayout>["seo"] = {
       <ListItem>Use a single term associated to multiple descriptions</ListItem>
       <ListItem>Wrap each couple with an <code>Item</code> component</ListItem>
     </List>
+    <CodePreview
+      code={`import DescriptionList from "./components/atoms/description-list/description-list.astro"`}
+      label="How to import"
+    />
+    <CodePreview
+      code={`<DescriptionList>
+  <dt>Term 1 - Variant 1</dt>
+  <dt>Term 1 - Variant 2</dt>
+  <dd>The description of Term 1 variants</dd>
+  <dt>Term 2</dt>
+  <dd>The description of term 2</dd>
+  <dt>Term 3</dt>
+  <dd>The first description of term 3</dd>
+  <dd>The second description of term 3</dd>
+</DescriptionList>`}
+      label="Basic use"
+    >
+      <DescriptionListComponent>
+        <dt>Term 1 - Variant 1</dt>
+        <dt>Term 1 - Variant 2</dt>
+        <dd>The description of Term 1 variants</dd>
+        <dt>Term 2</dt>
+        <dd>The description of term 2</dd>
+        <dt>Term 3</dt>
+        <dd>The first description of term 3</dd>
+        <dd>The second description of term 3</dd>
+      </DescriptionListComponent>
+    </CodePreview>
     <Heading as="h2">With <code>isInline: false</code> (default)</Heading>
     <Heading as="h3">Without Item component</Heading>
     <Heading as="h4">No spacing (default)</Heading>

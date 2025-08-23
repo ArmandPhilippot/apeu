@@ -1,49 +1,54 @@
 ---
-import type { ComponentProps } from "astro/types";
+import { getStoryMeta } from "../../../utils/stories";
+import CodePreview from "../../molecules/code-preview/code-preview.astro";
 import PageLayout from "../../templates/page-layout/page-layout.astro";
 import HeadingComponent from "./heading.astro";
 
 const title = "Heading";
-const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
-  { label: "Home", url: "/" },
-  { label: "Design system", url: "/design-system" },
-  { label: "Components", url: "/design-system/components" },
-  { label: "Atoms", url: "/design-system/components/atoms" },
-  { label: title, url: Astro.url.href },
-];
-const seo: ComponentProps<typeof PageLayout>["seo"] = {
-  nofollow: true,
-  noindex: true,
-  title: breadcrumb
-    .slice(1)
-    .reverse()
-    .map((crumb) => crumb.label)
-    .join(" | "),
-};
+const { breadcrumb, seo } = getStoryMeta({
+  breadcrumb: {
+    kind: "atoms",
+    route: Astro.url.pathname,
+    title,
+  },
+});
 ---
 
 <PageLayout breadcrumb={breadcrumb} seo={seo} title={title}>
   <Fragment slot="body">
-    <HeadingComponent as="h2">Usage</HeadingComponent>
-    <p>This component is used to display a heading.</p>
-    <HeadingComponent as="h2">Levels from h1 to h6</HeadingComponent>
-    <HeadingComponent as="h1">
-      The quick brown fox jumps over the lazy dog
-    </HeadingComponent>
-    <HeadingComponent as="h2">
-      The quick brown fox jumps over the lazy dog
-    </HeadingComponent>
-    <HeadingComponent as="h3">
-      The quick brown fox jumps over the lazy dog
-    </HeadingComponent>
-    <HeadingComponent as="h4">
-      The quick brown fox jumps over the lazy dog
-    </HeadingComponent>
-    <HeadingComponent as="h5">
-      The quick brown fox jumps over the lazy dog
-    </HeadingComponent>
-    <HeadingComponent as="h6">
-      The quick brown fox jumps over the lazy dog
-    </HeadingComponent>
+    <HeadingComponent>Introduction</HeadingComponent>
+    <p>
+      A Heading component is used to display headings on a page. It supports
+      native HTML headings from <code>h1</code> to <code>h6</code>.
+    </p>
+    <CodePreview
+      code={`import Heading from "./components/atoms/heading/heading.astro"`}
+      label="How to import"
+    />
+    <CodePreview code={`<Heading>A heading</Heading>`} label="Basic use">
+      <HeadingComponent>A heading</HeadingComponent>
+    </CodePreview>
+    <HeadingComponent>Levels</HeadingComponent>
+    <p>
+      Headings are meant to represent the hierarchy in a page, so different
+      levels are available. The default level, when <code>as</code> is not provided,
+      is <code>h2</code>.
+    </p>
+    <CodePreview
+      code={`<Heading as="h1">A heading of level 1</Heading>
+<Heading as="h2">A heading of level 2</Heading>
+<Heading as="h3">A heading of level 3</Heading>
+<Heading as="h4">A heading of level 4</Heading>
+<Heading as="h5">A heading of level 5</Heading>
+<Heading as="h6">A heading of level 6</Heading>`}
+      label="Using different heading levels"
+    >
+      <HeadingComponent as="h1">A heading of level 1</HeadingComponent>
+      <HeadingComponent as="h2">A heading of level 2</HeadingComponent>
+      <HeadingComponent as="h3">A heading of level 3</HeadingComponent>
+      <HeadingComponent as="h4">A heading of level 4</HeadingComponent>
+      <HeadingComponent as="h5">A heading of level 5</HeadingComponent>
+      <HeadingComponent as="h6">A heading of level 6</HeadingComponent>
+    </CodePreview>
   </Fragment>
 </PageLayout>

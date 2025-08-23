@@ -1,0 +1,84 @@
+---
+import type { ComponentProps } from "astro/types";
+import { Code } from "astro:components";
+import { shikiTheme } from "../../../lib/shiki/theme";
+
+type Props = Pick<ComponentProps<typeof Code>, "lang" | "wrap"> & {
+  code?: string | null | undefined;
+  label?: string | null | undefined;
+};
+
+const { code, label, lang = "text", wrap = false } = Astro.props;
+const hasUseAndPreview = code && Astro.slots.has("default");
+---
+
+<figure class="code-preview">
+  {label ? <figcaption>{label}</figcaption> : null}
+  {
+    code ? (
+      <div class="use">
+        {hasUseAndPreview && <div class="use-label">Use</div>}
+        {/* prettier-ignore */}
+        <Code class="use-content" code={code} lang={lang} theme={shikiTheme} wrap={wrap} />
+      </div>
+    ) : null
+  }
+  {
+    Astro.slots.has("default") ? (
+      <div class="preview">
+        {hasUseAndPreview && <div class="preview-label">Preview</div>}
+        <div class="preview-content">
+          <slot />
+        </div>
+      </div>
+    ) : null
+  }
+</figure>
+
+<style>
+  .code-preview {
+    margin-inline: 0;
+    background: var(--color-regular-dark);
+    border: var(--border-size-sm) solid var(--color-border);
+    border-radius: var(--border-radii-md);
+  }
+
+  figcaption {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    background: var(--color-regular-darker);
+    border-block-end: var(--border-size-sm) solid var(--color-border);
+  }
+
+  .use-label,
+  .preview-label {
+    padding-block: var(--spacing-xs) var(--spacing-2xs);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-bold);
+  }
+
+  .use-content {
+    margin: 0;
+    font-family: var(--font-family-mono);
+  }
+
+  .use,
+  .preview {
+    margin-top: 0;
+    padding: 0 var(--spacing-sm) var(--spacing-sm);
+
+    &:where(:not(:has(.use-label, .preview-label))) {
+      padding-block-start: var(--spacing-sm);
+    }
+  }
+
+  :where(.code-preview:has(.use)) .preview {
+    border-block-start: var(--border-size-sm) solid var(--color-border);
+  }
+
+  .use-content,
+  .preview-content {
+    padding: var(--spacing-md);
+    background: var(--color-regular);
+    border: var(--border-size-sm) solid var(--color-border);
+  }
+</style>

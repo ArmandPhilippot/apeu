@@ -1,6 +1,7 @@
 ---
 import { getStoryMeta } from "../../../utils/stories";
 import Heading from "../../atoms/heading/heading.astro";
+import CodePreview from "../../molecules/code-preview/code-preview.astro";
 import PageLayout from "../../templates/page-layout/page-layout.astro";
 import SearchFormComponent from "./search-form.astro";
 
@@ -21,18 +22,35 @@ const { breadcrumb, seo } = getStoryMeta({
       A <code>SearchForm</code> component should be used to authorize the user to
       search a page on the website using keywords.
     </p>
-    <SearchFormComponent
-      id="usage-example"
-      queryParam="query"
-      resultsPage="/#results"
+    <CodePreview
+      code={`import SearchForm from "./components/organisms/search-form/search-form.astro";`}
+      label="How to import"
+      lang="ts"
     />
+    <CodePreview
+      code={`<SearchForm id="use-example" queryParam="query" resultsPage="/#results" />`}
+      label="Basic use"
+      lang="astro"
+    >
+      <SearchFormComponent
+        id="use-example"
+        queryParam="query"
+        resultsPage="/#results"
+      />
+    </CodePreview>
     <Heading as="h2">Options</Heading>
     <Heading as="h3"><code>isInline</code></Heading>
-    <SearchFormComponent
-      id="inline-example"
-      isInline
-      queryParam="query"
-      resultsPage="/#results"
-    />
+    <CodePreview
+      code={`<SearchForm id="inlined-example" isInline queryParam="query" resultsPage="/#results" />`}
+      label="Using an inlined search form"
+      lang="astro"
+    >
+      <SearchFormComponent
+        id="inlined-example"
+        isInline
+        queryParam="query"
+        resultsPage="/#results"
+      />
+    </CodePreview>
   </Fragment>
 </PageLayout>

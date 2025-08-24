@@ -1,8 +1,8 @@
 ---
 import type { ComponentProps } from "astro/types";
 import { getStoryMeta } from "../../../utils/stories";
-import Box from "../../atoms/box/box.astro";
 import Heading from "../../atoms/heading/heading.astro";
+import CodePreview from "../../molecules/code-preview/code-preview.astro";
 import PageLayout from "../../templates/page-layout/page-layout.astro";
 import CollectionCardComponent from "./collection-card.astro";
 
@@ -29,6 +29,7 @@ const blog = {
   collection: "blogroll",
   description: {
     en: "A short description about the blog.",
+    fr: "A short description about the blog.",
   },
   id: "any-blog",
   meta: {
@@ -151,163 +152,318 @@ const tag = {
 
 <PageLayout breadcrumb={breadcrumb} seo={seo} title={title}>
   <Fragment slot="body">
-    <Heading as="h2">Usage</Heading>
+    <Heading as="h2">Introduction</Heading>
     <p>
       A <code>CollectionCard</code> component should be used to display a collection
       entry preview and to visit a link to learn more about this entry.
     </p>
-  </Fragment>
-  <Fragment slot="disconnected-body">
-    <CollectionCardComponent entry={basicCard} headingLvl="h3" />
-    <Box
-      elevation="raised"
-      isBordered
-      isCentered
-      isPadded
-      isProse
-      isRounded
-      isSpaced
-    >
-      <Heading as="h2">Variants</Heading>
-      <Heading as="h3">With collection</Heading>
-    </Box>
-    <CollectionCardComponent
-      entry={basicCard}
-      headingLvl="h4"
-      isCentered
-      showCollection
+    <CodePreview
+      code={`import CollectionCard from "./components/organisms/collection-card/collection-card.astro";`}
+      label="How to import"
+      lang="ts"
     />
-    <Box
-      elevation="raised"
-      isBordered
-      isCentered
-      isPadded
-      isProse
-      isRounded
-      isSpaced><Heading as="h3">With featured meta</Heading></Box
+    <CodePreview
+      code={`---
+const basicCard = {
+  collection: "pages",
+  description: "A short description of the page.",
+  id: "basic-card",
+  locale: "en",
+  route: "#a-basic-card",
+  slug: "a-basic-card",
+  title: "The page title",
+}
+---
+<CollectionCard entry={basicCard} headingLvl="h3" />`}
+      label="Basic use"
+      lang="astro"
     >
-    <CollectionCardComponent
-      entry={project}
-      featuredMeta={{ key: "kind" }}
-      headingLvl="h4"
-      isCentered
-    />
-    <Box
-      elevation="raised"
-      isBordered
-      isCentered
-      isPadded
-      isProse
-      isRounded
-      isSpaced><Heading as="h3">With CTA</Heading></Box
+      <CollectionCardComponent entry={basicCard} headingLvl="h3" />
+    </CodePreview>
+    <Heading>With the collection name</Heading>
+    <CodePreview
+      code={`---
+const basicCard = {
+  collection: "pages",
+  description: "A short description of the page.",
+  id: "basic-card",
+  locale: "en",
+  route: "#a-basic-card",
+  slug: "a-basic-card",
+  title: "The page title",
+}
+---
+<CollectionCard entry={basicCard} headingLvl="h3" showCollection />`}
+      label="Showing the collection name"
+      lang="astro"
     >
-    <CollectionCardComponent
-      cta={{ label: "Read more" }}
-      entry={basicCard}
-      headingLvl="h4"
-      isCentered
-    />
-    <Box
-      elevation="raised"
-      isBordered
-      isCentered
-      isPadded
-      isProse
-      isRounded
-      isSpaced
+      <CollectionCardComponent
+        entry={basicCard}
+        headingLvl="h3"
+        showCollection
+      />
+    </CodePreview>
+    <Heading>With a call to action</Heading>
+    <CodePreview
+      code={`---
+const basicCard = {
+  collection: "pages",
+  description: "A short description of the page.",
+  id: "basic-card",
+  locale: "en",
+  route: "#a-basic-card",
+  slug: "a-basic-card",
+  title: "The page title",
+}
+---
+<CollectionCard cta={{ label: "Read more" }} entry={basicCard} headingLvl="h3" />`}
+      label="Showing a call to action"
+      lang="astro"
     >
-      <Heading as="h2">Collections examples</Heading>
-      <p>Following you'll see some common examples for each collection.</p>
-    </Box>
-    <Box
-      elevation="raised"
-      isBordered
-      isCentered
-      isPadded
-      isProse
-      isRounded
-      isSpaced><Heading as="h3">Blogroll</Heading></Box
+      <CollectionCardComponent
+        cta={{ label: "Read more" }}
+        entry={basicCard}
+        headingLvl="h3"
+      />
+    </CodePreview>
+    <Heading>With featured meta</Heading>
+    <CodePreview
+      code={`---
+const project = {
+  collection: "projects",
+  description: "An excerpt about the project.",
+  id: "project-card",
+  locale: "en",
+  meta: {
+    kind: "site",
+    repository: {
+      name: "repo",
+      url: "https://github.com/user/repo",
+    },
+    publishedOn: new Date("2024-09-16"),
+    updatedOn: new Date("2024-09-16"),
+  },
+  route: "#et-perferendis-qui",
+  slug: "et-perferendis-qui",
+  title: "The project title",
+}
+---
+<CollectionCard entry={project} featuredMeta={{key: "kind", icon: "project"}} headingLvl="h3" />`}
+      label="Showing featured meta"
+      lang="astro"
     >
-    <CollectionCardComponent entry={blog} headingLvl="h4" isCentered />
-    <Box
-      elevation="raised"
-      isBordered
-      isCentered
-      isPadded
-      isProse
-      isRounded
-      isSpaced><Heading as="h3">Blog Category</Heading></Box
+      <CollectionCardComponent
+        entry={project}
+        featuredMeta={{ key: "kind", icon: "project" }}
+        headingLvl="h3"
+      />
+    </CodePreview>
+    <Heading>Collections examples</Heading>
+    <p>Below you'll see some common examples for each collection.</p>
+    <Heading as="h3">Blogroll</Heading>
+    <CodePreview
+      code={`---
+const blog = {
+  collection: "blogroll",
+  description: {
+    en: "A short description about the blog.",
+    fr: "A short description about the blog.",
+  },
+  id: "any-blog",
+  meta: {
+    inLanguages: ["en"],
+    publishedOn: new Date(),
+    updatedOn: new Date(),
+  },
+  title: "The blog title",
+  url: "#molestiae-eum-facere",
+}
+---
+<CollectionCard entry={blog} headingLvl="h4" />`}
+      label="Showing a blogroll entry"
+      lang="astro"
     >
-    <CollectionCardComponent entry={blogCategory} headingLvl="h4" isCentered />
-    <Box
-      elevation="raised"
-      isBordered
-      isCentered
-      isPadded
-      isProse
-      isRounded
-      isSpaced><Heading as="h3">Blog Post</Heading></Box
+      <CollectionCardComponent entry={blog} headingLvl="h4" />
+    </CodePreview>
+    <Heading as="h3">Blog categories</Heading>
+    <CodePreview
+      code={`---
+const blogCategory = {
+  collection: "blog.categories",
+  description: "An excerpt about the blog category.",
+  id: "category-card",
+  locale: "en",
+  route: "#et-perferendis-qui",
+  slug: "et-perferendis-qui",
+  title: "The blog category title",
+}
+---
+<CollectionCard entry={blogCategory} headingLvl="h4" />`}
+      label="Showing a blog category"
+      lang="astro"
     >
-    <CollectionCardComponent entry={blogPost} headingLvl="h4" isCentered />
-    <Box
-      elevation="raised"
-      isBordered
-      isCentered
-      isPadded
-      isProse
-      isRounded
-      isSpaced><Heading as="h3">Bookmark</Heading></Box
+      <CollectionCardComponent entry={blogCategory} headingLvl="h4" />
+    </CodePreview>
+    <Heading as="h3">Blog posts</Heading>
+    <CodePreview
+      code={`---
+const blogPost = {
+  collection: "blog.posts",
+  description: "An excerpt about the blog post.",
+  id: "post-card",
+  locale: "en",
+  meta: {
+    category: {
+      title: "A category",
+      route: "#quisquam-itaque-provident",
+    },
+    publishedOn: new Date("2024-09-16"),
+    updatedOn: new Date(),
+  },
+  route: "#et-perferendis-qui",
+  slug: "et-perferendis-qui",
+  title: "The blog post title",
+}
+---
+<CollectionCard entry={blogPost} headingLvl="h4" />`}
+      label="Showing a blog post"
+      lang="astro"
     >
-    <CollectionCardComponent entry={bookmark} headingLvl="h4" isCentered />
-    <Box
-      elevation="raised"
-      isBordered
-      isCentered
-      isPadded
-      isProse
-      isRounded
-      isSpaced><Heading as="h3">Guide</Heading></Box
+      <CollectionCardComponent entry={blogPost} headingLvl="h4" />
+    </CodePreview>
+    <Heading as="h3">Bookmarks</Heading>
+    <CodePreview
+      code={`---
+const bookmark = {
+  collection: "bookmarks",
+  description: "A short description about the bookmark.",
+  id: "bookmark-card",
+  isQuote: false,
+  meta: {
+    inLanguage: "en",
+    publishedOn: new Date(),
+  },
+  title: "The bookmark title",
+  url: "#molestiae-eum-facere",
+}
+---
+<CollectionCard entry={bookmark} headingLvl="h4" />`}
+      label="Showing a bookmark"
+      lang="astro"
     >
-    <CollectionCardComponent entry={guide} headingLvl="h4" isCentered />
-    <Box
-      elevation="raised"
-      isBordered
-      isCentered
-      isPadded
-      isProse
-      isRounded
-      isSpaced><Heading as="h3">Notes</Heading></Box
+      <CollectionCardComponent entry={bookmark} headingLvl="h4" />
+    </CodePreview>
+    <Heading as="h3">Guides</Heading>
+    <CodePreview
+      code={`---
+const guide = {
+  collection: "guides",
+  description: "An excerpt about the guide.",
+  id: "guide-card",
+  locale: "en",
+  meta: {
+    publishedOn: new Date("2024-09-16"),
+    updatedOn: new Date("2024-09-16"),
+  },
+  route: "#et-perferendis-qui",
+  slug: "et-perferendis-qui",
+  title: "The guide title",
+}
+---
+<CollectionCard entry={guide} headingLvl="h4" />`}
+      label="Showing a guide"
+      lang="astro"
     >
-    <CollectionCardComponent entry={note} headingLvl="h4" isCentered />
-    <Box
-      elevation="raised"
-      isBordered
-      isCentered
-      isPadded
-      isProse
-      isRounded
-      isSpaced><Heading as="h3">Page</Heading></Box
+      <CollectionCardComponent entry={guide} headingLvl="h4" />
+    </CodePreview>
+    <Heading as="h3">Notes</Heading>
+    <CodePreview
+      code={`---
+const note = {
+  collection: "notes",
+  description: "An excerpt about the note.",
+  id: "note-card",
+  locale: "en",
+  meta: {
+    publishedOn: new Date("2024-09-16"),
+    updatedOn: new Date("2024-09-16"),
+  },
+  route: "#et-perferendis-qui",
+  slug: "et-perferendis-qui",
+  title: "The note title",
+}
+---
+<CollectionCard entry={note} headingLvl="h4" />`}
+      label="Showing a note"
+      lang="astro"
     >
-    <CollectionCardComponent entry={page} headingLvl="h4" isCentered />
-    <Box
-      elevation="raised"
-      isBordered
-      isCentered
-      isPadded
-      isProse
-      isRounded
-      isSpaced><Heading as="h3">Project</Heading></Box
+      <CollectionCardComponent entry={note} headingLvl="h4" />
+    </CodePreview>
+    <Heading as="h3">Pages</Heading>
+    <CodePreview
+      code={`---
+const page = {
+  collection: "pages",
+  description: "An excerpt about the page.",
+  id: "page-card",
+  locale: "en",
+  route: "#et-perferendis-qui",
+  slug: "et-perferendis-qui",
+  title: "The page title",
+}
+---
+<CollectionCard entry={page} headingLvl="h4" />`}
+      label="Showing a page"
+      lang="astro"
     >
-    <CollectionCardComponent entry={project} headingLvl="h4" isCentered />
-    <Box
-      elevation="raised"
-      isBordered
-      isCentered
-      isPadded
-      isProse
-      isRounded
-      isSpaced><Heading as="h3">Tag</Heading></Box
+      <CollectionCardComponent entry={page} headingLvl="h4" />
+    </CodePreview>
+    <Heading as="h3">Projects</Heading>
+    <CodePreview
+      code={`---
+const project = {
+  collection: "projects",
+  description: "An excerpt about the project.",
+  id: "project-card",
+  locale: "en",
+  meta: {
+    kind: "site",
+    repository: {
+      name: "repo",
+      url: "https://github.com/user/repo",
+    },
+    publishedOn: new Date("2024-09-16"),
+    updatedOn: new Date("2024-09-16"),
+  },
+  route: "#et-perferendis-qui",
+  slug: "et-perferendis-qui",
+  title: "The project title",
+}
+---
+<CollectionCard entry={project} headingLvl="h4" />`}
+      label="Showing a project"
+      lang="astro"
     >
-    <CollectionCardComponent entry={tag} headingLvl="h4" isCentered />
+      <CollectionCardComponent entry={project} headingLvl="h4" />
+    </CodePreview>
+    <Heading as="h3">Tags</Heading>
+    <CodePreview
+      code={`---
+const tag = {
+  collection: "tags",
+  description: "An excerpt about the tag.",
+  id: "tag-card",
+  locale: "en",
+  route: "#et-perferendis-qui",
+  slug: "et-perferendis-qui",
+  title: "The tag title",
+}
+---
+<CollectionCard entry={tag} headingLvl="h4" />`}
+      label="Showing a tag"
+      lang="astro"
+    >
+      <CollectionCardComponent entry={tag} headingLvl="h4" />
+    </CodePreview>
   </Fragment>
 </PageLayout>

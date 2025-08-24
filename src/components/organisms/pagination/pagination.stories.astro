@@ -2,6 +2,7 @@
 import type { ComponentProps } from "astro/types";
 import { getStoryMeta } from "../../../utils/stories";
 import Heading from "../../atoms/heading/heading.astro";
+import CodePreview from "../../molecules/code-preview/code-preview.astro";
 import PageLayout from "../../templates/page-layout/page-layout.astro";
 import PaginationComponent from "./pagination.astro";
 
@@ -26,22 +27,61 @@ const renderLink: ComponentProps<typeof PaginationComponent>["renderLink"] = (
       A <code>Pagination</code> component should be used when a collection of items
       is divided in multiple pages.
     </p>
-    <Heading as="h2">With few pages</Heading>
-    <PaginationComponent current={1} last={4} renderLink={renderLink} />
+    <CodePreview
+      code={`import Pagination from "./components/organisms/pagination/pagination.astro";`}
+      label="How to import"
+      lang="ts"
+    />
+    <CodePreview
+      code={`<Pagination current={1} last={4} renderLink={renderLink} />`}
+      label="Basic use"
+      lang="astro"
+    >
+      <PaginationComponent current={1} last={4} renderLink={renderLink} />
+    </CodePreview>
     <Heading as="h2">With ellipsis and current page is first page</Heading>
-    <PaginationComponent current={1} last={10} renderLink={renderLink} />
+    <CodePreview
+      code={`<Pagination current={1} last={10} renderLink={renderLink} />`}
+      label="Showing ellipsis when current page is the first one"
+      lang="astro"
+    >
+      <PaginationComponent current={1} last={10} renderLink={renderLink} />
+    </CodePreview>
     <Heading as="h2">With ellipsis and current page is last page</Heading>
-    <PaginationComponent current={10} last={10} renderLink={renderLink} />
+    <CodePreview
+      code={`<Pagination current={10} last={10} renderLink={renderLink} />`}
+      label="Showing ellipsis when current page is the last one"
+      lang="astro"
+    >
+      <PaginationComponent current={10} last={10} renderLink={renderLink} />
+    </CodePreview>
     <Heading as="h2">
       With both ellipsis and current page is in the middle
     </Heading>
-    <PaginationComponent current={25} last={50} renderLink={renderLink} />
-    <Heading as="h2"> With custom siblings number </Heading>
-    <PaginationComponent
-      current={25}
-      last={50}
-      renderLink={renderLink}
-      siblings={3}
-    />
+    <CodePreview
+      code={`<Pagination current={25} last={50} renderLink={renderLink} />`}
+      label="Showing ellipsis on both side when current page is in the middle"
+      lang="astro"
+    >
+      <PaginationComponent current={25} last={50} renderLink={renderLink} />
+    </CodePreview>
+    <Heading as="h2">With custom siblings count</Heading>
+    <CodePreview
+      code={`<PaginationComponent
+  current={25}
+  last={50}
+  renderLink={renderLink}
+  siblings={3}
+/>`}
+      label="Using a custom siblings count"
+      lang="astro"
+    >
+      <PaginationComponent
+        current={25}
+        last={50}
+        renderLink={renderLink}
+        siblings={3}
+      />
+    </CodePreview>
   </Fragment>
 </PageLayout>

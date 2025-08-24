@@ -1,6 +1,7 @@
 ---
 import { getStoryMeta } from "../../../utils/stories";
 import Heading from "../../atoms/heading/heading.astro";
+import CodePreview from "../../molecules/code-preview/code-preview.astro";
 import PageLayout from "../../templates/page-layout/page-layout.astro";
 import NavbarComponent from "./navbar.astro";
 
@@ -21,10 +22,25 @@ const { breadcrumb, seo } = getStoryMeta({
       A <code>Navbar</code> component should be used in the website layout to provide
       navigation items to the user.
     </p>
-    <NavbarComponent id="usage-example">
-      <div slot="nav">Nav</div>
-      <div slot="search">Search</div>
-      <div slot="settings">Settings</div>
-    </NavbarComponent>
+    <CodePreview
+      code={`import Navbar from "./components/organisms/navbar/navbar.astro";`}
+      label="How to import"
+      lang="ts"
+    />
+    <CodePreview
+      code={`<Navbar id="usage-example">
+  <div slot="nav">Nav</div>
+  <div slot="search">Search</div>
+  <div slot="settings">Settings</div>
+</Navbar>`}
+      label="Basic use"
+      lang="astro"
+    >
+      <NavbarComponent id="usage-example">
+        <div slot="nav">Nav</div>
+        <div slot="search">Search</div>
+        <div slot="settings">Settings</div>
+      </NavbarComponent>
+    </CodePreview>
   </Fragment>
 </PageLayout>

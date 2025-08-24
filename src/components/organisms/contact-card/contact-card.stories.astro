@@ -1,8 +1,7 @@
 ---
-import type { ComponentProps } from "astro/types";
 import { getStoryMeta } from "../../../utils/stories";
-import Box from "../../atoms/box/box.astro";
 import Heading from "../../atoms/heading/heading.astro";
+import CodePreview from "../../molecules/code-preview/code-preview.astro";
 import PageLayout from "../../templates/page-layout/page-layout.astro";
 import ContactCardComponent from "./contact-card.astro";
 
@@ -14,68 +13,82 @@ const { breadcrumb, seo } = getStoryMeta({
     title,
   },
 });
+---
 
+<PageLayout breadcrumb={breadcrumb} seo={seo} title={title}>
+  <Fragment slot="body">
+    <Heading as="h2">Introduction</Heading>
+    <p>
+      An <code>ContactCard</code> component should be used to display contact methods.
+    </p>
+    <CodePreview
+      code={`import ContactCard from "./components/organisms/contact-card/contact-card.astro";`}
+      label="How to import"
+      lang="ts"
+    />
+    <CodePreview
+      code={`<ContactCard contactPageRoute="#contact" />`}
+      label="Basic use"
+      lang="astro"
+    >
+      <ContactCardComponent contactPageRoute="#contact" />
+    </CodePreview>
+    <Heading>With social links</Heading>
+    <CodePreview
+      code={`import ContactCard from "./components/organisms/contact-card/contact-card.astro";`}
+      label="How to import"
+      lang="ts"
+    />
+    <CodePreview
+      code={`---
 const socialMedia = {
   diaspora: "#diaspora",
   github: "#github",
   linkedin: "#linkedin",
   stackoverflow: "#stackoverflow",
-} satisfies ComponentProps<typeof ContactCardComponent>["socialMedia"];
+}
 ---
-
-<PageLayout breadcrumb={breadcrumb} seo={seo} title={title}>
-  <Fragment slot="body">
-    <Heading as="h2">Usage</Heading>
-    <p>
-      An <code>ContactCard</code> component should be used to display contact methods.
-    </p>
-  </Fragment>
-  <Fragment slot="disconnected-body">
-    <Box
-      elevation="raised"
-      isBordered
-      isCentered
-      isPadded
-      isProse
-      isRounded
-      isSpaced
+<ContactCard contactPageRoute="#contact" socialMedia={socialMedia} />`}
+      label="Showing social media"
+      lang="astro"
     >
-      <Heading>Default</Heading>
-    </Box>
-    <ContactCardComponent contactPageRoute="#contact" isCentered />
-    <Box
-      elevation="raised"
-      isBordered
-      isCentered
-      isPadded
-      isProse
-      isRounded
-      isSpaced
+      <ContactCardComponent
+        contactPageRoute="#contact"
+        socialMedia={{
+          diaspora: "#diaspora",
+          github: "#github",
+          linkedin: "#linkedin",
+          stackoverflow: "#stackoverflow",
+        }}
+      />
+    </CodePreview>
+    <Heading>With heading</Heading>
+    <CodePreview
+      code={`---
+const socialMedia = {
+  diaspora: "#diaspora",
+  github: "#github",
+  linkedin: "#linkedin",
+  stackoverflow: "#stackoverflow",
+}
+---
+<ContactCard contactPageRoute="#contact" socialMedia={socialMedia}>
+  <Heading as="h3" slot="heading">Contact</Heading>
+</ContactCard>`}
+      label="Adding a heading"
+      lang="astro"
     >
-      <Heading>With social links</Heading>
-    </Box>
-    <ContactCardComponent
-      contactPageRoute="#contact"
-      isCentered
-      socialMedia={socialMedia}
-    />
-    <Box
-      elevation="raised"
-      isBordered
-      isCentered
-      isPadded
-      isProse
-      isRounded
-      isSpaced
-    >
-      <Heading>With heading</Heading>
-    </Box>
-    <ContactCardComponent
-      contactPageRoute="#contact"
-      isCentered
-      socialMedia={socialMedia}
-    >
-      <Heading as="h3" slot="heading">Contact</Heading>
-    </ContactCardComponent>
+      <ContactCardComponent
+        contactPageRoute="#contact"
+        socialMedia={{
+          diaspora: "#diaspora",
+          github: "#github",
+          linkedin: "#linkedin",
+          stackoverflow: "#stackoverflow",
+        }}
+      >
+        <Heading as="h3" slot="heading">Contact</Heading>
+      </ContactCardComponent>
+    </CodePreview>
   </Fragment>
 </PageLayout>

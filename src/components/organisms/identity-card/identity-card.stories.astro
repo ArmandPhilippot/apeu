@@ -1,8 +1,7 @@
 ---
-import type { ComponentProps } from "astro/types";
 import { getStoryMeta } from "../../../utils/stories";
-import Box from "../../atoms/box/box.astro";
 import Heading from "../../atoms/heading/heading.astro";
+import CodePreview from "../../molecules/code-preview/code-preview.astro";
 import PageLayout from "../../templates/page-layout/page-layout.astro";
 import IdentityCardComponent from "./identity-card.astro";
 
@@ -15,22 +14,61 @@ const { breadcrumb, seo } = getStoryMeta({
   },
 });
 
-const authorPreview = {
-  name: "John Doe",
-} satisfies ComponentProps<typeof IdentityCardComponent>["author"];
+// cSpell:ignore ˈdʒɑn ˈdoʊ
+---
 
+<PageLayout breadcrumb={breadcrumb} seo={seo} title={title}>
+  <Fragment slot="body">
+    <Heading as="h2">Introduction</Heading>
+    <p>
+      An <code>IdentityCard</code> component should be used to display information
+      about an author.
+    </p>
+    <CodePreview
+      code={`import IdentityCard from "./components/organisms/identity-card/identity-card.astro";`}
+      label="How to import"
+      lang="ts"
+    />
+    <CodePreview
+      code={`<IdentityCard author={{ name: "John Doe" }} />`}
+      label="Basic use"
+      lang="astro"
+    >
+      <IdentityCardComponent author={{ name: "John Doe" }} />
+    </CodePreview>
+    <Heading>With avatar</Heading>
+    <CodePreview
+      code={`---
 const authorPreviewWithAvatar = {
-  ...authorPreview,
   avatar: {
     format: "jpg",
     height: 200,
     src: "https://picsum.photos/150/200",
     width: 150,
   },
-} satisfies ComponentProps<typeof IdentityCardComponent>["author"];
-
+  name: "John Doe"
+}
+---
+<IdentityCard author={authorPreviewWithAvatar} />`}
+      label="Adding an avatar"
+      lang="astro"
+    >
+      <IdentityCardComponent
+        author={{
+          avatar: {
+            format: "jpg",
+            height: 200,
+            src: "https://picsum.photos/150/200",
+            width: 150,
+          },
+          name: "John Doe",
+        }}
+      />
+    </CodePreview>
+    <Heading>With all available data</Heading>
+    <CodePreview
+      code={`---
 const authorPreviewWithAllInfo = {
-  ...authorPreview,
   avatar: {
     format: "jpg",
     height: 200,
@@ -39,71 +77,75 @@ const authorPreviewWithAllInfo = {
   },
   country: "FR",
   job: "Astronaut",
-  // cSpell:ignore ˈdʒɑn ˈdoʊ
-  nameIPA: `/ˈdʒɑn/ /ˈdoʊ/`,
+  name: "John Doe",
+  nameIPA: "/ˈdʒɑn/ /ˈdoʊ/",
   nationality: "FR",
   spokenLanguages: ["en", "fr"],
-} satisfies ComponentProps<typeof IdentityCardComponent>["author"];
+}
 ---
-
-<PageLayout breadcrumb={breadcrumb} seo={seo} title={title}>
-  <Fragment slot="body">
-    <Heading as="h2">Usage</Heading>
-    <p>
-      An <code>IdentityCard</code> component should be used to display information
-      about an author.
-    </p>
-  </Fragment>
-  <Fragment slot="disconnected-body">
-    <Box
-      elevation="raised"
-      isBordered
-      isCentered
-      isPadded
-      isProse
-      isRounded
-      isSpaced
+<IdentityCard author={authorPreviewWithAvatar} />`}
+      label="Using all supported data"
+      lang="astro"
     >
-      <Heading>Default</Heading>
-    </Box>
-    <IdentityCardComponent author={authorPreview} isCentered />
-    <Box
-      elevation="raised"
-      isBordered
-      isCentered
-      isPadded
-      isProse
-      isRounded
-      isSpaced
+      <IdentityCardComponent
+        author={{
+          avatar: {
+            format: "jpg",
+            height: 200,
+            src: "https://picsum.photos/150/200",
+            width: 150,
+          },
+          country: "FR",
+          job: "Astronaut",
+          name: "John Doe",
+          nameIPA: "/ˈdʒɑn/ /ˈdoʊ/",
+          nationality: "FR",
+          spokenLanguages: ["en", "fr"],
+        }}
+      />
+    </CodePreview>
+    <Heading>With a heading</Heading>
+    <CodePreview
+      code={`---
+const authorPreviewWithAllInfo = {
+  avatar: {
+    format: "jpg",
+    height: 200,
+    src: "https://picsum.photos/150/200",
+    width: 150,
+  },
+  country: "FR",
+  job: "Astronaut",
+  name: "John Doe",
+  nameIPA: "/ˈdʒɑn/ /ˈdoʊ/",
+  nationality: "FR",
+  spokenLanguages: ["en", "fr"],
+}
+---
+<IdentityCard author={authorPreviewWithAvatar}>
+  <Heading as="h3" slot="heading">About John Doe</Heading>
+</IdentityCard>`}
+      label="Using all supported data"
+      lang="astro"
     >
-      <Heading>With avatar</Heading>
-    </Box>
-    <IdentityCardComponent author={authorPreviewWithAvatar} isCentered />
-    <Box
-      elevation="raised"
-      isBordered
-      isCentered
-      isPadded
-      isProse
-      isRounded
-      isSpaced
-    >
-      <Heading>With all available data</Heading>
-    </Box>
-    <IdentityCardComponent author={authorPreviewWithAllInfo} isCentered />
-    <Box
-      elevation="raised"
-      isBordered
-      isCentered
-      isPadded
-      isProse
-      isRounded
-      isSpaced
-    >
-      <Heading>With heading</Heading>
-    </Box>
-    <IdentityCardComponent author={authorPreviewWithAllInfo} isCentered>
-      <Heading as="h3" slot="heading">About {authorPreview.name}</Heading>
-    </IdentityCardComponent>
+      <IdentityCardComponent
+        author={{
+          avatar: {
+            format: "jpg",
+            height: 200,
+            src: "https://picsum.photos/150/200",
+            width: 150,
+          },
+          country: "FR",
+          job: "Astronaut",
+          name: "John Doe",
+          nameIPA: "/ˈdʒɑn/ /ˈdoʊ/",
+          nationality: "FR",
+          spokenLanguages: ["en", "fr"],
+        }}
+      >
+        <Heading as="h3" slot="heading">About John Doe</Heading>
+      </IdentityCardComponent>
+    </CodePreview>
   </Fragment>
 </PageLayout>

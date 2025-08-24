@@ -1,7 +1,7 @@
 ---
-import type { ComponentProps } from "astro/types";
 import { getStoryMeta } from "../../../utils/stories";
 import Heading from "../../atoms/heading/heading.astro";
+import CodePreview from "../../molecules/code-preview/code-preview.astro";
 import PageLayout from "../../templates/page-layout/page-layout.astro";
 import MainNavComponent from "./main-nav.astro";
 
@@ -13,20 +13,40 @@ const { breadcrumb, seo } = getStoryMeta({
     title,
   },
 });
+---
 
+<PageLayout breadcrumb={breadcrumb} seo={seo} title={title}>
+  <Fragment slot="body">
+    <Heading as="h2">Introduction</Heading>
+    <p>This component is used to display the main navigation.</p>
+    <CodePreview
+      code={`import MainNav from "./components/organisms/main-nav/main-nav.astro";`}
+      label="How to import"
+      lang="ts"
+    />
+    <CodePreview
+      code={`---
 const items = [
   { label: "Item 1", url: "#item-1" },
   { label: "Item 2", url: "#item-2" },
   { label: "Item 3", url: "#item-3" },
   { label: "Item 4", url: "#item-4" },
   { label: "Item 5", url: "#item-5" },
-] satisfies ComponentProps<typeof MainNavComponent>["items"];
+]
 ---
-
-<PageLayout breadcrumb={breadcrumb} seo={seo} title={title}>
-  <Fragment slot="body">
-    <Heading as="h2">Usage</Heading>
-    <p>This component is used to display the main navigation.</p>
-    <MainNavComponent items={items} />
+<MainNav items={items} />`}
+      label="Basic use"
+      lang="astro"
+    >
+      <MainNavComponent
+        items={[
+          { label: "Item 1", url: "#item-1" },
+          { label: "Item 2", url: "#item-2" },
+          { label: "Item 3", url: "#item-3" },
+          { label: "Item 4", url: "#item-4" },
+          { label: "Item 5", url: "#item-5" },
+        ]}
+      />
+    </CodePreview>
   </Fragment>
 </PageLayout>

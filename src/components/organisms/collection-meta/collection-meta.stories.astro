@@ -2,6 +2,7 @@
 import type { ComponentProps } from "astro/types";
 import { getStoryMeta } from "../../../utils/stories";
 import Heading from "../../atoms/heading/heading.astro";
+import CodePreview from "../../molecules/code-preview/code-preview.astro";
 import PageLayout from "../../templates/page-layout/page-layout.astro";
 import CollectionMetaComponent from "./collection-meta.astro";
 
@@ -13,14 +14,6 @@ const { breadcrumb, seo } = getStoryMeta({
     title,
   },
 });
-
-const meta = {
-  publishedOn: new Date(),
-} satisfies ComponentProps<typeof CollectionMetaComponent>["data"];
-
-const icons = {
-  publishedOn: { name: "success", size: 24 },
-} satisfies ComponentProps<typeof CollectionMetaComponent>["icons"];
 
 const blogPostMeta = {
   category: {
@@ -45,24 +38,89 @@ const projectMeta = {
 
 <PageLayout breadcrumb={breadcrumb} seo={seo} title={title}>
   <Fragment slot="body">
-    <Heading as="h2">Usage</Heading>
+    <Heading as="h2">Introduction</Heading>
     <p>
       A <code>CollectionMeta</code> component should be used to display the meta
       of any collection configured in Astro.
     </p>
-    <CollectionMetaComponent data={meta} />
+    <CodePreview
+      code={`import CollectionMeta from "./components/organisms/collection-meta/collection-meta.astro";`}
+      label="How to import"
+      lang="ts"
+    />
+    <CodePreview
+      code={`<CollectionMeta data={{ publishedOn: new Date() }} />`}
+      label="Basic use"
+      lang="astro"
+    >
+      <CollectionMetaComponent data={{ publishedOn: new Date() }} />
+    </CodePreview>
+    <CollectionMetaComponent data={{ publishedOn: new Date() }} />
     <Heading as="h2">With hidden label</Heading>
-    <CollectionMetaComponent data={meta} hideLabel />
+    <CodePreview
+      code={`<CollectionMeta data={{ publishedOn: new Date() }} hideLabel />`}
+      label="Hiding the labels"
+      lang="astro"
+    >
+      <CollectionMetaComponent data={{ publishedOn: new Date() }} hideLabel />
+    </CodePreview>
     <Heading as="h2">With icons</Heading>
-    <CollectionMetaComponent data={meta} icons={icons} />
+    <CodePreview
+      code={`<CollectionMeta
+  data={{ publishedOn: new Date() }}
+  icons={{ publishedOn: { name: "blog", size: 24 } }}
+/>`}
+      label="Showing icons"
+      lang="astro"
+    >
+      <CollectionMetaComponent
+        data={{ publishedOn: new Date() }}
+        icons={{ publishedOn: { name: "blog", size: 24 } }}
+      />
+    </CodePreview>
     <Heading as="h2">Specific to a collection</Heading>
     <p>
       The component also handles meta specific to some collections. Check out
       the following examples.
     </p>
     <Heading as="h3">Blog post meta</Heading>
+    <CodePreview
+      code={`---
+const blogPostMeta = {
+  category: {
+    route: "#quisquam-itaque-provident",
+    title: "A category",
+  },
+  publishedOn: new Date("2024-09-16"),
+  tags: [
+    { route: "#tag1", title: "Tag 1" },
+    { route: "#tag2", title: "Tag 2" },
+  ],
+  updatedOn: new Date(),
+}
+---
+<CollectionMeta data={blogPostMeta} />`}
+      label="Showing blog post meta"
+      lang="astro"
+    >
+      <CollectionMetaComponent data={blogPostMeta} />
+    </CodePreview>
     <CollectionMetaComponent data={blogPostMeta} />
     <Heading as="h3">Project meta</Heading>
-    <CollectionMetaComponent data={projectMeta} />
+    <CodePreview
+      code={`---
+const projectMeta = {
+  kind: "site",
+  publishedOn: new Date("2024-09-16"),
+  updatedOn: new Date("2024-09-16"),
+  isArchived: true,
+}
+---
+<CollectionMeta data={projectMeta} />`}
+      label="Showing project meta"
+      lang="astro"
+    >
+      <CollectionMetaComponent data={projectMeta} />
+    </CodePreview>
   </Fragment>
 </PageLayout>

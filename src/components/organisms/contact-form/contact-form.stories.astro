@@ -1,6 +1,7 @@
 ---
 import { getStoryMeta } from "../../../utils/stories";
 import Heading from "../../atoms/heading/heading.astro";
+import CodePreview from "../../molecules/code-preview/code-preview.astro";
 import PageLayout from "../../templates/page-layout/page-layout.astro";
 import ContactFormComponent from "./contact-form.astro";
 
@@ -16,11 +17,22 @@ const { breadcrumb, seo } = getStoryMeta({
 
 <PageLayout breadcrumb={breadcrumb} seo={seo} title={title}>
   <Fragment slot="body">
-    <Heading>Usage</Heading>
+    <Heading>Introduction</Heading>
     <p>
       A <code>ContactForm</code> component should be used to authorize the user to
       contact you by email.
     </p>
-    <ContactFormComponent id="usage-example" />
+    <CodePreview
+      code={`import ContactForm from "./components/organisms/contact-form/contact-form.astro";`}
+      label="How to import"
+      lang="ts"
+    />
+    <CodePreview
+      code={`<ContactForm id="usage-example" />`}
+      label="Basic use"
+      lang="astro"
+    >
+      <ContactFormComponent id="usage-example" />
+    </CodePreview>
   </Fragment>
 </PageLayout>

@@ -1,39 +1,38 @@
 ---
-import type { ComponentProps } from "astro/types";
+import { getStoryMeta } from "../../../utils/stories";
 import Heading from "../../atoms/heading/heading.astro";
 import PageLayout from "../../templates/page-layout/page-layout.astro";
+import CodePreview from "../code-preview/code-preview.astro";
 import GreetingsComponent from "./greetings.astro";
 
 const title = "Greetings";
-const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
-  { label: "Home", url: "/" },
-  { label: "Design system", url: "/design-system" },
-  { label: "Components", url: "/design-system/components" },
-  { label: "Molecules", url: "/design-system/components/molecules" },
-  { label: title, url: Astro.url.href },
-];
-const seo: ComponentProps<typeof PageLayout>["seo"] = {
-  nofollow: true,
-  noindex: true,
-  title: breadcrumb
-    .slice(1)
-    .reverse()
-    .map((crumb) => crumb.label)
-    .join(" | "),
-};
-
-const props: ComponentProps<typeof GreetingsComponent> = {
-  name: "John Doe",
-};
+const { breadcrumb, seo } = getStoryMeta({
+  breadcrumb: {
+    kind: "molecules",
+    route: Astro.url.pathname,
+    title,
+  },
+});
 ---
 
 <PageLayout breadcrumb={breadcrumb} seo={seo} title={title}>
   <Fragment slot="body">
-    <Heading as="h2">Usage</Heading>
+    <Heading as="h2">Introduction</Heading>
     <p>
       The <code>Greetings</code> component should be used on a homepage to introduce
       the author of the website.
     </p>
-    <GreetingsComponent {...props} />
+    <CodePreview
+      code={`import Greetings from "./components/molecules/greetings/greetings.astro";`}
+      label="How to import"
+      lang="ts"
+    />
+    <CodePreview
+      code={`<Greetings name="John Doe" />`}
+      label="Basic use"
+      lang="astro"
+    >
+      <GreetingsComponent name="John Doe" />
+    </CodePreview>
   </Fragment>
 </PageLayout>

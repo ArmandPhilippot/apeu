@@ -1,26 +1,16 @@
 ---
 import type { ComponentProps } from "astro/types";
-import PageLayout from "../../components/templates/page-layout/page-layout.astro";
+import { getStoryMeta } from "../../utils/stories";
 import NotFoundViewComponent from "./not-found-view.astro";
 
 const title = "NotFoundView";
-
-const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
-  { label: "Home", url: "/" },
-  { label: "Design system", url: "/design-system" },
-  { label: "Views", url: "/design-system/views" },
-  { label: title, url: Astro.url.href },
-];
-
-const seo: ComponentProps<typeof PageLayout>["seo"] = {
-  nofollow: true,
-  noindex: true,
-  title: breadcrumb
-    .slice(1)
-    .reverse()
-    .map((crumb) => crumb.label)
-    .join(" | "),
-};
+const { breadcrumb, seo } = getStoryMeta({
+  breadcrumb: {
+    kind: "views",
+    route: Astro.url.pathname,
+    title,
+  },
+});
 
 const fakePage: ComponentProps<typeof NotFoundViewComponent>["entry"] = {
   Content: Fragment,

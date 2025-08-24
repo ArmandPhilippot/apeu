@@ -2,6 +2,7 @@
 import { getStoryMeta } from "../../../utils/stories";
 import Heading from "../../atoms/heading/heading.astro";
 import PageLayout from "../../templates/page-layout/page-layout.astro";
+import CodePreview from "../code-preview/code-preview.astro";
 import CopyToClipboardComponent from "./copy-to-clipboard.astro";
 
 const title = "CopyToClipboard";
@@ -16,34 +17,65 @@ const { breadcrumb, seo } = getStoryMeta({
 
 <PageLayout breadcrumb={breadcrumb} seo={seo} title={title}>
   <Fragment slot="body">
-    <Heading as="h2">Usage</Heading>
+    <Heading as="h2">Introduction</Heading>
     <p>
       A <code>CopyToClipboard</code> component should be used as a call to action
       to let users copy some contents to their clipboard with a simple click.
     </p>
+    <CodePreview
+      code={`import CopyToClipboard from "./components/molecules/copy-to-clipboard/copy-to-clipboard.astro";`}
+      label="How to import"
+      lang="ts"
+    />
     <Heading as="h2">Example 1</Heading>
     <p>The copy button can copy a text in an element next to the button.</p>
-    <div id="example1">
-      <CopyToClipboardComponent
-        feedback="Copied!"
-        label="Copy example 1"
-        selector="#example1 > div"
-      />
-      <div>The contents to copy to the clipboard.</div>
-    </div>
+    <CodePreview
+      code={`<div id="example1">
+  <CopyToClipboard
+    feedback="Copied!"
+    label="Copy example 1"
+    selector="#example1 > div"
+  />
+  <div>The contents to copy to the clipboard.</div>
+</div>`}
+      label="Using the button before the text to copy"
+      lang="astro"
+    >
+      <div id="example1">
+        <CopyToClipboardComponent
+          feedback="Copied!"
+          label="Copy example 1"
+          selector="#example1 > div"
+        />
+        <div>The contents to copy to the clipboard.</div>
+      </div>
+    </CodePreview>
     <Heading as="h2">Example 2</Heading>
     <p>
       The copy button can copy a text in an element placed before the button.
     </p>
-    <pre
-      id="example2">
+    <CodePreview
+      code={`<pre id="example2">
+  <code>console.log("Hello, world!");</code>
+</pre>
+<CopyToClipboard
+  feedback="Code copied!"
+  label="Copy code in example 2"
+  selector="pre > code"
+/>`}
+      label="Using the button after the text to copy"
+      lang="astro"
+    >
+      <pre
+        id="example2">
           <code>console.log("Hello, world!");</code>
-        </pre>
-    <CopyToClipboardComponent
-      feedback="Code copied!"
-      label="Copy code in example 2"
-      selector="pre > code"
-    />
+      </pre>
+      <CopyToClipboardComponent
+        feedback="Code copied!"
+        label="Copy code in example 2"
+        selector="pre > code"
+      />
+    </CodePreview>
     <Heading as="h2">Example 3</Heading>
     <p>
       The copy button can look for the text to copy using an ancestor of the
@@ -51,21 +83,41 @@ const { breadcrumb, seo } = getStoryMeta({
       you use a generic
       <code>selector</code> which is repeated multiple times across the document.
     </p>
+    <CodePreview
+      code={`<div>
+  <div>
     <div>
+      <CopyToClipboard
+        feedback="Answer copied!"
+        label="Copy code in example 3"
+        lookUpNodeLvl={3}
+        selector="code"
+      />
+    </div>
+  </div>
+  <pre>
+    <code>console.log("The answer to universe is 42!");</code>
+  </pre>
+</div>`}
+      label="Using the lookUpNodeLvl property"
+      lang="astro"
+    >
       <div>
         <div>
-          <CopyToClipboardComponent
-            feedback="Answer copied!"
-            label="Copy code in example 3"
-            lookUpNodeLvl={3}
-            selector="code"
-          />
+          <div>
+            <CopyToClipboardComponent
+              feedback="Answer copied!"
+              label="Copy code in example 3"
+              lookUpNodeLvl={3}
+              selector="code"
+            />
+          </div>
         </div>
+        <pre>
+          <code>console.log("The answer to universe is 42!");</code>
+        </pre>
       </div>
-      <pre>
-            <code>console.log("The answer to universe is 42!");</code>
-          </pre>
-    </div>
+    </CodePreview>
     <p>
       Without <code>lookUpNodeLvl</code>, the button would have copied the
       previous example instead of this one when using <code>code</code> as <code

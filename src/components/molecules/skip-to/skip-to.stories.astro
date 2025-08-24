@@ -2,6 +2,7 @@
 import { getStoryMeta } from "../../../utils/stories";
 import Heading from "../../atoms/heading/heading.astro";
 import PageLayout from "../../templates/page-layout/page-layout.astro";
+import CodePreview from "../code-preview/code-preview.astro";
 import SkipToComponent from "./skip-to.astro";
 
 const title = "SkipTo";
@@ -16,17 +17,30 @@ const { breadcrumb, seo } = getStoryMeta({
 
 <PageLayout breadcrumb={breadcrumb} seo={seo} title={title}>
   <Fragment slot="body">
-    <Heading as="h2">Usage</Heading>
+    <Heading as="h2">Introduction</Heading>
     <p>
       A SkipLink component is special. It is used to navigate through a page
       using anchors.
     </p>
-    <p>
-      Click here then use <kbd>Tab</kbd> key to focus the skip link below. It should
-      then appears on the top left of your screen.
-    </p>
-    <SkipToComponent anchor="#some-id">
-      Skip to some anchor on the page
-    </SkipToComponent>
+    <CodePreview
+      code={`import SkipTo from "./components/molecules/skip-to/skip-to.astro";`}
+      label="How to import"
+      lang="ts"
+    />
+    <CodePreview
+      code={`<SkipTo anchor="#some-id">
+  Skip to some anchor on the page
+</SkipTo>`}
+      label="Basic use"
+      lang="astro"
+    >
+      <p>
+        Click here then use <kbd>Tab</kbd> key to focus the skip link below. It should
+        then appears on the top left of your screen.
+      </p>
+      <SkipToComponent anchor="#some-id">
+        Skip to some anchor on the page
+      </SkipToComponent>
+    </CodePreview>
   </Fragment>
 </PageLayout>

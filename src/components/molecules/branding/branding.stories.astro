@@ -2,6 +2,7 @@
 import { getStoryMeta } from "../../../utils/stories";
 import Heading from "../../atoms/heading/heading.astro";
 import PageLayout from "../../templates/page-layout/page-layout.astro";
+import CodePreview from "../code-preview/code-preview.astro";
 import BrandingComponent from "./branding.astro";
 
 const title = "Branding";
@@ -16,8 +17,19 @@ const { breadcrumb, seo } = getStoryMeta({
 
 <PageLayout breadcrumb={breadcrumb} seo={seo} title={title}>
   <Fragment slot="body">
-    <Heading as="h2">Usage</Heading>
+    <Heading as="h2">Introduction</Heading>
     <p>This component is used to a logo alongside the brand.</p>
-    <BrandingComponent brand="Brand" url="#homepage" />
+    <CodePreview
+      code={`import Branding from "./components/molecules/branding/branding.astro";`}
+      label="How to import"
+      lang="ts"
+    />
+    <CodePreview
+      code={`<Branding brand="Brand" url="#homepage" />`}
+      label="Basic use"
+      lang="astro"
+    >
+      <BrandingComponent brand="Brand" url="#homepage" />
+    </CodePreview>
   </Fragment>
 </PageLayout>

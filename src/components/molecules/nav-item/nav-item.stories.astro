@@ -2,6 +2,7 @@
 import { getStoryMeta } from "../../../utils/stories";
 import Heading from "../../atoms/heading/heading.astro";
 import PageLayout from "../../templates/page-layout/page-layout.astro";
+import CodePreview from "../code-preview/code-preview.astro";
 import NavItemComponent from "./nav-item.astro";
 
 const title = "NavItem";
@@ -16,55 +17,90 @@ const { breadcrumb, seo } = getStoryMeta({
 
 <PageLayout breadcrumb={breadcrumb} seo={seo} title={title}>
   <Fragment slot="body">
-    <Heading as="h2">Usage</Heading>
+    <Heading as="h2">Introduction</Heading>
     <p>
       This component is used to define a navigation item inside a navigation
       list.
     </p>
-    <Heading as="h2">Variant: <code>isBlock: false</code> (default)</Heading>
-    <NavItemComponent href="#destination">Nav Item</NavItemComponent>
+    <CodePreview
+      code={`import NavItem from "./components/molecules/nav-item/nav-item.astro";`}
+      label="How to import"
+      lang="ts"
+    />
+    <CodePreview
+      code={`<NavItem href="#destination">Nav Item</NavItem>`}
+      label="Basic use"
+      lang="astro"
+    >
+      <NavItemComponent href="#destination">Nav Item</NavItemComponent>
+    </CodePreview>
+    <Heading>Variants</Heading>
+    <CodePreview
+      code={`<NavItem href="#destination">Nav Item</NavItem>
+<NavItem href="#destination" isBlock>Nav Item</NavItem>`}
+      label="Using variants"
+      lang="astro"
+    >
+      <NavItemComponent href="#destination">Nav Item</NavItemComponent>
+      <NavItemComponent href="#destination" isBlock>Nav Item</NavItemComponent>
+    </CodePreview>
+    <Heading>Other options</Heading>
     <Heading as="h3"><code>isBordered</code></Heading>
-    <NavItemComponent href="#destination" isBordered>Nav Item</NavItemComponent>
+    <CodePreview
+      code={`<NavItem href="#destination" isBordered>Nav Item</NavItem>
+<NavItem href="#destination" isBlock isBordered>Nav Item</NavItem>`}
+      label="Using borders on both variants"
+      lang="astro"
+    >
+      <NavItemComponent href="#destination" isBordered>
+        Nav Item
+      </NavItemComponent>
+      <NavItemComponent href="#destination" isBlock isBordered>
+        Nav Item
+      </NavItemComponent>
+    </CodePreview>
     <Heading as="h3"><code>isRounded</code></Heading>
-    <p>And with <code>isBordered</code> to highlight the difference.</p>
-    <NavItemComponent href="#destination" isBordered isRounded>
-      Nav Item
-    </NavItemComponent>
-    <Heading as="h3">With icon</Heading>
-    <NavItemComponent href="#destination" icon="home" iconSize={40}>
-      Nav Item
-    </NavItemComponent>
-    <Heading as="h3">Tag</Heading>
-    <Heading as="h4"><code>a</code></Heading>
-    <NavItemComponent as="a" href="#destination">A nav link</NavItemComponent>
-    <Heading as="h4"><code>label</code></Heading>
+    <CodePreview
+      code={`<NavItem href="#destination" isBordered isRounded>Nav Item</NavItem>
+<NavItem href="#destination" isBlock isBordered isRounded>Nav Item</NavItem>`}
+      label="Using rounded borders on both variants"
+      lang="astro"
+    >
+      <NavItemComponent href="#destination" isBordered isRounded>
+        Nav Item
+      </NavItemComponent>
+      <NavItemComponent href="#destination" isBlock isBordered isRounded>
+        Nav Item
+      </NavItemComponent>
+    </CodePreview>
+    <Heading as="h3">With an icon</Heading>
+    <CodePreview
+      code={`<NavItem href="#destination" icon="home" iconSize={40}>Nav Item</NavItem>
+<NavItem href="#destination" icon="home" iconSize={40} isBlock>Nav Item</NavItem>`}
+      label="Using icons on both variants"
+      lang="astro"
+    >
+      <NavItemComponent href="#destination" icon="home" iconSize={40}>
+        Nav Item
+      </NavItemComponent>
+      <NavItemComponent href="#destination" icon="home" iconSize={40} isBlock>
+        Nav Item
+      </NavItemComponent>
+    </CodePreview>
+    <Heading as="h3">As a label</Heading>
+    <CodePreview
+      code={`<NavItem as="label">Nav Item</NavItem>
+<NavItem as="label" isBlock>Nav Item</NavItem>`}
+      label="Using a label instead of a link with both variants"
+      lang="astro"
+    >
+      <NavItemComponent as="label">Nav Item</NavItemComponent>
+      <NavItemComponent as="label" isBlock>Nav Item</NavItemComponent>
+    </CodePreview>
     <p>
       When you are not using the block variant, please consider using a regular <code
         >Label</code
       > component instead.
     </p>
-    <NavItemComponent as="label">A nav label</NavItemComponent>
-    <Heading as="h2">Variant: <code>isBlock: true</code></Heading>
-    <NavItemComponent href="#destination" isBlock>Nav Item</NavItemComponent>
-    <Heading as="h3"><code>isBordered</code></Heading>
-    <NavItemComponent href="#destination" isBlock isBordered>
-      Nav Item
-    </NavItemComponent>
-    <Heading as="h3"><code>isRounded</code></Heading>
-    <p>And with <code>isBordered</code> to highlight the difference.</p>
-    <NavItemComponent href="#destination" isBlock isBordered isRounded>
-      Nav Item
-    </NavItemComponent>
-    <Heading as="h3">With icon</Heading>
-    <NavItemComponent href="#destination" icon="home" iconSize={40} isBlock>
-      Nav Item
-    </NavItemComponent>
-    <Heading as="h3">Tag</Heading>
-    <Heading as="h4"><code>a</code></Heading>
-    <NavItemComponent as="a" href="#destination" isBlock
-      >A nav link</NavItemComponent
-    >
-    <Heading as="h4"><code>label</code></Heading>
-    <NavItemComponent as="label" isBlock>A nav label</NavItemComponent>
   </Fragment>
 </PageLayout>

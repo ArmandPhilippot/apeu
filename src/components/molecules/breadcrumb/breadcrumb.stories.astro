@@ -3,6 +3,7 @@ import type { ComponentProps } from "astro/types";
 import { getStoryMeta } from "../../../utils/stories";
 import Heading from "../../atoms/heading/heading.astro";
 import PageLayout from "../../templates/page-layout/page-layout.astro";
+import CodePreview from "../code-preview/code-preview.astro";
 import BreadcrumbComponent from "./breadcrumb.astro";
 
 const title = "Breadcrumb";
@@ -24,8 +25,27 @@ const items: ComponentProps<typeof BreadcrumbComponent>["items"] = [
 
 <PageLayout breadcrumb={breadcrumb} seo={seo} title={title}>
   <Fragment slot="body">
-    <Heading as="h2">Usage</Heading>
+    <Heading as="h2">Introduction</Heading>
     <p>This component is used to display a breadcrumb on a page.</p>
-    <BreadcrumbComponent items={items} />
+    <CodePreview
+      code={`import Breadcrumb from "./components/molecules/breadcrumb/breadcrumb.astro";`}
+      label="How to import"
+      lang="ts"
+    />
+    <CodePreview
+      code={`---
+const items = [
+  { label: "Home", url: "#item1" },
+  { label: "Blog", url: "#item2" },
+  { label: "Year", url: "#item3" },
+  { label: "A very very long post title", url: "#item4" },
+];
+---
+<Breadcrumb items={items} />`}
+      label="Basic use"
+      lang="astro"
+    >
+      <BreadcrumbComponent items={items} />
+    </CodePreview>
   </Fragment>
 </PageLayout>

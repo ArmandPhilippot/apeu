@@ -1,8 +1,8 @@
 ---
 import { getStoryMeta } from "../../../utils/stories";
-import Box from "../../atoms/box/box.astro";
 import Heading from "../../atoms/heading/heading.astro";
 import PageLayout from "../../templates/page-layout/page-layout.astro";
+import CodePreview from "../code-preview/code-preview.astro";
 import CollapsibleComponent from "./collapsible.astro";
 
 const title = "Collapsible";
@@ -17,31 +17,34 @@ const { breadcrumb, seo } = getStoryMeta({
 
 <PageLayout breadcrumb={breadcrumb} seo={seo} title={title}>
   <Fragment slot="body">
-    <Heading as="h2">Usage</Heading>
+    <Heading as="h2">Introduction</Heading>
     <p>
       This component let you toggle the visibility of its contents by clicking
       on its label.
     </p>
-  </Fragment>
-  <Fragment slot="disconnected-body">
-    <CollapsibleComponent>
-      <span slot="label">A label</span>
-      The collapsible body
-    </CollapsibleComponent>
-    <Box
-      elevation="raised"
-      isBordered
-      isCentered
-      isPadded
-      isProse
-      isRounded
-      isSpaced
+    <CodePreview
+      code={`import Collapsible from "./components/molecules/collapsible/collapsible.astro";`}
+      label="How to import"
+      lang="ts"
+    />
+    <CodePreview
+      code={`<Collapsible>
+  <span slot="label">A label</span>
+  The collapsible body
+</Collapsible>`}
+      label="Basic use"
+      lang="astro"
     >
-      <Heading as="h2">Using <code>isProse</code></Heading>
-    </Box>
-    <CollapsibleComponent isProse>
-      <span slot="label">A label</span>
-      The collapsible body
-    </CollapsibleComponent>
+      <CollapsibleComponent>
+        <span slot="label">A label</span>
+        The collapsible body
+      </CollapsibleComponent>
+    </CodePreview>
+    <p>
+      A <code>{`<Collapsible />`}</code> inherits some properties from the <code
+        >{`<Box />`}</code
+      > component. You can, for example, use the <code>isProse</code> property to
+      limit its width.
+    </p>
   </Fragment>
 </PageLayout>

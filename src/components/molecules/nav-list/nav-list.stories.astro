@@ -1,10 +1,9 @@
 ---
-import type { ComponentProps } from "astro/types";
 import { getStoryMeta } from "../../../utils/stories";
 import Heading from "../../atoms/heading/heading.astro";
-import ListItem from "../../atoms/list/list-item.astro";
-import List from "../../atoms/list/list.astro";
 import PageLayout from "../../templates/page-layout/page-layout.astro";
+import CodePreview from "../code-preview/code-preview.astro";
+import NavItem from "../nav-item/nav-item.astro";
 import NavListComponent from "./nav-list.astro";
 
 const title = "NavList";
@@ -15,17 +14,11 @@ const { breadcrumb, seo } = getStoryMeta({
     title,
   },
 });
-
-const items = [
-  { label: "Item 1", url: "#item-1" },
-  { label: "Item 2", url: "#item-2" },
-  { label: "Item 3", url: "#item-3" },
-] satisfies ComponentProps<typeof NavListComponent>["items"];
 ---
 
 <PageLayout breadcrumb={breadcrumb} seo={seo} title={title}>
   <Fragment slot="body">
-    <Heading as="h2">Usage</Heading>
+    <Heading as="h2">Introduction</Heading>
     <p>
       This component is used to define a navigation list. It accepts an <code
         >items</code
@@ -34,25 +27,45 @@ const items = [
         >NavItem</code
       > component.
     </p>
-    <NavListComponent items={items}>
-      {
-        (item) => (
-          <List>
-            <ListItem>
-              <code>icon:</code> {item.icon ?? "undefined"}
-            </ListItem>
-            <ListItem>
-              <code>iconSize:</code> {item.iconSize ?? "undefined"}
-            </ListItem>
-            <ListItem>
-              <code>label:</code> {item.label}
-            </ListItem>
-            <ListItem>
-              <code>url:</code> {item.url}
-            </ListItem>
-          </List>
-        )
-      }
-    </NavListComponent>
+    <CodePreview
+      code={`import NavList from "./components/molecules/nav-list/nav-list.astro";`}
+      label="How to import"
+      lang="ts"
+    />
+    <CodePreview
+      code={`<NavList
+  items={[
+    { label: "Item 1", url: "#item-1" },
+    { label: "Item 2", url: "#item-2" },
+    { label: "Item 3", url: "#item-3" },
+  ]}
+>
+  {
+    (item) => (
+      <NavItem href={item.url} icon={item.icon} iconSize={item.iconSize}>
+        {item.label}
+      </NavItem>
+    )
+  }
+</NavList>`}
+      label="Basic use"
+      lang="astro"
+    >
+      <NavListComponent
+        items={[
+          { label: "Item 1", url: "#item-1" },
+          { label: "Item 2", url: "#item-2" },
+          { label: "Item 3", url: "#item-3" },
+        ]}
+      >
+        {
+          (item) => (
+            <NavItem href={item.url} icon={item.icon} iconSize={item.iconSize}>
+              {item.label}
+            </NavItem>
+          )
+        }
+      </NavListComponent>
+    </CodePreview>
   </Fragment>
 </PageLayout>

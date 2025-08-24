@@ -2,6 +2,7 @@
 import { getStoryMeta } from "../../../utils/stories";
 import Heading from "../../atoms/heading/heading.astro";
 import PageLayout from "../../templates/page-layout/page-layout.astro";
+import CodePreview from "../code-preview/code-preview.astro";
 import CodeBlockComponent from "./code-block.astro";
 
 const title = "CodeBlock";
@@ -58,33 +59,115 @@ const complexDiffCodeSample = `
 
 <PageLayout breadcrumb={breadcrumb} seo={seo} title={title}>
   <Fragment slot="body">
+    <Heading>Introduction</Heading>
+    <CodePreview
+      code={`import CodeBlock from "./components/molecules/code-block/code-block.astro";`}
+      label="How to import"
+      lang="ts"
+    />
+    <CodePreview
+      code={`<CodeBlock code={jsCodeSample} />`}
+      label="Basic use"
+      lang="astro"
+    >
+      <CodeBlockComponent code={jsCodeSample} />
+    </CodePreview>
     <Heading as="h2">With lang</Heading>
-    <CodeBlockComponent code={jsCodeSample} lang="js" />
+    <CodePreview
+      code={`<CodeBlock code={jsCodeSample} lang="js" />`}
+      label="Using a lang"
+      lang="astro"
+    >
+      <CodeBlockComponent code={jsCodeSample} lang="js" />
+    </CodePreview>
     <Heading as="h2">With file path</Heading>
-    <CodeBlockComponent
-      code={jsCodeSample}
-      filePath="./hello-world.js"
-      lang="js"
-    />
+    <CodePreview
+      code={`<CodeBlock code={jsCodeSample} filePath="./hello-world.js" lang="js" />`}
+      label="Using a lang with a file path"
+      lang="astro"
+    >
+      <CodeBlockComponent
+        code={jsCodeSample}
+        filePath="./hello-world.js"
+        lang="js"
+      />
+    </CodePreview>
     <Heading as="h2">With line numbers</Heading>
-    <CodeBlockComponent code={jsCodeSample} lang="js" showLineNumbers />
+    <CodePreview
+      code={`<CodeBlock code={jsCodeSample} lang="js" showLineNumbers />`}
+      label="Using line numbers"
+      lang="astro"
+    >
+      <CodeBlockComponent code={jsCodeSample} lang="js" showLineNumbers />
+    </CodePreview>
     <Heading as="h2">With line numbers and custom starting line</Heading>
-    <CodeBlockComponent
-      code={jsCodeSample}
-      lang="js"
-      lineStart={5}
-      showLineNumbers
-    />
+    <CodePreview
+      code={`<CodeBlock
+  code={jsCodeSample}
+  lang="js"
+  lineStart={5}
+  showLineNumbers
+/>`}
+      label="Using line numbers with a custom starting line"
+      lang="astro"
+    >
+      <CodeBlockComponent
+        code={jsCodeSample}
+        lang="js"
+        lineStart={5}
+        showLineNumbers
+      />
+    </CodePreview>
     <Heading as="h2">With prompt</Heading>
-    <CodeBlockComponent code={commandLineCodeSample} lang="shell" showPrompt />
+    <CodePreview
+      code={`<CodeBlock code={commandLineCodeSample} lang="shell" showPrompt />`}
+      label="Using a prompt"
+      lang="astro"
+    >
+      <CodeBlockComponent
+        code={commandLineCodeSample}
+        lang="shell"
+        showPrompt
+      />
+    </CodePreview>
     <Heading as="h2">With prompt and custom username</Heading>
-    <CodeBlockComponent
-      code={commandLineCodeSample}
-      lang="shell"
-      promptUser="john"
-      showPrompt
-    />
+    <CodePreview
+      code={`<CodeBlock
+  code={commandLineCodeSample}
+  lang="shell"
+  promptUser="john"
+  showPrompt
+/>`}
+      label="Using a prompt with a custom user"
+      lang="astro"
+    >
+      <CodeBlockComponent
+        code={commandLineCodeSample}
+        lang="shell"
+        promptUser="john"
+        showPrompt
+      />
+    </CodePreview>
     <Heading as="h2">With prompt and custom host</Heading>
+    <CodePreview
+      code={`<CodeBlock
+  code={commandLineCodeSample}
+  lang="shell"
+  promptHost="doe"
+  promptUser="john"
+  showPrompt
+/>`}
+      label="Using a prompt with a custom host"
+      lang="astro"
+    >
+      <CodeBlockComponent
+        code={commandLineCodeSample}
+        lang="shell"
+        promptHost="doe"
+        promptUser="john"
+        showPrompt
+      />
+    </CodePreview>
     <CodeBlockComponent
       code={commandLineCodeSample}
       lang="shell"
@@ -93,49 +176,96 @@ const complexDiffCodeSample = `
       showPrompt
     />
     <Heading as="h2">With prompt as root</Heading>
-    <CodeBlockComponent
-      code="nano /etc/hosts"
-      lang="shell"
-      promptUser="root"
-      showPrompt
-    />
+    <CodePreview
+      code={`<CodeBlock
+  code={commandLineCodeSample}
+  lang="shell"
+  promptUser="root"
+  showPrompt
+/>`}
+      label="Using a prompt as root"
+      lang="astro"
+    >
+      <CodeBlockComponent
+        code={commandLineCodeSample}
+        lang="shell"
+        promptUser="root"
+        showPrompt
+      />
+    </CodePreview>
     <Heading as="h2">With SQL prompt</Heading>
-    <CodeBlockComponent code={sqlCodeSample} lang="sql" showPrompt />
+    <CodePreview
+      code={`<CodeBlock code={sqlCodeSample} lang="sql" showPrompt />`}
+      label="Using an SQL prompt"
+      lang="astro"
+    >
+      <CodeBlockComponent code={sqlCodeSample} lang="sql" showPrompt />
+    </CodePreview>
     <Heading as="h2">With SQL prompt and custom prompt host</Heading>
-    <CodeBlockComponent
-      code={sqlCodeSample}
-      lang="sql"
-      promptHost="MariaDB"
-      showPrompt
-    />
+    <CodePreview
+      code={`<CodeBlock code={sqlCodeSample} lang="sql" promptHost="MariaDB" showPrompt />`}
+      label="Using a prompt with a custom host"
+      lang="astro"
+    >
+      <CodeBlockComponent
+        code={sqlCodeSample}
+        lang="sql"
+        promptHost="MariaDB"
+        showPrompt
+      />
+    </CodePreview>
     <Heading as="h2">With SQL prompt and custom database name</Heading>
-    <CodeBlockComponent
-      code={sqlCodeSample}
-      lang="sql"
-      promptDB="recipes"
-      showPrompt
-    />
+    <CodePreview
+      code={`<CodeBlock code={sqlCodeSample} lang="sql" promptDB="recipes" showPrompt />`}
+      label="Using a prompt with a custom database"
+      lang="astro"
+    >
+      <CodeBlockComponent
+        code={sqlCodeSample}
+        lang="sql"
+        promptDB="recipes"
+        showPrompt
+      />
+    </CodePreview>
     <Heading as="h2">Diff</Heading>
-    <CodeBlockComponent code={diffCodeSample} lang="diff" showLineNumbers />
+    <CodePreview
+      code={`<CodeBlock code={diffCodeSample} lang="diff" showLineNumbers />`}
+      label="Using a diff"
+      lang="astro"
+    >
+      <CodeBlockComponent code={diffCodeSample} lang="diff" showLineNumbers />
+    </CodePreview>
     <Heading as="h2">Diff with syntax highlighting</Heading>
-    <CodeBlockComponent
-      code={diffCodeSample}
-      isDiff
-      lang="ts"
-      showLineNumbers
-    />
-    <Heading as="h2">A complex diff example</Heading>
+    <CodePreview
+      code={`<CodeBlock code={diffCodeSample} isDiff lang="ts" showLineNumbers />`}
+      label="Using a diff with syntax highlighting"
+      lang="astro"
+    >
+      <CodeBlockComponent
+        code={diffCodeSample}
+        isDiff
+        lang="ts"
+        showLineNumbers
+      />
+    </CodePreview>
+    <Heading as="h2">Limitations</Heading>
     <p>
       Ideally, I'd like that removed lines affects the line numbers for the next
       lines but due to <code>counter</code> limitations, it seems impossible with
       CSS only when having multiple removed lines at once. So this type of blocks
       should be avoided.
     </p>
-    <CodeBlockComponent
-      code={complexDiffCodeSample}
-      isDiff
-      lang="css"
-      showLineNumbers
-    />
+    <CodePreview
+      code={`<CodeBlock code={complexDiffCodeSample} isDiff lang="css" showLineNumbers />`}
+      label="Using a diff with syntax highlighting"
+      lang="astro"
+    >
+      <CodeBlockComponent
+        code={complexDiffCodeSample}
+        isDiff
+        lang="css"
+        showLineNumbers
+      />
+    </CodePreview>
   </Fragment>
 </PageLayout>

@@ -2,6 +2,7 @@
 import { getStoryMeta } from "../../../utils/stories";
 import Heading from "../../atoms/heading/heading.astro";
 import PageLayout from "../../templates/page-layout/page-layout.astro";
+import CodePreview from "../code-preview/code-preview.astro";
 import SwitchComponent from "./switch.astro";
 
 const title = "Switch";
@@ -16,62 +17,140 @@ const { breadcrumb, seo } = getStoryMeta({
 
 <PageLayout breadcrumb={breadcrumb} seo={seo} title={title}>
   <Fragment slot="body">
-    <Heading as="h2">Usage</Heading>
+    <Heading as="h2">Introduction</Heading>
     <p>
       A <code>Switch</code> component should be used with boolean settings.
     </p>
-    <SwitchComponent
-      id="usage-example"
-      items={[
-        { label: "Item 1", value: "item1" },
-        { label: "Item 2", value: "item2" },
-      ]}
-      label="Usage Example"
-      value="item1"
+    <CodePreview
+      code={`import Switch from "./components/molecules/switch/switch.astro";`}
+      label="How to import"
+      lang="ts"
     />
+    <CodePreview
+      code={`<Switch
+  id="use-example"
+  items={[
+    { label: "Item 1", value: "item1" },
+    { label: "Item 2", value: "item2" },
+  ]}
+  label="Use Example"
+  value="item1"
+/>`}
+      label="Basic use"
+      lang="astro"
+    >
+      <SwitchComponent
+        id="use-example"
+        items={[
+          { label: "Item 1", value: "item1" },
+          { label: "Item 2", value: "item2" },
+        ]}
+        label="Use Example"
+        value="item1"
+      />
+    </CodePreview>
     <Heading as="h2">Options</Heading>
     <Heading as="h3">Items with icons</Heading>
-    <SwitchComponent
-      id="items-icons-example"
-      items={[
-        { icon: "sun", label: "Item 1", value: "item1" },
-        { icon: "moon", label: "Item 2", value: "item2" },
-      ]}
-      label="Items with icons Example"
-      value="item1"
-    />
+    <CodePreview
+      code={`<Switch
+  id="items-icons-example"
+  items={[
+    { icon: "sun", label: "Item 1", value: "item1" },
+    { icon: "moon", label: "Item 2", value: "item2" },
+  ]}
+  label="Items with icons Example"
+  value="item1"
+/>`}
+      label="Using icons"
+      lang="astro"
+    >
+      <SwitchComponent
+        id="items-icons-example"
+        items={[
+          { icon: "sun", label: "Item 1", value: "item1" },
+          { icon: "moon", label: "Item 2", value: "item2" },
+        ]}
+        label="Items with icons Example"
+        value="item1"
+      />
+    </CodePreview>
     <Heading as="h3"><code>hideItemsLabel</code></Heading>
-    <SwitchComponent
-      hideItemsLabel
-      id="hidden-items-label-example"
-      items={[
-        { icon: "sun", label: "Item 1", value: "item1" },
-        { icon: "moon", label: "Item 2", value: "item2" },
-      ]}
-      label="Hidden Items Label Example"
-      value="item1"
-    />
+    <CodePreview
+      code={`<Switch
+  hideItemsLabel
+  id="hidden-items-label-example"
+  items={[
+    { icon: "sun", label: "Item 1", value: "item1" },
+    { icon: "moon", label: "Item 2", value: "item2" },
+  ]}
+  label="Hidden Items Label Example"
+  value="item1"
+/>`}
+      label="Using hidden items labels"
+      lang="astro"
+    >
+      <SwitchComponent
+        hideItemsLabel
+        id="hidden-items-label-example"
+        items={[
+          { icon: "sun", label: "Item 1", value: "item1" },
+          { icon: "moon", label: "Item 2", value: "item2" },
+        ]}
+        label="Hidden Items Label Example"
+        value="item1"
+      />
+    </CodePreview>
     <Heading as="h3"><code>hideLabel</code></Heading>
-    <SwitchComponent
-      hideLabel
-      id="hidden-items-label-example"
-      items={[
-        { label: "Item 1", value: "item1" },
-        { label: "Item 2", value: "item2" },
-      ]}
-      label="Hidden Items Label Example"
-      value="item1"
-    />
+    <CodePreview
+      code={`<Switch
+  hideLabel
+  id="hidden-items-label-example"
+  items={[
+    { label: "Item 1", value: "item1" },
+    { label: "Item 2", value: "item2" },
+  ]}
+  label="Hidden Items Label Example"
+  value="item1"
+/>`}
+      label="Using a hidden label"
+      lang="astro"
+    >
+      <SwitchComponent
+        hideLabel
+        id="hidden-items-label-example"
+        items={[
+          { label: "Item 1", value: "item1" },
+          { label: "Item 2", value: "item2" },
+        ]}
+        label="Hidden Items Label Example"
+        value="item1"
+      />
+    </CodePreview>
     <Heading as="h3"><code>isInline</code></Heading>
-    <SwitchComponent
-      id="inline-example"
-      isInline
-      items={[
-        { label: "Item 1", value: "item1" },
-        { label: "Item 2", value: "item2" },
-      ]}
-      label="Inline Example"
-      value="item1"
-    />
+    <CodePreview
+      code={`<Switch
+  id="inline-example"
+  isInline
+  items={[
+    { label: "Item 1", value: "item1" },
+    { label: "Item 2", value: "item2" },
+  ]}
+  label="Inline Example"
+  value="item1"
+/>`}
+      label="Inlining the label"
+      lang="astro"
+    >
+      <SwitchComponent
+        id="inline-example"
+        isInline
+        items={[
+          { label: "Item 1", value: "item1" },
+          { label: "Item 2", value: "item2" },
+        ]}
+        label="Inline Example"
+        value="item1"
+      />
+    </CodePreview>
   </Fragment>
 </PageLayout>

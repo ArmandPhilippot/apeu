@@ -1,11 +1,11 @@
 ---
 import { getStoryMeta } from "../../../utils/stories";
-import Box from "../../atoms/box/box.astro";
 import Button from "../../atoms/button/button.astro";
 import Heading from "../../atoms/heading/heading.astro";
 import Img from "../../atoms/img/img.astro";
 import Link from "../../atoms/link/link.astro";
 import PageLayout from "../../templates/page-layout/page-layout.astro";
+import CodePreview from "../code-preview/code-preview.astro";
 import CardComponent from "./card.astro";
 
 const title = "Card";
@@ -20,296 +20,420 @@ const { breadcrumb, seo } = getStoryMeta({
 
 <PageLayout breadcrumb={breadcrumb} seo={seo} title={title}>
   <Fragment slot="body">
+    <Heading>Introduction</Heading>
     <p>
       A card can be used inside or outside a container. When wrapped in a
       container, the cover will be placed on the left of the card when the
       container reaches the breakpoint.
     </p>
-  </Fragment>
-  <Fragment slot="disconnected-body">
-    <Box
-      elevation="raised"
-      isBordered
-      isCentered
-      isPadded
-      isProse
-      isRounded
-      isSpaced
+    <CodePreview
+      code={`import Card from "./components/molecules/card/card.astro";`}
+      label="How to import"
+      lang="ts"
+    />
+    <CodePreview
+      code={`<Card>
+  <p>
+    Ut consequuntur modi. Accusantium quia unde sint suscipit ipsum. Sunt
+    voluptates earum ea cumque eligendi voluptate iste architecto dolores.
+    Sit impedit cum non voluptates at qui ducimus eveniet reiciendis. Ad
+    voluptate dolor dicta ea sit amet facere. Blanditiis non et.
+  </p>
+</Card>`}
+      label="Basic use"
+      lang="astro"
     >
-      <Heading>With title and body</Heading>
-    </Box>
-    <CardComponent>
-      <p>
-        Ut consequuntur modi. Accusantium quia unde sint suscipit ipsum. Sunt
-        voluptates earum ea cumque eligendi voluptate iste architecto dolores.
-        Sit impedit cum non voluptates at qui ducimus eveniet reiciendis. Ad
-        voluptate dolor dicta ea sit amet facere. Blanditiis non et.
-      </p>
-    </CardComponent>
-    <Box
-      elevation="raised"
-      isBordered
-      isCentered
-      isPadded
-      isProse
-      isRounded
-      isSpaced
+      <CardComponent>
+        <p>
+          Ut consequuntur modi. Accusantium quia unde sint suscipit ipsum. Sunt
+          voluptates earum ea cumque eligendi voluptate iste architecto dolores.
+          Sit impedit cum non voluptates at qui ducimus eveniet reiciendis. Ad
+          voluptate dolor dicta ea sit amet facere. Blanditiis non et.
+        </p>
+      </CardComponent>
+    </CodePreview>
+    <p>
+      If you don't wrap the Card in a CSS container, its appearance on large
+      screens will be the same as the mobile view. You cannot see the difference
+      here since main is a container.
+    </p>
+    <Heading>With heading and body</Heading>
+    <CodePreview
+      code={`<Card>
+  <Heading as="h3" slot="heading">The card title</Heading>
+  <p>
+    Ut consequuntur modi. Accusantium quia unde sint suscipit ipsum. Sunt
+    voluptates earum ea cumque eligendi voluptate iste architecto dolores.
+    Sit impedit cum non voluptates at qui ducimus eveniet reiciendis. Ad
+    voluptate dolor dicta ea sit amet facere. Blanditiis non et.
+  </p>
+</Card>`}
+      label="Using a heading"
+      lang="astro"
     >
-      <Heading>With title, body and frontmatter</Heading>
-    </Box>
-    <CardComponent>
-      <span slot="frontmatter">Category</span>
-      <Heading as="h3" slot="heading">The card title</Heading>
-      <p>
-        Ut consequuntur modi. Accusantium quia unde sint suscipit ipsum. Sunt
-        voluptates earum ea cumque eligendi voluptate iste architecto dolores.
-        Sit impedit cum non voluptates at qui ducimus eveniet reiciendis. Ad
-        voluptate dolor dicta ea sit amet facere. Blanditiis non et.
-      </p>
-    </CardComponent>
-    <Box
-      elevation="raised"
-      isBordered
-      isCentered
-      isPadded
-      isProse
-      isRounded
-      isSpaced
+      <CardComponent>
+        <Heading as="h3" slot="heading">The card title</Heading>
+        <p>
+          Ut consequuntur modi. Accusantium quia unde sint suscipit ipsum. Sunt
+          voluptates earum ea cumque eligendi voluptate iste architecto dolores.
+          Sit impedit cum non voluptates at qui ducimus eveniet reiciendis. Ad
+          voluptate dolor dicta ea sit amet facere. Blanditiis non et.
+        </p>
+      </CardComponent>
+    </CodePreview>
+    <Heading>With heading, body and frontmatter</Heading>
+    <CodePreview
+      code={`<Card>
+  <span slot="frontmatter">Category</span>
+  <Heading as="h3" slot="heading">The card title</Heading>
+  <p>
+    Ut consequuntur modi. Accusantium quia unde sint suscipit ipsum. Sunt
+    voluptates earum ea cumque eligendi voluptate iste architecto dolores.
+    Sit impedit cum non voluptates at qui ducimus eveniet reiciendis. Ad
+    voluptate dolor dicta ea sit amet facere. Blanditiis non et.
+  </p>
+</Card>`}
+      label="Using a heading and a frontmatter"
+      lang="astro"
     >
-      <Heading>With title, body and a call to action</Heading>
-    </Box>
-    <CardComponent>
-      <Heading as="h3" slot="heading">The card title</Heading>
-      <p>
-        Ut consequuntur modi. Accusantium quia unde sint suscipit ipsum. Sunt
-        voluptates earum ea cumque eligendi voluptate iste architecto dolores.
-        Sit impedit cum non voluptates at qui ducimus eveniet reiciendis. Ad
-        voluptate dolor dicta ea sit amet facere. Blanditiis non et.
-      </p>
-      <Button as="a" href="#post" slot="cta">Read more</Button>
-    </CardComponent>
-    <Box
-      elevation="raised"
-      isBordered
-      isCentered
-      isPadded
-      isProse
-      isRounded
-      isSpaced
+      <CardComponent>
+        <span slot="frontmatter">Category</span>
+        <Heading as="h3" slot="heading">The card title</Heading>
+        <p>
+          Ut consequuntur modi. Accusantium quia unde sint suscipit ipsum. Sunt
+          voluptates earum ea cumque eligendi voluptate iste architecto dolores.
+          Sit impedit cum non voluptates at qui ducimus eveniet reiciendis. Ad
+          voluptate dolor dicta ea sit amet facere. Blanditiis non et.
+        </p>
+      </CardComponent>
+    </CodePreview>
+    <Heading>With heading, body and a call to action</Heading>
+    <CodePreview
+      code={`<Card>
+  <Heading as="h3" slot="heading">The card title</Heading>
+  <p>
+    Ut consequuntur modi. Accusantium quia unde sint suscipit ipsum. Sunt
+    voluptates earum ea cumque eligendi voluptate iste architecto dolores.
+    Sit impedit cum non voluptates at qui ducimus eveniet reiciendis. Ad
+    voluptate dolor dicta ea sit amet facere. Blanditiis non et.
+  </p>
+  <Button as="a" href="#post" slot="cta">Read more</Button>
+</Card>`}
+      label="Using a heading and a call to action"
+      lang="astro"
     >
-      <Heading>With title, body and meta</Heading>
-    </Box>
-    <CardComponent>
-      <Heading as="h3" slot="heading">The card title</Heading>
-      <p>
-        Ut consequuntur modi. Accusantium quia unde sint suscipit ipsum. Sunt
-        voluptates earum ea cumque eligendi voluptate iste architecto dolores.
-        Sit impedit cum non voluptates at qui ducimus eveniet reiciendis. Ad
-        voluptate dolor dicta ea sit amet facere. Blanditiis non et.
-      </p>
-      <div slot="meta">Some meta</div>
-    </CardComponent>
-    <Box
-      elevation="raised"
-      isBordered
-      isCentered
-      isPadded
-      isProse
-      isRounded
-      isSpaced
+      <CardComponent>
+        <Heading as="h3" slot="heading">The card title</Heading>
+        <p>
+          Ut consequuntur modi. Accusantium quia unde sint suscipit ipsum. Sunt
+          voluptates earum ea cumque eligendi voluptate iste architecto dolores.
+          Sit impedit cum non voluptates at qui ducimus eveniet reiciendis. Ad
+          voluptate dolor dicta ea sit amet facere. Blanditiis non et.
+        </p>
+        <Button as="a" href="#post" slot="cta">Read more</Button>
+      </CardComponent>
+    </CodePreview>
+    <Heading>With heading, body and meta</Heading>
+    <CodePreview
+      code={`<Card>
+  <Heading as="h3" slot="heading">The card title</Heading>
+  <p>
+    Ut consequuntur modi. Accusantium quia unde sint suscipit ipsum. Sunt
+    voluptates earum ea cumque eligendi voluptate iste architecto dolores.
+    Sit impedit cum non voluptates at qui ducimus eveniet reiciendis. Ad
+    voluptate dolor dicta ea sit amet facere. Blanditiis non et.
+  </p>
+  <div slot="meta">Some meta</div>
+</Card>`}
+      label="Using a heading and meta"
+      lang="astro"
     >
-      <Heading>With title, body, meta and a call to action</Heading>
-    </Box>
-    <CardComponent>
-      <Heading as="h3" slot="heading">The card title</Heading>
-      <p>
-        Ut consequuntur modi. Accusantium quia unde sint suscipit ipsum. Sunt
-        voluptates earum ea cumque eligendi voluptate iste architecto dolores.
-        Sit impedit cum non voluptates at qui ducimus eveniet reiciendis. Ad
-        voluptate dolor dicta ea sit amet facere. Blanditiis non et.
-      </p>
-      <div slot="meta">Some meta</div>
-      <Button as="a" href="#post" slot="cta">Read more</Button>
-    </CardComponent>
-    <Box
-      elevation="raised"
-      isBordered
-      isCentered
-      isPadded
-      isProse
-      isRounded
-      isSpaced
+      <CardComponent>
+        <Heading as="h3" slot="heading">The card title</Heading>
+        <p>
+          Ut consequuntur modi. Accusantium quia unde sint suscipit ipsum. Sunt
+          voluptates earum ea cumque eligendi voluptate iste architecto dolores.
+          Sit impedit cum non voluptates at qui ducimus eveniet reiciendis. Ad
+          voluptate dolor dicta ea sit amet facere. Blanditiis non et.
+        </p>
+        <div slot="meta">Some meta</div>
+      </CardComponent>
+    </CodePreview>
+    <Heading>With heading, body, meta and a call to action</Heading>
+    <CodePreview
+      code={`<Card>
+  <Heading as="h3" slot="heading">The card title</Heading>
+  <p>
+    Ut consequuntur modi. Accusantium quia unde sint suscipit ipsum. Sunt
+    voluptates earum ea cumque eligendi voluptate iste architecto dolores.
+    Sit impedit cum non voluptates at qui ducimus eveniet reiciendis. Ad
+    voluptate dolor dicta ea sit amet facere. Blanditiis non et.
+  </p>
+  <div slot="meta">Some meta</div>
+  <Button as="a" href="#post" slot="cta">Read more</Button>
+</Card>`}
+      label="Using a heading, some meta and a call to action"
+      lang="astro"
     >
-      <Heading>With title, body and cover</Heading>
-    </Box>
-    <CardComponent>
-      <Img
-        alt="The card cover"
-        height={480}
-        slot="cover"
-        src="https://picsum.photos/640/480"
-        width={640}
-      />
-      <Heading as="h3" slot="heading">The card title</Heading>
-      <p>
-        Ut consequuntur modi. Accusantium quia unde sint suscipit ipsum. Sunt
-        voluptates earum ea cumque eligendi voluptate iste architecto dolores.
-        Sit impedit cum non voluptates at qui ducimus eveniet reiciendis. Ad
-        voluptate dolor dicta ea sit amet facere. Blanditiis non et.
-      </p>
-    </CardComponent>
-    <Box
-      elevation="raised"
-      isBordered
-      isCentered
-      isPadded
-      isProse
-      isRounded
-      isSpaced
+      <CardComponent>
+        <Heading as="h3" slot="heading">The card title</Heading>
+        <p>
+          Ut consequuntur modi. Accusantium quia unde sint suscipit ipsum. Sunt
+          voluptates earum ea cumque eligendi voluptate iste architecto dolores.
+          Sit impedit cum non voluptates at qui ducimus eveniet reiciendis. Ad
+          voluptate dolor dicta ea sit amet facere. Blanditiis non et.
+        </p>
+        <div slot="meta">Some meta</div>
+        <Button as="a" href="#post" slot="cta">Read more</Button>
+      </CardComponent>
+    </CodePreview>
+    <Heading>With heading, body and cover</Heading>
+    <CodePreview
+      code={`<Card>
+  <Img
+    alt="The card cover"
+    height={480}
+    slot="cover"
+    src="https://picsum.photos/640/480"
+    width={640}
+  />
+  <Heading as="h3" slot="heading">The card title</Heading>
+  <p>
+    Ut consequuntur modi. Accusantium quia unde sint suscipit ipsum. Sunt
+    voluptates earum ea cumque eligendi voluptate iste architecto dolores.
+    Sit impedit cum non voluptates at qui ducimus eveniet reiciendis. Ad
+    voluptate dolor dicta ea sit amet facere. Blanditiis non et.
+  </p>
+</Card>`}
+      label="Using a heading and a cover"
+      lang="astro"
     >
-      <Heading>With title, body, cover and meta</Heading>
-    </Box>
-    <CardComponent>
-      <Img
-        alt="The card cover"
-        height={480}
-        slot="cover"
-        src="https://picsum.photos/640/480"
-        width={640}
-      />
-      <Heading as="h3" slot="heading">The card title</Heading>
-      <p>
-        Ut consequuntur modi. Accusantium quia unde sint suscipit ipsum. Sunt
-        voluptates earum ea cumque eligendi voluptate iste architecto dolores.
-        Sit impedit cum non voluptates at qui ducimus eveniet reiciendis. Ad
-        voluptate dolor dicta ea sit amet facere. Blanditiis non et.
-      </p>
-      <div slot="meta">Some meta</div>
-    </CardComponent>
-    <Box
-      elevation="raised"
-      isBordered
-      isCentered
-      isPadded
-      isProse
-      isRounded
-      isSpaced
+      <CardComponent>
+        <Img
+          alt="The card cover"
+          height={480}
+          slot="cover"
+          src="https://picsum.photos/640/480"
+          width={640}
+        />
+        <Heading as="h3" slot="heading">The card title</Heading>
+        <p>
+          Ut consequuntur modi. Accusantium quia unde sint suscipit ipsum. Sunt
+          voluptates earum ea cumque eligendi voluptate iste architecto dolores.
+          Sit impedit cum non voluptates at qui ducimus eveniet reiciendis. Ad
+          voluptate dolor dicta ea sit amet facere. Blanditiis non et.
+        </p>
+      </CardComponent>
+    </CodePreview>
+    <Heading>With heading, body, cover and meta</Heading>
+    <CodePreview
+      code={`<Card>
+  <Img
+    alt="The card cover"
+    height={480}
+    slot="cover"
+    src="https://picsum.photos/640/480"
+    width={640}
+  />
+  <Heading as="h3" slot="heading">The card title</Heading>
+  <p>
+    Ut consequuntur modi. Accusantium quia unde sint suscipit ipsum. Sunt
+    voluptates earum ea cumque eligendi voluptate iste architecto dolores.
+    Sit impedit cum non voluptates at qui ducimus eveniet reiciendis. Ad
+    voluptate dolor dicta ea sit amet facere. Blanditiis non et.
+  </p>
+  <div slot="meta">Some meta</div>
+</Card>`}
+      label="Using a heading, a cover and some meta"
+      lang="astro"
     >
-      <Heading>With all</Heading>
-    </Box>
-    <CardComponent>
-      <span slot="frontmatter">Category</span>
-      <Img
-        alt="The card cover"
-        height={480}
-        slot="cover"
-        src="https://picsum.photos/640/480"
-        width={640}
-      />
-      <Heading as="h3" slot="heading">The card title</Heading>
-      <p>
-        Ut consequuntur modi. Accusantium quia unde sint suscipit ipsum. Sunt
-        voluptates earum ea cumque eligendi voluptate iste architecto dolores.
-        Sit impedit cum non voluptates at qui ducimus eveniet reiciendis. Ad
-        voluptate dolor dicta ea sit amet facere. Blanditiis non et.
-      </p>
-      <div slot="meta">Some meta</div>
-      <Button as="a" href="#post" slot="cta">Read more</Button>
-    </CardComponent>
-    <Box
-      elevation="raised"
-      isBordered
-      isCentered
-      isPadded
-      isProse
-      isRounded
-      isSpaced
+      <CardComponent>
+        <Img
+          alt="The card cover"
+          height={480}
+          slot="cover"
+          src="https://picsum.photos/640/480"
+          width={640}
+        />
+        <Heading as="h3" slot="heading">The card title</Heading>
+        <p>
+          Ut consequuntur modi. Accusantium quia unde sint suscipit ipsum. Sunt
+          voluptates earum ea cumque eligendi voluptate iste architecto dolores.
+          Sit impedit cum non voluptates at qui ducimus eveniet reiciendis. Ad
+          voluptate dolor dicta ea sit amet facere. Blanditiis non et.
+        </p>
+        <div slot="meta">Some meta</div>
+      </CardComponent>
+    </CodePreview>
+    <Heading>With everything</Heading>
+    <CodePreview
+      code={`<Card>
+  <span slot="frontmatter">Category</span>
+  <Img
+    alt="The card cover"
+    height={480}
+    slot="cover"
+    src="https://picsum.photos/640/480"
+    width={640}
+  />
+  <Heading as="h3" slot="heading">The card title</Heading>
+  <p>
+    Ut consequuntur modi. Accusantium quia unde sint suscipit ipsum. Sunt
+    voluptates earum ea cumque eligendi voluptate iste architecto dolores.
+    Sit impedit cum non voluptates at qui ducimus eveniet reiciendis. Ad
+    voluptate dolor dicta ea sit amet facere. Blanditiis non et.
+  </p>
+  <div slot="meta">Some meta</div>
+  <Button as="a" href="#post" slot="cta">Read more</Button>
+</Card>`}
+      label="Using every slots"
+      lang="astro"
     >
-      <Heading>With linked heading without cta</Heading>
-    </Box>
-    <CardComponent>
-      <Img
-        alt="The card cover"
-        height={480}
-        slot="cover"
-        src="https://picsum.photos/640/480"
-        width={640}
-      />
-      <Heading as="h3" slot="heading">
-        <Link href="#the-post">The card title</Link>
-      </Heading>
-      <p>
-        Ut consequuntur modi. Accusantium quia unde sint suscipit ipsum. Sunt
-        voluptates earum ea cumque eligendi voluptate iste architecto dolores.
-        Sit impedit cum non voluptates at qui ducimus eveniet reiciendis. Ad
-        voluptate dolor dicta ea sit amet facere. Blanditiis non et.
-      </p>
-      <div slot="meta">Some meta</div>
-    </CardComponent>
-    <Box
-      elevation="raised"
-      isBordered
-      isCentered
-      isPadded
-      isProse
-      isRounded
-      isSpaced
+      <CardComponent>
+        <span slot="frontmatter">Category</span>
+        <Img
+          alt="The card cover"
+          height={480}
+          slot="cover"
+          src="https://picsum.photos/640/480"
+          width={640}
+        />
+        <Heading as="h3" slot="heading">The card title</Heading>
+        <p>
+          Ut consequuntur modi. Accusantium quia unde sint suscipit ipsum. Sunt
+          voluptates earum ea cumque eligendi voluptate iste architecto dolores.
+          Sit impedit cum non voluptates at qui ducimus eveniet reiciendis. Ad
+          voluptate dolor dicta ea sit amet facere. Blanditiis non et.
+        </p>
+        <div slot="meta">Some meta</div>
+        <Button as="a" href="#post" slot="cta">Read more</Button>
+      </CardComponent>
+    </CodePreview>
+    <Heading>With a link wrapped in a heading and without cta</Heading>
+    <CodePreview
+      code={`<Card>
+  <Img
+    alt="The card cover"
+    height={480}
+    slot="cover"
+    src="https://picsum.photos/640/480"
+    width={640}
+  />
+  <Heading as="h3" slot="heading">
+    <Link href="#the-post">The card title</Link>
+  </Heading>
+  <p>
+    Ut consequuntur modi. Accusantium quia unde sint suscipit ipsum. Sunt
+    voluptates earum ea cumque eligendi voluptate iste architecto dolores.
+    Sit impedit cum non voluptates at qui ducimus eveniet reiciendis. Ad
+    voluptate dolor dicta ea sit amet facere. Blanditiis non et.
+  </p>
+  <div slot="meta">Some meta</div>
+</Card>`}
+      label="Using a link in a heading without other cta"
+      lang="astro"
     >
-      <Heading>With all and a very long excerpt</Heading>
-    </Box>
-    <CardComponent>
-      <span slot="frontmatter">Category</span>
-      <Img
-        alt="The card cover"
-        height={480}
-        slot="cover"
-        src="https://picsum.photos/640/480"
-        width={640}
-      />
-      <Heading as="h3" slot="heading">The card title</Heading>
-      <p>
-        Ut consequuntur modi. Accusantium quia unde sint suscipit ipsum. Sunt
-        voluptates earum ea cumque eligendi voluptate iste architecto dolores.
-        Sit impedit cum non voluptates at qui ducimus eveniet reiciendis. Ad
-        voluptate dolor dicta ea sit amet facere. Blanditiis non et.
-      </p>
-      <p>
-        Vero omnis quas iste sunt vitae qui. Rem ut qui pariatur autem sed.
-        Asperiores ipsum laborum consequuntur veniam ad quasi voluptates quia
-        quia. Doloremque vel est et recusandae aliquid neque aut nemo
-        perspiciatis.
-      </p>
-      <p>
-        Quia beatae aliquam iusto soluta velit. Illo quam perferendis in
-        corrupti blanditiis delectus. Ratione omnis et cum earum consequatur
-        recusandae repellendus. Enim qui maiores eaque voluptate tempora ut
-        aliquam. Fugit laborum sint reiciendis quo corporis dolor nihil et.
-        Nesciunt deserunt incidunt animi voluptas nihil animi debitis.
-      </p>
-      <p>
-        Error ea voluptatem amet consectetur. Totam neque in ut eum ducimus.
-        Dolores est quam rerum necessitatibus aut ad et doloremque. Quae quia
-        sint quis nihil accusamus et. Explicabo placeat esse. Quo necessitatibus
-        voluptate deleniti sequi debitis delectus.
-      </p>
-      <div slot="meta">Some meta</div>
-      <Button as="a" href="#post" slot="cta">Read more</Button>
-    </CardComponent>
-    <Box
-      elevation="raised"
-      isBordered
-      isCentered
-      isPadded
-      isProse
-      isRounded
-      isSpaced
+      <CardComponent>
+        <Img
+          alt="The card cover"
+          height={480}
+          slot="cover"
+          src="https://picsum.photos/640/480"
+          width={640}
+        />
+        <Heading as="h3" slot="heading">
+          <Link href="#the-post">The card title</Link>
+        </Heading>
+        <p>
+          Ut consequuntur modi. Accusantium quia unde sint suscipit ipsum. Sunt
+          voluptates earum ea cumque eligendi voluptate iste architecto dolores.
+          Sit impedit cum non voluptates at qui ducimus eveniet reiciendis. Ad
+          voluptate dolor dicta ea sit amet facere. Blanditiis non et.
+        </p>
+        <div slot="meta">Some meta</div>
+      </CardComponent>
+    </CodePreview>
+    <Heading>With all and a very long excerpt</Heading>
+    <CodePreview
+      code={`<Card>
+  <span slot="frontmatter">Category</span>
+  <Img
+    alt="The card cover"
+    height={480}
+    slot="cover"
+    src="https://picsum.photos/640/480"
+    width={640}
+  />
+  <Heading as="h3" slot="heading">The card title</Heading>
+  <p>
+    Ut consequuntur modi. Accusantium quia unde sint suscipit ipsum. Sunt
+    voluptates earum ea cumque eligendi voluptate iste architecto dolores.
+    Sit impedit cum non voluptates at qui ducimus eveniet reiciendis. Ad
+    voluptate dolor dicta ea sit amet facere. Blanditiis non et.
+  </p>
+  <p>
+    Vero omnis quas iste sunt vitae qui. Rem ut qui pariatur autem sed.
+    Asperiores ipsum laborum consequuntur veniam ad quasi voluptates quia
+    quia. Doloremque vel est et recusandae aliquid neque aut nemo
+    perspiciatis.
+  </p>
+  <p>
+    Quia beatae aliquam iusto soluta velit. Illo quam perferendis in
+    corrupti blanditiis delectus. Ratione omnis et cum earum consequatur
+    recusandae repellendus. Enim qui maiores eaque voluptate tempora ut
+    aliquam. Fugit laborum sint reiciendis quo corporis dolor nihil et.
+    Nesciunt deserunt incidunt animi voluptas nihil animi debitis.
+  </p>
+  <p>
+    Error ea voluptatem amet consectetur. Totam neque in ut eum ducimus.
+    Dolores est quam rerum necessitatibus aut ad et doloremque. Quae quia
+    sint quis nihil accusamus et. Explicabo placeat esse. Quo
+    necessitatibus voluptate deleniti sequi debitis delectus.
+  </p>
+  <div slot="meta">Some meta</div>
+  <Button as="a" href="#post" slot="cta">Read more</Button>
+</Card>`}
+      label="Using a link in a heading without other cta"
+      lang="astro"
     >
-      <Heading>Outside a container</Heading>
-      <p>
-        If you don't wrap the Card in a container, its appearance on large
-        screens will be the same as the mobile view. You cannot see the
-        difference here since main is a container.
-      </p>
-    </Box>
+      <CardComponent>
+        <span slot="frontmatter">Category</span>
+        <Img
+          alt="The card cover"
+          height={480}
+          slot="cover"
+          src="https://picsum.photos/640/480"
+          width={640}
+        />
+        <Heading as="h3" slot="heading">The card title</Heading>
+        <p>
+          Ut consequuntur modi. Accusantium quia unde sint suscipit ipsum. Sunt
+          voluptates earum ea cumque eligendi voluptate iste architecto dolores.
+          Sit impedit cum non voluptates at qui ducimus eveniet reiciendis. Ad
+          voluptate dolor dicta ea sit amet facere. Blanditiis non et.
+        </p>
+        <p>
+          Vero omnis quas iste sunt vitae qui. Rem ut qui pariatur autem sed.
+          Asperiores ipsum laborum consequuntur veniam ad quasi voluptates quia
+          quia. Doloremque vel est et recusandae aliquid neque aut nemo
+          perspiciatis.
+        </p>
+        <p>
+          Quia beatae aliquam iusto soluta velit. Illo quam perferendis in
+          corrupti blanditiis delectus. Ratione omnis et cum earum consequatur
+          recusandae repellendus. Enim qui maiores eaque voluptate tempora ut
+          aliquam. Fugit laborum sint reiciendis quo corporis dolor nihil et.
+          Nesciunt deserunt incidunt animi voluptas nihil animi debitis.
+        </p>
+        <p>
+          Error ea voluptatem amet consectetur. Totam neque in ut eum ducimus.
+          Dolores est quam rerum necessitatibus aut ad et doloremque. Quae quia
+          sint quis nihil accusamus et. Explicabo placeat esse. Quo
+          necessitatibus voluptate deleniti sequi debitis delectus.
+        </p>
+        <div slot="meta">Some meta</div>
+        <Button as="a" href="#post" slot="cta">Read more</Button>
+      </CardComponent>
+    </CodePreview>
   </Fragment>
 </PageLayout>

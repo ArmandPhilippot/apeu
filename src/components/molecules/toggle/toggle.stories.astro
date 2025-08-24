@@ -1,8 +1,8 @@
 ---
-import type { ComponentProps } from "astro/types";
 import { getStoryMeta } from "../../../utils/stories";
 import Heading from "../../atoms/heading/heading.astro";
 import PageLayout from "../../templates/page-layout/page-layout.astro";
+import CodePreview from "../code-preview/code-preview.astro";
 import ToggleComponent from "./toggle.astro";
 
 const title = "Toggle";
@@ -13,54 +13,150 @@ const { breadcrumb, seo } = getStoryMeta({
     title,
   },
 });
-
-const getItems = (
-  name: string
-): ComponentProps<typeof ToggleComponent>["items"] => [
-  { id: `${name}-item-1`, label: "Item 1", value: "item-1" },
-  { id: `${name}-item-2`, label: "Item 2", value: "item-2" },
-  { id: `${name}-item-3`, label: "Item 3", value: "item-3" },
-];
-
-const getItemsWithIcon = (
-  name: string
-): ComponentProps<typeof ToggleComponent>["items"] => [
-  { icon: "caret", id: `${name}-item-1`, label: "Item 1", value: "item-1" },
-  { icon: "gear", id: `${name}-item-2`, label: "Item 2", value: "item-2" },
-  { icon: "search", id: `${name}-item-3`, label: "Item 3", value: "item-3" },
-];
 ---
 
 <PageLayout breadcrumb={breadcrumb} seo={seo} title={title}>
   <Fragment slot="body">
-    <Heading>Default</Heading>
-    <ToggleComponent
-      groupName="default"
-      items={getItems("default")}
-      label="The legend"
+    <Heading>Introduction</Heading>
+    <CodePreview
+      code={`import Toggle from "./components/molecules/toggle/toggle.astro";`}
+      label="How to import"
+      lang="ts"
     />
+    <CodePreview
+      code={`<Toggle
+  groupName="use"
+  items={[
+    { id: 'use-item-1', label: "Item 1", value: "item-1" },
+    { id: 'use-item-2', label: "Item 2", value: "item-2" },
+    { id: 'use-item-3', label: "Item 3", value: "item-3" },
+  ]}
+  label="The legend"
+/>`}
+      label="Basic use"
+      lang="astro"
+    >
+      <ToggleComponent
+        groupName="use"
+        items={[
+          { id: "use-item-1", label: "Item 1", value: "item-1" },
+          { id: "use-item-2", label: "Item 2", value: "item-2" },
+          { id: "use-item-3", label: "Item 3", value: "item-3" },
+        ]}
+        label="The legend"
+      />
+    </CodePreview>
     <Heading>With default value</Heading>
-    <ToggleComponent
-      groupName="default-value"
-      items={getItems("default-value")}
-      label="The legend"
-      value={getItems("default-value")[0]?.value}
-    />
+    <CodePreview
+      code={`<Toggle
+  groupName="default-value"
+  items={[
+    { id: "default-item-1", label: "Item 1", value: "item-1" },
+    { id: "default-item-2", label: "Item 2", value: "item-2" },
+    { id: "default-item-3", label: "Item 3", value: "item-3" },
+  ]}
+  label="The legend"
+  value="item-2"
+/>`}
+      label="Using a default value"
+      lang="astro"
+    >
+      <ToggleComponent
+        groupName="default-value"
+        items={[
+          { id: "default-item-1", label: "Item 1", value: "item-1" },
+          { id: "default-item-2", label: "Item 2", value: "item-2" },
+          { id: "default-item-3", label: "Item 3", value: "item-3" },
+        ]}
+        label="The legend"
+        value="item-2"
+      />
+    </CodePreview>
     <Heading>With icons</Heading>
-    <ToggleComponent
-      groupName="with-icons"
-      items={getItemsWithIcon("with-icons")}
-      label="The legend"
-      value={getItemsWithIcon("with-icons")[0]?.value}
-    />
+    <CodePreview
+      code={`<Toggle
+  groupName="with-icons"
+  items={[
+    {
+      icon: "caret",
+      id: 'with-icons-item-1',
+      label: "Item 1",
+      value: "item-1",
+    },
+    {
+      icon: "gear",
+      id: 'with-icons-item-2',
+      label: "Item 2",
+      value: "item-2",
+    },
+    {
+      icon: "search",
+      id: 'with-icons-item-3',
+      label: "Item 3",
+      value: "item-3",
+    },
+  ]}
+  label="The legend"
+  value="item-1"
+/>`}
+      label="Using icons"
+      lang="astro"
+    >
+      <ToggleComponent
+        groupName="with-icons"
+        items={[
+          {
+            icon: "caret",
+            id: `with-icons-item-1`,
+            label: "Item 1",
+            value: "item-1",
+          },
+          {
+            icon: "gear",
+            id: `with-icons-item-2`,
+            label: "Item 2",
+            value: "item-2",
+          },
+          {
+            icon: "search",
+            id: `with-icons-item-3`,
+            label: "Item 3",
+            value: "item-3",
+          },
+        ]}
+        label="The legend"
+        value="item-1"
+      />
+    </CodePreview>
     <Heading>Inline</Heading>
-    <ToggleComponent
-      gap="xs"
-      groupName="inline"
-      isInline
-      items={getItems("inline")}
-      label="The legend"
-      value={getItems("inline")[0]?.value}
-    />
+    <CodePreview
+      code={`<Toggle
+  gap="xs"
+  groupName="inline"
+  isInline
+  items={[
+    { id: "inline-item-1", label: "Item 1", value: "item-1" },
+    { id: "inline-item-2", label: "Item 2", value: "item-2" },
+    { id: "inline-item-3", label: "Item 3", value: "item-3" },
+  ]}
+  label="The legend"
+  value="item-1"
+/>`}
+      label="Using a toggle with an inlined legend"
+      lang="astro"
+    >
+      <ToggleComponent
+        gap="xs"
+        groupName="inline"
+        isInline
+        items={[
+          { id: "inline-item-1", label: "Item 1", value: "item-1" },
+          { id: "inline-item-2", label: "Item 2", value: "item-2" },
+          { id: "inline-item-3", label: "Item 3", value: "item-3" },
+        ]}
+        label="The legend"
+        value="item-1"
+      />
+    </CodePreview>
   </Fragment>
 </PageLayout>

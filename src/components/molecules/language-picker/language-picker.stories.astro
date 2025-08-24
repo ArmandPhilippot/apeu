@@ -3,6 +3,7 @@ import type { ComponentProps } from "astro/types";
 import { getStoryMeta } from "../../../utils/stories";
 import Heading from "../../atoms/heading/heading.astro";
 import PageLayout from "../../templates/page-layout/page-layout.astro";
+import CodePreview from "../code-preview/code-preview.astro";
 import LanguagePickerComponent from "./language-picker.astro";
 
 /* cSpell:ignore Español Français */
@@ -24,26 +25,55 @@ const languages: ComponentProps<typeof LanguagePickerComponent>["languages"] = {
 
 <PageLayout breadcrumb={breadcrumb} seo={seo} title={title}>
   <Fragment slot="body">
-    <Heading as="h2">Usage</Heading>
+    <Heading as="h2">Introduction</Heading>
     <p>
       This component is used to let an user choose the current language of the
       website.
     </p>
-    <LanguagePickerComponent
-      current="es"
-      id="usage-example"
-      label="Choose a language:"
-      languages={languages}
+    <CodePreview
+      code={`import LanguagePicker from "./components/molecules/language-picker/language-picker.astro";`}
+      label="How to import"
+      lang="ts"
     />
+    <CodePreview
+      code={`<LanguagePicker
+  current="es"
+  id="usage-example"
+  label="Choose a language:"
+  languages={languages}
+/>`}
+      label="Basic use"
+      lang="astro"
+    >
+      <LanguagePickerComponent
+        current="es"
+        id="usage-example"
+        label="Choose a language:"
+        languages={languages}
+      />
+    </CodePreview>
     <Heading as="h2">Options</Heading>
     <Heading as="h3"><code>isInline</code></Heading>
-    <LanguagePickerComponent
-      current="es"
-      gap="2xs"
-      id="is-inline-example"
-      isInline
-      label="Choose a language:"
-      languages={languages}
-    />
+    <CodePreview
+      code={`<LanguagePicker
+  current="es"
+  gap="2xs"
+  id="is-inline-example"
+  isInline
+  label="Choose a language:"
+  languages={languages}
+/>`}
+      label="Basic use"
+      lang="astro"
+    >
+      <LanguagePickerComponent
+        current="es"
+        gap="2xs"
+        id="is-inline-example"
+        isInline
+        label="Choose a language:"
+        languages={languages}
+      />
+    </CodePreview>
   </Fragment>
 </PageLayout>

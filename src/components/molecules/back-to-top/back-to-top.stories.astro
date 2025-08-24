@@ -2,6 +2,7 @@
 import { getStoryMeta } from "../../../utils/stories";
 import Heading from "../../atoms/heading/heading.astro";
 import PageLayout from "../../templates/page-layout/page-layout.astro";
+import CodePreview from "../code-preview/code-preview.astro";
 import BackToTopComponent from "./back-to-top.astro";
 
 const title = "BackToTop";
@@ -16,12 +17,23 @@ const { breadcrumb, seo } = getStoryMeta({
 
 <PageLayout breadcrumb={breadcrumb} seo={seo} title={title}>
   <Fragment slot="body">
-    <Heading as="h2">Usage</Heading>
+    <Heading as="h2">Introduction</Heading>
     <p>
       A BackToTop component is special. It is used to navigate to the top of the
       page using an anchor. Its visibility is controlled according to a scroll
       threshold.
     </p>
-    <BackToTopComponent anchor="#some-anchor" label="Back to some anchor" />
+    <CodePreview
+      code={`import BackToTop from "./components/molecules/back-to-top/back-to-top.astro";`}
+      label="How to import"
+      lang="ts"
+    />
+    <CodePreview
+      code={`<BackToTop anchor="#some-anchor" label="Back to some anchor" />`}
+      label="Basic use"
+      lang="astro"
+    >
+      <BackToTopComponent anchor="#some-anchor" label="Back to some anchor" />
+    </CodePreview>
   </Fragment>
 </PageLayout>

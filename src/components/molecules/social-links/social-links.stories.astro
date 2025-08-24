@@ -3,6 +3,7 @@ import type { ComponentProps } from "astro/types";
 import { getStoryMeta } from "../../../utils/stories";
 import Heading from "../../atoms/heading/heading.astro";
 import PageLayout from "../../templates/page-layout/page-layout.astro";
+import CodePreview from "../code-preview/code-preview.astro";
 import SocialLinksComponent from "./social-links.astro";
 
 const title = "SocialLinks";
@@ -24,14 +25,30 @@ const links: ComponentProps<typeof SocialLinksComponent>["links"] = {
 
 <PageLayout breadcrumb={breadcrumb} seo={seo} title={title}>
   <Fragment slot="body">
-    <Heading>Usage</Heading>
+    <Heading>Introduction</Heading>
     <p>
       A <code>SocialLinks</code> component should be used to display a list of social
       links, usually the profiles of an author.
     </p>
-    <Heading>With labels</Heading>
-    <SocialLinksComponent links={links} />
+    <CodePreview
+      code={`import SocialLinks from "./components/molecules/social-links/social-links.astro";`}
+      label="How to import"
+      lang="ts"
+    />
+    <CodePreview
+      code={`<SocialLinks links={links} />`}
+      label="Basic use"
+      lang="astro"
+    >
+      <SocialLinksComponent links={links} />
+    </CodePreview>
     <Heading>With hidden labels</Heading>
-    <SocialLinksComponent hideLabels links={links} />
+    <CodePreview
+      code={`<SocialLinks hideLabels links={links} />`}
+      label="Hiding the labels"
+      lang="astro"
+    >
+      <SocialLinksComponent hideLabels links={links} />
+    </CodePreview>
   </Fragment>
 </PageLayout>

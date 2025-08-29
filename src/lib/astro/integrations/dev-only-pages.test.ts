@@ -63,7 +63,7 @@ describe("dev-only-pages", () => {
           `**/${prefix}*/**/*.astro`,
           `!**/${prefix}*/**/_*.astro`,
         ],
-        { cwd: new URL("./src/pages", mockContext.config.root) }
+        { cwd: fileURLToPath(new URL("./src/pages", mockContext.config.root)) }
       );
 
       /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */

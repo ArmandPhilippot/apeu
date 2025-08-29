@@ -66,7 +66,9 @@ describe("components-stories", () => {
       integration.hooks["astro:config:setup"](mockContext);
 
       expect(globSync).toHaveBeenCalledWith(`**/*.${STORIES_EXT}`, {
-        cwd: new URL("./src/components", mockContext.config.root),
+        cwd: fileURLToPath(
+          new URL("./src/components", mockContext.config.root)
+        ),
       });
       /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
       expect(getStoryRoute).toHaveBeenCalledTimes(2);

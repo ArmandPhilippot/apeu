@@ -27,4 +27,5 @@ tsconfigs
 tseslint
 unrs
 unstub
+vite
 vitest

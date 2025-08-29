@@ -1,8 +1,8 @@
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import type { AstroIntegration } from "astro";
-import { globbySync } from "globby";
 import slash from "slash";
+import { globSync } from "tinyglobby";
 import { STORIES_EXT } from "../../../utils/constants";
 import { joinPaths } from "../../../utils/paths";
 import { getStoryRoute } from "../../../utils/stories";
@@ -73,8 +73,8 @@ export const componentsStories = (({
 
         const componentsDir = new URL(components, config.root);
         const pattern = `**/*.${STORIES_EXT}`;
-        const stories = globbySync(pattern, {
-          cwd: componentsDir,
+        const stories = globSync(pattern, {
+          cwd: fileURLToPath(componentsDir),
         });
 
         const routes = stories.map((storyPath) => {

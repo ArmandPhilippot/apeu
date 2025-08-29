@@ -1,14 +1,8 @@
-import { join, normalize, parse, relative, sep } from "node:path";
+import { join, parse, relative, sep } from "node:path";
 import { globSync } from "tinyglobby";
+import { splitPath } from "../../../../utils/paths";
+import { removeTrailingSlashes } from "../../../../utils/strings";
 import type { Stories, Story, StoryIndex } from "./types";
-
-const splitPath = (path: string): string[] =>
-  normalize(path).split(sep).filter(Boolean);
-
-const removeTrailingSlashes = (str: string): string => {
-  if (!str.endsWith("/")) return str;
-  return str.replaceAll(/\/+$/g, "");
-};
 
 const stripStoriesSuffix = (parts: string[]): string[] => {
   const last = parts.at(-1);
@@ -26,12 +20,14 @@ const removeLastStoriesDir = (parts: string[]): string[] => {
   return parts;
 };
 
-const deduplicateLastSegment = (parts: string[]): string[] => {
-  const last = parts.length - 1;
-  if (last > 0 && parts[last] === parts[last - 1]) {
-    return parts.slice(0, -1);
-  }
-  return parts;
+const deduplicateLastSegment = (pathParts: string[]): string[] => {
+  const lastSegment = pathParts.at(-1);
+  // eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Explicit enough.
+  const secondToLastSegment = pathParts.at(-2);
+
+  return lastSegment === secondToLastSegment
+    ? pathParts.slice(0, -1)
+    : pathParts;
 };
 
 const buildSlug = (path: string): string => {

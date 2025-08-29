@@ -1,4 +1,4 @@
-import { join, parse } from "node:path";
+import { join, normalize, parse, sep } from "node:path";
 import slash from "slash";
 import type { AvailableLocale } from "../types/tokens";
 import { CONFIG } from "./constants";
@@ -76,3 +76,12 @@ export const getCumulativePaths = (path: string): string[] => {
 
   return steps;
 };
+
+/**
+ * Split the given path intro an array of substrings.
+ *
+ * @param {string} path - The path to split.
+ * @returns {string[]} The path parts.
+ */
+export const splitPath = (path: string): string[] =>
+  normalize(path).split(sep).filter(Boolean);

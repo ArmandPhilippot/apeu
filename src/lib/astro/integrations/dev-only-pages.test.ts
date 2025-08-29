@@ -1,14 +1,14 @@
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { globbySync } from "globby";
 import slash from "slash";
+import { globSync } from "tinyglobby";
 import { describe, expect, it, vi } from "vitest";
 import { createAstroConfigSetupMockContext } from "../../../../tests/mocks/integrations";
 import { devOnlyPages } from "./dev-only-pages";
 
-vi.mock("globby", () => {
+vi.mock("tinyglobby", () => {
   return {
-    globbySync: vi.fn(),
+    globSync: vi.fn(),
   };
 });
 
@@ -50,14 +50,14 @@ describe("dev-only-pages", () => {
       ] as const;
       const prefix = "__foo";
 
-      vi.mocked(globbySync).mockReturnValue([...mockPages]);
+      vi.mocked(globSync).mockReturnValue([...mockPages]);
 
       const integration = devOnlyPages({ prefix });
       const mockContext = createAstroConfigSetupMockContext();
 
       integration.hooks["astro:config:setup"](mockContext);
 
-      expect(globbySync).toHaveBeenCalledWith(
+      expect(globSync).toHaveBeenCalledWith(
         [
           `**/${prefix}*.astro`,
           `**/${prefix}*/**/*.astro`,
@@ -96,7 +96,7 @@ describe("dev-only-pages", () => {
       const mockPages = ["__foo/page1.astro"];
       const prefix = "__foo";
 
-      vi.mocked(globbySync).mockReturnValue(mockPages);
+      vi.mocked(globSync).mockReturnValue(mockPages);
 
       const integration = devOnlyPages({ prefix, logPages: true });
       const mockContext = createAstroConfigSetupMockContext();
@@ -109,7 +109,7 @@ describe("dev-only-pages", () => {
     });
 
     it("should handle an empty pages directory gracefully", () => {
-      vi.mocked(globbySync).mockReturnValue([]);
+      vi.mocked(globSync).mockReturnValue([]);
 
       const integration = devOnlyPages({ prefix: "__foo" });
       const mockContext = createAstroConfigSetupMockContext();

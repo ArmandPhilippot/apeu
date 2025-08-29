@@ -1,16 +1,16 @@
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { globbySync } from "globby";
 import slash from "slash";
+import { globSync } from "tinyglobby";
 import { describe, expect, it, vi } from "vitest";
 import { createAstroConfigSetupMockContext } from "../../../../tests/mocks/integrations";
 import { STORIES_EXT } from "../../../utils/constants";
 import { getStoryRoute } from "../../../utils/stories";
 import { componentsStories } from "./components-stories";
 
-vi.mock("globby", () => {
+vi.mock("tinyglobby", () => {
   return {
-    globbySync: vi.fn(),
+    globSync: vi.fn(),
   };
 });
 
@@ -46,14 +46,14 @@ describe("components-stories", () => {
       expect(mockContext.logger.info).not.toHaveBeenCalled();
     });
 
-    it("should call globbySync with the correct arguments and map story paths to routes", () => {
+    it("should call globSync with the correct arguments and map story paths to routes", () => {
       const mockStoryPaths = [
         "Button/Button.stories.astro",
         "Input/Input.stories.astro",
       ];
       const mockRoutes = ["/button", "/input"] as const;
 
-      vi.mocked(globbySync).mockReturnValue(mockStoryPaths);
+      vi.mocked(globSync).mockReturnValue(mockStoryPaths);
       vi.mocked(getStoryRoute)
         .mockReturnValueOnce(mockRoutes[0])
         .mockReturnValueOnce(mockRoutes[1]);
@@ -65,7 +65,7 @@ describe("components-stories", () => {
 
       integration.hooks["astro:config:setup"](mockContext);
 
-      expect(globbySync).toHaveBeenCalledWith(`**/*.${STORIES_EXT}`, {
+      expect(globSync).toHaveBeenCalledWith(`**/*.${STORIES_EXT}`, {
         cwd: new URL("./src/components", mockContext.config.root),
       });
       /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
@@ -82,7 +82,7 @@ describe("components-stories", () => {
       ];
       const mockRoutes = ["/button", "/input"] as const;
 
-      vi.mocked(globbySync).mockReturnValue(mockStoryPaths);
+      vi.mocked(globSync).mockReturnValue(mockStoryPaths);
       vi.mocked(getStoryRoute)
         .mockReturnValueOnce(mockRoutes[0])
         .mockReturnValueOnce(mockRoutes[1]);
@@ -122,7 +122,7 @@ describe("components-stories", () => {
         "Input/Input.stories.astro",
       ];
 
-      vi.mocked(globbySync).mockReturnValue(mockStoryPaths);
+      vi.mocked(globSync).mockReturnValue(mockStoryPaths);
 
       const integration = componentsStories({
         components: "./src/components",
@@ -141,7 +141,7 @@ describe("components-stories", () => {
       const mockRoute = "/button";
       const baseSlug = "/design-system";
 
-      vi.mocked(globbySync).mockReturnValue(mockStoryPaths);
+      vi.mocked(globSync).mockReturnValue(mockStoryPaths);
       vi.mocked(getStoryRoute).mockReturnValue(mockRoute);
 
       const integration = componentsStories({
@@ -161,7 +161,7 @@ describe("components-stories", () => {
     it("should not log stories when logStories is false", () => {
       const mockStoryPaths = ["Button/Button.stories.astro"];
 
-      vi.mocked(globbySync).mockReturnValue(mockStoryPaths);
+      vi.mocked(globSync).mockReturnValue(mockStoryPaths);
       vi.mocked(getStoryRoute).mockReturnValue("/button");
 
       const integration = componentsStories({
@@ -184,7 +184,7 @@ describe("components-stories", () => {
       const mockStoryPaths = ["Button/Button.stories.astro"];
       const mockRoute = "/button";
 
-      vi.mocked(globbySync).mockReturnValue(mockStoryPaths);
+      vi.mocked(globSync).mockReturnValue(mockStoryPaths);
       vi.mocked(getStoryRoute).mockReturnValue(mockRoute);
 
       const integration = componentsStories({

@@ -63,6 +63,7 @@ export const createAstroConfigSetupMockContext = (
         server: new URL("file:///mock/build/server"),
         serverEntry: "",
       },
+      srcDir: new URL("file:///mock/src"),
       outDir: new URL("file:///mock/out"),
       ...("config" in overrides && isObject(overrides.config)
         ? overrides.config

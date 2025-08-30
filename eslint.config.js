@@ -5,4 +5,9 @@ export default arphi({
   jsdoc: true,
   tests: true,
   typescript: true,
+  overrides: {
+    javascript: {
+      "one-var": "off",
+    },
+  },
 });

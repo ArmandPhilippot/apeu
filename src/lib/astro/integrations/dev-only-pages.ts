@@ -1,8 +1,8 @@
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import type { AstroIntegration } from "astro";
-import { globbySync } from "globby";
 import slash from "slash";
+import { globSync } from "tinyglobby";
 import { joinPaths } from "../../../utils/paths";
 
 /**
@@ -113,8 +113,8 @@ export const devOnlyPages = (({
         }
 
         const pagesDir = new URL("./src/pages", config.root);
-        const pages = globbySync(devOnlyPagesPatterns, {
-          cwd: pagesDir,
+        const pages = globSync(devOnlyPagesPatterns, {
+          cwd: fileURLToPath(pagesDir),
         });
         const devOnlyRoutes = pages.map((page) => {
           const route = getDevOnlyPageRoute(page, prefix);

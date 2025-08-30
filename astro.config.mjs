@@ -5,7 +5,7 @@ import sitemap from "@astrojs/sitemap";
 import { defineConfig, fontProviders } from "astro/config";
 import icon from "astro-icon";
 import remarkDirective from "remark-directive";
-import { componentsStories } from "./src/lib/astro/integrations/components-stories";
+import { astroStories } from "./src/lib/astro/integrations/astro-stories";
 import { devOnlyPages } from "./src/lib/astro/integrations/dev-only-pages";
 import { pagefind } from "./src/lib/astro/integrations/pagefind";
 import { rehypeCodeBlocks } from "./src/lib/rehype/rehype-code-blocks";
@@ -95,15 +95,12 @@ export default defineConfig({
     responsiveStyles: true,
   },
   integrations: [
-    componentsStories({
-      baseSlug: "/design-system/components",
-      components: "./src/components",
-    }),
-    componentsStories({
-      baseSlug: "/design-system/views",
-      components: "./src/views",
-    }),
     devOnlyPages({ prefix: "_dev_" }),
+    astroStories({
+      base: "/design-system",
+      layout: "./src/components/templates/story-layout/story-layout.astro",
+      patterns: ["components/**/*", "stories/**/*", "views/**/*"],
+    }),
     icon({
       iconDir: "src/assets/icons",
     }),

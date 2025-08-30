@@ -1,8 +1,33 @@
 import { join, parse, relative, sep } from "node:path";
 import { globSync } from "tinyglobby";
 import { splitPath } from "../../../../utils/paths";
-import { removeTrailingSlashes } from "../../../../utils/strings";
+import {
+  capitalizeFirstLetter,
+  removeTrailingSlashes,
+} from "../../../../utils/strings";
 import type { Stories, Story, StoryIndex } from "./types";
+
+/**
+ * Retrieve a story name from its route.
+ *
+ * @param {string} route - The route of a story.
+ * @returns {string} The name of a story.
+ * @throws {Error} When the story name can't be determined.
+ */
+const getStoryName = (route: string): string => {
+  const storyName = route.split("/").pop();
+
+  if (storyName === "" || storyName === undefined) {
+    throw new Error(
+      `Could not retrieve the story name from its route. Are you sure this route match a story? Received: ${route}`
+    );
+  }
+
+  return storyName
+    .split("-")
+    .map((story) => capitalizeFirstLetter(story))
+    .join(" ");
+};
 
 const stripStoriesSuffix = (parts: string[]): string[] => {
   const last = parts.at(-1);
@@ -79,6 +104,7 @@ const getStory = ({
     ext,
     pathWithoutExt,
     route,
+    title: getStoryName(route),
     type: "story",
   };
 };
@@ -116,12 +142,13 @@ const getStoryIndex = ({
         relativePath: relative(src, `./${childPath}`),
         src,
       });
-      return childRoute;
+      return { route: childRoute, title: getStoryName(childRoute) };
     });
 
   return {
     children,
     route,
+    title: getStoryName(route),
     type: "index",
   };
 };

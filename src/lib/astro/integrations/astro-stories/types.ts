@@ -4,12 +4,14 @@ export type Story = {
   ext: string;
   pathWithoutExt: string;
   route: string;
+  title: string;
   type: "story";
 };
 
 export type StoryIndex = {
-  children: string[];
+  children: { route: string; title: string }[];
   route: string;
+  title: string;
   type: "index";
 };
 
@@ -21,12 +23,12 @@ export type StoryFrontmatter<T extends Frontmatter> = T;
 
 export type StoryEntry<T extends Frontmatter> = Pick<
   Story,
-  "route" | "type"
+  "route" | "title" | "type"
 > & {
   frontmatter: StoryFrontmatter<T>;
   headings: MarkdownHeading[];
 };
-export type StoryIndexEntry = Pick<StoryIndex, "route" | "type">;
+export type StoryIndexEntry = Pick<StoryIndex, "route" | "title" | "type">;
 
 export type StoryLayoutProps<T extends Frontmatter = Frontmatter> = {
   story: StoryEntry<T> | StoryIndexEntry;

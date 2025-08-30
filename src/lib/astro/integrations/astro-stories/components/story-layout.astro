@@ -4,6 +4,10 @@ import type { StoryLayoutProps } from "../types";
 type Props = StoryLayoutProps;
 
 const { story } = Astro.props;
+const title =
+  story.type === "story"
+    ? (story.frontmatter.title ?? story.title)
+    : story.title;
 ---
 
 <html lang={Astro.currentLocale}>
@@ -13,9 +17,10 @@ const { story } = Astro.props;
       content="width=device-width, initial-scale=1.0, viewport-fit=cover"
       name="viewport"
     />
-    <title>
-      {story.type === "story" ? story.frontmatter.title : "Stories Index"}
-    </title>
+    <title>{title}</title>
   </head>
-  <body><slot /></body>
+  <body>
+    <h1>{title}</h1>
+    <slot />
+  </body>
 </html>

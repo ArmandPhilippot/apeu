@@ -4,17 +4,16 @@ import type { Story, StoryEntry } from "../types";
 
 type Props = Story;
 
-const { pathWithoutExt, route, type } = Astro.props;
+const { pathWithoutExt, ...props } = Astro.props;
 const { Content, components, frontmatter, getHeadings } = (await import(
   /* @vite-ignore */
   `${pathWithoutExt}.mdx`
 )) as typeof import("*.mdx");
 const headings = getHeadings();
 const story: StoryEntry<typeof frontmatter> = {
+  ...props,
   frontmatter,
   headings,
-  route,
-  type,
 };
 ---
 

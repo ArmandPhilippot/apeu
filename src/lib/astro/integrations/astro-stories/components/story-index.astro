@@ -11,9 +11,9 @@ const { ...index } = Astro.props;
   {
     index.children.length > 0 ? (
       <ul>
-        {index.children.map((route) => (
+        {index.children.map(({ route, title }) => (
           <li>
-            <a href={route}>{route}</a>
+            <a href={route}>{title}</a>
           </li>
         ))}
       </ul>

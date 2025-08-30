@@ -5,10 +5,8 @@ import PageLayout from "../page-layout/page-layout.astro";
 type Props = StoryLayoutProps;
 
 const { story } = Astro.props;
-
-console.log(story);
 ---
 
-<PageLayout seo={{ title: "Testing" }} title="Testing">
+<PageLayout seo={{ title: story.title }} title={story.title}>
   <slot slot="body" />
 </PageLayout>

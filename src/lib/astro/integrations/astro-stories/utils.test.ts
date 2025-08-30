@@ -45,10 +45,11 @@ describe("getStories", () => {
     });
 
     expect(result.example).toStrictEqual({
-      type: "story",
-      route: "/somewhere/example",
       ext: ".mdx",
       pathWithoutExt: "/project/src/stories/example",
+      route: "/somewhere/example",
+      title: "Example",
+      type: "story",
     });
   });
 
@@ -66,9 +67,13 @@ describe("getStories", () => {
     });
 
     expect(result.components).toStrictEqual({
-      type: "index",
+      children: [
+        { route: "/stories/components/button", title: "Button" },
+        { route: "/stories/components/input", title: "Input" },
+      ],
       route: "/stories/components",
-      children: ["/stories/components/button", "/stories/components/input"],
+      title: "Components",
+      type: "index",
     });
   });
 

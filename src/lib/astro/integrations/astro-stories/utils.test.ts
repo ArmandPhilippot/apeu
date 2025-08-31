@@ -16,6 +16,10 @@ describe("getStories", () => {
 
     expect(result).toStrictEqual({
       base: {
+        breadcrumb: [
+          { label: "Home", url: "/" },
+          { label: "Base", url: "/base" },
+        ],
         children: [],
         label: "Base",
         route: "/base",
@@ -32,6 +36,11 @@ describe("getStories", () => {
     });
 
     expect(result.button).toStrictEqual({
+      breadcrumb: [
+        { label: "Home", url: "/" },
+        { label: "Somewhere", url: "/somewhere" },
+        { label: "Button", url: "/somewhere/button" },
+      ],
       ext: ".mdx",
       label: "Button",
       path: join(import.meta.dirname, "button.stories.mdx"),
@@ -48,6 +57,11 @@ describe("getStories", () => {
     });
 
     expect(result.example).toStrictEqual({
+      breadcrumb: [
+        { label: "Home", url: "/" },
+        { label: "Somewhere", url: "/somewhere" },
+        { label: "Example", url: "/somewhere/example" },
+      ],
       ext: ".mdx",
       label: "Example",
       path: join(import.meta.dirname, "stories/example.mdx"),
@@ -64,6 +78,11 @@ describe("getStories", () => {
     });
 
     expect(result.components).toStrictEqual({
+      breadcrumb: [
+        { label: "Home", url: "/" },
+        { label: "Somewhere", url: "/somewhere" },
+        { label: "Components", url: "/somewhere/components" },
+      ],
       children: [
         { route: "/somewhere/components/button", label: "Button" },
         { route: "/somewhere/components/input", label: "Input" },

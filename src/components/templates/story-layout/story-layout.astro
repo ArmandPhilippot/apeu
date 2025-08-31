@@ -7,6 +7,10 @@ type Props = StoryLayoutProps;
 const { story } = Astro.props;
 ---
 
-<PageLayout seo={{ title: story.label }} title={story.label}>
+<PageLayout
+  breadcrumb={story.breadcrumb}
+  seo={{ title: story.label }}
+  title={story.label}
+>
   <slot slot="body" />
 </PageLayout>

@@ -1,4 +1,7 @@
+import type { Crumb } from "../../../../../types/data";
+
 export type Story = {
+  breadcrumb: Crumb[];
   ext: string;
   path: string;
   route: string;
@@ -7,6 +10,7 @@ export type Story = {
 };
 
 export type StoriesIndex = {
+  breadcrumb: Crumb[];
   children: { route: string; label: string }[];
   route: string;
   label: string;

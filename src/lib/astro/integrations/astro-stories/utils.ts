@@ -1,4 +1,5 @@
 import { basename, join, parse } from "node:path";
+import type { Crumb } from "../../../../types/data";
 import { getCumulativePaths, splitPath } from "../../../../utils/paths";
 import { capitalizeFirstLetter } from "../../../../utils/strings";
 import type { Stories, StoriesIndex, Story } from "./types/internal";
@@ -92,7 +93,7 @@ const cleanDirectoryPath = (dir: string): string => {
 };
 
 type ParsePathConfig = Pick<GetStoriesConfig, "base" | "src"> & {
-  /** The path to parse. */
+  /** A story or index path to parse. */
   path: string;
 };
 
@@ -144,34 +145,80 @@ const parseIndexPath = ({
   path,
   src,
 }: ParsePathConfig): IndexPathInfo => {
-  const dirname = basename(path);
+  const dirName = basename(path);
   const route = path === base ? path : `${base}${path}`;
 
   return {
-    dirname,
-    label: capitalizeStoryFilename(dirname),
+    dirname: dirName,
+    label: capitalizeStoryFilename(dirName),
     path: join(src, path),
     slug: path.slice(1),
     route,
   };
 };
 
-const formatStory = ({
-  ancestors,
-  filename,
-  slug,
-  ...story
-}: StoryPathInfo): Story => {
+type GenerateBreadcrumbConfig = {
+  /** The route to generate breadcrumbs for. */
+  route: string;
+  /** Map of routes to their labels. */
+  routeMap: Map<string, { label: string; route: string }>;
+};
+
+/**
+ * Generate breadcrumb trail for a given route.
+ *
+ * @param {GenerateBreadcrumbConfig} config - The config to generate breadcrumbs.
+ * @returns {Crumb[]} Array of breadcrumb items.
+ */
+const generateBreadcrumb = ({
+  route,
+  routeMap,
+}: GenerateBreadcrumbConfig): Crumb[] => {
+  const breadcrumb: Crumb[] = [{ url: "/", label: "Home" }];
+  const pathParts = route.split("/").filter(Boolean);
+
+  for (let i = 0; i < pathParts.length; i++) {
+    const currentPath = `/${pathParts.slice(0, i + 1).join("/")}`;
+    const routeInfo = routeMap.get(currentPath);
+
+    if (routeInfo !== undefined) {
+      breadcrumb.push({
+        label: routeInfo.label,
+        url: routeInfo.route,
+      });
+    }
+  }
+
+  return breadcrumb;
+};
+
+type FormatStoryConfig = {
+  routeMap: Map<string, { label: string; route: string }>;
+  story: StoryPathInfo;
+};
+
+const formatStory = ({ routeMap, story }: FormatStoryConfig): Story => {
+  const { ancestors, filename, slug, route, ...remainingData } = story;
   return {
+    ...remainingData,
+    breadcrumb: generateBreadcrumb({ route, routeMap }),
+    route,
     type: "story",
-    ...story,
   };
 };
 
-const formatIndex = (
-  { label, route, slug }: IndexPathInfo,
-  stories: StoryPathInfo[]
-): StoriesIndex => {
+type FormatIndexConfig = {
+  index: IndexPathInfo;
+  stories: StoryPathInfo[];
+  routeMap: Map<string, { label: string; route: string }>;
+};
+
+const formatIndex = ({
+  index,
+  routeMap,
+  stories,
+}: FormatIndexConfig): StoriesIndex => {
+  const { label, route, slug } = index;
   const children = stories
     .filter((story) => story.ancestors.includes(`/${slug}`))
     .map((story) => {
@@ -180,6 +227,7 @@ const formatIndex = (
 
   return {
     type: "index",
+    breadcrumb: generateBreadcrumb({ route, routeMap }),
     children,
     label,
     route,
@@ -190,11 +238,27 @@ const formatStories = (
   stories: StoryPathInfo[],
   indexes: IndexPathInfo[]
 ): Stories => {
+  const routeMap = new Map<string, { label: string; route: string }>();
+
+  for (const index of indexes) {
+    routeMap.set(index.route, {
+      label: index.label,
+      route: index.route,
+    });
+  }
+
+  for (const story of stories) {
+    routeMap.set(story.route, {
+      label: story.label,
+      route: story.route,
+    });
+  }
+
   const formattedStories = stories.map(
-    (story) => [story.slug, formatStory(story)] as const
+    (story) => [story.slug, formatStory({ routeMap, story })] as const
   );
   const formattedIndexes = indexes.map(
-    (idx) => [idx.slug, formatIndex(idx, stories)] as const
+    (index) => [index.slug, formatIndex({ index, routeMap, stories })] as const
   );
 
   return Object.fromEntries([...formattedIndexes, ...formattedStories]);

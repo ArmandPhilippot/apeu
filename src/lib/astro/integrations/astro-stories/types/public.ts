@@ -25,7 +25,7 @@ type Frontmatter = Record<string, unknown>;
  */
 export type StoryEntry<T extends Frontmatter = Frontmatter> = Pick<
   Story,
-  "label" | "route" | "type"
+  "breadcrumb" | "label" | "route" | "type"
 > & {
   /** The frontmatter of the story. */
   frontmatter: T;
@@ -36,7 +36,10 @@ export type StoryEntry<T extends Frontmatter = Frontmatter> = Pick<
 /**
  * An entry matching an index for stories.
  */
-export type StoriesIndexEntry = Pick<StoriesIndex, "label" | "route" | "type">;
+export type StoriesIndexEntry = Pick<
+  StoriesIndex,
+  "breadcrumb" | "label" | "route" | "type"
+>;
 
 /**
  * The properties received by the layout.

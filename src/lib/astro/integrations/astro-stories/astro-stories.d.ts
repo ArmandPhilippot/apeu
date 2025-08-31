@@ -1,12 +1,13 @@
 interface Config {
-  layout: string | null | undefined;
-  stories: import("./types").Stories;
+  base: string;
+  stories: import("./types/internal").Stories;
 }
 
 declare module "virtual:astro-stories/config" {
+  const base: Config["base"];
   const stories: Config["stories"];
-  export default { stories };
-  export { stories };
+  export default { base, stories };
+  export { base, stories };
 }
 
 declare module "virtual:astro-stories/Layout" {

@@ -1,13 +1,13 @@
 ---
-import type { StoryLayoutProps } from "../types";
+import type { StoryLayoutProps } from "../types/public";
 
 type Props = StoryLayoutProps;
 
 const { story } = Astro.props;
 const title =
   story.type === "story"
-    ? (story.frontmatter.title ?? story.title)
-    : story.title;
+    ? (story.frontmatter.title ?? story.label)
+    : story.label;
 ---
 
 <html lang={Astro.currentLocale}>

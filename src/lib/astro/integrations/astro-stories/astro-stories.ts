@@ -1,7 +1,9 @@
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import type { AstroIntegration, AstroIntegrationLogger } from "astro";
+import { globSync } from "tinyglobby";
 import { isString } from "../../../../utils/type-guards";
+import type { AstroStoriesConfig } from "./types/public";
 import { getStories } from "./utils";
 
 const resolveVirtualModuleId = <T extends string>(id: T): `\0${T}` => `\0${id}`;
@@ -26,19 +28,24 @@ const sanitizeBase = (base: string, logger: AstroIntegrationLogger) => {
   return sanitizedBase;
 };
 
-type AstroStoriesConfig = {
-  /**
-   * A base route where to inject the stories.
-   */
-  base: string;
-  /**
-   * The path of a layout to use for the stories.
-   */
-  layout?: string | null | undefined;
-  /**
-   * An array of patterns relative to your source directory.
-   */
-  patterns?: string[] | undefined;
+const DEFAULT_LAYOUT_PATH = fileURLToPath(
+  new URL("./components/story-layout.astro", import.meta.url)
+);
+
+const filterSupportedPaths = (
+  paths: string[],
+  logger: AstroIntegrationLogger
+) => {
+  const mdxPaths = paths.filter((path) => path.endsWith(".mdx"));
+  const nonMdxPaths = paths.filter((path) => !path.endsWith(".mdx"));
+
+  if (nonMdxPaths.length > 0) {
+    logger.warn(
+      `Found ${nonMdxPaths.length} non-MDX files that will be ignored because unsupported. Received:\n${nonMdxPaths.join("\n")}\n\nPlease check your glob patterns.`
+    );
+  }
+
+  return mdxPaths;
 };
 
 /**
@@ -56,7 +63,7 @@ type AstroStoriesConfig = {
 export function astroStories({
   base,
   layout,
-  patterns = ["**/*"],
+  patterns = ["**/*.stories.mdx", "**/stories/**/*.mdx"],
 }: AstroStoriesConfig): AstroIntegration {
   const integrationName = "astro-stories";
   const virtualModuleIdPrefix = `virtual:${integrationName}`;
@@ -68,14 +75,13 @@ export function astroStories({
         const sanitizedBase = sanitizeBase(base, logger);
         const layoutPath = isString(layout)
           ? resolve(fileURLToPath(config.root), layout)
-          : fileURLToPath(
-              new URL("./components/story-layout.astro", import.meta.url)
-            );
+          : DEFAULT_LAYOUT_PATH;
         const src = fileURLToPath(config.srcDir);
+        const allPaths = globSync(patterns, { cwd: src });
+        const mdxPaths = filterSupportedPaths(allPaths, logger);
         const stories = getStories({
           base: sanitizedBase,
-          patterns,
-          root: fileURLToPath(config.root),
+          paths: mdxPaths,
           src,
         });
 
@@ -85,7 +91,7 @@ export function astroStories({
         });
 
         const modules = {
-          [`${virtualModuleIdPrefix}/config` as const]: `export const stories = ${JSON.stringify(stories)}; export default ${JSON.stringify({ stories })};`,
+          [`${virtualModuleIdPrefix}/config` as const]: `export const base = ${JSON.stringify(sanitizedBase)}; export const stories = ${JSON.stringify(stories)}; export default ${JSON.stringify({ base: sanitizedBase, stories })};`,
           [`${virtualModuleIdPrefix}/Layout` as const]: `export { default } from ${JSON.stringify(layoutPath)};`,
         } satisfies Record<string, string>;
 

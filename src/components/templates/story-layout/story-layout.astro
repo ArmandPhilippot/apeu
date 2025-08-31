@@ -1,5 +1,5 @@
 ---
-import type { StoryLayoutProps } from "../../../lib/astro/integrations/astro-stories/types";
+import type { StoryLayoutProps } from "../../../lib/astro/integrations/astro-stories";
 import PageLayout from "../page-layout/page-layout.astro";
 
 type Props = StoryLayoutProps;
@@ -7,6 +7,6 @@ type Props = StoryLayoutProps;
 const { story } = Astro.props;
 ---
 
-<PageLayout seo={{ title: story.title }} title={story.title}>
+<PageLayout seo={{ title: story.label }} title={story.label}>
   <slot slot="body" />
 </PageLayout>

@@ -58,6 +58,17 @@ export const getLocaleFromPath = (path: string): AvailableLocale => {
 };
 
 /**
+ * Split the given path intro an array of substrings.
+ *
+ * @param {string} path - The path to split.
+ * @returns {string[]} The path parts.
+ */
+export const splitPath = (path: string): string[] => {
+  if (path === "") return [];
+  return normalize(path).split(sep).filter(Boolean);
+}
+
+/**
  * Returns cumulative path steps for a given path.
  *
  * @example "/en/blog/posts" → ["/en", "/en/blog", "/en/blog/posts"]
@@ -65,7 +76,7 @@ export const getLocaleFromPath = (path: string): AvailableLocale => {
  * @returns {string[]} An array of cumulative paths.
  */
 export const getCumulativePaths = (path: string): string[] => {
-  const parts = path.split("/").filter((part) => part !== "");
+  const parts = splitPath(path);
   const steps: string[] = [];
 
   let current = "";
@@ -76,12 +87,3 @@ export const getCumulativePaths = (path: string): string[] => {
 
   return steps;
 };
-
-/**
- * Split the given path intro an array of substrings.
- *
- * @param {string} path - The path to split.
- * @returns {string[]} The path parts.
- */
-export const splitPath = (path: string): string[] =>
-  normalize(path).split(sep).filter(Boolean);

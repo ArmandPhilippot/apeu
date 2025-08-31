@@ -1,13 +1,13 @@
 ---
 import type { GetStaticPaths } from "astro";
-import { stories } from "virtual:astro-stories/config";
+import { base, stories } from "virtual:astro-stories/config";
 import StoryIndex from "./components/story-index.astro";
 import Story from "./components/story.astro";
 
 export const getStaticPaths = (() =>
   Object.entries(stories).map(([slug, story]) => {
     return {
-      params: { story: slug === "" ? undefined : slug },
+      params: { story: story.route === base ? undefined : slug },
       props: { entry: story },
     };
   })) satisfies GetStaticPaths;

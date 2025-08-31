@@ -1,154 +1,123 @@
-import { globSync } from "tinyglobby";
+import { join } from "node:path";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { getStories } from "./utils";
-
-vi.mock("node:path", async (importOriginal) => {
-  const mod = await importOriginal<typeof import("node:path")>();
-  return {
-    ...mod,
-    relative: vi.fn((from: string, to: string) => to.replace(`${from}/`, "./")),
-  };
-});
-
-vi.mock("tinyglobby", () => {
-  return {
-    globSync: vi.fn(),
-  };
-});
 
 describe("getStories", () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
-  it("should return empty object when no stories are found", () => {
-    vi.mocked(globSync).mockReturnValue([]);
-
+  it("should only return the base as index when paths are empty", () => {
     const result = getStories({
-      base: "/stories",
-      patterns: ["**/*"],
-      root: "/some/full/path/to/project",
-      src: "/some/full/path/to/project/src",
+      base: "/base",
+      paths: [],
+      src: import.meta.dirname,
     });
 
-    expect(result).toStrictEqual({});
+    expect(result).toStrictEqual({
+      base: {
+        children: [],
+        label: "Base",
+        route: "/base",
+        type: "index",
+      },
+    });
   });
 
-  it("should create story entries for MDX files", () => {
-    vi.mocked(globSync).mockReturnValue(["project/src/stories/example.mdx"]);
-
+  it("should create a story entry for files using stories.mdx as extension", () => {
     const result = getStories({
       base: "/somewhere",
-      patterns: ["**/*"],
-      root: "/project",
-      src: "/project/src",
+      paths: ["button.stories.mdx"],
+      src: import.meta.dirname,
+    });
+
+    expect(result.button).toStrictEqual({
+      ext: ".mdx",
+      label: "Button",
+      path: join(import.meta.dirname, "button.stories.mdx"),
+      route: "/somewhere/button",
+      type: "story",
+    });
+  });
+
+  it("should create a story entry for MDX files in a stories directory", () => {
+    const result = getStories({
+      base: "/somewhere",
+      paths: ["stories/example.mdx"],
+      src: import.meta.dirname,
     });
 
     expect(result.example).toStrictEqual({
       ext: ".mdx",
-      pathWithoutExt: "/project/src/stories/example",
+      label: "Example",
+      path: join(import.meta.dirname, "stories/example.mdx"),
       route: "/somewhere/example",
-      title: "Example",
       type: "story",
     });
   });
 
   it("should create index entries for directories containing stories", () => {
-    vi.mocked(globSync).mockReturnValue([
-      "project/src/components/button.mdx",
-      "project/src/components/input.mdx",
-    ]);
-
     const result = getStories({
-      base: "/stories",
-      patterns: ["**/*"],
-      root: "/project",
-      src: "/project/src",
+      base: "/somewhere",
+      paths: ["components/button.mdx", "components/input.mdx"],
+      src: import.meta.dirname,
     });
 
     expect(result.components).toStrictEqual({
       children: [
-        { route: "/stories/components/button", title: "Button" },
-        { route: "/stories/components/input", title: "Input" },
+        { route: "/somewhere/components/button", label: "Button" },
+        { route: "/somewhere/components/input", label: "Input" },
       ],
-      route: "/stories/components",
-      title: "Components",
+      label: "Components",
+      route: "/somewhere/components",
       type: "index",
     });
   });
 
   describe("slug transformation behavior", () => {
     it("should remove .stories suffix from filenames", () => {
-      vi.mocked(globSync).mockReturnValue(["project/src/button.stories.mdx"]);
-
       const result = getStories({
-        base: "/stories",
-        patterns: ["**/*"],
-        root: "/project",
-        src: "/project/src",
+        base: "/somewhere",
+        paths: ["button.stories.mdx"],
+        src: import.meta.dirname,
       });
 
       expect(result.button).toBeDefined();
-      expect(result.button?.route).toBe("/stories/button");
+      expect(result.button?.route).toBe("/somewhere/button");
     });
 
     it("should remove stories directories from paths", () => {
-      vi.mocked(globSync).mockReturnValue(["project/src/stories/button.mdx"]);
-
       const result = getStories({
-        base: "/stories",
-        patterns: ["**/*"],
-        root: "/project",
-        src: "/project/src",
+        base: "/somewhere",
+        paths: ["stories/button.mdx"],
+        src: import.meta.dirname,
       });
 
-      expect(result.button?.route).toBe("/stories/button");
+      expect(result.button?.route).toBe("/somewhere/button");
     });
 
-    it("should deduplicate consecutive identical path segments", () => {
-      vi.mocked(globSync).mockReturnValue(["project/src/button/button.mdx"]);
-
+    it("should only remove the last stories directories from paths", () => {
       const result = getStories({
-        base: "/stories",
-        patterns: ["**/*"],
-        root: "/project",
-        src: "/project/src",
+        base: "/somewhere",
+        paths: ["component/stories/story/stories/first-story.mdx"],
+        src: import.meta.dirname,
       });
 
-      expect(result.button?.route).toBe("/stories/button");
-    });
-  });
-
-  describe("configuration handling", () => {
-    it("should use multiple patterns correctly", () => {
-      vi.mocked(globSync).mockReturnValue([]);
-
-      getStories({
-        base: "/stories",
-        patterns: ["components/**/*", "pages/**/*"],
-        root: "/project",
-        src: "/project/src",
-      });
-
-      expect(vi.mocked(globSync)).toHaveBeenCalledWith(
-        ["/project/src/components/**/*.mdx", "/project/src/pages/**/*.mdx"],
-        {
-          cwd: "/project",
-        }
+      expect(result["component/stories/story/first-story"]?.route).toBe(
+        "/somewhere/component/stories/story/first-story"
       );
     });
 
-    it("should respect custom base paths", () => {
-      vi.mocked(globSync).mockReturnValue(["project/src/example.mdx"]);
-
+    it("should deduplicate consecutive identical path segments", () => {
       const result = getStories({
-        base: "/custom-docs",
-        patterns: ["**/*"],
-        root: "/project",
-        src: "/project/src",
+        base: "/somewhere",
+        paths: ["component/button/button.stories.mdx"],
+        src: import.meta.dirname,
       });
 
-      expect(result.example?.route).toBe("/custom-docs/example");
+      expect(result["component/button"]?.route).toBe(
+        "/somewhere/component/button"
+      );
     });
   });
 });

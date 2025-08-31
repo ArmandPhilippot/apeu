@@ -1,13 +1,14 @@
 ---
 import Layout from "virtual:astro-stories/Layout";
-import type { Story, StoryEntry } from "../types";
+import type { Story } from "../types/internal";
+import type { StoryEntry } from "../types/public";
 
 type Props = Story;
 
-const { pathWithoutExt, ...props } = Astro.props;
+const { path, ...props } = Astro.props;
 const { Content, components, frontmatter, getHeadings } = (await import(
   /* @vite-ignore */
-  `${pathWithoutExt}.mdx`
+  `${path}`
 )) as typeof import("*.mdx");
 const headings = getHeadings();
 const story: StoryEntry<typeof frontmatter> = {

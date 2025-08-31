@@ -1,7 +1,16 @@
+import { globSync } from "tinyglobby";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { createAstroConfigSetupMockContext } from "../../../../../tests/mocks/integrations";
 import { isKeyExistIn, isObject } from "../../../../utils/type-guards";
 import { astroStories } from "./astro-stories";
+
+vi.mock("tinyglobby", async (importOriginal) => {
+  const mod = await importOriginal<typeof import("tinyglobby")>();
+  return {
+    ...mod,
+    globSync: vi.fn().mockReturnValue([]),
+  };
+});
 
 vi.mock("./utils", () => {
   return {
@@ -140,47 +149,6 @@ describe("astro-stories", () => {
   });
 
   describe("configuration options", () => {
-    it("should use default patterns when not provided", async () => {
-      expect.assertions(1);
-
-      const { getStories } = vi.mocked(await import("./utils"));
-
-      const integration = astroStories({ base: "/stories" });
-      const mockContext = createAstroConfigSetupMockContext();
-
-      if (integration.hooks["astro:config:setup"] !== undefined) {
-        await integration.hooks["astro:config:setup"](mockContext);
-      }
-
-      expect(getStories).toHaveBeenCalledWith(
-        expect.objectContaining({
-          patterns: ["**/*"],
-        })
-      );
-    });
-
-    it("should use custom patterns when provided", async () => {
-      expect.assertions(1);
-
-      const { getStories } = vi.mocked(await import("./utils"));
-
-      const integration = astroStories({
-        base: "/stories",
-        patterns: ["components/**/*", "pages/**/*"],
-      });
-      const mockContext = createAstroConfigSetupMockContext();
-
-      if (integration.hooks["astro:config:setup"] !== undefined) {
-        await integration.hooks["astro:config:setup"](mockContext);
-      }
-
-      expect(getStories).toHaveBeenCalledWith(
-        expect.objectContaining({
-          patterns: ["components/**/*", "pages/**/*"],
-        })
-      );
-    });
-
     it("should handle custom base path in route injection", async () => {
       expect.assertions(1);
 
@@ -330,6 +298,32 @@ describe("astro-stories", () => {
       const layoutModule = load("\0virtual:astro-stories/Layout");
 
       expect(layoutModule).toContain("custom-layout.astro");
+    });
+
+    it("should warn when tinyglobby gives unsupported paths", async () => {
+      expect.assertions(1);
+
+      vi.mocked(globSync).mockReturnValue([
+        "invalid/file.astro",
+        "another/unsupported/file.txt",
+      ]);
+
+      const integration = astroStories({
+        base: "/stories",
+        layout: "./custom-layout.astro",
+      });
+      const mockContext = createAstroConfigSetupMockContext();
+
+      if (integration.hooks["astro:config:setup"] !== undefined) {
+        await integration.hooks["astro:config:setup"](mockContext);
+      }
+
+      expect(mockContext.logger.warn)
+        .toHaveBeenCalledWith(`Found 2 non-MDX files that will be ignored because unsupported. Received:
+invalid/file.astro
+another/unsupported/file.txt
+
+Please check your glob patterns.`);
     });
   });
 });

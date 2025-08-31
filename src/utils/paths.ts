@@ -66,7 +66,7 @@ export const getLocaleFromPath = (path: string): AvailableLocale => {
 export const splitPath = (path: string): string[] => {
   if (path === "") return [];
   return normalize(path).split(sep).filter(Boolean);
-}
+};
 
 /**
  * Returns cumulative path steps for a given path.

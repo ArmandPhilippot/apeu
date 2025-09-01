@@ -86,25 +86,31 @@ const deduplicateLastSegment = (pathParts: string[]): string[] => {
     : pathParts;
 };
 
-const cleanDirectoryPath = (dir: string): string => {
-  const parts = splitPath(dir);
+const getStorySlug = (path: string): string => {
+  const parts = splitPath(path);
   const withoutLastStoriesDir = removeLastStoriesDir(parts);
-  return withoutLastStoriesDir.join("/");
+  const deduplicatedParts = deduplicateLastSegment(withoutLastStoriesDir);
+
+  return deduplicatedParts.join("/");
 };
 
-type ParsePathConfig = Pick<GetStoriesConfig, "base" | "src"> & {
+type ParseStoryPathConfig = Pick<GetStoriesConfig, "base" | "src"> & {
   /** A story or index path to parse. */
   path: string;
 };
 
 type StoryPathInfo = {
+  /** The ancestors routes computed from the story route. */
   ancestors: string[];
-  ext: string;
-  filename: string;
+  /** A label computed from the filename. */
   label: string;
+  /** The absolute path of the story file. */
   path: string;
+  /** The story route. */
   route: string;
+  /** The story slug. */
   slug: string;
+  /** A virtual module id associated to the story. */
   virtualModuleId: string;
 };
 
@@ -112,21 +118,17 @@ const parseStoryPath = ({
   base,
   path,
   src,
-}: ParsePathConfig): StoryPathInfo => {
-  const { dir, ext, name } = parse(path);
+}: ParseStoryPathConfig): StoryPathInfo => {
+  const { dir, name } = parse(path);
   const filename = stripStoriesSuffix(name);
   const label = capitalizeStoryFilename(filename);
-  const cleanDir = cleanDirectoryPath(dir);
-  const parts = [...splitPath(cleanDir), filename];
-  const deduplicatedParts = deduplicateLastSegment(parts);
-  const slug = deduplicatedParts.join("/");
+  const slug = getStorySlug(join(dir, filename));
   const route = `${base}/${slug}`;
-  const virtualModuleId = `virtual:astro-stories/stories/${slug.replaceAll(/[^\w/-]/g, "_")}`;
+  const virtualModuleId = `virtual:astro-stories/stories/${slug}`;
+  const ancestors = [...getCumulativePaths(route)].slice(0, -1);
 
   return {
-    ancestors: [base, ...getCumulativePaths(cleanDir)],
-    ext,
-    filename,
+    ancestors,
     label,
     path: join(src, path),
     route,
@@ -136,26 +138,20 @@ const parseStoryPath = ({
 };
 
 type IndexPathInfo = {
-  dirname: string;
+  /** A label computed from the directory name. */
   label: string;
-  path: string;
+  /** The index route. */
   route: string;
-  slug: string;
+  /** The index slug. */
+  slug: string | undefined;
 };
 
-const parseIndexPath = ({
-  base,
-  path,
-  src,
-}: ParsePathConfig): IndexPathInfo => {
-  const dirName = basename(path);
-  const route = path === base ? path : `${base}${path}`;
+const parseIndexRoute = (route: string, base: string): IndexPathInfo => {
+  const dirName = basename(route);
 
   return {
-    dirname: dirName,
     label: capitalizeStoryFilename(dirName),
-    path: join(src, path),
-    slug: path.slice(1),
+    slug: route === base ? route.slice(1) : route.replace(`${base}/`, ""),
     route,
   };
 };
@@ -201,7 +197,7 @@ type FormatStoryConfig = {
 };
 
 const formatStory = ({ routeMap, story }: FormatStoryConfig): Story => {
-  const { ancestors, filename, route, ...remainingData } = story;
+  const { ancestors, route, ...remainingData } = story;
   return {
     ...remainingData,
     breadcrumb: generateBreadcrumb({ route, routeMap }),
@@ -211,19 +207,19 @@ const formatStory = ({ routeMap, story }: FormatStoryConfig): Story => {
 };
 
 type FormatIndexConfig = {
-  index: IndexPathInfo;
+  currentIndex: IndexPathInfo;
   stories: StoryPathInfo[];
   routeMap: Map<string, { label: string; route: string }>;
 };
 
 const formatIndex = ({
-  index,
+  currentIndex,
   routeMap,
   stories,
 }: FormatIndexConfig): StoriesIndex => {
-  const { label, route, slug } = index;
+  const { label, route } = currentIndex;
   const children = stories
-    .filter((story) => story.ancestors.includes(`/${slug}`))
+    .filter((story) => story.ancestors.includes(route))
     .map((story) => {
       return { label: story.label, route: story.route };
     });
@@ -261,7 +257,11 @@ const formatStories = (
     (story) => [story.slug, formatStory({ routeMap, story })] as const
   );
   const formattedIndexes = indexes.map(
-    (index) => [index.slug, formatIndex({ index, routeMap, stories })] as const
+    (index) =>
+      [
+        index.slug,
+        formatIndex({ currentIndex: index, routeMap, stories }),
+      ] as const
   );
 
   return Object.fromEntries([...formattedIndexes, ...formattedStories]);
@@ -284,9 +284,12 @@ type GetStoriesConfig = {
  */
 export const getStories = ({ base, paths, src }: GetStoriesConfig): Stories => {
   const stories = paths.map((path) => parseStoryPath({ base, path, src }));
-  const uniqueIndexes = new Set(stories.flatMap((story) => story.ancestors));
-  const indexes = [...uniqueIndexes.values(), base].map((path) =>
-    parseIndexPath({ base, path, src })
+  const uniqueIndexes = new Set([
+    ...stories.flatMap((story) => story.ancestors),
+    base,
+  ]);
+  const indexes = [...uniqueIndexes.values()].map((route) =>
+    parseIndexRoute(route, base)
   );
 
   return formatStories(stories, indexes);

@@ -2,7 +2,6 @@ import type { Crumb } from "../../../../../types/data";
 
 export type Story = {
   breadcrumb: Crumb[];
-  ext: string;
   label: string;
   path: string;
   route: string;

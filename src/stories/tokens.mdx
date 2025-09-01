@@ -118,8 +118,8 @@ export const spacings = [
         <div
             style={`display:flex;flex-flow:row nowrap;gap: var(--spacing-${spacing});`}
         >
-            <div class="box" style="border-color: var(--color-border);" />
-            <div class="box" style="border-color: var(--color-border);" />
+            <div class="token-box" style="border-color: var(--color-border);" />
+            <div class="token-box" style="border-color: var(--color-border);" />
         </div>
         </TokenPreview>
     ))
@@ -135,7 +135,7 @@ export const spacings = [
     borders.sizes.map((size) => (
         <TokenPreview isInline token={`--border-size-${size}`}>
         <div
-            class="box"
+            class="token-box"
             style={`border-color: var(--color-border);border-width: var(--border-size-${size});`}
         />
         </TokenPreview>
@@ -150,7 +150,7 @@ export const spacings = [
     borders.radius.map((radii) => (
         <TokenPreview isInline token={`--border-radii-${radii}`}>
         <div
-            class="box"
+            class="token-box"
             style={`border-color: var(--color-border);border-radius: var(--border-radii-${radii});`}
         />
         </TokenPreview>
@@ -173,7 +173,7 @@ export const spacings = [
                 : `--color-${context}-${variant}`;
             return (
             <TokenPreview token={token}>
-                <div class="box" style={`background: var(${token});`} />
+                <div class="token-box" style={`background: var(${token});`} />
             </TokenPreview>
             );
         })}
@@ -190,7 +190,7 @@ export const spacings = [
         <div class="wrapper flex">
         <TokenPreview token={`--color-on-${context}`}>
             <div
-            class="box"
+            class="token-box"
             style={`background: var(--color-${context});color: var(--color-on-${context});`}
             >
             Preview
@@ -198,7 +198,7 @@ export const spacings = [
         </TokenPreview>
         <TokenPreview token={`--color-on-${context}-faded`}>
             <div
-            class="box"
+            class="token-box"
             style={`background: var(--color-${context}-faded);color: var(--color-on-${context}-faded);`}
             >
             Preview
@@ -206,7 +206,7 @@ export const spacings = [
         </TokenPreview>
         <TokenPreview token={`--color-on-${context}-subtle`}>
             <div
-            class="box"
+            class="token-box"
             style={`background: var(--color-${context}-subtle);color: var(--color-on-${context}-subtle);`}
             >
             Preview
@@ -226,11 +226,11 @@ export const spacings = [
     shadows.elevations.map((elevation) => (
         <TokenPreview isInline token={`--shadow-${elevation}-to-top-left`}>
         <div
-            class="box"
+            class="token-box"
             style={`background: var(--color-regular);padding: var(--spacing-md);`}
         >
             <div
-            class="box"
+            class="token-box"
             style={`background: var(--color-regular);border-color: var(--color-border);box-shadow: var(--shadow-${elevation}-to-top-left);`}
             />
         </div>
@@ -246,9 +246,9 @@ export const spacings = [
     <div class="wrapper grid">
         {shadows.directions.x.map((x) => (
         <TokenPreview token={`--shadow-elevated-to-${y}-${x}`}>
-            <div class="box" style={`padding: var(--spacing-md);`}>
+            <div class="token-box" style={`padding: var(--spacing-md);`}>
             <div
-                class="box"
+                class="token-box"
                 style={`--shadow-color: var(--color-black);background: var(--color-regular);border-color: var(--color-border);box-shadow: var(--shadow-elevated-to-${y}-${x});`}
             />
             </div>
@@ -257,9 +257,7 @@ export const spacings = [
     </div>
     ))
 }
+
 ### Colors
 
-<p>
-    Ideally, I should adapt the shadow color according to the surface but I
-    don't think I'll use them elsewhere than on regular background.
-</p>
+Ideally, I should adapt the shadow color according to the surface but I don't think I'll use them elsewhere than on regular background.

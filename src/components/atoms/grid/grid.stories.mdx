@@ -1,0 +1,152 @@
+---
+title: "Grid"
+---
+import { components as mdxComponents } from "../../mdx";
+import Grid from "./grid.astro";
+
+export const components = mdxComponents;
+
+## Usage
+
+This component can be used to create a CSS grid.
+
+<Grid>
+  <div>Item 1</div>
+  <div>Item 2</div>
+  <div>Item 3</div>
+  <div>Item 4</div>
+  <div>Item 5</div>
+  <div>Item 6</div>
+</Grid>
+
+## Options
+
+### <code>cols</code>
+
+The <code>cols</code> property lets you define an explicit columns number. Caveat: You'll need to handle yourself small viewports.
+
+<Grid cols={2}>
+  <div>Item 1</div>
+  <div>Item 2</div>
+  <div>Item 3</div>
+  <div>Item 4</div>
+  <div>Item 5</div>
+  <div>Item 6</div>
+</Grid>
+
+### <code>rows</code>
+
+The <code>rows</code> property lets you define an explicit rows number. Caveat: This is not useful by itself.
+
+<Grid rows={3}>
+  <div>Item 1</div>
+  <div>Item 2</div>
+  <div>Item 3</div>
+  <div>Item 4</div>
+  <div>Item 5</div>
+  <div>Item 6</div>
+</Grid>
+
+### <code>gap</code>
+
+The <code>gap</code> property lets you define an explicit columns number. Caveat: You'll need to handle yourself small viewports.
+
+#### Unique gap
+
+<Grid gap="md">
+  <div>Item 1</div>
+  <div>Item 2</div>
+  <div>Item 3</div>
+  <div>Item 4</div>
+  <div>Item 5</div>
+  <div>Item 6</div>
+</Grid>
+
+#### Col gap
+
+<Grid gap={{ col: "md" }}>
+  <div>Item 1</div>
+  <div>Item 2</div>
+  <div>Item 3</div>
+  <div>Item 4</div>
+  <div>Item 5</div>
+  <div>Item 6</div>
+</Grid>
+
+#### Row gap
+
+<Grid gap={{ row: "md" }}>
+  <div>Item 1</div>
+  <div>Item 2</div>
+  <div>Item 3</div>
+  <div>Item 4</div>
+  <div>Item 5</div>
+  <div>Item 6</div>
+</Grid>
+
+#### Both gaps with different value
+
+<Grid gap={{ col: "md", row: "xs" }}>
+  <div>Item 1</div>
+  <div>Item 2</div>
+  <div>Item 3</div>
+  <div>Item 4</div>
+  <div>Item 5</div>
+  <div>Item 6</div>
+</Grid>
+
+### <code>sizeMinCols</code>
+
+The <code>sizeMinCols</code> property lets you override the default minimal size for columns.
+
+<Grid sizeMinCols="400px">
+  <div>Item 1</div>
+  <div>Item 2</div>
+  <div>Item 3</div>
+  <div>Item 4</div>
+  <div>Item 5</div>
+  <div>Item 6</div>
+</Grid>
+
+### <code>sizeMaxCols</code>
+
+The <code>sizeMaxCols</code> property lets you override the default maximal size for columns.
+
+<Grid sizeMaxCols="200px">
+  <div>Item 1</div>
+  <div>Item 2</div>
+  <div>Item 3</div>
+  <div>Item 4</div>
+  <div>Item 5</div>
+  <div>Item 6</div>
+</Grid>
+
+### <code>templateCols</code>
+
+The <code>templateCols</code> property lets you override the default template for columns.
+
+<Grid templateCols="1fr auto 1fr">
+  <div>Item 1</div>
+  <div>Item 2</div>
+  <div>Item 3</div>
+  <div>Item 4</div>
+  <div>Item 5</div>
+  <div>Item 6</div>
+</Grid>
+
+### <code>templateRows</code>
+
+The <code>templateRows</code> property lets you override the default template for rows.
+
+<Grid templateRows="auto 3rem auto">
+  <div>Item 1</div>
+  <div>Item 2</div>
+  <div>Item 3</div>
+  <div>Item 4</div>
+  <div>Item 5</div>
+  <div>Item 6</div>
+</Grid>
+
+### Other CSS grid properties
+
+You can also use <code>alignContent</code>, <code>alignItems</code>, <code>justifyContent</code> and <code>justifyItems</code> to customize the alignment of your items in the grid.

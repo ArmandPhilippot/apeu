@@ -1,0 +1,46 @@
+---
+title: "Callout"
+---
+import { components as mdxComponents } from "../../mdx";
+import Callout from "./callout.astro";
+
+export const components = mdxComponents;
+
+## Usage
+
+This component is used to show important information to the reader.
+
+## Type
+
+### Critical
+
+<Callout type="critical">The contents.</Callout>
+
+### Discovery
+
+<Callout type="discovery">The contents.</Callout>
+
+### Idea
+
+<Callout type="idea">The contents.</Callout>
+
+### Info
+
+<Callout type="info">The contents.</Callout>
+
+### Success
+
+<Callout type="success">The contents.</Callout>
+
+### Warning
+
+<Callout type="warning">The contents.</Callout>
+
+## With a custom label
+
+<Callout
+  label="A custom label a bit long for small devices"
+  type="critical"
+>
+  The contents.
+</Callout>

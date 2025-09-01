@@ -1,0 +1,74 @@
+---
+title: "Box"
+---
+import { components as mdxComponents } from "../../mdx";
+import Box from "./box.astro";
+
+export const components = mdxComponents;
+
+## Usage
+
+This component can be used to create a box that reuse the same styles across multiple components.
+
+<Box>The box contents.</Box>
+  
+## Options
+
+### <code>elevation</code>
+
+#### <code>raised</code>
+
+<Box elevation="raised">The box contents.</Box>
+
+#### <code>elevated</code>
+
+<Box elevation="elevated">The box contents.</Box>
+
+#### <code>floating</code>
+
+<Box elevation="floating">The box contents.</Box>
+
+### <code>isBordered</code>
+
+<Box isBordered>The box contents.</Box>
+
+### <code>isCentered</code>
+
+<Box isCentered>The box contents.</Box>
+
+### <code>isPadded</code>
+
+<Box isPadded>The box contents.</Box>
+
+### <code>isProse</code>
+
+<Box isProse>The box contents.</Box>
+
+### <code>isRounded</code>
+
+<Box isBordered isRounded>The box contents.</Box>
+
+## Using <code>isProse</code>
+
+<Box isProse>
+  <p>The first child should not have a top margin.</p>
+  <p>In between you can use whatever you want.</p>
+  <p>Each "not-inlined" children will have both top and bottom margins.</p>
+  <p>The last child should not have a bottom margin.</p>
+</Box>
+
+### With <code>isBordered</code>
+
+<Box isBordered isProse>The box contents.</Box>
+
+### With <code>isCentered</code>
+
+And <code>isBordered</code> to see the box limits.
+
+<Box isBordered isCentered isProse>The box contents.</Box>
+
+### With <code>isPadded</code>
+
+And <code>isBordered</code> to see the box limits.
+
+<Box isBordered isPadded isProse>The box contents.</Box>

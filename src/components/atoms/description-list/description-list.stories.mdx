@@ -1,0 +1,503 @@
+---
+title: "Fieldset"
+---
+import { components as mdxComponents } from "../../mdx";
+import DescriptionList from "./description-list.astro";
+import Item from "./item.astro";
+
+export const components = mdxComponents;
+
+In a description list, you can:
+
+* Use a single term associated to a single description
+* Use multiple terms associated to a single description
+* Use a single term associated to multiple descriptions
+* Wrap each couple with an <code>Item</code> component
+
+## With <code>isInline: false</code> (default)
+
+### Without Item component
+
+#### No spacing (default)
+
+<DescriptionList>
+  <dt>Term 1 - Variant 1</dt>
+  <dt>Term 1 - Variant 2</dt>
+  <dd>The description of Term 1 variants</dd>
+  <dt>Term 2</dt>
+  <dd>The description of term 2</dd>
+  <dt>Term 3</dt>
+  <dd>The first description of term 3</dd>
+  <dd>The second description of term 3</dd>
+</DescriptionList>
+
+#### With <code>colSpacing</code>
+
+This option has no effects with this configuration.
+
+<DescriptionList colSpacing="sm">
+  <dt>Term 1 - Variant 1</dt>
+  <dt>Term 1 - Variant 2</dt>
+  <dd>The description of Term 1 variants</dd>
+  <dt>Term 2</dt>
+  <dd>The description of term 2</dd>
+  <dt>Term 3</dt>
+  <dd>The first description of term 3</dd>
+  <dd>The second description of term 3</dd>
+</DescriptionList>
+
+#### With <code>rowSpacing</code>
+
+<DescriptionList rowSpacing="sm">
+  <dt>Term 1 - Variant 1</dt>
+  <dt>Term 1 - Variant 2</dt>
+  <dd>The description of Term 1 variants</dd>
+  <dt>Term 2</dt>
+  <dd>The description of term 2</dd>
+  <dt>Term 3</dt>
+  <dd>The first description of term 3</dd>
+  <dd>The second description of term 3</dd>
+</DescriptionList>
+
+### With Item component
+
+#### With <code>isInline: false</code> on Item (default)
+
+##### No spacing on both (default)
+
+<DescriptionList>
+  <Item>
+    <dt>Term 1 - Variant 1</dt>
+    <dt>Term 1 - Variant 2</dt>
+    <dd>The description of Term 1 variants</dd>
+  </Item>
+  <Item>
+    <dt>Term 2</dt>
+    <dd>The description of term 2</dd>
+  </Item>
+  <Item>
+    <dt>Term 3</dt>
+    <dd>The first description of term 3</dd>
+    <dd>The second description of term 3</dd>
+  </Item>
+</DescriptionList>
+
+##### With <code>colSpacing</code> on DescriptionList
+
+<p>This option has no effects with this configuration.</p>
+<DescriptionList colSpacing="sm">
+  <Item>
+    <dt>Term 1 - Variant 1</dt>
+    <dt>Term 1 - Variant 2</dt>
+    <dd>The description of Term 1 variants</dd>
+  </Item>
+  <Item>
+    <dt>Term 2</dt>
+    <dd>The description of term 2</dd>
+  </Item>
+  <Item>
+    <dt>Term 3</dt>
+    <dd>The first description of term 3</dd>
+    <dd>The second description of term 3</dd>
+  </Item>
+</DescriptionList>
+
+##### With <code>rowSpacing</code> on DescriptionList
+
+<DescriptionList rowSpacing="sm">
+  <Item>
+    <dt>Term 1 - Variant 1</dt>
+    <dt>Term 1 - Variant 2</dt>
+    <dd>The description of Term 1 variants</dd>
+  </Item>
+  <Item>
+    <dt>Term 2</dt>
+    <dd>The description of term 2</dd>
+  </Item>
+  <Item>
+    <dt>Term 3</dt>
+    <dd>The first description of term 3</dd>
+    <dd>The second description of term 3</dd>
+  </Item>
+</DescriptionList>
+
+##### With <code>colSpacing</code> on Item
+
+<p>This option has no effects with this configuration.</p>
+<DescriptionList>
+  <Item colSpacing="sm">
+    <dt>Term 1 - Variant 1</dt>
+    <dt>Term 1 - Variant 2</dt>
+    <dd>The description of Term 1 variants</dd>
+  </Item>
+  <Item colSpacing="sm">
+    <dt>Term 2</dt>
+    <dd>The description of term 2</dd>
+  </Item>
+  <Item colSpacing="sm">
+    <dt>Term 3</dt>
+    <dd>The first description of term 3</dd>
+    <dd>The second description of term 3</dd>
+  </Item>
+</DescriptionList>
+
+##### With <code>rowSpacing</code> on Item
+
+<DescriptionList>
+  <Item rowSpacing="sm">
+    <dt>Term 1 - Variant 1</dt>
+    <dt>Term 1 - Variant 2</dt>
+    <dd>The description of Term 1 variants</dd>
+  </Item>
+  <Item rowSpacing="sm">
+    <dt>Term 2</dt>
+    <dd>The description of term 2</dd>
+  </Item>
+  <Item rowSpacing="sm">
+    <dt>Term 3</dt>
+    <dd>The first description of term 3</dd>
+    <dd>The second description of term 3</dd>
+  </Item>
+</DescriptionList>
+
+#### With <code>isInline: true</code> on Item
+
+##### No spacing on both (default)
+
+<DescriptionList>
+  <Item isInline>
+    <dt>Term 1 - Variant 1</dt>
+    <dt>Term 1 - Variant 2</dt>
+    <dd>The description of Term 1 variants</dd>
+  </Item>
+  <Item isInline>
+    <dt>Term 2</dt>
+    <dd>The description of term 2</dd>
+  </Item>
+  <Item isInline>
+    <dt>Term 3</dt>
+    <dd>The first description of term 3</dd>
+    <dd>The second description of term 3</dd>
+  </Item>
+</DescriptionList>
+
+##### With <code>colSpacing</code> on DescriptionList
+
+<DescriptionList colSpacing="sm">
+  <Item isInline>
+    <dt>Term 1 - Variant 1</dt>
+    <dt>Term 1 - Variant 2</dt>
+    <dd>The description of Term 1 variants</dd>
+  </Item>
+  <Item isInline>
+    <dt>Term 2</dt>
+    <dd>The description of term 2</dd>
+  </Item>
+  <Item isInline>
+    <dt>Term 3</dt>
+    <dd>The first description of term 3</dd>
+    <dd>The second description of term 3</dd>
+  </Item>
+</DescriptionList>
+
+##### With <code>rowSpacing</code> on DescriptionList
+
+<DescriptionList rowSpacing="sm">
+  <Item isInline>
+    <dt>Term 1 - Variant 1</dt>
+    <dt>Term 1 - Variant 2</dt>
+    <dd>The description of Term 1 variants</dd>
+  </Item>
+  <Item isInline>
+    <dt>Term 2</dt>
+    <dd>The description of term 2</dd>
+  </Item>
+  <Item isInline>
+    <dt>Term 3</dt>
+    <dd>The first description of term 3</dd>
+    <dd>The second description of term 3</dd>
+  </Item>
+</DescriptionList>
+
+##### With <code>colSpacing</code> on Item
+
+<DescriptionList>
+  <Item colSpacing="sm" isInline>
+    <dt>Term 1 - Variant 1</dt>
+    <dt>Term 1 - Variant 2</dt>
+    <dd>The description of Term 1 variants</dd>
+  </Item>
+  <Item colSpacing="sm" isInline>
+    <dt>Term 2</dt>
+    <dd>The description of term 2</dd>
+  </Item>
+  <Item colSpacing="sm" isInline>
+    <dt>Term 3</dt>
+    <dd>The first description of term 3</dd>
+    <dd>The second description of term 3</dd>
+  </Item>
+</DescriptionList>
+
+##### With <code>rowSpacing</code> on Item
+
+<DescriptionList>
+  <Item isInline rowSpacing="sm">
+    <dt>Term 1 - Variant 1</dt>
+    <dt>Term 1 - Variant 2</dt>
+    <dd>The description of Term 1 variants</dd>
+  </Item>
+  <Item isInline rowSpacing="sm">
+    <dt>Term 2</dt>
+    <dd>The description of term 2</dd>
+  </Item>
+  <Item isInline rowSpacing="sm">
+    <dt>Term 3</dt>
+    <dd>The first description of term 3</dd>
+    <dd>The second description of term 3</dd>
+  </Item>
+</DescriptionList>
+
+## With <code>isInline: true</code>
+
+### Without Item component
+
+You can use <code>isInline</code> without wrapping each couple with an Item component, but it's best if you do it.
+
+#### No spacing (default)
+
+<DescriptionList isInline>
+  <dt>Term 1 - Variant 1</dt>
+  <dt>Term 1 - Variant 2</dt>
+  <dd>The description of Term 1 variants</dd>
+  <dt>Term 2</dt>
+  <dd>The description of term 2</dd>
+  <dt>Term 3</dt>
+  <dd>The first description of term 3</dd>
+  <dd>The second description of term 3</dd>
+</DescriptionList>
+
+#### With <code>colSpacing</code>
+
+<DescriptionList colSpacing="sm" isInline>
+  <dt>Term 1 - Variant 1</dt>
+  <dt>Term 1 - Variant 2</dt>
+  <dd>The description of Term 1 variants</dd>
+  <dt>Term 2</dt>
+  <dd>The description of term 2</dd>
+  <dt>Term 3</dt>
+  <dd>The first description of term 3</dd>
+  <dd>The second description of term 3</dd>
+</DescriptionList>
+
+#### With <code>rowSpacing</code>
+
+<p>This option has no effects with this configuration.</p>
+<DescriptionList isInline rowSpacing="sm">
+  <dt>Term 1 - Variant 1</dt>
+  <dt>Term 1 - Variant 2</dt>
+  <dd>The description of Term 1 variants</dd>
+  <dt>Term 2</dt>
+  <dd>The description of term 2</dd>
+  <dt>Term 3</dt>
+  <dd>The first description of term 3</dd>
+  <dd>The second description of term 3</dd>
+</DescriptionList>
+
+### With Item component
+
+#### With <code>isInline: false</code> on Item
+
+##### No spacing on both (default)
+
+<DescriptionList isInline>
+  <Item>
+    <dt>Term 1 - Variant 1</dt>
+    <dt>Term 1 - Variant 2</dt>
+    <dd>The description of Term 1 variants</dd>
+  </Item>
+  <Item>
+    <dt>Term 2</dt>
+    <dd>The description of term 2</dd>
+  </Item>
+  <Item>
+    <dt>Term 3</dt>
+    <dd>The first description of term 3</dd>
+    <dd>The second description of term 3</dd>
+  </Item>
+</DescriptionList>
+
+##### With <code>colSpacing</code> on DescriptionList
+
+<DescriptionList colSpacing="md" isInline>
+  <Item>
+    <dt>Term 1 - Variant 1</dt>
+    <dt>Term 1 - Variant 2</dt>
+    <dd>The description of Term 1 variants</dd>
+  </Item>
+  <Item>
+    <dt>Term 2</dt>
+    <dd>The description of term 2</dd>
+  </Item>
+  <Item>
+    <dt>Term 3</dt>
+    <dd>The first description of term 3</dd>
+    <dd>The second description of term 3</dd>
+  </Item>
+</DescriptionList>
+
+##### With <code>rowSpacing</code> on DescriptionList
+
+<DescriptionList isInline rowSpacing="md">
+  <Item>
+    <dt>Term 1 - Variant 1</dt>
+    <dt>Term 1 - Variant 2</dt>
+    <dd>The description of Term 1 variants</dd>
+  </Item>
+  <Item>
+    <dt>Term 2</dt>
+    <dd>The description of term 2</dd>
+  </Item>
+  <Item>
+    <dt>Term 3</dt>
+    <dd>The first description of term 3</dd>
+    <dd>The second description of term 3</dd>
+  </Item>
+</DescriptionList>
+
+##### With <code>colSpacing</code> on Item
+
+<p>This option has no effects with this configuration.</p>
+<DescriptionList isInline>
+  <Item colSpacing="sm">
+    <dt>Term 1 - Variant 1</dt>
+    <dt>Term 1 - Variant 2</dt>
+    <dd>The description of Term 1 variants</dd>
+  </Item>
+  <Item colSpacing="sm">
+    <dt>Term 2</dt>
+    <dd>The description of term 2</dd>
+  </Item>
+  <Item colSpacing="sm">
+    <dt>Term 3</dt>
+    <dd>The first description of term 3</dd>
+    <dd>The second description of term 3</dd>
+  </Item>
+</DescriptionList>
+
+##### With <code>rowSpacing</code> on Item
+
+<DescriptionList isInline>
+  <Item rowSpacing="sm">
+    <dt>Term 1 - Variant 1</dt>
+    <dt>Term 1 - Variant 2</dt>
+    <dd>The description of Term 1 variants</dd>
+  </Item>
+  <Item rowSpacing="sm">
+    <dt>Term 2</dt>
+    <dd>The description of term 2</dd>
+  </Item>
+  <Item rowSpacing="sm">
+    <dt>Term 3</dt>
+    <dd>The first description of term 3</dd>
+    <dd>The second description of term 3</dd>
+  </Item>
+</DescriptionList>
+
+#### With <code>isInline: true</code> on Item
+
+##### No spacing on both (default)
+
+<DescriptionList isInline>
+  <Item isInline>
+    <dt>Term 1 - Variant 1</dt>
+    <dt>Term 1 - Variant 2</dt>
+    <dd>The description of Term 1 variants</dd>
+  </Item>
+  <Item isInline>
+    <dt>Term 2</dt>
+    <dd>The description of term 2</dd>
+  </Item>
+  <Item isInline>
+    <dt>Term 3</dt>
+    <dd>The first description of term 3</dd>
+    <dd>The second description of term 3</dd>
+  </Item>
+</DescriptionList>
+
+##### With <code>colSpacing</code> on DescriptionList
+
+<p>This option has no effects with this configuration.</p>
+<DescriptionList colSpacing="md" isInline>
+  <Item isInline>
+    <dt>Term 1 - Variant 1</dt>
+    <dt>Term 1 - Variant 2</dt>
+    <dd>The description of Term 1 variants</dd>
+  </Item>
+  <Item isInline>
+    <dt>Term 2</dt>
+    <dd>The description of term 2</dd>
+  </Item>
+  <Item isInline>
+    <dt>Term 3</dt>
+    <dd>The first description of term 3</dd>
+    <dd>The second description of term 3</dd>
+  </Item>
+</DescriptionList>
+
+##### With <code>rowSpacing</code> on DescriptionList
+
+<DescriptionList isInline rowSpacing="md">
+  <Item isInline>
+    <dt>Term 1 - Variant 1</dt>
+    <dt>Term 1 - Variant 2</dt>
+    <dd>The description of Term 1 variants</dd>
+  </Item>
+  <Item isInline>
+    <dt>Term 2</dt>
+    <dd>The description of term 2</dd>
+  </Item>
+  <Item isInline>
+    <dt>Term 3</dt>
+    <dd>The first description of term 3</dd>
+    <dd>The second description of term 3</dd>
+  </Item>
+</DescriptionList>
+
+##### With <code>colSpacing</code> on Item
+
+<DescriptionList isInline>
+  <Item colSpacing="sm" isInline>
+    <dt>Term 1 - Variant 1</dt>
+    <dt>Term 1 - Variant 2</dt>
+    <dd>The description of Term 1 variants</dd>
+  </Item>
+  <Item colSpacing="sm" isInline>
+    <dt>Term 2</dt>
+    <dd>The description of term 2</dd>
+  </Item>
+  <Item colSpacing="sm" isInline>
+    <dt>Term 3</dt>
+    <dd>The first description of term 3</dd>
+    <dd>The second description of term 3</dd>
+  </Item>
+</DescriptionList>
+
+##### With <code>rowSpacing</code> on Item
+
+<p>This option has no effects with this configuration.</p>
+<DescriptionList isInline>
+  <Item isInline rowSpacing="sm">
+    <dt>Term 1 - Variant 1</dt>
+    <dt>Term 1 - Variant 2</dt>
+    <dd>The description of Term 1 variants</dd>
+  </Item>
+  <Item isInline rowSpacing="sm">
+    <dt>Term 2</dt>
+    <dd>The description of term 2</dd>
+  </Item>
+  <Item isInline rowSpacing="sm">
+    <dt>Term 3</dt>
+    <dd>The first description of term 3</dd>
+    <dd>The second description of term 3</dd>
+  </Item>
+</DescriptionList>

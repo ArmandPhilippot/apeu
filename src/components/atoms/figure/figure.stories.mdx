@@ -1,0 +1,33 @@
+---
+title: "Figure"
+---
+import { components as mdxComponents } from "../../mdx";
+import Figure from "./figure.astro";
+
+export const components = mdxComponents;
+
+## Usage
+
+A figure can be an image, illustration, diagram, code snippet, etc. that can be moved to another part of the document without affecting the main flow.
+
+## Without figcaption
+
+<Figure>![An example](https://picsum.photos/640/480)</Figure>
+
+## With figcaption
+
+### At the top
+
+<Figure><figcaption>An image used as example</figcaption>![An example](https://picsum.photos/640/480)</Figure>
+
+### At the bottom
+
+<Figure>![An example](https://picsum.photos/640/480)<figcaption>An image used as example</figcaption></Figure>
+
+## Horizontally centered
+
+<Figure isCentered>![An example](https://picsum.photos/640/480)</Figure>
+
+## Full width
+
+<Figure isFullWidth>![An example](https://picsum.photos/640/480)</Figure>

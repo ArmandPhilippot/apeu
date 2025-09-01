@@ -1,0 +1,34 @@
+---
+title: "Time"
+---
+import { components as mdxComponents } from "../../mdx";
+import Time from "./time.astro";
+
+export const components = mdxComponents;
+export const date = new Date();
+
+## Default
+
+<Time date={date} />
+
+## With time
+
+<Time date={date} showTime />
+
+## Without day
+
+<Time date={date} hideDay />
+
+## Without month
+
+It does not make sense to use the day and the year without month, but you can do it:
+
+<Time date={date} hideMonth />
+
+## Without year
+
+<Time date={date} hideYear />
+
+## Without day and month
+
+<Time date={date} hideDay hideMonth />

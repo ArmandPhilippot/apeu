@@ -1,0 +1,72 @@
+---
+title: "List"
+---
+import { components as mdxComponents } from "../../mdx";
+import ListItem from "./list-item.astro";
+import List from "./list.astro";
+
+export const components = mdxComponents;
+
+## Usage
+
+This component is usually used to define a list of related items, either ordered or unordered.
+
+## Kind
+
+### Unordered
+
+<List>
+  <ListItem>Item 1</ListItem>
+  <ListItem>Item 2</ListItem>
+  <ListItem>Item 3</ListItem>
+</List>
+
+### Ordered
+
+<List as="ol">
+  <ListItem>Item 1</ListItem>
+  <ListItem>Item 2</ListItem>
+  <ListItem>Item 3</ListItem>
+</List>
+
+### Nesting and mixing
+
+<List>
+  <ListItem>Item 1</ListItem>
+  <ListItem>
+    Item 2
+    <List as="ol">
+      <ListItem>Subitem 1</ListItem>
+      <ListItem>Subitem 2</ListItem>
+      <ListItem>Subitem 3</ListItem>
+    </List>
+  </ListItem>
+  <ListItem>Item 3</ListItem>
+  <ListItem>Item 4</ListItem>
+</List>
+
+## Options
+
+### <code>isInline</code>
+
+<List isInline>
+  <ListItem>Item 1</ListItem>
+  <ListItem>Item 2</ListItem>
+  <ListItem>Item 3</ListItem>
+</List>
+
+### <code>hideMarker</code>
+
+<List hideMarker>
+  <ListItem>Item 1</ListItem>
+  <ListItem>Item 2</ListItem>
+  <ListItem>Item 3</ListItem>
+</List>
+
+### <code>hideMarker</code> on a specific item
+
+<List>
+  <ListItem>Item 1</ListItem>
+  <ListItem hideMarker>Item 2</ListItem>
+  <ListItem>Item 3</ListItem>
+</List>

@@ -1,0 +1,32 @@
+---
+title: "ProgressBar"
+---
+import { components as mdxComponents } from "../../mdx";
+import ProgressBar from "./progress-bar.astro";
+
+export const components = mdxComponents;
+
+## Usage
+
+A <code>ProgressBar</code> should be used to indicate a loading state. This can be useful with view transitions for example.
+
+## States
+
+## Using a current value
+
+<ProgressBar
+  aria-label="Progress bar with value example"
+  current={0.4}
+/>
+
+## Using a current value and a max
+
+<ProgressBar
+  aria-label="Progress bar with value and max example"
+  current={30}
+  max={100}
+/>
+
+## Indeterminate
+
+<ProgressBar aria-label="Indeterminate progress bar example" />

@@ -1,0 +1,31 @@
+---
+title: "Spinner"
+---
+import { components as mdxComponents } from "../../mdx";
+import Spinner from "./spinner.astro";
+
+export const components = mdxComponents;
+
+## Usage
+
+A <code>Spinner</code> should be used to indicate a loading state.
+
+<Spinner />
+
+## With message
+
+### Under the spinner (default)
+
+<Spinner>Loading...</Spinner>
+
+### On top of the spinner
+
+<Spinner isReversed>Loading...</Spinner>
+
+### Inlined after the spinner
+
+<Spinner isInline>Loading...</Spinner>
+
+### Inlined before the spinner
+
+<Spinner isInline isReversed>Loading...</Spinner>

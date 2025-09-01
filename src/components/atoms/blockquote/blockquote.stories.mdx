@@ -1,0 +1,33 @@
+---
+title: "Blockquote"
+---
+import { components as mdxComponents } from "../../mdx";
+import Blockquote from "./blockquote.astro";
+
+export const components = mdxComponents;
+
+## Usage
+
+This component is used to display a quote separated from the content.
+
+<Blockquote lang="en">This is a quotation.</Blockquote>
+
+## Blockquote with paragraphs
+
+<Blockquote>
+    Deleniti ut similique officia. Eum reprehenderit quibusdam molestiae rem
+    vitae ut. Officia labore delectus tempore doloremque. Officia
+    consequatur reiciendis deleniti placeat.
+    
+    Tempore esse nihil nam. Minus quisquam animi sint cum nihil ullam
+    consequatur cumque. Aut eligendi nulla rerum quasi debitis. Vel sed a ad
+    magnam. Voluptatem corporis neque blanditiis assumenda et ut
+    consequatur.
+</Blockquote>
+
+## Blockquote with figcaption
+
+<Blockquote>
+  Necessitatibus repudiandae voluptates accusantium architecto sint.
+  <Fragment slot="caption">In <cite>Lorem ipsum</cite></Fragment>
+</Blockquote>

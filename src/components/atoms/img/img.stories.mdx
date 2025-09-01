@@ -1,0 +1,27 @@
+---
+title: "Img"
+---
+import logo from "../../../assets/logo.svg"
+import { components as mdxComponents } from "../../mdx";
+import Img from "./img.astro";
+
+export const components = mdxComponents;
+
+## Imported local image
+
+<Img alt="The logo" src={logo} />
+
+## Imported local image with link
+
+The image can be linked to its source with the <code>data-clickable</code> attribute.
+
+<Img alt="The logo" data-clickable="true" src={logo} />
+
+## Remote image
+
+<Img
+  alt="An example"
+  height={480}
+  src="https://picsum.photos/640/480"
+  width={640}
+/>

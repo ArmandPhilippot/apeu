@@ -1,0 +1,109 @@
+---
+title: "Button"
+---
+import { components as mdxComponents } from "../../mdx";
+import Button from "./button.astro";
+
+export const components = mdxComponents;
+
+## Usage
+
+A button is usually used to encourage a user to take action.
+
+## Primary buttons
+
+### States
+
+#### Default
+
+<Button kind="primary">Call to action</Button>
+
+#### Busy
+
+<Button aria-busy="true" kind="primary">Call to action</Button>
+
+#### Disabled
+
+<Button disabled="true" kind="primary">Call to action</Button>
+
+## Secondary buttons
+
+When using the <code>secondary</code> kind (default), you can choose to use either a button or a link with the <code>as</code> property.
+
+### States
+
+#### Default
+
+<Button>Call to action</Button>
+
+#### Busy
+
+<Button aria-busy="true">Call to action</Button>
+
+#### Disabled
+
+<Button disabled="true">Call to action</Button>
+
+### <code>isExternal</code>
+
+<Button isExternal>Call to action</Button>
+
+## Discreet buttons
+
+When using the <code>discreet</code> kind, you can choose to use either a button or a link with the <code>as</code> property. This is a variant of the secondary kind.
+
+### States
+
+#### Default
+
+<Button kind="discreet">Call to action</Button>
+
+#### Busy
+
+<Button aria-busy="true" kind="discreet">Call to action</Button>
+
+#### Disabled
+
+<Button disabled="true" kind="discreet">Call to action</Button>
+
+### <code>isExternal</code>
+
+<Button isExternal kind="discreet">Call to action</Button>
+
+## Neutral buttons
+
+When using the <code>neutral</code> kind, you can choose to use either a button or a link with the <code>as</code> property and you are free the style as you'd like.
+
+### States
+
+#### Default
+
+<Button kind="neutral">Call to action</Button>
+
+#### Busy
+
+<Button aria-busy="true" kind="neutral">Call to action</Button>
+
+#### Disabled
+
+<Button disabled="true" kind="neutral">Call to action</Button>
+
+### <code>isExternal</code>
+
+<Button isExternal kind="neutral">Call to action</Button>
+
+## Links as button
+
+### States
+
+#### Default
+
+<Button as="a" href="#link">Call to action</Button>
+
+#### Busy
+
+<Button aria-busy="true" as="a" href="#link">Call to action</Button>
+
+### <code>isExternal</code>
+
+<Button as="a" href="#link" isExternal>Call to action</Button>

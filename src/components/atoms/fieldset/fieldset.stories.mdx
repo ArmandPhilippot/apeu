@@ -1,0 +1,59 @@
+---
+title: "Fieldset"
+---
+import { components as mdxComponents } from "../../mdx";
+import Fieldset from "./fieldset.astro";
+import Legend from "./legend.astro";
+
+export const components = mdxComponents;
+
+A fieldset requires a slot named <code>legend</code>. You should use the available <code>Legend</code> component to provide one.
+
+## Default
+
+<Fieldset>
+  <Legend slot="legend">The fieldset legend</Legend>
+  The fieldset contents
+</Fieldset>
+
+## Options
+
+### Fieldset <code>isBordered</code>
+
+<Fieldset isBordered>
+  <Legend slot="legend">The fieldset legend</Legend>
+  <label for="option-fieldset-bordered1">Field 1:</label>
+  <input id="option-fieldset-bordered1" type="text" />
+  <label for="option-fieldset-bordered2">Field 2:</label>
+  <input id="option-fieldset-bordered2" type="text" />
+</Fieldset>
+
+### Legend <code>isBordered</code>
+
+<Fieldset>
+  <Legend isBordered slot="legend">The fieldset legend</Legend>
+  <label for="option-legend-bordered1">Field 1:</label>
+  <input id="option-legend-bordered1" type="text" />
+  <label for="option-legend-bordered2">Field 2:</label>
+  <input id="option-legend-bordered2" type="text" />
+</Fieldset>
+
+### Fieldset <code>isBordered</code> and Legend <code>isBordered</code>
+
+<Fieldset isBordered>
+  <Legend isBordered slot="legend">The fieldset legend</Legend>
+  <label for="option-fieldset-legend-bordered1">Field 1:</label>
+  <input id="option-fieldset-legend-bordered1" type="text" />
+  <label for="option-fieldset-legend-bordered2">Field 2:</label>
+  <input id="option-fieldset-legend-bordered2" type="text" />
+</Fieldset>
+
+### Fieldset <code>isInline</code>
+
+<Fieldset gap="md" isInline>
+  <Legend slot="legend">The fieldset legend</Legend>
+  <label for="option-fieldset-bordered1">Field 1:</label>
+  <input id="option-fieldset-bordered1" type="text" />
+  <label for="option-fieldset-bordered2">Field 2:</label>
+  <input id="option-fieldset-bordered2" type="text" />
+</Fieldset>

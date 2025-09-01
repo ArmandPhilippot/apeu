@@ -206,23 +206,16 @@ const formatStory = ({ routeMap, story }: FormatStoryConfig): Story => {
   };
 };
 
-type FormatIndexConfig = {
-  currentIndex: IndexPathInfo;
-  stories: StoryPathInfo[];
-  routeMap: Map<string, { label: string; route: string }>;
-};
-
-const formatIndex = ({
-  currentIndex,
-  routeMap,
-  stories,
-}: FormatIndexConfig): StoriesIndex => {
+const formatIndex = (
+  currentIndex: IndexPathInfo,
+  routeMap: Map<string, { label: string; route: string }>
+): StoriesIndex => {
   const { label, route } = currentIndex;
-  const children = stories
-    .filter((story) => story.ancestors.includes(route))
-    .map((story) => {
-      return { label: story.label, route: story.route };
-    });
+  const children = [...routeMap.values()].filter(({ route: childRoute }) => {
+    if (childRoute === route) return false;
+    const parentRoute = childRoute.slice(0, childRoute.lastIndexOf("/"));
+    return parentRoute === route;
+  });
 
   return {
     type: "index",
@@ -237,31 +230,17 @@ const formatStories = (
   stories: StoryPathInfo[],
   indexes: IndexPathInfo[]
 ): Stories => {
-  const routeMap = new Map<string, { label: string; route: string }>();
-
-  for (const index of indexes) {
-    routeMap.set(index.route, {
-      label: index.label,
-      route: index.route,
-    });
-  }
-
-  for (const story of stories) {
-    routeMap.set(story.route, {
-      label: story.label,
-      route: story.route,
-    });
-  }
-
+  const routeMap = new Map<string, { label: string; route: string }>(
+    [...indexes, ...stories].map(({ label, route }) => [
+      route,
+      { label, route },
+    ])
+  );
   const formattedStories = stories.map(
     (story) => [story.slug, formatStory({ routeMap, story })] as const
   );
   const formattedIndexes = indexes.map(
-    (index) =>
-      [
-        index.slug,
-        formatIndex({ currentIndex: index, routeMap, stories }),
-      ] as const
+    (index) => [index.slug, formatIndex(index, routeMap)] as const
   );
 
   return Object.fromEntries([...formattedIndexes, ...formattedStories]);

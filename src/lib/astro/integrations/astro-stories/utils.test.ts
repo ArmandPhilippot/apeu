@@ -95,6 +95,25 @@ describe("getStories", () => {
     });
   });
 
+  it("should include sub-indexes as children of their parent index", () => {
+    const result = getStories({
+      base: "/design-system",
+      paths: ["components/atoms/blockquote.mdx", "tokens/colors.mdx"],
+      src: import.meta.dirname,
+    });
+
+    expect(result.components).toMatchObject({
+      children: [{ route: "/design-system/components/atoms", label: "Atoms" }],
+    });
+
+    expect(result["design-system"]).toMatchObject({
+      children: expect.arrayContaining([
+        { route: "/design-system/components", label: "Components" },
+        { route: "/design-system/tokens", label: "Tokens" },
+      ]),
+    });
+  });
+
   describe("slug transformation behavior", () => {
     it("should remove .stories suffix from filenames", () => {
       const result = getStories({

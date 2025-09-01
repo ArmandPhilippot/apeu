@@ -121,7 +121,7 @@ const parseStoryPath = ({
   const deduplicatedParts = deduplicateLastSegment(parts);
   const slug = deduplicatedParts.join("/");
   const route = `${base}/${slug}`;
-  const virtualModuleId = `virtual:astro-stories/${slug.replaceAll(/[^\w/-]/g, "_")}`;
+  const virtualModuleId = `virtual:astro-stories/stories/${slug.replaceAll(/[^\w/-]/g, "_")}`;
 
   return {
     ancestors: [base, ...getCumulativePaths(cleanDir)],

@@ -12,8 +12,10 @@ vi.mock("tinyglobby", async (importOriginal) => {
   };
 });
 
-vi.mock("./utils", () => {
+vi.mock("./utils", async (importOriginal) => {
+  const mod = await importOriginal<typeof import("./utils")>();
   return {
+    ...mod,
     getStories: vi.fn(() => {
       return {
         example: { type: "story", route: "/stories/example" },
@@ -24,17 +26,6 @@ vi.mock("./utils", () => {
         },
       };
     }),
-  };
-});
-
-vi.mock("../../../../utils/type-guards", async (importOriginal) => {
-  const mod =
-    await importOriginal<typeof import("../../../../utils/type-guards")>();
-  return {
-    ...mod,
-    isString: vi.fn(
-      (value: unknown): value is string => typeof value === "string"
-    ),
   };
 });
 
@@ -167,9 +158,9 @@ describe("astro-stories", () => {
   });
 
   describe("virtual modules", () => {
-    it("should create virtual modules for config and layout", async () => {
+    it("should create virtual modules for config, layout and registry", async () => {
       // eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory.
-      expect.assertions(4);
+      expect.assertions(5);
 
       const integration = astroStories({ base: "/stories" });
       const mockContext = createAstroConfigSetupMockContext();
@@ -205,6 +196,9 @@ describe("astro-stories", () => {
       );
       expect(load("\0virtual:astro-stories/Layout")).toContain(
         "export { default }"
+      );
+      expect(resolveId("virtual:astro-stories/registry")).toBe(
+        "\0virtual:astro-stories/registry"
       );
     });
 

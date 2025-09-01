@@ -44,8 +44,10 @@ describe("getStories", () => {
       ext: ".mdx",
       label: "Button",
       path: join(import.meta.dirname, "button.stories.mdx"),
+      slug: "button",
       route: "/somewhere/button",
       type: "story",
+      virtualModuleId: "virtual:astro-stories/stories/button",
     });
   });
 
@@ -65,8 +67,10 @@ describe("getStories", () => {
       ext: ".mdx",
       label: "Example",
       path: join(import.meta.dirname, "stories/example.mdx"),
+      slug: "example",
       route: "/somewhere/example",
       type: "story",
+      virtualModuleId: "virtual:astro-stories/stories/example",
     });
   });
 

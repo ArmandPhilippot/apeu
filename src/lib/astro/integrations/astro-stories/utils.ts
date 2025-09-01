@@ -105,6 +105,7 @@ type StoryPathInfo = {
   path: string;
   route: string;
   slug: string;
+  virtualModuleId: string;
 };
 
 const parseStoryPath = ({
@@ -120,6 +121,7 @@ const parseStoryPath = ({
   const deduplicatedParts = deduplicateLastSegment(parts);
   const slug = deduplicatedParts.join("/");
   const route = `${base}/${slug}`;
+  const virtualModuleId = `virtual:astro-stories/${slug.replaceAll(/[^\w/-]/g, "_")}`;
 
   return {
     ancestors: [base, ...getCumulativePaths(cleanDir)],
@@ -129,6 +131,7 @@ const parseStoryPath = ({
     path: join(src, path),
     route,
     slug,
+    virtualModuleId,
   };
 };
 
@@ -198,7 +201,7 @@ type FormatStoryConfig = {
 };
 
 const formatStory = ({ routeMap, story }: FormatStoryConfig): Story => {
-  const { ancestors, filename, slug, route, ...remainingData } = story;
+  const { ancestors, filename, route, ...remainingData } = story;
   return {
     ...remainingData,
     breadcrumb: generateBreadcrumb({ route, routeMap }),

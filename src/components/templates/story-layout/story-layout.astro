@@ -5,12 +5,49 @@ import PageLayout from "../page-layout/page-layout.astro";
 type Props = StoryLayoutProps;
 
 const { story } = Astro.props;
+const headings = story.type === "story" ? story.headings : null;
 ---
 
 <PageLayout
   breadcrumb={story.breadcrumb}
+  headings={headings}
   seo={{ title: story.label }}
   title={story.label}
 >
   <slot slot="body" />
 </PageLayout>
+
+<style is:global>
+  .wrapper {
+    margin-block-end: var(--spacing-md);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(
+      auto-fit,
+      min(
+        calc(100dvw - 2 * var(--spacing-md)),
+        var(--col-size, calc((var(--size-prose) - var(--spacing-2xl)) / 3))
+      )
+    );
+    gap: var(--spacing-md);
+  }
+
+  .flex {
+    display: flex;
+    flex-flow: column wrap;
+    gap: var(--spacing-sm);
+  }
+
+  .token-box {
+    display: flex;
+    flex-flow: row wrap;
+    place-items: center;
+    place-content: center;
+    min-width: 5rem;
+    min-height: 3rem;
+    padding: var(--spacing-xs);
+    border: var(--border-size-sm) solid transparent;
+  }
+</style>

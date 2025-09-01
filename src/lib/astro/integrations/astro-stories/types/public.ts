@@ -16,7 +16,7 @@ export type AstroStoriesConfig = {
   patterns?: string[] | undefined;
 };
 
-type Frontmatter = Record<string, unknown>;
+export type Frontmatter = Record<string, unknown>;
 
 /**
  * An entry matching an actual story.

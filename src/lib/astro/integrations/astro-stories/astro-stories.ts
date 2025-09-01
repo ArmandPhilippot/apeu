@@ -3,10 +3,54 @@ import { fileURLToPath } from "node:url";
 import type { AstroIntegration, AstroIntegrationLogger } from "astro";
 import { globSync } from "tinyglobby";
 import { isString } from "../../../../utils/type-guards";
+import type { Stories } from "./types/internal";
 import type { AstroStoriesConfig } from "./types/public";
 import { getStories } from "./utils";
 
 const resolveVirtualModuleId = <T extends string>(id: T): `\0${T}` => `\0${id}`;
+
+const createStoryModuleContent = (
+  path: string
+): string => `import * as mdx from ${JSON.stringify(path)};
+export const frontmatter = mdx.frontmatter;
+export const file = mdx.file;
+export const url = mdx.url;
+export const getHeadings = mdx.getHeadings;
+export const Content = mdx.Content;
+export const components = mdx.components;
+export default mdx.default;`;
+
+const createRegistryModules = (stories: Stories) => {
+  const storyModulesMap: [string, string][] = [];
+  const registryImports: string[] = [];
+  const registryEntries: string[] = [];
+
+  for (const [index, story] of Object.values(stories).entries()) {
+    if (story.type === "index") continue;
+
+    storyModulesMap.push([
+      story.virtualModuleId,
+      createStoryModuleContent(story.path),
+    ]);
+    registryImports.push(
+      `import * as story${index} from ${JSON.stringify(story.virtualModuleId)};`
+    );
+    registryEntries.push(`  ${JSON.stringify(story.slug)}: story${index},`);
+  }
+
+  const storyRegistryModule = [
+    ...registryImports,
+    "",
+    "export const storyRegistry = {",
+    ...registryEntries,
+    "};",
+  ].join("\n");
+
+  return {
+    storyModules: Object.fromEntries(storyModulesMap),
+    storyRegistryModule,
+  };
+};
 
 const sanitizeBase = (base: string, logger: AstroIntegrationLogger) => {
   let sanitizedBase = base;
@@ -84,6 +128,8 @@ export function astroStories({
           paths: mdxPaths,
           src,
         });
+        const { storyModules, storyRegistryModule } =
+          createRegistryModules(stories);
 
         injectRoute({
           pattern: `${sanitizedBase}/[...story]`,
@@ -93,6 +139,8 @@ export function astroStories({
         const modules = {
           [`${virtualModuleIdPrefix}/config` as const]: `export const base = ${JSON.stringify(sanitizedBase)}; export const stories = ${JSON.stringify(stories)}; export default ${JSON.stringify({ base: sanitizedBase, stories })};`,
           [`${virtualModuleIdPrefix}/Layout` as const]: `export { default } from ${JSON.stringify(layoutPath)};`,
+          [`${virtualModuleIdPrefix}/registry` as const]: storyRegistryModule,
+          ...storyModules,
         } satisfies Record<string, string>;
 
         /** Mapping names prefixed with `\0` to their original form. */

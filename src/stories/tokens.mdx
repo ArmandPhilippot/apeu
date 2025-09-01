@@ -1,8 +1,10 @@
 ---
 title: "Tokens"
 ---
-import Heading from "../components/atoms/heading/heading.astro";
 import TokenPreview from "../components/stories/token-preview.astro";
+import { components as mdxComponents } from "../components/mdx";
+
+export const components = mdxComponents;
 
 {/* See `src/styles/variables/borders.css` for the available tokens. */}
 export const borders = {
@@ -63,8 +65,10 @@ export const spacings = [
   "2xl",
 ];
 
-<Heading as="h2">Fonts</Heading>
-<Heading as="h3">Family</Heading>
+## Fonts
+
+### Family
+
 <div class="wrapper flex">
     {
     fonts.families.map((family) => (
@@ -76,7 +80,9 @@ export const spacings = [
     ))
     }
 </div>
-<Heading as="h3">Size</Heading>
+
+### Size
+
 <div class="wrapper flex">
     {
     fonts.sizes.map((size) => (
@@ -88,7 +94,9 @@ export const spacings = [
     ))
     }
 </div>
-<Heading as="h3">Weights</Heading>
+
+### Weights
+
 <div class="wrapper flex">
     {
     fonts.weights.map((weight) => (
@@ -100,7 +108,9 @@ export const spacings = [
     ))
     }
 </div>
-<Heading as="h2">Spacings</Heading>
+
+## Spacings
+
 <div class="wrapper flex">
     {
     spacings.map((spacing) => (
@@ -115,8 +125,11 @@ export const spacings = [
     ))
     }
 </div>
-<Heading as="h2">Borders</Heading>
-<Heading as="h3">Size</Heading>
+
+## Borders
+
+### Size
+
 <div class="wrapper flex">
     {
     borders.sizes.map((size) => (
@@ -129,7 +142,9 @@ export const spacings = [
     ))
     }
 </div>
-<Heading as="h3">Radius</Heading>
+
+### Radius
+
 <div class="wrapper flex">
     {
     borders.radius.map((radii) => (
@@ -142,8 +157,11 @@ export const spacings = [
     ))
     }
 </div>
-<Heading as="h2">Colors</Heading>
-<Heading as="h3">Surfaces</Heading>
+
+## Colors
+
+### Surfaces
+
 <div class="wrapper grid">
     {
     colors.contexts.map((context) => (
@@ -163,7 +181,9 @@ export const spacings = [
     ))
     }
 </div>
-<Heading as="h3">Texts on surfaces</Heading>
+
+### Texts on surfaces
+
 <div class="wrapper grid">
     {
     colors.contexts.map((context) => (
@@ -196,8 +216,11 @@ export const spacings = [
     ))
     }
 </div>
-<Heading as="h2">Shadows</Heading>
-<Heading as="h3">Elevation</Heading>
+
+## Shadows
+
+### Elevation
+
 <div class="wrapper flex">
     {
     shadows.elevations.map((elevation) => (
@@ -215,7 +238,9 @@ export const spacings = [
     ))
     }
 </div>
-<Heading as="h3">Direction</Heading>
+
+### Direction
+
 {
     shadows.directions.y.map((y) => (
     <div class="wrapper grid">
@@ -232,7 +257,8 @@ export const spacings = [
     </div>
     ))
 }
-<Heading as="h3">Colors</Heading>
+### Colors
+
 <p>
     Ideally, I should adapt the shadow color according to the surface but I
     don't think I'll use them elsewhere than on regular background.

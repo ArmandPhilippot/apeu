@@ -1,17 +1,23 @@
 ---
 import Layout from "virtual:astro-stories/Layout";
+import { storyRegistry } from "virtual:astro-stories/registry";
 import type { Story } from "../types/internal";
 import type { StoryEntry } from "../types/public";
 
 type Props = Story;
 
-const { path, ...props } = Astro.props;
-const { Content, components, frontmatter, getHeadings } = (await import(
-  /* @vite-ignore */
-  `${path}`
-)) as typeof import("*.mdx");
+const { path, slug, virtualModuleId, ...props } = Astro.props;
+const storyModule = storyRegistry[slug];
+
+if (storyModule === undefined) {
+  throw new Error(
+    `Couldn't find a story for the given slug. Received: ${slug}`
+  );
+}
+
+const { Content, components, frontmatter, getHeadings } = storyModule;
 const headings = getHeadings();
-const story: StoryEntry<typeof frontmatter> = {
+const story: StoryEntry = {
   ...props,
   frontmatter,
   headings,

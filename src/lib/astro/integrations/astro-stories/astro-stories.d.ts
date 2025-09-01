@@ -15,9 +15,14 @@ declare module "virtual:astro-stories/Layout" {
   export default Layout;
 }
 
-declare module "*.mdx" {
-  type MDX = import("astro").MDXInstance<Record<string, unknown>>;
+type MDX = import("astro").MDXInstance<import("./types/public").Frontmatter>;
 
+declare module "virtual:astro-stories/registry" {
+  const storyRegistry: Record<string, MDX>;
+  export { storyRegistry };
+}
+
+declare module "*.mdx" {
   export const frontmatter: MDX["frontmatter"];
   export const file: MDX["file"];
   export const url: MDX["url"];

@@ -2,74 +2,98 @@
 title: "TextField"
 ---
 import { components as mdxComponents } from "../../mdx";
+import CodePreview from "../../molecules/code-preview/code-preview.astro";
 import TextField from "./text-field.astro";
 
 export const components = mdxComponents;
 
-## Type
+## Introduction
 
-### Date
+<CodePreview
+  code={`import TextField from "./components/atoms/text-field/text-field.astro";`}
+  label="How to import"
+  lang="ts"
+/>
+<CodePreview
+  code={`<TextField type="text" />`}
+  label="Basic use"
+  lang="astro"
+>
+  <TextField type="text" />
+</CodePreview>
 
-<TextField type="date" />
+## Types
 
-### Datetime
-
+<CodePreview
+  code={`<TextField type="date" />
+<br /><br />
 <TextField type="datetime-local" />
-
-### Email
-
+<br /><br />
 <TextField type="email" />
-
-### Month
-
+<br /><br />
 <TextField type="month" />
-
-### Password
-
+<br /><br />
 <TextField type="password" />
-
-### Search
-
+<br /><br />
 <TextField type="search" />
-
-### Tel
-
+<br /><br />
 <TextField type="tel" />
-
-### Text
-
+<br /><br />
 <TextField type="text" />
-
-### Textarea
-
+<br /><br />
 <TextField type="textarea" />
-
-### Time
-
+<br /><br />
 <TextField type="time" />
-
-### URL
-
+<br /><br />
 <TextField type="url" />
+<br /><br />
+<TextField type="week" />`}
+  label="Using different types of text fields"
+  lang="astro"
+>
+  <TextField type="date" />
+  <br /><br />
+  <TextField type="datetime-local" />
+  <br /><br />
+  <TextField type="email" />
+  <br /><br />
+  <TextField type="month" />
+  <br /><br />
+  <TextField type="password" />
+  <br /><br />
+  <TextField type="search" />
+  <br /><br />
+  <TextField type="tel" />
+  <br /><br />
+  <TextField type="text" />
+  <br /><br />
+  <TextField type="textarea" />
+  <br /><br />
+  <TextField type="time" />
+  <br /><br />
+  <TextField type="url" />
+  <br /><br />
+  <TextField type="week" />
+</CodePreview>
 
-### Week
+## States
 
-<TextField type="week" />
-
-## State
-
-### Editable
-
-<TextField type="text" />
-
-### Read-only
-
+<CodePreview
+  code={`<TextField type="text" />
+<br /><br />
 <TextField readonly="true" type="text" />
-
-### Disabled
-
+<br /><br />
 <TextField disabled="true" type="text" />
-
-### With placeholder
-
-<TextField placeholder="Some placeholder..." type="text" />
+<br /><br />
+<TextField placeholder="Some placeholder..." type="text" />`}
+  label="Basic use"
+  lang="astro"
+>
+  <TextField type="text" />
+  <br /><br />
+  <TextField readonly="true" type="text" />
+  <br /><br />
+  <TextField disabled="true" type="text" />
+  <br /><br />
+  <TextField placeholder="Some placeholder..." type="text" />
+</CodePreview>

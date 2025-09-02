@@ -2,31 +2,55 @@
 title: "ProgressBar"
 ---
 import { components as mdxComponents } from "../../mdx";
+import CodePreview from "../../molecules/code-preview/code-preview.astro";
 import ProgressBar from "./progress-bar.astro";
 
 export const components = mdxComponents;
 
-## Usage
+## Introduction
 
-A <code>ProgressBar</code> should be used to indicate a loading state. This can be useful with view transitions for example.
+A `ProgressBar` should be used to indicate a loading state. This can be useful with view transitions for example.
+
+<CodePreview
+  code={`import ProgressBar from "./components/atoms/progress-bar/progress-bar.astro";`}
+  label="How to import"
+  lang="ts"
+/>
+
+<CodePreview code={`<ProgressBar />`} label="Basic use" lang="astro">
+  <ProgressBar />
+</CodePreview>
 
 ## States
 
-## Using a current value
+### Using a current value
 
-<ProgressBar
-  aria-label="Progress bar with value example"
-  current={0.4}
-/>
+<CodePreview
+  code={`<ProgressBar current={0.4} />`}
+  label="Using a current value"
+  lang="astro"
+>
+  <ProgressBar current={0.4} />
+</CodePreview>
 
-## Using a current value and a max
+### Using a current value and a max
 
-<ProgressBar
-  aria-label="Progress bar with value and max example"
-  current={30}
-  max={100}
-/>
+<CodePreview
+  code={`<ProgressBar current={30} max={100} />`}
+  label="Using a maximal value"
+  lang="astro"
+>
+  <ProgressBar current={30} max={100} />
+</CodePreview>
 
-## Indeterminate
+## Accessibility
 
-<ProgressBar aria-label="Indeterminate progress bar example" />
+When using a `ProgressBar` component, you should provide an `aria-label`.
+
+<CodePreview
+  code={`<ProgressBar aria-label="Indeterminate progress" />`}
+  label="Improving the accessibility"
+  lang="astro"
+>
+  <ProgressBar aria-label="Indeterminate progress" />
+</CodePreview>

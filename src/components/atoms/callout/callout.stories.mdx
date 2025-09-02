@@ -2,45 +2,70 @@
 title: "Callout"
 ---
 import { components as mdxComponents } from "../../mdx";
+import CodePreview from "../../molecules/code-preview/code-preview.astro";
 import Callout from "./callout.astro";
 
 export const components = mdxComponents;
 
-## Usage
+## Introduction
 
 This component is used to show important information to the reader.
 
-## Type
+<CodePreview
+  code={`import Callout from "./components/atoms/callout/callout.astro"`}
+  label="How to import"
+  lang="ts"
+/>
+<CodePreview code={`<Callout>The contents.</Callout>`} label="Basic use">
+  <Callout>The contents.</Callout>
+</CodePreview>
 
-### Critical
+## Types
 
-<Callout type="critical">The contents.</Callout>
-
-### Discovery
-
+<CodePreview
+  code={`<Callout type="critical">The contents.</Callout>
+<br />
 <Callout type="discovery">The contents.</Callout>
-
-### Idea
-
+<br />
 <Callout type="idea">The contents.</Callout>
-
-### Info
-
+<br />
 <Callout type="info">The contents.</Callout>
-
-### Success
-
+<br />
 <Callout type="success">The contents.</Callout>
-
-### Warning
-
-<Callout type="warning">The contents.</Callout>
+<br />
+<Callout type="warning">The contents.</Callout>`}
+  label="Using different types of callouts"
+  lang="astro"
+>
+  <Callout type="critical">The contents.</Callout>
+  <br />
+  <Callout type="discovery">The contents.</Callout>
+  <br />
+  <Callout type="idea">The contents.</Callout>
+  <br />
+  <Callout type="info">The contents.</Callout>
+  <br />
+  <Callout type="success">The contents.</Callout>
+  <br />
+  <Callout type="warning">The contents.</Callout>
+</CodePreview>
 
 ## With a custom label
 
-<Callout
-  label="A custom label a bit long for small devices"
-  type="critical"
+<CodePreview
+  code={`<Callout
+    label="A custom label a bit long to check small devices"
+    type="critical"
 >
-  The contents.
-</Callout>
+    The contents.
+</Callout>`}
+  label="Using a custom label"
+  lang="astro"
+>
+  <Callout
+    label="A custom label a bit long to check small devices"
+    type="critical"
+  >
+    The contents.
+  </Callout>
+</CodePreview>

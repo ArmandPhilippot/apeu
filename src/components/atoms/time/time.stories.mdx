@@ -2,33 +2,93 @@
 title: "Time"
 ---
 import { components as mdxComponents } from "../../mdx";
+import CodePreview from "../../molecules/code-preview/code-preview.astro";
 import Time from "./time.astro";
 
 export const components = mdxComponents;
 export const date = new Date();
 
-## Default
+## Introduction
 
-<Time date={date} />
+<CodePreview
+  code={`import Time from "./components/atoms/time/time.astro";`}
+  label="How to import"
+  lang="ts"
+/>
+<CodePreview
+  code={`---
+const date = new Date();
+---
+<Time date={date} />`}
+  label="Basic use"
+  lang="astro"
+>
+  <Time date={date} />
+</CodePreview>
 
 ## With time
 
-<Time date={date} showTime />
+<CodePreview
+  code={`---
+const date = new Date();
+---
+<Time date={date} showTime /> />`}
+  label="Showing the time"
+  lang="astro"
+>
+  <Time date={date} showTime />
+</CodePreview>
 
 ## Without day
 
-<Time date={date} hideDay />
+<CodePreview
+  code={`---
+const date = new Date();
+---
+<Time date={date} hideDay /> />`}
+  label="Hiding the day"
+  lang="astro"
+>
+  <Time date={date} hideDay />
+</CodePreview>
 
 ## Without month
 
-It does not make sense to use the day and the year without month, but you can do it:
+You shouldn't hide the month alone because it does not make sense to use the day and the year without a month, but this is supported:
 
-<Time date={date} hideMonth />
+<CodePreview
+  code={`---
+const date = new Date();
+---
+<Time date={date} hideMonth /> />`}
+  label="Hiding the month"
+  lang="astro"
+>
+  <Time date={date} hideMonth />
+</CodePreview>
 
 ## Without year
 
-<Time date={date} hideYear />
+<CodePreview
+  code={`---
+const date = new Date();
+---
+<Time date={date} hideYear /> />`}
+  label="Hiding the year"
+  lang="astro"
+>
+  <Time date={date} hideYear />
+</CodePreview>
 
 ## Without day and month
 
-<Time date={date} hideDay hideMonth />
+<CodePreview
+  code={`---
+const date = new Date();
+---
+<Time date={date} hideDay hideMonth /> />`}
+  label="Hiding the day and the month"
+  lang="astro"
+>
+  <Time date={date} hideDay hideMonth />
+</CodePreview>

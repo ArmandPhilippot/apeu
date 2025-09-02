@@ -2,71 +2,162 @@
 title: "List"
 ---
 import { components as mdxComponents } from "../../mdx";
+import CodePreview from "../../molecules/code-preview/code-preview.astro";
 import ListItem from "./list-item.astro";
 import List from "./list.astro";
 
 export const components = mdxComponents;
 
-## Usage
+## Introduction
 
 This component is usually used to define a list of related items, either ordered or unordered.
+
+<CodePreview
+  code={`import List from "./components/atoms/list/list.astro";
+import ListItem from "./components/atoms/list-item/list-item.astro";`}
+  label="How to import"
+  lang="ts"
+/>
+<CodePreview
+  code={`<List>
+    <ListItem>Item 1</ListItem>
+    <ListItem>Item 2</ListItem>
+    <ListItem>Item 3</ListItem>
+</List>`}
+  label="Basic use"
+  lang="astro"
+>
+  <List>
+    <ListItem>Item 1</ListItem>
+    <ListItem>Item 2</ListItem>
+    <ListItem>Item 3</ListItem>
+  </List>
+</CodePreview>
 
 ## Kind
 
 ### Unordered
 
-<List>
-  <ListItem>Item 1</ListItem>
-  <ListItem>Item 2</ListItem>
-  <ListItem>Item 3</ListItem>
-</List>
+<CodePreview
+  code={`<List>
+    <ListItem>Item 1</ListItem>
+    <ListItem>Item 2</ListItem>
+    <ListItem>Item 3</ListItem>
+</List>`}
+  label="Using an unordered list"
+  lang="astro"
+>
+  <List>
+    <ListItem>Item 1</ListItem>
+    <ListItem>Item 2</ListItem>
+    <ListItem>Item 3</ListItem>
+  </List>
+</CodePreview>
 
 ### Ordered
 
-<List as="ol">
-  <ListItem>Item 1</ListItem>
-  <ListItem>Item 2</ListItem>
-  <ListItem>Item 3</ListItem>
-</List>
+<CodePreview
+  code={`<List as="ol">
+    <ListItem>Item 1</ListItem>
+    <ListItem>Item 2</ListItem>
+    <ListItem>Item 3</ListItem>
+</List>`}
+  label="Using an ordered list"
+  lang="astro"
+>
+  <List as="ol">
+    <ListItem>Item 1</ListItem>
+    <ListItem>Item 2</ListItem>
+    <ListItem>Item 3</ListItem>
+  </List>
+</CodePreview>
 
 ### Nesting and mixing
 
-<List>
-  <ListItem>Item 1</ListItem>
-  <ListItem>
+<CodePreview
+  code={`<List>
+    <ListItem>Item 1</ListItem>
+    <ListItem>
     Item 2
     <List as="ol">
       <ListItem>Subitem 1</ListItem>
       <ListItem>Subitem 2</ListItem>
       <ListItem>Subitem 3</ListItem>
     </List>
-  </ListItem>
-  <ListItem>Item 3</ListItem>
-  <ListItem>Item 4</ListItem>
-</List>
+    </ListItem>
+    <ListItem>Item 3</ListItem>
+    <ListItem>Item 4</ListItem>
+</List>`}
+  label="Using mixed and nested lists"
+  lang="astro"
+>
+  <List>
+    <ListItem>Item 1</ListItem>
+    <ListItem>
+      Item 2
+      <List as="ol">
+        <ListItem>Subitem 1</ListItem>
+        <ListItem>Subitem 2</ListItem>
+        <ListItem>Subitem 3</ListItem>
+      </List>
+    </ListItem>
+    <ListItem>Item 3</ListItem>
+    <ListItem>Item 4</ListItem>
+  </List>
+</CodePreview>
 
 ## Options
 
-### <code>isInline</code>
+### `isInline`
 
-<List isInline>
-  <ListItem>Item 1</ListItem>
-  <ListItem>Item 2</ListItem>
-  <ListItem>Item 3</ListItem>
-</List>
+<CodePreview
+  code={`<List isInline>
+    <ListItem>Item 1</ListItem>
+    <ListItem>Item 2</ListItem>
+    <ListItem>Item 3</ListItem>
+</List>`}
+  label="Using an inlined list"
+  lang="astro"
+>
+  <List isInline>
+    <ListItem>Item 1</ListItem>
+    <ListItem>Item 2</ListItem>
+    <ListItem>Item 3</ListItem>
+  </List>
+</CodePreview>
 
-### <code>hideMarker</code>
+### `hideMarker`
 
-<List hideMarker>
-  <ListItem>Item 1</ListItem>
-  <ListItem>Item 2</ListItem>
-  <ListItem>Item 3</ListItem>
-</List>
+<CodePreview
+  code={`<List hideMarker>
+    <ListItem>Item 1</ListItem>
+    <ListItem>Item 2</ListItem>
+    <ListItem>Item 3</ListItem>
+</List>`}
+  label="Using a list without marker"
+  lang="astro"
+>
+  <List hideMarker>
+    <ListItem>Item 1</ListItem>
+    <ListItem>Item 2</ListItem>
+    <ListItem>Item 3</ListItem>
+  </List>
+</CodePreview>
 
-### <code>hideMarker</code> on a specific item
+### `hideMarker` on a specific item
 
-<List>
-  <ListItem>Item 1</ListItem>
-  <ListItem hideMarker>Item 2</ListItem>
-  <ListItem>Item 3</ListItem>
-</List>
+<CodePreview
+  code={`<List>
+    <ListItem>Item 1</ListItem>
+    <ListItem hideMarker>Item 2</ListItem>
+    <ListItem>Item 3</ListItem>
+</List>`}
+  label="Using a list while hiding a specific marker"
+  lang="astro"
+>
+  <List>
+    <ListItem>Item 1</ListItem>
+    <ListItem hideMarker>Item 2</ListItem>
+    <ListItem>Item 3</ListItem>
+  </List>
+</CodePreview>

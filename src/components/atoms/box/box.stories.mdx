@@ -2,73 +2,108 @@
 title: "Box"
 ---
 import { components as mdxComponents } from "../../mdx";
+import CodePreview from "../../molecules/code-preview/code-preview.astro";
 import Box from "./box.astro";
 
 export const components = mdxComponents;
 
-## Usage
+## Introduction
 
 This component can be used to create a box that reuse the same styles across multiple components.
 
-<Box>The box contents.</Box>
-  
+<CodePreview
+  code={`import Box from "./components/atoms/box/box.astro"`}
+  label="How to import"
+  lang="ts"
+/>
+<CodePreview code={`<Box>The box contents.</Box>`} label="Basic use">
+  <Box>The box contents.</Box>
+</CodePreview>
+
 ## Options
 
-### <code>elevation</code>
+### `elevation`
 
-#### <code>raised</code>
-
-<Box elevation="raised">The box contents.</Box>
-
-#### <code>elevated</code>
-
+<CodePreview
+  code={`<Box elevation="raised">The box contents.</Box>
+<br />
 <Box elevation="elevated">The box contents.</Box>
+<br />
+<Box elevation="floating">The box contents.</Box>`}
+  label="Using elevation"
+  lang="astro"
+>
+  <Box elevation="raised">The box contents.</Box>
+  <br />
+  <Box elevation="elevated">The box contents.</Box>
+  <br />
+  <Box elevation="floating">The box contents.</Box>
+</CodePreview>
 
-#### <code>floating</code>
+### `isBordered`
 
-<Box elevation="floating">The box contents.</Box>
+<CodePreview
+  code={`<Box isBordered>The box contents.</Box>`}
+  label="With borders"
+  lang="astro"
+>
+  <Box isBordered>The box contents.</Box>
+</CodePreview>
 
-### <code>isBordered</code>
+### `isRounded`
 
-<Box isBordered>The box contents.</Box>
+<CodePreview
+  code={`<Box isBordered isRounded>The box contents.</Box>`}
+  label="With rounded borders"
+  lang="astro"
+>
+  <Box isBordered isRounded>The box contents.</Box>
+</CodePreview>
 
-### <code>isCentered</code>
+### `isPadded`
 
-<Box isCentered>The box contents.</Box>
+<CodePreview
+  code={`<Box isBordered isPadded>The box contents.</Box>`}
+  label="With padding"
+  lang="astro"
+>
+  <Box isBordered isPadded>The box contents.</Box>
+</CodePreview>
 
-### <code>isPadded</code>
+### `isProse`
 
-<Box isPadded>The box contents.</Box>
+This option will limit the size of the container.
 
-### <code>isProse</code>
+<CodePreview
+  code={`<Box isBordered isProse>
+<p>The first child should not have a top margin.</p>
+<p>In between you can use whatever you want.</p>
+<p>Each children of type block will have both top and bottom margins.</p>
+<p>The last child should not have a bottom margin.</p>
+</Box>`}
+  label="Using prose"
+  lang="astro"
+>
+  <Box isBordered isProse>
+    <p>The first child should not have a top margin.</p>
+    <p>In between you can use whatever you want.</p>
+    <p>
+      Each children of type block will have both top and bottom margins.
+    </p>
+    <p>The last child should not have a bottom margin.</p>
+  </Box>
+</CodePreview>
 
-<Box isProse>The box contents.</Box>
+### `isCentered`
 
-### <code>isRounded</code>
+This option only have an effect if you limit the size of the container.
 
-<Box isBordered isRounded>The box contents.</Box>
-
-## Using <code>isProse</code>
-
-<Box isProse>
-  <p>The first child should not have a top margin.</p>
-  <p>In between you can use whatever you want.</p>
-  <p>Each "not-inlined" children will have both top and bottom margins.</p>
-  <p>The last child should not have a bottom margin.</p>
-</Box>
-
-### With <code>isBordered</code>
-
-<Box isBordered isProse>The box contents.</Box>
-
-### With <code>isCentered</code>
-
-And <code>isBordered</code> to see the box limits.
-
-<Box isBordered isCentered isProse>The box contents.</Box>
-
-### With <code>isPadded</code>
-
-And <code>isBordered</code> to see the box limits.
-
-<Box isBordered isPadded isProse>The box contents.</Box>
+<CodePreview
+  code={`<Box isBordered isCentered>The box contents.</Box>`}
+  label="With centering"
+  lang="astro"
+>
+  <Box isBordered isCentered style="width: 15rem;">
+    The box contents.
+  </Box>
+</CodePreview>

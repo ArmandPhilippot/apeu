@@ -2,18 +2,39 @@
 title: "Label"
 ---
 import { components as mdxComponents } from "../../mdx";
+import CodePreview from "../../molecules/code-preview/code-preview.astro";
 import Label from "./label.astro";
 
 export const components = mdxComponents;
 
-## Usage
+## Introduction
 
 This component is used to display a label for a form input.
 
-<Label>A label</Label>
+<CodePreview
+  code={`import Label from "./components/atoms/label/label.astro"`}
+  label="How to import"
+  lang="ts"
+/>
+
+<CodePreview
+  code={`<Label>Some label</Label>`}
+  label="Basic use"
+  lang="astro"
+>
+  <Label>Some label</Label>
+</CodePreview>
 
 ## Options
 
-### <code>isRequired</code>
+### `isRequired`
 
-<Label isRequired>A label</Label>
+When associated with a required input, a label can visually shows this requirement.
+
+<CodePreview
+  code={`<Label isRequired>Some label</Label>`}
+  label="Showing a required field"
+  lang="astro"
+>
+  <Label isRequired>Some label</Label>
+</CodePreview>

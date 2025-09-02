@@ -2,30 +2,42 @@
 title: "Spinner"
 ---
 import { components as mdxComponents } from "../../mdx";
+import CodePreview from "../../molecules/code-preview/code-preview.astro";
 import Spinner from "./spinner.astro";
 
 export const components = mdxComponents;
 
-## Usage
+## Introduction
 
-A <code>Spinner</code> should be used to indicate a loading state.
+A `Spinner` should be used to indicate a loading state.
 
-<Spinner />
+<CodePreview
+  code={`import Spinner from "./components/atoms/spinner/spinner.astro";`}
+  label="How to import"
+  lang="ts"
+/>
+<CodePreview code={`<Spinner />`} label="Basic use">
+  <Spinner />
+</CodePreview>
 
-## With message
+## With text
 
-### Under the spinner (default)
-
-<Spinner>Loading...</Spinner>
-
-### On top of the spinner
-
+<CodePreview
+  code={`<Spinner>Loading...</Spinner>
+<br />
 <Spinner isReversed>Loading...</Spinner>
-
-### Inlined after the spinner
-
+<br />
 <Spinner isInline>Loading...</Spinner>
-
-### Inlined before the spinner
-
-<Spinner isInline isReversed>Loading...</Spinner>
+<br />
+<Spinner isInline isReversed>Loading...</Spinner>`}
+  label="Basic use"
+  lang="astro"
+>
+  <Spinner>Loading...</Spinner>
+  <br />
+  <Spinner isReversed>Loading...</Spinner>
+  <br />
+  <Spinner isInline>Loading...</Spinner>
+  <br />
+  <Spinner isInline isReversed>Loading...</Spinner>
+</CodePreview>

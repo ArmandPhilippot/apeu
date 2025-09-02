@@ -2,24 +2,47 @@
 title: "Heading"
 ---
 import { components as mdxComponents } from "../../mdx";
+import CodePreview from "../../molecules/code-preview/code-preview.astro";
 import Heading from "./heading.astro";
 
 export const components = mdxComponents;
 
-## Usage
+## Introduction
 
- This component is used to display a heading.
+A Heading component is used to display headings on a page. It supports native HTML headings from `h1` to `h6`.
 
-## Levels from h1 to h6
+<CodePreview
+  code={`import Heading from "./components/atoms/heading/heading.astro"`}
+  label="How to import"
+  lang="ts"
+/>
 
-<Heading as="h1">The quick brown fox jumps over the lazy dog</Heading>
+<CodePreview
+  code={`<Heading>A heading</Heading>`}
+  label="Basic use"
+  lang="astro"
+>
+  <Heading>A heading</Heading>
+</CodePreview>
 
-<Heading as="h2">The quick brown fox jumps over the lazy dog</Heading>
+## Levels
 
-<Heading as="h3">The quick brown fox jumps over the lazy dog</Heading>
+Headings are meant to represent the hierarchy in a page, so different levels are available. The default level, when `as` is not provided, is `h2`.
 
-<Heading as="h4">The quick brown fox jumps over the lazy dog</Heading>
-
-<Heading as="h5">The quick brown fox jumps over the lazy dog</Heading>
-
-<Heading as="h6">The quick brown fox jumps over the lazy dog</Heading>
+<CodePreview
+  code={`<Heading as="h1">A heading of level 1</Heading>
+<Heading as="h2">A heading of level 2</Heading>
+<Heading as="h3">A heading of level 3</Heading>
+<Heading as="h4">A heading of level 4</Heading>
+<Heading as="h5">A heading of level 5</Heading>
+<Heading as="h6">A heading of level 6</Heading>`}
+  label="Using different heading levels"
+  lang="astro"
+>
+  <Heading as="h1">A heading of level 1</Heading>
+  <Heading as="h2">A heading of level 2</Heading>
+  <Heading as="h3">A heading of level 3</Heading>
+  <Heading as="h4">A heading of level 4</Heading>
+  <Heading as="h5">A heading of level 5</Heading>
+  <Heading as="h6">A heading of level 6</Heading>
+</CodePreview>

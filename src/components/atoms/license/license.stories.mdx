@@ -2,12 +2,20 @@
 title: "License"
 ---
 import { components as mdxComponents } from "../../mdx";
+import CodePreview from "../../molecules/code-preview/code-preview.astro";
 import License from "./license.astro";
 
 export const components = mdxComponents;
 
-## Usage
+## Introduction
 
 This component is used to display an icon of the website license.
 
-<License />
+<CodePreview
+  code={`import License from "./components/atoms/license/license.astro"`}
+  label="How to import"
+  lang="ts"
+/>
+<CodePreview code={`<License />`} label="Basic use" lang="astro">
+  <License />
+</CodePreview>

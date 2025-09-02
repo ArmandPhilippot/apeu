@@ -2,58 +2,146 @@
 title: "Fieldset"
 ---
 import { components as mdxComponents } from "../../mdx";
+import CodePreview from "../../molecules/code-preview/code-preview.astro";
+import TextField from "../text-field/text-field.astro";
+import Label from "../label/label.astro";
 import Fieldset from "./fieldset.astro";
 import Legend from "./legend.astro";
 
 export const components = mdxComponents;
 
-A fieldset requires a slot named <code>legend</code>. You should use the available <code>Legend</code> component to provide one.
+## Introduction
 
-## Default
+A fieldset requires a slot named `legend`. You should use the available `Legend` component to provide one.
 
-<Fieldset>
-  <Legend slot="legend">The fieldset legend</Legend>
-  The fieldset contents
-</Fieldset>
+<CodePreview
+  code={`import Fieldset from "./components/atoms/fieldset/fieldset.astro";
+import Legend from "./components/atoms/fieldset/legend.astro";`}
+  label="How to import"
+  lang="ts"
+/>
+<CodePreview
+  code={`<Fieldset>
+    <Legend slot="legend">The fieldset legend</Legend>
+
+    The fieldset contents
+</Fieldset>`}
+  label="Basic use"
+  lang="astro"
+>
+  <Fieldset>
+    <Legend slot="legend">The fieldset legend</Legend>
+
+    The fieldset contents
+  </Fieldset>
+</CodePreview>
 
 ## Options
 
-### Fieldset <code>isBordered</code>
+### Fieldset `isBordered`
 
-<Fieldset isBordered>
-  <Legend slot="legend">The fieldset legend</Legend>
-  <label for="option-fieldset-bordered1">Field 1:</label>
-  <input id="option-fieldset-bordered1" type="text" />
-  <label for="option-fieldset-bordered2">Field 2:</label>
-  <input id="option-fieldset-bordered2" type="text" />
-</Fieldset>
+<CodePreview
+  code={`<Fieldset isBordered>
+    <Legend slot="legend">The fieldset legend</Legend>
 
-### Legend <code>isBordered</code>
+    The fieldset contents
+</Fieldset>`}
+  label="Using borders on fieldset"
+  lang="astro"
+>
+  <Fieldset isBordered>
+    <Legend slot="legend">The fieldset legend</Legend>
 
-<Fieldset>
-  <Legend isBordered slot="legend">The fieldset legend</Legend>
-  <label for="option-legend-bordered1">Field 1:</label>
-  <input id="option-legend-bordered1" type="text" />
-  <label for="option-legend-bordered2">Field 2:</label>
-  <input id="option-legend-bordered2" type="text" />
-</Fieldset>
+    The fieldset contents
+  </Fieldset>
+</CodePreview>
 
-### Fieldset <code>isBordered</code> and Legend <code>isBordered</code>
+### Legend `isBordered`
 
-<Fieldset isBordered>
-  <Legend isBordered slot="legend">The fieldset legend</Legend>
-  <label for="option-fieldset-legend-bordered1">Field 1:</label>
-  <input id="option-fieldset-legend-bordered1" type="text" />
-  <label for="option-fieldset-legend-bordered2">Field 2:</label>
-  <input id="option-fieldset-legend-bordered2" type="text" />
-</Fieldset>
+<CodePreview
+  code={`<Fieldset>
+    <Legend isBordered slot="legend">The fieldset legend</Legend>
 
-### Fieldset <code>isInline</code>
+    The fieldset contents
+</Fieldset>`}
+  label="Using borders on legend"
+  lang="astro"
+>
+  <Fieldset>
+    <Legend isBordered slot="legend">The fieldset legend</Legend>
 
-<Fieldset gap="md" isInline>
-  <Legend slot="legend">The fieldset legend</Legend>
-  <label for="option-fieldset-bordered1">Field 1:</label>
-  <input id="option-fieldset-bordered1" type="text" />
-  <label for="option-fieldset-bordered2">Field 2:</label>
-  <input id="option-fieldset-bordered2" type="text" />
-</Fieldset>
+    The fieldset contents
+  </Fieldset>
+</CodePreview>
+
+### Fieldset `isBordered` and Legend `isBordered`
+
+<CodePreview
+  code={`<Fieldset isBordered>
+    <Legend isBordered slot="legend">The fieldset legend</Legend>
+
+    The fieldset contents
+</Fieldset>`}
+  label="Using borders both on fieldset and legend"
+  lang="astro"
+>
+  <Fieldset isBordered>
+    <Legend isBordered slot="legend">The fieldset legend</Legend>
+
+    The fieldset contents
+  </Fieldset>
+</CodePreview>
+
+### Fieldset `isInline`
+
+When using `isInline`, you can also pass a `gap` property to control the spacing between elements.
+
+<CodePreview
+  code={`<Fieldset>
+      <Legend slot="legend">The fieldset legend</Legend>
+      <div>
+        <Label for="option-fieldset-default1">Field 1:</Label>
+        <TextField id="option-fieldset-default1" type="text" />
+      </div>
+      <div>
+        <Label for="option-fieldset-default2">Field 2:</Label>
+        <TextField id="option-fieldset-default2" type="text" />
+      </div>
+    </Fieldset>
+    <Fieldset gap="md" isInline>
+      <Legend slot="legend">The fieldset legend</Legend>
+      <div>
+        <Label for="option-fieldset-inline1">Field 1:</Label>
+        <TextField id="option-fieldset-inline1" type="text" />  
+      </div>
+      <div>
+        <Label for="option-fieldset-inline2">Field 2:</Label>
+        <TextField id="option-fieldset-inline2" type="text" />
+      </div>
+</Fieldset>`}
+  label="Comparing isInline effect on fieldset"
+  lang="astro"
+>
+  <Fieldset>
+    <Legend slot="legend">The fieldset legend</Legend>
+    <div>
+      <Label for="option-fieldset-default1">Field 1:</Label>
+      <TextField id="option-fieldset-default1" type="text" />
+    </div>
+    <div>
+      <Label for="option-fieldset-default2">Field 2:</Label>
+      <TextField id="option-fieldset-default2" type="text" />
+    </div>
+  </Fieldset>
+  <Fieldset gap="md" isInline>
+    <Legend slot="legend">The fieldset legend</Legend>
+    <div>
+      <Label for="option-fieldset-inline1">Field 1:</Label>
+      <TextField id="option-fieldset-inline1" type="text" />
+    </div>
+    <div>
+      <Label for="option-fieldset-inline2">Field 2:</Label>
+      <TextField id="option-fieldset-inline2" type="text" />
+    </div>
+  </Fieldset>
+</CodePreview>

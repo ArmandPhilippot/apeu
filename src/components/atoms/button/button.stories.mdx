@@ -2,108 +2,170 @@
 title: "Button"
 ---
 import { components as mdxComponents } from "../../mdx";
+import CodePreview from "../../molecules/code-preview/code-preview.astro";
 import Button from "./button.astro";
 
 export const components = mdxComponents;
 
-## Usage
+## Introduction
 
 A button is usually used to encourage a user to take action.
 
-## Primary buttons
+<CodePreview
+  code={`import Button from "./components/atoms/button/button.astro"`}
+  label="How to import"
+  lang="ts"
+/>
+<CodePreview
+  code={`<Button>A label</Button>`}
+  label="Basic use"
+  lang="astro"
+>
+  <Button>A label</Button>
+</CodePreview>
 
-### States
+## Button kind
 
-#### Default
+Buttons comes with 4 variants. You should use `primary` for important call to actions.
 
-<Button kind="primary">Call to action</Button>
+<CodePreview
+  code={`<Button kind="primary">A primary button</Button>
+<br />
+<Button kind="secondary">A secondary button</Button>
+<br />
+<Button kind="discreet">A discreet button</Button>
+<br />
+<Button kind="neutral">A neutral button</Button>`}
+  label="Using different kinds of buttons"
+  lang="astro"
+>
+  <Button kind="primary">A primary button</Button>
+  <br />
+  <Button kind="secondary">A secondary button</Button>
+  <br />
+  <Button kind="discreet">A discreet button</Button>
+  <br />
+  <Button kind="neutral">A neutral button</Button>
+</CodePreview>
 
-#### Busy
+## States
 
-<Button aria-busy="true" kind="primary">Call to action</Button>
+### Busy
 
-#### Disabled
+<CodePreview
+  code={`<Button aria-busy="true" kind="primary">A primary button</Button>
+<br />
+<Button aria-busy="true" kind="secondary">A secondary button</Button>
+<br />
+<Button aria-busy="true" kind="discreet">A discreet button</Button>
+<br />
+<Button aria-busy="true" kind="neutral">A neutral button</Button>`}
+  label="Using aria-busy on different kinds of buttons"
+  lang="astro"
+>
+  <Button aria-busy="true" kind="primary">A primary button</Button>
+  <br />
+  <Button aria-busy="true" kind="secondary">A secondary button</Button>
+  <br />
+  <Button aria-busy="true" kind="discreet">A discreet button</Button>
+  <br />
+  <Button aria-busy="true" kind="neutral">A neutral button</Button>
+</CodePreview>
 
-<Button disabled="true" kind="primary">Call to action</Button>
+### Disabled
 
-## Secondary buttons
+<CodePreview
+  code={`<Button disabled="true" kind="primary">A primary button</Button>
+<br />
+<Button disabled="true" kind="secondary">A secondary button</Button>
+<br />
+<Button disabled="true" kind="discreet">A discreet button</Button>
+<br />
+<Button disabled="true" kind="neutral">A neutral button</Button>`}
+  label="Using disabled on different kinds of buttons"
+  lang="astro"
+>
+  <Button disabled="true" kind="primary">A primary button</Button>
+  <br />
+  <Button disabled="true" kind="secondary">A secondary button</Button>
+  <br />
+  <Button disabled="true" kind="discreet">A discreet button</Button>
+  <br />
+  <Button disabled="true" kind="neutral">A neutral button</Button>
+</CodePreview>
 
-When using the <code>secondary</code> kind (default), you can choose to use either a button or a link with the <code>as</code> property.
+### `isExternal`
 
-### States
-
-#### Default
-
-<Button>Call to action</Button>
-
-#### Busy
-
-<Button aria-busy="true">Call to action</Button>
-
-#### Disabled
-
-<Button disabled="true">Call to action</Button>
-
-### <code>isExternal</code>
-
-<Button isExternal>Call to action</Button>
-
-## Discreet buttons
-
-When using the <code>discreet</code> kind, you can choose to use either a button or a link with the <code>as</code> property. This is a variant of the secondary kind.
-
-### States
-
-#### Default
-
-<Button kind="discreet">Call to action</Button>
-
-#### Busy
-
-<Button aria-busy="true" kind="discreet">Call to action</Button>
-
-#### Disabled
-
-<Button disabled="true" kind="discreet">Call to action</Button>
-
-### <code>isExternal</code>
-
-<Button isExternal kind="discreet">Call to action</Button>
-
-## Neutral buttons
-
-When using the <code>neutral</code> kind, you can choose to use either a button or a link with the <code>as</code> property and you are free the style as you'd like.
-
-### States
-
-#### Default
-
-<Button kind="neutral">Call to action</Button>
-
-#### Busy
-
-<Button aria-busy="true" kind="neutral">Call to action</Button>
-
-#### Disabled
-
-<Button disabled="true" kind="neutral">Call to action</Button>
-
-### <code>isExternal</code>
-
-<Button isExternal kind="neutral">Call to action</Button>
+<CodePreview
+  code={`<Button isExternal kind="secondary">A secondary button</Button>
+<br />
+<Button isExternal kind="discreet">A discreet button</Button>
+<br />
+<Button isExternal kind="neutral">A neutral button</Button>`}
+  label="Using isExternal on different kinds of buttons"
+  lang="astro"
+>
+  <Button isExternal kind="secondary">A secondary button</Button>
+  <br />
+  <Button isExternal kind="discreet">A discreet button</Button>
+  <br />
+  <Button isExternal kind="neutral">A neutral button</Button>
+</CodePreview>
 
 ## Links as button
 
-### States
+Sometimes, links can be designed as a button. This component handles this with the `as` property for `secondary`, `discreet` and `neutral` buttons. If you try to use a link with a `primary` button an error will be thrown.
 
-#### Default
+<CodePreview
+  code={`<Button as="a" href="#link" kind="secondary">A secondary button</Button>
+<br />
+<Button as="a" href="#link" kind="discreet">A discreet button</Button>
+<br />
+<Button as="a" href="#link" kind="neutral">A neutral button</Button>`}
+  label="Using a link instead of a button"
+  lang="astro"
+>
+  <Button as="a" href="#link" kind="secondary">A secondary button</Button>
+  <br />
+  <Button as="a" href="#link" kind="discreet">A discreet button</Button>
+  <br />
+  <Button as="a" href="#link" kind="neutral">A neutral button</Button>
+</CodePreview>
 
-<Button as="a" href="#link">Call to action</Button>
+States should behave the same when using a link instead of a button. However, note that a link can't be disabled.
 
-#### Busy
+### Busy links
 
-<Button aria-busy="true" as="a" href="#link">Call to action</Button>
+<CodePreview
+  code={`<Button aria-busy="true" as="a" href="#link" kind="secondary">A secondary button</Button>
+<br />
+<Button aria-busy="true" as="a" href="#link" kind="discreet">A discreet button</Button>
+<br />
+<Button aria-busy="true" as="a" href="#link" kind="neutral">A neutral button</Button>`}
+  label="Using a busy link instead of a button"
+  lang="astro"
+>
+  <Button aria-busy="true" as="a" href="#link" kind="secondary">A secondary button</Button>
+  <br />
+  <Button aria-busy="true" as="a" href="#link" kind="discreet">A discreet button</Button>
+  <br />
+  <Button aria-busy="true" as="a" href="#link" kind="neutral">A neutral button</Button>
+</CodePreview>
 
-### <code>isExternal</code>
+### External links
 
-<Button as="a" href="#link" isExternal>Call to action</Button>
+<CodePreview
+  code={`<Button as="a" href="#link" isExternal kind="secondary">A secondary button</Button>
+<br />
+<Button as="a" href="#link" isExternal kind="discreet">A discreet button</Button>
+<br />
+<Button as="a" href="#link" isExternal kind="neutral">A neutral button</Button>`}
+  label="Using an external link instead of a button"
+  lang="astro"
+>
+  <Button as="a" href="#link" isExternal kind="secondary">A secondary button</Button>
+  <br />
+  <Button as="a" href="#link" isExternal kind="discreet">A discreet button</Button>
+  <br />
+  <Button as="a" href="#link" isExternal kind="neutral">A neutral button</Button>
+</CodePreview>

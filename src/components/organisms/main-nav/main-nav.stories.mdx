@@ -1,0 +1,20 @@
+---
+title: "MainNav"
+---
+import { components as mdxComponents } from "../../mdx";
+import MainNav from "./main-nav.astro";
+
+export const components = mdxComponents;
+export const items = [
+  { label: "Item 1", url: "#item-1" },
+  { label: "Item 2", url: "#item-2" },
+  { label: "Item 3", url: "#item-3" },
+  { label: "Item 4", url: "#item-4" },
+  { label: "Item 5", url: "#item-5" },
+]
+
+## Usage
+
+This component is used to display the main navigation.
+
+<MainNav items={items} />

@@ -1,0 +1,28 @@
+---
+title: "SearchForm"
+---
+import { components as mdxComponents } from "../../mdx";
+import SearchForm from "./search-form.astro";
+
+export const components = mdxComponents;
+
+## Usage
+
+A <code>SearchForm</code> component should be used to authorize the user to search a page on the website using keywords.
+
+<SearchForm
+  id="usage-example"
+  queryParam="query"
+  resultsPage="/#results"
+/>
+
+## Options
+
+### <code>isInline</code>
+
+<SearchForm
+  id="inline-example"
+  isInline
+  queryParam="query"
+  resultsPage="/#results"
+/>

@@ -1,0 +1,40 @@
+---
+title: "ContactCard"
+---
+import { components as mdxComponents } from "../../mdx";
+import Heading from "../../atoms/heading/heading.astro";
+import ContactCard from "./contact-card.astro";
+
+export const components = mdxComponents;
+export const socialMedia = {
+  diaspora: "#diaspora",
+  github: "#github",
+  linkedin: "#linkedin",
+  stackoverflow: "#stackoverflow",
+}
+
+## Usage
+
+An <code>ContactCard</code> component should be used to display contact methods.
+
+## Default
+
+<ContactCard contactPageRoute="#contact" isCentered />
+
+## With social links
+
+<ContactCard
+  contactPageRoute="#contact"
+  isCentered
+  socialMedia={socialMedia}
+/>
+
+## With heading
+
+<ContactCard
+  contactPageRoute="#contact"
+  isCentered
+  socialMedia={socialMedia}
+>
+  <Heading as="h3" slot="heading">Contact</Heading>
+</ContactCard>

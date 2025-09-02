@@ -1,0 +1,57 @@
+---
+title: "CollectionMeta"
+---
+import { components as mdxComponents } from "../../mdx";
+import CollectionMeta from "./collection-meta.astro";
+
+export const components = mdxComponents;
+export const meta = {
+  publishedOn: new Date(),
+};
+export const icons = {
+  publishedOn: { name: "success", size: 24 },
+};
+export const blogPostMeta = {
+  category: {
+    route: "#quisquam-itaque-provident",
+    title: "A category",
+  },
+  publishedOn: new Date("2024-09-16"),
+  tags: [
+    { route: "#tag1", title: "Tag 1" },
+    { route: "#tag2", title: "Tag 2" },
+  ],
+  updatedOn: new Date(),
+};
+export const projectMeta = {
+  kind: "site",
+  publishedOn: new Date("2024-09-16"),
+  updatedOn: new Date("2024-09-16"),
+  isArchived: true,
+};
+
+## Usage
+
+A <code>CollectionMeta</code> component should be used to display the meta of any collection configured in Astro.
+
+<CollectionMeta data={meta} />
+
+## With hidden label
+
+<CollectionMeta data={meta} hideLabel />
+
+## With icons
+
+<CollectionMeta data={meta} icons={icons} />
+
+## Specific to a collection
+
+The component also handles meta specific to some collections. Check out the following examples.
+
+### Blog post meta
+
+<CollectionMeta data={blogPostMeta} />
+
+### Project meta
+
+<CollectionMeta data={projectMeta} />

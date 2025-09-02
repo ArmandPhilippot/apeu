@@ -1,0 +1,37 @@
+---
+title: "Pagination"
+---
+import { components as mdxComponents } from "../../mdx";
+import Pagination from "./pagination.astro";
+
+export const components = mdxComponents;
+export const renderLink = (page) => `#page-${page}`;
+
+## Usage
+
+A <code>Pagination</code> component should be used when a collection of items is divided in multiple pages.
+
+## With few pages
+
+<Pagination current={1} last={4} renderLink={renderLink} />
+
+## With ellipsis and current page is first page
+
+<Pagination current={1} last={10} renderLink={renderLink} />
+
+## With ellipsis and current page is last page
+
+<Pagination current={10} last={10} renderLink={renderLink} />
+
+## With both ellipsis and current page is in the middle
+
+<Pagination current={25} last={50} renderLink={renderLink} />
+
+## With custom siblings number
+
+<Pagination
+  current={25}
+  last={50}
+  renderLink={renderLink}
+  siblings={3}
+/>

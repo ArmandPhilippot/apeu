@@ -1,0 +1,60 @@
+---
+title: "IdentityCard"
+---
+import { components as mdxComponents } from "../../mdx";
+import Heading from "../../atoms/heading/heading.astro";
+import IdentityCard from "./identity-card.astro";
+
+export const components = mdxComponents;
+
+export const authorPreview = {
+  name: "John Doe",
+};
+
+export const authorPreviewWithAvatar = {
+  ...authorPreview,
+  avatar: {
+    format: "jpg",
+    height: 200,
+    src: "https://picsum.photos/150/200",
+    width: 150,
+  },
+};
+
+export const authorPreviewWithAllInfo = {
+  ...authorPreview,
+  avatar: {
+    format: "jpg",
+    height: 200,
+    src: "https://picsum.photos/150/200",
+    width: 150,
+  },
+  country: "FR",
+  job: "Astronaut",
+  // cSpell:ignore ˈdʒɑn ˈdoʊ
+  nameIPA: `/ˈdʒɑn/ /ˈdoʊ/`,
+  nationality: "FR",
+  spokenLanguages: ["en", "fr"],
+};
+
+## Usage
+
+An <code>IdentityCard</code> component should be used to display information about an author.
+
+## Default
+
+<IdentityCard author={authorPreview} isCentered />
+
+## With avatar
+
+<IdentityCard author={authorPreviewWithAvatar} isCentered />
+
+## With all available data
+
+<IdentityCard author={authorPreviewWithAllInfo} isCentered />
+
+## With heading
+
+<IdentityCard author={authorPreviewWithAllInfo} isCentered>
+  <Heading as="h3" slot="heading">About {authorPreview.name}</Heading>
+</IdentityCard>

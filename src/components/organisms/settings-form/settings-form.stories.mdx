@@ -1,0 +1,23 @@
+---
+title: "SettingsForm"
+---
+import { components as mdxComponents } from "../../mdx";
+import SettingsForm from "./settings-form.astro";
+
+export const components = mdxComponents;
+export const altLanguages = [
+  { locale: "en", route: "#my-en-route" },
+  { locale: "fr", route: "#ma-route-fr" },
+];
+
+## Usage
+
+A <code>SettingsForm</code> component should be used to authorize the user to customize the website.
+
+<SettingsForm id="usage-example" />
+
+## Alternatives languages
+
+You can provide the routes to use for the alternative languages using the <code>altLanguages</code> property.
+
+<SettingsForm altLanguages={altLanguages} id="alt-languages-example" />

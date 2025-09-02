@@ -1,0 +1,18 @@
+---
+title: "Page with title, cover, meta, and body"
+---
+import { components as mdxComponents } from "../../../mdx";
+import Page from "../page.astro";
+
+export const components = mdxComponents;
+export const title = "Page with title, cover, meta, and body";
+export const cover = {
+  height: 480,
+  src: "https://picsum.photos/640/480",
+  width: 640,
+};
+
+<Page cover={cover} heading={title}>
+  <div slot="meta">Some meta</div>
+  <p slot="body">This is the main content of the page.</p>
+</Page>

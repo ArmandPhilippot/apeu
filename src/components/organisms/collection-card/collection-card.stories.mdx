@@ -1,0 +1,205 @@
+---
+title: "CollectionCard"
+---
+import { components as mdxComponents } from "../../mdx";
+import CollectionCard from "./collection-card.astro";
+
+export const components = mdxComponents;
+export const basicCard = {
+  collection: "pages",
+  description: "A short description of the page.",
+  id: "basic-card",
+  locale: "en",
+  route: "#libero-est-aut",
+  slug: "libero-est-aut",
+  title: "The page title",
+};
+export const blog = {
+  collection: "blogroll",
+  description: {
+    en: "A short description about the blog.",
+  },
+  id: "any-blog",
+  meta: {
+    inLanguages: ["en"],
+    publishedOn: new Date(),
+    updatedOn: new Date(),
+  },
+  title: "The blog title",
+  url: "#molestiae-eum-facere",
+};
+export const blogCategory = {
+  collection: "blog.categories",
+  description: "An excerpt about the blog category.",
+  id: "category-card",
+  locale: "en",
+  route: "#et-perferendis-qui",
+  slug: "et-perferendis-qui",
+  title: "The blog category title",
+};
+export const blogPost = {
+  collection: "blog.posts",
+  description: "An excerpt about the blog post.",
+  id: "post-card",
+  locale: "en",
+  meta: {
+    category: {
+      title: "A category",
+      route: "#quisquam-itaque-provident",
+    },
+    publishedOn: new Date("2024-09-16"),
+    updatedOn: new Date(),
+  },
+  route: "#et-perferendis-qui",
+  slug: "et-perferendis-qui",
+  title: "The blog post title",
+};
+export const bookmark = {
+  collection: "bookmarks",
+  description: "A short description about the bookmark.",
+  id: "bookmark-card",
+  isQuote: false,
+  meta: {
+    inLanguage: "en",
+    publishedOn: new Date(),
+  },
+  title: "The bookmark title",
+  url: "#molestiae-eum-facere",
+};
+export const guide = {
+  collection: "guides",
+  description: "An excerpt about the guide.",
+  id: "guide-card",
+  locale: "en",
+  meta: {
+    publishedOn: new Date("2024-09-16"),
+    updatedOn: new Date("2024-09-16"),
+  },
+  route: "#et-perferendis-qui",
+  slug: "et-perferendis-qui",
+  title: "The guide title",
+};
+export const note = {
+  collection: "notes",
+  description: "An excerpt about the note.",
+  id: "note-card",
+  locale: "en",
+  meta: {
+    publishedOn: new Date("2024-09-16"),
+    updatedOn: new Date("2024-09-16"),
+  },
+  route: "#et-perferendis-qui",
+  slug: "et-perferendis-qui",
+  title: "The note title",
+};
+export const page = {
+  collection: "pages",
+  description: "An excerpt about the page.",
+  id: "page-card",
+  locale: "en",
+  route: "#et-perferendis-qui",
+  slug: "et-perferendis-qui",
+  title: "The page title",
+};
+export const project = {
+  collection: "projects",
+  description: "An excerpt about the project.",
+  id: "project-card",
+  locale: "en",
+  meta: {
+    kind: "site",
+    repository: {
+      name: "repo",
+      url: "https://github.com/user/repo",
+    },
+    publishedOn: new Date("2024-09-16"),
+    updatedOn: new Date("2024-09-16"),
+  },
+  route: "#et-perferendis-qui",
+  slug: "et-perferendis-qui",
+  title: "The project title",
+};
+export const tag = {
+  collection: "tags",
+  description: "An excerpt about the tag.",
+  id: "tag-card",
+  locale: "en",
+  route: "#et-perferendis-qui",
+  slug: "et-perferendis-qui",
+  title: "The tag title",
+};
+
+## Usage
+
+A <code>CollectionCard</code> component should be used to display a collection entry preview and to visit a link to learn more about this entry.
+
+<CollectionCard entry={basicCard} headingLvl="h3" />
+
+## Variants
+
+### With collection
+
+<CollectionCard
+  entry={basicCard}
+  headingLvl="h4"
+  isCentered
+  showCollection
+/>
+
+### With featured meta
+
+<CollectionCard
+  entry={project}
+  featuredMeta={{ key: "kind" }}
+  headingLvl="h4"
+  isCentered
+/>
+
+### With CTA
+
+<CollectionCard
+  cta={{ label: "Read more" }}
+  entry={basicCard}
+  headingLvl="h4"
+  isCentered
+/>
+
+## Collections examples
+
+Following you'll see some common examples for each collection.
+
+### Blogroll
+
+<CollectionCard entry={blog} headingLvl="h4" isCentered />
+
+### Blog Category
+
+<CollectionCard entry={blogCategory} headingLvl="h4" isCentered />
+
+### Blog Post
+
+<CollectionCard entry={blogPost} headingLvl="h4" isCentered />
+
+### Bookmark
+
+<CollectionCard entry={bookmark} headingLvl="h4" isCentered />
+
+### Guide
+
+<CollectionCard entry={guide} headingLvl="h4" isCentered />
+
+### Note
+
+<CollectionCard entry={note} headingLvl="h4" isCentered />
+
+### Page
+
+<CollectionCard entry={page} headingLvl="h4" isCentered />
+
+### Project
+
+<CollectionCard entry={project} headingLvl="h4" isCentered />
+
+### Tag
+
+<CollectionCard entry={tag} headingLvl="h4" isCentered />

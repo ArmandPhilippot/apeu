@@ -17,6 +17,8 @@ const { ...index } = Astro.props;
           </li>
         ))}
       </ul>
-    ) : null
+    ) : (
+      "No stories found."
+    )
   }
 </Layout>

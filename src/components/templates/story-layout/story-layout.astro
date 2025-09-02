@@ -2,20 +2,36 @@
 import type { StoryLayoutProps } from "../../../lib/astro/integrations/astro-stories";
 import PageLayout from "../page-layout/page-layout.astro";
 
-type Props = StoryLayoutProps;
+type FrontMatter = {
+  isStandalone?: boolean | undefined;
+  title: string;
+};
+
+type Props = StoryLayoutProps<FrontMatter>;
 
 const { story } = Astro.props;
-const headings = story.type === "story" ? story.headings : null;
+const isStory = story.type === "story";
+const headings = isStory ? story.headings : null;
+const title = isStory ? story.frontmatter.title : story.label;
+const shouldUseLayout = isStory
+  ? story.frontmatter.isStandalone !== true
+  : true;
 ---
 
-<PageLayout
-  breadcrumb={story.breadcrumb}
-  headings={headings}
-  seo={{ title: story.label }}
-  title={story.label}
->
-  <slot slot="body" />
-</PageLayout>
+{
+  shouldUseLayout ? (
+    <PageLayout
+      breadcrumb={story.breadcrumb}
+      headings={headings}
+      seo={{ title: story.label }}
+      title={title}
+    >
+      <slot slot="body" />
+    </PageLayout>
+  ) : (
+    <slot />
+  )
+}
 
 <style is:global>
   .wrapper {

@@ -1,0 +1,59 @@
+---
+title: "CopyToClipboard"
+---
+import { components as mdxComponents } from "../../mdx";
+import CopyToClipboard from "./copy-to-clipboard.astro";
+
+export const components = mdxComponents;
+
+## Usage
+
+A <code>CopyToClipboard</code> component should be used as a call to action to let users copy some contents to their clipboard with a simple click.
+
+## Example 1
+
+The copy button can copy a text in an element next to the button.
+
+<div id="example1">
+  <CopyToClipboard
+    feedback="Copied!"
+    label="Copy example 1"
+    selector="#example1 > div"
+  />
+  <div>The contents to copy to the clipboard.</div>
+</div>
+
+## Example 2
+
+The copy button can copy a text in an element placed before the button.
+
+<pre id="example2">
+  <code>console.log("Hello, world!");</code>
+</pre>
+<CopyToClipboard
+  feedback="Code copied!"
+  label="Copy code in example 2"
+  selector="pre > code"
+/>
+
+## Example 3
+
+The copy button can look for the text to copy using an ancestor of the button by providing a <code>lookUpNodeLvl</code> prop. This can be useful if you use a generic <code>selector</code> which is repeated multiple times across the document.
+
+<div>
+  <div>
+    <div>
+      <CopyToClipboard
+        feedback="Answer copied!"
+        label="Copy code in example 3"
+        lookUpNodeLvl={3}
+        selector="code"
+      />
+    </div>
+  </div>
+  <pre>
+    <code>console.log("The answer to universe is 42!");</code>
+  </pre>
+</div>
+
+Without <code>lookUpNodeLvl</code>, the button would have copied the previous example instead of this one when using <code>code</code> as <code>selector</code>.

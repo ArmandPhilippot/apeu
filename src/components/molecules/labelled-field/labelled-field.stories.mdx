@@ -1,0 +1,141 @@
+---
+title: "LabelledField"
+---
+import { components as mdxComponents } from "../../mdx";
+import ListItem from "../../atoms/list/list-item.astro";
+import List from "../../atoms/list/list.astro";
+import TextField from "../../atoms/text-field/text-field.astro";
+import LabelledField from "./labelled-field.astro";
+
+export const components = mdxComponents;
+
+## Usage
+
+This component is used to display a field and a label tied together.
+
+<LabelledField>
+  <Label for="usage-example" slot="label">A label</Label>
+  <TextField id="usage-example" slot="field" type="text" />
+</LabelledField>
+
+## Variant: <code>vertical</code> (default)
+
+### Default
+
+<LabelledField>
+  <Label for="vertical-default" slot="label">A label</Label>
+  <TextField id="vertical-default" slot="field" type="text" />
+</LabelledField>
+
+### With hint
+
+<LabelledField>
+  <Label for="vertical-hint" slot="label">A label</Label>
+  <TextField id="vertical-hint" slot="field" type="text" />
+  <Fragment slot="hint">A hint about this field.</Fragment>
+</LabelledField>
+
+### With errors
+
+<LabelledField>
+  <Label for="vertical-errors" slot="label">A label</Label>
+  <TextField id="vertical-errors" slot="field" type="text" />
+  <List slot="errors">
+    <ListItem>error 1 because...</ListItem>
+    <ListItem>error 2 because...</ListItem>
+  </List>
+</LabelledField>
+
+### With hint, errors and spacing
+
+<LabelledField>
+  <Label for="vertical-hint-errors" slot="label">A label</Label>
+  <TextField id="vertical-hint-errors" slot="field" type="text" />
+  <Fragment slot="hint">A hint about this field.</Fragment>
+  <List slot="errors">
+    <ListItem>error 1 because...</ListItem>
+    <ListItem>error 2 because...</ListItem>
+  </List>
+</LabelledField>
+
+## Variant: <code>inline</code>
+
+### Default
+
+<LabelledField variant="inline">
+  <Label for="inline-default" slot="label">A label</Label>
+  <TextField id="inline-default" slot="field" type="text" />
+</LabelledField>
+
+### With hint
+
+<LabelledField variant="inline">
+  <Label for="inline-hint" slot="label">A label</Label>
+  <TextField id="inline-hint" slot="field" type="text" />
+  <Fragment slot="hint">A hint about this field.</Fragment>
+</LabelledField>
+
+### With errors
+
+<LabelledField variant="inline">
+  <Label for="inline-errors" slot="label">A label</Label>
+  <TextField id="inline-errors" slot="field" type="text" />
+  <List slot="errors">
+    <ListItem>error 1 because...</ListItem>
+    <ListItem>error 2 because...</ListItem>
+  </List>
+</LabelledField>
+
+### With hint, errors and spacing
+
+<LabelledField variant="inline">
+  <Label for="inline-hint-errors" slot="label">A label</Label>
+  <TextField id="inline-hint-errors" slot="field" type="text" />
+  <Fragment slot="hint">A hint about this field.</Fragment>
+  <List slot="errors">
+    <ListItem>error 1 because...</ListItem>
+    <ListItem>error 2 because...</ListItem>
+  </List>
+</LabelledField>
+
+## Variant: <code>inline-reversed</code>
+
+Reversing order can be useful with boolean fields like a checkbox.
+
+### Default
+
+<LabelledField variant="inline-reversed">
+  <Label for="inline-reversed-default" slot="label">A label</Label>
+  <input id="inline-reversed-default" slot="field" type="checkbox" />
+</LabelledField>
+
+### With hint
+
+<LabelledField variant="inline-reversed">
+  <Label for="inline-reversed-hint" slot="label">A label</Label>
+  <input id="inline-reversed-hint" slot="field" type="checkbox" />
+  <Fragment slot="hint">A hint about this field.</Fragment>
+</LabelledField>
+
+### With errors
+
+<LabelledField variant="inline-reversed">
+  <Label for="inline-reversed-errors" slot="label">A label</Label>
+  <input id="inline-reversed-errors" slot="field" type="checkbox" />
+  <List slot="errors">
+    <ListItem>error 1 because...</ListItem>
+    <ListItem>error 2 because...</ListItem>
+  </List>
+</LabelledField>
+
+### With hint, errors and spacing
+
+<LabelledField variant="inline-reversed">
+  <Label for="inline-reversed-hint-errors" slot="label">A label</Label>
+  <input id="inline-reversed-hint-errors" slot="field" type="checkbox" />
+  <Fragment slot="hint">A hint about this field.</Fragment>
+  <List slot="errors">
+    <ListItem>error 1 because...</ListItem>
+    <ListItem>error 2 because...</ListItem>
+  </List>
+</LabelledField>

@@ -1,0 +1,25 @@
+---
+title: "SocialLinks"
+---
+import { components as mdxComponents } from "../../mdx";
+import SocialLinks from "./social-links.astro";
+
+export const components = mdxComponents;
+export const links = {
+  diaspora: "#diaspora",
+  github: "#github",
+  linkedin: "#linkedin",
+  stackoverflow: "#stackoverflow",
+};
+
+## Usage
+
+A <code>SocialLinks</code> component should be used to display a list of social links, usually the profiles of an author.
+
+## With labels
+
+<SocialLinks links={links} />
+
+## With hidden labels
+
+<SocialLinks hideLabels links={links} />

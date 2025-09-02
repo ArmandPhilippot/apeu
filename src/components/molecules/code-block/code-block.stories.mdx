@@ -1,0 +1,152 @@
+---
+title: "CodeBlock"
+---
+import { components as mdxComponents } from "../../mdx";
+import CodeBlock from "./code-block.astro";
+
+export const components = mdxComponents;
+
+export const jsCodeSample = `
+console.log("Hello world!");
+const foo = 42;
+`;
+
+export const commandLineCodeSample = `
+git add README.md
+git commit -m "Added documentation"
+`;
+
+export const sqlCodeSample = `
+ALTER USER 'root'@'localhost'
+`;
+
+export const diffCodeSample = `
+const breadcrumb = [
+  { label: 'Home', slug: '/' },
+  { label: 'Design system', slug: '/design-system' },
+-  { label: 'Foo', slug: '/design-system/foo' },
++  { label: 'Components', slug: '/design-system/components' },
+  { label: 'Molecules', slug: '/design-system/components/molecules' },
+  {
+    label: title,
+    slug: '/design-system/components/molecules/code-blocks',
+  },
+];
+`;
+
+export const complexDiffCodeSample = `
+.container {
+-  display: "block";
++  display: "flex";
++  flex-flow: row wrap;
++  align-items: "center";
+  margin: 0;
+-  padding: 1px;
+-  font-size: 10px;
++  padding: 5px;
+  position: relative;
+}
+`;
+
+## With lang
+
+<CodeBlock code={jsCodeSample} lang="js" />
+
+## With file path
+
+<CodeBlock
+  code={jsCodeSample}
+  filePath="./hello-world.js"
+  lang="js"
+/>
+
+## With line numbers
+
+<CodeBlock code={jsCodeSample} lang="js" showLineNumbers />
+
+## With line numbers and custom starting line
+
+<CodeBlock
+  code={jsCodeSample}
+  lang="js"
+  lineStart={5}
+  showLineNumbers
+/>
+
+## With prompt
+
+<CodeBlock code={commandLineCodeSample} lang="shell" showPrompt />
+
+## With prompt and custom username
+
+<CodeBlock
+  code={commandLineCodeSample}
+  lang="shell"
+  promptUser="john"
+  showPrompt
+/>
+
+## With prompt and custom host
+
+<CodeBlock
+  code={commandLineCodeSample}
+  lang="shell"
+  promptHost="doe"
+  promptUser="john"
+  showPrompt
+/>
+
+## With prompt as root
+
+<CodeBlock
+  code="nano /etc/hosts"
+  lang="shell"
+  promptUser="root"
+  showPrompt
+/>
+
+## With SQL prompt
+
+<CodeBlock code={sqlCodeSample} lang="sql" showPrompt />
+
+## With SQL prompt and custom prompt host
+
+<CodeBlock
+  code={sqlCodeSample}
+  lang="sql"
+  promptHost="MariaDB"
+  showPrompt
+/>
+
+## With SQL prompt and custom database name
+
+<CodeBlock
+  code={sqlCodeSample}
+  lang="sql"
+  promptDB="recipes"
+  showPrompt
+/>
+
+## Diff
+
+<CodeBlock code={diffCodeSample} lang="diff" showLineNumbers />
+
+## Diff with syntax highlighting
+
+<CodeBlock
+  code={diffCodeSample}
+  isDiff
+  lang="ts"
+  showLineNumbers
+/>
+
+## A complex diff example
+
+Ideally, I'd like that removed lines affects the line numbers for the next lines but due to <code>counter</code> limitations, it seems impossible with CSS only when having multiple removed lines at once. So this type of blocks should be avoided.
+
+<CodeBlock
+  code={complexDiffCodeSample}
+  isDiff
+  lang="css"
+  showLineNumbers
+/>

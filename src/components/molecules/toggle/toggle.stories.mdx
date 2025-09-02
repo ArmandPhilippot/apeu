@@ -1,0 +1,48 @@
+---
+title: "Toggle"
+---
+import { components as mdxComponents } from "../../mdx";
+import Toggle from "./toggle.astro";
+
+export const components = mdxComponents;
+
+export const getItems = (name) => [{ id: `${name}-item-1`, label: "Item 1", value: "item-1" }, { id: `${name}-item-2`, label: "Item 2", value: "item-2" }, { id: `${name}-item-3`, label: "Item 3", value: "item-3" } ];
+
+export const getItemsWithIcon = (name) => [{ icon: "caret", id: `${name}-item-1`, label: "Item 1", value: "item-1" },{ icon: "gear", id: `${name}-item-2`, label: "Item 2", value: "item-2" }, { icon: "search", id: `${name}-item-3`, label: "Item 3", value: "item-3" } ];
+
+## Default
+
+<Toggle
+  groupName="default"
+  items={getItems("default")}
+  label="The legend"
+/>
+
+## With default value
+
+<Toggle
+  groupName="default-value"
+  items={getItems("default-value")}
+  label="The legend"
+  value={getItems("default-value")[0]?.value}
+/>
+
+## With icons
+
+<Toggle
+  groupName="with-icons"
+  items={getItemsWithIcon("with-icons")}
+  label="The legend"
+  value={getItemsWithIcon("with-icons")[0]?.value}
+/>
+
+## Inline
+
+<Toggle
+  gap="xs"
+  groupName="inline"
+  isInline
+  items={getItems("inline")}
+  label="The legend"
+  value={getItems("inline")[0]?.value}
+/>

@@ -1,0 +1,80 @@
+---
+title: "NavItem"
+---
+import { components as mdxComponents } from "../../mdx";
+import NavItem from "./nav-item.astro";
+
+export const components = mdxComponents;
+
+## Usage
+
+This component is used to define a navigation item inside a navigation list.
+
+## Variant: <code>isBlock: false</code> (default)
+
+<NavItem href="#destination">Nav Item</NavItem>
+
+### <code>isBordered</code>
+
+<NavItem href="#destination" isBordered>Nav Item</NavItem>
+
+### <code>isRounded</code>
+
+And with <code>isBordered</code> to highlight the difference.
+
+<NavItem href="#destination" isBordered isRounded>
+  Nav Item
+</NavItem>
+
+### With icon
+
+<NavItem href="#destination" icon="home" iconSize={40}>
+  Nav Item
+</NavItem>
+
+### Tag
+
+#### <code>a</code>
+
+<NavItem as="a" href="#destination">A nav link</NavItem>
+
+#### <code>label</code>
+
+When you are not using the block variant, please consider using a regular <code>Label</code> component instead.
+
+<NavItem as="label">A nav label</NavItem>
+
+## Variant: <code>isBlock: true</code>
+
+<NavItem href="#destination" isBlock>Nav Item</NavItem>
+
+### <code>isBordered</code>
+
+<NavItem href="#destination" isBlock isBordered>
+  Nav Item
+</NavItem>
+
+### <code>isRounded</code>
+
+And with <code>isBordered</code> to highlight the difference.
+
+<NavItem href="#destination" isBlock isBordered isRounded>
+  Nav Item
+</NavItem>
+
+### With icon
+
+<NavItem href="#destination" icon="home" iconSize={40} isBlock>
+  Nav Item
+</NavItem>
+
+### Tag
+
+
+#### <code>a</code>
+
+<NavItem as="a" href="#destination" isBlock>A nav link</NavItem>
+
+#### <code>label</code>
+
+<NavItem as="label" isBlock>A nav label</NavItem>

@@ -1,0 +1,90 @@
+---
+title: "RadioGroup"
+---
+import { components as mdxComponents } from "../../mdx";
+import RadioGroup from "./radio-group.astro";
+import RadioItem from "./radio-item.astro";
+
+export const components = mdxComponents;
+
+export const getItems = (name) => [
+  { fieldId: `${name}-item-1`, label: "Item 1", name, value: "item-1" },
+  { fieldId: `${name}-item-2`, label: "Item 2", name, value: "item-2" },
+  { fieldId: `${name}-item-3`, label: "Item 3", name, value: "item-3" },
+];
+
+## Usage
+
+This component is used to display a group of <code>RadioItem</code>.
+
+<RadioGroup label="The legend">
+  {
+    getItems("default").map((item) => (
+      <RadioItem
+        class="radio-group__item"
+        fieldId={item.fieldId}
+        name={item.name}
+        value={item.value}
+      >
+        {item.label}
+      </RadioItem>
+    ))
+  }
+</RadioGroup>
+
+## Options
+
+### <code>isBordered</code>
+
+<RadioGroup isBordered label="The legend">
+  {
+    getItems("bordered").map((item, _idx, arr) => (
+      <RadioItem
+        class="radio-group__item"
+        fieldId={item.fieldId}
+        isChecked={item.value === arr[0]?.value}
+        name={item.name}
+        value={item.value}
+      >
+        {item.label}
+      </RadioItem>
+    ))
+  }
+</RadioGroup>
+
+### <code>isInline</code>
+
+<RadioGroup isInline label="The legend">
+  {
+    getItems("inlined").map((item, _idx, arr) => (
+      <RadioItem
+        class="radio-group__item"
+        fieldId={item.fieldId}
+        isChecked={item.value === arr[0]?.value}
+        name={item.name}
+        value={item.value}
+      >
+        {item.label}
+      </RadioItem>
+    ))
+  }
+</RadioGroup>
+
+### <code>hideRadio</code> on <code>RadioItem</code>
+
+<RadioGroup label="The legend">
+  {
+    getItems("hidden-radio").map((item, _idx, arr) => (
+      <RadioItem
+        class="radio-group__item"
+        fieldId={item.fieldId}
+        hideRadio
+        isChecked={item.value === arr[0]?.value}
+        name={item.name}
+        value={item.value}
+      >
+        {item.label}
+      </RadioItem>
+    ))
+  }
+</RadioGroup>

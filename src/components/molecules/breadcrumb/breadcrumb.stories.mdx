@@ -1,0 +1,20 @@
+---
+title: "Breadcrumb"
+---
+import { components as mdxComponents } from "../../mdx";
+import Breadcrumb from "./breadcrumb.astro";
+
+export const components = mdxComponents;
+
+export const items = [
+  { label: "Home", url: "#item1" },
+  { label: "Blog", url: "#item2" },
+  { label: "Year", url: "#item3" },
+  { label: "A very very long post title", url: "#item4" },
+];
+
+## Usage
+
+This component is used to display a breadcrumb on a page.
+
+<Breadcrumb items={items} />

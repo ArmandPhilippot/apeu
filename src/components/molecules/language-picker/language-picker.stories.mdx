@@ -1,0 +1,37 @@
+---
+title: "LanguagePicker"
+---
+import { components as mdxComponents } from "../../mdx";
+import LanguagePicker from "./language-picker.astro";
+
+{/* cSpell:ignore Español Français */}
+export const components = mdxComponents;
+export const languages = {
+  en: { name: "English", route: "#en" },
+  es: { name: "Español", route: "#es" },
+  fr: { name: "Français", route: "#fr" },
+};
+
+## Usage
+
+This component is used to let an user choose the current language of the website.
+
+<LanguagePicker
+  current="es"
+  id="usage-example"
+  label="Choose a language:"
+  languages={languages}
+/>
+
+## Options
+
+### <code>isInline</code>
+
+<LanguagePicker
+  current="es"
+  gap="2xs"
+  id="is-inline-example"
+  isInline
+  label="Choose a language:"
+  languages={languages}
+/>

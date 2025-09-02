@@ -1,18 +1,19 @@
 ---
-import type { ComponentProps } from "astro/types";
+title: "Layout"
+---
+import { components as mdxComponents } from "../../../mdx";
 import Heading from "../../atoms/heading/heading.astro";
-import LayoutComponent from "./layout.astro";
+import Layout from "./layout.astro";
 
-const title = "Layout";
-
-const seo: ComponentProps<typeof LayoutComponent>["seo"] = {
+export const components = mdxComponents;
+export const title = "Layout";
+export const seo = {
   nofollow: true,
   noindex: true,
   title: `${title} | Templates | Components | Design system`,
 };
----
 
-<LayoutComponent seo={seo}>
+<Layout seo={seo}>
   <Heading as="h1">{title}</Heading>
   <p>This is the main content of the page.</p>
-</LayoutComponent>
+</Layout>

@@ -1,0 +1,24 @@
+---
+title: "Page with breadcrumb and aside"
+---
+import { components as mdxComponents } from "../../../mdx";
+import PageLayout from "../page-layout.astro";
+
+export const components = mdxComponents;
+export const title = "Page with breadcrumb and aside";
+export const breadcrumb = [
+  { label: "Home", url: "#home" },
+  { label: "Blog", url: "#blog" },
+  { label: "Posts", url: "#posts" },
+  { label: title, url: Astro.url.href },
+];
+export const seo = {
+  nofollow: true,
+  noindex: true,
+  title: `${title} | Templates | Components | Design system`,
+};
+
+<PageLayout breadcrumb={breadcrumb} seo={seo} title={title}>
+  <p slot="body">This is the main content of the page.</p>
+  <div slot="aside">Some aside here</div>
+</PageLayout>

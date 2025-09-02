@@ -1,7 +1,21 @@
 import { experimental_AstroContainer as AstroContainer } from "astro/container";
 import type { ComponentProps } from "astro/types";
-import { beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import {
+  createLayoutMockEntries,
+  setupCollectionMocks,
+} from "../../../../tests/helpers/astro-content";
+import { clearEntriesIndexCache } from "../../../lib/astro/collections/indexes";
 import StoryLayout from "./story-layout.astro";
+
+vi.mock("astro:content", async (importOriginal) => {
+  const mod = await importOriginal<typeof import("astro:content")>();
+  return {
+    ...mod,
+    getCollection: vi.fn(() => []),
+    getEntry: vi.fn(),
+  };
+});
 
 type LocalTestContext = {
   container: AstroContainer;
@@ -10,6 +24,14 @@ type LocalTestContext = {
 describe("StoryLayout", () => {
   beforeEach<LocalTestContext>(async (context) => {
     context.container = await AstroContainer.create();
+
+    const layoutEntries = createLayoutMockEntries(["en", "fr"]);
+    setupCollectionMocks(layoutEntries);
+  });
+
+  afterEach(() => {
+    clearEntriesIndexCache();
+    vi.clearAllMocks();
   });
 
   it<LocalTestContext>("can render a story", async ({ container }) => {

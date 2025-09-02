@@ -1,7 +1,23 @@
 import { experimental_AstroContainer as AstroContainer } from "astro/container";
+import { Fragment } from "astro/jsx-runtime";
 import type { ComponentProps } from "astro/types";
-import { beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import StoryIndex from "./story-index.astro";
+
+vi.mock("astro:content", async (importOriginal) => {
+  const mod = await importOriginal<typeof import("astro:content")>();
+  return {
+    ...mod,
+    getCollection: vi.fn(() => []),
+    getEntry: vi.fn(),
+  };
+});
+
+vi.mock("virtual:astro-stories/Layout", () => {
+  return {
+    default: Fragment,
+  };
+});
 
 type LocalTestContext = {
   container: AstroContainer;
@@ -10,6 +26,10 @@ type LocalTestContext = {
 describe("StoryIndex", () => {
   beforeEach<LocalTestContext>(async (context) => {
     context.container = await AstroContainer.create();
+  });
+
+  afterEach(() => {
+    vi.clearAllMocks();
   });
 
   it<LocalTestContext>("renders a list of stories", async ({ container }) => {

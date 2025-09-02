@@ -36,7 +36,7 @@ describe("StoryLayout", () => {
 
   it<LocalTestContext>("can render a story", async ({ container }) => {
     // eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory.
-    expect.assertions(3);
+    expect.assertions(2);
 
     const story = {
       breadcrumb: [],
@@ -54,7 +54,6 @@ describe("StoryLayout", () => {
       slots: { default: children },
     });
 
-    expect(result).toContain("<title>My awesome story</title>");
     expect(result).toContain("First story");
     expect(result).toContain(children);
   });

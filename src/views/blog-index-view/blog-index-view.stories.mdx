@@ -1,18 +1,18 @@
 ---
-import type { ComponentProps } from "astro/types";
-import PageLayout from "../../components/templates/page-layout/page-layout.astro";
-import BlogIndexViewComponent from "./blog-index-view.astro";
+title: "BlogIndexView"
+---
+import { components as mdxComponents } from "../../components/mdx";
+import BlogIndexView from "./blog-index-view.astro";
 
-const title = "BlogIndexView";
-
-const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
+export const components = mdxComponents;
+export const title = "BlogIndexView";
+export const breadcrumb = [
   { label: "Home", url: "/" },
   { label: "Design system", url: "/design-system" },
   { label: "Views", url: "/design-system/views" },
-  { label: title, url: Astro.url.href },
+  { label: title, url: "/design-system/views/blog-index-view" },
 ];
-
-const seo: ComponentProps<typeof PageLayout>["seo"] = {
+export const seo = {
   nofollow: true,
   noindex: true,
   title: breadcrumb
@@ -21,9 +21,8 @@ const seo: ComponentProps<typeof PageLayout>["seo"] = {
     .map((crumb) => crumb.label)
     .join(" | "),
 };
-
-const fakePage: ComponentProps<typeof BlogIndexViewComponent>["entry"] = {
-  Content: Fragment,
+export const fakePage = {
+  Content: null,
   collection: "index.pages",
   description: "The blog index page.",
   hasContent: false,
@@ -42,6 +41,5 @@ const fakePage: ComponentProps<typeof BlogIndexViewComponent>["entry"] = {
   slug: "blog",
   title,
 };
----
 
-<BlogIndexViewComponent breadcrumb={breadcrumb} entry={fakePage} seo={seo} />
+<BlogIndexView breadcrumb={breadcrumb} entry={fakePage} seo={seo} />

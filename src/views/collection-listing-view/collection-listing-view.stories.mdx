@@ -1,18 +1,18 @@
 ---
-import type { ComponentProps } from "astro/types";
-import PageLayout from "../../components/templates/page-layout/page-layout.astro";
-import CollectionListingViewComponent from "./collection-listing-view.astro";
+title: "CollectionListingView"
+---
+import { components as mdxComponents } from "../../components/mdx";
+import CollectionListingView from "./collection-listing-view.astro";
 
-const title = "CollectionListingView";
-
-const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
+export const components = mdxComponents;
+export const title = "CollectionListingView";
+export const breadcrumb = [
   { label: "Home", url: "/" },
   { label: "Design system", url: "/design-system" },
   { label: "Views", url: "/design-system/views" },
-  { label: title, url: Astro.url.href },
+  { label: title, url: "/design-system/views/collection-listing-view" },
 ];
-
-const seo: ComponentProps<typeof PageLayout>["seo"] = {
+export const seo = {
   nofollow: true,
   noindex: true,
   title: breadcrumb
@@ -21,10 +21,9 @@ const seo: ComponentProps<typeof PageLayout>["seo"] = {
     .map((crumb) => crumb.label)
     .join(" | "),
 };
-
-const fakePage: ComponentProps<typeof CollectionListingViewComponent>["entry"] =
+export const fakePage =
   {
-    Content: Fragment,
+    Content: null,
     collection: "index.pages",
     description: "A listing page.",
     hasContent: false,
@@ -77,18 +76,16 @@ const fakePage: ComponentProps<typeof CollectionListingViewComponent>["entry"] =
     slug: "listing",
     title,
   };
-
-const pagination = {
+export const pagination = {
   currentPage: 1,
   end: 2,
   lastPage: 2,
   size: 2,
   start: 1,
   total: 2,
-} satisfies ComponentProps<typeof CollectionListingViewComponent>["pagination"];
----
+};
 
-<CollectionListingViewComponent
+<CollectionListingView
   breadcrumb={breadcrumb}
   entry={fakePage}
   feed={null}

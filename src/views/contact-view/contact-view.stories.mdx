@@ -1,18 +1,18 @@
 ---
-import type { ComponentProps } from "astro/types";
-import PageLayout from "../../components/templates/page-layout/page-layout.astro";
-import ContactViewComponent from "./contact-view.astro";
+title: "ContactView"
+---
+import { components as mdxComponents } from "../../components/mdx";
+import ContactView from "./contact-view.astro";
 
-const title = "ContactView";
-
-const breadcrumb: ComponentProps<typeof PageLayout>["breadcrumb"] = [
+export const components = mdxComponents;
+export const title = "ContactView";
+export const breadcrumb = [
   { label: "Home", url: "/" },
   { label: "Design system", url: "/design-system" },
   { label: "Views", url: "/design-system/views" },
-  { label: title, url: Astro.url.href },
+  { label: title, url: "/design-system/views/contact-view" },
 ];
-
-const seo: ComponentProps<typeof PageLayout>["seo"] = {
+export const seo = {
   nofollow: true,
   noindex: true,
   title: breadcrumb
@@ -21,9 +21,8 @@ const seo: ComponentProps<typeof PageLayout>["seo"] = {
     .map((crumb) => crumb.label)
     .join(" | "),
 };
-
-const fakePage: ComponentProps<typeof ContactViewComponent>["entry"] = {
-  Content: Fragment,
+export const fakePage = {
+  Content: null,
   collection: "pages",
   description: "The contact page.",
   hasContent: false,
@@ -42,6 +41,5 @@ const fakePage: ComponentProps<typeof ContactViewComponent>["entry"] = {
   slug: "contact",
   title,
 };
----
 
-<ContactViewComponent breadcrumb={breadcrumb} entry={fakePage} seo={seo} />
+<ContactView breadcrumb={breadcrumb} entry={fakePage} seo={seo} />

@@ -616,6 +616,7 @@ All commands are run from the root of the project, from a terminal.
 * Thanks to [@MoustaphaDev](https://github.com/MoustaphaDev) for the inspiration for my Dev-only pages feature with [astro-dev-only-routes](https://github.com/MoustaphaDev/astro-dev-only-routes).
 * Thanks [@Princesseuh](https://github.com/Princesseuh), [@delucis](https://github.com/delucis) and [@HiDeoo](https://github.com/HiDeoo) for the inspiration to handle RSS feeds.
 * Thanks [@Princesseuh](https://github.com/Princesseuh) for the inspiration for my custom glob loader.
+* Thanks to the [Starlight](https://github.com/withastro/starlight) team for the inspiration on how to handle custom layout for my stories.
 
 ## License
 

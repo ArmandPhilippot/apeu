@@ -4,4 +4,6 @@
 
 Enables Astro experimental fonts API to manage fonts.
 
-The fallback used when the fonts can't be loaded could be different than before. Other than that, I choose to use a minor mostly because this is an experimental API.
+This change relies on an experimental API and because of that, a minor seems more appropriate.
+
+Note that the fallback solution used when fonts cannot be loaded might be different from the one used previously.

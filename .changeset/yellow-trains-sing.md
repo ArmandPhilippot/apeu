@@ -2,13 +2,13 @@
 "apeu": major
 ---
 
-<!-- cSpell:ignore extrait s'agit utilisée moteurs -->
-
 Adds a `permaslug` frontmatter property to localize the routes.
 
 This project no longer localize routes in French for you. A `permaslug` property has been introduced to let you define the translation by yourself in the frontmatter of your content files.
 
 If you were relying on automatic translation for your routes, you'll need to update your files. For example, given a route `/en/blog/posts/post-1` previously localized in French as `/blog/articles/post-1`, you will need to update your `content/fr/blog/posts/index.mdx` file to include a `permaslug`:
+
+<!-- cSpell:ignore extrait s'agit utilisée moteurs -->
 
 ```diff
 ---

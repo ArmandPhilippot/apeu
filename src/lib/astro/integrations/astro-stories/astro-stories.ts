@@ -115,7 +115,15 @@ export function astroStories({
   return {
     name: integrationName,
     hooks: {
-      "astro:config:setup"({ config, injectRoute, logger, updateConfig }) {
+      "astro:config:setup"({
+        command,
+        config,
+        injectRoute,
+        logger,
+        updateConfig,
+      }) {
+        if (command !== "dev") return;
+
         const sanitizedBase = sanitizeBase(base, logger);
         const layoutPath = isString(layout)
           ? resolve(fileURLToPath(config.root), layout)

@@ -13,7 +13,7 @@ The source code of [my personal website](https://armand.philippot.eu).
 
 ### Dev-only pages
 
-This project supports and uses dev-only pages. Those pages are accessible in your browser in dev mode but they won't be built (so they are not available in preview mode). You can find them thanks to their `_dev_` prefix.
+This project supports dev-only pages. Those pages are accessible in your browser in dev mode but they won't be built (so they are not available in preview mode). You can find them thanks to their `_dev_` prefix.
 
 Why `_dev_`? Because [Astro already uses a single underscore](https://docs.astro.build/en/guides/routing/#excluding-pages) to exclude the pages from being built so we need a different prefix to differentiate them and a double underscore could be confusing.
 
@@ -35,6 +35,9 @@ The following pattern is not supported because it does not make sense:
 
 To access the page in your browser, you need to remove the prefix from the slug. For example, the existing `src/pages/_dev_design-system` folder can be accessed in your browser with the following url `http://localhost:4321/design-system`.
 
+> [!NOTE]
+> This integration is no longer used, but is kept in the project in case we need it again later.
+
 ### Stories
 
 Currently, it is not possible to use [Storybook with Astro](https://github.com/storybookjs/storybook/issues/18356). So I added an Astro integration to be able to test the components in isolation. This is not a Storybook replacement: you can't play with props, dynamically generate a table of available props, etc.
@@ -45,51 +48,44 @@ To create stories for your components or views, use the following structure:
 /src/components
 ├── button/
 │   ├── button.astro
-│   └── button.stories.astro
+│   └── button.stories.mdx
 └── link/
     ├── link.astro
-    └── link.stories.astro
+    └── link.stories.mdx
 ```
 
 Where:
 
 - `button.astro` is your Astro component
-- `button.stories.astro` is your component's stories
+- `button.stories.mdx` is your component's stories
 
-The `button.stories.astro` file is treated as a regular Astro page: import the component, use a layout if needed, and use some HTML markup to document the component.
+Any `<filename>.stories.mdx` is treated as a story: import the component you want to document and it will be injected as route, based on its path.
 
-> [!NOTE]
-> The VS Code extension will infer the component name inside the `stories.astro` file as `Button` because of the filename. To import your component you'll need to rename the import (e.g. `ButtonComponent`) to avoid conflicts.
+When you need more general stories, you can store them in `src/stories`. They will be injected as top-level pages.
 
 The integration supports a base path to inject the stories. So with the current configuration and using the previous structure, you can access your stories in a browser with the following slugs:
 
 - `/design-system/components/button`
 - `/design-system/components/link`
+- `/design-system/tokens`
 
-If you need to divide your stories in multiple files, you can use a `stories` directory in your component directory. For example, both the following structures are supported:
+If you need to divide your stories in multiple files, you can use a `stories` directory in your component directory. For example, both the following structure is supported:
 
 ```text
 /src/components
-├── button/
-│   ├── stories/
-│   │   ├── primary-button.stories.astro
-│   │   └── secondary-button.stories.astro
-│   ├── button.astro
-│   └── button.stories.astro
-└── link/
+└── button/
     ├── stories/
-    │   ├── link.stories.astro
-    │   ├── nav-link.stories.astro
-    │   └── index.stories.astro
-    └── link.astro
+    │   ├── primary-button.stories.mdx
+    │   └── secondary-button.stories.mdx
+    └── button.astro
 ```
 
-It is up to you to define links to your sub-stories in `index.stories.astro` or `button.stories.astro`.
+The stories indexes (or listing pages) will be automatically generated.
 
 > [!IMPORTANT]
-> If you create a new story file (ie. `.stories.astro`), you'll need to restart the dev server to be able to access it in your browser.
+> If you create a new story file (ie. `.stories.mdx`) or move one of them, you'll need to restart the dev server to be able to access it in your browser.
 
-Only `.astro` extension is supported for stories. I'd like to use `.mdx` but if I'm right, Astro integrations can only inject routes for `.astro`, `.js` and `.ts` files.
+Only `.mdx` extension is supported for stories.
 
 ### i18n
 
@@ -258,11 +254,6 @@ Before starting, please follow the instructions in [Setup](#setup).
 │   │   └── astro/
 │   │       └── integrations/
 │   ├── pages/
-│   │   ├── _dev_design-system/
-│   │   │   ├── components/
-│   │   │   ├── tokens/
-│   │   │   ├── views/
-│   │   │   └── index.astro
 │   │   ├── [...page]/
 │   │   │   ├── feed.xml.ts
 │   │   │   └── index.astro
@@ -276,6 +267,8 @@ Before starting, please follow the instructions in [Setup](#setup).
 │   │   └── robots.txt.ts
 │   ├── services/
 │   │   └── mailer/
+│   ├── stories/
+│   │   └── tokens.mdx
 │   ├── styles/
 │   ├── translations/
 │   │   └── en.json
@@ -295,6 +288,7 @@ In details:
 - `src/lib/`: the features based on dependencies (e.g. Astro integration or Shiki transformers),
 - `src/pages/`: the special components used to create pages and API routes,
 - `src/services/`: the website services (e.g. mailer),
+- `src/stories/`: the generic stories injected as top-level pages under `/design-system`,
 - `src/styles/`: global styles, variables and helpers should be placed in this directory,
 - `src/translations/`: the JSON files used to store all UI strings and routes for one language,
 - `src/types/`: the Typescript types shared across the application,
@@ -325,7 +319,7 @@ When creating a new component you should also create stories for it and use the 
 /src/components/atoms/
 ├── button/
 │   ├── button.astro
-│   ├── button.stories.astro
+│   ├── button.stories.mdx
 │   └── button.test.ts
 └── other components
 ```
@@ -373,7 +367,7 @@ When creating a new view you should also create stories for it and use the follo
 /src/views/
 ├── view-name/
 │   ├── view-name.astro
-│   ├── view-name.stories.astro
+│   ├── view-name.stories.mdx
 │   └── view-name.test.ts
 └── other views
 ```

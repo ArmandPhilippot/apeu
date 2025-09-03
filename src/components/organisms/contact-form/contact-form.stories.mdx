@@ -2,12 +2,25 @@
 title: "ContactForm"
 ---
 import { components as mdxComponents } from "../../mdx";
+import CodePreview from "../../molecules/code-preview/code-preview.astro";
 import ContactForm from "./contact-form.astro";
 
 export const components = mdxComponents;
 
-## Usage
+## Introduction
 
-A <code>ContactForm</code> component should be used to authorize the user to contact you by email.
+A `ContactForm` component should be used to authorize the user to contact you by email.
 
-<ContactForm id="usage-example" />
+<CodePreview
+  code={`import ContactForm from "./components/organisms/contact-form/contact-form.astro";`}
+  label="How to import"
+  lang="ts"
+/>
+
+<CodePreview
+  code={`<ContactForm id="usage-example" />`}
+  label="Basic use"
+  lang="astro"
+>
+  <ContactForm id="usage-example" />
+</CodePreview>

@@ -1,8 +1,9 @@
 ---
 title: "ContactCard"
 ---
-import { components as mdxComponents } from "../../mdx";
 import Heading from "../../atoms/heading/heading.astro";
+import { components as mdxComponents } from "../../mdx";
+import CodePreview from "../../molecules/code-preview/code-preview.astro";
 import ContactCard from "./contact-card.astro";
 
 export const components = mdxComponents;
@@ -13,28 +14,76 @@ export const socialMedia = {
   stackoverflow: "#stackoverflow",
 }
 
-## Usage
+## Introduction
 
-An <code>ContactCard</code> component should be used to display contact methods.
+An `ContactCard` component should be used to display contact methods.
 
-## Default
+<CodePreview
+  code={`import ContactCard from "./components/organisms/contact-card/contact-card.astro";`}
+  label="How to import"
+  lang="ts"
+/>
 
-<ContactCard contactPageRoute="#contact" isCentered />
+<CodePreview
+  code={`<ContactCard contactPageRoute="#contact" />`}
+  label="Basic use"
+  lang="astro"
+>
+  <ContactCard contactPageRoute="#contact" />
+</CodePreview>
 
 ## With social links
 
-<ContactCard
-  contactPageRoute="#contact"
-  isCentered
-  socialMedia={socialMedia}
-/>
+<CodePreview
+  code={`---
+const socialMedia = {
+    diaspora: "#diaspora",
+    github: "#github",
+    linkedin: "#linkedin",
+    stackoverflow: "#stackoverflow",
+}
+---
+<ContactCard contactPageRoute="#contact" socialMedia={socialMedia} />`}
+  label="Showing social media"
+  lang="astro"
+>
+  <ContactCard
+    contactPageRoute="#contact"
+    socialMedia={{
+      diaspora: "#diaspora",
+      github: "#github",
+      linkedin: "#linkedin",
+      stackoverflow: "#stackoverflow",
+    }}
+  />
+</CodePreview>
 
 ## With heading
 
-<ContactCard
-  contactPageRoute="#contact"
-  isCentered
-  socialMedia={socialMedia}
+<CodePreview
+  code={`---
+const socialMedia = {
+    diaspora: "#diaspora",
+    github: "#github",
+    linkedin: "#linkedin",
+    stackoverflow: "#stackoverflow",
+}
+---
+<ContactCard contactPageRoute="#contact" socialMedia={socialMedia}>
+    <Heading as="h3" slot="heading">Contact</Heading>
+</ContactCard>`}
+  label="Adding a heading"
+  lang="astro"
 >
-  <Heading as="h3" slot="heading">Contact</Heading>
-</ContactCard>
+  <ContactCard
+    contactPageRoute="#contact"
+    socialMedia={{
+      diaspora: "#diaspora",
+      github: "#github",
+      linkedin: "#linkedin",
+      stackoverflow: "#stackoverflow",
+    }}
+  >
+    <Heading as="h3" slot="heading">Contact</Heading>
+  </ContactCard>
+</CodePreview>

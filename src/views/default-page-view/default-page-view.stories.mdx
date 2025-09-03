@@ -1,0 +1,46 @@
+---
+title: "DefaultPageView"
+isStandalone: true
+---
+import { components as mdxComponents } from "../../components/mdx";
+import DefaultPageView from "./default-page-view.astro";
+
+export const components = mdxComponents;
+export const title = "DefaultPageView";
+export const breadcrumb = [
+  { label: "Home", url: "/" },
+  { label: "Design system", url: "/design-system" },
+  { label: "Views", url: "/design-system/views" },
+  { label: title, url: "/design-system/views/default-page-view" },
+];
+export const seo = {
+  nofollow: true,
+  noindex: true,
+  title: breadcrumb
+    .slice(1)
+    .reverse()
+    .map((crumb) => crumb.label)
+    .join(" | "),
+};
+export const fakePage = {
+  Content: null,
+  collection: "pages",
+  description: "A default page.",
+  hasContent: false,
+  headings: [],
+  id: "en/default-page",
+  locale: "en",
+  meta: {
+    publishedOn: new Date(),
+    updatedOn: new Date(),
+  },
+  route: "/default-page",
+  seo: {
+    description: "",
+    title,
+  },
+  slug: "default-page",
+  title,
+};
+
+<DefaultPageView breadcrumb={breadcrumb} entry={fakePage} seo={seo} />

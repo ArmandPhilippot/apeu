@@ -1,0 +1,89 @@
+---
+title: "ContactCard"
+---
+import Heading from "../../atoms/heading/heading.astro";
+import { components as mdxComponents } from "../../mdx";
+import CodePreview from "../../molecules/code-preview/code-preview.astro";
+import ContactCard from "./contact-card.astro";
+
+export const components = mdxComponents;
+export const socialMedia = {
+  diaspora: "#diaspora",
+  github: "#github",
+  linkedin: "#linkedin",
+  stackoverflow: "#stackoverflow",
+}
+
+## Introduction
+
+An `ContactCard` component should be used to display contact methods.
+
+<CodePreview
+  code={`import ContactCard from "./components/organisms/contact-card/contact-card.astro";`}
+  label="How to import"
+  lang="ts"
+/>
+
+<CodePreview
+  code={`<ContactCard contactPageRoute="#contact" />`}
+  label="Basic use"
+  lang="astro"
+>
+  <ContactCard contactPageRoute="#contact" />
+</CodePreview>
+
+## With social links
+
+<CodePreview
+  code={`---
+const socialMedia = {
+    diaspora: "#diaspora",
+    github: "#github",
+    linkedin: "#linkedin",
+    stackoverflow: "#stackoverflow",
+}
+---
+<ContactCard contactPageRoute="#contact" socialMedia={socialMedia} />`}
+  label="Showing social media"
+  lang="astro"
+>
+  <ContactCard
+    contactPageRoute="#contact"
+    socialMedia={{
+      diaspora: "#diaspora",
+      github: "#github",
+      linkedin: "#linkedin",
+      stackoverflow: "#stackoverflow",
+    }}
+  />
+</CodePreview>
+
+## With heading
+
+<CodePreview
+  code={`---
+const socialMedia = {
+    diaspora: "#diaspora",
+    github: "#github",
+    linkedin: "#linkedin",
+    stackoverflow: "#stackoverflow",
+}
+---
+<ContactCard contactPageRoute="#contact" socialMedia={socialMedia}>
+    <Heading as="h3" slot="heading">Contact</Heading>
+</ContactCard>`}
+  label="Adding a heading"
+  lang="astro"
+>
+  <ContactCard
+    contactPageRoute="#contact"
+    socialMedia={{
+      diaspora: "#diaspora",
+      github: "#github",
+      linkedin: "#linkedin",
+      stackoverflow: "#stackoverflow",
+    }}
+  >
+    <Heading as="h3" slot="heading">Contact</Heading>
+  </ContactCard>
+</CodePreview>

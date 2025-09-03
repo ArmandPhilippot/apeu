@@ -1,0 +1,24 @@
+---
+import Layout from "virtual:astro-stories/Layout";
+import type { StoriesIndex } from "../types/internal";
+
+type Props = StoriesIndex;
+
+const { ...index } = Astro.props;
+---
+
+<Layout story={index}>
+  {
+    index.children.length > 0 ? (
+      <ul>
+        {index.children.map(({ label, route }) => (
+          <li>
+            <a href={route}>{label}</a>
+          </li>
+        ))}
+      </ul>
+    ) : (
+      "No stories found."
+    )
+  }
+</Layout>

@@ -1,0 +1,95 @@
+---
+title: "CollectionListingView"
+isStandalone: true
+---
+import { components as mdxComponents } from "../../components/mdx";
+import CollectionListingView from "./collection-listing-view.astro";
+
+export const components = mdxComponents;
+export const title = "CollectionListingView";
+export const breadcrumb = [
+  { label: "Home", url: "/" },
+  { label: "Design system", url: "/design-system" },
+  { label: "Views", url: "/design-system/views" },
+  { label: title, url: "/design-system/views/collection-listing-view" },
+];
+export const seo = {
+  nofollow: true,
+  noindex: true,
+  title: breadcrumb
+    .slice(1)
+    .reverse()
+    .map((crumb) => crumb.label)
+    .join(" | "),
+};
+export const fakePage =
+  {
+    Content: null,
+    collection: "index.pages",
+    description: "A listing page.",
+    hasContent: false,
+    headings: [],
+    id: "en/listing",
+    locale: "en",
+    meta: {
+      publishedOn: new Date(),
+      updatedOn: new Date(),
+    },
+    related: {
+      collection: "notes",
+      entries: [
+        {
+          collection: "notes",
+          description: "A first note.",
+          id: "en/first-note",
+          locale: "en",
+          meta: {
+            publishedOn: new Date(),
+            tags: null,
+            updatedOn: new Date(),
+          },
+          route: "#first-note",
+          slug: "first-note",
+          title: "First note",
+        },
+        {
+          collection: "notes",
+          description: "A second note.",
+          id: "en/second-note",
+          locale: "en",
+          meta: {
+            publishedOn: new Date(),
+            tags: null,
+            updatedOn: new Date(),
+          },
+          route: "#second-note",
+          slug: "second-note",
+          title: "Second note",
+        },
+      ],
+      total: 3,
+    },
+    route: "/listing",
+    seo: {
+      description: "",
+      title,
+    },
+    slug: "listing",
+    title,
+  };
+export const pagination = {
+  currentPage: 1,
+  end: 2,
+  lastPage: 2,
+  size: 2,
+  start: 1,
+  total: 2,
+};
+
+<CollectionListingView
+  breadcrumb={breadcrumb}
+  entry={fakePage}
+  feed={null}
+  pagination={pagination}
+  seo={seo}
+/>

@@ -1,49 +1,39 @@
 import { describe, expect, it } from "vitest";
-import { getStoryNameFromSlug, getStoryRoute } from "./stories";
+import { getStorySeo } from "./stories";
 
-describe("get-story-route", () => {
-  it("returns the story route from its path", () => {
-    const path = "/some/path/to/story";
-    const route = getStoryRoute(path);
+describe("get-story-seo", () => {
+  it("computes seo meta from a breadcrumb", () => {
+    const meta = getStorySeo({
+      breadcrumb: [
+        { label: "Home", url: "/" },
+        { label: "Design system", url: "/design-system" },
+        { label: "Components", url: "/design-system/components" },
+        { label: "Atoms", url: "/design-system/components/atoms" },
+        { label: "Story", url: "/design-system/components/atoms/story" },
+      ],
+    });
 
-    expect(route).toMatchInlineSnapshot(`"/some/path/to"`);
+    expect(meta).toStrictEqual({
+      title: "Story | Atoms | Components | Design system",
+      noindex: true,
+      nofollow: true,
+    });
   });
 
-  it("can return a sub story route", () => {
-    const path = "/some/path/to/stories/single-story.stories.astro";
-    const route = getStoryRoute(path);
+  it("allows overriding seo flags", () => {
+    const meta = getStorySeo({
+      breadcrumb: [
+        { label: "Home", url: "/" },
+        { label: "Design system", url: "/design-system" },
+        { label: "Components", url: "/design-system/components" },
+        { label: "Atoms", url: "/design-system/components/atoms" },
+        { label: "Story", url: "/design-system/components/atoms/story" },
+      ],
+      seo: { noindex: false, nofollow: false, title: "Overridden" },
+    });
 
-    expect(route).toMatchInlineSnapshot(`"/some/path/to/single-story"`);
-  });
-
-  it("can return the stories index route", () => {
-    const path = "/some/path/to/stories/index.stories.astro";
-    const route = getStoryRoute(path);
-
-    expect(route).toMatchInlineSnapshot(`"/some/path/to"`);
-  });
-});
-
-describe("get-story-name-from-slug", () => {
-  it("returns the story name from its slug", () => {
-    const slug = "/the/story/slug";
-    const storyName = getStoryNameFromSlug(slug);
-
-    expect(storyName).toMatchInlineSnapshot(`"Slug"`);
-  });
-
-  it("can return the story name from slug separated by hyphens", () => {
-    const slug = "/the/story/slug-separated-by-hyphens";
-    const storyName = getStoryNameFromSlug(slug);
-
-    expect(storyName).toMatchInlineSnapshot(`"SlugSeparatedByHyphens"`);
-  });
-
-  it("throws an error if the name can't be determined", () => {
-    const slug = "";
-
-    expect(() => getStoryNameFromSlug(slug)).toThrowErrorMatchingInlineSnapshot(
-      `[Error: Could not retrieve the story name from its slug. Are you sure this slug match a story?]`
-    );
+    expect(meta.noindex).toBe(false);
+    expect(meta.nofollow).toBe(false);
+    expect(meta.title).toBe("Overridden");
   });
 });

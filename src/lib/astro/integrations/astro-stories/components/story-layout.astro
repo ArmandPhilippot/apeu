@@ -1,0 +1,26 @@
+---
+import type { StoryLayoutProps } from "../types/public";
+
+type Props = StoryLayoutProps;
+
+const { story } = Astro.props;
+const title =
+  story.type === "story"
+    ? (story.frontmatter.title ?? story.label)
+    : story.label;
+---
+
+<html lang={Astro.currentLocale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+      name="viewport"
+    />
+    <title>{title}</title>
+  </head>
+  <body>
+    <h1>{title}</h1>
+    <slot />
+  </body>
+</html>

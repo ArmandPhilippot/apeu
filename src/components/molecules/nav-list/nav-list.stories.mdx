@@ -1,0 +1,60 @@
+---
+title: "NavList"
+---
+import { components as mdxComponents } from "../../mdx";
+import CodePreview from "../code-preview/code-preview.astro";
+import NavItem from "../nav-item/nav-item.astro";
+import NavList from "./nav-list.astro";
+
+export const components = mdxComponents;
+export const items = [
+  { label: "Item 1", url: "#item-1" },
+  { label: "Item 2", url: "#item-2" },
+  { label: "Item 3", url: "#item-3" },
+];
+
+## Introduction
+
+This component is used to define a navigation list. It accepts an `items` property and expect a function as child to render these items. You can choose the way to render the children but it is recommended to use the `NavItem` component.
+
+<CodePreview
+  code={`import NavList from "./components/molecules/nav-list/nav-list.astro";`}
+  label="How to import"
+  lang="ts"
+/>
+
+<CodePreview
+  code={`<NavList
+    items={[
+      { label: "Item 1", url: "#item-1" },
+      { label: "Item 2", url: "#item-2" },
+      { label: "Item 3", url: "#item-3" },
+    ]}
+>
+    {
+      (item) => (
+        <NavItem href={item.url} icon={item.icon} iconSize={item.iconSize}>
+          {item.label}
+        </NavItem>
+      )
+    }
+</NavList>`}
+  label="Basic use"
+  lang="astro"
+>
+  <NavList
+    items={[
+      { label: "Item 1", url: "#item-1" },
+      { label: "Item 2", url: "#item-2" },
+      { label: "Item 3", url: "#item-3" },
+    ]}
+  >
+    {
+      (item) => (
+        <NavItem href={item.url} icon={item.icon} iconSize={item.iconSize}>
+          {item.label}
+        </NavItem>
+      )
+    }
+  </NavList>
+</CodePreview>

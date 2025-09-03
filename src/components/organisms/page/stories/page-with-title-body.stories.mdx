@@ -1,0 +1,12 @@
+---
+title: "Page with title and body"
+---
+import { components as mdxComponents } from "../../../mdx";
+import Page from "../page.astro";
+
+export const components = mdxComponents;
+export const title = "Page with title and body";
+
+<Page heading={title}>
+  <p slot="body">This is the main content of the page.</p>
+</Page>

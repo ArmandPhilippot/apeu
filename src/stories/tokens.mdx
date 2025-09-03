@@ -1,0 +1,263 @@
+---
+title: "Tokens"
+---
+import TokenPreview from "../components/stories/token-preview.astro";
+import { components as mdxComponents } from "../components/mdx";
+
+export const components = mdxComponents;
+
+{/* See `src/styles/variables/borders.css` for the available tokens. */}
+export const borders = {
+  radius: ["sm", "md", "lg", "rounded"],
+  sizes: ["sm", "md", "lg", "xl"],
+};
+
+{/* See `src/styles/variables/colors.css` for the available tokens. */}
+export const colors = {
+  contexts: [
+    "critical",
+    "discovery",
+    "idea",
+    "info",
+    "muted",
+    "primary",
+    "regular",
+    "success",
+    "warning",
+  ],
+  variants: [
+    "subtle",
+    "lighter",
+    "light",
+    "default",
+    "dark",
+    "darker",
+    "faded",
+  ],
+};
+
+{/* See `src/styles/variables/fonts.css` for the available tokens. */}
+export const fonts = {
+  families: ["mono", "regular"],
+  sizes: ["sm", "md", "lg", "xl", "2xl", "3xl", "4xl", "5xl"],
+  weights: ["bold", "regular"],
+};
+
+{/* See `src/styles/variables/shadows.css` for the available tokens. */}
+export const shadows = {
+  elevations: ["raised", "elevated", "floating"],
+  directions: {
+    x: ["right", "center", "left"],
+    y: ["bottom", "top"],
+  },
+};
+
+{/* See `src/styles/variables/spacings.css` for the available tokens. */}
+export const spacings = [
+  "4xs",
+  "3xs",
+  "2xs",
+  "xs",
+  "sm",
+  "md",
+  "lg",
+  "xl",
+  "2xl",
+];
+
+## Fonts
+
+### Family
+
+<div class="wrapper flex">
+    {
+    fonts.families.map((family) => (
+        <TokenPreview isInline token={`--font-family-${family}`}>
+        <p style={`font-family: var(--font-family-${family});`}>
+            The quick brown fox jumps over the lazy dog
+        </p>
+        </TokenPreview>
+    ))
+    }
+</div>
+
+### Size
+
+<div class="wrapper flex">
+    {
+    fonts.sizes.map((size) => (
+        <TokenPreview isInline token={`--font-size-${size}`}>
+        <p style={`font-size: var(--font-size-${size});`}>
+            The quick brown fox jumps over the lazy dog
+        </p>
+        </TokenPreview>
+    ))
+    }
+</div>
+
+### Weights
+
+<div class="wrapper flex">
+    {
+    fonts.weights.map((weight) => (
+        <TokenPreview isInline token={`--font-weight-${weight}`}>
+        <p style={`font-weight: var(--font-weight-${weight});`}>
+            The quick brown fox jumps over the lazy dog
+        </p>
+        </TokenPreview>
+    ))
+    }
+</div>
+
+## Spacings
+
+<div class="wrapper flex">
+    {
+    spacings.map((spacing) => (
+        <TokenPreview isInline token={`--spacing-${spacing}`}>
+        <div
+            style={`display:flex;flex-flow:row nowrap;gap: var(--spacing-${spacing});`}
+        >
+            <div class="token-box" style="border-color: var(--color-border);" />
+            <div class="token-box" style="border-color: var(--color-border);" />
+        </div>
+        </TokenPreview>
+    ))
+    }
+</div>
+
+## Borders
+
+### Size
+
+<div class="wrapper flex">
+    {
+    borders.sizes.map((size) => (
+        <TokenPreview isInline token={`--border-size-${size}`}>
+        <div
+            class="token-box"
+            style={`border-color: var(--color-border);border-width: var(--border-size-${size});`}
+        />
+        </TokenPreview>
+    ))
+    }
+</div>
+
+### Radius
+
+<div class="wrapper flex">
+    {
+    borders.radius.map((radii) => (
+        <TokenPreview isInline token={`--border-radii-${radii}`}>
+        <div
+            class="token-box"
+            style={`border-color: var(--color-border);border-radius: var(--border-radii-${radii});`}
+        />
+        </TokenPreview>
+    ))
+    }
+</div>
+
+## Colors
+
+### Surfaces
+
+<div class="wrapper grid">
+    {
+    colors.contexts.map((context) => (
+        <div class="wrapper flex">
+        {colors.variants.map((variant) => {
+            const token =
+            variant === "default"
+                ? `--color-${context}`
+                : `--color-${context}-${variant}`;
+            return (
+            <TokenPreview token={token}>
+                <div class="token-box" style={`background: var(${token});`} />
+            </TokenPreview>
+            );
+        })}
+        </div>
+    ))
+    }
+</div>
+
+### Texts on surfaces
+
+<div class="wrapper grid">
+    {
+    colors.contexts.map((context) => (
+        <div class="wrapper flex">
+        <TokenPreview token={`--color-on-${context}`}>
+            <div
+            class="token-box"
+            style={`background: var(--color-${context});color: var(--color-on-${context});`}
+            >
+            Preview
+            </div>
+        </TokenPreview>
+        <TokenPreview token={`--color-on-${context}-faded`}>
+            <div
+            class="token-box"
+            style={`background: var(--color-${context}-faded);color: var(--color-on-${context}-faded);`}
+            >
+            Preview
+            </div>
+        </TokenPreview>
+        <TokenPreview token={`--color-on-${context}-subtle`}>
+            <div
+            class="token-box"
+            style={`background: var(--color-${context}-subtle);color: var(--color-on-${context}-subtle);`}
+            >
+            Preview
+            </div>
+        </TokenPreview>
+        </div>
+    ))
+    }
+</div>
+
+## Shadows
+
+### Elevation
+
+<div class="wrapper flex">
+    {
+    shadows.elevations.map((elevation) => (
+        <TokenPreview isInline token={`--shadow-${elevation}-to-top-left`}>
+        <div
+            class="token-box"
+            style={`background: var(--color-regular);padding: var(--spacing-md);`}
+        >
+            <div
+            class="token-box"
+            style={`background: var(--color-regular);border-color: var(--color-border);box-shadow: var(--shadow-${elevation}-to-top-left);`}
+            />
+        </div>
+        </TokenPreview>
+    ))
+    }
+</div>
+
+### Direction
+
+{
+    shadows.directions.y.map((y) => (
+    <div class="wrapper grid">
+        {shadows.directions.x.map((x) => (
+        <TokenPreview token={`--shadow-elevated-to-${y}-${x}`}>
+            <div class="token-box" style={`padding: var(--spacing-md);`}>
+            <div
+                class="token-box"
+                style={`--shadow-color: var(--color-black);background: var(--color-regular);border-color: var(--color-border);box-shadow: var(--shadow-elevated-to-${y}-${x});`}
+            />
+            </div>
+        </TokenPreview>
+        ))}
+    </div>
+    ))
+}
+
+### Colors
+
+Ideally, I should adapt the shadow color according to the surface but I don't think I'll use them elsewhere than on regular background.

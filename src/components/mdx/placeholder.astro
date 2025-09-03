@@ -13,7 +13,7 @@ const { class: className, ...attrs } = Astro.props;
       <slot />
     </Gallery>
   ) : (
-    <div>
+    <div {...attrs} class={className}>
       <slot />
     </div>
   )

@@ -1,0 +1,50 @@
+---
+title: "MainNav"
+---
+import { components as mdxComponents } from "../../mdx";
+import CodePreview from "../../molecules/code-preview/code-preview.astro";
+import MainNav from "./main-nav.astro";
+
+export const components = mdxComponents;
+export const items = [
+  { label: "Item 1", url: "#item-1" },
+  { label: "Item 2", url: "#item-2" },
+  { label: "Item 3", url: "#item-3" },
+  { label: "Item 4", url: "#item-4" },
+  { label: "Item 5", url: "#item-5" },
+]
+
+## Introduction
+
+This component is used to display the main navigation.
+
+<CodePreview
+  code={`import MainNav from "./components/organisms/main-nav/main-nav.astro";`}
+  label="How to import"
+  lang="ts"
+/>
+
+<CodePreview
+  code={`---
+const items = [
+    { label: "Item 1", url: "#item-1" },
+    { label: "Item 2", url: "#item-2" },
+    { label: "Item 3", url: "#item-3" },
+    { label: "Item 4", url: "#item-4" },
+    { label: "Item 5", url: "#item-5" },
+]
+---
+<MainNav items={items} />`}
+  label="Basic use"
+  lang="astro"
+>
+  <MainNav
+    items={[
+      { label: "Item 1", url: "#item-1" },
+      { label: "Item 2", url: "#item-2" },
+      { label: "Item 3", url: "#item-3" },
+      { label: "Item 4", url: "#item-4" },
+      { label: "Item 5", url: "#item-5" },
+    ]}
+  />
+</CodePreview>

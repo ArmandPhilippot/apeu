@@ -1,53 +1,35 @@
-import { STORIES_EXT, STORIES_SUFFIX } from "./constants";
-import { getParentDirPath, joinPaths } from "./paths";
-import { capitalizeFirstLetter } from "./strings";
+import type { Crumb, SEO } from "../types/data";
 
-const isSubStory = (path: string) => path.endsWith(`/${STORIES_SUFFIX}`);
+/**
+ * Derive the `<title>` string for SEO purposes from a breadcrumb trail.
+ *
+ * @param {Crumb[]} breadcrumb - The breadcrumb trail for the page.
+ * @returns {string} A human-readable SEO title string.
+ */
+const getStorySeoTitle = (breadcrumb: Crumb[]): string =>
+  breadcrumb
+    .slice(1)
+    .reverse()
+    .map((crumb) => crumb.label)
+    .join(" | ");
 
-const getSubStoryRoute = (path: string, baseSlug: string) => {
-  const slug = path
-    .replace(baseSlug, "")
-    .replace(new RegExp(`.${STORIES_EXT}$`), "");
-  const parentPath = getParentDirPath(baseSlug);
-
-  return slug === "/index" ? parentPath : joinPaths(parentPath, slug);
+type GetStorySeoConfig = {
+  breadcrumb: Crumb[];
+  seo?: Partial<SEO> | undefined | null;
 };
 
 /**
- * Retrieve the story route.
+ * Compute SEO metadata for a story by deriving the SEO title from the
+ * breadcrumb with some overridable data.
  *
- * Stories should live alongside components in a directory named after the
- * component name so to avoid route like `foo/bar/button/button` and instead
- * use `foo/bar/button` we need to truncate the path. The same applies for
- * stories located in a subdirectory.
- *
- * @param {string} path - The path to a story file.
- * @returns {string} The computed story route.
+ * @param {GetStorySeoConfig} config - A configuration object.
+ * @returns {SEO} An SEO object.
  */
-export const getStoryRoute = (path: string): string => {
-  const route = getParentDirPath(path);
-
-  return isSubStory(route) ? getSubStoryRoute(path, route) : route;
-};
-
-/**
- * Retrieve a story name from its slug.
- *
- * @param {string} slug - The slug of a story.
- * @returns {string} The name of a story.
- * @throws {Error} When the story name can't be determined.
- */
-export const getStoryNameFromSlug = (slug: string): string => {
-  const storyName = slug.split("/").pop();
-
-  if (storyName === "" || storyName === undefined) {
-    throw new Error(
-      "Could not retrieve the story name from its slug. Are you sure this slug match a story?"
-    );
-  }
-
-  return storyName
-    .split("-")
-    .map((story) => capitalizeFirstLetter(story))
-    .join("");
+export const getStorySeo = ({ breadcrumb, seo }: GetStorySeoConfig): SEO => {
+  return {
+    ...seo,
+    noindex: seo?.noindex ?? true,
+    nofollow: seo?.nofollow ?? true,
+    title: seo?.title ?? getStorySeoTitle(breadcrumb),
+  };
 };

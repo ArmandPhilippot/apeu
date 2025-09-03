@@ -1,0 +1,65 @@
+---
+title: "Img"
+---
+import logo from "../../../assets/logo.svg"
+import { components as mdxComponents } from "../../mdx";
+import CodePreview from "../../molecules/code-preview/code-preview.astro";
+import Img from "./img.astro";
+
+export const components = mdxComponents;
+
+## Introduction
+
+<CodePreview
+  code={`import Img from "./components/atoms/img/img.astro"`}
+  label="How to import"
+  lang="ts"
+/>
+
+## Imported local image
+
+<CodePreview
+  code={`---
+import logo from "../../../assets/logo.svg";
+---
+<Img alt="The logo" src={logo} />`}
+  label="Basic use"
+  lang="astro"
+>
+  <Img alt="The logo" src={logo} />
+</CodePreview>
+
+## Imported local image with link
+
+The image can be linked to its source with the `data-clickable` attribute.
+
+<CodePreview
+  code={`---
+import logo from "../../../assets/logo.svg";
+---
+<Img alt="The logo" data-clickable="true" src={logo} />`}
+  label="Using a clickable image"
+  lang="astro"
+>
+  <Img alt="The logo" data-clickable="true" src={logo} />
+</CodePreview>
+
+## Remote image
+
+<CodePreview
+  code={`<Img
+    alt="An example"
+    height={480}
+    src="https://picsum.photos/640/480"
+    width={640}
+/>`}
+  label="Using a remote image"
+  lang="astro"
+>
+  <Img
+    alt="An example"
+    height={480}
+    src="https://picsum.photos/640/480"
+    width={640}
+  />
+</CodePreview>

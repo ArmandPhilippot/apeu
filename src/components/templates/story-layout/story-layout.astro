@@ -1,0 +1,76 @@
+---
+import type { StoryLayoutProps } from "../../../lib/astro/integrations/astro-stories";
+import type { SEO } from "../../../types/data";
+import { getStorySeo } from "../../../utils/stories";
+import PageLayout from "../page-layout/page-layout.astro";
+
+type FrontMatter = {
+  isStandalone?: boolean | undefined;
+  seo?: Partial<SEO> | undefined;
+  title: string;
+};
+
+type Props = StoryLayoutProps<FrontMatter>;
+
+const { story } = Astro.props;
+const isStory = story.type === "story";
+const headings = isStory ? story.headings : null;
+const title = isStory ? story.frontmatter.title : story.label;
+const seo = getStorySeo({
+  breadcrumb: story.breadcrumb,
+  seo: isStory ? story.frontmatter.seo : null,
+});
+const shouldUseLayout = isStory
+  ? story.frontmatter.isStandalone !== true
+  : true;
+---
+
+{
+  shouldUseLayout ? (
+    <PageLayout
+      breadcrumb={story.breadcrumb}
+      headings={headings}
+      seo={seo}
+      title={title}
+    >
+      <slot slot="body" />
+    </PageLayout>
+  ) : (
+    <slot />
+  )
+}
+
+<style is:global>
+  .wrapper {
+    margin-block-end: var(--spacing-md);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(
+      auto-fit,
+      min(
+        calc(100dvw - 2 * var(--spacing-md)),
+        var(--col-size, calc((var(--size-prose) - var(--spacing-2xl)) / 3))
+      )
+    );
+    gap: var(--spacing-md);
+  }
+
+  .flex {
+    display: flex;
+    flex-flow: column wrap;
+    gap: var(--spacing-sm);
+  }
+
+  .token-box {
+    display: flex;
+    flex-flow: row wrap;
+    place-items: center;
+    place-content: center;
+    min-width: 5rem;
+    min-height: 3rem;
+    padding: var(--spacing-xs);
+    border: var(--border-size-sm) solid transparent;
+  }
+</style>

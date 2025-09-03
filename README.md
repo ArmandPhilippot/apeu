@@ -131,6 +131,9 @@ Therefore, there are some caveats in dev mode:
 - If you change the Pagefind config (like adding data attributes to filter the contents), the index will not be automatically rebuilt. You need to perform another build and to execute `pnpm dev` again.
 - The indexed images use the built URLs (the ones processed by Astro) so they can't be displayed in dev environment (so at the moment, they are fully deactivated).
 
+> [!NOTE]
+> This integration is no longer used, but is kept in the project in case we need it again later.
+
 ### Stories
 
 Storybook is [currently not supported with Astro](https://github.com/storybookjs/storybook/issues/18356). This projects uses a custom Astro integration to bring support for testing components and views in isolation. This is not a Storybook replacement: you can't play with props, dynamically generate a table of available props, etc.
@@ -143,49 +146,50 @@ To create stories for your components (`src/components`) or views (`src/views`),
 /src/components
 ├── button/
 │   ├── button.astro
-│   └── button.stories.astro
+│   └── button.stories.mdx
 └── link/
     ├── link.astro
-    └── link.stories.astro
+    └── link.stories.mdx
 ```
 
 Where:
 
 - `button.astro` is your Astro component
-- `button.stories.astro` is your component's stories
+- `button.stories.mdx` is your component's stories
 
-The `button.stories.astro` file is treated as a regular Astro page: import the component, use a layout if needed, and use some HTML markup to document the component.
+Any `<filename>.stories.mdx` is treated as a story: import the component you want to document and it will be injected as route, based on its path.
 
-> [!NOTE]
-> The VS Code extension will infer the component name inside the `stories.astro` file as `Button` because of the filename. To import your component you'll need to rename the import (e.g. `ButtonComponent`) to avoid conflicts.
+When you need more general stories, you can store them in `src/stories`. They will be injected as top-level pages.
 
 The integration supports a base path to inject the stories. Using [dev-only pages](#dev-only-pages) and the previous structure, stories are currently accessible in a browser under `/design-system`. The previous example gives the following slugs:
 
 - `/design-system/components/button`
 - `/design-system/components/link`
+- `/design-system/tokens`
 
-If you need to divide your stories in multiple files, you can use a `stories` directory inside your component directory. For example, both the following structures are supported:
+If you need to divide your stories in multiple files, you can use a `stories` directory inside your component directory. For example, the following structure is supported:
 
 ```text
 /src/components
-├── button/
-│   ├── stories/
-│   │   ├── primary-button.stories.astro
-│   │   └── secondary-button.stories.astro
-│   ├── button.astro
-│   └── button.stories.astro
-└── link/
+└── button/
     ├── stories/
-    │   ├── link.stories.astro
-    │   ├── nav-link.stories.astro
-    │   └── index.stories.astro
-    └── link.astro
+    │   ├── primary-button.stories.mdx
+    │   └── secondary-button.stories.mdx
+    └── button.astro
 ```
 
-When you need multiple stories files, it is up to you to define the links to your sub-stories in an "index" file. In the previous example, this file would be `index.stories.astro` or `button.stories.astro`.
+Only `.mdx` extension is supported for stories. The stories indexes (or listing pages) will be automatically generated.
 
 > [!IMPORTANT]
 > Because the stories are injected earlier in the build steps, if you create a new story file (ie. `.stories.astro`), you'll have to restart the dev server to be able to access it in your browser.
+
+### i18n
+
+This project is i18n-ready and it is available in English and in French right now.
+
+All UI strings are stored as a key/value pair in a JSON file located in `src/translations`.
+
+Then each templates use some helpers to translate those messages in the current locale. It also supports pluralization and route localization.
 
 ### Themes
 
@@ -322,11 +326,6 @@ Before starting, please follow the instructions in [Setup](#setup).
 │   │   └── astro/
 │   │       └── integrations/
 │   ├── pages/
-│   │   ├── _dev_design-system/
-│   │   │   ├── components/
-│   │   │   ├── tokens/
-│   │   │   ├── views/
-│   │   │   └── index.astro
 │   │   ├── [...page]/
 │   │   │   ├── feed.xml.ts
 │   │   │   └── index.astro
@@ -340,6 +339,8 @@ Before starting, please follow the instructions in [Setup](#setup).
 │   │   └── robots.txt.ts
 │   ├── services/
 │   │   └── mailer/
+│   ├── stories/
+│   │   └── tokens.mdx
 │   ├── styles/
 │   ├── translations/
 │   │   └── en.json
@@ -360,6 +361,7 @@ In details:
 - `src/lib/`: the features based on dependencies (e.g. Astro integration or Shiki transformers),
 - `src/pages/`: the special components used to create pages and API routes,
 - `src/services/`: the website services (e.g. mailer),
+- `src/stories/`: the generic stories injected as top-level pages under `/design-system`,
 - `src/styles/`: global styles, variables and helpers should be placed in this directory,
 - `src/translations/`: the JSON files used to store all UI strings and routes for one language,
 - `src/types/`: the Typescript types shared across the application,
@@ -393,7 +395,7 @@ When creating a new component you should also create stories for it and use the 
 /src/components/atoms/
 ├── button/
 │   ├── button.astro
-│   ├── button.stories.astro
+│   ├── button.stories.mdx
 │   └── button.test.ts
 └── other components
 ```
@@ -441,7 +443,7 @@ When creating a new view you should also create stories for it and use the follo
 /src/views/
 ├── view-name/
 │   ├── view-name.astro
-│   ├── view-name.stories.astro
+│   ├── view-name.stories.mdx
 │   └── view-name.test.ts
 └── other views
 ```
@@ -614,6 +616,7 @@ All commands are run from the root of the project, from a terminal.
 * Thanks to [@MoustaphaDev](https://github.com/MoustaphaDev) for the inspiration for my Dev-only pages feature with [astro-dev-only-routes](https://github.com/MoustaphaDev/astro-dev-only-routes).
 * Thanks [@Princesseuh](https://github.com/Princesseuh), [@delucis](https://github.com/delucis) and [@HiDeoo](https://github.com/HiDeoo) for the inspiration to handle RSS feeds.
 * Thanks [@Princesseuh](https://github.com/Princesseuh) for the inspiration for my custom glob loader.
+* Thanks to the [Starlight](https://github.com/withastro/starlight) team for the inspiration on how to handle custom layout for my stories.
 
 ## License
 

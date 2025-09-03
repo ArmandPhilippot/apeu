@@ -1,0 +1,140 @@
+---
+title: "Figure"
+---
+import { components as mdxComponents } from "../../mdx";
+import CodePreview from "../../molecules/code-preview/code-preview.astro";
+import Img from "../img/img.astro";
+import Figure from "./figure.astro";
+
+export const components = mdxComponents;
+
+## Introduction
+
+A figure can be an image, illustration, diagram, code snippet, etc. that can be moved to another part of the document without affecting the main flow.
+
+<CodePreview
+  code={`import Figure from "./components/atoms/figure/figure.astro"`}
+  label="How to import"
+  lang="ts"
+/>
+
+<CodePreview
+  code={`<Figure>The figure contents.</Figure>`}
+  label="Basic use"
+  lang="astro"
+>
+  <Figure>The figure contents.</Figure>
+</CodePreview>
+
+## Without figcaption
+
+<Figure>
+  <Img
+    alt="An example"
+    height={480}
+    src="https://picsum.photos/640/480"
+    width={640}
+  />
+</Figure>
+
+## With figcaption
+
+### At the top
+
+<CodePreview
+  code={`<Figure>
+    <figcaption>An image used as example</figcaption>
+    <Img
+      alt="An example"
+      height={480}
+      src="https://picsum.photos/640/480"
+      width={640}
+    />
+</Figure>`}
+  label="Using a caption at the top"
+  lang="astro"
+>
+  <Figure>
+    <figcaption>An image used as example</figcaption>
+    <Img
+        alt="An example"
+        height={480}
+        src="https://picsum.photos/640/480"
+        width={640}
+    />
+  </Figure>
+</CodePreview>
+
+### At the bottom
+
+<CodePreview
+  code={`<Figure>
+    <Img
+      alt="An example"
+      height={480}
+      src="https://picsum.photos/640/480"
+      width={640}
+    />
+    <figcaption>An image used as example</figcaption>
+</Figure>`}
+  label="Using a caption at the bottom"
+  lang="astro"
+>
+  <Figure>
+    <Img
+        alt="An example"
+        height={480}
+        src="https://picsum.photos/640/480"
+        width={640}
+    />
+    <figcaption>An image used as example</figcaption>
+  </Figure>
+</CodePreview>
+
+## Horizontally centered
+
+<CodePreview
+  code={`<Figure isCentered>
+    <Img
+      alt="An example"
+      height={480}
+      src="https://picsum.photos/640/480"
+      width={640}
+    />
+</Figure>`}
+  label="Using a centered figure"
+  lang="astro"
+>
+  <Figure isCentered>
+    <Img
+      alt="An example"
+      height={480}
+      src="https://picsum.photos/640/480"
+      width={640}
+    />
+  </Figure>
+</CodePreview>
+
+## Full width
+
+<CodePreview
+  code={`<Figure isFullWidth>
+    <Img
+      alt="An example"
+      height={480}
+      src="https://picsum.photos/640/480"
+      width={640}
+    />
+</Figure>`}
+  label="Using a full width figure"
+  lang="astro"
+>
+  <Figure isFullWidth>
+    <Img
+        alt="An example"
+        height={480}
+        src="https://picsum.photos/640/480"
+        width={640}
+    />
+  </Figure>
+</CodePreview>

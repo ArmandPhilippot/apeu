@@ -1,0 +1,90 @@
+---
+title: "NavItem"
+---
+import { components as mdxComponents } from "../../mdx";
+import CodePreview from "../code-preview/code-preview.astro";
+import NavItem from "./nav-item.astro";
+
+export const components = mdxComponents;
+
+## Introduction
+
+This component is used to define a navigation item inside a navigation list.
+
+<CodePreview
+  code={`import NavItem from "./components/molecules/nav-item/nav-item.astro";`}
+  label="How to import"
+  lang="ts"
+/>
+
+<CodePreview
+  code={`<NavItem href="#destination">Nav Item</NavItem>`}
+  label="Basic use"
+  lang="astro"
+>
+  <NavItem href="#destination">Nav Item</NavItem>
+</CodePreview>
+
+## Variants
+
+<CodePreview
+  code={`<NavItem href="#destination">Nav Item</NavItem>
+<NavItem href="#destination" isBlock>Nav Item</NavItem>`}
+  label="Using variants"
+  lang="astro"
+>
+  <NavItem href="#destination">Nav Item</NavItem>
+  <NavItem href="#destination" isBlock>Nav Item</NavItem>
+</CodePreview>
+
+## Other options
+
+### `isBordered`
+
+<CodePreview
+  code={`<NavItem href="#destination" isBordered>Nav Item</NavItem>
+<NavItem href="#destination" isBlock isBordered>Nav Item</NavItem>`}
+  label="Using borders on both variants"
+  lang="astro"
+>
+  <NavItem href="#destination" isBordered>Nav Item</NavItem>
+  <NavItem href="#destination" isBlock isBordered>Nav Item</NavItem>
+</CodePreview>
+
+### `isRounded`
+
+<CodePreview
+  code={`<NavItem href="#destination" isBordered isRounded>Nav Item</NavItem>
+<NavItem href="#destination" isBlock isBordered isRounded>Nav Item</NavItem>`}
+  label="Using rounded borders on both variants"
+  lang="astro"
+>
+  <NavItem href="#destination" isBordered isRounded>Nav Item</NavItem>
+  <NavItem href="#destination" isBlock isBordered isRounded>Nav Item</NavItem>
+</CodePreview>
+
+### With an icon
+
+<CodePreview
+  code={`<NavItem href="#destination" icon="home" iconSize={40}>Nav Item</NavItem>
+<NavItem href="#destination" icon="home" iconSize={40} isBlock>Nav Item</NavItem>`}
+  label="Using icons on both variants"
+  lang="astro"
+>
+  <NavItem href="#destination" icon="home" iconSize={40}>Nav Item</NavItem>
+  <NavItem href="#destination" icon="home" iconSize={40} isBlock>Nav Item</NavItem>
+</CodePreview>
+
+### As a label
+
+<CodePreview
+  code={`<NavItem as="label">Nav Item</NavItem>
+<NavItem as="label" isBlock>Nav Item</NavItem>`}
+  label="Using a label instead of a link with both variants"
+  lang="astro"
+>
+  <NavItem as="label">Nav Item</NavItem>
+  <NavItem as="label" isBlock>Nav Item</NavItem>
+</CodePreview>
+
+When you are not using the block variant, please consider using a regular `Label` component instead.

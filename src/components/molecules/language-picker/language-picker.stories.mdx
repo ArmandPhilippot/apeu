@@ -1,0 +1,68 @@
+---
+title: "LanguagePicker"
+---
+import { components as mdxComponents } from "../../mdx";
+import CodePreview from "../code-preview/code-preview.astro";
+import LanguagePicker from "./language-picker.astro";
+
+{/* cSpell:ignore Español Français */}
+export const components = mdxComponents;
+export const languages = {
+  en: { name: "English", route: "#en" },
+  es: { name: "Español", route: "#es" },
+  fr: { name: "Français", route: "#fr" },
+};
+
+## Introduction
+
+This component is used to let an user choose the current language of the website.
+
+<CodePreview
+  code={`import LanguagePicker from "./components/molecules/language-picker/language-picker.astro";`}
+  label="How to import"
+  lang="ts"
+/>
+
+<CodePreview
+  code={`<LanguagePicker
+    current="es"
+    id="usage-example"
+    label="Choose a language:"
+    languages={languages}
+/>`}
+  label="Basic use"
+  lang="astro"
+>
+  <LanguagePicker
+    current="es"
+    id="usage-example"
+    label="Choose a language:"
+    languages={languages}
+  />
+</CodePreview>
+
+## Options
+
+### `isInline`
+
+<CodePreview
+  code={`<LanguagePicker
+    current="es"
+    gap="2xs"
+    id="is-inline-example"
+    isInline
+    label="Choose a language:"
+    languages={languages}
+/>`}
+  label="Basic use"
+  lang="astro"
+>
+  <LanguagePicker
+    current="es"
+    gap="2xs"
+    id="is-inline-example"
+    isInline
+    label="Choose a language:"
+    languages={languages}
+  />
+</CodePreview>

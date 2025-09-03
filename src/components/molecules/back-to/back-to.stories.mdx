@@ -2,14 +2,27 @@
 title: "BackTo"
 ---
 import { components as mdxComponents } from "../../mdx";
+import CodePreview from "../code-preview/code-preview.astro";
 import BackTo from "./back-to.astro";
 
 export const components = mdxComponents;
 
-## Usage
+## Introduction
 
 A BackTo component is special. It is used to navigate through a page using anchors. His purpose is to let the user go back to a previous anchor.
 
-**Note:** The button is currently designed to be used a "back to top" button but I choose to name it BackTo to support possible future variants.
+<CodePreview
+  code={`import BackTo from "./components/molecules/back-to/back-to.astro";`}
+  label="How to import"
+  lang="ts"
+/>
 
-<BackTo anchor="#some-anchor" label="Back to some anchor" />
+<CodePreview
+  code={`<BackTo anchor="#some-anchor" label="Back to some anchor" />`}
+  label="Basic use"
+  lang="astro"
+>
+  <BackTo anchor="#some-anchor" label="Back to some anchor" />
+</CodePreview>
+
+**Note:** The button is currently designed to be used a "back to top" button but I choose to name it BackTo to support possible future variants.

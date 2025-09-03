@@ -2,9 +2,10 @@
 title: "CardsList"
 ---
 import { components as mdxComponents } from "../../mdx";
+import Heading from "../../atoms/heading/heading.astro";
 import Link from "../../atoms/link/link.astro";
-import ListItem from "../../atoms/list/list-item.astro";
-import List from "../../atoms/list/list.astro";
+import Card from "../card/card.astro";
+import CodePreview from "../code-preview/code-preview.astro";
 import CardsList from "./cards-list.astro";
 
 export const components = mdxComponents;
@@ -31,24 +32,42 @@ export const items = [
   },
 ];
 
+## Introduction
 
-## Usage
+When using a `CardsList` component, you'll need to provide a function as child that describes how to render the given items. See the example at the end of the [`Astro.slots.render()` section](https://docs.astro.build/en/reference/api-reference/#astroslotsrender) in Astro documentation. If you want to specify the columns, you can use the `--cols` CSS variable.
 
-When using a <code>CardsList</code> component, you'll need to provide a function as child that describes how to render the given items. See the example at the end of the <Link href="https://docs.astro.build/en/reference/api-reference/#astroslotsrender">Astro.slots.render()</Link> section in Astro documentation. If you want to specify the columns, you can use the <code>--cols</code> CSS variable.
+<CodePreview
+  code={`import CardsList from "./components/molecules/cards-list/cards-list.astro";`}
+  label="How to import"
+  lang="ts"
+/>
 
-## Default
-
-<CardsList items={items}>
-  {
-    (item) => (
-        <Fragment>
-          <p>Received:</p>
-          <List>
-            <ListItem>Body: {item.body}</ListItem>
-            <ListItem>Heading: {item.heading}</ListItem>
-            <ListItem>Url: {item.url}</ListItem>
-          </List>
-        </Fragment>
-    )
-  }
-</CardsList>
+<CodePreview
+  code={`<CardsList items={items}>
+    {
+      (item: (typeof items)[number]) => (
+        <Card>
+          <Heading as="h3" slot="heading">
+            <Link href={item.url}>{item.heading}</Link>
+          </Heading>
+          {item.body}
+        </Card>
+      )
+    }
+</CardsList>`}
+  label="Basic use"
+  lang="astro"
+>
+  <CardsList items={items}>
+    {
+      (item) => (
+        <Card>
+          <Heading as="h3" slot="heading">
+            <Link href={item.url}>{item.heading}</Link>
+          </Heading>
+          {item.body}
+        </Card>
+      )
+    }
+  </CardsList>
+</CodePreview>

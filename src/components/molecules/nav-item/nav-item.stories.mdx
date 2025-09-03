@@ -2,79 +2,89 @@
 title: "NavItem"
 ---
 import { components as mdxComponents } from "../../mdx";
+import CodePreview from "../code-preview/code-preview.astro";
 import NavItem from "./nav-item.astro";
 
 export const components = mdxComponents;
 
-## Usage
+## Introduction
 
 This component is used to define a navigation item inside a navigation list.
 
-## Variant: <code>isBlock: false</code> (default)
+<CodePreview
+  code={`import NavItem from "./components/molecules/nav-item/nav-item.astro";`}
+  label="How to import"
+  lang="ts"
+/>
 
-<NavItem href="#destination">Nav Item</NavItem>
+<CodePreview
+  code={`<NavItem href="#destination">Nav Item</NavItem>`}
+  label="Basic use"
+  lang="astro"
+>
+  <NavItem href="#destination">Nav Item</NavItem>
+</CodePreview>
 
-### <code>isBordered</code>
+## Variants
 
-<NavItem href="#destination" isBordered>Nav Item</NavItem>
+<CodePreview
+  code={`<NavItem href="#destination">Nav Item</NavItem>
+<NavItem href="#destination" isBlock>Nav Item</NavItem>`}
+  label="Using variants"
+  lang="astro"
+>
+  <NavItem href="#destination">Nav Item</NavItem>
+  <NavItem href="#destination" isBlock>Nav Item</NavItem>
+</CodePreview>
 
-### <code>isRounded</code>
+## Other options
 
-And with <code>isBordered</code> to highlight the difference.
+### `isBordered`
 
-<NavItem href="#destination" isBordered isRounded>
-  Nav Item
-</NavItem>
+<CodePreview
+  code={`<NavItem href="#destination" isBordered>Nav Item</NavItem>
+<NavItem href="#destination" isBlock isBordered>Nav Item</NavItem>`}
+  label="Using borders on both variants"
+  lang="astro"
+>
+  <NavItem href="#destination" isBordered>Nav Item</NavItem>
+  <NavItem href="#destination" isBlock isBordered>Nav Item</NavItem>
+</CodePreview>
 
-### With icon
+### `isRounded`
 
-<NavItem href="#destination" icon="home" iconSize={40}>
-  Nav Item
-</NavItem>
+<CodePreview
+  code={`<NavItem href="#destination" isBordered isRounded>Nav Item</NavItem>
+<NavItem href="#destination" isBlock isBordered isRounded>Nav Item</NavItem>`}
+  label="Using rounded borders on both variants"
+  lang="astro"
+>
+  <NavItem href="#destination" isBordered isRounded>Nav Item</NavItem>
+  <NavItem href="#destination" isBlock isBordered isRounded>Nav Item</NavItem>
+</CodePreview>
 
-### Tag
+### With an icon
 
-#### <code>a</code>
+<CodePreview
+  code={`<NavItem href="#destination" icon="home" iconSize={40}>Nav Item</NavItem>
+<NavItem href="#destination" icon="home" iconSize={40} isBlock>Nav Item</NavItem>`}
+  label="Using icons on both variants"
+  lang="astro"
+>
+  <NavItem href="#destination" icon="home" iconSize={40}>Nav Item</NavItem>
+  <NavItem href="#destination" icon="home" iconSize={40} isBlock>Nav Item</NavItem>
+</CodePreview>
 
-<NavItem as="a" href="#destination">A nav link</NavItem>
+### As a label
 
-#### <code>label</code>
+<CodePreview
+  code={`<NavItem as="label">Nav Item</NavItem>
+<NavItem as="label" isBlock>Nav Item</NavItem>`}
+  label="Using a label instead of a link with both variants"
+  lang="astro"
+>
+  <NavItem as="label">Nav Item</NavItem>
+  <NavItem as="label" isBlock>Nav Item</NavItem>
+</CodePreview>
 
-When you are not using the block variant, please consider using a regular <code>Label</code> component instead.
-
-<NavItem as="label">A nav label</NavItem>
-
-## Variant: <code>isBlock: true</code>
-
-<NavItem href="#destination" isBlock>Nav Item</NavItem>
-
-### <code>isBordered</code>
-
-<NavItem href="#destination" isBlock isBordered>
-  Nav Item
-</NavItem>
-
-### <code>isRounded</code>
-
-And with <code>isBordered</code> to highlight the difference.
-
-<NavItem href="#destination" isBlock isBordered isRounded>
-  Nav Item
-</NavItem>
-
-### With icon
-
-<NavItem href="#destination" icon="home" iconSize={40} isBlock>
-  Nav Item
-</NavItem>
-
-### Tag
-
-
-#### <code>a</code>
-
-<NavItem as="a" href="#destination" isBlock>A nav link</NavItem>
-
-#### <code>label</code>
-
-<NavItem as="label" isBlock>A nav label</NavItem>
+When you are not using the block variant, please consider using a regular `Label` component instead.

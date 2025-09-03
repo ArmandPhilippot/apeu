@@ -2,22 +2,33 @@
 title: "Collapsible"
 ---
 import { components as mdxComponents } from "../../mdx";
+import CodePreview from "../code-preview/code-preview.astro";
 import Collapsible from "./collapsible.astro";
 
 export const components = mdxComponents;
 
-## Usage
+## Introduction
 
-This component let you toggle the visibility of its contents by clicking on its label.
+This component lets you toggle the visibility of its contents by clicking on its label.
 
-<Collapsible>
-  <span slot="label">A label</span>
-  The collapsible body
-</Collapsible>
+<CodePreview
+  code={`import Collapsible from "./components/molecules/collapsible/collapsible.astro";`}
+  label="How to import"
+  lang="ts"
+/>
 
-## Using <code>isProse</code>
+<CodePreview
+  code={`<Collapsible>
+    <span slot="label">A label</span>
+    <div>The collapsible body</div>
+</Collapsible>`}
+  label="Basic use"
+  lang="astro"
+>
+  <Collapsible>
+    <span slot="label">A label</span>
+    <div>The collapsible body</div>
+  </Collapsible>
+</CodePreview>
 
-<Collapsible isProse>
-  <span slot="label">A label</span>
-  The collapsible body
-</Collapsible>
+A `<Collapsible />` inherits some properties from the `<Box />` component. You can, for example, use the `isProse` property to limit its width.

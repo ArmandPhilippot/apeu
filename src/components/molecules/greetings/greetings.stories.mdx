@@ -2,12 +2,25 @@
 title: "Greetings"
 ---
 import { components as mdxComponents } from "../../mdx";
+import CodePreview from "../code-preview/code-preview.astro";
 import Greetings from "./greetings.astro";
 
 export const components = mdxComponents;
 
-## Usage
+## Introduction
 
-The <code>Greetings</code> component should be used on a homepage to introduce the author of the website.
+The `Greetings` component should be used on a homepage to introduce the author of the website.
 
-<Greetings name="John Doe" />
+<CodePreview
+  code={`import Greetings from "./components/molecules/greetings/greetings.astro";`}
+  label="How to import"
+  lang="ts"
+/>
+
+<CodePreview
+  code={`<Greetings name="John Doe" />`}
+  label="Basic use"
+  lang="astro"
+>
+  <Greetings name="John Doe" />
+</CodePreview>

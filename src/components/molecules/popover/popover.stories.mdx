@@ -2,85 +2,171 @@
 title: "Popover"
 ---
 import { components as mdxComponents } from "../../mdx";
+import CodePreview from "../code-preview/code-preview.astro";
 import Popover from "./popover.astro";
 
 export const components = mdxComponents;
 
-## Default
+## Introduction
 
-<Popover controllerId="default-controller" modalId="default-modal">
-  <label for="default-controller" slot="label">Open default modal</label>
-  <div id="default-modal" slot="modal">
-    The content of the default modal.
-  </div>
-</Popover>
+<CodePreview
+  code={`import Popover from "./components/molecules/popover/popover.astro";`}
+  label="How to import"
+  lang="ts"
+/>
+
+<CodePreview
+  code={`<Popover controllerId="default-controller" modalId="default-modal">
+    <label for="default-controller" slot="label">Open default modal</label>
+    <div id="default-modal" slot="modal">The content of the default modal.</div>
+</Popover>`}
+  label="Basic use"
+  lang="astro"
+>
+  <Popover controllerId="default-controller" modalId="default-modal">
+    <label for="default-controller" slot="label">Open default modal</label>
+    <div id="default-modal" slot="modal">The content of the default modal.</div>
+  </Popover>
+</CodePreview>
 
 ## Using callback functions to access IDs
 
-<Popover
-  controllerId="callback-controller"
-  modalId="callback-modal"
->
-  <fragment slot="label">
+<CodePreview
+  code={`<Popover controllerId="callback-controller" modalId="callback-modal">
+    <fragment slot="label">
     {
-      (controllerId) => (
+      (controllerId: string) => (
         <label for={controllerId}>Open callback example modal</label>
       )
     }
-  </fragment>
-  <fragment slot="modal">
+    </fragment>
+    <fragment slot="modal">
     {
-      (modalId) => (
+      (modalId: string) => (
         <div id={modalId} slot="modal">
           The content of the callback example modal.
         </div>
       )
     }
-  </fragment>
-</Popover>
+    </fragment>
+</Popover>`}
+  label="Using callback functions"
+  lang="astro"
+>
+  <Popover controllerId="callback-controller" modalId="callback-modal">
+    <fragment slot="label">
+      {
+        (controllerId) => (
+          <label for={controllerId}>Open callback example modal</label>
+        )
+      }
+    </fragment>
+    <fragment slot="modal">
+      {
+        (modalId) => (
+          <div id={modalId} slot="modal">
+            The content of the callback example modal.
+          </div>
+        )
+      }
+    </fragment>
+  </Popover>
+</CodePreview>
 
 ## Opening direction
 
 ### Bottom
 
-<Popover
-  controllerId="bottom-controller"
-  modalId="bottom-modal"
-  openTo="bottom"
+<CodePreview
+  code={`<Popover
+    controllerId="bottom-controller"
+    modalId="bottom-modal"
+    openTo="bottom"
 >
-  <label for="bottom-controller" slot="label">Open bottom modal</label>
-  <div id="bottom-modal" slot="modal">The content of the bottom modal.</div>
-</Popover>
+    <label for="bottom-controller" slot="label">Open bottom modal</label>
+    <div id="bottom-modal" slot="modal">The content of the bottom modal.</div>
+</Popover>`}
+  label="Opening the modal to the bottom"
+  lang="astro"
+>
+  <Popover
+    controllerId="bottom-controller"
+    modalId="bottom-modal"
+    openTo="bottom"
+  >
+    <label for="bottom-controller" slot="label">Open bottom modal</label>
+    <div id="bottom-modal" slot="modal">The content of the bottom modal.</div>
+  </Popover>
+</CodePreview>
 
 ### Top
 
-<Popover
-  controllerId="top-controller"
-  modalId="top-modal"
-  openTo="top"
+<CodePreview
+  code={`<Popover
+    controllerId="top-controller"
+    modalId="top-modal"
+    openTo="top"
 >
-  <label for="top-controller" slot="label">Open top modal</label>
-  <div id="top-modal" slot="modal">The content of the top modal.</div>
-</Popover>
+    <label for="top-controller" slot="label">Open top modal</label>
+    <div id="top-modal" slot="modal">The content of the top modal.</div>
+</Popover>`}
+  label="Opening the modal to the top"
+  lang="astro"
+>
+  <Popover
+    controllerId="top-controller"
+    modalId="top-modal"
+    openTo="top"
+  >
+    <label for="top-controller" slot="label">Open top modal</label>
+    <div id="top-modal" slot="modal">The content of the top modal.</div>
+  </Popover>
+</CodePreview>
 
 ### Left
 
-<Popover
-  controllerId="left-controller"
-  modalId="left-modal"
-  openTo="left"
+<CodePreview
+  code={`<Popover
+    controllerId="left-controller"
+    modalId="left-modal"
+    openTo="left"
 >
-  <label for="left-controller" slot="label">Open left modal</label>
-  <div id="left-modal" slot="modal">The content of the left modal.</div>
-</Popover>
+    <label for="left-controller" slot="label">Open left modal</label>
+    <div id="left-modal" slot="modal">The content of the left modal.</div>
+</Popover>`}
+  label="Opening the modal to the left"
+  lang="astro"
+>
+  <Popover
+    controllerId="left-controller"
+    modalId="left-modal"
+    openTo="left"
+  >
+    <label for="left-controller" slot="label">Open left modal</label>
+    <div id="left-modal" slot="modal">The content of the left modal.</div>
+  </Popover>
+</CodePreview>
 
 ### Right
 
-<Popover
-  controllerId="right-controller"
-  modalId="right-modal"
-  openTo="right"
+<CodePreview
+  code={`<Popover
+    controllerId="right-controller"
+    modalId="right-modal"
+    openTo="right"
 >
-  <label for="right-controller" slot="label">Open right modal</label>
-  <div id="right-modal" slot="modal">The content of the right modal.</div>
-</Popover>
+    <label for="right-controller" slot="label">Open right modal</label>
+    <div id="right-modal" slot="modal">The content of the right modal.</div>
+</Popover>`}
+  label="Opening the modal to the right"
+  lang="astro"
+>
+  <Popover
+    controllerId="right-controller"
+    modalId="right-modal"
+    openTo="right"
+  >
+    <label for="right-controller" slot="label">Open right modal</label>
+    <div id="right-modal" slot="modal">The content of the right modal.</div>
+  </Popover>
+</CodePreview>

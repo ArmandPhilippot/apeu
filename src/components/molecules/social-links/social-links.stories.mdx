@@ -2,6 +2,7 @@
 title: "SocialLinks"
 ---
 import { components as mdxComponents } from "../../mdx";
+import CodePreview from "../code-preview/code-preview.astro";
 import SocialLinks from "./social-links.astro";
 
 export const components = mdxComponents;
@@ -12,14 +13,30 @@ export const links = {
   stackoverflow: "#stackoverflow",
 };
 
-## Usage
+## Introduction
 
-A <code>SocialLinks</code> component should be used to display a list of social links, usually the profiles of an author.
+A `SocialLinks` component should be used to display a list of social links, usually the profiles of an author.
 
-## With labels
+<CodePreview
+  code={`import SocialLinks from "./components/molecules/social-links/social-links.astro";`}
+  label="How to import"
+  lang="ts"
+/>
 
-<SocialLinks links={links} />
+<CodePreview
+  code={`<SocialLinks links={links} />`}
+  label="Basic use"
+  lang="astro"
+>
+  <SocialLinks links={links} />
+</CodePreview>
 
 ## With hidden labels
 
-<SocialLinks hideLabels links={links} />
+<CodePreview
+  code={`<SocialLinks hideLabels links={links} />`}
+  label="Hiding the labels"
+  lang="astro"
+>
+  <SocialLinks hideLabels links={links} />
+</CodePreview>

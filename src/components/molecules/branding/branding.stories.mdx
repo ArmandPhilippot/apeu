@@ -2,12 +2,25 @@
 title: "Branding"
 ---
 import { components as mdxComponents } from "../../mdx";
+import CodePreview from "../code-preview/code-preview.astro";
 import Branding from "./branding.astro";
 
 export const components = mdxComponents;
 
-## Usage
+## Introduction
 
 This component is used to a logo alongside the brand.
 
-<Branding brand="Brand" url="#homepage" />
+<CodePreview
+  code={`import Branding from "./components/molecules/branding/branding.astro";`}
+  label="How to import"
+  lang="ts"
+/>
+
+<CodePreview
+  code={`<Branding brand="Brand" url="#homepage" />`}
+  label="Basic use"
+  lang="astro"
+>
+  <Branding brand="Brand" url="#homepage" />
+</CodePreview>

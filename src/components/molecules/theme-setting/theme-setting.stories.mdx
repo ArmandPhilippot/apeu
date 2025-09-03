@@ -2,64 +2,127 @@
 title: "Toggle"
 ---
 import { components as mdxComponents } from "../../mdx";
+import CodePreview from "../code-preview/code-preview.astro";
 import ThemeSetting from "./theme-setting.astro";
 
 export const components = mdxComponents;
 export const switchLabel = "Enable dark mode?";
 export const toggleLabel = "Choose a theme:";
 
-## Usage
+## Introduction
 
-A <code>ThemeSetting</code> component is used to let the user choose the he wants to use for the website.
+A `ThemeSetting` component is used to let the user choose the he wants to use for the website.
 
-<ThemeSetting label={toggleLabel} setting="theme" />
+<CodePreview
+  code={`import ThemeSetting from "./components/molecules/theme-setting/theme-setting.astro";`}
+  label="How to import"
+  lang="ts"
+/>
+
+<CodePreview
+  code={`<ThemeSetting label="Choose a theme:" setting="theme" />`}
+  label="Basic use"
+  lang="astro"
+>
+  <ThemeSetting label="Choose a theme:" setting="theme" />
+</CodePreview>
 
 ## Options
 
-### <code>isInline</code>
+### `isInline`
 
-<ThemeSetting
-  id="inlined-example"
-  isInline
-  label={toggleLabel}
-  setting="theme"
-/>
+<CodePreview
+  code={`<ThemeSetting
+    id="inlined-example"
+    isInline
+    label="Choose a theme:"
+    setting="theme"
+/>`}
+  label="Using isInline"
+  lang="astro"
+>
+  <ThemeSetting
+    id="inlined-example"
+    isInline
+    label="Choose a theme:"
+    setting="theme"
+  />
+</CodePreview>
 
-### <code>variant="switch"</code>
+### `variant="switch"`
 
-<ThemeSetting  label={switchLabel} setting="theme" variant="switch" />
+<CodePreview
+  code={`<ThemeSetting
+    label="Enable dark mode?"
+    setting="theme"
+    variant="switch"
+/>`}
+  label="Using the switch variant"
+  lang="astro"
+>
+  <ThemeSetting
+    label="Enable dark mode?"
+    setting="theme"
+    variant="switch"
+  />
+</CodePreview>
 
 ## With multiple toggles on the page
 
-If you need multiple toggles on the same page for the same setting key, you must provide an <code>id</code>.
+If you need multiple toggles on the same page for the same setting key, you must provide an `id`.
 
-<ThemeSetting
-  id="toggle1"
-  label={toggleLabel}
-  setting="shiki"
-  variant="toggle"
+<CodePreview
+  code={`<ThemeSetting
+    id="toggle1"
+    label="Choose a theme:"
+    setting="shiki"
+    variant="toggle"
 />
-
 <ThemeSetting
-  id="toggle2"
-  label={toggleLabel}
-  setting="shiki"
-  variant="toggle"
+    id="toggle2"
+    label="Choose a theme:"
+    setting="shiki"
+    variant="toggle"
 />
-
 <ThemeSetting
-  id="toggle3"
-  label={toggleLabel}
-  setting="shiki"
-  variant="toggle"
-/>
+    id="toggle3"
+    label="Choose a theme:"
+    setting="shiki"
+    variant="toggle"
+/>`}
+  label="Using multiple toggles on a page"
+  lang="astro"
+>
+  <ThemeSetting
+    id="toggle1"
+    label="Choose a theme:"
+    setting="shiki"
+    variant="toggle"
+  />
+  <ThemeSetting
+    id="toggle2"
+    label="Choose a theme:"
+    setting="shiki"
+    variant="toggle"
+  />
+  <ThemeSetting
+    id="toggle3"
+    label="Choose a theme:"
+    setting="shiki"
+    variant="toggle"
+  />
+</CodePreview>
 
-## With multiple switches on the page
+This limitation does not apply to the switch variant.
 
-If you need multiple switches on the same page for the <code>id</code> is not required.
-
-<ThemeSetting label={switchLabel} setting="shiki" variant="switch" />
-
-<ThemeSetting label={switchLabel} setting="shiki" variant="switch" />
-
-<ThemeSetting label={switchLabel} setting="shiki" variant="switch" />
+<CodePreview
+  code={`<ThemeSetting label="Enable dark mode?" setting="shiki" variant="switch" />
+  <ThemeSetting label="Enable dark mode?" setting="shiki" variant="switch" />
+  <ThemeSetting label="Enable dark mode?" setting="shiki" variant="switch" />`}
+  label="Using multiple switches on a page"
+  lang="astro"
+>
+  <ThemeSetting label="Enable dark mode?" setting="shiki" variant="switch" />
+  <ThemeSetting label="Enable dark mode?" setting="shiki" variant="switch" />
+  <ThemeSetting label="Enable dark mode?" setting="shiki" variant="switch" />
+</CodePreview>

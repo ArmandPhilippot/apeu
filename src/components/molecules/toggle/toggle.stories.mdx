@@ -2,47 +2,158 @@
 title: "Toggle"
 ---
 import { components as mdxComponents } from "../../mdx";
+import CodePreview from "../code-preview/code-preview.astro";
 import Toggle from "./toggle.astro";
 
 export const components = mdxComponents;
 
-export const getItems = (name) => [{ id: `${name}-item-1`, label: "Item 1", value: "item-1" }, { id: `${name}-item-2`, label: "Item 2", value: "item-2" }, { id: `${name}-item-3`, label: "Item 3", value: "item-3" } ];
 
-export const getItemsWithIcon = (name) => [{ icon: "caret", id: `${name}-item-1`, label: "Item 1", value: "item-1" },{ icon: "gear", id: `${name}-item-2`, label: "Item 2", value: "item-2" }, { icon: "search", id: `${name}-item-3`, label: "Item 3", value: "item-3" } ];
+## Introduction
 
-## Default
-
-<Toggle
-  groupName="default"
-  items={getItems("default")}
-  label="The legend"
+<CodePreview
+  code={`import Toggle from "./components/molecules/toggle/toggle.astro";`}
+  label="How to import"
+  lang="ts"
 />
+
+<CodePreview
+  code={`<Toggle
+    groupName="use"
+    items={[
+      { id: 'use-item-1', label: "Item 1", value: "item-1" },
+      { id: 'use-item-2', label: "Item 2", value: "item-2" },
+      { id: 'use-item-3', label: "Item 3", value: "item-3" },
+    ]}
+    label="The legend"
+/>`}
+  label="Basic use"
+  lang="astro"
+>
+  <Toggle
+    groupName="use"
+    items={[
+      { id: "use-item-1", label: "Item 1", value: "item-1" },
+      { id: "use-item-2", label: "Item 2", value: "item-2" },
+      { id: "use-item-3", label: "Item 3", value: "item-3" },
+    ]}
+    label="The legend"
+  />
+</CodePreview>
 
 ## With default value
 
-<Toggle
-  groupName="default-value"
-  items={getItems("default-value")}
-  label="The legend"
-  value={getItems("default-value")[0]?.value}
-/>
+<CodePreview
+  code={`<Toggle
+    groupName="default-value"
+    items={[
+      { id: "default-item-1", label: "Item 1", value: "item-1" },
+      { id: "default-item-2", label: "Item 2", value: "item-2" },
+      { id: "default-item-3", label: "Item 3", value: "item-3" },
+    ]}
+    label="The legend"
+    value="item-2"
+/>`}
+  label="Using a default value"
+  lang="astro"
+>
+  <Toggle
+    groupName="default-value"
+    items={[
+      { id: "default-item-1", label: "Item 1", value: "item-1" },
+      { id: "default-item-2", label: "Item 2", value: "item-2" },
+      { id: "default-item-3", label: "Item 3", value: "item-3" },
+    ]}
+    label="The legend"
+    value="item-2"
+  />
+</CodePreview>
 
 ## With icons
 
-<Toggle
-  groupName="with-icons"
-  items={getItemsWithIcon("with-icons")}
-  label="The legend"
-  value={getItemsWithIcon("with-icons")[0]?.value}
-/>
+<CodePreview
+  code={`<Toggle
+    groupName="with-icons"
+    items={[
+      {
+        icon: "caret",
+        id: 'with-icons-item-1',
+        label: "Item 1",
+        value: "item-1",
+      },
+      {
+        icon: "gear",
+        id: 'with-icons-item-2',
+        label: "Item 2",
+        value: "item-2",
+      },
+      {
+        icon: "search",
+        id: 'with-icons-item-3',
+        label: "Item 3",
+        value: "item-3",
+      },
+    ]}
+    label="The legend"
+    value="item-1"
+/>`}
+  label="Using icons"
+  lang="astro"
+>
+  <Toggle
+    groupName="with-icons"
+    items={[
+      {
+        icon: "caret",
+        id: `with-icons-item-1`,
+        label: "Item 1",
+        value: "item-1",
+      },
+      {
+        icon: "gear",
+        id: `with-icons-item-2`,
+        label: "Item 2",
+        value: "item-2",
+      },
+      {
+        icon: "search",
+        id: `with-icons-item-3`,
+        label: "Item 3",
+        value: "item-3",
+      },
+    ]}
+    label="The legend"
+    value="item-1"
+  />
+</CodePreview>
 
 ## Inline
 
-<Toggle
-  gap="xs"
-  groupName="inline"
-  isInline
-  items={getItems("inline")}
-  label="The legend"
-  value={getItems("inline")[0]?.value}
-/>
+<CodePreview
+  code={`<Toggle
+    gap="xs"
+    groupName="inline"
+    isInline
+    items={[
+      { id: "inline-item-1", label: "Item 1", value: "item-1" },
+      { id: "inline-item-2", label: "Item 2", value: "item-2" },
+      { id: "inline-item-3", label: "Item 3", value: "item-3" },
+    ]}
+    label="The legend"
+    value="item-1"
+/>`}
+  label="Using a toggle with an inlined legend"
+  lang="astro"
+>
+  <Toggle
+    gap="xs"
+    groupName="inline"
+    isInline
+    items={[
+      { id: "inline-item-1", label: "Item 1", value: "item-1" },
+      { id: "inline-item-2", label: "Item 2", value: "item-2" },
+      { id: "inline-item-3", label: "Item 3", value: "item-3" },
+    ]}
+    label="The legend"
+    value="item-1"
+  />
+</CodePreview>

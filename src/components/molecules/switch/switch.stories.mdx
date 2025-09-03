@@ -2,73 +2,153 @@
 title: "Switch"
 ---
 import { components as mdxComponents } from "../../mdx";
+import CodePreview from "../code-preview/code-preview.astro";
 import Switch from "./switch.astro";
 
 export const components = mdxComponents;
 
-## Usage
+## Introduction
 
-A <code>Switch</code> component should be used with boolean settings.
+A `Switch` component should be used with boolean settings.
 
-<Switch
-  id="usage-example"
-  items={[
-    { label: "Item 1", value: "item1" },
-    { label: "Item 2", value: "item2" },
-  ]}
-  label="Usage Example"
-  value="item1"
+<CodePreview
+  code={`import Switch from "./components/molecules/switch/switch.astro";`}
+  label="How to import"
+  lang="ts"
 />
+
+<CodePreview
+  code={`<Switch
+    id="use-example"
+    items={[
+      { label: "Item 1", value: "item1" },
+      { label: "Item 2", value: "item2" },
+    ]}
+    label="Use Example"
+    value="item1"
+/>`}
+  label="Basic use"
+  lang="astro"
+>
+  <Switch
+    id="use-example"
+    items={[
+      { label: "Item 1", value: "item1" },
+      { label: "Item 2", value: "item2" },
+    ]}
+    label="Use Example"
+    value="item1"
+  />
+</CodePreview>
 
 ## Options
 
 ### Items with icons
 
-<Switch
-  id="items-icons-example"
-  items={[
-    { icon: "sun", label: "Item 1", value: "item1" },
-    { icon: "moon", label: "Item 2", value: "item2" },
-  ]}
-  label="Items with icons Example"
-  value="item1"
-/>
+<CodePreview
+  code={`<Switch
+    id="items-icons-example"
+    items={[
+      { icon: "sun", label: "Item 1", value: "item1" },
+      { icon: "moon", label: "Item 2", value: "item2" },
+    ]}
+    label="Items with icons Example"
+    value="item1"
+/>`}
+  label="Using icons"
+  lang="astro"
+>
+  <Switch
+    id="items-icons-example"
+    items={[
+      { icon: "sun", label: "Item 1", value: "item1" },
+      { icon: "moon", label: "Item 2", value: "item2" },
+    ]}
+    label="Items with icons Example"
+    value="item1"
+  />
+</CodePreview>
 
-### <code>hideItemsLabel</code>
+### `hideItemsLabel`
 
-<Switch
-  hideItemsLabel
-  id="hidden-items-label-example"
-  items={[
-    { icon: "sun", label: "Item 1", value: "item1" },
-    { icon: "moon", label: "Item 2", value: "item2" },
-  ]}
-  label="Hidden Items Label Example"
-  value="item1"
-/>
+<CodePreview
+  code={`<Switch
+    hideItemsLabel
+    id="hidden-items-label-example"
+    items={[
+      { icon: "sun", label: "Item 1", value: "item1" },
+      { icon: "moon", label: "Item 2", value: "item2" },
+    ]}
+    label="Hidden Items Label Example"
+    value="item1"
+/>`}
+  label="Using hidden items labels"
+  lang="astro"
+>
+  <Switch
+    hideItemsLabel
+    id="hidden-items-label-example"
+    items={[
+      { icon: "sun", label: "Item 1", value: "item1" },
+      { icon: "moon", label: "Item 2", value: "item2" },
+    ]}
+    label="Hidden Items Label Example"
+    value="item1"
+  />
+</CodePreview>
 
-### <code>hideLabel</code>
+### `hideLabel`
 
-<Switch
-  hideLabel
-  id="hidden-items-label-example"
-  items={[
-    { label: "Item 1", value: "item1" },
-    { label: "Item 2", value: "item2" },
-  ]}
-  label="Hidden Items Label Example"
-  value="item1"
-/>
+<CodePreview
+  code={`<Switch
+    hideLabel
+    id="hidden-items-label-example"
+    items={[
+      { label: "Item 1", value: "item1" },
+      { label: "Item 2", value: "item2" },
+    ]}
+    label="Hidden Items Label Example"
+    value="item1"
+/>`}
+  label="Using a hidden label"
+  lang="astro"
+>
+  <Switch
+    hideLabel
+    id="hidden-items-label-example"
+    items={[
+      { label: "Item 1", value: "item1" },
+      { label: "Item 2", value: "item2" },
+    ]}
+    label="Hidden Items Label Example"
+    value="item1"
+  />
+</CodePreview>
 
-### <code>isInline</code>
+### `isInline`
 
-<Switch
-  id="inline-example"
-  isInline
-  items={[
-    { label: "Item 1", value: "item1" },
-    { label: "Item 2", value: "item2" },
-  ]}
-  label="Inline Example"
-  value="item1"
-/>
+<CodePreview
+  code={`<Switch
+    id="inline-example"
+    isInline
+    items={[
+      { label: "Item 1", value: "item1" },
+      { label: "Item 2", value: "item2" },
+    ]}
+    label="Inline Example"
+    value="item1"
+/>`}
+  label="Inlining the label"
+  lang="astro"
+>
+  <Switch
+    id="inline-example"
+    isInline
+    items={[
+      { label: "Item 1", value: "item1" },
+      { label: "Item 2", value: "item2" },
+    ]}
+    label="Inline Example"
+    value="item1"
+  />
+</CodePreview>

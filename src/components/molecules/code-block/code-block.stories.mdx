@@ -2,6 +2,7 @@
 title: "CodeBlock"
 ---
 import { components as mdxComponents } from "../../mdx";
+import CodePreview from "../code-preview/code-preview.astro";
 import CodeBlock from "./code-block.astro";
 
 export const components = mdxComponents;
@@ -48,105 +49,230 @@ export const complexDiffCodeSample = `
 }
 `;
 
+## Introduction
+
+<CodePreview
+  code={`import CodeBlock from "./components/molecules/code-block/code-block.astro";`}
+  label="How to import"
+  lang="ts"
+/>
+
+<CodePreview
+  code={`<CodeBlock code={jsCodeSample} />`}
+  label="Basic use"
+  lang="astro"
+>
+  <CodeBlock code={jsCodeSample} />
+</CodePreview>
+
 ## With lang
 
-<CodeBlock code={jsCodeSample} lang="js" />
+<CodePreview
+  code={`<CodeBlock code={jsCodeSample} lang="js" />`}
+  label="Using a lang"
+  lang="astro"
+>
+  <CodeBlock code={jsCodeSample} lang="js" />
+</CodePreview>
 
 ## With file path
 
-<CodeBlock
-  code={jsCodeSample}
-  filePath="./hello-world.js"
-  lang="js"
-/>
+<CodePreview
+  code={`<CodeBlock code={jsCodeSample} filePath="./hello-world.js" lang="js" />`}
+  label="Using a lang with a file path"
+  lang="astro"
+>
+  <CodeBlock
+    code={jsCodeSample}
+    filePath="./hello-world.js"
+    lang="js"
+  />
+</CodePreview>
 
 ## With line numbers
 
-<CodeBlock code={jsCodeSample} lang="js" showLineNumbers />
+<CodePreview
+  code={`<CodeBlock code={jsCodeSample} lang="js" showLineNumbers />`}
+  label="Using line numbers"
+  lang="astro"
+>
+  <CodeBlock code={jsCodeSample} lang="js" showLineNumbers />
+</CodePreview>
 
 ## With line numbers and custom starting line
 
-<CodeBlock
-  code={jsCodeSample}
-  lang="js"
-  lineStart={5}
-  showLineNumbers
-/>
+<CodePreview
+  code={`<CodeBlock
+    code={jsCodeSample}
+    lang="js"
+    lineStart={5}
+    showLineNumbers
+/>`}
+  label="Using line numbers with a custom starting line"
+  lang="astro"
+>
+  <CodeBlock
+    code={jsCodeSample}
+    lang="js"
+    lineStart={5}
+    showLineNumbers
+  />
+</CodePreview>
 
 ## With prompt
 
-<CodeBlock code={commandLineCodeSample} lang="shell" showPrompt />
+<CodePreview
+  code={`<CodeBlock code={commandLineCodeSample} lang="shell" showPrompt />`}
+  label="Using a prompt"
+  lang="astro"
+>
+  <CodeBlock
+    code={commandLineCodeSample}
+    lang="shell"
+    showPrompt
+  />
+</CodePreview>
 
 ## With prompt and custom username
 
-<CodeBlock
-  code={commandLineCodeSample}
-  lang="shell"
-  promptUser="john"
-  showPrompt
-/>
+<CodePreview
+  code={`<CodeBlock
+    code={commandLineCodeSample}
+    lang="shell"
+    promptUser="john"
+    showPrompt
+/>`}
+  label="Using a prompt with a custom user"
+  lang="astro"
+>
+  <CodeBlock
+    code={commandLineCodeSample}
+    lang="shell"
+    promptUser="john"
+    showPrompt
+  />
+</CodePreview>
 
 ## With prompt and custom host
 
-<CodeBlock
-  code={commandLineCodeSample}
-  lang="shell"
-  promptHost="doe"
-  promptUser="john"
-  showPrompt
-/>
+<CodePreview
+  code={`<CodeBlock
+    code={commandLineCodeSample}
+    lang="shell"
+    promptHost="doe"
+    promptUser="john"
+    showPrompt
+/>`}
+  label="Using a prompt with a custom host"
+  lang="astro"
+>
+  <CodeBlock
+    code={commandLineCodeSample}
+    lang="shell"
+    promptHost="doe"
+    promptUser="john"
+    showPrompt
+  />
+</CodePreview>
 
 ## With prompt as root
 
-<CodeBlock
-  code="nano /etc/hosts"
-  lang="shell"
-  promptUser="root"
-  showPrompt
-/>
+<CodePreview
+  code={`<CodeBlock
+    code={commandLineCodeSample}
+    lang="shell"
+    promptUser="root"
+    showPrompt
+/>`}
+  label="Using a prompt as root"
+  lang="astro"
+>
+  <CodeBlock
+    code={commandLineCodeSample}
+    lang="shell"
+    promptUser="root"
+    showPrompt
+  />
+</CodePreview>
 
 ## With SQL prompt
 
-<CodeBlock code={sqlCodeSample} lang="sql" showPrompt />
+<CodePreview
+  code={`<CodeBlock code={sqlCodeSample} lang="sql" showPrompt />`}
+  label="Using an SQL prompt"
+  lang="astro"
+>
+  <CodeBlock code={sqlCodeSample} lang="sql" showPrompt />
+</CodePreview>
 
 ## With SQL prompt and custom prompt host
 
-<CodeBlock
-  code={sqlCodeSample}
-  lang="sql"
-  promptHost="MariaDB"
-  showPrompt
-/>
+<CodePreview
+  code={`<CodeBlock code={sqlCodeSample} lang="sql" promptHost="MariaDB" showPrompt />`}
+  label="Using a prompt with a custom host"
+  lang="astro"
+>
+  <CodeBlock
+    code={sqlCodeSample}
+    lang="sql"
+    promptHost="MariaDB"
+    showPrompt
+  />
+</CodePreview>
 
 ## With SQL prompt and custom database name
 
-<CodeBlock
-  code={sqlCodeSample}
-  lang="sql"
-  promptDB="recipes"
-  showPrompt
-/>
+<CodePreview
+  code={`<CodeBlock code={sqlCodeSample} lang="sql" promptDB="recipes" showPrompt />`}
+  label="Using a prompt with a custom database"
+  lang="astro"
+>
+  <CodeBlock
+    code={sqlCodeSample}
+    lang="sql"
+    promptDB="recipes"
+    showPrompt
+  />
+</CodePreview>
 
 ## Diff
 
-<CodeBlock code={diffCodeSample} lang="diff" showLineNumbers />
+<CodePreview
+  code={`<CodeBlock code={diffCodeSample} lang="diff" showLineNumbers />`}
+  label="Using a diff"
+  lang="astro"
+>
+  <CodeBlock code={diffCodeSample} lang="diff" showLineNumbers />
+</CodePreview>
 
 ## Diff with syntax highlighting
 
-<CodeBlock
-  code={diffCodeSample}
-  isDiff
-  lang="ts"
-  showLineNumbers
-/>
+<CodePreview
+  code={`<CodeBlock code={diffCodeSample} isDiff lang="ts" showLineNumbers />`}
+  label="Using a diff with syntax highlighting"
+  lang="astro"
+>
+  <CodeBlock
+    code={diffCodeSample}
+    isDiff
+    lang="ts"
+    showLineNumbers
+  />
+</CodePreview>
 
-## A complex diff example
+## Limitations
 
-Ideally, I'd like that removed lines affects the line numbers for the next lines but due to <code>counter</code> limitations, it seems impossible with CSS only when having multiple removed lines at once. So this type of blocks should be avoided.
+Ideally, I'd like that removed lines affects the line numbers for the next lines but due to `counter` limitations, it seems impossible with CSS only when having multiple removed lines at once. So this type of blocks should be avoided.
 
-<CodeBlock
-  code={complexDiffCodeSample}
-  isDiff
-  lang="css"
-  showLineNumbers
-/>
+<CodePreview
+  code={`<CodeBlock code={complexDiffCodeSample} isDiff lang="css" showLineNumbers />`}
+  label="Using a diff with syntax highlighting"
+  lang="astro"
+>
+  <CodeBlock
+    code={complexDiffCodeSample}
+    isDiff
+    lang="css"
+    showLineNumbers
+  />
+</CodePreview>

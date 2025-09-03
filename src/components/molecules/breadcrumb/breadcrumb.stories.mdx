@@ -2,19 +2,39 @@
 title: "Breadcrumb"
 ---
 import { components as mdxComponents } from "../../mdx";
+import CodePreview from "../code-preview/code-preview.astro";
 import Breadcrumb from "./breadcrumb.astro";
 
 export const components = mdxComponents;
-
 export const items = [
-  { label: "Home", url: "#item1" },
-  { label: "Blog", url: "#item2" },
-  { label: "Year", url: "#item3" },
-  { label: "A very very long post title", url: "#item4" },
+{ label: "Home", url: "#item1" },
+{ label: "Blog", url: "#item2" },
+{ label: "Year", url: "#item3" },
+{ label: "A very very long post title", url: "#item4" },
 ];
 
-## Usage
+## Introduction
 
 This component is used to display a breadcrumb on a page.
 
-<Breadcrumb items={items} />
+<CodePreview
+  code={`import Breadcrumb from "./components/molecules/breadcrumb/breadcrumb.astro";`}
+  label="How to import"
+  lang="ts"
+/>
+
+<CodePreview
+  code={`---
+const items = [
+{ label: "Home", url: "#item1" },
+{ label: "Blog", url: "#item2" },
+{ label: "Year", url: "#item3" },
+{ label: "A very very long post title", url: "#item4" },
+];
+---
+<Breadcrumb items={items} />`}
+  label="Basic use"
+  lang="astro"
+>
+  <Breadcrumb items={items} />
+</CodePreview>

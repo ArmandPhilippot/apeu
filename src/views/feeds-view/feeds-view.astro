@@ -43,7 +43,7 @@ const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
     {hasContent && <Content />}
     <p>{translate("page.feeds.global.feed.introduction")}</p>
     <p>
-      <Button as="a" href={`${routeById("home").url}feed.xml`}>
+      <Button as="a" href={`${routeById("home").path}feed.xml`}>
         <Icon aria-hidden="true" name="feed" />
         {translate("cta.subscribe.to.website")}
       </Button>
@@ -53,7 +53,7 @@ const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
       {
         feeds?.map((feed) => (
           <ListItem>
-            <Link href={feed.slug}>{feed.label}</Link>
+            <Link href={feed.path}>{feed.label}</Link>
           </ListItem>
         ))
       }

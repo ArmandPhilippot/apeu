@@ -6,7 +6,7 @@ import {
   type PluralUIKey,
   type SingularUIKey,
 } from "../../../services/i18n";
-import type { CollectionMetaData } from "../../../types/data";
+import type { CollectionMetaData, Route } from "../../../types/data";
 import type { IconName } from "../../../types/tokens";
 import type { AllKeysOf, Blend } from "../../../types/utilities";
 import DescriptionList from "../../atoms/description-list/description-list.astro";
@@ -32,12 +32,7 @@ type Props = ComponentProps<typeof DescriptionList> & {
   icons?: CollectionMetaIcon;
 };
 
-type LinkValue = {
-  href: string;
-  text: string;
-};
-
-type MetaValue = string | Date | LinkValue;
+type MetaValue = string | Date | Route;
 
 type RenderConfig<K extends AllKeysOf<MetaData>> = {
   shouldRender: (value: MetaData[K]) => value is NonNullable<MetaData[K]>;
@@ -102,7 +97,7 @@ const configs: MetaDataConfigs = {
     },
     renderValue: (value) =>
       value.map(({ isWebsiteOwner, name, website }) =>
-        website && !isWebsiteOwner ? { href: website, text: name } : name
+        website && !isWebsiteOwner ? { label: name, path: website } : name
       ),
   },
   inLanguage: {
@@ -161,7 +156,7 @@ const configs: MetaDataConfigs = {
         token: "meta.label.repository",
       };
     },
-    renderValue: ({ name, url }) => [{ href: url, text: name }],
+    renderValue: ({ name, url }) => [{ label: name, path: url }],
   },
   category: {
     shouldRender: (value): value is NonNullable<MetaData["category"]> =>
@@ -171,7 +166,7 @@ const configs: MetaDataConfigs = {
         token: "meta.label.category",
       };
     },
-    renderValue: (value) => [{ href: value.route, text: value.title }],
+    renderValue: (value) => [value],
   },
   tags: {
     shouldRender: (value): value is NonNullable<MetaData["tags"]> =>
@@ -182,13 +177,7 @@ const configs: MetaDataConfigs = {
         isPlural: true,
       };
     },
-    renderValue: (value) =>
-      value.map((tag) => {
-        return {
-          href: tag.route,
-          text: tag.title,
-        };
-      }),
+    renderValue: (value) => value,
   },
   total: {
     shouldRender: (value): value is NonNullable<MetaData["total"]> => !!value,
@@ -240,7 +229,7 @@ const isMetaTranslationKey = (key: unknown): key is SingularUIKey =>
               if (item instanceof Date) {
                 content = <Time date={item} />;
               } else if (typeof item === "object") {
-                content = <Link href={item.href}>{item.text}</Link>;
+                content = <Link href={item.path}>{item.label}</Link>;
               } else if (isMetaTranslationKey(item)) {
                 content = translate(item);
               }

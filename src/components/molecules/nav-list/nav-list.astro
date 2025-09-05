@@ -1,14 +1,13 @@
 ---
 import type { ComponentProps } from "astro/types";
+import type { Route } from "../../../types/data";
 import type { IconName } from "../../../types/tokens";
 import ListItem from "../../atoms/list/list-item.astro";
 import List from "../../atoms/list/list.astro";
 
-type NavItem = {
+type NavItem = Route & {
   icon?: IconName | null | undefined;
   iconSize?: number | undefined;
-  label: string;
-  url: string;
 };
 
 type Props = Omit<ComponentProps<typeof List>, "as"> & {

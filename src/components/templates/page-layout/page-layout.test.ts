@@ -103,9 +103,9 @@ describe("PageLayout", () => {
 
     const props = {
       breadcrumb: [
-        { label: "omnis assumenda aut", url: "#voluptate-est-sed" },
-        { label: "voluptas odio voluptatem", url: "#est-ducimus-sit" },
-        { label: "sunt ratione quis", url: "#sunt-illo-iusto" },
+        { label: "omnis assumenda aut", path: "#voluptate-est-sed" },
+        { label: "voluptas odio voluptatem", path: "#est-ducimus-sit" },
+        { label: "sunt ratione quis", path: "#sunt-illo-iusto" },
       ] as const,
       seo: {
         title: "est et fugiat",

@@ -32,7 +32,7 @@ export const useRouting: UseRouting = async (
       );
     }
 
-    return { label: match.raw.data.title, url: match.route };
+    return { label: match.raw.data.title, path: match.route };
   };
 
   return { routeById };

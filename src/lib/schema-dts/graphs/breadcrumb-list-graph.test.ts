@@ -6,11 +6,11 @@ describe("get-breadcrumb-list-graph", () => {
     const graph = getBreadcrumbListGraph([
       {
         label: "magni",
-        url: "/magni",
+        path: "/magni",
       },
       {
         label: "quasi",
-        url: "/quasi",
+        path: "/quasi",
       },
     ]);
 

@@ -61,7 +61,7 @@ describe("use-routing", () => {
 
     expect(routeById("note1")).toStrictEqual({
       label: "Note 1",
-      url: "/note1",
+      path: "/note1",
     });
   });
 
@@ -72,7 +72,7 @@ describe("use-routing", () => {
 
     expect(routeById("project1", "fr")).toStrictEqual({
       label: "Projet 1",
-      url: "/fr/projet1",
+      path: "/fr/projet1",
     });
   });
 

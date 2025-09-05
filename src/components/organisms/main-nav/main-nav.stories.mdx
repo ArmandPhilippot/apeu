@@ -7,11 +7,11 @@ import MainNav from "./main-nav.astro";
 
 export const components = mdxComponents;
 export const items = [
-  { label: "Item 1", url: "#item-1" },
-  { label: "Item 2", url: "#item-2" },
-  { label: "Item 3", url: "#item-3" },
-  { label: "Item 4", url: "#item-4" },
-  { label: "Item 5", url: "#item-5" },
+  { label: "Item 1", path: "#item-1" },
+  { label: "Item 2", path: "#item-2" },
+  { label: "Item 3", path: "#item-3" },
+  { label: "Item 4", path: "#item-4" },
+  { label: "Item 5", path: "#item-5" },
 ]
 
 ## Introduction
@@ -27,11 +27,11 @@ This component is used to display the main navigation.
 <CodePreview
   code={`---
 const items = [
-    { label: "Item 1", url: "#item-1" },
-    { label: "Item 2", url: "#item-2" },
-    { label: "Item 3", url: "#item-3" },
-    { label: "Item 4", url: "#item-4" },
-    { label: "Item 5", url: "#item-5" },
+    { label: "Item 1", path: "#item-1" },
+    { label: "Item 2", path: "#item-2" },
+    { label: "Item 3", path: "#item-3" },
+    { label: "Item 4", path: "#item-4" },
+    { label: "Item 5", path: "#item-5" },
 ]
 ---
 <MainNav items={items} />`}
@@ -40,11 +40,11 @@ const items = [
 >
   <MainNav
     items={[
-      { label: "Item 1", url: "#item-1" },
-      { label: "Item 2", url: "#item-2" },
-      { label: "Item 3", url: "#item-3" },
-      { label: "Item 4", url: "#item-4" },
-      { label: "Item 5", url: "#item-5" },
+      { label: "Item 1", path: "#item-1" },
+      { label: "Item 2", path: "#item-2" },
+      { label: "Item 3", path: "#item-3" },
+      { label: "Item 4", path: "#item-4" },
+      { label: "Item 5", path: "#item-5" },
     ]}
   />
 </CodePreview>

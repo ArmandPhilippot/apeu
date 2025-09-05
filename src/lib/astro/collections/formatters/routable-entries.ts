@@ -14,9 +14,9 @@ import type { EntryByIdIndex } from "../indexes";
 import type { IndexedEntry, RoutableCollectionKey } from "../types";
 import { getAuthorLink } from "./authors";
 import {
-  getCategoryFromReference,
+  getCategoryRoute,
   getMetaFromRemarkPluginFrontmatter,
-  getTagsFromReferences,
+  getTagsRoutes,
   resolveReferences,
   resolveTranslations,
 } from "./utils";
@@ -95,11 +95,11 @@ export async function getRoutableEntryPreview<T extends RoutableCollectionKey>(
       : {}),
     ...("category" in remainingMeta
       ? {
-          category: getCategoryFromReference(remainingMeta.category, indexById),
+          category: getCategoryRoute(remainingMeta.category, indexById),
         }
       : {}),
     ...("tags" in remainingMeta
-      ? { tags: getTagsFromReferences(remainingMeta.tags, indexById) }
+      ? { tags: getTagsRoutes(remainingMeta.tags, indexById) }
       : {}),
   };
 

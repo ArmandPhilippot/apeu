@@ -31,7 +31,7 @@ const getRouteCrumbs = (
     .map((segment) => routeIndex.get(segment))
     .filter((entry) => entry !== undefined)
     .map((entry) => {
-      return { label: entry.raw.data.title, url: entry.route };
+      return { label: entry.raw.data.title, path: entry.route };
     });
 };
 
@@ -66,7 +66,7 @@ export const getBreadcrumb = async ({
   if (paginationLabel !== undefined) {
     crumbs.push({
       label: paginationLabel,
-      url: route,
+      path: route,
     });
   }
 

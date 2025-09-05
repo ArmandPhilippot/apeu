@@ -5,11 +5,11 @@ describe("get-story-seo", () => {
   it("computes seo meta from a breadcrumb", () => {
     const meta = getStorySeo({
       breadcrumb: [
-        { label: "Home", url: "/" },
-        { label: "Design system", url: "/design-system" },
-        { label: "Components", url: "/design-system/components" },
-        { label: "Atoms", url: "/design-system/components/atoms" },
-        { label: "Story", url: "/design-system/components/atoms/story" },
+        { label: "Home", path: "/" },
+        { label: "Design system", path: "/design-system" },
+        { label: "Components", path: "/design-system/components" },
+        { label: "Atoms", path: "/design-system/components/atoms" },
+        { label: "Story", path: "/design-system/components/atoms/story" },
       ],
     });
 
@@ -23,11 +23,11 @@ describe("get-story-seo", () => {
   it("allows overriding seo flags", () => {
     const meta = getStorySeo({
       breadcrumb: [
-        { label: "Home", url: "/" },
-        { label: "Design system", url: "/design-system" },
-        { label: "Components", url: "/design-system/components" },
-        { label: "Atoms", url: "/design-system/components/atoms" },
-        { label: "Story", url: "/design-system/components/atoms/story" },
+        { label: "Home", path: "/" },
+        { label: "Design system", path: "/design-system" },
+        { label: "Components", path: "/design-system/components" },
+        { label: "Atoms", path: "/design-system/components/atoms" },
+        { label: "Story", path: "/design-system/components/atoms/story" },
       ],
       seo: { noindex: false, nofollow: false, title: "Overridden" },
     });

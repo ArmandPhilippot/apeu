@@ -10,7 +10,7 @@ import {
 import type { IndexedEntry } from "../types";
 import {
   getMetaFromRemarkPluginFrontmatter,
-  getTaxonomyLink,
+  getTaxonomyRoute,
   resolveReferences,
   resolveTranslations,
 } from "./utils";
@@ -73,11 +73,11 @@ describe("get-taxonomy-link", () => {
       route: "/blog/category/micro-blog",
       slug: "micro-blog",
     };
-    const result = getTaxonomyLink(indexedEntry);
+    const result = getTaxonomyRoute(indexedEntry);
 
     expect(result).toMatchObject({
-      route: indexedEntry.route,
-      title: indexedEntry.raw.data.title,
+      label: indexedEntry.raw.data.title,
+      path: indexedEntry.route,
     });
   });
 
@@ -87,11 +87,11 @@ describe("get-taxonomy-link", () => {
       route: "/tags/catchall-tag",
       slug: "catchall-tag",
     };
-    const result = getTaxonomyLink(indexedEntry);
+    const result = getTaxonomyRoute(indexedEntry);
 
     expect(result).toMatchObject({
-      route: indexedEntry.route,
-      title: indexedEntry.raw.data.title,
+      label: indexedEntry.raw.data.title,
+      path: indexedEntry.route,
     });
   });
 });

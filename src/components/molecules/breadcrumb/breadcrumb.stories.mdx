@@ -7,10 +7,10 @@ import Breadcrumb from "./breadcrumb.astro";
 
 export const components = mdxComponents;
 export const items = [
-{ label: "Home", url: "#item1" },
-{ label: "Blog", url: "#item2" },
-{ label: "Year", url: "#item3" },
-{ label: "A very very long post title", url: "#item4" },
+{ label: "Home", path: "#item1" },
+{ label: "Blog", path: "#item2" },
+{ label: "Year", path: "#item3" },
+{ label: "A very very long post title", path: "#item4" },
 ];
 
 ## Introduction
@@ -26,10 +26,10 @@ This component is used to display a breadcrumb on a page.
 <CodePreview
   code={`---
 const items = [
-{ label: "Home", url: "#item1" },
-{ label: "Blog", url: "#item2" },
-{ label: "Year", url: "#item3" },
-{ label: "A very very long post title", url: "#item4" },
+{ label: "Home", path: "#item1" },
+{ label: "Blog", path: "#item2" },
+{ label: "Year", path: "#item3" },
+{ label: "A very very long post title", path: "#item4" },
 ];
 ---
 <Breadcrumb items={items} />`}

@@ -52,7 +52,7 @@ export const getWebPageGraph = async ({
     editor: { "@id": websiteAuthor },
     headline: title,
     isAccessibleForFree: true,
-    isPartOf: { "@id": `${WEBSITE_URL}${routeById("home").url}` },
+    isPartOf: { "@id": `${WEBSITE_URL}${routeById("home").path}` },
     lastReviewed: meta.updatedOn.toISOString(),
     license: translate("license.url"),
     name: title,

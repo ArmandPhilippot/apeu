@@ -8,10 +8,10 @@ import PageLayout from "../page-layout.astro";
 export const components = mdxComponents;
 export const title = "Page with breadcrumb and aside";
 export const breadcrumb = [
-  { label: "Home", url: "#home" },
-  { label: "Blog", url: "#blog" },
-  { label: "Posts", url: "#posts" },
-  { label: title, url: "#current-page" },
+  { label: "Home", path: "#home" },
+  { label: "Blog", path: "#blog" },
+  { label: "Posts", path: "#posts" },
+  { label: title, path: "#current-page" },
 ];
 export const seo = {
   nofollow: true,

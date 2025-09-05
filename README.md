@@ -83,8 +83,8 @@ To use localized routing in your templates and components, you can import the `u
 import { useRouting } from "../services/routing";
 
 const { routeById } = await useRouting("fr");
-console.log(routeById("projects")) // { label: "Projets", url: "/projets" }
-console.log(routeById("projects/first-project")) // { label: "Premier projet", url: "/projets/premier-projet" }
+console.log(routeById("projects")) // { label: "Projets", path: "/projets" }
+console.log(routeById("projects/first-project")) // { label: "Premier projet", path: "/projets/premier-projet" }
 ---
 ```
 
@@ -95,8 +95,8 @@ You can also override the locale provided to `useRouting` per `routeById` call w
 import { useRouting } from "../services/routing";
 
 const { routeById } = await useRouting("fr");
-console.log(routeById("projects", "en")) // { label: "Projects", url: "/en/projects" }
-console.log(routeById("projects/first-project", "en")) // { label: "First project", url: "/en/projects/first-project" }
+console.log(routeById("projects", "en")) // { label: "Projects", path: "/en/projects" }
+console.log(routeById("projects/first-project", "en")) // { label: "First project", path: "/en/projects/first-project" }
 ---
 ```
 
@@ -491,7 +491,7 @@ const contactRoute = routeById("contact");
 ---
 
 <p>{translate("some.key.available.in.translations")}</p>
-<a href={contactRoute.url}>
+<a href={contactRoute.path}>
   {contactRoute.label}
 </a>
 <div>

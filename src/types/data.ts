@@ -9,8 +9,10 @@ import type { AvailableLocale, IconName } from "./tokens";
 import type { ConditionallyExtend, PatchExistingProperties } from "./utilities";
 
 export type Route = {
+  /** The label of the route. */
   label: string;
-  url: string;
+  /** The pathname of the route. */
+  path: string;
 };
 
 export type WithIcon<T> = T & {
@@ -173,8 +175,8 @@ type AddCollectionFeatures<T, K, Mode> = AddRenderedContentIfApplicable<
 
 type UpdatedMetaPropertiesTypes = {
   authors: AuthorLink[];
-  category: TaxonomyLink | null;
-  tags: TaxonomyLink[] | null;
+  category: Route | null;
+  tags: Route[] | null;
 };
 
 type UpdatedRootPropertiesTypes = {
@@ -307,11 +309,11 @@ export type Project = FormattedEntry<"projects", "full">;
 export type ProjectPreview = FormattedEntry<"projects">;
 export type ProjectMetaData = Project["meta"];
 
-export type RawTaxonomyEntry = CollectionEntry<"blog.categories" | "tags">;
-export type Taxonomy = FormattedEntry<"blog.categories" | "tags", "full">;
-export type TaxonomyPreview = FormattedEntry<"blog.categories" | "tags">;
+export type TaxonomyCollectionKey = "blog.categories" | "tags";
+export type RawTaxonomyEntry = CollectionEntry<TaxonomyCollectionKey>;
+export type Taxonomy = FormattedEntry<TaxonomyCollectionKey, "full">;
+export type TaxonomyPreview = FormattedEntry<TaxonomyCollectionKey>;
 export type TaxonomyMetaData = Taxonomy["meta"];
-export type TaxonomyLink = Pick<Taxonomy, "title"> & { route: string };
 
 export type CollectionMetaData =
   | BlogMetaData

@@ -8,9 +8,9 @@ import NavList from "./nav-list.astro";
 
 export const components = mdxComponents;
 export const items = [
-  { label: "Item 1", url: "#item-1" },
-  { label: "Item 2", url: "#item-2" },
-  { label: "Item 3", url: "#item-3" },
+  { label: "Item 1", path: "#item-1" },
+  { label: "Item 2", path: "#item-2" },
+  { label: "Item 3", path: "#item-3" },
 ];
 
 ## Introduction
@@ -26,14 +26,14 @@ This component is used to define a navigation list. It accepts an `items` proper
 <CodePreview
   code={`<NavList
     items={[
-      { label: "Item 1", url: "#item-1" },
-      { label: "Item 2", url: "#item-2" },
-      { label: "Item 3", url: "#item-3" },
+      { label: "Item 1", path: "#item-1" },
+      { label: "Item 2", path: "#item-2" },
+      { label: "Item 3", path: "#item-3" },
     ]}
 >
     {
       (item) => (
-        <NavItem href={item.url} icon={item.icon} iconSize={item.iconSize}>
+        <NavItem href={item.path} icon={item.icon} iconSize={item.iconSize}>
           {item.label}
         </NavItem>
       )
@@ -44,14 +44,14 @@ This component is used to define a navigation list. It accepts an `items` proper
 >
   <NavList
     items={[
-      { label: "Item 1", url: "#item-1" },
-      { label: "Item 2", url: "#item-2" },
-      { label: "Item 3", url: "#item-3" },
+      { label: "Item 1", path: "#item-1" },
+      { label: "Item 2", path: "#item-2" },
+      { label: "Item 3", path: "#item-3" },
     ]}
   >
     {
       (item) => (
-        <NavItem href={item.url} icon={item.icon} iconSize={item.iconSize}>
+        <NavItem href={item.path} icon={item.icon} iconSize={item.iconSize}>
           {item.label}
         </NavItem>
       )

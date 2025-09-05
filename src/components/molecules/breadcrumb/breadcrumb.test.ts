@@ -20,9 +20,9 @@ describe("Breadcrumb", () => {
 
     const props = {
       items: [
-        { label: "omnis assumenda aut", url: "#voluptate-est-sed" },
-        { label: "voluptas odio voluptatem", url: "#est-ducimus-sit" },
-        { label: "sunt ratione quis", url: "#sunt-illo-iusto" },
+        { label: "omnis assumenda aut", path: "#voluptate-est-sed" },
+        { label: "voluptas odio voluptatem", path: "#est-ducimus-sit" },
+        { label: "sunt ratione quis", path: "#sunt-illo-iusto" },
       ],
     } satisfies ComponentProps<typeof Breadcrumb>;
     const result = await container.renderToString(Breadcrumb, {
@@ -32,12 +32,12 @@ describe("Breadcrumb", () => {
     const listItems = [...result.matchAll(/<li[^>]*>[\S\s]*?<\/li>/g)];
 
     expect(listItems).toHaveLength(props.items.length);
-    expect(result).toContain(props.items[0]?.url);
-    expect(result).toContain(props.items[1]?.url);
-    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- `url` index. */
+    expect(result).toContain(props.items[0]?.path);
+    expect(result).toContain(props.items[1]?.path);
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- `path` index. */
     expect(result).toContain(props.items[2]?.label);
-    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- `url` index. */
-    expect(result).not.toContain(props.items[2]?.url);
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- `path` index. */
+    expect(result).not.toContain(props.items[2]?.path);
   });
 
   it<LocalTestContext>("can render the items centered", async ({
@@ -48,9 +48,9 @@ describe("Breadcrumb", () => {
     const props = {
       isCentered: true,
       items: [
-        { label: "omnis assumenda aut", url: "#voluptate-est-sed" },
-        { label: "voluptas odio voluptatem", url: "#est-ducimus-sit" },
-        { label: "sunt ratione quis", url: "#sunt-illo-iusto" },
+        { label: "omnis assumenda aut", path: "#voluptate-est-sed" },
+        { label: "voluptas odio voluptatem", path: "#est-ducimus-sit" },
+        { label: "sunt ratione quis", path: "#sunt-illo-iusto" },
       ],
     } satisfies ComponentProps<typeof Breadcrumb>;
     const result = await container.renderToString(Breadcrumb, {

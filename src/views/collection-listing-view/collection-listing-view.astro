@@ -40,7 +40,7 @@ const isTagPage = (
   entry: QueriedCollectionEntry<ListingPageCollection, "preview">
 ) => {
   if (!("tags" in entry.meta) || !entry.meta.tags) return false;
-  return entry.meta.tags.some((tag) => tag.route === page.route);
+  return entry.meta.tags.some((tag) => tag.path === page.route);
 };
 
 const filterCurrentTag = <
@@ -51,7 +51,7 @@ const filterCurrentTag = <
   if (!("tags" in meta) || !meta.tags) return meta;
   return {
     ...meta,
-    tags: meta.tags.filter((tag) => tag.route !== page.route),
+    tags: meta.tags.filter((tag) => tag.path !== page.route),
   };
 };
 
@@ -91,7 +91,7 @@ const config: CollectionConfigMap = {
       if ("category" in entry.meta) {
         const { authors, category, ...rest } = entry.meta;
         const filteredMeta = filterCurrentTag(rest);
-        return page.route === category?.route
+        return page.route === category?.path
           ? { ...entry, meta: { ...filteredMeta } }
           : { ...entry, meta: { ...filteredMeta, category } };
       }

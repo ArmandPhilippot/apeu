@@ -26,7 +26,7 @@ export const getBlogGraph = async ({
   const { translate } = useI18n(locale);
   const { routeById } = await useRouting(locale);
   const websiteAuthor = `${WEBSITE_URL}#author` as const;
-  const blogUrl = `${WEBSITE_URL}${routeById("blog").url}`;
+  const blogUrl = `${WEBSITE_URL}${routeById("blog").path}`;
 
   return {
     "@id": `${blogUrl}#blog`,
@@ -40,7 +40,7 @@ export const getBlogGraph = async ({
     editor: { "@id": websiteAuthor },
     headline: title,
     isAccessibleForFree: true,
-    isPartOf: { "@id": `${WEBSITE_URL}${routeById("home").url}` },
+    isPartOf: { "@id": `${WEBSITE_URL}${routeById("home").path}` },
     license: translate("license.url"),
     mainEntityOfPage: blogUrl,
     name: title,

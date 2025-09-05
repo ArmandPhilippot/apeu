@@ -17,8 +17,8 @@ describe("getStories", () => {
     expect(result).toStrictEqual({
       base: {
         breadcrumb: [
-          { label: "Home", url: "/" },
-          { label: "Base", url: "/base" },
+          { label: "Home", path: "/" },
+          { label: "Base", path: "/base" },
         ],
         children: [],
         label: "Base",
@@ -37,9 +37,9 @@ describe("getStories", () => {
 
     expect(result.button).toStrictEqual({
       breadcrumb: [
-        { label: "Home", url: "/" },
-        { label: "Somewhere", url: "/somewhere" },
-        { label: "Button", url: "/somewhere/button" },
+        { label: "Home", path: "/" },
+        { label: "Somewhere", path: "/somewhere" },
+        { label: "Button", path: "/somewhere/button" },
       ],
       label: "Button",
       path: join(import.meta.dirname, "button.stories.mdx"),
@@ -59,9 +59,9 @@ describe("getStories", () => {
 
     expect(result.example).toStrictEqual({
       breadcrumb: [
-        { label: "Home", url: "/" },
-        { label: "Somewhere", url: "/somewhere" },
-        { label: "Example", url: "/somewhere/example" },
+        { label: "Home", path: "/" },
+        { label: "Somewhere", path: "/somewhere" },
+        { label: "Example", path: "/somewhere/example" },
       ],
       label: "Example",
       path: join(import.meta.dirname, "stories/example.mdx"),
@@ -81,13 +81,13 @@ describe("getStories", () => {
 
     expect(result.components).toStrictEqual({
       breadcrumb: [
-        { label: "Home", url: "/" },
-        { label: "Somewhere", url: "/somewhere" },
-        { label: "Components", url: "/somewhere/components" },
+        { label: "Home", path: "/" },
+        { label: "Somewhere", path: "/somewhere" },
+        { label: "Components", path: "/somewhere/components" },
       ],
       children: [
-        { route: "/somewhere/components/button", label: "Button" },
-        { route: "/somewhere/components/input", label: "Input" },
+        { label: "Button", path: "/somewhere/components/button" },
+        { label: "Input", path: "/somewhere/components/input" },
       ],
       label: "Components",
       route: "/somewhere/components",
@@ -103,13 +103,13 @@ describe("getStories", () => {
     });
 
     expect(result.components).toMatchObject({
-      children: [{ route: "/design-system/components/atoms", label: "Atoms" }],
+      children: [{ label: "Atoms", path: "/design-system/components/atoms" }],
     });
 
     expect(result["design-system"]).toMatchObject({
       children: expect.arrayContaining([
-        { route: "/design-system/components", label: "Components" },
-        { route: "/design-system/tokens", label: "Tokens" },
+        { label: "Components", path: "/design-system/components" },
+        { label: "Tokens", path: "/design-system/tokens" },
       ]),
     });
   });

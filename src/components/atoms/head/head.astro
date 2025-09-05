@@ -122,7 +122,7 @@ const feeds = await getCollectionsFeeds(locale);
         />
         {feeds.map((feed) => (
           <link
-            href={new URL(feed.slug, Astro.site)}
+            href={new URL(feed.path, Astro.site)}
             rel="alternate"
             title={feed.label}
             type="application/rss+xml"

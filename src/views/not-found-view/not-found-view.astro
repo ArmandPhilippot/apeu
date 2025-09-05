@@ -16,7 +16,7 @@ const {
   entry: { Content, hasContent, ...page },
   ...props
 } = Astro.props;
-const { routeById } = await useRouting();
+const { routeById } = await useRouting(page.locale);
 const breadcrumb = await getBreadcrumb({ route: Astro.url.pathname });
 const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
   await getWebPageGraph({ ...page, breadcrumb }),
@@ -37,7 +37,7 @@ const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
     <SearchForm
       id="not-found-search"
       queryParam={CONFIG.SEARCH.QUERY_PARAM}
-      resultsPage={routeById(`${page.locale}/search`).url}
+      resultsPage={routeById("search").url}
     />
   </Fragment>
 </PageLayout>

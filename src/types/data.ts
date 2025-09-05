@@ -5,7 +5,7 @@ import type {
   RenderResult,
 } from "astro:content";
 import type { RoutableCollectionKey } from "../lib/astro/collections/types";
-import type { IconName } from "./tokens";
+import type { AvailableLocale, IconName } from "./tokens";
 import type { ConditionallyExtend, PatchExistingProperties } from "./utilities";
 
 export type Route = {
@@ -19,7 +19,7 @@ export type WithIcon<T> = T & {
 };
 
 export type AltLanguage = {
-  locale: string;
+  locale: AvailableLocale;
   route: string;
 };
 

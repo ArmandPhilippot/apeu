@@ -6,7 +6,7 @@ Replaces the `route` helper from `useI18n` with `useRouting`.
 
 Routes are no longer handled statically in a translation file but dynamically in an index built from data provided in your content directory. Because of that, the `route` property has been removed from the object returned by `useI18n()`.
 
-If you need to display a route in your templates, you'll need to import and use the `useRouting()` utility instead. This returns an object containing a `routeById()` helper.
+If you need to display a route in your templates, you'll need to import and use the `useRouting()` utility instead. This returns an object containing a `routeById()` helper that uses a similar API than `route()`.
 
 ```diff
 ---
@@ -15,9 +15,9 @@ import { useI18n } from "../../../services/i18n";
 
 -const { locale, route, translate } = useI18n(Astro.currentLocale);
 +const { locale, translate } = useI18n(Astro.currentLocale);
-+const { routeById } = await useRouting();
-+const homeRoute = routeById(`${locale}/home`);
-+const blogRoute = routeById(`${locale}/blog`);
++const { routeById } = await useRouting(locale);
++const homeRoute = routeById("home");
++const blogRoute = routeById("blog");
 
 const mainNav = [
   {

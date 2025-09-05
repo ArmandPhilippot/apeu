@@ -32,7 +32,7 @@ const {
   ...props
 } = Astro.props;
 const { translate } = useI18n(Astro.currentLocale);
-const { routeById } = await useRouting();
+const { routeById } = await useRouting(page.locale);
 const author = await queryEntry({
   collection: "authors",
   id: "armand-philippot",
@@ -103,7 +103,7 @@ const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
             addRelMe
             as="section"
             class="homepage-contact"
-            contactPageRoute={routeById("fr/contact").url}
+            contactPageRoute={routeById("contact").url}
             elevation="raised"
             isSpaced
             socialMedia={author.socialMedia}

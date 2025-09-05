@@ -22,7 +22,7 @@ const {
   ...props
 } = Astro.props;
 const { translate, translatePlural } = useI18n(page.locale);
-const { routeById } = await useRouting();
+const { routeById } = await useRouting(page.locale);
 const { entries: categories } = await queryCollection("blog.categories", {
   format: "preview",
   orderBy: { key: "title", order: "ASC" },
@@ -76,7 +76,7 @@ const getPostCTA = (
     >
       <Heading>{translate("page.blog.section.recent.posts.heading")}</Heading>
       <div class="blog-section-cta">
-        <Button as="a" href={routeById(`${page.locale}/blog/posts`).url}>
+        <Button as="a" href={routeById("blog/posts").url}>
           {translatePlural("cta.see.all.posts", { count: totalPosts })}
         </Button>
         <Button
@@ -84,7 +84,7 @@ const getPostCTA = (
             title: translate("page.blog.posts.title"),
           })}
           as="a"
-          href={`${routeById(`${page.locale}/blog/posts`).url}/feed.xml`}
+          href={`${routeById("blog/posts").url}/feed.xml`}
         >
           <Icon aria-hidden="true" name="feed" />
           {translate("cta.subscribe")}

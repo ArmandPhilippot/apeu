@@ -29,9 +29,18 @@ vi.mock("../../utils/constants", async (importOriginal) => {
   };
 });
 
+// cSpell:ignore projet
 const mockEntries = createMockEntriesByCollection({
   authors: [{ collection: "authors", id: "john-doe" }],
   notes: [{ collection: "notes", id: "en/note1", data: { title: "Note 1" } }],
+  projects: [
+    { collection: "projects", id: "en/project1", data: { title: "Project 1" } },
+    {
+      collection: "projects",
+      id: "fr/project1",
+      data: { permaslug: "projet1", title: "Projet 1" },
+    },
+  ],
 });
 
 describe("use-routing", () => {
@@ -48,31 +57,42 @@ describe("use-routing", () => {
   it("can return a route by id", async () => {
     expect.assertions(1);
 
-    const { routeById } = await useRouting();
+    const { routeById } = await useRouting("en");
 
-    expect(routeById("en/note1")).toStrictEqual({
+    expect(routeById("note1")).toStrictEqual({
       label: "Note 1",
       url: "/note1",
     });
   });
 
-  it("throws an error when the entry does not have a route", async () => {
+  it("can return a route by id by overriding the default locale", async () => {
     expect.assertions(1);
 
-    const { routeById } = await useRouting();
+    const { routeById } = await useRouting("en");
 
-    expect(() => routeById("john-doe")).toThrowErrorMatchingInlineSnapshot(
-      `[Error: Cannot find a route for the given id, received: john-doe]`
+    expect(routeById("project1", "fr")).toStrictEqual({
+      label: "Projet 1",
+      url: "/fr/projet1",
+    });
+  });
+
+  it("throws an error when the entry exists but not for the given locale", async () => {
+    expect.assertions(1);
+
+    const { routeById } = await useRouting("fr");
+
+    expect(() => routeById("note1")).toThrowErrorMatchingInlineSnapshot(
+      `[Error: Cannot find a route for the given id using "fr" as locale. Received: note1]`
     );
   });
 
   it("throws an error when the entry does not exist", async () => {
     expect.assertions(1);
 
-    const { routeById } = await useRouting();
+    const { routeById } = await useRouting("en");
 
-    expect(() => routeById("en/post1")).toThrowErrorMatchingInlineSnapshot(
-      `[Error: Cannot find a route for the given id, received: en/post1]`
+    expect(() => routeById("post1")).toThrowErrorMatchingInlineSnapshot(
+      `[Error: Cannot find a route for the given id using "en" as locale. Received: post1]`
     );
   });
 });

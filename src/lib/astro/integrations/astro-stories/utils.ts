@@ -160,7 +160,7 @@ type GenerateBreadcrumbConfig = {
   /** The route to generate breadcrumbs for. */
   route: string;
   /** Map of routes to their labels. */
-  routeMap: Map<string, { label: string; route: string }>;
+  routeMap: Map<string, Route>;
 };
 
 /**
@@ -173,7 +173,7 @@ const generateBreadcrumb = ({
   route,
   routeMap,
 }: GenerateBreadcrumbConfig): Route[] => {
-  const breadcrumb: Route[] = [{ url: "/", label: "Home" }];
+  const breadcrumb: Route[] = [{ label: "Home", path: "/" }];
   const pathParts = route.split("/").filter(Boolean);
 
   for (let i = 0; i < pathParts.length; i++) {
@@ -181,10 +181,7 @@ const generateBreadcrumb = ({
     const routeInfo = routeMap.get(currentPath);
 
     if (routeInfo !== undefined) {
-      breadcrumb.push({
-        label: routeInfo.label,
-        url: routeInfo.route,
-      });
+      breadcrumb.push(routeInfo);
     }
   }
 
@@ -192,7 +189,7 @@ const generateBreadcrumb = ({
 };
 
 type FormatStoryConfig = {
-  routeMap: Map<string, { label: string; route: string }>;
+  routeMap: Map<string, Route>;
   story: StoryPathInfo;
 };
 
@@ -208,10 +205,10 @@ const formatStory = ({ routeMap, story }: FormatStoryConfig): Story => {
 
 const formatIndex = (
   currentIndex: IndexPathInfo,
-  routeMap: Map<string, { label: string; route: string }>
+  routeMap: Map<string, Route>
 ): StoriesIndex => {
   const { label, route } = currentIndex;
-  const children = [...routeMap.values()].filter(({ route: childRoute }) => {
+  const children = [...routeMap.values()].filter(({ path: childRoute }) => {
     if (childRoute === route) return false;
     const parentRoute = childRoute.slice(0, childRoute.lastIndexOf("/"));
     return parentRoute === route;
@@ -230,10 +227,10 @@ const formatStories = (
   stories: StoryPathInfo[],
   indexes: IndexPathInfo[]
 ): Stories => {
-  const routeMap = new Map<string, { label: string; route: string }>(
+  const routeMap = new Map<string, Route>(
     [...indexes, ...stories].map(({ label, route }) => [
       route,
-      { label, route },
+      { label, path: route },
     ])
   );
   const formattedStories = stories.map(

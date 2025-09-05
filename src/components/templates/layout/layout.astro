@@ -31,70 +31,70 @@ const { class: className, seo, ...attrs } = Astro.props;
 const { locale, translate } = useI18n(Astro.currentLocale);
 const { routeById } = await useRouting(locale);
 const homeRoute = routeById("home");
-const isHome = Astro.url.pathname === homeRoute.url;
+const isHome = Astro.url.pathname === homeRoute.path;
 const mainNav = [
   {
     icon: "home",
     iconSize: 28,
     label: translate("page.home.title"),
-    url: homeRoute.url,
+    path: homeRoute.path,
   },
   {
     icon: "blog",
     iconSize: 28,
     label: translate("page.blog.title"),
-    url: routeById("blog").url,
+    path: routeById("blog").path,
   },
   {
     icon: "guide",
     iconSize: 28,
     label: translate("page.guides.title"),
-    url: routeById("guides").url,
+    path: routeById("guides").path,
   },
   {
     icon: "notepad",
     iconSize: 28,
     label: translate("page.notes.title"),
-    url: routeById("notes").url,
+    path: routeById("notes").path,
   },
   {
     icon: "project",
     iconSize: 28,
     label: translate("page.projects.title"),
-    url: routeById("projects").url,
+    path: routeById("projects").path,
   },
   {
     icon: "bookmark",
     iconSize: 28,
     label: translate("page.bookmarks.title"),
-    url: routeById("bookmarks").url,
+    path: routeById("bookmarks").path,
   },
   {
     icon: "globe",
     iconSize: 28,
     label: translate("page.blogroll.title"),
-    url: routeById("blogroll").url,
+    path: routeById("blogroll").path,
   },
   {
     icon: "contact",
     iconSize: 28,
     label: translate("page.contact.title"),
-    url: routeById("contact").url,
+    path: routeById("contact").path,
   },
 ] satisfies ComponentProps<typeof NavList>["items"];
 const devOnlyLinks = import.meta.env.DEV
-  ? [{ label: "Design system", url: "/design-system" }]
+  ? [{ label: "Design system", path: "/design-system" }]
   : [];
 const footerLinks = [
   {
     label: translate("page.legal.notice.title"),
-    url: routeById("legal-notice").url,
+    path: routeById("legal-notice").path,
   },
   {
     icon: "feed",
     iconSize: 17,
     label: translate("page.feeds.title"),
-    url: routeById("feeds").url,
+    path: routeById("feeds").path,
   },
   ...devOnlyLinks,
 ] satisfies ComponentProps<typeof NavList>["items"];
@@ -139,7 +139,7 @@ const topId = translate("anchor.site.top");
           </SkipTo>
           <header class="site-header">
             <div class="site-branding">
-              <Branding brand={CONFIG.BRAND} url={homeRoute.url} />
+              <Branding brand={CONFIG.BRAND} url={homeRoute.path} />
             </div>
             <Navbar
               aria-label={translate("nav.label.primary")}
@@ -151,7 +151,7 @@ const topId = translate("anchor.site.top");
                 id="site-search"
                 isInline
                 queryParam={CONFIG.SEARCH.QUERY_PARAM}
-                resultsPage={routeById("search").url}
+                resultsPage={routeById("search").path}
                 slot="search"
               />
               <SettingsForm
@@ -172,8 +172,8 @@ const topId = translate("anchor.site.top");
             <License />
             <NavList class="site-footer-nav" isInline items={footerLinks}>
               {
-                ({ label, url, ...item }) => (
-                  <NavItem {...item} href={url}>
+                ({ label, path, ...item }) => (
+                  <NavItem {...item} href={path}>
                     {label}
                   </NavItem>
                 )

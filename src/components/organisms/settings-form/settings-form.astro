@@ -28,7 +28,7 @@ const languages = Object.fromEntries(
             lang === locale
               ? Astro.url.href
               : (altLanguages?.find((altLang) => altLang.locale === lang)
-                  ?.route ?? routeById("home", lang).url),
+                  ?.route ?? routeById("home", lang).path),
         },
       ];
     })

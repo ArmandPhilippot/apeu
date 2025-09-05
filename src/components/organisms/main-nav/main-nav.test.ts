@@ -20,8 +20,8 @@ describe("MainNav", () => {
 
     const props = {
       items: [
-        { label: "quia voluptate atque", url: "#et-reprehenderit-et" },
-        { label: "odit accusamus quidem", url: "#quod-voluptas-earum" },
+        { label: "quia voluptate atque", path: "#et-reprehenderit-et" },
+        { label: "odit accusamus quidem", path: "#quod-voluptas-earum" },
       ] as const,
     } satisfies ComponentProps<typeof MainNav>;
     const label = "pariatur dolorem ipsum";
@@ -31,8 +31,8 @@ describe("MainNav", () => {
     });
 
     expect(result).toContain(props.items[0].label);
-    expect(result).toContain(props.items[0].url);
+    expect(result).toContain(props.items[0].path);
     expect(result).toContain(props.items[1].label);
-    expect(result).toContain(props.items[1].url);
+    expect(result).toContain(props.items[1].path);
   });
 });

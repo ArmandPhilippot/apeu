@@ -151,8 +151,8 @@ describe("getWebPageGraph", () => {
     expect.assertions(2);
 
     const breadcrumb = [
-      { label: "Home", url: "/" },
-      { label: "Category", url: "/category" },
+      { label: "Home", path: "/" },
+      { label: "Category", path: "/category" },
     ];
 
     const graph = await getWebPageGraph({
@@ -233,7 +233,7 @@ describe("getWebPageGraph", () => {
     // eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory.
     expect.assertions(4);
 
-    const breadcrumb = [{ label: "Home", url: "/" }];
+    const breadcrumb = [{ label: "Home", path: "/" }];
     const cover = {
       alt: "Image description",
       height: 480,

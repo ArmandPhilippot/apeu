@@ -252,8 +252,8 @@ describe("getArticleGraph", () => {
           publishedOn: new Date("2024-10-09T13:55:57.813Z"),
           updatedOn: new Date("2024-10-09T13:55:57.813Z"),
           tags: [
-            { title: "tenetur", route: "/tenetur" },
-            { title: "iste", route: "/iste" },
+            { label: "tenetur", path: "/tenetur" },
+            { label: "iste", path: "/iste" },
           ],
         },
         route: "/route",
@@ -276,7 +276,7 @@ describe("getArticleGraph", () => {
         locale: CONFIG.LANGUAGES.DEFAULT,
         meta: {
           authors: [{ isWebsiteOwner: false, name: "John Doe" }],
-          category: { title: "animi", route: "/animi" },
+          category: { label: "animi", path: "/animi" },
           publishedOn: new Date("2024-10-09T13:55:57.813Z"),
           updatedOn: new Date("2024-10-09T13:55:57.813Z"),
         },
@@ -320,8 +320,8 @@ describe("getArticleGraph", () => {
             wordsPerMinute: 80,
           },
           tags: [
-            { title: "tenetur", route: "/tenetur" },
-            { title: "iste", route: "/iste" },
+            { label: "tenetur", path: "/tenetur" },
+            { label: "iste", path: "/iste" },
           ],
           updatedOn: new Date("2024-10-09T13:55:57.813Z"),
         },

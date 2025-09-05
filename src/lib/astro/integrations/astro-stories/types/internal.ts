@@ -12,7 +12,7 @@ export type Story = {
 
 export type StoriesIndex = {
   breadcrumb: Route[];
-  children: { route: string; label: string }[];
+  children: Route[];
   label: string;
   route: string;
   type: "index";

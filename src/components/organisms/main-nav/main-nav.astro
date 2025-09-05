@@ -29,16 +29,16 @@ const isCurrentRouteOrNested = (url: string) => {
   items={items}
 >
   {
-    ({ label, url, ...item }) => {
-      const isSelected = isCurrentRouteOrNested(url);
+    ({ label, path, ...item }) => {
+      const isSelected = isCurrentRouteOrNested(path);
 
       return (
         <NavItem
           {...item}
-          aria-current={url === Astro.url.pathname ? "page" : undefined}
+          aria-current={path === Astro.url.pathname ? "page" : undefined}
           class="main-nav-item"
           {...(isSelected && { "data-selected": true })}
-          href={url}
+          href={path}
           isBlock
           isBordered={isSelected}
           isRounded

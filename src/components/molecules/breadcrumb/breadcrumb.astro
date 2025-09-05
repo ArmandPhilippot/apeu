@@ -38,7 +38,7 @@ const scaleToRightTransition = {
 >
   <NavList class="breadcrumb-list" hideMarker isInline isOrdered items={items}>
     {
-      ({ label, url, ...item }, index, crumbs) => {
+      ({ label, path, ...item }, index, crumbs) => {
         const isFirstItem = index === 0;
         const isLastItem = index + 1 === crumbs.length;
 
@@ -56,7 +56,7 @@ const scaleToRightTransition = {
             <NavItem
               {...item}
               class="breadcrumb-item"
-              href={url}
+              href={path}
               isRounded
               transition:animate={scaleToRightTransition}
               transition:name={

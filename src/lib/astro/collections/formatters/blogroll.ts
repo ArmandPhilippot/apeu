@@ -1,7 +1,7 @@
 import type { Blog } from "../../../../types/data";
 import type { EntryByIdIndex } from "../indexes";
 import type { IndexedEntry } from "../types";
-import { getTagsFromReferences } from "./utils";
+import { getTagsRoutes } from "./utils";
 
 /**
  * Convert a blogroll collection entry to a formatted blogroll object.
@@ -17,7 +17,7 @@ export const getBlog = (
   const { collection, data, id } = blog.raw;
   const { meta, ...remainingData } = data;
   const { isDraft, tags, ...remainingMeta } = meta;
-  const resolvedTags = getTagsFromReferences(tags, indexById);
+  const resolvedTags = getTagsRoutes(tags, indexById);
 
   return {
     ...remainingData,

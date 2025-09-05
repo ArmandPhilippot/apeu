@@ -3,7 +3,8 @@ import type {
   AltLanguage,
   ReadingTime,
   RemarkPluginFrontmatterMeta,
-  TaxonomyLink,
+  Route,
+  TaxonomyCollectionKey,
 } from "../../../../types/data";
 import type { AvailableLocale } from "../../../../types/tokens";
 import { WORDS_PER_MINUTE } from "../../../../utils/constants";
@@ -106,19 +107,19 @@ export const getMetaFromRemarkPluginFrontmatter = (
 };
 
 /**
- * Convert a taxonomy indexed entry to a TaxonomyLink object.
+ * Convert a taxonomy indexed entry to a Route object.
  *
- * @param {IndexedEntry<"blog.categories" | "tags">} taxonomy - The taxonomy indexed entry.
- * @returns {Promise<TaxonomyLink>} An object describing the taxonomy link.
+ * @param {IndexedEntry<TaxonomyCollectionKey>} taxonomy - The taxonomy indexed entry.
+ * @returns {Promise<Route>} An object describing the taxonomy route.
  */
-export const getTaxonomyLink = (
-  taxonomy: IndexedEntry<"blog.categories" | "tags">
-): TaxonomyLink => {
+export const getTaxonomyRoute = (
+  taxonomy: IndexedEntry<TaxonomyCollectionKey>
+): Route => {
   const { route, raw } = taxonomy;
 
   return {
-    route,
-    title: raw.data.title,
+    label: raw.data.title,
+    path: route,
   };
 };
 
@@ -149,40 +150,40 @@ export const resolveReferences = <C extends CollectionKey>(
 };
 
 /**
- * Retrieve a category link from a `blog.categories` reference.
+ * Retrieve a category route from a `blog.categories` reference.
  *
  * @param {CollectionReference<"blog.categories"> | undefined} reference - A `blog.categories` reference.
  * @param {EntryByIdIndex} indexById - A map of indexed entries by id.
- * @returns {TaxonomyLink | null} An object describing the category link or null.
+ * @returns {Route | null} An object describing the category route or null.
  */
-export const getCategoryFromReference = (
+export const getCategoryRoute = (
   reference: CollectionReference<"blog.categories"> | undefined,
   indexById: EntryByIdIndex
-): TaxonomyLink | null => {
+): Route | null => {
   if (reference === undefined) return null;
 
   const category = indexById.get(reference.id);
 
   return category !== undefined &&
     isInCollection(category, reference.collection)
-    ? getTaxonomyLink(category)
+    ? getTaxonomyRoute(category)
     : null;
 };
 
 /**
- * Retrieve the tags links from a list of `tags` references.
+ * Retrieve the tags routes from a list of `tags` references.
  *
  * @param {CollectionReference<"tags">[] | undefined} references - An array of `tags` references.
  * @param {EntryByIdIndex} indexById - A map of indexed entries by id.
- * @returns {TaxonomyLink[] | null} An array of objects describing the tags links.
+ * @returns {Route[] | null} An array of objects describing the tags routes.
  */
-export const getTagsFromReferences = (
+export const getTagsRoutes = (
   references: CollectionReference<"tags">[] | undefined,
   indexById: EntryByIdIndex
-): TaxonomyLink[] | null => {
+): Route[] | null => {
   const resolvedTags = resolveReferences(references, indexById);
 
-  return resolvedTags?.map(getTaxonomyLink) ?? null;
+  return resolvedTags?.map(getTaxonomyRoute) ?? null;
 };
 
 /**

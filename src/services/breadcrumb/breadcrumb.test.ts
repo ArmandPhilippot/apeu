@@ -93,7 +93,7 @@ describe("getBreadcrumb", () => {
 
     const result = await getBreadcrumb({ route: "/" });
 
-    expect(result).toStrictEqual([{ label: "Home", url: "/" }]);
+    expect(result).toStrictEqual([{ label: "Home", path: "/" }]);
   });
 
   it("returns breadcrumb for localized route", async () => {
@@ -102,9 +102,9 @@ describe("getBreadcrumb", () => {
     const result = await getBreadcrumb({ route: "/fr/blog/article" });
 
     expect(result).toStrictEqual([
-      { label: "Accueil", url: "/fr" },
-      { label: "Blog", url: "/fr/blog" },
-      { label: "Article", url: "/fr/blog/article" },
+      { label: "Accueil", path: "/fr" },
+      { label: "Blog", path: "/fr/blog" },
+      { label: "Article", path: "/fr/blog/article" },
     ]);
   });
 
@@ -114,8 +114,8 @@ describe("getBreadcrumb", () => {
     const result = await getBreadcrumb({ route: "/about" });
 
     expect(result).toStrictEqual([
-      { label: "Home", url: "/" },
-      { label: "About", url: "/about" },
+      { label: "Home", path: "/" },
+      { label: "About", path: "/about" },
     ]);
   });
 
@@ -127,7 +127,7 @@ describe("getBreadcrumb", () => {
     expect(result).toStrictEqual([
       {
         label: "Home",
-        url: "/",
+        path: "/",
       },
     ]);
   });
@@ -141,10 +141,10 @@ describe("getBreadcrumb", () => {
     });
 
     expect(result).toStrictEqual([
-      { label: "Home", url: "/" },
-      { label: "Blog", url: "/blog" },
-      { label: "Post", url: "/blog/post" },
-      { label: "Page 2", url: "/blog/post" },
+      { label: "Home", path: "/" },
+      { label: "Blog", path: "/blog" },
+      { label: "Post", path: "/blog/post" },
+      { label: "Page 2", path: "/blog/post" },
     ]);
   });
 });

@@ -14,13 +14,13 @@ export const icons = {
 };
 export const blogPostMeta = {
   category: {
-    route: "#quisquam-itaque-provident",
-    title: "A category",
+    label: "A category",
+    path: "#quisquam-itaque-provident",
   },
   publishedOn: new Date("2024-09-16"),
   tags: [
-    { route: "#tag1", title: "Tag 1" },
-    { route: "#tag2", title: "Tag 2" },
+    { label: "Tag 1", path: "#tag1" },
+    { label: "Tag 2", path: "#tag2" },
   ],
   updatedOn: new Date(),
 };
@@ -85,13 +85,13 @@ The component also handles meta specific to some collections. Check out the foll
   code={`---
 const blogPostMeta = {
     category: {
-      route: "#quisquam-itaque-provident",
-      title: "A category",
+      label: "A category",
+      path: "#quisquam-itaque-provident",
     },
     publishedOn: new Date("2024-09-16"),
     tags: [
-      { route: "#tag1", title: "Tag 1" },
-      { route: "#tag2", title: "Tag 2" },
+      { label: "Tag 1", path: "#tag1" },
+      { label: "Tag 2", path: "#tag2" },
     ],
     updatedOn: new Date(),
 }

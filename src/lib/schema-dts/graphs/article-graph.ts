@@ -72,13 +72,13 @@ export const getArticleGraph = async ({
     isAccessibleForFree: true,
     ...(isBlogPost && {
       isPartOf: {
-        "@id": `${WEBSITE_URL}${routeById("blog").url}#blog`,
+        "@id": `${WEBSITE_URL}${routeById("blog").path}#blog`,
       },
     }),
     ...(meta.tags !== null &&
       meta.tags !== undefined &&
       meta.tags.length > 0 && {
-        keywords: meta.tags.map((tag) => tag.title).join(","),
+        keywords: meta.tags.map((tag) => tag.label).join(","),
       }),
     license: translate("license.url"),
     mainEntityOfPage: { "@id": url },

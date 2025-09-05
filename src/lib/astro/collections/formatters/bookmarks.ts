@@ -1,7 +1,7 @@
 import type { Bookmark } from "../../../../types/data";
 import type { EntryByIdIndex } from "../indexes";
 import type { IndexedEntry } from "../types";
-import { getTagsFromReferences } from "./utils";
+import { getTagsRoutes } from "./utils";
 
 /**
  * Convert a bookmark collection entry to a Bookmark object.
@@ -17,7 +17,7 @@ export const getBookmark = (
   const { collection, data, id } = bookmark.raw;
   const { meta, ...remainingData } = data;
   const { isDraft, tags, ...remainingMeta } = meta;
-  const resolvedTags = getTagsFromReferences(tags, indexById);
+  const resolvedTags = getTagsRoutes(tags, indexById);
 
   return {
     ...remainingData,

@@ -161,7 +161,7 @@ const getItemCategories = (entry: FeedCompatibleEntry) => {
     entry.meta.tags !== undefined &&
     entry.meta.tags.length > 0
   ) {
-    categories.push(...entry.meta.tags.map((tag) => tag.title));
+    categories.push(...entry.meta.tags.map((tag) => tag.label));
   }
 
   return categories;

@@ -17,8 +17,8 @@ describe("NavList", () => {
 
     const props = {
       items: [
-        { label: "Item 1", url: "#item-1" },
-        { label: "Item 2", url: "#item-2" },
+        { label: "Item 1", path: "#item-1" },
+        { label: "Item 2", path: "#item-2" },
       ],
     } satisfies Omit<ComponentProps<typeof NavList>, "children">;
     const body = "id quibusdam eius";
@@ -38,8 +38,8 @@ describe("NavList", () => {
     const props = {
       isOrdered: true,
       items: [
-        { label: "Item 1", url: "#item-1" },
-        { label: "Item 2", url: "#item-2" },
+        { label: "Item 1", path: "#item-1" },
+        { label: "Item 2", path: "#item-2" },
       ],
     } satisfies Omit<ComponentProps<typeof NavList>, "children">;
     const body = "id quibusdam eius";

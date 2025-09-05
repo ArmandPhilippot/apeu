@@ -38,7 +38,7 @@ describe("StoryIndex", () => {
 
     const props = {
       breadcrumb: [],
-      children: [{ label: "A story", route: "/stories/a-story" }],
+      children: [{ label: "A story", path: "/stories/a-story" }],
       label: "My stories index",
       route: "/stories/my-index",
       type: "index",

@@ -115,8 +115,8 @@ describe("CollectionMeta", () => {
     const props = {
       data: {
         tags: [
-          { title: "JavaScript", route: "/tags/javascript" },
-          { title: "TypeScript", route: "/tags/typescript" },
+          { label: "JavaScript", path: "/tags/javascript" },
+          { label: "TypeScript", path: "/tags/typescript" },
         ],
       },
     } as const satisfies ComponentProps<typeof CollectionMeta>;
@@ -124,10 +124,10 @@ describe("CollectionMeta", () => {
       props,
     });
 
-    expect(result).toContain(`href="${props.data.tags[0].route}"`);
-    expect(result).toContain(`href="${props.data.tags[1].route}"`);
-    expect(result).toContain(`>${props.data.tags[0].title}<`);
-    expect(result).toContain(`>${props.data.tags[1].title}<`);
+    expect(result).toContain(`href="${props.data.tags[0].path}"`);
+    expect(result).toContain(`href="${props.data.tags[1].path}"`);
+    expect(result).toContain(`>${props.data.tags[0].label}<`);
+    expect(result).toContain(`>${props.data.tags[1].label}<`);
   });
 
   it<LocalTestContext>("renders multiple metadata types together", async ({
@@ -147,7 +147,7 @@ describe("CollectionMeta", () => {
             isWebsiteOwner: false,
           },
         ],
-        tags: [{ title: "JavaScript", route: "/tags/javascript" }],
+        tags: [{ label: "JavaScript", path: "/tags/javascript" }],
       },
     } as const satisfies ComponentProps<typeof CollectionMeta>;
     const result = await container.renderToString(CollectionMeta, {
@@ -290,8 +290,8 @@ describe("CollectionMeta", () => {
     const props = {
       data: {
         category: {
-          title: "Development",
-          route: "/category/development",
+          label: "Development",
+          path: "/category/development",
         },
       },
     } as const satisfies ComponentProps<typeof CollectionMeta>;
@@ -299,8 +299,8 @@ describe("CollectionMeta", () => {
       props,
     });
 
-    expect(result).toContain(`href="${props.data.category.route}"`);
-    expect(result).toContain(`>${props.data.category.title}<`);
+    expect(result).toContain(`href="${props.data.category.path}"`);
+    expect(result).toContain(`>${props.data.category.label}<`);
   });
 
   it<LocalTestContext>("renders total metadata correctly", async ({

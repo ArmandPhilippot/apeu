@@ -26,7 +26,7 @@ const mainNav = [
 -    label: translate("page.home.title"),
 +    label: homeRoute.label,
 -    url: route("home"),
-+    url: homeRoute.url,
++    path: homeRoute.path,
   },
   {
     icon: "blog",
@@ -34,7 +34,7 @@ const mainNav = [
 -    label: translate("page.blog.title"),
 +    label: blogRoute.label,
 -    url: route("blog"),
-+    url: blogRoute.url,
++    path: blogRoute.path,
   },
 ];
 ---

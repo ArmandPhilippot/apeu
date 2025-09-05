@@ -1,15 +1,10 @@
 ---
 import type { ComponentProps } from "astro/types";
-import type { IconName } from "../../../types/tokens";
+import type { Route, WithIcon } from "../../../types/data";
 import ListItem from "../../atoms/list/list-item.astro";
 import List from "../../atoms/list/list.astro";
 
-type NavItem = {
-  icon?: IconName | null | undefined;
-  iconSize?: number | undefined;
-  label: string;
-  url: string;
-};
+type NavItem = WithIcon<Route>;
 
 type Props = Omit<ComponentProps<typeof List>, "as"> & {
   children: (item: NavItem, index: number, list: NavItem[]) => unknown;

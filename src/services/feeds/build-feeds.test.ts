@@ -60,7 +60,7 @@ describe("get-rss-items-from-entries", () => {
       ...tagBaseFixture,
       meta: {
         ...tagBaseFixture.meta,
-        tags: [{ route: "/tag1", title: "Tag1" }],
+        tags: [{ label: "Tag1", path: "/tag1" }],
       },
     } satisfies FeedCompatibleEntry;
     const entries: FeedCompatibleEntry[] = [tag];
@@ -70,7 +70,7 @@ describe("get-rss-items-from-entries", () => {
     );
 
     expect(result).toHaveLength(entries.length);
-    expect(result[0]?.categories).toContain(tag.meta.tags[0]?.title);
+    expect(result[0]?.categories).toContain(tag.meta.tags[0]?.label);
   });
 });
 

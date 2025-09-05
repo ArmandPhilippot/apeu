@@ -13,7 +13,7 @@ export const getBreadcrumbListGraph = (breadcrumb: Route[]): BreadcrumbList => {
     "@type": "BreadcrumbList",
     itemListElement: breadcrumb.map((crumb, index) =>
       getListItemGraph({
-        id: crumb.url,
+        id: crumb.path,
         label: crumb.label,
         position: index + 1,
       })

@@ -4,6 +4,7 @@ import { useI18n } from "../../../services/i18n";
 import { useRouting } from "../../../services/routing";
 import type { AltLanguage } from "../../../types/data";
 import { LOCALE_DISPLAY_NAMES } from "../../../utils/constants";
+import { isAvailableLocale } from "../../../utils/type-guards";
 import LanguagePicker from "../../molecules/language-picker/language-picker.astro";
 import ThemeSetting from "../../molecules/theme-setting/theme-setting.astro";
 
@@ -12,20 +13,26 @@ type Props = HTMLAttributes<"form"> & {
 };
 
 const { altLanguages, class: className, id, ...attrs } = Astro.props;
-const { routeById } = await useRouting();
 const { locale, translate } = useI18n(Astro.currentLocale);
+const { routeById } = await useRouting(locale);
 const languages = Object.fromEntries(
-  Object.entries(LOCALE_DISPLAY_NAMES).map(([lang, langName]) => [
-    lang,
-    {
-      name: langName,
-      route:
-        lang === locale
-          ? Astro.url.href
-          : (altLanguages?.find((altLang) => altLang.locale === lang)?.route ??
-            routeById(`${lang}/home`)),
-    },
-  ])
+  Object.entries(LOCALE_DISPLAY_NAMES)
+    .map(([lang, langName]) => {
+      if (!isAvailableLocale(lang)) return null;
+
+      return [
+        lang,
+        {
+          name: langName,
+          route:
+            lang === locale
+              ? Astro.url.href
+              : (altLanguages?.find((altLang) => altLang.locale === lang)
+                  ?.route ?? routeById("home", lang).url),
+        },
+      ];
+    })
+    .filter((language) => language !== null)
 );
 ---
 

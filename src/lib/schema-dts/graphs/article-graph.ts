@@ -40,7 +40,7 @@ export const getArticleGraph = async ({
   title,
 }: ArticleData): Promise<Article | BlogPosting> => {
   const { translate } = useI18n(locale);
-  const { routeById } = await useRouting();
+  const { routeById } = await useRouting(locale);
   const websiteAuthor = `${WEBSITE_URL}#author` as const;
   const url = `${WEBSITE_URL}${articleRoute}`;
   const coverUrl =
@@ -71,7 +71,9 @@ export const getArticleGraph = async ({
     inLanguage: getLanguageGraph(locale, locale),
     isAccessibleForFree: true,
     ...(isBlogPost && {
-      isPartOf: { "@id": `${WEBSITE_URL}${routeById(`${locale}/blog`)}#blog` },
+      isPartOf: {
+        "@id": `${WEBSITE_URL}${routeById("blog").url}#blog`,
+      },
     }),
     ...(meta.tags !== null &&
       meta.tags !== undefined &&

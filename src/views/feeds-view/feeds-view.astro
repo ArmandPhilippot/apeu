@@ -22,7 +22,7 @@ const {
   ...props
 } = Astro.props;
 const { translate } = useI18n(page.locale);
-const { routeById } = await useRouting();
+const { routeById } = await useRouting(page.locale);
 const feeds = await getCollectionsFeeds(page.locale);
 const breadcrumb = await getBreadcrumb({ route: Astro.url.pathname });
 const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
@@ -43,7 +43,7 @@ const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
     {hasContent && <Content />}
     <p>{translate("page.feeds.global.feed.introduction")}</p>
     <p>
-      <Button as="a" href={`${routeById(`${page.locale}/home`)}feed.xml`}>
+      <Button as="a" href={`${routeById("home").url}feed.xml`}>
         <Icon aria-hidden="true" name="feed" />
         {translate("cta.subscribe.to.website")}
       </Button>

@@ -1,5 +1,5 @@
 import { basename, join, parse } from "node:path";
-import type { Crumb } from "../../../../types/data";
+import type { Route } from "../../../../types/data";
 import { getCumulativePaths, splitPath } from "../../../../utils/paths";
 import { capitalizeFirstLetter } from "../../../../utils/strings";
 import type { Stories, StoriesIndex, Story } from "./types/internal";
@@ -167,13 +167,13 @@ type GenerateBreadcrumbConfig = {
  * Generate breadcrumb trail for a given route.
  *
  * @param {GenerateBreadcrumbConfig} config - The config to generate breadcrumbs.
- * @returns {Crumb[]} Array of breadcrumb items.
+ * @returns {Route[]} Array of breadcrumb items.
  */
 const generateBreadcrumb = ({
   route,
   routeMap,
-}: GenerateBreadcrumbConfig): Crumb[] => {
-  const breadcrumb: Crumb[] = [{ url: "/", label: "Home" }];
+}: GenerateBreadcrumbConfig): Route[] => {
+  const breadcrumb: Route[] = [{ url: "/", label: "Home" }];
   const pathParts = route.split("/").filter(Boolean);
 
   for (let i = 0; i < pathParts.length; i++) {

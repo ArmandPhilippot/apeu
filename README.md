@@ -82,15 +82,23 @@ To use localized routing in your templates and components, you can import the `u
 ---
 import { useRouting } from "../services/routing";
 
-const { routeById } = await useRouting();
-console.log(routeById("en/projects")) // "/en/projects"
-console.log(routeById("en/projects/first-project")) // "/en/projects/first-project"
-console.log(routeById("fr/projects")) // "/projets"
-console.log(routeById("fr/projects/first-project")) // "/projets/premier-projet"
+const { routeById } = await useRouting("fr");
+console.log(routeById("projects")) // { label: "Projets", url: "/projets" }
+console.log(routeById("projects/first-project")) // { label: "Premier projet", url: "/projets/premier-projet" }
 ---
 ```
 
-The `useRouting()` helper returns a `routeById()` function which is convenient when you use the same id in every locales for your contents. For example, You can then use the following: ``routeById(`${locale}/contact`)`` to display the contact page route in the current locale.
+You can also override the locale provided to `useRouting` per `routeById` call when you need a route in a different locale:
+
+```astro
+---
+import { useRouting } from "../services/routing";
+
+const { routeById } = await useRouting("fr");
+console.log(routeById("projects", "en")) // { label: "Projects", url: "/en/projects" }
+console.log(routeById("projects/first-project", "en")) // { label: "First project", url: "/en/projects/first-project" }
+---
+```
 
 #### Switching between languages
 
@@ -478,11 +486,13 @@ import { useRouting } from "src/services/routing";
 import { useI18n } from "src/utils/helpers/i18n";
 
 const { locale, translate, translatePlural } = useI18n(Astro.currentLocale);
-const { routeById } = await useRouting();
+const { routeById } = await useRouting(locale);
+const contactRoute = routeById("contact");
 ---
 
-<a href={routeById(`${locale}/contact`)}>
-  {translate("some.key.available.in.translations")}
+<p>{translate("some.key.available.in.translations")}</p>
+<a href={contactRoute.url}>
+  {contactRoute.label}
 </a>
 <div>
   {translatePlural("some.key.supporting.pluralization", { count: 42 })}

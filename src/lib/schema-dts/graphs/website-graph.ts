@@ -28,18 +28,18 @@ export const getWebSiteGraph = async ({
   logo,
 }: WebSiteGraphData): Promise<WebSite> => {
   const { translate } = useI18n(locale);
-  const { routeById } = await useRouting();
+  const { routeById } = await useRouting(locale);
   const websiteAuthor = `${WEBSITE_URL}#author` as const;
   const searchAction: CustomSearchAction = {
     "@type": "SearchAction",
     query: "required",
     "query-input": "required name=query",
-    target: `${WEBSITE_URL}${routeById(`${locale}/search`)}?${CONFIG.SEARCH.QUERY_PARAM}={query}`,
+    target: `${WEBSITE_URL}${routeById("search").url}?${CONFIG.SEARCH.QUERY_PARAM}={query}`,
   };
 
   return {
     "@type": "WebSite",
-    "@id": `${WEBSITE_URL}${routeById(`${locale}/home`)}`,
+    "@id": `${WEBSITE_URL}${routeById("home").url}`,
     author: { "@id": websiteAuthor },
     copyrightHolder: { "@id": websiteAuthor },
     copyrightYear: CONFIG.CREATION_YEAR,
@@ -54,6 +54,6 @@ export const getWebSiteGraph = async ({
     potentialAction: searchAction,
     publisher: { "@id": websiteAuthor },
     thumbnailUrl: logo,
-    url: `${WEBSITE_URL}${routeById(`${locale}/home`)}`,
+    url: `${WEBSITE_URL}${routeById("home").url}`,
   };
 };

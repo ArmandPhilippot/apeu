@@ -2,7 +2,7 @@ import {
   getEntriesIndex,
   type EntryByRouteIndex,
 } from "../../lib/astro/collections/indexes";
-import type { Crumb } from "../../types/data";
+import type { Route } from "../../types/data";
 import { getCumulativePaths } from "../../utils/paths";
 import { removeTrailingSlashes } from "../../utils/strings";
 import { isLocalizedRoute } from "../i18n";
@@ -24,7 +24,7 @@ const getRouteHierarchy = (route: string): string[] => {
 const getRouteCrumbs = (
   route: string,
   routeIndex: EntryByRouteIndex
-): Crumb[] => {
+): Route[] => {
   const segments = getRouteHierarchy(route);
 
   return segments
@@ -53,12 +53,12 @@ type BreadcrumbConfig = {
  * Retrieve the breadcrumb for the given page.
  *
  * @param {BreadcrumbConfig} config - A configuration object.
- * @returns {Promise<Crumb[]>} - The breadcrumb parts.
+ * @returns {Promise<Route[]>} - The breadcrumb parts.
  */
 export const getBreadcrumb = async ({
   paginationLabel,
   route,
-}: BreadcrumbConfig): Promise<Crumb[]> => {
+}: BreadcrumbConfig): Promise<Route[]> => {
   const { byRoute } = await getEntriesIndex();
   const normalizedRoute = normalizeRoute(route);
   const crumbs = getRouteCrumbs(normalizedRoute, byRoute);

@@ -29,56 +29,57 @@ type Props = Pick<ComponentProps<typeof Head>, "seo"> &
 
 const { class: className, seo, ...attrs } = Astro.props;
 const { locale, translate } = useI18n(Astro.currentLocale);
-const { routeById } = await useRouting();
-const isHome = Astro.url.pathname === routeById(`${locale}/home`);
+const { routeById } = await useRouting(locale);
+const homeRoute = routeById("home");
+const isHome = Astro.url.pathname === homeRoute.url;
 const mainNav = [
   {
     icon: "home",
     iconSize: 28,
     label: translate("page.home.title"),
-    url: routeById(`${locale}/home`),
+    url: homeRoute.url,
   },
   {
     icon: "blog",
     iconSize: 28,
     label: translate("page.blog.title"),
-    url: routeById(`${locale}/blog`),
+    url: routeById("blog").url,
   },
   {
     icon: "guide",
     iconSize: 28,
     label: translate("page.guides.title"),
-    url: routeById(`${locale}/guides`),
+    url: routeById("guides").url,
   },
   {
     icon: "notepad",
     iconSize: 28,
     label: translate("page.notes.title"),
-    url: routeById(`${locale}/notes`),
+    url: routeById("notes").url,
   },
   {
     icon: "project",
     iconSize: 28,
     label: translate("page.projects.title"),
-    url: routeById(`${locale}/projects`),
+    url: routeById("projects").url,
   },
   {
     icon: "bookmark",
     iconSize: 28,
     label: translate("page.bookmarks.title"),
-    url: routeById(`${locale}/bookmarks`),
+    url: routeById("bookmarks").url,
   },
   {
     icon: "globe",
     iconSize: 28,
     label: translate("page.blogroll.title"),
-    url: routeById(`${locale}/blogroll`),
+    url: routeById("blogroll").url,
   },
   {
     icon: "contact",
     iconSize: 28,
     label: translate("page.contact.title"),
-    url: routeById(`${locale}/contact`),
+    url: routeById("contact").url,
   },
 ] satisfies ComponentProps<typeof NavList>["items"];
 const devOnlyLinks = import.meta.env.DEV
@@ -87,13 +88,13 @@ const devOnlyLinks = import.meta.env.DEV
 const footerLinks = [
   {
     label: translate("page.legal.notice.title"),
-    url: routeById(`${locale}/legal-notice`),
+    url: routeById("legal-notice").url,
   },
   {
     icon: "feed",
     iconSize: 17,
     label: translate("page.feeds.title"),
-    url: routeById(`${locale}/feeds`),
+    url: routeById("feeds").url,
   },
   ...devOnlyLinks,
 ] satisfies ComponentProps<typeof NavList>["items"];
@@ -138,10 +139,7 @@ const topId = translate("anchor.site.top");
           </SkipTo>
           <header class="site-header">
             <div class="site-branding">
-              <Branding
-                brand={CONFIG.BRAND}
-                url={routeById(`${locale}/home`)}
-              />
+              <Branding brand={CONFIG.BRAND} url={homeRoute.url} />
             </div>
             <Navbar
               aria-label={translate("nav.label.primary")}
@@ -153,7 +151,7 @@ const topId = translate("anchor.site.top");
                 id="site-search"
                 isInline
                 queryParam={CONFIG.SEARCH.QUERY_PARAM}
-                resultsPage={routeById(`${locale}/search`)}
+                resultsPage={routeById("search").url}
                 slot="search"
               />
               <SettingsForm

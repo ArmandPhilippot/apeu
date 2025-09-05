@@ -1,6 +1,7 @@
 import { getEntriesIndex } from "../../lib/astro/collections/indexes";
+import type { Route } from "../../types/data";
 
-export type RouteById = (id: string) => string;
+export type RouteById = (id: string) => Route;
 
 type UseRouting = () => Promise<{
   /**
@@ -24,7 +25,7 @@ export const useRouting: UseRouting = async (): ReturnType<UseRouting> => {
       throw new Error(`Cannot find a route for the given id, received: ${id}`);
     }
 
-    return match.route;
+    return { label: match.raw.data.title, url: match.route };
   };
 
   return { routeById };

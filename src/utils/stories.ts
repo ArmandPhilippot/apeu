@@ -1,12 +1,12 @@
-import type { Crumb, SEO } from "../types/data";
+import type { Route, SEO } from "../types/data";
 
 /**
  * Derive the `<title>` string for SEO purposes from a breadcrumb trail.
  *
- * @param {Crumb[]} breadcrumb - The breadcrumb trail for the page.
+ * @param {Route[]} breadcrumb - The breadcrumb trail for the page.
  * @returns {string} A human-readable SEO title string.
  */
-const getStorySeoTitle = (breadcrumb: Crumb[]): string =>
+const getStorySeoTitle = (breadcrumb: Route[]): string =>
   breadcrumb
     .slice(1)
     .reverse()
@@ -14,7 +14,7 @@ const getStorySeoTitle = (breadcrumb: Crumb[]): string =>
     .join(" | ");
 
 type GetStorySeoConfig = {
-  breadcrumb: Crumb[];
+  breadcrumb: Route[];
   seo?: Partial<SEO> | undefined | null;
 };
 

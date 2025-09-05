@@ -16,22 +16,28 @@ import { useI18n } from "../../../services/i18n";
 -const { locale, route, translate } = useI18n(Astro.currentLocale);
 +const { locale, translate } = useI18n(Astro.currentLocale);
 +const { routeById } = await useRouting();
++const homeRoute = routeById(`${locale}/home`);
++const blogRoute = routeById(`${locale}/blog`);
 
 const mainNav = [
   {
     icon: "home",
     iconSize: 28,
-    label: translate("page.home.title"),
+-    label: translate("page.home.title"),
++    label: homeRoute.label,
 -    url: route("home"),
-+    url: routeById(`${locale}/home`),
++    url: homeRoute.url,
   },
   {
     icon: "blog",
     iconSize: 28,
-    label: translate("page.blog.title"),
+-    label: translate("page.blog.title"),
++    label: blogRoute.label,
 -    url: route("blog"),
-+    url: routeById(`${locale}/blog`),
++    url: blogRoute.url,
   },
 ];
 ---
 ```
+
+The route label is based on the title you defined in your Markdown file. If this title is not suitable as a route label, you can continue to use your own label.

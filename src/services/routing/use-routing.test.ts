@@ -31,7 +31,7 @@ vi.mock("../../utils/constants", async (importOriginal) => {
 
 const mockEntries = createMockEntriesByCollection({
   authors: [{ collection: "authors", id: "john-doe" }],
-  notes: [{ collection: "notes", id: "en/note1" }],
+  notes: [{ collection: "notes", id: "en/note1", data: { title: "Note 1" } }],
 });
 
 describe("use-routing", () => {
@@ -50,7 +50,10 @@ describe("use-routing", () => {
 
     const { routeById } = await useRouting();
 
-    expect(routeById("en/note1")).toBe("/note1");
+    expect(routeById("en/note1")).toStrictEqual({
+      label: "Note 1",
+      url: "/note1",
+    });
   });
 
   it("throws an error when the entry does not have a route", async () => {

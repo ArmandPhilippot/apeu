@@ -31,7 +31,7 @@ const { breadcrumb, description, headings, graphs, seo, title, ...attrs } =
 const { locale, translate } = useI18n(Astro.currentLocale);
 const { routeById } = await useRouting();
 const homeRouteId = `${locale}/home`;
-const isHome = Astro.url.pathname === routeById(homeRouteId);
+const isHome = Astro.url.pathname === routeById(homeRouteId).url;
 const ogHomeImgPath = isDefaultLocale(locale) ? "home" : homeRouteId;
 const ogImgPath = isHome ? ogHomeImgPath : Astro.url.pathname.slice(1);
 const socialImg = {

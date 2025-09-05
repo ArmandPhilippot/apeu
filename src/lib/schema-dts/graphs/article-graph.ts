@@ -71,7 +71,9 @@ export const getArticleGraph = async ({
     inLanguage: getLanguageGraph(locale, locale),
     isAccessibleForFree: true,
     ...(isBlogPost && {
-      isPartOf: { "@id": `${WEBSITE_URL}${routeById(`${locale}/blog`)}#blog` },
+      isPartOf: {
+        "@id": `${WEBSITE_URL}${routeById(`${locale}/blog`).url}#blog`,
+      },
     }),
     ...(meta.tags !== null &&
       meta.tags !== undefined &&

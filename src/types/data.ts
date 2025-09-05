@@ -5,16 +5,22 @@ import type {
   RenderResult,
 } from "astro:content";
 import type { RoutableCollectionKey } from "../lib/astro/collections/types";
+import type { IconName } from "./tokens";
 import type { ConditionallyExtend, PatchExistingProperties } from "./utilities";
+
+export type Route = {
+  label: string;
+  url: string;
+};
+
+export type WithIcon<T> = T & {
+  icon?: IconName | null | undefined;
+  iconSize?: number | undefined;
+};
 
 export type AltLanguage = {
   locale: string;
   route: string;
-};
-
-export type Crumb = {
-  label: string;
-  url: string;
 };
 
 export type HeadingNode = {

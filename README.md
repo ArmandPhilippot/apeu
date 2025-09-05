@@ -83,10 +83,10 @@ To use localized routing in your templates and components, you can import the `u
 import { useRouting } from "../services/routing";
 
 const { routeById } = await useRouting();
-console.log(routeById("en/projects")) // "/en/projects"
-console.log(routeById("en/projects/first-project")) // "/en/projects/first-project"
-console.log(routeById("fr/projects")) // "/projets"
-console.log(routeById("fr/projects/first-project")) // "/projets/premier-projet"
+console.log(routeById("en/projects")) // { label: "Projects", url: "/en/projects" }
+console.log(routeById("en/projects/first-project")) // { label: "First project", url: "/en/projects/first-project" }
+console.log(routeById("fr/projects")) // { label: "Projets", url: "/projets" }
+console.log(routeById("fr/projects/first-project")) // { label: "Premier projet", url: "/projets/premier-projet" }
 ---
 ```
 
@@ -481,7 +481,7 @@ const { locale, translate, translatePlural } = useI18n(Astro.currentLocale);
 const { routeById } = await useRouting();
 ---
 
-<a href={routeById(`${locale}/contact`)}>
+<a href={routeById(`${locale}/contact`).url}>
   {translate("some.key.available.in.translations")}
 </a>
 <div>

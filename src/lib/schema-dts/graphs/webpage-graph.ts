@@ -1,7 +1,7 @@
 import type { WebPage } from "schema-dts";
 import { useI18n } from "../../../services/i18n";
 import { useRouting } from "../../../services/routing";
-import type { Crumb, Page } from "../../../types/data";
+import type { Route, Page } from "../../../types/data";
 import { WEBSITE_URL } from "../../../utils/constants";
 import { getImgSrc } from "../../../utils/images";
 import { getDurationFromReadingTime } from "../values/duration";
@@ -11,7 +11,7 @@ type PageData = Pick<
   Page,
   "cover" | "description" | "locale" | "meta" | "route" | "title"
 > & {
-  breadcrumb?: Crumb[] | null | undefined;
+  breadcrumb?: Route[] | null | undefined;
   type?: WebPage["@type"] | null | undefined;
 };
 
@@ -52,7 +52,7 @@ export const getWebPageGraph = async ({
     editor: { "@id": websiteAuthor },
     headline: title,
     isAccessibleForFree: true,
-    isPartOf: { "@id": `${WEBSITE_URL}${routeById(`${locale}/home`)}` },
+    isPartOf: { "@id": `${WEBSITE_URL}${routeById(`${locale}/home`).url}` },
     lastReviewed: meta.updatedOn.toISOString(),
     license: translate("license.url"),
     name: title,

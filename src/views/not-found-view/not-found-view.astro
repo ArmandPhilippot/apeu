@@ -37,7 +37,7 @@ const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
     <SearchForm
       id="not-found-search"
       queryParam={CONFIG.SEARCH.QUERY_PARAM}
-      resultsPage={routeById(`${page.locale}/search`)}
+      resultsPage={routeById(`${page.locale}/search`).url}
     />
   </Fragment>
 </PageLayout>

@@ -55,6 +55,8 @@ describe("ThemeSelect", () => {
 
     await expect(async () =>
       container.renderToString(ThemeSelect, { props: invalidProps })
-    ).rejects.toThrowErrorMatchingInlineSnapshot();
+    ).rejects.toThrowErrorMatchingInlineSnapshot(
+      `[Error: The provided value for "current" does not match any "themes" key. Received: something]`
+    );
   });
 });

@@ -57,6 +57,8 @@ describe("LanguageSelect", () => {
 
     await expect(async () =>
       container.renderToString(LanguageSelect, { props: invalidProps })
-    ).rejects.toThrowErrorMatchingInlineSnapshot();
+    ).rejects.toThrowErrorMatchingInlineSnapshot(
+      `[Error: The provided value for "current" does not match any "languages" key. Received: something]`
+    );
   });
 });

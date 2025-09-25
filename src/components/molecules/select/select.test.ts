@@ -79,6 +79,8 @@ describe("Select", () => {
 
     await expect(async () =>
       container.renderToString(Select, { props: invalidProps })
-    ).rejects.toThrowErrorMatchingInlineSnapshot();
+    ).rejects.toThrowErrorMatchingInlineSnapshot(
+      `[Error: The provided value does not match any value in your "options". Received: something]`
+    );
   });
 });

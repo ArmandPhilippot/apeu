@@ -1,4 +1,24 @@
 /**
+ * Represents an invalid anchor format error.
+ *
+ * @augments Error
+ * @class
+ */
+export class InvalidAnchorFormatError extends Error {
+  /**
+   * Create a new InvalidAnchorFormatError error.
+   *
+   * @param {string} propName - The name of the invalid property.
+   * @param {string} currentValue - The value received.
+   */
+  constructor(propName: string, currentValue: unknown) {
+    const err = `The "${propName}" property should be a valid anchor starting with "#". Received: ${String(currentValue)}`;
+    super(err);
+    this.name = "InvalidAnchorFormatError";
+  }
+}
+
+/**
  * Represent an invalid props error.
  *
  * @augments Error

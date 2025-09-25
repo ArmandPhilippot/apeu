@@ -1,20 +1,36 @@
 ---
 import type { JSX } from "astro/jsx-runtime";
-import type { ComponentProps } from "astro/types";
-import BackTo from "../back-to/back-to.astro";
+import { Icon } from "astro-icon/components";
+import { InvalidAnchorFormatError } from "../../../utils/exceptions";
+import Button from "../../atoms/button/button.astro";
 
-type Props = JSX.HTMLAttributes &
-  Pick<ComponentProps<typeof BackTo>, "anchor" | "label"> & {
-    scrollThreshold?: number | null | undefined;
-  };
+type Props = JSX.HTMLAttributes & {
+  /**
+   * An anchor on the same page.
+   */
+  anchor: `#${string}`;
+  /**
+   * A visually hidden label.
+   */
+  label: string;
+  /**
+   * From which position on the page the button should be displayed.
+   */
+  scrollThreshold?: number | null | undefined;
+};
 
 const {
   anchor,
   class: className,
   label,
   scrollThreshold,
+  slot,
   ...attrs
 } = Astro.props;
+
+if (!anchor.startsWith("#")) {
+  throw new InvalidAnchorFormatError("anchor", anchor);
+}
 ---
 
 <back-to-top
@@ -23,7 +39,10 @@ const {
   data-threshold={scrollThreshold}
   data-visible="false"
 >
-  <BackTo anchor={anchor} label={label} />
+  <Button as="a" class="back-to-top-link" href={anchor}>
+    <Icon aria-hidden="true" name="caret" />
+    <span class="sr-only">{label}</span>
+  </Button>
 </back-to-top>
 
 <style>
@@ -42,6 +61,26 @@ const {
       transition:
         opacity 0.3s ease-in 0s,
         visibility 0s ease-in 0s;
+    }
+  }
+
+  .back-to-top-link {
+    aspect-ratio: 1 / 1;
+    border-width: var(--border-size-md);
+    box-shadow: var(--shadow-elevated-to-top-left);
+
+    @media (any-pointer: fine) {
+      padding: var(--spacing-sm);
+    }
+
+    &:where(:hover, :focus) {
+      box-shadow: var(--shadow-floating-to-top-left);
+      transform: scale(1.1);
+    }
+
+    &:where(:active) {
+      box-shadow: var(--shadow-raised-to-top-left);
+      transform: scale(0.95);
     }
   }
 </style>

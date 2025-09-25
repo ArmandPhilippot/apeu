@@ -1,0 +1,94 @@
+---
+import type { JSX } from "astro/jsx-runtime";
+import type { ComponentProps } from "astro/types";
+import type { Route } from "../../../types/data";
+import Select from "../select/select.astro";
+
+type Languages = Record<string, Route>;
+
+type Props = JSX.HTMLAttributes &
+  Pick<ComponentProps<typeof Select>, "hideLabel" | "label"> & {
+    /**
+     * The current locale.
+     */
+    current: keyof Languages;
+    /**
+     * An object with the locale as key associated to a route as value.
+     */
+    languages: Languages;
+    /**
+     * Should we add an icon in front of the field?
+     *
+     * @default false
+     */
+    showIcon?: boolean | null | undefined;
+  };
+
+const {
+  class: className,
+  current,
+  hideLabel,
+  label,
+  languages,
+  showIcon = false,
+  slot,
+  ...attrs
+} = Astro.props;
+const options: ComponentProps<typeof Select>["options"] = Object.values(
+  languages
+).map((route) => {
+  return { label: route.label, value: route.path };
+});
+const currentLocale = languages[current];
+
+if (!currentLocale) {
+  throw new Error(
+    `The provided value for "current" does not match any "languages" key. Received: ${current}`
+  );
+}
+---
+
+<ap-language-select {...attrs} class:list={["language-select", className]}>
+  <Select
+    hideLabel={hideLabel}
+    icon={showIcon ? "locale" : null}
+    label={label}
+    options={options}
+    value={currentLocale.path}
+  />
+</ap-language-select>
+
+<style>
+  .language-select {
+    display: flex;
+    flex-flow: row wrap;
+  }
+</style>
+
+<script>
+  class APLanguageSelect extends HTMLElement {
+    #select: HTMLSelectElement | null = null;
+
+    constructor() {
+      super();
+      this.handleLanguageChange = this.handleLanguageChange.bind(this);
+    }
+
+    connectedCallback() {
+      this.#select = this.querySelector("select");
+      this.#select?.addEventListener("change", this.handleLanguageChange);
+    }
+
+    disconnectedCallback() {
+      this.#select?.removeEventListener("change", this.handleLanguageChange);
+    }
+
+    handleLanguageChange(e: Event) {
+      if (e.currentTarget instanceof HTMLSelectElement) {
+        window.location.pathname = e.currentTarget.value;
+      }
+    }
+  }
+
+  customElements.define("ap-language-select", APLanguageSelect);
+</script>

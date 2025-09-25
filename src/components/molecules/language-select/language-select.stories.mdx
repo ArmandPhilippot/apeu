@@ -1,0 +1,104 @@
+---
+title: "LanguageSelect"
+---
+import { components as mdxComponents } from "../../mdx";
+import CodePreview from "../code-preview/code-preview.astro";
+import LanguageSelect from "./language-select.astro";
+
+{/* cSpell:ignore Español Français */}
+export const components = mdxComponents;
+export const languages = {
+  en: { label: "English", path: "#en" },
+  es: { label: "Español", path: "#es" },
+  fr: { label: "Français", path: "#fr" },
+};
+
+## Introduction
+
+This component is used to let a user choose the current language of the website.
+
+<CodePreview
+  code={`import LanguageSelect from "./components/molecules/language-select/language-select.astro";`}
+  label="How to import"
+  lang="ts"
+/>
+
+<CodePreview
+  code={`<LanguageSelect
+    current="es"
+    label="Choose a language:"
+    languages={languages}
+/>`}
+  label="Basic use"
+  lang="astro"
+>
+  <LanguageSelect
+    current="es"
+    label="Choose a language:"
+    languages={languages}
+  />
+</CodePreview>
+
+## Options
+
+### With an icon
+
+<CodePreview
+  code={`<LanguageSelect
+    current="es"
+    label="Choose a language:"
+    languages={languages}
+    showIcon
+/>`}
+  label="Showing an icon"
+  lang="astro"
+>
+  <LanguageSelect
+    current="es"
+    label="Choose a language:"
+    languages={languages}
+    showIcon
+  />
+</CodePreview>
+
+### Without label
+
+<CodePreview
+  code={`<LanguageSelect
+    current="es"
+    hideLabel
+    label="Choose a language:"
+    languages={languages}
+/>`}
+  label="Hiding the label"
+  lang="astro"
+>
+  <LanguageSelect
+    current="es"
+    hideLabel
+    label="Choose a language:"
+    languages={languages}
+  />
+</CodePreview>
+
+### Without label but with an icon
+
+<CodePreview
+  code={`<LanguageSelect
+    current="es"
+    hideLabel
+    label="Choose a language:"
+    languages={languages}
+    showIcon
+/>`}
+  label="Showing an icon without label"
+  lang="astro"
+>
+  <LanguageSelect
+    current="es"
+    hideLabel
+    label="Choose a language:"
+    languages={languages}
+    showIcon
+  />
+</CodePreview>

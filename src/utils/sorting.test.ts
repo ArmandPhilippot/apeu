@@ -13,7 +13,7 @@ describe("sort-by-key", () => {
       { foo: "fugiat", bar: false, baz: new Date("2024-04-29T13:34:00.000Z") },
     ];
 
-    expect(entries.sort((a, b) => sortByKey(a, b, "baz")))
+    expect(entries.toSorted((a, b) => sortByKey(a, b, "baz")))
       .toMatchInlineSnapshot(`
         [
           {
@@ -46,7 +46,7 @@ describe("sort-by-key", () => {
       { foo: "ut", bar: true, baz: new Date("2024-04-21T12:26:00.000Z") },
     ];
 
-    expect(entries.sort((a, b) => sortByKey(a, b, "foo")))
+    expect(entries.toSorted((a, b) => sortByKey(a, b, "foo")))
       .toMatchInlineSnapshot(`
         [
           {
@@ -75,7 +75,7 @@ describe("sort-by-key", () => {
     ];
 
     expect(() =>
-      entries.sort((a, b) => sortByKey(a, b, "bar"))
+      entries.toSorted((a, b) => sortByKey(a, b, "bar"))
     ).toThrowErrorMatchingInlineSnapshot(
       `[Error: Unsupported property type for sorting]`
     );

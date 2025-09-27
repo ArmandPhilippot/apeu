@@ -19,7 +19,7 @@ export const GET: APIRoute = async (): Promise<Response> => {
   const buffer = await sharp(favicon).resize(32).toFormat("png").toBuffer();
   const icoBuffer = encode([buffer]);
 
-  return new Response(icoBuffer, {
+  return new Response(Buffer.from(icoBuffer), {
     headers: { "Content-Type": "image/x-icon" },
   });
 };

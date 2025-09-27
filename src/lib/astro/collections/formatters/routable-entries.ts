@@ -131,10 +131,7 @@ export async function getRoutableEntry<T extends RoutableCollectionKey>(
 ) {
   const preview = await getRoutableEntryPreview(entry, indexById);
   const { remarkPluginFrontmatter, ...renderResult } = await render(entry.raw);
-  const altLanguages = await resolveTranslations(
-    entry.raw.data.i18n,
-    indexById
-  );
+  const altLanguages = resolveTranslations(entry.raw.data.i18n, indexById);
 
   return {
     ...preview,

@@ -192,7 +192,7 @@ const getOrderedEntries = <C extends CollectionKey>(
   if (orderBy === undefined) return entries;
 
   const { key, order } = orderBy;
-  const orderedEntries = [...entries].sort((a, b) => {
+  const orderedEntries = [...entries].toSorted((a, b) => {
     const sourceA =
       "meta" in a.raw.data && key in a.raw.data.meta
         ? a.raw.data.meta

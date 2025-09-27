@@ -182,31 +182,25 @@ describe("resolveTranslations", () => {
     vi.resetAllMocks();
   });
 
-  it("returns null for undefined translations", async () => {
-    expect.assertions(1);
-
-    const result = await resolveTranslations(undefined, mockEntriesIndex);
+  it("returns null for undefined translations", () => {
+    const result = resolveTranslations(undefined, mockEntriesIndex);
 
     expect(result).toBeNull();
   });
 
-  it("returns null for empty translations object", async () => {
-    expect.assertions(1);
-
-    const result = await resolveTranslations({}, mockEntriesIndex);
+  it("returns null for empty translations object", () => {
+    const result = resolveTranslations({}, mockEntriesIndex);
 
     expect(result).toBeNull();
   });
 
-  it("successfully resolves valid translations", async () => {
-    expect.assertions(1);
-
+  it("successfully resolves valid translations", () => {
     const translations = {
       en: { collection: "pages", id: "en/pages/about" },
       fr: { collection: "pages", id: "fr/pages/about" },
     } as const;
 
-    const result = await resolveTranslations(translations, mockEntriesIndex);
+    const result = resolveTranslations(translations, mockEntriesIndex);
 
     expect(result).toStrictEqual([
       { locale: "en", route: "en/pages/about" },
@@ -214,52 +208,44 @@ describe("resolveTranslations", () => {
     ]);
   });
 
-  it("filters out invalid language codes", async () => {
-    expect.assertions(1);
-
+  it("filters out invalid language codes", () => {
     const translations = {
       en: { collection: "pages", id: "en/pages/home" },
       invalid: { collection: "pages", id: "invalid" },
     } as const;
 
-    const result = await resolveTranslations(translations, mockEntriesIndex);
+    const result = resolveTranslations(translations, mockEntriesIndex);
 
     expect(result).toStrictEqual([{ locale: "en", route: "en/pages/home" }]);
   });
 
-  it("handles getEntry returning null", async () => {
-    expect.assertions(1);
-
+  it("handles getEntry returning null", () => {
     const translations = {
       en: { collection: "pages", id: "home" },
     } as const;
 
-    const result = await resolveTranslations(translations, mockEntriesIndex);
+    const result = resolveTranslations(translations, mockEntriesIndex);
 
     expect(result).toBeNull();
   });
 
-  it("handles entries without route data", async () => {
-    expect.assertions(1);
-
+  it("handles entries without route data", () => {
     const translations = {
       en: { collection: "pages", id: "home" },
     } as const;
 
-    const result = await resolveTranslations(translations, mockEntriesIndex);
+    const result = resolveTranslations(translations, mockEntriesIndex);
 
     expect(result).toBeNull();
   });
 
-  it("handles mixed valid and invalid entries", async () => {
-    expect.assertions(1);
-
+  it("handles mixed valid and invalid entries", () => {
     const translations = {
       en: { collection: "pages", id: "en/pages/home" },
       fr: { collection: "pages", id: "nonexistent" },
     } as const;
 
-    const result = await resolveTranslations(translations, mockEntriesIndex);
+    const result = resolveTranslations(translations, mockEntriesIndex);
 
     expect(result).toStrictEqual([{ locale: "en", route: "en/pages/home" }]);
   });

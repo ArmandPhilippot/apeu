@@ -9,7 +9,7 @@ import type { Route, SEO } from "../types/data";
 const getStorySeoTitle = (breadcrumb: Route[]): string =>
   breadcrumb
     .slice(1)
-    .reverse()
+    .toReversed()
     .map((crumb) => crumb.label)
     .join(" | ");
 

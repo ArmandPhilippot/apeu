@@ -209,7 +209,7 @@ const getOrderedEntries = <C extends CollectionKey>(
     return sortByKey(sourceA, sourceB, key);
   });
 
-  return order === "DESC" ? orderedEntries.reverse() : orderedEntries;
+  return order === "DESC" ? orderedEntries.toReversed() : orderedEntries;
 };
 
 const ensureArray = <T extends string>(item: T | T[]): T[] =>

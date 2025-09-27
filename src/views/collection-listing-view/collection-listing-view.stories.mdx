@@ -18,7 +18,7 @@ export const seo = {
   noindex: true,
   title: breadcrumb
     .slice(1)
-    .reverse()
+    .toReversed()
     .map((crumb) => crumb.label)
     .join(" | "),
 };

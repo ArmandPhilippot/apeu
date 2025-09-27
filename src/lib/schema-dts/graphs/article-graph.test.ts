@@ -358,7 +358,9 @@ describe("getArticleGraph", () => {
         "wordCount",
       ];
 
-      expect(Object.keys(graph).sort()).toStrictEqual(expectedKeys.sort());
+      expect(Object.keys(graph).toSorted()).toStrictEqual(
+        expectedKeys.toSorted()
+      );
 
       // Use a small structural snapshot
       const structure = {

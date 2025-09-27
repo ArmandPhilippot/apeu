@@ -192,7 +192,7 @@ const getOrderedEntries = <C extends CollectionKey>(
   if (orderBy === undefined) return entries;
 
   const { key, order } = orderBy;
-  const orderedEntries = [...entries].sort((a, b) => {
+  const orderedEntries = [...entries].toSorted((a, b) => {
     const sourceA =
       "meta" in a.raw.data && key in a.raw.data.meta
         ? a.raw.data.meta
@@ -209,7 +209,7 @@ const getOrderedEntries = <C extends CollectionKey>(
     return sortByKey(sourceA, sourceB, key);
   });
 
-  return order === "DESC" ? orderedEntries.reverse() : orderedEntries;
+  return order === "DESC" ? orderedEntries.toReversed() : orderedEntries;
 };
 
 const ensureArray = <T extends string>(item: T | T[]): T[] =>

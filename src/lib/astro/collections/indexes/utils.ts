@@ -11,7 +11,7 @@ import type { CollectionEntry, CollectionKey } from "astro:content";
 export const flattenAndSortByHierarchy = <T extends { id: string }>(
   nested: T[][]
 ): T[] =>
-  nested.flat().sort((a, b) => {
+  nested.flat().toSorted((a, b) => {
     const aDepth = a.id.split("/").length;
     const bDepth = b.id.split("/").length;
 

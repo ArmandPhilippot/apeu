@@ -220,16 +220,16 @@ type Translations<C extends CollectionKey> = Partial<
  * @template C
  * @param {Translations<C> | undefined} translations - An object.
  * @param {EntryByIdIndex} indexById - A map of indexed entries by id.
- * @returns {Promise<AltLanguage[] | null>} The resolved translations.
+ * @returns {AltLanguage[] | null} The resolved translations.
  */
-export const resolveTranslations = async <C extends CollectionKey>(
+export const resolveTranslations = <C extends CollectionKey>(
   translations: Translations<C> | undefined,
   indexById: EntryByIdIndex
-): Promise<AltLanguage[] | null> => {
+): AltLanguage[] | null => {
   if (translations === undefined) return null;
 
-  const resolvedEntries = await Promise.all(
-    Object.entries(translations).map(resolveTranslationEntry(indexById))
+  const resolvedEntries = Object.entries(translations).map(
+    resolveTranslationEntry(indexById)
   );
   const validEntries = resolvedEntries.filter(
     (entry): entry is AltLanguage => entry !== null

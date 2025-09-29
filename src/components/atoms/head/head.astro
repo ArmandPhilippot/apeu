@@ -1,0 +1,136 @@
+---
+import { getImage } from "astro:assets";
+import faviconPng from "../../../../../assets/favicon.png";
+import faviconSvg from "../../../../../assets/logo.svg";
+import { getCollectionsFeeds } from "../../../services/feeds";
+import { useI18n } from "../../../services/i18n";
+import type { SEO } from "../../../types/data";
+
+type ColorScheme =
+  | "normal"
+  | "light"
+  | "dark"
+  | "only light"
+  | "light dark"
+  | "dark light";
+
+type Fonts = Array<{
+  href: string;
+  mimetype: string;
+}>;
+
+type Props = {
+  addBrandToTitle?: boolean | null | undefined;
+  brand: string;
+  colorScheme?: ColorScheme | null | undefined;
+  fonts?: Fonts | null | undefined;
+  generator?: string | null | undefined;
+  seo: SEO;
+  themeColor?: string | null | undefined;
+};
+
+const {
+  addBrandToTitle = false,
+  brand,
+  colorScheme,
+  fonts,
+  generator,
+  seo,
+  themeColor,
+} = Astro.props;
+const { locale, translate } = useI18n(Astro.currentLocale);
+const appleTouchIcon = await getImage({
+  src: faviconPng,
+  width: 180,
+  height: 180,
+  format: "png",
+});
+const icon = await getImage({ src: faviconSvg, format: "svg" });
+const feeds = await getCollectionsFeeds(locale);
+const seoTitle = `${seo.title}${addBrandToTitle ? ` | ${brand}` : ""}`;
+---
+
+<head>
+  <meta charset="utf-8" />
+  <meta
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    name="viewport"
+  />
+  <title>{seoTitle}</title>
+  {
+    seo.description ? (
+      <meta content={seo.description} name="description" />
+    ) : null
+  }
+  <meta
+    content={`${seo.noindex ? "noindex" : "index"}, ${
+      seo.nofollow ? "nofollow" : "follow"
+    }`}
+    name="robots"
+  />
+  <link href={seo.canonical ?? Astro.url.href} rel="canonical" />
+  {
+    Astro.site
+      ? seo.languages?.map((language) => (
+          <link
+            href={new URL(language.route, Astro.site)}
+            hreflang={language.locale}
+            rel="alternate"
+          />
+        ))
+      : null
+  }
+  {
+    seo.author ? (
+      <>
+        <meta content={seo.author.name} name="author" />
+        <link href={seo.author.website} rel="author" />
+      </>
+    ) : (
+      <>
+        <meta content={brand} name="author" />
+        {Astro.site ? <link href={Astro.site.href} rel="author" /> : null}
+      </>
+    )
+  }
+  {colorScheme ? <meta content={colorScheme} name="color-scheme" /> : null}
+  {themeColor ? <meta content={themeColor} name="theme-color" /> : null}
+  {generator ? <meta content={generator} name="generator" /> : null}
+  <link href="/favicon.ico" rel="icon" sizes="32x32" />
+  <link href={icon.src} rel="icon" type="image/svg+xml" />
+  <link href={appleTouchIcon.src} rel="apple-touch-icon" />
+  <link href="/manifest.json" rel="manifest" />
+  <link href="/sitemap-index.xml" rel="sitemap" />
+  {
+    fonts?.map((font) => (
+      <link
+        as="font"
+        crossorigin
+        href={font.href}
+        rel="preload"
+        type={font.mimetype}
+      />
+    ))
+  }
+  {
+    Astro.site ? (
+      <Fragment>
+        <link
+          href={new URL("./feed.xml", Astro.site)}
+          rel="alternate"
+          title={translate("feed.website.link.title")}
+          type="application/rss+xml"
+        />
+        {feeds.map((feed) => (
+          <link
+            href={new URL(feed.path, Astro.site)}
+            rel="alternate"
+            title={feed.label}
+            type="application/rss+xml"
+          />
+        ))}
+      </Fragment>
+    ) : null
+  }
+  <slot />
+</head>

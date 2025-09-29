@@ -20,6 +20,7 @@ const {
   class: className,
   current,
   max = 1,
+  slot,
   ...attrs
 } = Astro.props;
 const progressValueFallback = current ? `${current}/${max}` : null;

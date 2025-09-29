@@ -19,7 +19,7 @@ type Props = Omit<HTMLAttributes<"input" | "textarea">, "type"> & {
   type: FieldTextType;
 };
 
-const { class: className, type, ...attrs } = Astro.props;
+const { class: className, slot, type, ...attrs } = Astro.props;
 ---
 
 {

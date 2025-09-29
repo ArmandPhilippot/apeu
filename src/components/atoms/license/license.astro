@@ -5,7 +5,7 @@ import { useI18n } from "../../../services/i18n";
 
 type Props = Omit<ComponentProps<typeof Icon>, "name" | "title">;
 
-const { class: className, ...attrs } = Astro.props;
+const { class: className, slot, ...attrs } = Astro.props;
 const { translate } = useI18n(Astro.currentLocale);
 ---
 

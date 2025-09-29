@@ -5,7 +5,7 @@ type Props = HTMLAttributes<"label"> & {
   isRequired?: boolean | null | undefined;
 };
 
-const { class: className, isRequired = false, ...attrs } = Astro.props;
+const { class: className, isRequired = false, slot, ...attrs } = Astro.props;
 ---
 
 <label {...attrs} class:list={["label", className]}>

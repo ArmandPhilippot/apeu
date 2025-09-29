@@ -42,8 +42,6 @@ describe("SkipTo", () => {
         props: { anchor: "illum-consequuntur-minima" },
         slots: { default: label },
       })
-    ).rejects.toThrowErrorMatchingInlineSnapshot(
-      `[Error: The \`anchor\` property should be targeting an id on the same page. It must start with \`#\`.]`
-    );
+    ).rejects.toThrowErrorMatchingInlineSnapshot(`[InvalidAnchorFormatError: The "anchor" property should be a valid anchor starting with "#". Received: illum-consequuntur-minima]`);
   });
 });

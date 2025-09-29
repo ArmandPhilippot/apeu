@@ -1,11 +1,17 @@
 a {
   color: var(--color-primary);
-  text-decoration-thickness: 0.2ex;
-  text-underline-offset: 0.4ex;
-  transition: text-decoration 0.18s linear 0s;
+  outline-offset: var(--border-size-sm);
+  text-decoration-thickness: 0.1ex;
+  text-underline-offset: 0.2ex;
+  transition: text-decoration 0.1s linear 0s;
 
   &:where(:hover, :focus) {
     color: var(--color-primary-light);
+  }
+
+  &:where(:focus-visible) {
+    outline: var(--border-size-sm) solid var(--color-primary-lighter);
+    transition: none;
   }
 
   &:has(> img, > svg) {
@@ -36,7 +42,7 @@ a {
     outline: var(--border-size-md) solid var(--color-primary-lighter);
   }
 
-  &:where(.download, [hreflang], [rel~="external"]) {
+  &:where([data-download="true"], [hreflang], [rel~="external"]) {
     &::after {
       display: inline-block;
       content: var(--is-lang-hidden, "\0000a0" var(--lang-icon, ""))
@@ -53,15 +59,15 @@ a {
     --is-lang-hidden: "";
   }
 
-  &[rel~="external"]:not(.download) {
+  &[rel~="external"]:not([data-download="true"]) {
     --link-icon: var(--external-icon);
   }
 
-  &.download:not([rel~="external"]) {
+  &[data-download="true"]:not([rel~="external"]) {
     --link-icon: var(--download-icon);
   }
 
-  &.download[rel~="external"] {
+  &[data-download="true"][rel~="external"] {
     --link-icon: var(--download-icon) "\0000a0" var(--external-icon);
   }
 

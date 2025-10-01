@@ -55,6 +55,7 @@ export type IconName =
   | "blog"
   | "bookmark"
   | "caret"
+  | "caret-down"
   | "cc-by-sa"
   | "contact"
   | "copy"
@@ -92,5 +93,19 @@ export type Spacing =
   | "lg"
   | "xl"
   | "2xl";
+
+export type FieldTextType =
+  | "date"
+  | "datetime-local"
+  | "email"
+  | "month"
+  | "password"
+  | "search"
+  | "tel"
+  | "text"
+  | "textarea"
+  | "time"
+  | "url"
+  | "week";
 
 export type Theme = (typeof THEMES)[number];

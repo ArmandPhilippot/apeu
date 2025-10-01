@@ -2,6 +2,8 @@
 import type { JSX } from "astro/jsx-runtime";
 import type { ComponentProps } from "astro/types";
 import type { Route } from "../../../types/data";
+import Label from "../../atoms/label/label.astro";
+import SelectField from "../../atoms/select-field/select-field.astro";
 import Select from "../select/select.astro";
 
 type Languages = Record<string, Route>;
@@ -49,19 +51,25 @@ if (!currentLocale) {
 ---
 
 <ap-language-select {...attrs} class:list={["language-select", className]}>
-  <Select
-    hideLabel={hideLabel}
-    icon={showIcon ? "locale" : null}
-    label={label}
-    options={options}
-    value={currentLocale.path}
-  />
+  <Label>
+    <span class:list={{ "sr-only": hideLabel }}>{label}</span>
+    <SelectField
+      icon={showIcon ? "locale" : null}
+      options={options}
+      value={currentLocale.path}
+    />
+  </Label>
 </ap-language-select>
 
 <style>
-  .language-select {
+  .language-select,
+  .language-select label {
     display: flex;
     flex-flow: row wrap;
+  }
+
+  .language-select label > *:last-child {
+    flex: 1;
   }
 </style>
 

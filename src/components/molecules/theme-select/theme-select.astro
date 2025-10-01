@@ -4,6 +4,8 @@ import type { ComponentProps } from "astro/types";
 import { SETTING_KEYS, type Settings } from "../../../services/stores";
 import type { Theme } from "../../../types/tokens";
 import { isKeyExistIn } from "../../../utils/type-guards";
+import Label from "../../atoms/label/label.astro";
+import SelectField from "../../atoms/select-field/select-field.astro";
 import Select from "../select/select.astro";
 
 type Themes = Record<Theme, string>;
@@ -60,19 +62,26 @@ if (!isValidTheme) {
   class:list={["theme-select", className]}
   data-setting={setting}
 >
-  <Select
-    hideLabel={hideLabel}
-    icon={showIcon ? "locale" : null}
-    label={label}
-    options={options}
-    value={current}
-  />
+  <Label>
+    <span class:list={{ "sr-only": hideLabel }}>{label}</span>
+    <SelectField
+      icon={/* TODO: replace the icon */
+      showIcon ? "locale" : null}
+      options={options}
+      value={current}
+    />
+  </Label>
 </ap-theme-select>
 
 <style>
-  .theme-select {
+  .theme-select,
+  .theme-select label {
     display: flex;
     flex-flow: row wrap;
+  }
+
+  .theme-select label > *:last-child {
+    flex: 1;
   }
 </style>
 

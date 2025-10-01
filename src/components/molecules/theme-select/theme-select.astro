@@ -6,31 +6,39 @@ import type { Theme } from "../../../types/tokens";
 import { isKeyExistIn } from "../../../utils/type-guards";
 import Label from "../../atoms/label/label.astro";
 import SelectField from "../../atoms/select-field/select-field.astro";
-import Select from "../select/select.astro";
 
 type Themes = Record<Theme, string>;
 
-type Props = JSX.HTMLAttributes &
-  Pick<ComponentProps<typeof Select>, "hideLabel" | "label"> & {
-    /**
-     * The current theme.
-     */
-    current: Theme;
-    /**
-     * The controlled setting key.
-     */
-    setting?: keyof Settings | null | undefined;
-    /**
-     * Should we add an icon in front of the field?
-     *
-     * @default false
-     */
-    showIcon?: boolean | null | undefined;
-    /**
-     * An object with the theme as key associated to a label.
-     */
-    themes: Themes;
-  };
+type Props = JSX.HTMLAttributes & {
+  /**
+   * The current theme.
+   */
+  current: Theme;
+  /**
+   * Should the label be visually hidden?
+   *
+   * @default false
+   */
+  hideLabel?: boolean | null | undefined;
+  /**
+   * The field label.
+   */
+  label: string;
+  /**
+   * The controlled setting key.
+   */
+  setting?: keyof Settings | null | undefined;
+  /**
+   * Should we add an icon in front of the field?
+   *
+   * @default false
+   */
+  showIcon?: boolean | null | undefined;
+  /**
+   * An object with the theme as key associated to a label.
+   */
+  themes: Themes;
+};
 
 const {
   class: className,
@@ -43,7 +51,7 @@ const {
   themes,
   ...attrs
 } = Astro.props;
-const options: ComponentProps<typeof Select>["options"] = Object.entries(
+const options: ComponentProps<typeof SelectField>["options"] = Object.entries(
   themes
 ).map(([theme, themeLabel]) => {
   return { label: themeLabel, value: theme };

@@ -4,27 +4,35 @@ import type { ComponentProps } from "astro/types";
 import type { Route } from "../../../types/data";
 import Label from "../../atoms/label/label.astro";
 import SelectField from "../../atoms/select-field/select-field.astro";
-import Select from "../select/select.astro";
 
 type Languages = Record<string, Route>;
 
-type Props = JSX.HTMLAttributes &
-  Pick<ComponentProps<typeof Select>, "hideLabel" | "label"> & {
-    /**
-     * The current locale.
-     */
-    current: keyof Languages;
-    /**
-     * An object with the locale as key associated to a route as value.
-     */
-    languages: Languages;
-    /**
-     * Should we add an icon in front of the field?
-     *
-     * @default false
-     */
-    showIcon?: boolean | null | undefined;
-  };
+type Props = JSX.HTMLAttributes & {
+  /**
+   * The current locale.
+   */
+  current: keyof Languages;
+  /**
+   * Should the label be visually hidden?
+   *
+   * @default false
+   */
+  hideLabel?: boolean | null | undefined;
+  /**
+   * The field label.
+   */
+  label: string;
+  /**
+   * An object with the locale as key associated to a route as value.
+   */
+  languages: Languages;
+  /**
+   * Should we add an icon in front of the field?
+   *
+   * @default false
+   */
+  showIcon?: boolean | null | undefined;
+};
 
 const {
   class: className,
@@ -36,7 +44,7 @@ const {
   slot,
   ...attrs
 } = Astro.props;
-const options: ComponentProps<typeof Select>["options"] = Object.values(
+const options: ComponentProps<typeof SelectField>["options"] = Object.values(
   languages
 ).map((route) => {
   return { label: route.label, value: route.path };

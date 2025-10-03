@@ -130,7 +130,7 @@ const topId = translate("anchor.site.top");
       </style>
     </noscript>
   </Head>
-  <body class="site" id={topId}>
+  <body class="site svg-filter-paper" id={topId}>
     <ThemeProvider>
       <SvgFiltersProvider>
         <PageTransitionProvider>
@@ -203,20 +203,6 @@ const topId = translate("anchor.site.top");
         minmax(calc(var(--one-px-in-rem) * 200), 22dvw)
         minmax(0, 1fr);
       grid-template-rows: minmax(0, 1fr) minmax(0, auto);
-    }
-
-    &::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      z-index: -1;
-      clip-path: inset(0);
-      pointer-events: none;
-      user-select: none;
-
-      /* Fixes a Chromium bug where the SVG filter wasn't updated when
-       * switching the theme... */
-      transform: translate3d(0, 0, 0);
     }
   }
 
@@ -331,20 +317,6 @@ const topId = translate("anchor.site.top");
     @media (--sm-or-above) {
       bottom: calc(1dvi + var(--spacing-md));
       right: calc(1dvi + var(--spacing-md));
-    }
-  }
-
-  :global(:where([data-theme="light"])) {
-    .site::before,
-    .site-navbar::before {
-      filter: url("#paper-filter");
-    }
-  }
-
-  :global(:where([data-theme="dark"])) {
-    .site::before,
-    .site-navbar::before {
-      filter: url("#dark-paper-filter");
     }
   }
 </style>

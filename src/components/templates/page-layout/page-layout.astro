@@ -79,7 +79,7 @@ const socialImg = {
       />
     ) : null
   }
-  <div class="page-layout-content">
+  <div class="page-layout-content svg-filter-paper-dark">
     <main class="page-layout-main" data-pagefind-body>
       <Page
         {...attrs}
@@ -143,17 +143,6 @@ const socialImg = {
       box-shadow: inset 0 0 var(--border-size-sm) var(--border-size-sm)
         var(--inset-shadow-color);
     }
-
-    &::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      z-index: -1;
-      background: var(--color-regular-dark);
-      clip-path: inset(0);
-      pointer-events: none;
-      user-select: none;
-    }
   }
 
   :where(.page-layout:not(:has(.page-layout-breadcrumb))) .page-layout-content {
@@ -171,15 +160,5 @@ const socialImg = {
     width: 100%;
     max-width: var(--size-prose);
     margin: var(--spacing-md) auto 0;
-  }
-
-  :global(:where([data-theme="light"])) .page-layout-content::before {
-    filter: url("#paper-filter") brightness(0.985) contrast(98.5%)
-      saturate(103%);
-  }
-
-  :global(:where([data-theme="dark"])) .page-layout-content::before {
-    filter: url("#dark-paper-filter") brightness(0.85) contrast(103%)
-      saturate(120%);
   }
 </style>

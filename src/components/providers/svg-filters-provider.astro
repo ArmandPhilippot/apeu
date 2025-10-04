@@ -3,45 +3,55 @@
 ---
 
 <slot />
-<svg
-  aria-hidden="true"
-  height="0"
-  viewBox="0 0 100 100"
-  width="0"
-  xmlns="http://www.w3.org/2000/svg"
->
-  <defs>
-    <filter color-interpolation-filters="sRGB" id="paper-filter">
-      <feTurbulence
-        baseFrequency="0.020"
-        numOctaves="7"
-        result="noise"
-        seed="3"
-        type="fractalNoise"></feTurbulence>
-      <feDiffuseLighting
-        diffuseConstant="1.1"
-        in="noise"
-        lighting-color="var(--color-regular)"
-        surfaceScale="0.600"
-      >
-        <feDistantLight azimuth="60" elevation="65"></feDistantLight>
-      </feDiffuseLighting>
-    </filter>
-    <filter color-interpolation-filters="sRGB" id="dark-paper-filter">
-      <feTurbulence
-        baseFrequency="0.020"
-        numOctaves="7"
-        result="noise"
-        seed="3"
-        type="fractalNoise"></feTurbulence>
-      <feDiffuseLighting
-        diffuseConstant="1.2"
-        in="noise"
-        lighting-color="var(--color-regular)"
-        surfaceScale="1.1"
-      >
-        <feDistantLight azimuth="40" elevation="57"></feDistantLight>
-      </feDiffuseLighting>
-    </filter>
-  </defs>
-</svg>
+
+<style is:global>
+  .svg-filter-paper,
+  .svg-filter-paper-dark {
+    position: relative;
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      clip-path: inset(0);
+      pointer-events: none;
+      user-select: none;
+      background: var(--bg-filter-lightning-color);
+
+      /* Fixes a Chromium bug where the SVG filter wasn't updated when
+       * switching the theme... */
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  .svg-filter-paper::before {
+    --bg-filter-lightning-color: var(--color-regular);
+  }
+
+  .svg-filter-paper-dark::before {
+    --bg-filter-lightning-color: var(--color-regular-darker);
+  }
+
+  :where(html:not([data-theme="dark"])) {
+    .svg-filter-paper::before {
+      background-image: url("../../assets/paper-light.svg");
+    }
+
+    .svg-filter-paper-dark::before {
+      background-image: url("../../assets/paper-light.svg");
+      filter: brightness(0.985) contrast(98.5%) saturate(103%);
+    }
+  }
+
+  :where(html[data-theme="dark"]) {
+    .svg-filter-paper::before {
+      background-image: url("../../assets/paper-dark.svg");
+    }
+
+    .svg-filter-paper-dark::before {
+      background-image: url("../../assets/paper-dark.svg");
+      filter: brightness(0.85) contrast(103%) saturate(120%);
+    }
+  }
+</style>

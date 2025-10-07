@@ -165,7 +165,7 @@ export const spacings = [
 <div class="wrapper grid">
     {
     colors.contexts.map((context) => (
-        <div class="wrapper flex">
+        <div class="wrapper grid">
         {colors.variants.map((variant) => {
             const token =
             variant === "default"
@@ -187,7 +187,7 @@ export const spacings = [
 <div class="wrapper grid">
     {
     colors.contexts.map((context) => (
-        <div class="wrapper flex">
+        <div class="wrapper grid">
         <TokenPreview token={`--color-on-${context}`}>
             <div
             class="token-box"

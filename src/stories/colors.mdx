@@ -1,0 +1,66 @@
+---
+title: "Colors"
+---
+import TokenPreview from "../components/stories/token-preview.astro";
+import { components as mdxComponents } from "../components/mdx";
+
+export const components = mdxComponents;
+
+{/* See `src/styles/variables/colors.css` for the available colors. */}
+export const colors = {
+  list: {
+    neutral: ["white", "grey", "black"],
+    vivid: ["blue", "cyan", "green", "orange", "pink", "purple", "red", "yellow"],
+  },
+  variants: [
+    "subtle",
+    "lighter",
+    "light",
+    "default",
+    "dark",
+    "darker",
+    "faded",
+  ],
+}
+
+## Neutral
+
+<div class="wrapper grid">
+  {
+  colors.list.neutral.map((color) => (
+    <div class="wrapper flex">
+      {colors.variants.map((variant) => {
+        const token = variant === "default"
+          ? `--color-${color}`
+          : `--color-${color}-${variant}`;
+        return (
+          <TokenPreview token={token}>
+              <div class="token-box" style={`background: var(${token});`} />
+          </TokenPreview>
+        );
+      })}
+    </div>
+  ))
+  }
+</div>
+
+## Vivid
+
+<div class="wrapper grid">
+  {
+  colors.list.vivid.map((color) => (
+    <div class="wrapper flex">
+      {colors.variants.map((variant) => {
+        const token = variant === "default"
+          ? `--color-${color}`
+          : `--color-${color}-${variant}`;
+        return (
+          <TokenPreview token={token}>
+              <div class="token-box" style={`background: var(${token});`} />
+          </TokenPreview>
+        );
+      })}
+    </div>
+  ))
+  }
+</div>

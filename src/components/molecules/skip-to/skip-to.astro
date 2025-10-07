@@ -1,5 +1,6 @@
 ---
 import type { ComponentProps } from "astro/types";
+import { InvalidAnchorFormatError } from "../../../utils/exceptions";
 import Button from "../../atoms/button/button.astro";
 
 type Props = Omit<
@@ -9,12 +10,10 @@ type Props = Omit<
   anchor: `#${string}`;
 };
 
-const { anchor, class: className, ...attrs } = Astro.props;
+const { anchor, class: className, slot, ...attrs } = Astro.props;
 
 if (!anchor.startsWith("#")) {
-  throw new Error(
-    "The `anchor` property should be targeting an id on the same page. It must start with `#`."
-  );
+  throw new InvalidAnchorFormatError("anchor", anchor);
 }
 ---
 
@@ -32,6 +31,7 @@ if (!anchor.startsWith("#")) {
     top: var(--spacing-sm);
     left: var(--spacing-sm);
     z-index: 99;
+    user-select: none;
     box-shadow: var(--shadow-raised-to-top-left);
 
     &:focus {

@@ -5,7 +5,7 @@ type Props = HTMLAttributes<"li"> & {
   hideMarker?: boolean | null | undefined;
 };
 
-const { class: className, hideMarker = false, ...attrs } = Astro.props;
+const { class: className, hideMarker = false, slot, ...attrs } = Astro.props;
 ---
 
 <li

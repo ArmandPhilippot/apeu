@@ -79,24 +79,24 @@ if (isExternal && kind === "primary") {
     }
 
     &:not([data-type="neutral"]) {
-      border: var(--border-size-md) solid var(--btn-border);
-      border-radius: var(--border-radii-lg);
+      border: var(--btn-border-size) solid var(--btn-border);
+      border-radius: var(--border-radii-md);
       transition:
-        box-shadow 0.15s linear 0s,
+        box-shadow 0.15s ease-in-out 0s,
         color 0.15s linear 0s,
         outline-offset 0.1s linear 0s,
-        transform 0.15s linear 0s;
+        transform 0.15s ease-in-out 0s;
     }
 
     &:not([data-type="neutral"], [aria-disabled="true"], :disabled) {
       &:hover {
-        transform: translateX(calc(var(--border-size-lg) * -1))
-          translateY(calc(var(--border-size-lg) * -1));
+        transform: translateX(calc(var(--btn-border-size) * -2))
+          translateY(calc(var(--btn-border-size) * -2));
       }
 
       &:active {
-        transform: translateY(var(--border-size-md))
-          translateX(var(--border-size-md));
+        transform: translateY(var(--btn-border-size))
+          translateX(var(--btn-border-size));
       }
     }
 
@@ -114,8 +114,9 @@ if (isExternal && kind === "primary") {
       --btn-bg: var(--color-primary);
       --btn-fg: var(--color-on-primary);
       --btn-border: var(--color-primary-dark);
+      --btn-border-size: var(--border-size-sm);
       --btn-shadow-color: var(--btn-border);
-      --btn-shadow-size: var(--border-size-lg);
+      --btn-shadow-size: calc(var(--btn-border-size) * 2);
       --btn-inset-shadow-color: var(--color-border);
 
       box-shadow:
@@ -138,7 +139,7 @@ if (isExternal && kind === "primary") {
         &:hover {
           --btn-bg: var(--color-primary-light);
           --btn-border: var(--color-primary);
-          --btn-shadow-size: calc(var(--border-size-lg) * 2);
+          --btn-shadow-size: calc(var(--btn-border-size) * 4);
         }
 
         &:active {
@@ -150,11 +151,12 @@ if (isExternal && kind === "primary") {
     }
 
     &[data-type="secondary"] {
-      --btn-bg: var(--color-regular);
+      --btn-bg: var(--color-regular-light);
       --btn-fg: var(--color-primary);
       --btn-border: var(--color-primary);
+      --btn-border-size: var(--border-size-sm);
       --btn-shadow-color: var(--btn-border);
-      --btn-shadow-size: var(--border-size-lg);
+      --btn-shadow-size: calc(var(--btn-border-size) * 2);
 
       box-shadow: var(--btn-shadow-size) var(--btn-shadow-size) 0 0
         var(--btn-shadow-color);
@@ -172,13 +174,13 @@ if (isExternal && kind === "primary") {
 
       &:not([aria-disabled="true"], :disabled) {
         &:hover {
-          --btn-bg: var(--color-regular-light);
+          --btn-bg: var(--color-regular-lighter);
           --btn-border: var(--color-primary-light);
-          --btn-shadow-size: calc(var(--border-size-lg) * 2);
+          --btn-shadow-size: calc(var(--btn-border-size) * 4);
         }
 
         &:active {
-          --btn-bg: var(--color-regular-dark);
+          --btn-bg: var(--color-regular);
           --btn-border: var(--color-primary-dark);
           --btn-shadow-size: 0;
         }
@@ -186,11 +188,12 @@ if (isExternal && kind === "primary") {
     }
 
     &[data-type="discreet"] {
-      --btn-bg: var(--color-regular);
+      --btn-bg: var(--color-regular-light);
       --btn-fg: var(--color-on-regular);
       --btn-border: var(--color-border);
+      --btn-border-size: var(--border-size-sm);
       --btn-shadow-color: var(--btn-border);
-      --btn-shadow-size: var(--border-size-lg);
+      --btn-shadow-size: calc(var(--btn-border-size) * 2);
 
       box-shadow: var(--btn-shadow-size) var(--btn-shadow-size) 0 0
         var(--btn-shadow-color);
@@ -208,13 +211,13 @@ if (isExternal && kind === "primary") {
 
       &:not([aria-disabled="true"], :disabled) {
         &:hover {
-          --btn-bg: var(--color-regular-light);
+          --btn-bg: var(--color-regular-lighter);
           --btn-border: var(--color-border-light);
-          --btn-shadow-size: calc(var(--border-size-lg) * 2);
+          --btn-shadow-size: calc(var(--btn-border-size) * 4);
         }
 
         &:active {
-          --btn-bg: var(--color-regular-dark);
+          --btn-bg: var(--color-regular);
           --btn-border: var(--color-border-dark);
           --btn-shadow-size: 0;
         }

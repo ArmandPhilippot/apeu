@@ -30,7 +30,7 @@ const { class: className, slot, type, ...attrs } = Astro.props;
       var(--border-size-md) var(--border-size-md) 0 0 var(--color-shadow);
     color: var(--color-on-regular);
     line-height: inherit;
-    outline: var(--border-size-md) solid transparent;
+    outline: var(--border-size-sm) solid transparent;
     outline-offset: calc(var(--border-size-md) * -1);
     transition:
       box-shadow 0.1s linear 0s,
@@ -65,8 +65,8 @@ const { class: className, slot, type, ...attrs } = Astro.props;
       background: var(--color-regular-lighter);
     }
 
-    &:where(:focus-visible:not(:read-only)) {
-      background: var(--color-regular-darker);
+    &:where(:focus:not(:read-only)) {
+      background: var(--color-regular-dark);
       box-shadow:
         inset 0 0 var(--border-size-md) var(--border-size-md)
           var(--color-shadow-inset-dark),

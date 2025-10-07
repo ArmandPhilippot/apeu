@@ -75,7 +75,7 @@ if (currentOption === undefined) {
       var(--border-size-md) var(--border-size-md) 0 0 var(--color-shadow);
     color: var(--color-primary-faded);
     cursor: pointer;
-    outline: var(--border-size-md) solid transparent;
+    outline: var(--border-size-sm) solid transparent;
     transition:
       box-shadow 0.1s linear 0s,
       outline 0.1s ease-in-out 0s,
@@ -94,7 +94,7 @@ if (currentOption === undefined) {
     }
 
     &:focus-within {
-      background: var(--color-regular-darker);
+      background: var(--color-regular-dark);
       box-shadow:
         inset 0 0 var(--border-size-md) var(--border-size-md)
           var(--color-shadow-inset-dark),
@@ -121,6 +121,7 @@ if (currentOption === undefined) {
   select {
     grid-column-start: 1;
     grid-row: 1;
+    min-height: calc(var(--one-px-in-rem) * 54);
     padding: var(--spacing-xs) calc(var(--spacing-sm) * 2 + var(--caret-size))
       var(--spacing-xs) var(--spacing-sm);
     appearance: none;
@@ -129,6 +130,11 @@ if (currentOption === undefined) {
     border-radius: inherit;
     color: inherit;
     cursor: pointer;
+    font-weight: var(--font-weight-bold);
+
+    @media (any-pointer: fine) {
+      min-height: calc(var(--one-px-in-rem) * 48);
+    }
 
     &:where(:focus) {
       outline: none;

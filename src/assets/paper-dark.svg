@@ -7,7 +7,7 @@
   <defs>
     <filter color-interpolation-filters="sRGB" id="dark-paper-filter">
       <feTurbulence
-        baseFrequency="0.025"
+        baseFrequency="0.012"
         numOctaves="7"
         result="noise"
         seed="8"

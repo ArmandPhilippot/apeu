@@ -2,8 +2,8 @@ a {
   color: var(--color-primary);
   outline-offset: var(--border-size-sm);
   text-decoration-thickness: 0.1ex;
-  text-underline-offset: 0.2ex;
-  transition: text-decoration 0.1s linear 0s;
+  text-underline-offset: 0.35ex;
+  transition: text-decoration-thickness 0.1s linear 0s;
 
   &:where(:hover, :focus) {
     color: var(--color-primary-light);
@@ -28,7 +28,7 @@ a {
   }
 
   &:hover {
-    text-decoration-thickness: 0.4ex;
+    text-decoration-thickness: 0.3ex;
   }
 
   &:active {
@@ -37,9 +37,10 @@ a {
   }
 
   &:focus-visible {
-    border-radius: var(--border-radii-sm);
+    border-radius: var(--border-radii-md);
     text-decoration-color: transparent;
     outline: var(--border-size-md) solid var(--color-primary-lighter);
+    outline-offset: var(--border-size-md);
   }
 
   &:where([data-download="true"], [hreflang], [rel~="external"]) {
@@ -121,15 +122,15 @@ samp {
 
 :where(:not(samp)) > kbd {
   padding: var(--spacing-4xs) var(--spacing-2xs);
-  color: var(--color-muted-faded);
+  color: var(--color-regular-faded);
 
   &:not(:has(kbd, samp)) {
     background: var(--color-regular-lighter);
     box-shadow:
       inset 0 0 var(--border-size-sm) var(--border-size-sm)
-        var(--color-muted-light),
-      inset 0 0 0 var(--border-size-sm) var(--color-muted-light),
-      0 0 0 var(--border-size-sm) var(--color-muted),
+        var(--color-border-light),
+      inset 0 0 0 var(--border-size-sm) var(--color-border),
+      0 0 0 var(--border-size-sm) var(--color-border-dark),
       var(--border-size-md) var(--border-size-md) 0 var(--border-size-sm)
         var(--color-shadow);
   }

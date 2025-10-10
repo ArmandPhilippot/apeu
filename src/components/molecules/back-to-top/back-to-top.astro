@@ -39,7 +39,7 @@ if (!anchor.startsWith("#")) {
   data-threshold={scrollThreshold}
   data-visible="false"
 >
-  <Button as="a" class="back-to-top-link" href={anchor}>
+  <Button as="a" href={anchor}>
     <Icon aria-hidden="true" name="caret" />
     <span class="sr-only">{label}</span>
   </Button>
@@ -62,25 +62,25 @@ if (!anchor.startsWith("#")) {
         opacity 0.3s ease-in 0s,
         visibility 0s ease-in 0s;
     }
-  }
 
-  .back-to-top-link {
-    aspect-ratio: 1 / 1;
-    border-width: var(--border-size-md);
-    box-shadow: var(--shadow-elevated-to-top-left);
+    a {
+      aspect-ratio: 1 / 1;
+      border-width: var(--border-size-md);
+      box-shadow: var(--shadow-elevated-to-top-left);
 
-    @media (any-pointer: fine) {
-      padding: var(--spacing-sm);
-    }
+      @media (any-pointer: fine) {
+        padding: var(--spacing-sm);
+      }
 
-    &:where(:hover, :focus) {
-      box-shadow: var(--shadow-floating-to-top-left);
-      transform: scale(1.1);
-    }
+      &:where(:hover, :focus) {
+        box-shadow: var(--shadow-floating-to-top-left);
+        transform: scale(1.1);
+      }
 
-    &:where(:active) {
-      box-shadow: var(--shadow-raised-to-top-left);
-      transform: scale(0.95);
+      &:where(:active) {
+        box-shadow: var(--shadow-raised-to-top-left);
+        transform: scale(0.95);
+      }
     }
   }
 </style>

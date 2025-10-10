@@ -3,3 +3,4 @@
 @custom-media --sm-or-above (width >= 640px);
 @custom-media --md-or-above (width >= 1024px);
 @custom-media --prose (width >= 55em);
+@custom-media --prose-x2 (width >= calc(55em * 2));

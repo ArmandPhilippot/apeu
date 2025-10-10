@@ -10,4 +10,5 @@
   --spacing-lg: calc(var(--spacing-md) * pow(var(--spacing-ratio), 2));
   --spacing-xl: calc(var(--spacing-md) * pow(var(--spacing-ratio), 3));
   --spacing-2xl: calc(var(--spacing-md) * pow(var(--spacing-ratio), 4));
+  --spacing-dynamic: clamp(var(--spacing-md), 2.25dvi, var(--spacing-2xl));
 }

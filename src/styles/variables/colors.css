@@ -112,12 +112,12 @@
 [data-shiki="dark"] pre,
 [data-theme="dark"] {
   --color-black-subtle: hsl(212deg 52% 3%);
-  --color-black-lighter: hsl(218deg 26% 14%);
-  --color-black-light: hsl(217deg 28% 12%);
+  --color-black-lighter: hsl(218deg 25% 15%);
+  --color-black-light: hsl(217deg 27% 13%);
   --color-black: hsl(216deg 30% 10%);
-  --color-black-dark: hsl(215deg 32% 8%);
-  --color-black-darker: hsl(214deg 34% 7%);
-  --color-black-faded: hsl(220deg 20% 65%);
+  --color-black-dark: hsl(215deg 33% 8%);
+  --color-black-darker: hsl(214deg 30% 7%);
+  --color-black-faded: hsl(220deg 19% 65%);
   --color-blue-subtle: hsl(204deg 48% 11%);
   --color-blue-lighter: hsl(214deg 56% 76%);
   --color-blue-light: hsl(212deg 58% 74%);

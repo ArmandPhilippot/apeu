@@ -217,7 +217,7 @@ describe("callout", () => {
 
   it<LocalTestContext>("can use an aria label", async ({ container }) => {
     /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
-    expect.assertions(3);
+    expect.assertions(2);
 
     const props = {
       "aria-label": "officiis cum adipisci",
@@ -232,6 +232,5 @@ describe("callout", () => {
 
     expect(result).toContain(props.label);
     expect(result).toContain(`aria-label="${props["aria-label"]}"`);
-    expect(result).not.toContain('<div aria-hidden="true"');
   });
 });

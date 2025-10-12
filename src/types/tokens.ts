@@ -56,6 +56,7 @@ export type IconName =
   | "bookmark"
   | "caret"
   | "caret-down"
+  | "caret-right"
   | "cc-by-sa"
   | "contact"
   | "copy"

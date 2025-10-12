@@ -8,12 +8,12 @@ type Props = Omit<ComponentProps<typeof Link>, "href"> & {
   url: string;
 };
 
-const { brand, class: className, url, ...attrs } = Astro.props;
+const { brand, class: className, slot, url, ...attrs } = Astro.props;
 ---
 
 <Link {...attrs} class:list={["branding", className]} href={url}>
-  <Logo aria-hidden="true" class="logo" />
-  <span class="brand">{brand}</span>
+  <Logo aria-hidden="true" />
+  <span>{brand}</span>
 </Link>
 
 <style>
@@ -26,22 +26,22 @@ const { brand, class: className, url, ...attrs } = Astro.props;
     width: fit-content;
     padding: var(--spacing-xs);
     border-radius: var(--border-radii-lg);
+    outline-width: var(--border-size-lg);
     text-align: center;
     text-decoration: none;
 
     &:where(:focus-visible) {
-      outline: var(--border-size-lg) solid var(--color-primary-lighter);
-      outline-offset: calc(var(--border-size-md) * -2);
+      outline-offset: calc(var(--border-size-lg) * -1);
     }
-  }
 
-  .logo {
-    width: auto;
-    height: clamp(3em, 6dvi, 4em);
-  }
+    svg {
+      width: auto;
+      height: 3.75em;
+    }
 
-  .brand {
-    font-size: var(--font-size-2xl);
-    font-weight: var(--font-weight-bold);
+    span {
+      font-size: var(--font-size-2xl);
+      font-weight: var(--font-weight-bold);
+    }
   }
 </style>

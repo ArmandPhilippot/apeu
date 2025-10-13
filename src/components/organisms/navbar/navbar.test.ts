@@ -1,15 +1,75 @@
 import { experimental_AstroContainer as AstroContainer } from "astro/container";
 import type { ComponentProps } from "astro/types";
-import { beforeEach, describe, expect, it } from "vitest";
+import {
+  afterAll,
+  afterEach,
+  beforeAll,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi,
+} from "vitest";
+import {
+  createMockEntries,
+  setupCollectionMocks,
+} from "../../../../tests/helpers/astro-content";
+import { clearEntriesIndexCache } from "../../../lib/astro/collections/indexes";
 import Navbar from "./navbar.astro";
+
+vi.mock("astro:content", async (importOriginal) => {
+  const mod = await importOriginal<typeof import("astro:content")>();
+  return {
+    ...mod,
+    getCollection: vi.fn(() => []),
+    getEntry: vi.fn(),
+  };
+});
+
+vi.mock("../../../utils/constants", async (importOriginal) => {
+  const mod = await importOriginal<typeof import("../../../utils/constants")>();
+  return {
+    ...mod,
+    CONFIG: {
+      ...mod.CONFIG,
+      LANGUAGES: {
+        DEFAULT: "en",
+        AVAILABLE: ["en", "es", "fr"],
+      },
+    },
+    LOCALE_DISPLAY_NAMES: {
+      en: "English",
+    },
+  };
+});
 
 type LocalTestContext = {
   container: AstroContainer;
 };
 
 describe("Navbar", () => {
+  beforeAll(() => {
+      const mockEntries = createMockEntries([
+        { collection: "pages", id: "en/search", data: { title: "Search" } },
+        {
+          collection: "pages",
+          id: "en/recherche",
+          data: { title: "Recherche" },
+        },
+      ]);
+      setupCollectionMocks(mockEntries);
+    });
+
   beforeEach<LocalTestContext>(async (context) => {
     context.container = await AstroContainer.create();
+  });
+
+  afterEach<LocalTestContext>(() => {
+    vi.unstubAllEnvs();
+  });
+
+  afterAll(() => {
+    clearEntriesIndexCache();
   });
 
   it<LocalTestContext>("renders the navbar", async ({ container }) => {

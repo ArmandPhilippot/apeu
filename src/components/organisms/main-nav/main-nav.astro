@@ -9,7 +9,7 @@ import ListItem from "../../atoms/list/list-item.astro";
 import List from "../../atoms/list/list.astro";
 
 type Props = Omit<ComponentProps<typeof List>, "children" | "hideMarker"> & {
-  items: Required<WithIcon<Route>>[];
+  items: WithIcon<Route>[];
 };
 
 const { class: className, items, slot, ...attrs } = Astro.props;

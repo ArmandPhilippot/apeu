@@ -2,13 +2,14 @@
 import type { ComponentProps } from "astro/types";
 import Callout from "../../components/atoms/callout/callout.astro";
 import ContactForm from "../../components/organisms/contact-form/contact-form.astro";
-import PageLayout from "../../components/templates/page-layout/page-layout.astro";
+import PageFrame from "../../components/organisms/page-frame/page-frame.astro";
+import Layout from "../../components/templates/layout/layout.astro";
 import { getWebPageGraph } from "../../lib/schema-dts/graphs/webpage-graph";
 import { getBreadcrumb } from "../../services/breadcrumb";
 import type { QueriedEntry } from "../../services/collections";
 import { useI18n } from "../../services/i18n";
 
-type Props = Partial<ComponentProps<typeof PageLayout>> & {
+type Props = Partial<ComponentProps<typeof Layout>> & {
   entry: QueriedEntry<"pages">;
 };
 
@@ -18,7 +19,7 @@ const {
 } = Astro.props;
 const { translate } = useI18n(page.locale);
 const breadcrumb = await getBreadcrumb({ route: Astro.url.pathname });
-const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
+const graphs: ComponentProps<typeof Layout>["graphs"] = [
   await getWebPageGraph({
     ...page,
     breadcrumb,
@@ -27,22 +28,16 @@ const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
 ];
 ---
 
-<PageLayout
-  breadcrumb={breadcrumb}
-  description={page.description}
-  graphs={graphs}
-  headings={page.headings}
-  seo={page.seo}
-  title={page.title}
-  {...props}
->
-  <Fragment slot="body">
-    {hasContent && <Content />}
-    <noscript>
-      <Callout style="margin-block-end: var(--spacing-md);" type="warning">
-        {translate("no.js.contact.form.text")}
-      </Callout>
-    </noscript>
-    <ContactForm id="contact-page-form" />
-  </Fragment>
-</PageLayout>
+<Layout breadcrumb={breadcrumb} graphs={graphs} seo={page.seo} {...props}>
+  <PageFrame headings={page.headings} title={page.title}>
+    <Fragment slot="body">
+      {hasContent && <Content />}
+      <noscript>
+        <Callout style="margin-block-end: var(--spacing-md);" type="warning">
+          {translate("no.js.contact.form.text")}
+        </Callout>
+      </noscript>
+      <ContactForm id="contact-page-form" />
+    </Fragment>
+  </PageFrame>
+</Layout>

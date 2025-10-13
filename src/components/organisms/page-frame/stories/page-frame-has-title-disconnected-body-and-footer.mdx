@@ -1,0 +1,15 @@
+---
+title: "PageFrame has title, disconnected body and footer"
+wrapInPageFrame: false
+---
+import { components as mdxComponents } from "../../../mdx";
+import PageFrame from "../page-frame.astro";
+
+export const components = mdxComponents;
+
+<PageFrame title={frontmatter.title}>
+  <div slot="disconnected-body">
+    This is the content of a disconnected body.
+  </div>
+  <div slot="footer">Some footer contents.</div>
+</PageFrame>

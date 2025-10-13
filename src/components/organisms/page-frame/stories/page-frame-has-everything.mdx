@@ -1,23 +1,26 @@
 ---
-title: "Page with everything except disconnected body"
+title: "PageFrame has everything"
+wrapInPageFrame: false
 ---
 import { components as mdxComponents } from "../../../mdx";
-import Page from "../page.astro";
+import PageFrame from "../page-frame.astro";
 
 export const components = mdxComponents;
-export const title = "Page with everything except disconnected body";
 export const cover = {
   height: 480,
   src: "https://picsum.photos/640/480",
   width: 640,
 };
-export const toc = [
+export const headings = [
   { depth: 1, slug: "#heading1", text: "Heading 1" },
   { depth: 1, slug: "#heading2", text: "Heading 2" },
 ];
 
-<Page cover={cover} feed="#feed" heading={title} toc={toc}>
+<PageFrame cover={cover} headings={headings} title={frontmatter.title}>
   <div slot="meta">Some meta</div>
   <p slot="body">This is the main content of the page.</p>
+  <div slot="disconnected-body">
+    This is the content of a disconnected body.
+  </div>
   <div slot="footer">Some footer contents.</div>
-</Page>
+</PageFrame>

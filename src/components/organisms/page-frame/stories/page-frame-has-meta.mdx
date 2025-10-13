@@ -1,13 +1,13 @@
 ---
-title: "Page with title, cover, meta, and body"
+title: "PageFrame has meta"
+wrapInPageFrame: false
 ---
 import { components as mdxComponents } from "../../../mdx";
-import Page from "../page.astro";
+import PageFrame from "../page-frame.astro";
 
 export const components = mdxComponents;
-export const title = "Page with title, cover, meta, and body";
 
-<Page heading={title}>
+<PageFrame title={frontmatter.title}>
   <div slot="meta">Some meta</div>
   <p slot="body">This is the main content of the page.</p>
-</Page>
+</PageFrame>

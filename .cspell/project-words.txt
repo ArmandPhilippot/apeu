@@ -6,6 +6,7 @@ bluesky
 canvaskit
 commitlint
 esbuild
+FOUC
 Français
 frontmatter
 globby
@@ -18,6 +19,7 @@ Pageable
 pagefind
 permaslug
 pnpmDedupe
+popovertarget
 rehype
 routability
 shiki

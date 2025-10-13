@@ -1,13 +1,13 @@
 import { experimental_AstroContainer as AstroContainer } from "astro/container";
 import type { ComponentProps } from "astro/types";
 import { beforeEach, describe, expect, it } from "vitest";
-import Page from "./page.astro";
+import PageFrame from "./page-frame.astro";
 
 type LocalTestContext = {
   container: AstroContainer;
 };
 
-describe("Page", () => {
+describe("PageFrame", () => {
   beforeEach<LocalTestContext>(async (context) => {
     context.container = await AstroContainer.create();
   });
@@ -16,9 +16,9 @@ describe("Page", () => {
     /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
     expect.assertions(2);
 
-    const props = {} satisfies ComponentProps<typeof Page>;
+    const props = {} satisfies ComponentProps<typeof PageFrame>;
     const body = "consequatur placeat explicabo";
-    const result = await container.renderToString(Page, {
+    const result = await container.renderToString(PageFrame, {
       props,
       slots: { body },
     });
@@ -27,21 +27,21 @@ describe("Page", () => {
     expect(result).toContain(body);
   });
 
-  it<LocalTestContext>("renders a heading", async ({ container }) => {
+  it<LocalTestContext>("renders a title", async ({ container }) => {
     /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
     expect.assertions(2);
 
     const props = {
-      heading: "unde non eum",
-    } satisfies ComponentProps<typeof Page>;
+      title: "unde non eum",
+    } satisfies ComponentProps<typeof PageFrame>;
     const body = "consequatur placeat explicabo";
-    const result = await container.renderToString(Page, {
+    const result = await container.renderToString(PageFrame, {
       props,
       slots: { body },
     });
 
     expect(result).toContain("</h1>");
-    expect(result).toContain(props.heading);
+    expect(result).toContain(props.title);
   });
 
   it<LocalTestContext>("can render a disconnected body", async ({
@@ -50,10 +50,10 @@ describe("Page", () => {
     expect.assertions(1);
 
     const props = {
-      heading: "unde non eum",
-    } satisfies ComponentProps<typeof Page>;
+      title: "unde non eum",
+    } satisfies ComponentProps<typeof PageFrame>;
     const disconnectedBody = "consequatur placeat explicabo";
-    const result = await container.renderToString(Page, {
+    const result = await container.renderToString(PageFrame, {
       props,
       slots: { "disconnected-body": disconnectedBody },
     });
@@ -70,9 +70,9 @@ describe("Page", () => {
         src: "https://picsum.photos/640/480",
         width: 640,
       },
-      heading: "unde non eum",
-    } satisfies ComponentProps<typeof Page>;
-    const result = await container.renderToString(Page, {
+      title: "unde non eum",
+    } satisfies ComponentProps<typeof PageFrame>;
+    const result = await container.renderToString(PageFrame, {
       props,
     });
 
@@ -86,9 +86,9 @@ describe("Page", () => {
 
     const props = {
       feed: "#perspiciatis-excepturi-repellendus",
-      heading: "unde non eum",
-    } satisfies ComponentProps<typeof Page>;
-    const result = await container.renderToString(Page, {
+      title: "unde non eum",
+    } satisfies ComponentProps<typeof PageFrame>;
+    const result = await container.renderToString(PageFrame, {
       props,
     });
 
@@ -99,10 +99,10 @@ describe("Page", () => {
     expect.assertions(1);
 
     const props = {
-      heading: "unde non eum",
-    } satisfies ComponentProps<typeof Page>;
+      title: "unde non eum",
+    } satisfies ComponentProps<typeof PageFrame>;
     const meta = "quasi numquam explicabo";
-    const result = await container.renderToString(Page, {
+    const result = await container.renderToString(PageFrame, {
       props,
       slots: { meta },
     });
@@ -114,10 +114,10 @@ describe("Page", () => {
     expect.assertions(1);
 
     const props = {
-      heading: "unde non eum",
-    } satisfies ComponentProps<typeof Page>;
+      title: "unde non eum",
+    } satisfies ComponentProps<typeof PageFrame>;
     const footer = "quasi numquam explicabo";
-    const result = await container.renderToString(Page, {
+    const result = await container.renderToString(PageFrame, {
       props,
       slots: { footer },
     });
@@ -132,19 +132,19 @@ describe("Page", () => {
     expect.assertions(4);
 
     const props = {
-      heading: "unde non eum",
-      toc: [
+      headings: [
         { depth: 1, slug: "#heading1", text: "Heading 1" },
         { depth: 1, slug: "#heading2", text: "Heading 2" },
       ] as const,
-    } satisfies ComponentProps<typeof Page>;
-    const result = await container.renderToString(Page, {
+      title: "unde non eum",
+    } satisfies ComponentProps<typeof PageFrame>;
+    const result = await container.renderToString(PageFrame, {
       props,
     });
 
-    expect(result).toContain(props.toc[0].text);
-    expect(result).toContain(props.toc[0].slug);
-    expect(result).toContain(props.toc[1].text);
-    expect(result).toContain(props.toc[1].slug);
+    expect(result).toContain(props.headings[0].text);
+    expect(result).toContain(props.headings[0].slug);
+    expect(result).toContain(props.headings[1].text);
+    expect(result).toContain(props.headings[1].slug);
   });
 });

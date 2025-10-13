@@ -49,16 +49,16 @@ type LocalTestContext = {
 
 describe("Navbar", () => {
   beforeAll(() => {
-      const mockEntries = createMockEntries([
-        { collection: "pages", id: "en/search", data: { title: "Search" } },
-        {
-          collection: "pages",
-          id: "en/recherche",
-          data: { title: "Recherche" },
-        },
-      ]);
-      setupCollectionMocks(mockEntries);
-    });
+    const mockEntries = createMockEntries([
+      { collection: "pages", id: "en/search", data: { title: "Search" } },
+      {
+        collection: "pages",
+        id: "en/recherche",
+        data: { title: "Recherche" },
+      },
+    ]);
+    setupCollectionMocks(mockEntries);
+  });
 
   beforeEach<LocalTestContext>(async (context) => {
     context.container = await AstroContainer.create();

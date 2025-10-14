@@ -119,6 +119,11 @@ if (!isValidTheme) {
       if (isValidSettingsKey(this.dataset.setting)) {
         this.#settingKey = this.dataset.setting;
       }
+
+      this.#updateSelectedOption(settings.get()[this.#settingKey]);
+      this.#unsubscribe = settings.subscribe((currentSettings) => {
+        this.#updateSelectedOption(currentSettings[this.#settingKey]);
+      });
     }
 
     disconnectedCallback() {
@@ -128,6 +133,11 @@ if (!isValidTheme) {
         this.#unsubscribe();
       }
     }
+
+    #updateSelectedOption = (value: string) => {
+      if (!this.#select) return;
+      this.#select.value = value;
+    };
 
     handleThemeChange(e: Event) {
       if (!(e.currentTarget instanceof HTMLSelectElement)) return;
@@ -140,10 +150,8 @@ if (!isValidTheme) {
 
       if (newTheme === null) return;
 
-      if (this.#select) {
-        this.#select.value = newTheme;
-        settings.setKey(this.#settingKey, newTheme);
-      }
+      this.#updateSelectedOption(newTheme);
+      settings.setKey(this.#settingKey, newTheme);
     }
   }
 

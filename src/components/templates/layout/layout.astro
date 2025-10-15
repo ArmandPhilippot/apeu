@@ -1,12 +1,19 @@
 ---
+import { useI18n } from "../../../services/i18n";
+import { useRouting } from "../../../services/routing";
 import "../../../styles/global.css";
 import type { SEO } from "../../../types/data";
+import { CONFIG } from "../../../utils/constants";
+import Head from "./head.astro";
 
 type Props = {
   seo: SEO;
 };
 
 const { seo } = Astro.props;
+const { locale } = useI18n(Astro.currentLocale);
+const { routeById } = await useRouting(locale);
+const isHome = Astro.url.pathname === routeById("home").path;
 ---
 
 <html
@@ -15,13 +22,49 @@ const { seo } = Astro.props;
   lang={Astro.currentLocale}
   style="color-scheme: light;"
 >
-  <head>
-    <meta charset="utf-8" />
-    <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
-    <meta content="width=device-width" name="viewport" />
-    <meta content={Astro.generator} name="generator" />
-    <title>{seo.title}</title>
-  </head>
+  <Head
+    addBrandToTitle={!isHome}
+    brand={CONFIG.BRAND}
+    colorScheme="light dark"
+    seo={seo}
+    themeColor="#214769"
+  >
+    <Fragment slot="blocking">
+      {/* These scripts are intentionally inlined to avoid FOUC. */}
+      <script is:inline>
+        !(function () {
+          const e = localStorage.getItem("apeu-settings:theme"),
+            t = "string" == typeof e ? JSON.parse(e) : void 0,
+            o = window.matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light",
+            c = e && ["dark", "light"].includes(t) ? t : o;
+          (document.documentElement.setAttribute("data-theme", c),
+            (document.documentElement.style.colorScheme = c));
+        })();
+      </script>
+      <script is:inline>
+        !(function () {
+          const e = localStorage.getItem("apeu-settings:shiki"),
+            t = "string" == typeof e ? JSON.parse(e) : void 0,
+            o = document.documentElement.getAttribute("data-theme"),
+            s = window.matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light",
+            c = e && ["dark", "light"].includes(t) ? t : o === "auto" ? s : o;
+          document.documentElement.setAttribute("data-shiki", c);
+        })();
+      </script>
+    </Fragment>
+    <noscript>
+      <style>
+        .js-only {
+          /* stylelint-disable-next-line declaration-no-important */
+          display: none !important;
+        }
+      </style>
+    </noscript>
+  </Head>
   <body>
     <slot />
   </body>

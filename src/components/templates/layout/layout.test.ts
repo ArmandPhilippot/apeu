@@ -120,43 +120,4 @@ describe("Layout", () => {
 
     expect(result).toContain(body);
   });
-
-  it<LocalTestContext>("can render a link to the design system in dev mode", async ({
-    container,
-  }) => {
-    expect.assertions(1);
-
-    vi.stubEnv("MODE", "development");
-
-    const props = {
-      seo: {
-        title: "est et fugiat",
-      },
-    } satisfies ComponentProps<typeof Layout>;
-    const result = await container.renderToString(Layout, {
-      props,
-    });
-
-    expect(result).toContain("/design-system");
-  });
-
-  it<LocalTestContext>("does not render a link to the design system in other modes than dev", async ({
-    container,
-  }) => {
-    expect.assertions(1);
-
-    vi.stubEnv("MODE", "production");
-    vi.stubEnv("DEV", false);
-
-    const props = {
-      seo: {
-        title: "est et fugiat",
-      },
-    } satisfies ComponentProps<typeof Layout>;
-    const result = await container.renderToString(Layout, {
-      props,
-    });
-
-    expect(result).not.toContain("/design-system");
-  });
 });

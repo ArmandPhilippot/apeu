@@ -2,7 +2,7 @@
 import type { StoryLayoutProps } from "../../../lib/astro/integrations/astro-stories";
 import type { SEO } from "../../../types/data";
 import { getStorySeo } from "../../../utils/stories";
-import PageLayout from "../page-layout/page-layout.astro";
+import Layout from "../layout/layout.astro";
 
 type FrontMatter = {
   isStandalone?: boolean | undefined;
@@ -14,8 +14,6 @@ type Props = StoryLayoutProps<FrontMatter>;
 
 const { story } = Astro.props;
 const isStory = story.type === "story";
-const headings = isStory ? story.headings : null;
-const title = isStory ? story.frontmatter.title : story.label;
 const seo = getStorySeo({
   breadcrumb: story.breadcrumb,
   seo: isStory ? story.frontmatter.seo : null,
@@ -27,14 +25,9 @@ const shouldUseLayout = isStory
 
 {
   shouldUseLayout ? (
-    <PageLayout
-      breadcrumb={story.breadcrumb}
-      headings={headings}
-      seo={seo}
-      title={title}
-    >
-      <slot slot="body" />
-    </PageLayout>
+    <Layout seo={seo}>
+      <slot />
+    </Layout>
   ) : (
     <slot />
   )

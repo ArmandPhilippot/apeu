@@ -4,6 +4,7 @@ import { useRouting } from "../../../services/routing";
 import "../../../styles/global.css";
 import type { SEO } from "../../../types/data";
 import { CONFIG } from "../../../utils/constants";
+import ThemeProvider from "../../providers/theme-provider.astro";
 import Head from "./head.astro";
 
 type Props = {
@@ -19,7 +20,7 @@ const isHome = Astro.url.pathname === routeById("home").path;
 <html
   data-shiki="light"
   data-theme="light"
-  lang={Astro.currentLocale}
+  lang={locale}
   style="color-scheme: light;"
 >
   <Head
@@ -65,7 +66,151 @@ const isHome = Astro.url.pathname === routeById("home").path;
       </style>
     </noscript>
   </Head>
-  <body>
-    <slot />
+  <body class="site svg-paper">
+    <ThemeProvider>
+      <header class="site-header">
+        <h1 class="site-branding">{CONFIG.BRAND}</h1>
+        <nav class="site-navbar svg-paper">Navbar</nav>
+      </header>
+      <div class="site-body">
+        <nav class="site-breadcrumb">Breadcrumb</nav>
+        <main class="site-main svg-paper-dark">
+          <slot />
+        </main>
+      </div>
+      <footer class="site-footer">Footer</footer>
+    </ThemeProvider>
   </body>
 </html>
+
+<style>
+  .site {
+    --site-col1-width: minmax(0, 1fr);
+    --spacing-dynamic: clamp(var(--spacing-md), 2.25dvi, var(--spacing-2xl));
+
+    display: grid;
+    grid-template-columns: var(--site-col1-width) minmax(0, 1fr);
+    grid-template-rows:
+      minmax(0, auto) minmax(0, 1fr) minmax(0, auto)
+      minmax(0, auto);
+    min-height: 100dvh;
+
+    @media (--md-or-above) {
+      --site-col1-width: clamp(
+        calc(300 * var(--one-px-in-rem)),
+        21dvi,
+        calc(600 * var(--one-px-in-rem))
+      );
+    }
+  }
+
+  .site-header {
+    grid-column: 1 / -1;
+    grid-row: 1 / -1;
+    display: grid;
+    grid-template-columns: subgrid;
+    grid-template-rows: subgrid;
+
+    @media (--sm-or-above) {
+      grid-row: 1;
+    }
+
+    @media (--md-or-above) {
+      grid-column: 1;
+      grid-row: 1 / 4;
+    }
+  }
+
+  .site-branding {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    place-self: center;
+
+    @media (--sm-or-above) {
+      grid-column: 1;
+      align-self: self-end;
+    }
+  }
+
+  .site-navbar {
+    grid-column: 1 / -1;
+    grid-row: 4;
+    position: sticky;
+    bottom: 0;
+    z-index: 10;
+    border-block-start: var(--border-size-sm) solid var(--color-border);
+    box-shadow: var(--shadow-raised-to-bottom-center);
+
+    @media (--sm-or-above) {
+      grid-column: 2;
+      grid-row: 1;
+      position: relative;
+      border-block-start: none;
+      border-inline-start: var(--border-size-sm) solid var(--color-border);
+      box-shadow: none;
+
+      /* The SVG background is no longer needed. */
+      &::before {
+        display: none;
+      }
+    }
+
+    @media (--md-or-above) {
+      grid-row: 2 / 3;
+      background-color: var(--color-regular-light);
+    }
+  }
+
+  .site-body {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    display: flex;
+    flex-flow: column nowrap;
+
+    @media (--md-or-above) {
+      grid-column: 2;
+      grid-row: 1 / 3;
+      padding-inline-end: var(--spacing-dynamic);
+    }
+  }
+
+  .site-breadcrumb {
+    display: flex;
+    justify-content: center;
+    border-block-start: var(--border-size-sm) solid var(--color-border);
+
+    @media (--md-or-above) {
+      justify-content: start;
+      border-block-start: none;
+    }
+  }
+
+  .site-main {
+    flex: 1;
+    border-block: var(--border-size-sm) solid var(--color-border);
+    box-shadow:
+      inset 0 var(--border-size-md) var(--border-size-md)
+        calc(var(--border-size-md) * -1) var(--color-shadow-inset-dark),
+      inset 0 calc(var(--border-size-md) * -1) var(--border-size-md)
+        calc(var(--border-size-md) * -1) var(--color-shadow-inset-dark);
+
+    @media (--md-or-above) {
+      border-inline: var(--border-size-sm) solid var(--color-border);
+      border-radius: var(--border-radii-md);
+      box-shadow: inset 0 0 var(--border-size-md) var(--border-size-md)
+        var(--color-shadow-inset-dark);
+    }
+  }
+
+  .site-footer {
+    grid-column: 1 / -1;
+    grid-row: 3;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-3xs);
+    padding: var(--spacing-dynamic);
+    font-size: var(--font-size-sm);
+  }
+</style>

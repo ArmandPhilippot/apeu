@@ -2,7 +2,6 @@
 import type { ComponentProps } from "astro/types";
 import { Icon } from "astro-icon/components";
 import logo from "../../assets/logo.svg";
-import Box from "../../components/atoms/box/box.astro";
 import Button from "../../components/atoms/button/button.astro";
 import Heading from "../../components/atoms/heading/heading.astro";
 import { components } from "../../components/mdx";
@@ -11,7 +10,8 @@ import Greetings from "../../components/molecules/greetings/greetings.astro";
 import CollectionCard from "../../components/organisms/collection-card/collection-card.astro";
 import ContactCard from "../../components/organisms/contact-card/contact-card.astro";
 import IdentityCard from "../../components/organisms/identity-card/identity-card.astro";
-import PageLayout from "../../components/templates/page-layout/page-layout.astro";
+import PageFrame from "../../components/organisms/page-frame/page-frame.astro";
+import Layout from "../../components/templates/layout/layout.astro";
 import { getPersonGraph } from "../../lib/schema-dts/graphs/person-graph";
 import { getWebPageGraph } from "../../lib/schema-dts/graphs/webpage-graph";
 import { getWebSiteGraph } from "../../lib/schema-dts/graphs/website-graph";
@@ -23,7 +23,7 @@ import {
 import { useI18n } from "../../services/i18n";
 import { useRouting } from "../../services/routing";
 
-type Props = Partial<ComponentProps<typeof PageLayout>> & {
+type Props = Partial<ComponentProps<typeof Layout>> & {
   entry: QueriedEntry<"pages">;
 };
 
@@ -56,7 +56,7 @@ const { entries: collections } = await queryCollection(
     },
   }
 );
-const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
+const graphs: ComponentProps<typeof Layout>["graphs"] = [
   await getPersonGraph(author, page.locale),
   await getWebSiteGraph({
     description: page.seo.description ?? page.description,
@@ -70,111 +70,86 @@ const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
 ];
 ---
 
-<PageLayout
-  class="homepage"
-  description={page.description}
-  graphs={graphs}
-  seo={page.seo}
-  title={page.title}
-  {...props}
->
-  <Fragment slot="disconnected-body">
-    <Greetings class="homepage-greetings" name={author.name} />
-    {
-      author ? (
-        <Fragment>
-          <IdentityCard
-            as="section"
-            author={{
-              ...author,
-              avatar: author.avatar
-                ? { ...author.avatar, loading: "eager" }
-                : null,
-            }}
-            class="homepage-about"
-            elevation="raised"
-            isSpaced
-          >
-            <Heading slot="heading">
-              {translate("page.home.section.about.heading")}
-            </Heading>
-          </IdentityCard>
-          <ContactCard
-            addRelMe
-            as="section"
-            class="homepage-contact"
-            contactPageRoute={routeById("contact").path}
-            elevation="raised"
-            isSpaced
-            socialMedia={author.socialMedia}
-          >
-            <Heading slot="heading">
-              {translate("page.home.section.contact.heading")}
-            </Heading>
-          </ContactCard>
-        </Fragment>
-      ) : null
-    }
-    {
-      hasContent ? (
-        <Box
-          as="section"
-          class="homepage-content"
-          elevation="raised"
-          isBordered
-          isCentered
-          isPadded
-          isProse
-          isRounded
-          isSpaced
-        >
-          <Content components={components} />
-        </Box>
-      ) : null
-    }
-    {
-      collections?.length ? (
-        <section class="homepage-collections">
-          <Box
-            class="homepage-collections-heading"
-            elevation="raised"
-            isBordered
-            isCentered
-            isPadded
-            isProse
-            isRounded
-          >
-            <Heading as="h2">
-              {translate("page.home.section.collections.heading")}
-            </Heading>
-            <Button
-              aria-label={translate("cta.subscribe.to.website")}
-              as="a"
-              href={`${page.route}feed.xml`}
+<Layout graphs={graphs} seo={page.seo} {...props}>
+  <PageFrame isFullWidth>
+    <div class="homepage" slot="disconnected-body">
+      <Greetings class="homepage-greetings" name={author.name} />
+      {
+        author ? (
+          <Fragment>
+            <IdentityCard
+              as="section"
+              author={{
+                ...author,
+                avatar: author.avatar
+                  ? { ...author.avatar, loading: "eager" }
+                  : null,
+              }}
+              class="homepage-about"
             >
-              <Icon aria-hidden="true" name="feed" />
-              {translate("cta.subscribe")}
-            </Button>
-          </Box>
-          <CardsList
-            isContainer
-            items={collections}
-            sizeMinCols="clamp(26rem,20dvi,30rem)"
-          >
-            {({ meta: _meta, ...collection }: (typeof collections)[number]) => (
-              <CollectionCard
-                class="homepage-collection"
-                elevation="raised"
-                entry={collection}
-                headingLvl="h3"
-              />
-            )}
-          </CardsList>
-        </section>
-      ) : null
-    }
-  </Fragment>
-</PageLayout>
+              <Heading slot="heading">
+                {translate("page.home.section.about.heading")}
+              </Heading>
+            </IdentityCard>
+            <ContactCard
+              addRelMe
+              as="section"
+              class="homepage-contact"
+              contactPageRoute={routeById("contact").path}
+              socialMedia={author.socialMedia}
+            >
+              <Heading slot="heading">
+                {translate("page.home.section.contact.heading")}
+              </Heading>
+            </ContactCard>
+          </Fragment>
+        ) : null
+      }
+      {
+        hasContent ? (
+          <section class="homepage-content">
+            <Content components={components} />
+          </section>
+        ) : null
+      }
+      {
+        collections?.length ? (
+          <section class="homepage-collections">
+            <div class="homepage-collections-heading">
+              <Heading as="h2">
+                {translate("page.home.section.collections.heading")}
+              </Heading>
+              <Button
+                aria-label={translate("cta.subscribe.to.website")}
+                as="a"
+                href={`${page.route}feed.xml`}
+              >
+                <Icon aria-hidden="true" name="feed" />
+                {translate("cta.subscribe")}
+              </Button>
+            </div>
+            <CardsList
+              isContainer
+              items={collections}
+              sizeMinCols="clamp(26rem,20dvi,30rem)"
+            >
+              {({
+                meta: _meta,
+                ...collection
+              }: (typeof collections)[number]) => (
+                <CollectionCard
+                  class="homepage-collection"
+                  entry={collection}
+                  headingLvl="h3"
+                />
+              )}
+            </CardsList>
+          </section>
+        ) : null
+      }
+    </div>
+  </PageFrame>
+</Layout>
 
 <style>
   /* We need to increase specificity because of inconsistencies between
@@ -183,7 +158,7 @@ const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
     @container (width > 55em) {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, auto));
-      gap: var(--spacing-md);
+      gap: var(--spacing-dynamic);
 
       & > :global(*:not(.homepage-greetings)) {
         margin-block: 0;
@@ -223,7 +198,7 @@ const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
   }
 
   .homepage-greetings {
-    margin: clamp(var(--spacing-md), 5dvh, var(--spacing-lg)) auto;
+    margin: var(--spacing-dynamic) auto;
   }
 
   .homepage-about {
@@ -253,12 +228,22 @@ const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
     display: flex;
     align-items: center;
     gap: var(--spacing-sm) var(--spacing-md);
+    background: var(--color-regular);
+    border-block: var(--border-size-sm) solid var(--color-border);
+    border-radius: var(--border-radii-md);
+    box-shadow: var(--shadow-raised-to-top-center);
+
+    @media (--prose) {
+      border-inline: var(--border-size-sm) solid var(--color-border);
+      box-shadow: var(--shadow-raised-to-top-left);
+    }
   }
 
   .homepage-collection {
     /* TODO: avoid magic numbers... */
     @container body (width >= 49.6em) {
       border: var(--border-size-sm) solid var(--color-border);
+      box-shadow: var(--shadow-raised-to-top-left);
     }
   }
 </style>

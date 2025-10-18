@@ -47,6 +47,7 @@ const appleTouchIcon = await getImage({
 });
 const icon = await getImage({ src: faviconSvg, format: "svg" });
 const feeds = await getCollectionsFeeds(locale);
+const seoTitle = `${seo.title}${addBrandToTitle ? ` | ${brand}` : ""}`;
 ---
 
 <head>
@@ -55,7 +56,7 @@ const feeds = await getCollectionsFeeds(locale);
     content="width=device-width, initial-scale=1.0, viewport-fit=cover"
     name="viewport"
   />
-  <title>{seo.title}{addBrandToTitle ? ` | ${brand}` : ""}</title>
+  <title>{seoTitle}</title>
   {
     seo.description ? (
       <meta content={seo.description} name="description" />

@@ -2,12 +2,14 @@
 import type { StoryLayoutProps } from "../../../lib/astro/integrations/astro-stories";
 import type { SEO } from "../../../types/data";
 import { getStorySeo } from "../../../utils/stories";
-import PageLayout from "../page-layout/page-layout.astro";
+import PageFrame from "../../organisms/page-frame/page-frame.astro";
+import Layout from "../layout/layout.astro";
 
 type FrontMatter = {
-  isStandalone?: boolean | undefined;
   seo?: Partial<SEO> | undefined;
   title: string;
+  wrapInLayout?: boolean | undefined;
+  wrapInPageFrame?: boolean | undefined;
 };
 
 type Props = StoryLayoutProps<FrontMatter>;
@@ -20,25 +22,19 @@ const seo = getStorySeo({
   breadcrumb: story.breadcrumb,
   seo: isStory ? story.frontmatter.seo : null,
 });
-const shouldUseLayout = isStory
-  ? story.frontmatter.isStandalone !== true
+const useLayout = isStory ? (story.frontmatter.wrapInLayout ?? true) : true;
+const LayoutComponent = useLayout ? Layout : Fragment;
+const usePageFrame = isStory
+  ? (story.frontmatter.wrapInPageFrame ?? true)
   : true;
+const PageFrameComponent = usePageFrame ? PageFrame : Fragment;
 ---
 
-{
-  shouldUseLayout ? (
-    <PageLayout
-      breadcrumb={story.breadcrumb}
-      headings={headings}
-      seo={seo}
-      title={title}
-    >
-      <slot slot="body" />
-    </PageLayout>
-  ) : (
-    <slot />
-  )
-}
+<LayoutComponent breadcrumb={story.breadcrumb} seo={seo}>
+  <PageFrameComponent headings={headings} title={title}>
+    <slot slot={usePageFrame ? "body" : "default"} />
+  </PageFrameComponent>
+</LayoutComponent>
 
 <style is:global>
   .wrapper {
@@ -51,10 +47,12 @@ const shouldUseLayout = isStory
       auto-fit,
       min(
         calc(100dvw - 2 * var(--spacing-md)),
-        var(--col-size, calc((var(--size-prose) - var(--spacing-2xl)) / 3))
+        var(--col-size, calc((var(--size-prose) - var(--spacing-xl) * 2) / 3))
       )
     );
+    grid-auto-rows: minmax(0, 1fr);
     gap: var(--spacing-md);
+    justify-content: center;
   }
 
   .flex {

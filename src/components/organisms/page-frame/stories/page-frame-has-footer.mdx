@@ -1,13 +1,13 @@
 ---
-title: "Page with title, body and footer"
+title: "PageFrame has footer"
+wrapInPageFrame: false
 ---
 import { components as mdxComponents } from "../../../mdx";
-import Page from "../page.astro";
+import PageFrame from "../page-frame.astro";
 
 export const components = mdxComponents;
-export const title = "Page with title, body and footer";
 
-<Page heading={title}>
+<PageFrame title={frontmatter.title}>
   <p slot="body">This is the main content of the page.</p>
   <div slot="footer">Some footer contents.</div>
-</Page>
+</PageFrame>

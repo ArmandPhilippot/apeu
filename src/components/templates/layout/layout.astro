@@ -1,105 +1,20 @@
 ---
-import type { ComponentProps, HTMLAttributes } from "astro/types";
-import { Font } from "astro:assets";
-import { ClientRouter } from "astro:transitions";
 import { useI18n } from "../../../services/i18n";
 import { useRouting } from "../../../services/routing";
 import "../../../styles/global.css";
+import type { SEO } from "../../../types/data";
 import { CONFIG } from "../../../utils/constants";
-import Copyright from "../../atoms/copyright/copyright.astro";
-import Head from "../../atoms/head/head.astro";
-import License from "../../atoms/license/license.astro";
-import BackToTop from "../../molecules/back-to-top/back-to-top.astro";
-import Branding from "../../molecules/branding/branding.astro";
-import NavItem from "../../molecules/nav-item/nav-item.astro";
-import NavList from "../../molecules/nav-list/nav-list.astro";
-import SkipTo from "../../molecules/skip-to/skip-to.astro";
-import MainNav from "../../organisms/main-nav/main-nav.astro";
-import Navbar from "../../organisms/navbar/navbar.astro";
-import SearchForm from "../../organisms/search-form/search-form.astro";
-import SettingsForm from "../../organisms/settings-form/settings-form.astro";
-import PageTransitionProvider from "../../providers/page-transition-provider.astro";
-import SvgFiltersProvider from "../../providers/svg-filters-provider.astro";
 import ThemeProvider from "../../providers/theme-provider.astro";
-import GlobalThemeInit from "../../utilities/global-theme-init.astro";
-import ShikiThemeInit from "../../utilities/shiki-theme-init.astro";
+import Head from "./head.astro";
 
-type Props = Pick<ComponentProps<typeof Head>, "seo"> &
-  Omit<HTMLAttributes<"div">, "id">;
+type Props = {
+  seo: SEO;
+};
 
-const { class: className, seo, ...attrs } = Astro.props;
-const { locale, translate } = useI18n(Astro.currentLocale);
+const { seo } = Astro.props;
+const { locale } = useI18n(Astro.currentLocale);
 const { routeById } = await useRouting(locale);
-const homeRoute = routeById("home");
-const isHome = Astro.url.pathname === homeRoute.path;
-const mainNav = [
-  {
-    icon: "home",
-    iconSize: 28,
-    label: translate("page.home.title"),
-    path: homeRoute.path,
-  },
-  {
-    icon: "blog",
-    iconSize: 28,
-    label: translate("page.blog.title"),
-    path: routeById("blog").path,
-  },
-  {
-    icon: "guide",
-    iconSize: 28,
-    label: translate("page.guides.title"),
-    path: routeById("guides").path,
-  },
-  {
-    icon: "notepad",
-    iconSize: 28,
-    label: translate("page.notes.title"),
-    path: routeById("notes").path,
-  },
-  {
-    icon: "project",
-    iconSize: 28,
-    label: translate("page.projects.title"),
-    path: routeById("projects").path,
-  },
-  {
-    icon: "bookmark",
-    iconSize: 28,
-    label: translate("page.bookmarks.title"),
-    path: routeById("bookmarks").path,
-  },
-  {
-    icon: "globe",
-    iconSize: 28,
-    label: translate("page.blogroll.title"),
-    path: routeById("blogroll").path,
-  },
-  {
-    icon: "contact",
-    iconSize: 28,
-    label: translate("page.contact.title"),
-    path: routeById("contact").path,
-  },
-] satisfies ComponentProps<typeof NavList>["items"];
-const devOnlyLinks = import.meta.env.DEV
-  ? [{ label: "Design system", path: "/design-system" }]
-  : [];
-const footerLinks = [
-  {
-    label: translate("page.legal.notice.title"),
-    path: routeById("legal-notice").path,
-  },
-  {
-    icon: "feed",
-    iconSize: 17,
-    label: translate("page.feeds.title"),
-    path: routeById("feeds").path,
-  },
-  ...devOnlyLinks,
-] satisfies ComponentProps<typeof NavList>["items"];
-const contentsId = translate("anchor.site.content");
-const topId = translate("anchor.site.top");
+const isHome = Astro.url.pathname === routeById("home").path;
 ---
 
 <html
@@ -115,12 +30,33 @@ const topId = translate("anchor.site.top");
     seo={seo}
     themeColor="#214769"
   >
-    <ClientRouter fallback="swap" />
-    <Font cssVariable="--font-inter" preload />
-    <Font cssVariable="--font-cousine" preload />
-    <slot name="head" />
-    <GlobalThemeInit />
-    <ShikiThemeInit />
+    <Fragment slot="blocking">
+      {/* These scripts are intentionally inlined to avoid FOUC. */}
+      <script is:inline>
+        !(function () {
+          const e = localStorage.getItem("apeu-settings:theme"),
+            t = "string" == typeof e ? JSON.parse(e) : void 0,
+            o = window.matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light",
+            c = e && ["dark", "light"].includes(t) ? t : o;
+          (document.documentElement.setAttribute("data-theme", c),
+            (document.documentElement.style.colorScheme = c));
+        })();
+      </script>
+      <script is:inline>
+        !(function () {
+          const e = localStorage.getItem("apeu-settings:shiki"),
+            t = "string" == typeof e ? JSON.parse(e) : void 0,
+            o = document.documentElement.getAttribute("data-theme"),
+            s = window.matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light",
+            c = e && ["dark", "light"].includes(t) ? t : o === "auto" ? s : o;
+          document.documentElement.setAttribute("data-shiki", c);
+        })();
+      </script>
+    </Fragment>
     <noscript>
       <style>
         .js-only {
@@ -130,193 +66,151 @@ const topId = translate("anchor.site.top");
       </style>
     </noscript>
   </Head>
-  <body class="site svg-filter-paper" id={topId}>
+  <body class="site svg-paper">
     <ThemeProvider>
-      <SvgFiltersProvider>
-        <PageTransitionProvider>
-          <SkipTo anchor={`#${contentsId}`}>
-            {translate("cta.skip.to.content")}
-          </SkipTo>
-          <header class="site-header">
-            <div class="site-branding">
-              <Branding brand={CONFIG.BRAND} url={homeRoute.path} />
-            </div>
-            <Navbar
-              aria-label={translate("nav.label.primary")}
-              class="site-navbar"
-              id="site-navbar"
-            >
-              <MainNav items={mainNav} slot="nav" />
-              <SearchForm
-                id="site-search"
-                isInline
-                queryParam={CONFIG.SEARCH.QUERY_PARAM}
-                resultsPage={routeById("search").path}
-                slot="search"
-              />
-              <SettingsForm
-                altLanguages={seo.languages}
-                id="site-settings"
-                slot="settings"
-              />
-            </Navbar>
-          </header>
-          <div {...attrs} class:list={["site-body", className]} id={contentsId}>
-            <slot />
-          </div>
-          <footer class="site-footer">
-            <Copyright
-              creationYear={CONFIG.CREATION_YEAR}
-              owner={CONFIG.BRAND}
-            />
-            <License />
-            <NavList class="site-footer-nav" isInline items={footerLinks}>
-              {
-                ({ label, path, ...item }) => (
-                  <NavItem {...item} href={path}>
-                    {label}
-                  </NavItem>
-                )
-              }
-            </NavList>
-            <BackToTop
-              anchor={`#${topId}`}
-              class="site-back-to-top"
-              label={translate("cta.back.to.top")}
-            />
-          </footer>
-        </PageTransitionProvider>
-      </SvgFiltersProvider>
+      <header class="site-header">
+        <h1 class="site-branding">{CONFIG.BRAND}</h1>
+        <nav class="site-navbar svg-paper">Navbar</nav>
+      </header>
+      <div class="site-body">
+        <nav class="site-breadcrumb">Breadcrumb</nav>
+        <main class="site-main svg-paper-dark">
+          <slot />
+        </main>
+      </div>
+      <footer class="site-footer">Footer</footer>
     </ThemeProvider>
   </body>
 </html>
 
 <style>
   .site {
-    display: flex;
-    flex-flow: column;
+    --site-col1-width: minmax(0, 1fr);
+    --spacing-dynamic: clamp(var(--spacing-md), 2.25dvi, var(--spacing-2xl));
+
+    display: grid;
+    grid-template-columns: var(--site-col1-width) minmax(0, 1fr);
+    grid-template-rows:
+      minmax(0, auto) minmax(0, 1fr) minmax(0, auto)
+      minmax(0, auto);
     min-height: 100dvh;
 
     @media (--md-or-above) {
-      display: grid;
-      grid-template-columns:
-        minmax(calc(var(--one-px-in-rem) * 200), 22dvw)
-        minmax(0, 1fr);
-      grid-template-rows: minmax(0, 1fr) minmax(0, auto);
+      --site-col1-width: clamp(
+        calc(300 * var(--one-px-in-rem)),
+        21dvi,
+        calc(600 * var(--one-px-in-rem))
+      );
     }
   }
 
   .site-header {
-    display: contents;
+    grid-column: 1 / -1;
+    grid-row: 1 / -1;
+    display: grid;
+    grid-template-columns: subgrid;
+    grid-template-rows: subgrid;
 
     @media (--sm-or-above) {
-      display: flex;
-      flex-flow: row wrap;
-      gap: var(--spacing-md);
-      border-block-end: var(--border-size-sm) solid var(--color-border);
-      box-shadow: var(--shadow-raised-to-top-center);
+      grid-row: 1;
     }
 
     @media (--md-or-above) {
       grid-column: 1;
-      grid-row: 1;
-      flex-flow: column;
-      gap: clamp(var(--spacing-sm), 2dvi, var(--spacing-2xl));
-      padding: clamp(var(--spacing-4xs), 1.5dvi, var(--spacing-2xl))
-        var(--spacing-xs) 0;
-      border-block-end: none;
-      box-shadow: none;
+      grid-row: 1 / 4;
     }
   }
 
-  .site-branding,
-  .site-footer {
-    display: flex;
-    flex-flow: row wrap;
-    align-items: center;
-  }
-
   .site-branding {
-    justify-content: center;
-    padding: var(--spacing-2xs);
-    border-block-end: var(--border-size-sm) solid var(--color-border);
+    grid-column: 1 / -1;
+    grid-row: 1;
+    place-self: center;
 
     @media (--sm-or-above) {
-      border-block: none;
+      grid-column: 1;
+      align-self: self-end;
     }
   }
 
   .site-navbar {
-    order: 1;
+    grid-column: 1 / -1;
+    grid-row: 4;
     position: sticky;
     bottom: 0;
     z-index: 10;
     border-block-start: var(--border-size-sm) solid var(--color-border);
     box-shadow: var(--shadow-raised-to-bottom-center);
 
-    &::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      z-index: -1;
-      clip-path: inset(0);
-      pointer-events: none;
-      user-select: none;
-    }
-
     @media (--sm-or-above) {
-      flex: 1;
-      order: unset;
+      grid-column: 2;
+      grid-row: 1;
       position: relative;
       border-block-start: none;
       border-inline-start: var(--border-size-sm) solid var(--color-border);
       box-shadow: none;
+
+      /* The SVG background is no longer needed. */
+      &::before {
+        display: none;
+      }
     }
 
     @media (--md-or-above) {
-      border-inline-start: none;
+      grid-row: 2 / 3;
+      background-color: var(--color-regular-light);
     }
   }
 
   .site-body {
-    container: body / inline-size;
-    flex: 1;
+    grid-column: 1 / -1;
+    grid-row: 2;
+    display: flex;
+    flex-flow: column nowrap;
 
     @media (--md-or-above) {
       grid-column: 2;
-      grid-row: 1;
+      grid-row: 1 / 3;
+      padding-inline-end: var(--spacing-dynamic);
+    }
+  }
+
+  .site-breadcrumb {
+    display: flex;
+    justify-content: center;
+    border-block-start: var(--border-size-sm) solid var(--color-border);
+
+    @media (--md-or-above) {
+      justify-content: start;
+      border-block-start: none;
+    }
+  }
+
+  .site-main {
+    flex: 1;
+    border-block: var(--border-size-sm) solid var(--color-border);
+    box-shadow:
+      inset 0 var(--border-size-md) var(--border-size-md)
+        calc(var(--border-size-md) * -1) var(--color-shadow-inset-dark),
+      inset 0 calc(var(--border-size-md) * -1) var(--border-size-md)
+        calc(var(--border-size-md) * -1) var(--color-shadow-inset-dark);
+
+    @media (--md-or-above) {
+      border-inline: var(--border-size-sm) solid var(--color-border);
+      border-radius: var(--border-radii-md);
+      box-shadow: inset 0 0 var(--border-size-md) var(--border-size-md)
+        var(--color-shadow-inset-dark);
     }
   }
 
   .site-footer {
+    grid-column: 1 / -1;
+    grid-row: 3;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
     justify-content: center;
-    gap: var(--spacing-4xs);
-    padding: clamp(var(--spacing-md), 4dvh, var(--spacing-lg)) var(--spacing-md);
+    gap: var(--spacing-3xs);
+    padding: var(--spacing-dynamic);
     font-size: var(--font-size-sm);
-
-    @media (--md-or-above) {
-      grid-column: 1 / -1;
-      grid-row: 2;
-    }
-  }
-
-  .site-footer-nav {
-    gap: var(--spacing-xs);
-    margin-inline-start: var(--spacing-xs);
-  }
-
-  .site-back-to-top {
-    position: fixed;
-    /* This not ideal because the navbar height could change but setting a fix
-     * height to the navbar is not ideal neither so I prefer to use a "magic"
-     * number here. */
-    bottom: 6.5rem;
-    right: calc(1dvi + var(--spacing-sm));
-    z-index: 2;
-
-    @media (--sm-or-above) {
-      bottom: calc(1dvi + var(--spacing-md));
-      right: calc(1dvi + var(--spacing-md));
-    }
   }
 </style>

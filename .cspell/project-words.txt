@@ -6,6 +6,7 @@ bluesky
 canvaskit
 commitlint
 esbuild
+FOUC
 Français
 frontmatter
 globby

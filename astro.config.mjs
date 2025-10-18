@@ -8,7 +8,6 @@ import remarkDirective from "remark-directive";
 import { astroStories } from "./src/lib/astro/integrations/astro-stories";
 import { devOnlyPages } from "./src/lib/astro/integrations/dev-only-pages";
 import { pagefind } from "./src/lib/astro/integrations/pagefind";
-import { rehypeCodeBlocks } from "./src/lib/rehype/rehype-code-blocks";
 import { rehypeDisableExplicitJsx } from "./src/lib/rehype/rehype-disable-explicit-jsx";
 import { rehypeImages } from "./src/lib/rehype/rehype-images";
 import { remarkCallouts } from "./src/lib/remark/remark-callouts";
@@ -118,7 +117,7 @@ export default defineConfig({
   ],
   markdown: {
     remarkPlugins: [remarkDirective, remarkCallouts, remarkWordsCount],
-    rehypePlugins: [rehypeDisableExplicitJsx, rehypeCodeBlocks, rehypeImages],
+    rehypePlugins: [rehypeDisableExplicitJsx, rehypeImages],
     shikiConfig: {
       theme: shikiTheme,
     },

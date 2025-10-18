@@ -1,19 +1,9 @@
 ---
 import type { ComponentProps } from "astro/types";
-import { Icon } from "astro-icon/components";
-import Button from "../../components/atoms/button/button.astro";
-import ListItem from "../../components/atoms/list/list-item.astro";
-import List from "../../components/atoms/list/list.astro";
-import Link from "../../components/mdx/link.astro";
-import PageLayout from "../../components/templates/page-layout/page-layout.astro";
-import { getWebPageGraph } from "../../lib/schema-dts/graphs/webpage-graph";
-import { getBreadcrumb } from "../../services/breadcrumb";
+import Layout from "../../components/templates/layout/layout.astro";
 import type { QueriedEntry } from "../../services/collections";
-import { getCollectionsFeeds } from "../../services/feeds";
-import { useI18n } from "../../services/i18n";
-import { useRouting } from "../../services/routing";
 
-type Props = Partial<ComponentProps<typeof PageLayout>> & {
+type Props = Partial<ComponentProps<typeof Layout>> & {
   entry: QueriedEntry<"pages">;
 };
 
@@ -21,42 +11,6 @@ const {
   entry: { Content, hasContent, ...page },
   ...props
 } = Astro.props;
-const { translate } = useI18n(page.locale);
-const { routeById } = await useRouting(page.locale);
-const feeds = await getCollectionsFeeds(page.locale);
-const breadcrumb = await getBreadcrumb({ route: Astro.url.pathname });
-const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
-  await getWebPageGraph({ ...page, breadcrumb }),
-];
 ---
 
-<PageLayout
-  breadcrumb={breadcrumb}
-  description={page.description}
-  graphs={graphs}
-  headings={page.headings}
-  seo={page.seo}
-  title={page.title}
-  {...props}
->
-  <Fragment slot="body">
-    {hasContent && <Content />}
-    <p>{translate("page.feeds.global.feed.introduction")}</p>
-    <p>
-      <Button as="a" href={`${routeById("home").path}feed.xml`}>
-        <Icon aria-hidden="true" name="feed" />
-        {translate("cta.subscribe.to.website")}
-      </Button>
-    </p>
-    <p>{translate("page.feeds.individual.feeds.introduction")}</p>
-    <List>
-      {
-        feeds?.map((feed) => (
-          <ListItem>
-            <Link href={feed.path}>{feed.label}</Link>
-          </ListItem>
-        ))
-      }
-    </List>
-  </Fragment>
-</PageLayout>
+<Layout seo={page.seo} {...props}>FeedsView</Layout>

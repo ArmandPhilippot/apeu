@@ -1,0 +1,98 @@
+---
+import type { ComponentProps } from "astro/types";
+import { Picture as AstroPicture, getImage } from "astro:assets";
+import Link from "../link/link.astro";
+
+/* Without Pick, Typescript gives me an error when using the component. Not
+ * sure which property is conflicting with exactOptionalPropertyTypes... */
+type PictureProps = Pick<
+  ComponentProps<typeof AstroPicture>,
+  | "alt"
+  | "class"
+  | "class:list"
+  | "decoding"
+  | "densities"
+  | "fit"
+  | "format"
+  | "formats"
+  | "layout"
+  | "loading"
+  | "pictureAttributes"
+  | "position"
+  | "quality"
+  | "src"
+  | "style"
+  | "widths"
+>;
+
+type Props = PictureProps & {
+  /**
+   * Should only be used with Remark/Rehype. It is an internal helper to wrap
+   * images with a link pointing to the same file.
+   *
+   * @see src/lib/rehype/rehype-images.ts
+   */
+  "data-clickable"?: `${boolean}` | null | undefined;
+  height?: number | undefined;
+  inferSize?: boolean | null | undefined;
+  width?: number | undefined;
+};
+
+const {
+  alt,
+  "data-clickable": isClickable,
+  densities,
+  format,
+  formats = ["avif", "webp"],
+  height,
+  inferSize,
+  pictureAttributes,
+  quality,
+  src,
+  width,
+  widths,
+  ...attrs
+} = Astro.props;
+
+const img = await getImage({
+  densities,
+  format,
+  height,
+  ...(inferSize ? { inferSize } : {}),
+  quality,
+  src,
+  width,
+  widths,
+});
+const mergedAttrs = { ...img.attributes, ...attrs };
+const Wrapper = isClickable ? Link : Fragment;
+/* With `class:list` it seems the `picture` class is overridden... */
+const pictureClass = pictureAttributes?.class
+  ? `picture ${pictureAttributes.class}`
+  : "picture";
+---
+
+<Wrapper href={img.src}>
+  {/* @ts-expect-error ts(2375) -- Not sure where the conflict comes from... */}
+  <AstroPicture
+    {...mergedAttrs}
+    alt={alt}
+    formats={formats}
+    pictureAttributes={{
+      ...pictureAttributes,
+      class: pictureClass,
+    }}
+    src={img.src}
+  />
+</Wrapper>
+
+<style>
+  img {
+    display: block;
+    max-width: 100%;
+  }
+
+  :global(:where([data-theme="dark"])) .picture:where(:not(:active)) {
+    filter: brightness(0.9) contrast(1.025);
+  }
+</style>

@@ -4,13 +4,14 @@
   --font-weight-regular: 400;
   --font-weight-bold: 600;
   --line-height: 1.618;
+  --font-size-base: 16;
   --font-size-ratio: 1.125;
   --font-size-xs: calc(var(--font-size-md) / pow(var(--font-size-ratio), 2));
   --font-size-sm: calc(var(--font-size-md) / var(--font-size-ratio));
   --font-size-md: clamp(
-    calc(var(--one-px-in-rem) * 16),
-    calc(calc(var(--one-px-in-rem) * 16) + 0.15dvw),
-    calc(var(--one-px-in-rem) * 16 * 2)
+    calc(var(--one-px-in-rem) * var(--font-size-base)),
+    calc(calc(var(--one-px-in-rem) * var(--font-size-base)) + 0.15dvw),
+    calc(var(--one-px-in-rem) * var(--font-size-base) * 2)
   );
   --font-size-lg: calc(var(--font-size-md) * var(--font-size-ratio));
   --font-size-xl: calc(var(--font-size-md) * pow(var(--font-size-ratio), 2));

@@ -1,34 +1,35 @@
 <svg
+  width="100"
+  height="100"
+  viewBox="0 0 100 100"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <defs>
+    <filter color-interpolation-filters="sRGB" id='light-paper-filter'>
+      <feTurbulence
+        baseFrequency="0.015"
+        numOctaves="7"
+        result="noise"
+        seed="8"
+        stitchTiles="stitch"
+        type="fractalNoise"
+      />
+      <feDiffuseLighting
+        diffuseConstant="1.05"
+        in="noise"
+        lighting-color='hsl(216deg 22% 98%)'
+        surfaceScale="1.15"
+      >
+        <feDistantLight azimuth="80" elevation="72" />
+      </feDiffuseLighting>
+    </filter>
+  </defs>
+  <rect
+    filter="url(#light-paper-filter)"
+    x="0"
+    y="0"
     width="100"
     height="100"
-    xmlns="http://www.w3.org/2000/svg">
-    <defs>
-        <filter
-            color-interpolation-filters="sRGB"
-            id='light-paper-filter'>
-            <feTurbulence
-                baseFrequency="0.02"
-                numOctaves="10"
-                result="noise"
-                seed="5"
-                stitchTiles="stitch"
-                type="fractalNoise" />
-            <feDiffuseLighting
-                diffuseConstant="1.1"
-                lighting-color='hsl(200deg 22% 98%)'
-                in="noise"
-                surfaceScale="0.600">
-                <feDistantLight
-                    azimuth="80"
-                    elevation="65" />
-            </feDiffuseLighting>
-        </filter>
-    </defs>
-    <rect
-        filter="url(#light-paper-filter)"
-        x="0"
-        y="0"
-        width="100"
-        height="100"
-        id="light-paper" />
+    id="light-paper"
+  />
 </svg>

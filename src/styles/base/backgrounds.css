@@ -1,0 +1,43 @@
+.paper,
+.paper-dark {
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    user-select: none;
+  }
+}
+
+.paper::before {
+  background: var(--color-regular);
+}
+
+.paper-dark::before {
+  background: var(--color-regular-dark);
+}
+
+:where(:root:not([data-theme="dark"])) {
+  .paper::before {
+    background-image: url("../../assets/paper-light.svg");
+  }
+
+  .paper-dark::before {
+    background-image: url("../../assets/paper-light.svg");
+    filter: brightness(.97) contrast(99%) saturate(105%);
+  }
+}
+
+:where(:root[data-theme="dark"]) {
+  .paper::before {
+    background-image: url("../../assets/paper-dark.svg");
+  }
+
+  .paper-dark::before {
+    background-image: url("../../assets/paper-dark.svg");
+    filter: brightness(0.85) contrast(103%) hue-rotate(-2deg) saturate(104%);
+  }
+}

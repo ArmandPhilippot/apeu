@@ -109,7 +109,7 @@ samp {
 
 :where(:not(pre)) > code {
   padding: var(--spacing-5xs) var(--spacing-3xs);
-  background: var(--color-regular-darker);
+  background: var(--color-regular-dark);
   border: var(--border-size-sm) solid var(--color-border);
 }
 
@@ -131,7 +131,7 @@ samp {
   &:has(samp) {
     padding: var(--spacing-4xs) var(--spacing-2xs);
     background: var(--color-regular-darker);
-    border: var(--border-size-sm) solid var(--color-border-light);
+    border: var(--border-size-sm) solid var(--color-border);
     box-shadow: inset 0 calc(var(--border-size-sm) * -1) var(--border-size-md) 0
       var(--color-muted-darker);
     font-style: italic;
@@ -141,7 +141,7 @@ samp {
 :where(:not(kbd)) > samp {
   padding: var(--spacing-5xs) var(--spacing-3xs);
   background: var(--color-regular-lighter);
-  border: var(--border-size-sm) solid var(--color-border-light);
+  border: var(--border-size-sm) solid var(--color-border);
   font-style: italic;
 
   &:not(:has(kbd)) {

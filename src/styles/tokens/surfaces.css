@@ -1,0 +1,147 @@
+:root {
+  --color-critical: var(--color-red);
+  --color-critical-darker: var(--color-red-darker);
+  --color-critical-dark: var(--color-red-dark);
+  --color-critical-light: var(--color-red-light);
+  --color-critical-lighter: var(--color-red-lighter);
+  --color-on-critical: var(--color-regular);
+  --color-critical-high: var(--color-red-high);
+  --color-on-critical-high: var(--color-critical-low);
+  --color-critical-low: var(--color-red-low);
+  --color-on-critical-low: var(--color-critical-high);
+  --color-discovery: var(--color-purple);
+  --color-discovery-darker: var(--color-purple-darker);
+  --color-discovery-dark: var(--color-purple-dark);
+  --color-discovery-light: var(--color-purple-light);
+  --color-discovery-lighter: var(--color-purple-lighter);
+  --color-on-discovery: var(--color-regular);
+  --color-discovery-high: var(--color-purple-high);
+  --color-on-discovery-high: var(--color-discovery-low);
+  --color-discovery-low: var(--color-purple-low);
+  --color-on-discovery-low: var(--color-discovery-high);
+  --color-idea: var(--color-yellow);
+  --color-idea-darker: var(--color-yellow-darker);
+  --color-idea-dark: var(--color-yellow-dark);
+  --color-idea-light: var(--color-yellow-light);
+  --color-idea-lighter: var(--color-yellow-lighter);
+  --color-on-idea: var(--color-regular);
+  --color-idea-high: var(--color-yellow-high);
+  --color-on-idea-high: var(--color-idea-low);
+  --color-idea-low: var(--color-yellow-low);
+  --color-on-idea-low: var(--color-idea-high);
+  --color-info: var(--color-blue);
+  --color-info-darker: var(--color-blue-darker);
+  --color-info-dark: var(--color-blue-dark);
+  --color-info-light: var(--color-blue-light);
+  --color-info-lighter: var(--color-blue-lighter);
+  --color-on-info: var(--color-regular);
+  --color-info-high: var(--color-blue-high);
+  --color-on-info-high: var(--color-info-low);
+  --color-info-low: var(--color-blue-low);
+  --color-on-info-low: var(--color-info-high);
+  --color-muted: var(--color-grey);
+  --color-muted-darker: var(--color-grey-darker);
+  --color-muted-dark: var(--color-grey-dark);
+  --color-muted-light: var(--color-grey-light);
+  --color-muted-lighter: var(--color-grey-lighter);
+  --color-muted-high: var(--color-grey-high);
+  --color-on-muted-high: var(--color-muted-low);
+  --color-muted-low: var(--color-grey-low);
+  --color-on-muted-low: var(--color-muted-high);
+  --color-primary: var(--color-blue);
+  --color-primary-darker: var(--color-blue-darker);
+  --color-primary-dark: var(--color-blue-dark);
+  --color-primary-light: var(--color-blue-light);
+  --color-primary-lighter: var(--color-blue-lighter);
+  --color-on-primary: var(--color-regular);
+  --color-primary-high: var(--color-blue-high);
+  --color-on-primary-high: var(--color-primary-low);
+  --color-primary-low: var(--color-blue-low);
+  --color-on-primary-low: var(--color-primary-high);
+  --color-success: var(--color-green);
+  --color-success-darker: var(--color-green-darker);
+  --color-success-dark: var(--color-green-dark);
+  --color-success-light: var(--color-green-light);
+  --color-success-lighter: var(--color-green-lighter);
+  --color-on-success: var(--color-regular);
+  --color-success-high: var(--color-green-high);
+  --color-on-success-high: var(--color-success-low);
+  --color-success-low: var(--color-green-low);
+  --color-on-success-low: var(--color-success-high);
+  --color-warning: var(--color-orange);
+  --color-warning-darker: var(--color-orange-darker);
+  --color-warning-dark: var(--color-orange-dark);
+  --color-warning-light: var(--color-orange-light);
+  --color-warning-lighter: var(--color-orange-lighter);
+  --color-on-warning: var(--color-regular);
+  --color-warning-high: var(--color-orange-high);
+  --color-on-warning-high: var(--color-warning-low);
+  --color-warning-low: var(--color-orange-low);
+  --color-on-warning-low: var(--color-warning-high);
+
+  &[data-theme="dark"] {
+    --color-border: var(--color-grey-lighter);
+    --color-on-muted: var(--color-white);
+    --color-regular-darker: var(--color-black);
+    --color-regular-dark: var(--color-grey-darker);
+    --color-regular: var(--color-grey-dark);
+    --color-regular-light: var(--color-grey);
+    --color-regular-lighter: var(--color-grey-light);
+    --color-on-regular: var(--color-white);
+    --color-shadow: oklch(from var(--color-black) 17% c h);
+    --color-shadow-inset: oklch(from var(--color-shadow) l c h / 70%);
+    --color-shadow-inset-dark: oklch(from var(--color-shadow) l c h / 90%);
+  }
+
+  &[data-theme="light"] {
+    --color-border: var(--color-grey-darker);
+    --color-on-muted: var(--color-black);
+    --color-regular-darker: var(--color-grey-dark);
+    --color-regular-dark: var(--color-grey);
+    --color-regular: var(--color-grey-light);
+    --color-regular-light: var(--color-grey-lighter);
+    --color-regular-lighter: var(--color-white);
+    --color-on-regular: var(--color-black);
+    --color-shadow: oklch(from var(--color-black) 80% c h);
+    --color-shadow-inset: oklch(from var(--color-shadow) l c h / 30%);
+    --color-shadow-inset-dark: oklch(from var(--color-shadow) l c h / 50%);
+  }
+}
+
+:root[data-shiki] pre {
+  --color-shiki-line-added: var(--color-green-low);
+  --color-shiki-on-line-added: var(--color-green-darker);
+  --color-shiki-line-removed: var(--color-red-low);
+  --color-shiki-on-line-removed: var(--color-red-darker);
+  --color-shiki-gutter-border: var(--color-grey);
+  --color-shiki-token-attribute: var(--color-purple);
+  --color-shiki-token-comment: var(--color-grey-high);
+  --color-shiki-token-constant: var(--color-yellow);
+  --color-shiki-token-function: var(--color-purple);
+  --color-shiki-token-invalid: var(--color-red);
+  --color-shiki-token-keyword: var(--color-orange);
+  --color-shiki-token-link: var(--color-yellow);
+  --color-shiki-token-numeric: var(--color-yellow);
+  --color-shiki-token-property: var(--color-cyan);
+  --color-shiki-token-property-vendored: var(--color-cyan-light);
+  --color-shiki-token-regex: var(--color-pink);
+  --color-shiki-token-string: var(--color-green);
+  --color-shiki-token-support: var(--color-pink);
+  --color-shiki-token-tag: var(--color-cyan);
+  --color-shiki-token-type: var(--color-yellow);
+  --color-shiki-token-variable: var(--color-blue);
+}
+
+:root[data-shiki="dark"] pre {
+  --color-shiki-background: var(--color-black);
+  --color-shiki-on-background: var(--color-white);
+  --color-shiki-gutter: var(--color-black-dark);
+  --color-shiki-on-gutter: var(--color-grey-high);
+}
+
+:root[data-shiki="light"] pre {
+  --color-shiki-background: var(--color-white);
+  --color-shiki-on-background: var(--color-black);
+  --color-shiki-gutter: var(--color-white-dark);
+  --color-shiki-on-gutter: var(--color-grey-high);
+}

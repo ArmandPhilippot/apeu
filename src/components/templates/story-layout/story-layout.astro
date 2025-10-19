@@ -2,6 +2,7 @@
 import type { StoryLayoutProps } from "../../../lib/astro/integrations/astro-stories";
 import type { SEO } from "../../../types/data";
 import { getStorySeo } from "../../../utils/stories";
+import Page from "../../organisms/page/page.astro";
 import Layout from "../layout/layout.astro";
 
 type FrontMatter = {
@@ -14,6 +15,8 @@ type Props = StoryLayoutProps<FrontMatter>;
 
 const { story } = Astro.props;
 const isStory = story.type === "story";
+const headings = isStory ? story.headings : null;
+const title = isStory ? story.frontmatter.title : story.label;
 const seo = getStorySeo({
   breadcrumb: story.breadcrumb,
   seo: isStory ? story.frontmatter.seo : null,
@@ -26,7 +29,9 @@ const shouldUseLayout = isStory
 {
   shouldUseLayout ? (
     <Layout seo={seo}>
-      <slot />
+      <Page headings={headings} title={title}>
+        <slot />
+      </Page>
     </Layout>
   ) : (
     <slot />
@@ -44,7 +49,7 @@ const shouldUseLayout = isStory
       auto-fit,
       min(
         calc(100dvw - 2 * var(--spacing-md)),
-        var(--col-size, calc((var(--size-prose) - var(--spacing-2xl)) / 3))
+        var(--col-size, calc(var(--size-prose) / 3.25))
       )
     );
     gap: var(--spacing-md);

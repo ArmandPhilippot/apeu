@@ -1,0 +1,51 @@
+---
+title: "CodePreview"
+---
+
+import logo from "../../../assets/logo.svg";
+import { components as mdxComponents } from "../../mdx";
+import CodePreview from "./code-preview.astro";
+
+export const components = mdxComponents;
+
+## Introduction
+
+<CodePreview
+  code={`import CodePreview from "./components/molecules/code-preview/code-preview.astro"`}
+  label="How to import"
+  lang="ts"
+/>
+
+## Example
+
+### With a code sample only
+
+For an example without preview, see above.
+
+### With a preview only
+
+<CodePreview label="Using only a preview" lang="astro">
+  The preview can be manually added here.
+</CodePreview>
+
+### With code sample and a preview
+
+<CodePreview
+  code={`<CodePreview
+    code="The code to preview"
+    label="Preview of the rendered CodePreview"
+    lang="astro"
+>
+    The preview can be manually added here.
+</CodePreview>`}
+  label="Using a code sample with a preview"
+  lang="astro"
+>
+  <CodePreview
+    code="The code to preview"
+    label="Preview of the rendered CodePreview"
+    lang="astro"
+  >
+    The preview can be manually added here.
+  </CodePreview>
+</CodePreview>

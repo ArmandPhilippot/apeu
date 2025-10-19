@@ -1,0 +1,20 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+type Props = HTMLAttributes<"a"> & {
+  isDownload?: boolean | null | undefined;
+  isExternal?: boolean | null | undefined;
+};
+
+const {
+  isDownload = false,
+  isExternal = false,
+  rel = "",
+  slot,
+  ...attrs
+} = Astro.props;
+const shouldAddExternal = isExternal && !rel?.includes("external");
+const linkRel = shouldAddExternal ? `external ${rel}`.trim() : rel;
+---
+
+<a {...attrs} data-download={isDownload} rel={linkRel}><slot /></a>

@@ -1,0 +1,116 @@
+---
+title: "Link"
+---
+
+import { components as mdxComponents } from "../../mdx";
+import CodePreview from "../../molecules/code-preview/code-preview.astro";
+import Link from "./link.astro";
+
+export const components = mdxComponents;
+
+## Introduction
+
+A link can be used as internal or external navigation. It can provide extra information such as the target language or if this is an external or download link.
+
+<CodePreview
+  code={`import Link from "./components/atoms/link/link.astro"`}
+  label="How to import"
+  lang="ts"
+/>
+
+<CodePreview
+  code={`<Link href="/target">Text used as anchor</Link>`}
+  label="Basic use"
+  lang="astro"
+>
+  <Link href="/target">Text used as anchor</Link>
+</CodePreview>
+
+## Options
+
+### `hreflang`
+
+Use this to define the target language and to visually show that information.
+
+<CodePreview
+  code={`<Link href="/destination" hreflang="fr">Text used as anchor</Link>`}
+  label="Defining a language"
+  lang="astro"
+>
+  <Link href="/destination" hreflang="fr">Text used as anchor</Link>
+</CodePreview>
+
+### `isExternal`
+
+Use this to visually show that the following the link would lead to an external website.
+
+<CodePreview
+  code={`<Link href="/target" isExternal>Text used as anchor</Link>`}
+  label="Using an external link"
+  lang="astro"
+>
+  <Link href="/target" isExternal>Text used as anchor</Link>
+</CodePreview>
+
+### `isDownload`
+
+Use this to visually show that the following the link targets a file that can be downloaded.
+
+<CodePreview
+  code={`<Link href="/target.pdf" isDownload>Text used as anchor</Link>`}
+  label="Using a download link"
+  lang="astro"
+>
+  <Link href="/target.pdf" isDownload>Text used as anchor</Link>
+</CodePreview>
+
+### Mixing options
+
+Sometimes you might need to mix the previous options to represent an external link in French or an external download link for example.
+
+<CodePreview
+  code={`<Link href="/destination.pdf" hreflang="fr" isDownload>Text used as anchor</Link>
+<br />
+<Link href="/destination" hreflang="fr" isExternal>Text used as anchor</Link>
+<br />
+<Link href="/target.pdf" isDownload isExternal>Text used as anchor</Link>
+<br />
+<Link href="/destination.pdf" hreflang="fr" isDownload isExternal>Text used as anchor</Link>`}
+  label="Using multiple options"
+  lang="astro"
+>
+  <Link href="/destination.pdf" hreflang="fr" isDownload>Text used as anchor</Link>
+  <br />
+  <Link href="/destination" hreflang="fr" isExternal>Text used as anchor</Link>
+  <br />
+  <Link href="/target.pdf" isDownload isExternal>Text used as anchor</Link>
+  <br />
+  <Link href="/destination.pdf" hreflang="fr" isDownload isExternal>Text used as anchor</Link>
+</CodePreview>
+
+## Wrapping an image in a link
+
+When creating a gallery, it is common to wrap images with a link. This component also supports this.
+
+<CodePreview
+  code={`<Link href="/target"><img alt="" src="https://picsum.photos/640/480" /></Link>`}
+  label="Using an image inside a link"
+  lang="astro"
+>
+  <Link href="/target">
+    <img alt="" src="https://picsum.photos/640/480" />
+  </Link>
+</CodePreview>
+
+## HTML spacing handling
+
+When used at the beginning or at the end of a sentence, a link should not display an extra space before or after.
+
+<CodePreview label="No extra spaces">
+  <p>
+    <Link href="#destination">A link</Link> at the beginning of a sentence.
+  </p>
+  <p>
+    A sentence ending with <Link href="#destination">a link</Link>.
+  </p>
+</CodePreview>

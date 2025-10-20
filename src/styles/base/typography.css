@@ -259,3 +259,12 @@ table {
     }
   }
 }
+
+*:is(h2, h3, h4, h5, h6, p, figure) + *:is(h2, h3, h4, h5, h6, p, figure) {
+  margin-block: var(--spacing-md);
+}
+
+/* Browsers default quotes do not use a space after/before French quotes which is a mistake, so we need custom styles. */
+:root:lang(fr) { quotes: "« " " »" "‹ " " ›" }
+
+:root:lang(en) { quotes: "“" "”" "‘" "’" }

@@ -35,7 +35,7 @@ if (isExternal && kind === "primary") {
 
 <Tag
   {...attrs}
-  class:list={["btn", className]}
+  class:list={[className, "btn"]}
   {...isExternal && { "data-external": true }}
   data-type={kind}><slot /></Tag
 >

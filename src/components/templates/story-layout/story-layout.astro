@@ -6,9 +6,10 @@ import Page from "../../organisms/page/page.astro";
 import Layout from "../layout/layout.astro";
 
 type FrontMatter = {
-  isStandalone?: boolean | undefined;
   seo?: Partial<SEO> | undefined;
   title: string;
+  wrapInLayout?: boolean | undefined;
+  wrapInPage?: boolean | undefined;
 };
 
 type Props = StoryLayoutProps<FrontMatter>;
@@ -21,22 +22,17 @@ const seo = getStorySeo({
   breadcrumb: story.breadcrumb,
   seo: isStory ? story.frontmatter.seo : null,
 });
-const shouldUseLayout = isStory
-  ? story.frontmatter.isStandalone !== true
-  : true;
+const useLayout = isStory ? (story.frontmatter.wrapInLayout ?? true) : true;
+const LayoutComponent = useLayout ? Layout : Fragment;
+const usePage = isStory ? (story.frontmatter.wrapInPage ?? true) : true;
+const PageComponent = usePage ? Page : Fragment;
 ---
 
-{
-  shouldUseLayout ? (
-    <Layout seo={seo}>
-      <Page headings={headings} title={title}>
-        <slot />
-      </Page>
-    </Layout>
-  ) : (
+<LayoutComponent breadcrumb={story.breadcrumb} seo={seo}>
+  <PageComponent headings={headings} title={title}>
     <slot />
-  )
-}
+  </PageComponent>
+</LayoutComponent>
 
 <style is:global>
   .wrapper {

@@ -1,6 +1,8 @@
 ---
 import "@pagefind/default-ui/css/ui.css";
 import type { ComponentProps } from "astro/types";
+import { components } from "../../components/mdx";
+import Page from "../../components/organisms/page/page.astro";
 import Layout from "../../components/templates/layout/layout.astro";
 import type { QueriedEntry } from "../../services/collections";
 
@@ -14,4 +16,8 @@ const {
 } = Astro.props;
 ---
 
-<Layout seo={page.seo} {...props}>SearchView</Layout>
+<Layout seo={page.seo} {...props}>
+  <Page headings={page.headings} title={page.title}>
+    {hasContent && <Content components={components} />}
+  </Page>
+</Layout>

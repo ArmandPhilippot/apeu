@@ -1,6 +1,8 @@
 ---
-import type { Page } from "astro";
+import type { Page as AstroPage } from "astro";
 import type { ComponentProps } from "astro/types";
+import { components } from "../../components/mdx";
+import Page from "../../components/organisms/page/page.astro";
 import Layout from "../../components/templates/layout/layout.astro";
 import type {
   EnrichedPage,
@@ -10,7 +12,7 @@ import type {
 type Props = Partial<ComponentProps<typeof Layout>> & {
   entry: EnrichedPage<ListingPageCollection, "preview">;
   pagination: Pick<
-    Page<"index.pages" | "pages">,
+    AstroPage<"index.pages" | "pages">,
     "currentPage" | "end" | "lastPage" | "size" | "start" | "total"
   >;
 };
@@ -22,4 +24,8 @@ const {
 } = Astro.props;
 ---
 
-<Layout seo={page.seo} {...props}>CollectionListingView</Layout>
+<Layout seo={page.seo} {...props}>
+  <Page headings={page.headings} title={page.title}>
+    {hasContent && <Content components={components} />}
+  </Page>
+</Layout>

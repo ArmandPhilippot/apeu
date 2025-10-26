@@ -6,7 +6,7 @@ type Props = HTMLAttributes<"figure">;
 const { class: className, slot, ...attrs } = Astro.props;
 ---
 
-<figure {...attrs} class:list={["blockquote", className]}>
+<figure {...attrs} class:list={[className, "blockquote"]}>
   <blockquote class="blockquote-quote"><slot /></blockquote>
   {
     Astro.slots.has("caption") ? (

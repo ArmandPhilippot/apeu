@@ -78,7 +78,7 @@ describe("StoryLayout", () => {
     expect(result).toContain(children);
   });
 
-  it<LocalTestContext>("can define a story as standalone", async ({
+  it<LocalTestContext>("can define a story without layout", async ({
     container,
   }) => {
     // eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory.
@@ -87,8 +87,11 @@ describe("StoryLayout", () => {
     const story = {
       breadcrumb: [],
       frontmatter: {
+        seo: {
+          title: "My SEO title for this story",
+        },
         title: "First story",
-        isStandalone: true,
+        wrapInLayout: false,
       },
       headings: [],
       label: "My awesome story",
@@ -101,7 +104,38 @@ describe("StoryLayout", () => {
       slots: { default: children },
     });
 
-    expect(result).not.toContain("<title>My awesome story</title>");
+    expect(result).not.toContain("<title>My SEO title for this story</title>");
+    expect(result).toContain("First story");
+    expect(result).toContain(children);
+  });
+
+  it<LocalTestContext>("can define a story without page component", async ({
+    container,
+  }) => {
+    // eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory.
+    expect.assertions(3);
+
+    const story = {
+      breadcrumb: [],
+      frontmatter: {
+        seo: {
+          title: "My SEO title for this story",
+        },
+        title: "First story",
+        wrapInPage: false,
+      },
+      headings: [],
+      label: "My awesome story",
+      route: "/stories/my-awesome-story",
+      type: "story",
+    } satisfies ComponentProps<typeof StoryLayout>["story"];
+    const children = "dolor voluptatem tenetur";
+    const result = await container.renderToString(StoryLayout, {
+      props: { story },
+      slots: { default: children },
+    });
+
+    expect(result).toContain("<title>My SEO title for this story</title>");
     expect(result).not.toContain("First story");
     expect(result).toContain(children);
   });

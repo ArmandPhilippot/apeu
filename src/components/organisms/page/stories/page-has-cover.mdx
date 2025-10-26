@@ -1,0 +1,17 @@
+---
+title: "Page has cover"
+wrapInPage: false
+---
+import { components as mdxComponents } from "../../../mdx";
+import Page from "../page.astro";
+
+export const components = mdxComponents;
+export const cover = {
+  height: 480,
+  src: "https://picsum.photos/640/480",
+  width: 640,
+};
+
+<Page cover={cover} title={frontmatter.title}>
+  <p>This is the main content of the page.</p>
+</Page>

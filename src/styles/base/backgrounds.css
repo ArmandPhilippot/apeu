@@ -27,7 +27,7 @@
 
   .paper-dark::before {
     background-image: url("../../assets/paper-light.svg");
-    filter: saturate(110%) brightness(.96) contrast(101%);
+    filter: saturate(110%) brightness(0.96) contrast(101%);
   }
 }
 

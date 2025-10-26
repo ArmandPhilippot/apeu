@@ -139,9 +139,8 @@ samp {
     padding: var(--spacing-3xs) var(--spacing-2xs) var(--spacing-4xs);
     background: var(--color-regular-lighter);
     border: var(--border-size-sm) solid var(--color-border);
-    box-shadow:
-      var(--border-size-sm) var(--border-size-sm) 0 0
-        var(--color-shadow);
+    box-shadow: var(--border-size-sm) var(--border-size-sm) 0 0
+      var(--color-shadow);
     font-style: italic;
   }
 }
@@ -265,6 +264,10 @@ table {
 }
 
 /* Browsers default quotes do not use a space after/before French quotes which is a mistake, so we need custom styles. */
-:root:lang(fr) { quotes: "« " " »" "‹ " " ›" }
+:root:lang(fr) {
+  quotes: "« " " »" "‹ " " ›";
+}
 
-:root:lang(en) { quotes: "“" "”" "‘" "’" }
+:root:lang(en) {
+  quotes: "“" "”" "‘" "’";
+}

@@ -7,4 +7,5 @@
   --border-size-sm: var(--one-px-in-rem);
   --border-size-md: calc(var(--border-size-sm) * 2);
   --border-size-lg: calc(var(--border-size-sm) * 3);
+  --border-size-xl: calc(var(--border-size-sm) * 4);
 }

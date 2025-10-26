@@ -27,7 +27,7 @@
 
   .paper-dark::before {
     background-image: url("../../assets/paper-light.svg");
-    filter: brightness(.97) contrast(99%) saturate(105%);
+    filter: saturate(110%) brightness(.96) contrast(101%);
   }
 }
 
@@ -38,6 +38,6 @@
 
   .paper-dark::before {
     background-image: url("../../assets/paper-dark.svg");
-    filter: brightness(0.85) contrast(103%) hue-rotate(-2deg) saturate(104%);
+    filter: hue-rotate(-2deg) saturate(110%) brightness(0.9) contrast(102%);
   }
 }

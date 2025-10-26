@@ -87,12 +87,14 @@ const pictureClass = pictureAttributes?.class
 </Wrapper>
 
 <style>
-  img {
-    display: block;
-    max-width: 100%;
-  }
+  @layer components {
+    img {
+      display: block;
+      max-width: 100%;
+    }
 
-  :global(:where([data-theme="dark"])) .picture:where(:not(:active)) {
-    filter: brightness(0.9) contrast(1.025);
+    :global(:where([data-theme="dark"])) .picture:where(:not(:active)) {
+      filter: brightness(0.9) contrast(1.025);
+    }
   }
 </style>

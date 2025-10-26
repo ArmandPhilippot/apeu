@@ -3,25 +3,25 @@ title: "Colors"
 ---
 
 import TokenPreview from "../components/stories/token-preview.astro";
-import { components as mdxComponents } from "../components/mdx";
+import { components } from "../components/mdx";
 
-export const components = mdxComponents;
+export { components };
 
 {/* See `src/styles/themes/light.css` for the available colors. */}
 export const colors = {
-neutral: ["white", "grey-lighter", "grey-light", "grey", "grey-dark", "grey-darker", "black"],
-vivid: {
-colors: ["blue", "cyan", "green", "orange", "pink", "purple", "red", "yellow"],
-variants: [
-"low",
-"lighter",
-"light",
-"default",
-"dark",
-"darker",
-"high",
-]
-},
+  neutral: ["white", "black"],
+  others: {
+    colors: ["blue", "cyan", "green", "grey", "slate", "orange", "pink", "purple", "red", "yellow"],
+    variants: [
+    "low",
+    "lighter",
+    "light",
+    "default",
+    "dark",
+    "darker",
+    "high",
+    ]
+  },
 }
 
 ## Neutral
@@ -39,12 +39,12 @@ variants: [
   })}
 </div>
 
-## Vivid
+## With variants
 
 <div class="wrapper grid">
-  {colors.vivid.colors.map((color) => (
+  {colors.others.colors.map((color) => (
     <div class="wrapper flex">
-      {colors.vivid.variants.map((variant) => {
+      {colors.others.variants.map((variant) => {
         const token =
           variant === "default"
             ? `--color-${color}`

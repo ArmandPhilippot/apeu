@@ -53,42 +53,52 @@ const hasUseAndPreview = code && Astro.slots.has("default");
 </figure>
 
 <style>
-  .code-preview {
-    border: var(--border-size-sm) solid var(--color-border);
-    border-radius: var(--border-radii-md);
-  }
+  @layer components {
+    .code-preview {
+      background: var(--color-regular-light);
+      border: var(--border-size-sm) solid var(--color-border-light);
+      border-radius: var(--border-radii-lg);
 
-  figcaption {
-    padding: var(--spacing-xs) var(--spacing-sm);
-    background: var(--color-regular-dark);
-    border-block-end: var(--border-size-sm) solid var(--color-border);
-  }
-
-  .use-label,
-  .preview-label {
-    padding-block: var(--spacing-xs) var(--spacing-2xs);
-    font-size: var(--font-size-sm);
-    font-weight: var(--font-weight-bold);
-  }
-
-  .use,
-  .preview {
-    padding: 0 var(--spacing-sm) var(--spacing-sm);
-    background: var(--color-regular-light);
-
-    &:where(:not(:has(> .use-label, > .preview-label))) {
-      padding-block-start: var(--spacing-sm);
+      & > *:last-child {
+        border-end-start-radius: inherit;
+        border-end-end-radius: inherit;
+      }
     }
-  }
 
-  :where(.code-preview:has(.use)) .preview {
-    border-block-start: var(--border-size-sm) solid var(--color-border);
-  }
+    figcaption {
+      margin: var(--spacing-2xs) var(--spacing-2xs) 0;
+      padding: var(--spacing-xs) var(--spacing-sm);
+      background: var(--color-regular-high);
+      color: var(--color-on-regular-high);
+      border-radius: var(--border-radii-md);
+    }
 
-  .use-content,
-  .preview-content {
-    padding: var(--spacing-md);
-    background: var(--color-regular-lighter);
-    border: var(--border-size-sm) solid var(--color-border);
+    .use-label,
+    .preview-label {
+      padding-block: var(--spacing-sm) var(--spacing-xs);
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-bold);
+    }
+
+    .use,
+    .preview {
+      padding: 0 var(--spacing-sm) var(--spacing-sm);
+
+      &:where(:not(:has(> .use-label, > .preview-label))) {
+        padding-block-start: var(--spacing-md);
+      }
+    }
+
+    :where(.code-preview:has(.use)) .preview {
+      border-block-start: var(--border-size-sm) solid var(--color-border);
+    }
+
+    .use-content,
+    .preview-content {
+      padding: var(--spacing-md);
+      background: var(--color-regular-low);
+      border: var(--border-size-sm) solid var(--color-border-lighter);
+      border-radius: var(--border-radii-md);
+    }
   }
 </style>

@@ -6,12 +6,23 @@
 :root[data-shiki="light"] pre {
   /* Neutral */
   --color-white: hsl(216deg 15% 100%);
-  --color-grey-lighter: hsl(216deg 20% 99%);
-  --color-grey-light: hsl(216deg 22% 98%);
-  --color-grey: hsl(216deg 24% 94%);
-  --color-grey-dark: hsl(216deg 26% 91%);
-  --color-grey-darker: hsl(216deg 28% 88%);
   --color-black: hsl(216deg 35% 12%);
+  /* Grey */
+  --color-grey-low: hsl(216deg 6% 90%);
+  --color-grey-lighter: hsl(216deg 8% 86%);
+  --color-grey-light: hsl(216deg 10% 83%);
+  --color-grey: hsl(216deg 12% 80%);
+  --color-grey-dark: hsl(216deg 14% 77%);
+  --color-grey-darker: hsl(216deg 16% 74%);
+  --color-grey-high: hsl(216deg 18% 25%);
+  /* Slate */
+  --color-slate-low: hsl(216deg 14% 100%);
+  --color-slate-lighter: hsl(216deg 18% 99%);
+  --color-slate-light: hsl(216deg 20% 98%);
+  --color-slate: hsl(216deg 22% 97%);
+  --color-slate-dark: hsl(216deg 24% 93%);
+  --color-slate-darker: hsl(216deg 26% 89%);
+  --color-slate-high: hsl(216deg 30% 22%);
   /* Blue */
   --color-blue-low: hsl(208deg 50% 86%);
   --color-blue-lighter: hsl(208deg 66% 29%);

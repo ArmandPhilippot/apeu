@@ -1,4 +1,9 @@
 :root {
+  --color-border-lighter: var(--color-grey-lighter);
+  --color-border-light: var(--color-grey-light);
+  --color-border: var(--color-grey);
+  --color-border-dark: var(--color-grey-dark);
+  --color-border-darker: var(--color-grey-darker);
   --color-critical: var(--color-red);
   --color-critical-darker: var(--color-red-darker);
   --color-critical-dark: var(--color-red-dark);
@@ -80,28 +85,32 @@
   --color-on-warning-low: var(--color-warning-high);
 
   &[data-theme="dark"] {
-    --color-border: var(--color-grey-lighter);
     --color-on-muted: var(--color-white);
-    --color-regular-darker: var(--color-black);
-    --color-regular-dark: var(--color-grey-darker);
-    --color-regular: var(--color-grey-dark);
-    --color-regular-light: var(--color-grey);
-    --color-regular-lighter: var(--color-grey-light);
-    --color-on-regular: var(--color-white);
+    --color-regular-low: var(--color-slate-low);
+    --color-on-regular-low: var(--color-slate-high);
+    --color-regular-lighter: var(--color-slate-lighter);
+    --color-regular-light: var(--color-slate-light);
+    --color-regular: var(--color-slate);
+    --color-regular-dark: var(--color-slate-dark);
+    --color-regular-darker: var(--color-slate-darker);
+    --color-regular-high: var(--color-slate-high);
+    --color-on-regular-high: var(--color-slate-low);
     --color-shadow: oklch(from var(--color-black) 17% c h);
     --color-shadow-inset: oklch(from var(--color-shadow) l c h / 70%);
     --color-shadow-inset-dark: oklch(from var(--color-shadow) l c h / 90%);
   }
 
   &[data-theme="light"] {
-    --color-border: var(--color-grey-darker);
     --color-on-muted: var(--color-black);
-    --color-regular-darker: var(--color-grey-dark);
-    --color-regular-dark: var(--color-grey);
-    --color-regular: var(--color-grey-light);
-    --color-regular-light: var(--color-grey-lighter);
-    --color-regular-lighter: var(--color-white);
-    --color-on-regular: var(--color-black);
+    --color-regular-low: var(--color-slate-low);
+    --color-on-regular-low: var(--color-slate-high);
+    --color-regular-lighter: var(--color-slate-lighter);
+    --color-regular-light: var(--color-slate-light);
+    --color-regular: var(--color-slate);
+    --color-regular-dark: var(--color-slate-dark);
+    --color-regular-darker: var(--color-slate-darker);
+    --color-regular-high: var(--color-slate-high);
+    --color-on-regular-high: var(--color-slate-low);
     --color-shadow: oklch(from var(--color-black) 80% c h);
     --color-shadow-inset: oklch(from var(--color-shadow) l c h / 30%);
     --color-shadow-inset-dark: oklch(from var(--color-shadow) l c h / 50%);

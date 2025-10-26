@@ -14,36 +14,26 @@ export const borders = {
 
 {/* See `src/styles/tokens/colors.css` for the available tokens. */}
 export const surfaces = {
-  contexts: {
-    names: [
-      "critical",
-      "discovery",
-      "idea",
-      "info",
-      "primary",
-      "success",
-      "warning",
-    ],
-    variants: [
-      "low",
-      "lighter",
-      "light",
-      "default",
-      "dark",
-      "darker",
-      "high",
-    ],
-  },
-  neutral: {
-    names: ["muted", "regular"],
-    variants: [
-      "lighter",
-      "light",
-      "default",
-      "dark",
-      "darker",
-    ],
-  }
+  names: [
+    "regular",
+    "muted",
+    "primary",
+    "critical",
+    "discovery",
+    "idea",
+    "info",
+    "success",
+    "warning",
+  ],
+  variants: [
+    "low",
+    "lighter",
+    "light",
+    "default",
+    "dark",
+    "darker",
+    "high",
+  ],
 };
 
 {/* See `src/styles/tokens/fonts.css` for the available tokens. */}
@@ -170,13 +160,11 @@ export const spacings = [
 
 ## Surfaces
 
-### Neutral
-
 <div class="wrapper grid">
   {
-  surfaces.neutral.names.map((context) => (
+  surfaces.names.map((context) => (
     <div class="wrapper flex">
-      {surfaces.neutral.variants.map((variant) => {
+      {surfaces.variants.map((variant) => {
         const token = variant === "default"
           ? `--color-${context}`
           : `--color-${context}-${variant}`;
@@ -191,72 +179,16 @@ export const spacings = [
   }
 </div>
 
-#### Texts on neutral surfaces
+### Texts on surfaces
 
 <div class="wrapper grid">
   {
-  surfaces.neutral.names.map((context) => (
+  surfaces.names.map((context) => (
     <div class="wrapper flex">
       <TokenPreview token={`--color-on-${context}`}>
         <div
           class="token-box"
           style={`background: var(--color-${context});color: var(--color-on-${context});`}
-        >
-          Preview
-        </div>
-      </TokenPreview>
-    </div>
-  ))
-  }
-</div>
-
-### Contexts
-
-<div class="wrapper grid">
-  {
-  surfaces.contexts.names.map((context) => (
-    <div class="wrapper flex">
-      {surfaces.contexts.variants.map((variant) => {
-        const token = variant === "default"
-          ? `--color-${context}`
-          : `--color-${context}-${variant}`;
-        return (
-          <TokenPreview token={token}>
-            <div class="token-box" style={`background: var(${token});`} />
-          </TokenPreview>
-        );
-      })}
-    </div>
-  ))
-  }
-</div>
-
-#### Texts on contextual surfaces
-
-<div class="wrapper grid">
-  {
-  surfaces.contexts.names.map((context) => (
-    <div class="wrapper flex">
-      <TokenPreview token={`--color-on-${context}`}>
-        <div
-          class="token-box"
-          style={`background: var(--color-${context});color: var(--color-on-${context});`}
-        >
-          Preview
-        </div>
-      </TokenPreview>
-      <TokenPreview token={`--color-on-${context}-high`}>
-        <div
-          class="token-box"
-          style={`background: var(--color-${context}-high);color: var(--color-on-${context}-high);`}
-        >
-          Preview
-        </div>
-      </TokenPreview>
-      <TokenPreview token={`--color-on-${context}-low`}>
-        <div
-          class="token-box"
-          style={`background: var(--color-${context}-low);color: var(--color-on-${context}-low);`}
         >
           Preview
         </div>

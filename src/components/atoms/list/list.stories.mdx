@@ -1,0 +1,221 @@
+---
+title: "List"
+---
+import { components as mdxComponents } from "../../mdx";
+import CodePreview from "../../molecules/code-preview/code-preview.astro";
+import ListItem from "./list-item.astro";
+import List from "./list.astro";
+
+export const components = mdxComponents;
+
+## Introduction
+
+This component is usually used to define a list of related items, either ordered or unordered.
+
+<CodePreview
+  code={`import List from "./components/atoms/list/list.astro";
+import ListItem from "./components/atoms/list-item/list-item.astro";`}
+  label="How to import"
+  lang="ts"
+/>
+<CodePreview
+  code={`<List>
+    <ListItem>Item 1</ListItem>
+    <ListItem>Item 2</ListItem>
+    <ListItem>Item 3</ListItem>
+</List>`}
+  label="Basic use"
+  lang="astro"
+>
+  <List>
+    <ListItem>Item 1</ListItem>
+    <ListItem>Item 2</ListItem>
+    <ListItem>Item 3</ListItem>
+  </List>
+</CodePreview>
+
+## Kind
+
+### Unordered
+
+<CodePreview
+  code={`<List>
+    <ListItem>Item 1</ListItem>
+    <ListItem>Item 2</ListItem>
+    <ListItem>Item 3</ListItem>
+</List>`}
+  label="Using an unordered list"
+  lang="astro"
+>
+  <List>
+    <ListItem>Item 1</ListItem>
+    <ListItem>Item 2</ListItem>
+    <ListItem>Item 3</ListItem>
+  </List>
+</CodePreview>
+
+### Ordered
+
+<CodePreview
+  code={`<List as="ol">
+    <ListItem>Item 1</ListItem>
+    <ListItem>Item 2</ListItem>
+    <ListItem>Item 3</ListItem>
+</List>`}
+  label="Using an ordered list"
+  lang="astro"
+>
+  <List as="ol">
+    <ListItem>Item 1</ListItem>
+    <ListItem>Item 2</ListItem>
+    <ListItem>Item 3</ListItem>
+  </List>
+</CodePreview>
+
+### Nesting and mixing
+
+<CodePreview
+  code={`<List>
+    <ListItem>Item 1</ListItem>
+    <ListItem>
+    Item 2
+    <List as="ol">
+      <ListItem>Subitem 1</ListItem>
+      <ListItem>Subitem 2</ListItem>
+      <ListItem>Subitem 3</ListItem>
+    </List>
+    </ListItem>
+    <ListItem>Item 3</ListItem>
+    <ListItem>Item 4</ListItem>
+</List>`}
+  label="Using mixed and nested lists"
+  lang="astro"
+>
+  <List>
+    <ListItem>Item 1</ListItem>
+    <ListItem>
+      Item 2
+      <List as="ol">
+        <ListItem>Subitem 1</ListItem>
+        <ListItem>Subitem 2</ListItem>
+        <ListItem>Subitem 3</ListItem>
+      </List>
+    </ListItem>
+    <ListItem>Item 3</ListItem>
+    <ListItem>Item 4</ListItem>
+  </List>
+</CodePreview>
+
+## Options
+
+### `isInline`
+
+<CodePreview
+  code={`<List isInline>
+    <ListItem>Item 1</ListItem>
+    <ListItem>Item 2</ListItem>
+    <ListItem>Item 3</ListItem>
+</List>`}
+  label="Using an inlined list"
+  lang="astro"
+>
+  <List isInline>
+    <ListItem>Item 1</ListItem>
+    <ListItem>Item 2</ListItem>
+    <ListItem>Item 3</ListItem>
+  </List>
+</CodePreview>
+
+### `hideMarker`
+
+<CodePreview
+  code={`<List hideMarker>
+    <ListItem>Item 1</ListItem>
+    <ListItem>Item 2</ListItem>
+    <ListItem>Item 3</ListItem>
+</List>`}
+  label="Using a list without marker"
+  lang="astro"
+>
+  <List hideMarker>
+    <ListItem>Item 1</ListItem>
+    <ListItem>Item 2</ListItem>
+    <ListItem>Item 3</ListItem>
+  </List>
+</CodePreview>
+
+### `hideMarker` on a specific item
+
+<CodePreview
+  code={`<List>
+    <ListItem>Item 1</ListItem>
+    <ListItem hideMarker>Item 2</ListItem>
+    <ListItem>Item 3</ListItem>
+</List>`}
+  label="Using a list while hiding a specific marker"
+  lang="astro"
+>
+  <List>
+    <ListItem>Item 1</ListItem>
+    <ListItem hideMarker>Item 2</ListItem>
+    <ListItem>Item 3</ListItem>
+  </List>
+</CodePreview>
+
+### `spacing`
+
+#### With a regular list
+
+<CodePreview
+  code={`<List spacing="md">
+    <ListItem>Item 1</ListItem>
+    <ListItem>Item 2</ListItem>
+    <ListItem>Item 3</ListItem>
+</List>`}
+  label="Using spacing with a list"
+  lang="astro"
+>
+  <List spacing="md">
+    <ListItem>Item 1</ListItem>
+    <ListItem>Item 2</ListItem>
+    <ListItem>Item 3</ListItem>
+  </List>
+</CodePreview>
+
+#### With an inline list
+
+##### Single spacing value
+
+<CodePreview
+  code={`<List isInline spacing="md">
+    <ListItem>Item 1</ListItem>
+    <ListItem>Item 2</ListItem>
+    <ListItem>Item 3</ListItem>
+</List>`}
+  label="Using spacing with an inline list"
+  lang="astro"
+>
+  <List isInline spacing="md">
+    <ListItem>Item 1</ListItem>
+    <ListItem>Item 2</ListItem>
+    <ListItem>Item 3</ListItem>
+  </List>
+</CodePreview>
+
+##### Different spacing values
+
+<CodePreview
+  code={`<List isInline spacing={{col: "md", row: "xs"}}>
+    <ListItem>Item 1</ListItem>
+    <ListItem>Item 2</ListItem>
+    <ListItem>Item 3</ListItem>
+</List>`}
+  label="Using a different spacing for cols and rows"
+  lang="astro"
+>
+  <List isInline spacing={{col: "md", row: "xs"}}>
+    <ListItem>Item 1</ListItem>
+    <ListItem>Item 2</ListItem>
+    <ListItem>Item 3</ListItem>
+  </List>
+</CodePreview>

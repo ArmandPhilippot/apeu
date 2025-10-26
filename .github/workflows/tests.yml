@@ -1,4 +1,5 @@
 name: Tests
+permissions: {}
 
 on:
   push:
@@ -6,6 +7,9 @@ on:
       - main
       - next
   pull_request:
+    branches:
+      - main
+      - next
 
 defaults:
   run:
@@ -15,11 +19,8 @@ env:
   CI: true
   FORCE_COLOR: true
 
-permissions:
-  contents: read
-
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.event_name == 'pull_request_target' && github.head_ref || github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -29,10 +30,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@v5
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
 
-      - name: Install Tools & Dependencies
-        uses: ./.github/actions/ci-setup
+      - name: Setup pnpm
+        uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # v4.2.0
 
-      - name: Execute Unit Tests
+      - name: Install Node.js
+        uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6.0.0
+        with:
+          cache: pnpm
+          node-version: 24
+
+      - name: Install dependencies
+        run: pnpm i
+
+      - name: Unit Tests
         run: pnpm test:unit

@@ -8,12 +8,18 @@
     "group:allNonMajor",
     "schedule:weekly",
   ],
-  labels: ["dependencies"],
-  postUpdateOptions: ["pnpmDedupe"],
+  labels: [
+    "dependencies"
+  ],
+  postUpdateOptions: [
+    "pnpmDedupe"
+  ],
   semanticCommits: "enabled",
   semanticCommitType: "ci",
   rangeStrategy: "bump",
-  ignorePaths: ["**/node_modules/**"],
+  ignorePaths: [
+    "**/node_modules/**"
+  ],
   ignoreDeps: [
     // ignore "engines" update
     "node",

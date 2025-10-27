@@ -4,6 +4,7 @@ import { useRouting } from "../../../services/routing";
 import "../../../styles/global.css";
 import type { SEO } from "../../../types/data";
 import { CONFIG } from "../../../utils/constants";
+import Branding from "../../molecules/branding/branding.astro";
 import ThemeProvider from "../../providers/theme-provider.astro";
 import Head from "./head.astro";
 
@@ -14,7 +15,8 @@ type Props = {
 const { seo } = Astro.props;
 const { locale } = useI18n(Astro.currentLocale);
 const { routeById } = await useRouting(locale);
-const isHome = Astro.url.pathname === routeById("home").path;
+const homeUrl = routeById("home").path;
+const isHome = Astro.url.pathname === homeUrl;
 ---
 
 <html data-shiki="light" data-theme="light" lang={locale}>
@@ -66,7 +68,9 @@ const isHome = Astro.url.pathname === routeById("home").path;
   <body class="site paper">
     <ThemeProvider>
       <header class="site-header">
-        <h1 class="site-branding">{CONFIG.BRAND}</h1>
+        <h1 class="site-branding">
+          <Branding brand={CONFIG.BRAND} url={homeUrl} />
+        </h1>
         <nav class="site-navbar paper">Navbar</nav>
       </header>
       <div class="site-body">
@@ -190,6 +194,10 @@ const isHome = Astro.url.pathname === routeById("home").path;
       @media (--md-or-above) {
         justify-content: start;
         border-block-start: none;
+      }
+
+      @media (--prose) {
+        padding-inline: clamp(var(--spacing-xs), 2cqi, var(--spacing-xl));
       }
     }
 

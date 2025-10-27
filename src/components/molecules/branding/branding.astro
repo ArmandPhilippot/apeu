@@ -1,0 +1,47 @@
+---
+import type { ComponentProps } from "astro/types";
+import Logo from "../../../assets/logo-animated.svg";
+import Link from "../../atoms/link/link.astro";
+
+type Props = Omit<ComponentProps<typeof Link>, "href"> & {
+  brand: string;
+  url: string;
+};
+
+const { brand, class: className, slot, url, ...attrs } = Astro.props;
+---
+
+<Link {...attrs} class:list={[className, "branding"]} href={url}>
+  <Logo aria-hidden="true" />
+  <span>{brand}</span>
+</Link>
+
+<style>
+  .branding {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    place-content: center;
+    gap: var(--spacing-sm);
+    width: fit-content;
+    padding: var(--spacing-xs);
+    border-radius: var(--border-radii-lg);
+    outline-width: var(--border-size-lg);
+    text-align: center;
+    text-decoration: none;
+
+    &:where(:focus-visible) {
+      outline-offset: calc(var(--border-size-lg) * -1);
+    }
+
+    svg {
+      width: auto;
+      height: 1.75em;
+    }
+
+    span {
+      font-size: var(--font-size-2xl);
+      font-weight: var(--font-weight-bold);
+    }
+  }
+</style>

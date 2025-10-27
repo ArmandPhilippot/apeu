@@ -1,0 +1,322 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import { Icon } from "astro-icon/components";
+import type { RoutableCollectionKey } from "../../../lib/astro/collections/types";
+import type { QueriedEntry } from "../../../services/collections";
+import { useI18n } from "../../../services/i18n";
+import { buildToc } from "../../../services/toc";
+import type { Img as ImgType } from "../../../types/data";
+import Button from "../../atoms/button/button.astro";
+import Heading from "../../atoms/heading/heading.astro";
+import Img from "../../atoms/img/img.astro";
+import Collapsible from "../../molecules/collapsible/collapsible.astro";
+import TableOfContents from "../table-of-contents/table-of-contents.astro";
+
+type Props = Omit<HTMLAttributes<"article">, "title"> & {
+  cover?: Omit<ImgType, "alt"> | null | undefined;
+  feed?: string | URL | null | undefined;
+  headings?: QueriedEntry<RoutableCollectionKey>["headings"] | null | undefined;
+  isFullWidth?: boolean | null | undefined;
+  /** The page title. */
+  title?: string | null | undefined;
+};
+
+const {
+  class: className,
+  cover,
+  feed,
+  headings,
+  isFullWidth = false,
+  title,
+  ...attrs
+} = Astro.props;
+const { translate } = useI18n(Astro.currentLocale);
+---
+
+<article
+  {...attrs}
+  class:list={["page", className]}
+  data-disconnected-body={Astro.slots.has("disconnected-body")}
+  data-full-width={isFullWidth}
+>
+  {
+    title || cover || Astro.slots.has("meta") ? (
+      <header class="page-header">
+        {title ? (
+          <div class="page-title">
+            <Heading as="h1">{title}</Heading>
+            {feed ? (
+              <Button
+                aria-label={translate("cta.subscribe.a11y", { title })}
+                as="a"
+                href={feed}
+              >
+                <Icon aria-hidden="true" name="feed" />
+                {translate("cta.subscribe")}
+              </Button>
+            ) : null}
+          </div>
+        ) : null}
+        {cover ? (
+          <Img
+            {...cover}
+            alt=""
+            loading="eager"
+            pictureAttributes={{ class: "page-cover" }}
+          />
+        ) : null}
+        {Astro.slots.has("meta") ? (
+          <div class="page-meta">
+            <slot name="meta" />
+          </div>
+        ) : null}
+      </header>
+    ) : null
+  }
+  {
+    headings?.length ? (
+      <div class="page-sidebar">
+        <Collapsible class="page-toc" open>
+          <Heading as="h2" class="page-toc-title" slot="label">
+            {translate("collapsible.toc.title")}
+          </Heading>
+          <div class="page-toc-body">
+            <TableOfContents headings={buildToc(headings)} />
+          </div>
+        </Collapsible>
+      </div>
+    ) : null
+  }
+  {
+    Astro.slots.has("body") ? (
+      <div class="page-body">
+        <slot name="body" />
+      </div>
+    ) : null
+  }
+  <slot
+    name="disconnected-body"
+    slot={Astro.slots.has("disconnected-body") ? "disconnected-body" : ""}
+  />
+  {
+    Astro.slots.has("footer") ? (
+      <footer class="page-footer">
+        <slot name="footer" />
+      </footer>
+    ) : null
+  }
+</article>
+
+<style>
+  .page {
+    --main-col-width: 100%;
+    --sidebar-col-width: 0;
+
+    display: grid;
+    grid-template-columns:
+      minmax(calc(var(--main-col-width) / 2), var(--main-col-width))
+      minmax(0, var(--sidebar-col-width));
+    grid-template-rows: repeat(5, minmax(0, auto));
+    column-gap: calc(var(--spacing-dynamic) / 2);
+    justify-content: center;
+
+    @media (--prose) {
+      --main-col-width: var(--size-padded-prose);
+      --sidebar-col-width: calc(
+        var(--size-prose) / 3 + 2 * var(--spacing-dynamic)
+      );
+    }
+  }
+
+  .page > :global(*) {
+    grid-column: 1 / -1;
+  }
+
+  :where(.page:not([data-full-width="true"]):has(.page-toc)) {
+    @media (--prose-x2) {
+      & > *:not(.page-sidebar) {
+        grid-column: 1;
+      }
+
+      & .page-sidebar {
+        grid-column: 2;
+        grid-row: 1 / -1;
+      }
+    }
+  }
+
+  .page-header,
+  .page-body,
+  .page-footer {
+    max-width: var(--size-padded-prose);
+    width: 100%;
+    background: var(--color-regular);
+    border-block: var(--border-size-sm) solid var(--color-border);
+    border-radius: var(--border-radii-md);
+    box-shadow: var(--shadow-raised-to-top-center);
+
+    @media (--prose) {
+      border-inline: var(--border-size-sm) solid var(--color-border);
+      box-shadow: var(--shadow-raised-to-top-left);
+    }
+  }
+
+  :where(.page[data-full-width="true"]) {
+    .page-header,
+    .page-sidebar,
+    .page-body,
+    .page-footer {
+      margin-inline: auto;
+    }
+  }
+
+  .page-header,
+  :where(.page:not([data-disconnected-body="true"])) .page-body {
+    &:has(+ *) {
+      border-end-start-radius: 0;
+      border-end-end-radius: 0;
+    }
+  }
+
+  :where(.page:has(.page-toc)) .page-header,
+  :where(.page:not([data-disconnected-body="true"])) .page-body:has(+ *) {
+    border-block-end: none;
+  }
+
+  .page-header {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .page-title,
+  .page-body,
+  .page-footer {
+    padding: var(--spacing-dynamic);
+  }
+
+  .page-title {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-flow: column wrap;
+    place-items: center;
+    place-content: center;
+    gap: var(--spacing-sm) var(--spacing-md);
+    text-align: center;
+
+    @media (--prose) {
+      flex-direction: row;
+    }
+
+    & h1 {
+      margin: 0;
+    }
+  }
+
+  :where(.page:has(.page-cover, .page-meta)) {
+    .page-header {
+      @media (--prose-x2) {
+        border-block-end: var(--border-size-sm) solid var(--color-border);
+      }
+    }
+
+    .page-title {
+      border-block-end: var(--border-size-sm) solid var(--color-border);
+    }
+  }
+
+  .page-cover,
+  .page-meta {
+    grid-column: 1 / -1;
+  }
+
+  :where(.page:has(.page-meta)) .page-cover {
+    border-block-end: var(--border-size-sm) solid var(--color-border);
+
+    @media (--prose-x2) {
+      grid-column: 1;
+      border-block-end: none;
+      border-inline-end: var(--border-size-sm) solid var(--color-border);
+    }
+  }
+
+  :where(.page:has(.page-cover)) .page-meta {
+    @media (--prose-x2) {
+      grid-column: 2;
+    }
+  }
+
+  .page-cover :global(img) {
+    max-height: calc(var(--one-px-in-rem) * 250);
+
+    @media (--prose-x2) {
+      max-height: calc(var(--one-px-in-rem) * 375);
+    }
+  }
+
+  .page-meta {
+    padding: var(--spacing-dynamic);
+    text-align: center;
+  }
+
+  .page-toc {
+    max-width: var(--main-col-width);
+    border-inline-width: 0;
+    box-shadow: var(--shadow-raised-to-top-center);
+
+    @media (--prose) {
+      border-inline-width: var(--border-size-sm);
+      box-shadow: var(--shadow-raised-to-top-left);
+    }
+
+    @media (--prose-x2) {
+      position: sticky;
+      top: var(--spacing-dynamic);
+      border-radius: var(--border-radii-md);
+      box-shadow: var(--shadow-raised-to-top-left);
+
+      & > :global(summary) {
+        padding-inline-start: var(--spacing-dynamic);
+      }
+    }
+  }
+
+  .page-toc-title {
+    font-size: var(--font-size-2xl);
+
+    @media (--prose-x2) {
+      font-size: var(--font-size-lg);
+    }
+  }
+
+  .page-toc-body {
+    padding: var(--spacing-md) var(--spacing-dynamic);
+
+    @media (--prose-x2) {
+      font-size: var(--font-size-sm);
+    }
+  }
+
+  :where(.page:has(.page-header)) .page-body,
+  :where(.page:not([data-disconnected-body="true"])) .page-footer {
+    border-block-start: none;
+    border-start-start-radius: 0;
+    border-start-end-radius: 0;
+  }
+
+  .page-body:where(:not(:has(+ *))),
+  :where(.page:not([data-disconnected-body="true"])) .page-footer {
+    padding-block-end: var(--spacing-dynamic);
+  }
+
+  .page-body {
+    padding-block-start: var(--spacing-dynamic);
+  }
+
+  :where(.page[data-disconnected-body="true"]) .page-body {
+    margin-block-end: var(--spacing-dynamic);
+  }
+
+  :where(.page[data-disconnected-body="true"]) .page-footer {
+    margin-block-start: var(--spacing-dynamic);
+  }
+</style>

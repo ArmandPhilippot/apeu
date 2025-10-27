@@ -7,18 +7,14 @@ type Props = HTMLAttributes<"a"> & {
 };
 
 const {
-  class: className,
   isDownload = false,
   isExternal = false,
-  rel,
+  rel = "",
+  slot,
   ...attrs
 } = Astro.props;
-const linkRel =
-  isExternal && !rel?.includes("external") ? `external ${rel}` : rel;
+const shouldAddExternal = isExternal && !rel?.includes("external");
+const linkRel = shouldAddExternal ? `external ${rel}`.trim() : rel;
 ---
 
-<a
-  {...attrs}
-  class:list={["link", { download: isDownload }, className]}
-  rel={linkRel}><slot /></a
->
+<a {...attrs} data-download={isDownload} rel={linkRel}><slot /></a>

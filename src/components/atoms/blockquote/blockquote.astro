@@ -3,7 +3,7 @@ import type { HTMLAttributes } from "astro/types";
 
 type Props = HTMLAttributes<"figure">;
 
-const { class: className, ...attrs } = Astro.props;
+const { class: className, slot, ...attrs } = Astro.props;
 ---
 
 <figure {...attrs} class:list={["blockquote", className]}>

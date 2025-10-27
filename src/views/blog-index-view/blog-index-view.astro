@@ -1,19 +1,19 @@
 ---
 import type { ComponentProps } from "astro/types";
 import { Icon } from "astro-icon/components";
-import Box from "../../components/atoms/box/box.astro";
 import Button from "../../components/atoms/button/button.astro";
 import Heading from "../../components/atoms/heading/heading.astro";
 import CardsList from "../../components/molecules/cards-list/cards-list.astro";
 import CollectionCard from "../../components/organisms/collection-card/collection-card.astro";
-import PageLayout from "../../components/templates/page-layout/page-layout.astro";
+import PageFrame from "../../components/organisms/page-frame/page-frame.astro";
+import Layout from "../../components/templates/layout/layout.astro";
 import { getWebPageGraph } from "../../lib/schema-dts/graphs/webpage-graph";
 import { getBreadcrumb } from "../../services/breadcrumb";
 import { queryCollection, type QueriedEntry } from "../../services/collections";
 import { useI18n } from "../../services/i18n";
 import { useRouting } from "../../services/routing";
 
-type Props = Partial<ComponentProps<typeof PageLayout>> & {
+type Props = Partial<ComponentProps<typeof Layout>> & {
   entry: QueriedEntry<"index.pages">;
 };
 
@@ -38,7 +38,7 @@ const { entries: recentPosts, total: totalPosts } = await queryCollection(
   }
 );
 const breadcrumb = await getBreadcrumb({ route: Astro.url.pathname });
-const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
+const graphs: ComponentProps<typeof Layout>["graphs"] = [
   await getWebPageGraph({ ...page, breadcrumb }),
 ];
 
@@ -52,93 +52,62 @@ const getPostCTA = (
 };
 ---
 
-<PageLayout
-  breadcrumb={breadcrumb}
-  description={page.description}
-  graphs={graphs}
-  headings={page.headings}
-  isIndex
-  seo={page.seo}
-  title={page.title}
-  {...props}
->
-  {hasContent && <Content slot={hasContent ? "body" : ""} />}
-  <Fragment slot="disconnected-body">
-    <Box
-      class="blog-section-heading"
-      elevation="raised"
-      isBordered
-      isCentered
-      isPadded
-      isProse
-      isRounded
-      isSpaced
-    >
-      <Heading>{translate("page.blog.section.recent.posts.heading")}</Heading>
-      <div class="blog-section-cta">
-        <Button as="a" href={routeById("blog/posts").path}>
-          {translatePlural("cta.see.all.posts", { count: totalPosts })}
-        </Button>
-        <Button
-          aria-label={translate("cta.subscribe.a11y", {
-            title: translate("page.blog.posts.title"),
-          })}
-          as="a"
-          href={`${routeById("blog/posts").path}/feed.xml`}
-        >
-          <Icon aria-hidden="true" name="feed" />
-          {translate("cta.subscribe")}
-        </Button>
+<Layout breadcrumb={breadcrumb} graphs={graphs} seo={page.seo} {...props}>
+  <PageFrame headings={page.headings} isFullWidth title={page.title}>
+    {hasContent && <Content slot={hasContent ? "body" : ""} />}
+    <div slot="disconnected-body">
+      <div class="blog-section-heading">
+        <Heading>{translate("page.blog.section.recent.posts.heading")}</Heading>
+        <div class="blog-section-cta">
+          <Button as="a" href={routeById("blog/posts").path}>
+            {translatePlural("cta.see.all.posts", { count: totalPosts })}
+          </Button>
+          <Button
+            aria-label={translate("cta.subscribe.a11y", {
+              title: translate("page.blog.posts.title"),
+            })}
+            as="a"
+            href={`${routeById("blog/posts").path}/feed.xml`}
+          >
+            <Icon aria-hidden="true" name="feed" />
+            {translate("cta.subscribe")}
+          </Button>
+        </div>
       </div>
-    </Box>
-    <CardsList isContainer items={recentPosts} sizeMinCols="35rem">
-      {
-        (post: (typeof recentPosts)[number]) => (
-          <CollectionCard
-            class="post-card"
-            cta={getPostCTA(post.title)}
-            elevation="raised"
-            entry={{
-              ...post,
-              cover: post.cover
-                ? {
-                    ...post.cover,
-                    loading: "eager",
-                  }
-                : null,
-            }}
-            featuredMeta={{ icon: "blog", key: "publishedOn" }}
-            headingLvl="h3"
-          />
-        )
-      }
-    </CardsList>
-    <Box
-      class="blog-section-heading"
-      elevation="raised"
-      isBordered
-      isCentered
-      isPadded
-      isProse
-      isRounded
-      isSpaced
-    >
-      <Heading>{translate("page.blog.section.categories.heading")}</Heading>
-    </Box>
-    <CardsList isContainer items={categories} sizeMinCols="27rem">
-      {
-        ({ meta: _meta, ...cat }: (typeof categories)[number]) => (
-          <CollectionCard
-            class="category-card"
-            elevation="raised"
-            entry={cat}
-            headingLvl="h3"
-          />
-        )
-      }
-    </CardsList>
-  </Fragment>
-</PageLayout>
+      <CardsList isContainer items={recentPosts} sizeMinCols="35rem">
+        {
+          (post: (typeof recentPosts)[number]) => (
+            <CollectionCard
+              class="post-card"
+              cta={getPostCTA(post.title)}
+              entry={{
+                ...post,
+                cover: post.cover
+                  ? {
+                      ...post.cover,
+                      loading: "eager",
+                    }
+                  : null,
+              }}
+              featuredMeta={{ icon: "blog", key: "publishedOn" }}
+              headingLvl="h3"
+            />
+          )
+        }
+      </CardsList>
+      <div class="blog-section-heading">
+        <Heading>{translate("page.blog.section.categories.heading")}</Heading>
+      </div>
+      <CardsList isContainer items={categories} sizeMinCols="27rem">
+        {
+          ({ meta: _meta, ...cat }: (typeof categories)[number]) => (
+            <CollectionCard class="category-card" entry={cat} headingLvl="h3" />
+          )
+        }
+      </CardsList>
+    </div>
+  </PageFrame>
+</Layout>
 
 <style>
   .blog-section-heading,
@@ -150,8 +119,25 @@ const getPostCTA = (
   }
 
   .blog-section-heading {
+    margin-block: var(--spacing-dynamic);
+    padding: var(--spacing-md);
+    background: var(--color-regular);
+    border-block: var(--border-size-sm) solid var(--color-border);
+    border-radius: var(--border-radii-md);
+    box-shadow: var(--shadow-raised-to-top-center);
+
+    @media (--prose) {
+      border-inline: var(--border-size-sm) solid var(--color-border);
+      box-shadow: var(--shadow-raised-to-top-left);
+    }
+
     & > :global(*:first-child) {
       margin-inline-end: auto;
     }
+  }
+
+  .post-card,
+  .category-card {
+    box-shadow: var(--shadow-raised-to-top-left);
   }
 </style>

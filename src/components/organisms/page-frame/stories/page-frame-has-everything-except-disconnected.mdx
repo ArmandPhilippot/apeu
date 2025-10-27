@@ -1,0 +1,23 @@
+---
+title: "PageFrame has everything except disconnected"
+wrapInPageFrame: false
+---
+import { components as mdxComponents } from "../../../mdx";
+import PageFrame from "../page-frame.astro";
+
+export const components = mdxComponents;
+export const cover = {
+  height: 480,
+  src: "https://picsum.photos/640/480",
+  width: 640,
+};
+export const headings = [
+  { depth: 1, slug: "#heading1", text: "Heading 1" },
+  { depth: 1, slug: "#heading2", text: "Heading 2" },
+];
+
+<PageFrame cover={cover} headings={headings} title={frontmatter.title}>
+  <div slot="meta">Some meta</div>
+  <p slot="body">This is the main content of the page.</p>
+  <div slot="footer">Some footer contents.</div>
+</PageFrame>

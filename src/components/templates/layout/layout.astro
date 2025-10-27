@@ -1,18 +1,21 @@
 ---
+import type { ComponentProps } from "astro/types";
 import { useI18n } from "../../../services/i18n";
 import { useRouting } from "../../../services/routing";
 import "../../../styles/global.css";
 import type { SEO } from "../../../types/data";
 import { CONFIG } from "../../../utils/constants";
 import Branding from "../../molecules/branding/branding.astro";
+import Breadcrumb from "../../molecules/breadcrumb/breadcrumb.astro";
 import ThemeProvider from "../../providers/theme-provider.astro";
 import Head from "./head.astro";
 
 type Props = {
+  breadcrumb?: ComponentProps<typeof Breadcrumb>["items"] | null | undefined;
   seo: SEO;
 };
 
-const { seo } = Astro.props;
+const { breadcrumb, seo } = Astro.props;
 const { locale } = useI18n(Astro.currentLocale);
 const { routeById } = await useRouting(locale);
 const homeUrl = routeById("home").path;
@@ -74,7 +77,13 @@ const isHome = Astro.url.pathname === homeUrl;
         <nav class="site-navbar paper">Navbar</nav>
       </header>
       <div class="site-body">
-        <nav class="site-breadcrumb">Breadcrumb</nav>
+        {
+          breadcrumb ? (
+            <nav class="site-breadcrumb">
+              <Breadcrumb items={breadcrumb} />
+            </nav>
+          ) : null
+        }
         <main class="site-main paper-dark">
           <slot />
         </main>

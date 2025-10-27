@@ -1,0 +1,145 @@
+---
+import type { ComponentProps } from "astro/types";
+import { Icon } from "astro-icon/components";
+import type { Route } from "../../../types/data";
+import Link from "../../atoms/link/link.astro";
+import ListItem from "../../atoms/list/list-item.astro";
+import List from "../../atoms/list/list.astro";
+
+type Props = Omit<
+  ComponentProps<typeof List<"ol">>,
+  "as" | "hideMarker" | "isInline"
+> & {
+  items: Route[];
+};
+
+const { class: className, items, slot, ...attrs } = Astro.props;
+
+const scaleToRight = {
+  old: {
+    name: "breadcrumb-scale-to-right",
+    duration: "0.2s",
+    easing: "linear",
+    direction: "reverse",
+  },
+  new: {
+    name: "breadcrumb-scale-to-right",
+    duration: "0.3s",
+    easing: "linear",
+  },
+};
+
+const scaleToRightTransition = {
+  forwards: scaleToRight,
+  backwards: scaleToRight,
+};
+---
+
+<List
+  {...attrs}
+  as="ol"
+  class:list={["breadcrumb", className]}
+  hideMarker
+  isInline
+  spacing="2xs"
+>
+  {
+    items.map(({ label, path }, index, crumbs) => {
+      const isFirstItem = index === 0;
+      const isLastItem = index + 1 === crumbs.length;
+
+      return (
+        <ListItem class="breadcrumb-item">
+          {isLastItem ? (
+            <span
+              aria-current="page"
+              class="breadcrumb-link"
+              transition:animate={scaleToRightTransition}
+              transition:name="breadcrumb-current"
+            >
+              {label}
+            </span>
+          ) : (
+            <Fragment>
+              <Link class="breadcrumb-link" href={path}>
+                {label}
+              </Link>
+              <Icon
+                aria-hidden="true"
+                class="breadcrumb-sep"
+                name="caret-right"
+                size="10"
+                {...(isFirstItem
+                  ? {}
+                  : {
+                      "transition:animate": scaleToRightTransition,
+                    })}
+              />
+            </Fragment>
+          )}
+        </ListItem>
+      );
+    })
+  }
+</List>
+
+<style>
+  .breadcrumb {
+    flex-wrap: nowrap;
+    max-width: 100%;
+    padding: var(--spacing-sm) var(--spacing-md);
+    white-space: nowrap;
+    overflow-x: auto;
+  }
+
+  .breadcrumb-item {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    gap: var(--spacing-2xs);
+  }
+
+  .breadcrumb-link {
+    font-size: var(--font-size-sm);
+  }
+
+  .breadcrumb-link[aria-current="page"],
+  .breadcrumb-sep {
+    color: var(--color-muted-faded);
+    font-weight: var(--font-weight-bold);
+  }
+</style>
+
+<style is:global>
+  ::view-transition-old(breadcrumb-home),
+  ::view-transition-new(breadcrumb-home) {
+    animation: none;
+    transform: none;
+    opacity: 1;
+  }
+
+  ::view-transition-old(breadcrumb-home) {
+    display: none;
+  }
+
+  ::view-transition-old(breadcrumb-current),
+  ::view-transition-new(breadcrumb-current),
+  [id^="::view-transition-old(breadcrumb-item-"],
+  [id^="::view-transition-new(breadcrumb-item-"] {
+    height: 100%;
+  }
+
+  @keyframes breadcrumb-scale-to-right {
+    0% {
+      transform: scaleX(0);
+      transform-origin: left center;
+      opacity: 0;
+    }
+
+    100% {
+      transform: scaleX(1);
+      transform-origin: left center;
+      opacity: 1;
+    }
+  }
+</style>

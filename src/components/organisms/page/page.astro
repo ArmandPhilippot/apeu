@@ -8,6 +8,7 @@ import { buildToc } from "../../../services/toc";
 import type { Img as ImgType } from "../../../types/data";
 import Button from "../../atoms/button/button.astro";
 import Img from "../../atoms/img/img.astro";
+import Collapsible from "../../molecules/collapsible/collapsible.astro";
 import TableOfContents from "../../molecules/table-of-contents/table-of-contents.astro";
 
 type Props = Omit<HTMLAttributes<"article">, "title"> & {
@@ -68,10 +69,13 @@ const body = await Astro.slots.render("default");
   {
     headings?.length ? (
       <div class="page-sidebar">
-        <div class="page-toc">
-          <h2>{translate("collapsible.toc.title")}</h2>
-          <TableOfContents headings={buildToc(headings)} />
-        </div>
+        <Collapsible class="page-toc">
+          <h2 slot="label">{translate("collapsible.toc.title")}</h2>
+          <TableOfContents
+            class="page-toc-body"
+            headings={buildToc(headings)}
+          />
+        </Collapsible>
       </div>
     ) : null
   }
@@ -170,7 +174,7 @@ const body = await Astro.slots.render("default");
 
     .page-title,
     .page-meta,
-    .page-toc,
+    .page-toc-body,
     .page-body,
     .page-footer {
       padding-inline: var(--spacing-md) var(--gutter);
@@ -259,20 +263,17 @@ const body = await Astro.slots.render("default");
     }
 
     .page-toc {
-      padding-block: var(--spacing-md);
       border-block-end: var(--border-size-sm) solid var(--color-border);
 
       @media (--prose-sidebar) {
-        padding-block: var(--spacing-md) var(--gutter);
         position: sticky;
-        top: 0;
+        top: calc(var(--gutter) / 2);
         border-block-start: var(--border-size-sm) solid var(--color-border);
         border-radius: var(--border-radii-md);
       }
 
       & h2 {
         font-size: var(--font-size-2xl);
-        margin-block-end: var(--spacing-md);
 
         @media (--prose-x2) {
           font-size: var(--font-size-lg);
@@ -282,6 +283,10 @@ const body = await Astro.slots.render("default");
 
     :where(.page:not(:has(.page-cover, .page-meta))) .page-toc {
       border-block-start: var(--border-size-sm) solid var(--color-border);
+    }
+
+    .page-toc-body {
+      padding-block: var(--spacing-md);
     }
 
     .page-body:where(:not(:last-child)) {

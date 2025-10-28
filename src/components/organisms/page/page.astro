@@ -4,9 +4,11 @@ import { Icon } from "astro-icon/components";
 import type { RoutableCollectionKey } from "../../../lib/astro/collections/types";
 import type { QueriedEntry } from "../../../services/collections";
 import { useI18n } from "../../../services/i18n";
+import { buildToc } from "../../../services/toc";
 import type { Img as ImgType } from "../../../types/data";
 import Button from "../../atoms/button/button.astro";
 import Img from "../../atoms/img/img.astro";
+import TableOfContents from "../../molecules/table-of-contents/table-of-contents.astro";
 
 type Props = Omit<HTMLAttributes<"article">, "title"> & {
   cover?: Omit<ImgType, "alt"> | null | undefined;
@@ -66,7 +68,10 @@ const body = await Astro.slots.render("default");
   {
     headings?.length ? (
       <div class="page-sidebar">
-        <div class="page-toc">Table of Contents</div>
+        <div class="page-toc">
+          <h2>{translate("collapsible.toc.title")}</h2>
+          <TableOfContents headings={buildToc(headings)} />
+        </div>
       </div>
     ) : null
   }
@@ -263,6 +268,15 @@ const body = await Astro.slots.render("default");
         top: 0;
         border-block-start: var(--border-size-sm) solid var(--color-border);
         border-radius: var(--border-radii-md);
+      }
+
+      & h2 {
+        font-size: var(--font-size-2xl);
+        margin-block-end: var(--spacing-md);
+
+        @media (--prose-x2) {
+          font-size: var(--font-size-lg);
+        }
       }
     }
 

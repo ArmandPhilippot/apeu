@@ -153,9 +153,9 @@ const body = await Astro.slots.render("default");
     .page-footer {
       &:where(:last-child) {
         padding-block-end: calc(var(--gutter) * 1.5);
+        border-block-end: var(--border-size-sm) solid var(--color-border);
 
         @media (--prose) {
-          border-block-end: var(--border-size-sm) solid var(--color-border);
           border-end-start-radius: var(--border-radii-md);
           border-end-end-radius: var(--border-radii-md);
         }
@@ -177,7 +177,7 @@ const body = await Astro.slots.render("default");
     .page-toc-body,
     .page-body,
     .page-footer {
-      padding-inline: var(--spacing-md) var(--gutter);
+      padding-inline: var(--gutter);
     }
 
     .page-header {

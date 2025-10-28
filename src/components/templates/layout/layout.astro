@@ -7,6 +7,9 @@ import "../../../styles/global.css";
 import type { Route, SEO, WithIcon } from "../../../types/data";
 import { CONFIG } from "../../../utils/constants";
 import Copyright from "../../atoms/copyright/copyright.astro";
+import Link from "../../atoms/link/link.astro";
+import ListItem from "../../atoms/list/list-item.astro";
+import List from "../../atoms/list/list.astro";
 import BackToTop from "../../molecules/back-to-top/back-to-top.astro";
 import Branding from "../../molecules/branding/branding.astro";
 import Breadcrumb from "../../molecules/breadcrumb/breadcrumb.astro";
@@ -63,6 +66,11 @@ const mainNavRoutes = getLinks(
   ],
   "header"
 );
+const devOnlyRoutes = [{ label: "Design system", path: "/design-system" }];
+const footerRoutes = [
+  ...getLinks(["legalNotice", "feeds"], "footer"),
+  ...(import.meta.env.DEV ? devOnlyRoutes : []),
+];
 
 const isHome = Astro.url.pathname === pagesRoutes.home.path;
 const contentsId = translate("anchor.site.content");
@@ -146,6 +154,17 @@ const topId = translate("anchor.site.top");
             name="cc-by-sa"
             title={translate("license.title")}
           />
+          <List class="site-footer-nav" isInline spacing="2xs">
+            {
+              footerRoutes.map(({ label, path, ...item }) => (
+                <ListItem>
+                  <Link {...item} href={path}>
+                    {label}
+                  </Link>
+                </ListItem>
+              ))
+            }
+          </List>
           <BackToTop
             anchor={`#${topId}`}
             class="site-back-to-top"
@@ -314,7 +333,7 @@ const topId = translate("anchor.site.top");
       align-items: center;
       justify-content: center;
       gap: var(--spacing-3xs);
-      padding: var(--gutter) var(--spacing-md) var(--spacing-md);
+      padding: var(--gutter) var(--spacing-md);
       font-size: var(--font-size-sm);
     }
 

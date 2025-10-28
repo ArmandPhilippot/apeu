@@ -3,6 +3,7 @@ import type { ComponentProps } from "astro/types";
 import { components } from "../../components/mdx";
 import Page from "../../components/organisms/page/page.astro";
 import Layout from "../../components/templates/layout/layout.astro";
+import { getBreadcrumb } from "../../services/breadcrumb";
 import type { QueriedEntry } from "../../services/collections";
 
 type Props = Partial<ComponentProps<typeof Layout>> & {
@@ -13,9 +14,10 @@ const {
   entry: { Content, hasContent, ...page },
   ...props
 } = Astro.props;
+const breadcrumb = await getBreadcrumb({ route: Astro.url.pathname });
 ---
 
-<Layout seo={page.seo} {...props}>
+<Layout breadcrumb={breadcrumb} seo={page.seo} {...props}>
   <Page headings={page.headings} title={page.title}>
     {hasContent && <Content components={components} />}
   </Page>

@@ -4,13 +4,14 @@ import { Icon } from "astro-icon/components";
 import { useI18n } from "../../../services/i18n";
 import { useRouting } from "../../../services/routing";
 import "../../../styles/global.css";
-import type { SEO } from "../../../types/data";
+import type { Route, SEO, WithIcon } from "../../../types/data";
 import { CONFIG } from "../../../utils/constants";
 import Copyright from "../../atoms/copyright/copyright.astro";
 import BackToTop from "../../molecules/back-to-top/back-to-top.astro";
 import Branding from "../../molecules/branding/branding.astro";
 import Breadcrumb from "../../molecules/breadcrumb/breadcrumb.astro";
 import SkipLink from "../../molecules/skip-link/skip-link.astro";
+import MainNav from "../../organisms/main-nav/main-nav.astro";
 import PageTransitionProvider from "../../providers/page-transition-provider.astro";
 import ThemeProvider from "../../providers/theme-provider.astro";
 import Head from "./head.astro";
@@ -23,8 +24,47 @@ type Props = {
 const { breadcrumb, seo } = Astro.props;
 const { locale, translate } = useI18n(Astro.currentLocale);
 const { routeById } = await useRouting(locale);
-const homeUrl = routeById("home").path;
-const isHome = Astro.url.pathname === homeUrl;
+
+const pagesRoutes = {
+  blog: { ...routeById("blog"), icon: "blog" },
+  blogroll: { ...routeById("blogroll"), icon: "globe" },
+  bookmarks: { ...routeById("bookmarks"), icon: "bookmark" },
+  contact: { ...routeById("contact"), icon: "contact" },
+  feeds: { ...routeById("feeds"), icon: "feed" },
+  guides: { ...routeById("guides"), icon: "guide" },
+  home: { ...routeById("home"), icon: "home" },
+  legalNotice: routeById("legal-notice"),
+  notes: { ...routeById("notes"), icon: "notepad" },
+  projects: { ...routeById("projects"), icon: "project" },
+} satisfies Record<string, Omit<WithIcon<Route>, "iconSize">>;
+
+const getLinks = <T extends keyof typeof pagesRoutes>(
+  keys: T[],
+  target: "header" | "footer"
+) =>
+  keys.map((key): WithIcon<Route> => {
+    return {
+      ...pagesRoutes[key],
+      // eslint-disable-next-line no-magic-numbers -- Explicit enough.
+      iconSize: target === "footer" ? 17 : 28,
+    };
+  });
+
+const mainNavRoutes = getLinks(
+  [
+    "home",
+    "blog",
+    "guides",
+    "notes",
+    "projects",
+    "bookmarks",
+    "blogroll",
+    "contact",
+  ],
+  "header"
+);
+
+const isHome = Astro.url.pathname === pagesRoutes.home.path;
 const contentsId = translate("anchor.site.content");
 const topId = translate("anchor.site.top");
 ---
@@ -83,9 +123,9 @@ const topId = translate("anchor.site.top");
         </SkipLink>
         <header class="site-header">
           <h1 class="site-branding">
-            <Branding brand={CONFIG.BRAND} url={homeUrl} />
+            <Branding brand={CONFIG.BRAND} url={pagesRoutes.home.path} />
           </h1>
-          <nav class="site-navbar paper">Navbar</nav>
+          <nav class="site-navbar paper"><MainNav items={mainNavRoutes} /></nav>
         </header>
         <div class="site-body">
           {
@@ -155,6 +195,7 @@ const topId = translate("anchor.site.top");
       display: grid;
       grid-template-columns: subgrid;
       grid-template-rows: subgrid;
+      align-items: center;
 
       @media (--sm-or-above) {
         grid-row: 1;
@@ -163,6 +204,7 @@ const topId = translate("anchor.site.top");
       @media (--md-or-above) {
         grid-column: 1;
         grid-row: 1 / 4;
+        align-items: start;
       }
     }
 
@@ -173,7 +215,10 @@ const topId = translate("anchor.site.top");
 
       @media (--sm-or-above) {
         grid-column: 1;
-        align-self: self-end;
+      }
+
+      @media (--md-or-above) {
+        padding-block: var(--spacing-md) var(--gutter);
       }
     }
 
@@ -202,7 +247,7 @@ const topId = translate("anchor.site.top");
 
       @media (--md-or-above) {
         grid-row: 2 / 3;
-        background-color: var(--color-regular-light);
+        padding-inline: var(--gutter);
       }
     }
 

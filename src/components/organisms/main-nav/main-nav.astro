@@ -1,0 +1,153 @@
+---
+import type { ComponentProps } from "astro/types";
+import { Icon } from "astro-icon/components";
+import { useI18n } from "../../../services/i18n";
+import type { Route, WithIcon } from "../../../types/data";
+import { CONFIG } from "../../../utils/constants";
+import { isHomePage } from "../../../utils/urls";
+import Link from "../../atoms/link/link.astro";
+import ListItem from "../../atoms/list/list-item.astro";
+import List from "../../atoms/list/list.astro";
+
+type Props = Omit<ComponentProps<typeof List>, "children" | "hideMarker"> & {
+  items: WithIcon<Route>[];
+};
+
+const { class: className, items, slot, ...attrs } = Astro.props;
+const { locale } = useI18n(Astro.currentLocale);
+const isCurrentRouteOrNested = (url: string) => {
+  if (isHomePage(url)) return Astro.url.pathname === url;
+  /* eslint-disable-next-line no-magic-numbers -- When this is not the default locale, the slug is prefixed by the locale so we need to go further. */
+  const parentSlugIndex = locale === CONFIG.LANGUAGES.DEFAULT ? 1 : 2;
+  const parentPath = Astro.url.pathname.split("/")[parentSlugIndex];
+  const slug = url.split("/")[parentSlugIndex];
+
+  return parentPath === slug;
+};
+---
+
+<List {...attrs} class:list={[className, "main-nav", "paper"]} hideMarker>
+  {
+    items.map(({ icon, iconSize = 24, label, path }) => {
+      const isSelected = isCurrentRouteOrNested(path);
+
+      return (
+        <ListItem class="main-nav-item">
+          <Link
+            aria-current={path === Astro.url.pathname ? "page" : undefined}
+            class:list={["main-nav-link", { paper: isSelected }]}
+            {...(isSelected && { "data-selected": true })}
+            href={path}
+          >
+            {icon && <Icon aria-hidden="true" name={icon} size={iconSize} />}
+            {label}
+          </Link>
+        </ListItem>
+      );
+    })
+  }
+</List>
+
+<style>
+  @layer components {
+    .main-nav {
+      --cols: 2;
+
+      display: grid;
+      grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+      gap: var(--border-size-sm);
+      background: var(--color-border);
+
+      @media (--xxs-or-above) {
+        --cols: 3;
+      }
+
+      @media (--md-or-above) {
+        --cols: 1;
+
+        border: var(--border-size-sm) solid var(--color-border);
+        border-radius: var(--border-radii-lg);
+        box-shadow:
+          var(--shadow-raised-to-top-left),
+          var(--border-size-md) var(--border-size-md) 0 0 var(--color-shadow);
+      }
+    }
+
+    .main-nav-item {
+      background: var(--color-regular);
+
+      @media (--md-or-above) {
+        background: var(--color-regular-light);
+      }
+
+      &:first-child {
+        border-start-start-radius: inherit;
+        border-start-end-radius: inherit;
+      }
+
+      &:last-child {
+        border-end-start-radius: inherit;
+        border-end-end-radius: inherit;
+      }
+    }
+
+    .main-nav-link {
+      display: flex;
+      flex-flow: column nowrap;
+      place-items: center;
+      gap: var(--spacing-2xs) var(--spacing-xs);
+      min-height: calc(var(--one-px-in-rem) * 54);
+      padding: var(--spacing-2xs) var(--spacing-xs);
+      z-index: 1;
+      border-radius: var(--border-radii-md);
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-bold);
+      text-decoration: none;
+
+      @media (any-pointer: fine) {
+        min-height: calc(var(--one-px-in-rem) * 48);
+      }
+
+      @media (--xxs-or-above) {
+        flex-direction: row;
+      }
+
+      @media (--md-or-above) {
+        border-radius: inherit;
+      }
+
+      &:focus-visible {
+        outline-offset: calc(var(--border-size-sm) * -1);
+      }
+
+      &:hover,
+      &:focus {
+        background: var(--color-regular-lighter);
+      }
+
+      &:active {
+        background: var(--color-regular);
+      }
+
+      &[data-selected="true"] {
+        &::before {
+          border-radius: inherit;
+          box-shadow: inset 0 0 var(--border-size-md) var(--border-size-md)
+            var(--color-shadow-inset);
+        }
+
+        &:where(:hover, :focus)::before {
+          filter: brightness(102%);
+        }
+
+        &:where(:hover, :focus):not(:active)::before {
+          box-shadow: none;
+        }
+
+        &:active::before {
+          filter: brightness(98%);
+        }
+      }
+    }
+  }
+</style>

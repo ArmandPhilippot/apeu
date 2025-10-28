@@ -69,7 +69,7 @@ const body = await Astro.slots.render("default");
   {
     headings?.length ? (
       <div class="page-sidebar">
-        <Collapsible class="page-toc">
+        <Collapsible class="page-toc" open>
           <h2 slot="label">{translate("collapsible.toc.title")}</h2>
           <TableOfContents
             class="page-toc-body"

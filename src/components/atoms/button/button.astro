@@ -85,7 +85,7 @@ if (isExternal && kind === "primary") {
           transform 0.15s ease-in-out 0s;
       }
 
-      &:not([data-type="neutral"], [aria-disabled="true"], :disabled) {
+      &:where(:not([data-type="neutral"], [aria-disabled="true"], :disabled)) {
         &:hover {
           transform: translateX(calc(var(--btn-border-size) * -2))
             translateY(calc(var(--btn-border-size) * -2));

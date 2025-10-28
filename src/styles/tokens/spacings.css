@@ -10,4 +10,13 @@
   --spacing-lg: calc(var(--spacing-md) * pow(var(--spacing-ratio), 2));
   --spacing-xl: calc(var(--spacing-md) * pow(var(--spacing-ratio), 3));
   --spacing-2xl: calc(var(--spacing-md) * pow(var(--spacing-ratio), 4));
+  --gutter: var(--spacing-md);
+
+  @media (--prose) {
+    --gutter: clamp(
+      var(--spacing-md),
+      calc((var(--spacing-md) + 1dvw)),
+      var(--spacing-xl)
+    );
+  }
 }

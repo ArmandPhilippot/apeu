@@ -7,6 +7,7 @@ import "../../../styles/global.css";
 import type { SEO } from "../../../types/data";
 import { CONFIG } from "../../../utils/constants";
 import Copyright from "../../atoms/copyright/copyright.astro";
+import BackToTop from "../../molecules/back-to-top/back-to-top.astro";
 import Branding from "../../molecules/branding/branding.astro";
 import Breadcrumb from "../../molecules/breadcrumb/breadcrumb.astro";
 import SkipLink from "../../molecules/skip-link/skip-link.astro";
@@ -25,6 +26,7 @@ const { routeById } = await useRouting(locale);
 const homeUrl = routeById("home").path;
 const isHome = Astro.url.pathname === homeUrl;
 const contentsId = translate("anchor.site.content");
+const topId = translate("anchor.site.top");
 ---
 
 <html data-shiki="light" data-theme="light" lang={locale}>
@@ -103,6 +105,11 @@ const contentsId = translate("anchor.site.content");
             class="site-license"
             name="cc-by-sa"
             title={translate("license.title")}
+          />
+          <BackToTop
+            anchor={`#${topId}`}
+            class="site-back-to-top"
+            label={translate("cta.back.to.top")}
           />
         </footer>
       </PageTransitionProvider>
@@ -208,7 +215,13 @@ const contentsId = translate("anchor.site.content");
       @media (--md-or-above) {
         grid-column: 2;
         grid-row: 1 / 3;
-        padding-inline-end: var(--spacing-md);
+        padding-inline-end: var(--gutter);
+      }
+    }
+
+    :global(:where(.site:not(:has(.site-breadcrumb)))) .site-body {
+      @media (--md-or-above) {
+        margin-block-start: var(--gutter);
       }
     }
 
@@ -256,13 +269,28 @@ const contentsId = translate("anchor.site.content");
       align-items: center;
       justify-content: center;
       gap: var(--spacing-3xs);
-      padding: var(--spacing-md);
+      padding: var(--gutter) var(--spacing-md) var(--spacing-md);
       font-size: var(--font-size-sm);
     }
 
     .site-license {
       font-size: 1.25em;
       vertical-align: text-top;
+    }
+
+    .site-back-to-top {
+      /* Approximate height to avoid covering the navbar and footer text.  */
+      --navbar-footer-height: 7.2ch;
+
+      position: fixed;
+      bottom: calc(var(--navbar-footer-height) + 1dvi + var(--spacing-sm));
+      right: calc(1dvi + var(--spacing-sm));
+      z-index: 2;
+
+      @media (--sm-or-above) {
+        /* stylelint-disable-next-line -- We need a unit for calc to work. */
+        --navbar-footer-height: 0px;
+      }
     }
   }
 </style>

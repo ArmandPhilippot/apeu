@@ -90,7 +90,6 @@ const body = await Astro.slots.render("default");
 <style>
   @layer components {
     .page {
-      --gutter: var(--spacing-md);
       --main-col-width: 100%;
       --sidebar-col-width: 0;
 
@@ -103,11 +102,6 @@ const body = await Astro.slots.render("default");
       justify-content: center;
 
       @media (--prose) {
-        --gutter: clamp(
-          var(--spacing-md),
-          calc((var(--spacing-md) + 1dvw)),
-          var(--spacing-xl)
-        );
         --main-col-width: calc(var(--size-prose) + 2.5 * var(--gutter));
         --sidebar-col-width: calc(var(--size-prose) / 2.5 + 2 * var(--gutter));
       }

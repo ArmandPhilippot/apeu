@@ -1,0 +1,37 @@
+---
+title: "Copyright"
+---
+import { components as mdxComponents } from "../../mdx";
+import CodePreview from "../../molecules/code-preview/code-preview.astro";
+import Copyright from "./copyright.astro";
+
+export const components = mdxComponents;
+
+## Introduction
+
+A Copyright component is usually used in the website's footer to display the copyright.
+
+<CodePreview
+  code={`import Copyright from "./components/atoms/copyright/copyright.astro"`}
+  label="How to import"
+  lang="ts"
+/>
+<CodePreview
+  code={`<Copyright creationYear={2025} owner="John Doe" />`}
+  label="Basic use"
+  lang="astro"
+>
+  <Copyright creationYear={2025} owner="John Doe" />
+</CodePreview>
+
+## Different current and creation years
+
+When the creation year is different from the current one, both years will be displayed.
+
+<CodePreview
+  code={`<Copyright creationYear={2020} owner="John Doe" />`}
+  label="Automatic handling of dates"
+  lang="astro"
+>
+  <Copyright creationYear={2020} owner="John Doe" />
+</CodePreview>

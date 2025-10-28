@@ -1,0 +1,16 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+type Props = HTMLAttributes<"span"> & {
+  creationYear: number;
+  owner: string;
+};
+
+const { creationYear, owner, slot, ...attrs } = Astro.props;
+
+const currentYear = new Date().getFullYear();
+const shouldAddCurrentYear = currentYear !== creationYear;
+const years = `${creationYear}${shouldAddCurrentYear ? ` - ${currentYear}` : ""}`;
+---
+
+<span {...attrs}>&copy; {years} {owner}.</span>

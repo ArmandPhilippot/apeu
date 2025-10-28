@@ -1,10 +1,12 @@
 ---
 import type { ComponentProps } from "astro/types";
+import { Icon } from "astro-icon/components";
 import { useI18n } from "../../../services/i18n";
 import { useRouting } from "../../../services/routing";
 import "../../../styles/global.css";
 import type { SEO } from "../../../types/data";
 import { CONFIG } from "../../../utils/constants";
+import Copyright from "../../atoms/copyright/copyright.astro";
 import Branding from "../../molecules/branding/branding.astro";
 import Breadcrumb from "../../molecules/breadcrumb/breadcrumb.astro";
 import ThemeProvider from "../../providers/theme-provider.astro";
@@ -16,7 +18,7 @@ type Props = {
 };
 
 const { breadcrumb, seo } = Astro.props;
-const { locale } = useI18n(Astro.currentLocale);
+const { locale, translate } = useI18n(Astro.currentLocale);
 const { routeById } = await useRouting(locale);
 const homeUrl = routeById("home").path;
 const isHome = Astro.url.pathname === homeUrl;
@@ -88,7 +90,14 @@ const isHome = Astro.url.pathname === homeUrl;
           <slot />
         </main>
       </div>
-      <footer class="site-footer">Footer</footer>
+      <footer class="site-footer">
+        <Copyright creationYear={CONFIG.CREATION_YEAR} owner={CONFIG.BRAND} />
+        <Icon
+          class="site-license"
+          name="cc-by-sa"
+          title={translate("license.title")}
+        />
+      </footer>
     </ThemeProvider>
   </body>
 </html>
@@ -241,6 +250,11 @@ const isHome = Astro.url.pathname === homeUrl;
       gap: var(--spacing-3xs);
       padding: var(--spacing-md);
       font-size: var(--font-size-sm);
+    }
+
+    .site-license {
+      font-size: 1.25em;
+      vertical-align: text-top;
     }
   }
 </style>

@@ -1,0 +1,28 @@
+---
+title: "SkipLink"
+---
+import { components as mdxComponents } from "../../mdx";
+import CodePreview from "../code-preview/code-preview.astro";
+import SkipLink from "./skip-link.astro";
+
+export const components = mdxComponents;
+
+## Introduction
+
+A SkipLink component is special. It is used to navigate through a page using anchors.
+
+<CodePreview
+  code={`import SkipLink from "./components/molecules/skip-to/skip-link.astro";`}
+  label="How to import"
+  lang="ts"
+/>
+
+<CodePreview
+  code={`<SkipLink to="#some-id">Skip to some anchor on the page</SkipLink>`}
+  label="Basic use"
+  lang="astro"
+>
+  Click here then use <kbd>Tab</kbd> key to focus the skip link below. It should then appears on the top left of your screen.
+
+  <SkipLink to="#some-id">Skip to some anchor on the page</SkipLink>
+</CodePreview>

@@ -169,7 +169,7 @@ dt {
 }
 
 :is(h1, h2, h3, h4, h5, h6) {
-  color: var(--color-primary-faded);
+  color: var(--color-primary-high);
   font-weight: var(--font-weight-bold);
   text-wrap: balance;
 }
@@ -199,7 +199,7 @@ h6 {
 }
 
 label {
-  color: var(--color-primary-faded);
+  color: var(--color-primary-high);
   font-weight: var(--font-weight-bold);
 
   &:where([for]) {
@@ -208,7 +208,7 @@ label {
 }
 
 legend {
-  color: var(--color-primary-faded);
+  color: var(--color-primary-high);
   font-weight: var(--font-weight-bold);
 }
 

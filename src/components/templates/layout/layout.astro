@@ -16,6 +16,7 @@ import Breadcrumb from "../../molecules/breadcrumb/breadcrumb.astro";
 import SkipLink from "../../molecules/skip-link/skip-link.astro";
 import MainNav from "../../organisms/main-nav/main-nav.astro";
 import SearchForm from "../../organisms/search-form/search-form.astro";
+import SettingsForm from "../../organisms/settings-form/settings-form.astro";
 import PageTransitionProvider from "../../providers/page-transition-provider.astro";
 import ThemeProvider from "../../providers/theme-provider.astro";
 import Head from "./head.astro";
@@ -143,6 +144,7 @@ const topId = translate("anchor.site.top");
               queryParam={CONFIG.SEARCH.QUERY_PARAM}
               resultsPage={pagesRoutes.search.path}
             />
+            <SettingsForm altLanguages={seo.languages} />
           </nav>
         </header>
         <div class="site-body">

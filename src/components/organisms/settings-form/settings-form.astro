@@ -1,0 +1,66 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import { useI18n } from "../../../services/i18n";
+import { useRouting } from "../../../services/routing";
+import type { AltLanguage, Route } from "../../../types/data";
+import { LOCALE_DISPLAY_NAMES } from "../../../utils/constants";
+import { isAvailableLocale } from "../../../utils/type-guards";
+import LanguageSelect from "../../molecules/language-select/language-select.astro";
+
+type Props = HTMLAttributes<"form"> & {
+  altLanguages?: AltLanguage[] | null | undefined;
+};
+
+const { altLanguages, class: className, id, ...attrs } = Astro.props;
+const { locale, translate } = useI18n(Astro.currentLocale);
+const { routeById } = await useRouting(locale);
+const languages = Object.fromEntries(
+  Object.entries(LOCALE_DISPLAY_NAMES)
+    .map(([lang, langName]): [string, Route] | null => {
+      if (!isAvailableLocale(lang)) return null;
+
+      return [
+        lang,
+        {
+          label: langName,
+          path:
+            lang === locale
+              ? Astro.url.pathname
+              : (altLanguages?.find((altLang) => altLang.locale === lang)
+                  ?.route ?? routeById("home", lang).path),
+        },
+      ];
+    })
+    .filter((language) => language !== null)
+);
+---
+
+<form {...attrs} class:list={[className, "settings-form"]} id={id}>
+  <fieldset>
+    <legend>{translate("settings.form.label")}</legend>
+    {
+      Object.keys(languages).length > 1 ? (
+        <LanguageSelect
+          class="settings-form-language"
+          current={locale}
+          hideLabel
+          label={translate("form.settings.label.language")}
+          languages={languages}
+          showIcon
+        />
+      ) : null
+    }
+  </fieldset>
+</form>
+
+<style>
+  @layer components {
+    .settings-form fieldset {
+      display: flex;
+      flex-flow: column;
+      margin-inline: 0;
+      padding-inline: 0;
+      border: none;
+    }
+  }
+</style>

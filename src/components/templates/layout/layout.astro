@@ -15,6 +15,7 @@ import Branding from "../../molecules/branding/branding.astro";
 import Breadcrumb from "../../molecules/breadcrumb/breadcrumb.astro";
 import SkipLink from "../../molecules/skip-link/skip-link.astro";
 import MainNav from "../../organisms/main-nav/main-nav.astro";
+import SearchForm from "../../organisms/search-form/search-form.astro";
 import PageTransitionProvider from "../../providers/page-transition-provider.astro";
 import ThemeProvider from "../../providers/theme-provider.astro";
 import Head from "./head.astro";
@@ -39,6 +40,7 @@ const pagesRoutes = {
   legalNotice: routeById("legal-notice"),
   notes: { ...routeById("notes"), icon: "notepad" },
   projects: { ...routeById("projects"), icon: "project" },
+  search: routeById("search"),
 } satisfies Record<string, Omit<WithIcon<Route>, "iconSize">>;
 
 const getLinks = <T extends keyof typeof pagesRoutes>(
@@ -133,7 +135,15 @@ const topId = translate("anchor.site.top");
           <h1 class="site-branding">
             <Branding brand={CONFIG.BRAND} url={pagesRoutes.home.path} />
           </h1>
-          <nav class="site-navbar paper"><MainNav items={mainNavRoutes} /></nav>
+          <nav class="site-navbar paper">
+            <MainNav items={mainNavRoutes} />
+            <SearchForm
+              id="site-search"
+              isInline
+              queryParam={CONFIG.SEARCH.QUERY_PARAM}
+              resultsPage={pagesRoutes.search.path}
+            />
+          </nav>
         </header>
         <div class="site-body">
           {

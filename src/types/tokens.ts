@@ -41,6 +41,20 @@ export type Direction = "bottom" | "left" | "right" | "top";
  */
 export type Elevation = "raised" | "elevated" | "floating";
 
+export type FieldTextType =
+  | "date"
+  | "datetime-local"
+  | "email"
+  | "month"
+  | "password"
+  | "search"
+  | "tel"
+  | "text"
+  | "textarea"
+  | "time"
+  | "url"
+  | "week";
+
 export type HeadingLvl = (typeof HEADING_TAGS)[number];
 
 /**

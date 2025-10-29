@@ -1,0 +1,86 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import type { FieldTextType } from "../../../types/tokens";
+
+type Props = Omit<HTMLAttributes<"input" | "textarea">, "type"> & {
+  type: FieldTextType;
+};
+
+const { class: className, slot, type, ...attrs } = Astro.props;
+---
+
+{
+  type === "textarea" ? (
+    <textarea {...attrs} class:list={[className, "text-field"]} />
+  ) : (
+    <input {...attrs} class:list={[className, "text-field"]} type={type} />
+  )
+}
+
+<style>
+  @layer components {
+    .text-field {
+      padding: var(--spacing-xs) var(--spacing-sm);
+      background: var(--color-regular-light);
+      border: var(--border-size-sm) solid var(--color-border-light);
+      border-radius: var(--border-radii-lg);
+      box-shadow:
+        inset 0 0 var(--border-size-sm) var(--border-size-sm)
+          var(--color-shadow-inset),
+        var(--shadow-raised-to-top-left),
+        var(--border-size-md) var(--border-size-md) 0 0 var(--color-shadow);
+      color: var(--color-on-regular);
+      line-height: inherit;
+      outline: var(--border-size-md) solid transparent;
+      outline-offset: calc(var(--border-size-md) * -1);
+      transition:
+        box-shadow 0.1s linear 0s,
+        outline 0.1s ease-in-out 0s,
+        transform 0.1s linear 0s;
+
+      &:where(textarea) {
+        min-height: 18cap;
+      }
+
+      &:where(:not(textarea)) {
+        min-height: calc(var(--one-px-in-rem) * 54);
+
+        @media (any-pointer: fine) {
+          min-height: calc(var(--one-px-in-rem) * 48);
+        }
+      }
+
+      &:where(:disabled) {
+        cursor: not-allowed;
+      }
+
+      &:where(:disabled, :read-only) {
+        background: var(--color-muted-lighter);
+      }
+
+      &:where(:focus-visible) {
+        outline-color: var(--color-primary);
+      }
+
+      &:where(:hover:not(:read-only)) {
+        background: var(--color-regular-lighter);
+      }
+
+      &:where(:focus:not(:read-only)) {
+        background: var(--color-regular-dark);
+        box-shadow:
+          inset 0 0 var(--border-size-md) var(--border-size-md)
+            var(--color-shadow-inset-dark),
+          0 0 0 0 var(--color-shadow),
+          0 0 0 0 var(--color-muted-darker);
+        transform: translateY(var(--border-size-md))
+          translateX(var(--border-size-md));
+      }
+
+      &::placeholder {
+        color: var(--color-muted-high);
+        opacity: 1;
+      }
+    }
+  }
+</style>

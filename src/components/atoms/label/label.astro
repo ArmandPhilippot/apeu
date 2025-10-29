@@ -1,0 +1,28 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+type Props = HTMLAttributes<"label"> & {
+  isRequired?: boolean | null | undefined;
+};
+
+const { class: className, isRequired = false, slot, ...attrs } = Astro.props;
+---
+
+<label {...attrs} class:list={[className, "label"]}>
+  <slot />
+  {
+    isRequired ? (
+      <span aria-hidden="true" class="label-required">
+        *
+      </span>
+    ) : null
+  }
+</label>
+
+<style>
+  @layer components {
+    .label-required {
+      color: var(--color-critical);
+    }
+  }
+</style>

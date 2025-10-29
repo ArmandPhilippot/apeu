@@ -148,13 +148,17 @@ const topId = translate("anchor.site.top");
           </main>
         </div>
         <footer class="site-footer">
-          <Copyright creationYear={CONFIG.CREATION_YEAR} owner={CONFIG.BRAND} />
+          <Copyright
+            class="site-copyright"
+            creationYear={CONFIG.CREATION_YEAR}
+            owner={CONFIG.BRAND}
+          />
           <Icon
             class="site-license"
             name="cc-by-sa"
             title={translate("license.title")}
           />
-          <List class="site-footer-nav" isInline spacing="2xs">
+          <List class="site-footer-nav" isInline spacing="xs">
             {
               footerRoutes.map(({ label, path, ...item }) => (
                 <ListItem>
@@ -337,9 +341,17 @@ const topId = translate("anchor.site.top");
       font-size: var(--font-size-sm);
     }
 
+    .site-copyright {
+      text-align: center;
+    }
+
     .site-license {
       font-size: 1.25em;
       vertical-align: text-top;
+    }
+
+    .site-footer-nav {
+      margin-inline-start: var(--spacing-2xs);
     }
 
     .site-back-to-top {

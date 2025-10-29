@@ -1,0 +1,70 @@
+---
+title: "SelectField"
+---
+import { components as mdxComponents } from "../../mdx";
+import CodePreview from "../../molecules/code-preview/code-preview.astro";
+import SelectField from "./select-field.astro";
+
+export const components = mdxComponents;
+
+## Introduction
+
+<CodePreview
+  code={`import SelectField from "./components/atoms/select-field/select-field.astro";`}
+  label="How to import"
+  lang="ts"
+/>
+
+<CodePreview
+  code={`<SelectField
+    options={[
+      { label: "Option 1", value: "option-1" },
+      { label: "Option 2", value: "option-2" },
+      { label: "Option 3", value: "option-3" }
+    ]}
+    value="option-2"
+  />`}
+  label="Basic use"
+  lang="astro"
+>
+  <SelectField
+    options={[
+      { label: "Option 1", value: "option-1" },
+      { label: "Option 2", value: "option-2" },
+      { label: "Option 3", value: "option-3" }
+    ]}
+    value="option-2"
+  />
+</CodePreview>
+
+## Options
+
+### `icon`
+
+<CodePreview
+  code={`<SelectField
+    icon="bookmark"
+    options={[
+      { label: "Option 1", value: "option-1" },
+      { label: "Option 2", value: "option-2" },
+      { label: "Option 3", value: "option-3" }
+    ]}
+    value="option-2"
+  />`}
+  label="Displaying an icon in front of the selected option"
+  lang="astro"
+>
+  <SelectField
+    icon="sun"
+    options={[
+      { label: "Option 1", value: "option-1" },
+      { label: "Option 2", value: "option-2" },
+      { label: "Option 3", value: "option-3" }
+    ]}
+    value="option-2"
+  />
+</CodePreview>
+
+### `iconSize`
+
+You can also adjust the size of the icon using `iconSize`. This defaults to `24` and this is only used when an icon is provided.

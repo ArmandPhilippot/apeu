@@ -14,9 +14,7 @@ import BackToTop from "../../molecules/back-to-top/back-to-top.astro";
 import Branding from "../../molecules/branding/branding.astro";
 import Breadcrumb from "../../molecules/breadcrumb/breadcrumb.astro";
 import SkipLink from "../../molecules/skip-link/skip-link.astro";
-import MainNav from "../../organisms/main-nav/main-nav.astro";
-import SearchForm from "../../organisms/search-form/search-form.astro";
-import SettingsForm from "../../organisms/settings-form/settings-form.astro";
+import Navbar from "../../organisms/navbar/navbar.astro";
 import PageTransitionProvider from "../../providers/page-transition-provider.astro";
 import ThemeProvider from "../../providers/theme-provider.astro";
 import Head from "./head.astro";
@@ -136,16 +134,11 @@ const topId = translate("anchor.site.top");
           <h1 class="site-branding">
             <Branding brand={CONFIG.BRAND} url={pagesRoutes.home.path} />
           </h1>
-          <nav class="site-navbar paper">
-            <MainNav items={mainNavRoutes} />
-            <SearchForm
-              id="site-search"
-              isInline
-              queryParam={CONFIG.SEARCH.QUERY_PARAM}
-              resultsPage={pagesRoutes.search.path}
-            />
-            <SettingsForm altLanguages={seo.languages} />
-          </nav>
+          <Navbar
+            altLanguages={seo.languages}
+            class="site-navbar paper"
+            mainNav={mainNavRoutes}
+          />
         </header>
         <div class="site-body">
           {
@@ -367,18 +360,10 @@ const topId = translate("anchor.site.top");
     }
 
     .site-back-to-top {
-      /* Approximate height to avoid covering the navbar and footer text.  */
-      --navbar-footer-height: 7.2ch;
-
       position: fixed;
-      bottom: calc(var(--navbar-footer-height) + 1dvi + var(--spacing-sm));
+      bottom: calc(var(--size-navbar) + 1dvi + var(--spacing-sm));
       right: calc(1dvi + var(--spacing-sm));
       z-index: 2;
-
-      @media (--sm-or-above) {
-        /* stylelint-disable-next-line -- We need a unit for calc to work. */
-        --navbar-footer-height: 0px;
-      }
     }
   }
 </style>

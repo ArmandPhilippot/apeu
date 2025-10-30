@@ -38,7 +38,7 @@ const languages = Object.fromEntries(
 
 <form {...attrs} class:list={[className, "settings-form"]} id={id}>
   <fieldset>
-    <legend>{translate("settings.form.label")}</legend>
+    <legend>{translate("form.settings.label")}</legend>
     {
       Object.keys(languages).length > 1 ? (
         <LanguageSelect
@@ -89,6 +89,10 @@ const languages = Object.fromEntries(
       margin-inline: 0;
       padding-inline: 0;
       border: none;
+    }
+
+    .settings-form legend {
+      margin-block-end: var(--spacing-3xs);
     }
 
     .settings-form-language,

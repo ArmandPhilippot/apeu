@@ -1,0 +1,213 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import { Icon } from "astro-icon/components";
+import { useI18n } from "../../../services/i18n";
+import { useRouting } from "../../../services/routing";
+import type { AltLanguage, Route, WithIcon } from "../../../types/data";
+import { CONFIG } from "../../../utils/constants";
+import Button from "../../atoms/button/button.astro";
+import MainNav from "../main-nav/main-nav.astro";
+import SearchForm from "../search-form/search-form.astro";
+import SettingsForm from "../settings-form/settings-form.astro";
+
+type Props = HTMLAttributes<"nav"> & {
+  altLanguages?: AltLanguage[] | null | undefined;
+  mainNav: WithIcon<Route>[];
+};
+
+const { altLanguages, class: className, mainNav, slot, ...attrs } = Astro.props;
+const { locale, translate } = useI18n(Astro.currentLocale);
+const { routeById } = await useRouting(locale);
+---
+
+<nav {...attrs} class:list={[className, "navbar"]}>
+  <div class="navbar-item" data-item="menu">
+    <Button
+      class="navbar-controller"
+      kind="neutral"
+      popovertarget="navbar-menu-modal"
+    >
+      <Icon aria-hidden="true" name="hamburger" size={28} />
+      {translate("navbar.main.nav.label")}
+    </Button>
+    <div class="navbar-modal" id="navbar-menu-modal" popover>
+      <MainNav class="navbar-content" items={mainNav} />
+    </div>
+  </div>
+  <div class="navbar-item" data-item="search">
+    <Button
+      class="navbar-controller"
+      kind="neutral"
+      popovertarget="navbar-search-modal"
+    >
+      <Icon aria-hidden="true" name="search" size={28} />
+      {translate("navbar.search.label")}
+    </Button>
+    <div class="navbar-modal" id="navbar-search-modal" popover>
+      <SearchForm
+        class="navbar-content"
+        id="navbar-search"
+        isInline
+        queryParam={CONFIG.SEARCH.QUERY_PARAM}
+        resultsPage={routeById("search").path}
+      />
+    </div>
+  </div>
+  <div class="navbar-item js-only" data-item="settings">
+    <Button
+      class="navbar-controller"
+      kind="neutral"
+      popovertarget="navbar-settings-modal"
+    >
+      <Icon aria-hidden="true" name="gear" size={28} />
+      {translate("navbar.settings.label")}
+    </Button>
+    <div class="navbar-modal" id="navbar-settings-modal" popover>
+      <SettingsForm
+        altLanguages={altLanguages}
+        class="navbar-content"
+        id="navbar-settings"
+      />
+    </div>
+  </div>
+</nav>
+
+<style>
+  @layer components {
+    .navbar {
+      display: grid;
+      grid-auto-columns: minmax(0, 1fr);
+      grid-auto-flow: column;
+      height: var(--size-navbar);
+
+      @media (--md-or-above) {
+        display: flex;
+        flex-flow: column;
+        gap: var(--spacing-md);
+        align-items: stretch;
+        height: auto;
+      }
+    }
+
+    .navbar-item {
+      display: flex;
+      color: var(--color-primary);
+
+      &:where(:not(:last-child)) {
+        border-inline-end: var(--border-size-sm) solid var(--color-border);
+
+        @media (--md-or-above) {
+          border-inline-end: none;
+        }
+      }
+    }
+
+    .navbar-controller {
+      flex: 1;
+      flex-direction: column;
+      row-gap: var(--spacing-2xs);
+      font-size: var(--font-size-xs);
+      word-break: break-all;
+      text-transform: uppercase;
+      outline-offset: calc(var(--border-size-md) * -2);
+
+      @media (--md-or-above) {
+        display: none;
+      }
+    }
+
+    :where(.navbar-item:has(:popover-open)) .navbar-controller {
+      box-shadow: inset 0 0 0 var(--border-size-md) var(--color-primary);
+    }
+
+    .navbar-modal {
+      --translate-x: 0;
+      --transform-origin-x: 50%;
+      --transform-origin-y: 100%;
+
+      width: 100%;
+      inset-block: auto var(--size-navbar);
+      background: var(--color-regular);
+      border-color: var(--color-border);
+      border-style: solid;
+      border-block-width: var(--border-size-sm);
+      border-inline-width: 0;
+      box-shadow: var(--shadow-elevated-to-bottom-center);
+      opacity: 0;
+      transform: translate3d(var(--translate-x), 0, 100px) scale(0);
+      transform-origin: var(--transform-origin-x) var(--transform-origin-y);
+      transition:
+        opacity 0.35s ease-in-out 0s,
+        transform 0.35s ease-in-out 0s,
+        overlay 0.35s ease-in-out 0s,
+        display 0.35s ease-in-out 0s;
+      /* stylelint-disable-next-line */
+      transition-behavior: allow-discrete;
+
+      @media (--sm-or-above) {
+        --transform-origin-y: 0;
+
+        width: auto;
+        inset-block: var(--size-navbar) auto;
+        border-inline: var(--border-size-sm) solid var(--color-border);
+        box-shadow: var(--shadow-elevated-to-top-left);
+      }
+
+      @media (--md-or-above) {
+        display: contents;
+      }
+
+      &:where(:popover-open) {
+        opacity: 1;
+        transform: translate3d(var(--translate-x), 0, 0) scale(1);
+
+        @starting-style {
+          opacity: 0;
+          transform: translate3d(var(--translate-x), 0, 100px) scale(0);
+        }
+      }
+    }
+
+    :where([data-item="menu"]) .navbar-modal {
+      --transform-origin-x: 20%;
+
+      @media (--sm-or-above) {
+        --translate-x: -50%;
+        --transform-origin-x: 50%;
+
+        inset-inline: 50% 0;
+      }
+    }
+
+    :where([data-item="search"], [data-item="settings"]) .navbar-modal {
+      padding: var(--spacing-md);
+    }
+
+    :where([data-item="search"]) .navbar-modal {
+      --transform-origin-x: 50%;
+
+      @media (--sm-or-above) {
+        --translate-x: -5%;
+
+        left: 50%;
+      }
+    }
+
+    :where([data-item="settings"]) .navbar-modal {
+      --transform-origin-x: 80%;
+
+      @media (--sm-or-above) {
+        --transform-origin-x: 70%;
+
+        min-width: 25dvw;
+        inset-inline: auto 0;
+      }
+    }
+
+    .navbar-content {
+      @media (--md-or-above) {
+        flex: 1;
+      }
+    }
+  }
+</style>

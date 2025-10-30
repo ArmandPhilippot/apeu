@@ -6,6 +6,7 @@ import type { AltLanguage, Route } from "../../../types/data";
 import { LOCALE_DISPLAY_NAMES } from "../../../utils/constants";
 import { isAvailableLocale } from "../../../utils/type-guards";
 import LanguageSelect from "../../molecules/language-select/language-select.astro";
+import ThemeSelect from "../../molecules/theme-select/theme-select.astro";
 
 type Props = HTMLAttributes<"form"> & {
   altLanguages?: AltLanguage[] | null | undefined;
@@ -50,6 +51,32 @@ const languages = Object.fromEntries(
         />
       ) : null
     }
+    <ThemeSelect
+      class="settings-form-theme"
+      current="auto"
+      hideLabel
+      label={translate("form.settings.label.theme.website")}
+      setting="theme"
+      showIcon
+      themes={{
+        auto: translate("theme.label.auto"),
+        dark: translate("theme.label.dark"),
+        light: translate("theme.label.light"),
+      }}
+    />
+    <ThemeSelect
+      class="settings-form-theme"
+      current="auto"
+      hideLabel
+      label={translate("form.settings.label.theme.shiki")}
+      setting="shiki"
+      showIcon
+      themes={{
+        auto: translate("theme.label.auto"),
+        dark: translate("theme.label.dark"),
+        light: translate("theme.label.light"),
+      }}
+    />
   </fieldset>
 </form>
 
@@ -58,9 +85,19 @@ const languages = Object.fromEntries(
     .settings-form fieldset {
       display: flex;
       flex-flow: column;
+      gap: var(--spacing-xs);
       margin-inline: 0;
       padding-inline: 0;
       border: none;
+    }
+
+    .settings-form-language,
+    .settings-form-theme {
+      flex: 1;
+
+      & :global(label) {
+        flex: 1;
+      }
     }
   }
 </style>

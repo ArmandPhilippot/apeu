@@ -62,6 +62,11 @@ if (isExternal && kind === "primary") {
       outline-offset: calc(var(--border-size-md) * -1);
       text-decoration: none;
 
+      @media screen and (any-pointer: fine) {
+        min-width: unset;
+        min-height: unset;
+      }
+
       &[aria-busy="true"] {
         cursor: wait;
       }

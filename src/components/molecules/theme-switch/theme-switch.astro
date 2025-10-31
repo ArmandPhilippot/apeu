@@ -1,0 +1,237 @@
+---
+import type { JSX } from "astro/jsx-runtime";
+import { Icon } from "astro-icon/components";
+import type { Settings } from "../../../services/stores";
+import type { WithIcon } from "../../../types/data";
+import type { Theme } from "../../../types/tokens";
+import Button from "../../atoms/button/button.astro";
+import Label from "../../atoms/label/label.astro";
+
+type Themes = Record<
+  Extract<Theme, "dark" | "light">,
+  WithIcon<{ label: string }>
+>;
+
+type Props = JSX.HTMLAttributes & {
+  /**
+   * Should we hide the label visually?
+   *
+   * @default false
+   */
+  hideLabel?: boolean | null | undefined;
+  /**
+   * Should the label and the switch be inlined?
+   *
+   * @default false
+   */
+  isInline?: boolean | null | undefined;
+  /**
+   * The switch label.
+   */
+  label: string;
+  /**
+   * The controlled setting key.
+   */
+  setting?: keyof Settings;
+};
+
+const {
+  "aria-label": ariaLabel,
+  class: className,
+  hideLabel = false,
+  isInline = false,
+  label,
+  setting = "theme",
+  slot,
+  ...attrs
+} = Astro.props;
+const themes = {
+  dark: { label: "Dark", icon: "moon", iconSize: 24 },
+  light: { label: "Light", icon: "sun", iconSize: 24 },
+} satisfies WithIcon<Themes>;
+---
+
+<apeu-theme-switch
+  {...attrs}
+  class:list={[className, "switch"]}
+  data-setting={setting}
+>
+  <Label aria-label={ariaLabel} class="switch-label" data-inline={isInline}>
+    <span class:list={{ "sr-only": hideLabel }}>{label}</span>
+    <Button aria-checked="true" class="switch-btn" kind="neutral" role="switch">
+      <Icon
+        aria-hidden="true"
+        class="switch-option"
+        name={themes.light.icon}
+        size={themes.light.iconSize}
+        title={themes.light.label}
+      />
+      <span aria-hidden="true" class="switch-indicator"></span>
+      <Icon
+        aria-hidden="true"
+        class="switch-option"
+        name={themes.dark.icon}
+        size={themes.dark.iconSize}
+        title={themes.dark.label}
+      />
+    </Button>
+  </Label>
+</apeu-theme-switch>
+
+<style>
+  @layer components {
+    .switch,
+    .switch-label {
+      display: flex;
+      gap: 0 var(--spacing-xs);
+      align-items: center;
+      width: fit-content;
+      cursor: pointer;
+    }
+
+    .switch {
+      --switch-size: calc(var(--one-px-in-rem) * 35);
+    }
+
+    .switch-label {
+      &:where([data-inline="true"]) {
+        flex-flow: row wrap;
+        align-items: center;
+      }
+
+      &:where([data-inline="false"]) {
+        flex-flow: column wrap;
+      }
+    }
+
+    .switch-btn {
+      flex-direction: column;
+      padding: var(--spacing-xs) 0;
+      border-radius: var(--border-radii-pill);
+
+      @container (width >= 320px) {
+        flex-flow: row wrap;
+      }
+    }
+
+    .switch-indicator {
+      width: var(--switch-size);
+      aspect-ratio: 1 / 2;
+      box-sizing: content-box;
+      position: relative;
+      background: var(--color-muted);
+      border: var(--border-size-sm) solid var(--color-muted-high);
+      border-radius: var(--border-radii-pill);
+      box-shadow: inset 0 0 var(--border-size-xl) 0 var(--color-black);
+
+      @container (width >= 320px) {
+        width: unset;
+        height: var(--switch-size);
+        aspect-ratio: 2 / 1;
+      }
+
+      &::after {
+        content: "";
+        aspect-ratio: 1 / 1;
+        position: absolute;
+        inset-block-start: calc(var(--border-size-sm) * -1);
+        inset-inline: 0;
+        background: var(--color-primary);
+        border: var(--border-size-sm) solid var(--color-primary-high);
+        border-radius: var(--border-radii-rounded);
+        box-shadow:
+          inset 0 0 0 var(--border-size-md) var(--color-regular-light),
+          var(--shadow-raised-to-top-left);
+        transform: translateY(calc(var(--border-size-sm) * -1));
+        transition:
+          box-shadow 0.25s ease 0s,
+          transform 0.25s ease 0s;
+
+        @container (width >= 320px) {
+          inset-block: 0;
+          inset-inline: 0 auto;
+          transform: translateX(0);
+        }
+      }
+    }
+
+    :where(.switch-btn[aria-checked="true"]) .switch-indicator::after {
+      box-shadow:
+        inset 0 0 0 var(--border-size-md) var(--color-regular-light),
+        var(--shadow-raised-to-top-right);
+      transform: translateY(calc(100% + var(--border-size-sm)));
+
+      @container (width >= 320px) {
+        transform: translateX(calc(100% + var(--border-size-sm)));
+      }
+    }
+  }
+</style>
+
+<script>
+  import {
+    isValidSettingsKey,
+    resolveCurrentColorScheme,
+    SETTING_KEYS,
+    settings,
+    type Settings,
+  } from "../../../services/stores";
+
+  class APEUThemeSwitch extends HTMLElement {
+    #btn: HTMLButtonElement | null;
+    #settingKey: keyof Settings = SETTING_KEYS.THEME;
+    #unsubscribe: (() => void) | null = null;
+
+    constructor() {
+      super();
+      this.#btn = this.querySelector("button");
+      this.handleClick = this.handleClick.bind(this);
+      this.updateVisualState = this.updateVisualState.bind(this);
+    }
+
+    connectedCallback() {
+      this.#btn?.addEventListener("click", this.handleClick);
+
+      if (isValidSettingsKey(this.dataset.setting)) {
+        this.#settingKey = this.dataset.setting;
+      }
+
+      this.#unsubscribe = settings.subscribe((newSettings) => {
+        this.updateVisualState(newSettings);
+      });
+
+      this.updateVisualState(settings.get());
+    }
+
+    disconnectedCallback() {
+      this.#btn?.removeEventListener("click", this.handleClick);
+
+      if (this.#unsubscribe) {
+        this.#unsubscribe();
+      }
+    }
+
+    handleClick() {
+      const currentSettings = settings.get();
+      const currentTheme = currentSettings[this.#settingKey];
+      const resolvedTheme = resolveCurrentColorScheme(currentTheme);
+      const newTheme = resolvedTheme === "light" ? "dark" : "light";
+
+      settings.setKey(this.#settingKey, newTheme);
+    }
+
+    updateVisualState(currentSettings: Readonly<Settings>) {
+      if (!this.#btn) return;
+
+      const currentTheme = currentSettings[this.#settingKey];
+      const resolvedTheme =
+        this.#settingKey === SETTING_KEYS.SHIKI && currentTheme === "auto"
+          ? resolveCurrentColorScheme(currentSettings.theme)
+          : resolveCurrentColorScheme(currentTheme);
+
+      this.#btn.ariaChecked = resolvedTheme === "dark" ? "true" : "false";
+    }
+  }
+
+  customElements.define("apeu-theme-switch", APEUThemeSwitch);
+</script>

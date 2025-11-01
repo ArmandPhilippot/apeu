@@ -1,0 +1,95 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+type Props = HTMLAttributes<"figure"> & {
+  isCentered?: boolean | null | undefined;
+  isFullWidth?: boolean | null | undefined;
+};
+
+const {
+  class: className,
+  isCentered = false,
+  isFullWidth = false,
+  slot,
+  ...attrs
+} = Astro.props;
+---
+
+<figure
+  {...attrs}
+  class:list={[className, "paper-dark", "figure"]}
+  data-centered={isCentered}
+  data-full-width={isFullWidth}
+>
+  <slot />
+</figure>
+
+<style>
+  @layer components {
+    .figure {
+      padding: var(--spacing-2xs);
+      z-index: 1;
+      border: var(--border-size-sm) solid var(--color-border-dark);
+      border-radius: var(--border-radii-lg);
+
+      &:where([data-centered="true"]) {
+        margin-inline: auto;
+      }
+
+      &:where([data-full-width="false"]) {
+        max-width: fit-content;
+      }
+
+      &::before {
+        border-radius: inherit;
+        box-shadow: inset 0 0 var(--border-size-md) var(--border-size-md)
+          var(--color-shadow-inset-dark);
+      }
+
+      &::after {
+        content: "";
+        position: absolute;
+        inset: calc(var(--spacing-2xs) - var(--border-size-lg));
+        z-index: -1;
+        background: var(--color-regular-light);
+        border: var(--border-size-sm) solid var(--color-border-dark);
+        border-radius: inherit;
+        box-shadow:
+          var(--shadow-raised-to-top-left), var(--shadow-raised-to-bottom-right);
+        pointer-events: none;
+        user-select: none;
+      }
+    }
+
+    :where(.figure[data-full-width="true"]) :global(:is(picture, img)) {
+      width: 100%;
+      max-height: unset;
+    }
+
+    :where(.figure[data-full-width="false"]) > :global(picture) {
+      max-width: fit-content;
+    }
+
+    .figure:has(> picture, > img) > :global(figcaption:first-child) {
+      margin-block-end: var(--border-size-md);
+    }
+
+    .figure:has(> picture, > img) > :global(figcaption:last-child) {
+      margin-block-start: var(--border-size-md);
+    }
+
+    .figure > :global(picture > img) {
+      border-radius: inherit;
+    }
+
+    .figure > :global(*:first-child) {
+      border-start-start-radius: var(--border-radii-md);
+      border-start-end-radius: var(--border-radii-md);
+    }
+
+    .figure > :global(*:last-child) {
+      border-end-start-radius: var(--border-radii-md);
+      border-end-end-radius: var(--border-radii-md);
+    }
+  }
+</style>

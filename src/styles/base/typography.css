@@ -85,9 +85,12 @@ address {
 }
 
 :where(caption, figcaption) {
+  padding: var(--spacing-3xs) var(--spacing-sm);
+  background: var(--color-regular-lighter);
   color: var(--color-regular-high);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-bold);
+  text-align: center;
 }
 
 caption {
@@ -117,8 +120,9 @@ samp {
 
 :where(:not(pre)) > code {
   padding: var(--spacing-5xs) var(--spacing-3xs);
-  background: var(--color-regular-dark);
+  background: var(--color-regular-low);
   border: var(--border-size-sm) solid var(--color-border-light);
+  color: var(--color-on-regular-low);
 }
 
 :where(:not(samp)) > kbd {

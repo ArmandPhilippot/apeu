@@ -17,31 +17,35 @@ const { brand, class: className, slot, url, ...attrs } = Astro.props;
 </Link>
 
 <style>
-  .branding {
-    display: flex;
-    flex-flow: row wrap;
-    align-items: center;
-    place-content: center;
-    gap: var(--spacing-sm);
-    width: fit-content;
-    padding: var(--spacing-xs);
-    border-radius: var(--border-radii-lg);
-    outline-width: var(--border-size-lg);
-    text-align: center;
-    text-decoration: none;
-
-    &:where(:focus-visible) {
-      outline-offset: calc(var(--border-size-lg) * -1);
-    }
-
-    svg {
-      width: auto;
-      height: 1.75em;
-    }
-
-    span {
+  @layer components {
+    .branding {
+      display: flex;
+      flex-flow: row wrap;
+      align-items: center;
+      place-content: center;
+      gap: var(--spacing-sm);
+      width: fit-content;
+      padding: var(--spacing-xs);
+      border-radius: var(--border-radii-lg);
       font-size: var(--font-size-2xl);
       font-weight: var(--font-weight-bold);
+      outline-width: var(--border-size-lg);
+      text-align: center;
+      text-decoration: none;
+
+      &:where(:focus-visible) {
+        outline-offset: calc(var(--border-size-lg) * -1);
+      }
+
+      svg {
+        width: auto;
+        height: 2.25em;
+      }
+
+      span {
+        text-shadow: var(--border-size-md) var(--border-size-md) 0
+          var(--color-regular-darker);
+      }
     }
   }
 </style>

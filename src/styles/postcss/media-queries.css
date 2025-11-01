@@ -1,6 +1,6 @@
 @custom-media --xxs-or-above (width >= 480px);
 @custom-media --xs-or-above (width >= 568px);
-@custom-media --sm-or-above (width >= 640px);
+@custom-media --sm-or-above (width >= 768px);
 @custom-media --md-or-above (width >= 1024px);
 @custom-media --prose (width >= 40em);
 @custom-media --prose-sidebar (width >= calc(40em * 2.25));

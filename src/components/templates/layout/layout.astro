@@ -131,9 +131,11 @@ const topId = translate("anchor.site.top");
           {translate("cta.skip.to.content")}
         </SkipLink>
         <header class="site-header">
-          <h1 class="site-branding">
-            <Branding brand={CONFIG.BRAND} url={pagesRoutes.home.path} />
-          </h1>
+          <Branding
+            brand={CONFIG.BRAND}
+            class="site-branding"
+            url={pagesRoutes.home.path}
+          />
           <Navbar
             altLanguages={seo.languages}
             class="site-navbar paper"
@@ -240,13 +242,14 @@ const topId = translate("anchor.site.top");
       grid-column: 1 / -1;
       grid-row: 1;
       place-self: center;
+      padding: var(--spacing-sm);
 
       @media (--sm-or-above) {
         grid-column: 1;
       }
 
       @media (--md-or-above) {
-        padding-block: var(--spacing-md) var(--gutter);
+        padding: var(--gutter);
       }
     }
 

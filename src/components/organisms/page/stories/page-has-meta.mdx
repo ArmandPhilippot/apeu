@@ -1,0 +1,13 @@
+---
+title: "Page has meta"
+wrapInPage: false
+---
+import { components as mdxComponents } from "../../../mdx";
+import Page from "../page.astro";
+
+export const components = mdxComponents;
+
+<Page title={frontmatter.title}>
+  <div slot="meta">Some meta</div>
+  <p>This is the main content of the page.</p>
+</Page>

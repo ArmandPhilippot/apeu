@@ -41,14 +41,15 @@ const { class: className, isInline = false, token, ...attrs } = Astro.props;
     flex-flow: row wrap;
   }
 
+  figcaption {
+    background: none;
+  }
+
   .token {
     display: inline-block;
     padding: var(--spacing-3xs) var(--spacing-2xs);
     border: var(--border-size-sm) solid var(--color-border);
     border-radius: var(--border-radii-md);
-    font-family: var(--font-family-mono);
-    font-size: var(--font-size-sm);
     font-weight: var(--font-weight-bold);
-    line-height: var(--line-height);
   }
 </style>

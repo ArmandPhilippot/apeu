@@ -6,6 +6,18 @@ import CodePreview from "../../molecules/code-preview/code-preview.astro";
 import Navbar from "./navbar.astro";
 
 export const components = mdxComponents;
+export const mainNav = [
+  { label: "Item 1", path: "#item-1" },
+  { label: "Item 2", path: "#item-2" },
+  { label: "Item 3", path: "#item-3" },
+  { label: "Item 4", path: "#item-4" },
+  { label: "Item 5", path: "#item-5" },
+]
+export const altLanguages = [
+  { locale: "en", route: "#en" },
+  { locale: "es", route: "#es" },
+  { locale: "fr", route: "#fr" },
+];
 
 ## Introduction
 
@@ -18,17 +30,21 @@ A `Navbar` component should be used in the website layout to provide navigation 
 />
 
 <CodePreview
-  code={`<Navbar id="usage-example">
-    <div slot="nav">Nav</div>
-    <div slot="search">Search</div>
-    <div slot="settings">Settings</div>
-</Navbar>`}
+  code={`<Navbar mainNav={mainNav} />`}
   label="Basic use"
   lang="astro"
 >
-  <Navbar id="usage-example">
-    <div slot="nav">Nav</div>
-    <div slot="search">Search</div>
-    <div slot="settings">Settings</div>
-  </Navbar>
+  <Navbar mainNav={mainNav} />
+</CodePreview>
+
+## Options
+
+### `altLanguages`
+
+<CodePreview
+  code={`<Navbar altLanguages={altLanguages} mainNav={mainNav} />`}
+  label="Providing alternative languages"
+  lang="astro"
+>
+  <Navbar altLanguages={altLanguages} mainNav={mainNav} />
 </CodePreview>

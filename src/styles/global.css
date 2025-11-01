@@ -1,19 +1,26 @@
 @charset "utf-8";
 
 /* Reset */
-@import url("modern-normalize/modern-normalize.css");
+@import url("modern-normalize/modern-normalize.css") layer(reset);
+@import url("reset/all.css") layer(reset);
+
+/* Themes */
+@import url("themes/dark.css") layer(themes);
+@import url("themes/light.css") layer(themes);
+
+/* Tokens */
+@import url("tokens/borders.css") layer(tokens);
+@import url("tokens/fonts.css") layer(tokens);
+@import url("tokens/icons.css") layer(tokens);
+@import url("tokens/sizes.css") layer(tokens);
+@import url("tokens/shadows.css") layer(tokens);
+@import url("tokens/spacings.css") layer(tokens);
+@import url("tokens/surfaces.css") layer(tokens);
+@import url("tokens/utilities.css") layer(tokens);
 
 /* Base */
-@import url("base/accessibility.css");
-@import url("base/shell.css");
-@import url("base/typography.css");
+@import url("base/backgrounds.css") layer(base);
+@import url("base/typography.css") layer(base);
 
-/* Variables */
-@import url("variables/borders.css");
-@import url("variables/colors.css");
-@import url("variables/fonts.css");
-@import url("variables/icons.css");
-@import url("variables/sizes.css");
-@import url("variables/shadows.css");
-@import url("variables/spacings.css");
-@import url("variables/utilities.css");
+/* Utils */
+@import url("utils/accessibility.css") layer(utils);

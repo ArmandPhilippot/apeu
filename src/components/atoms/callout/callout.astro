@@ -1,0 +1,119 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import { Icon } from "astro-icon/components";
+import { useI18n } from "../../../services/i18n";
+import type { CalloutType } from "../../../types/tokens";
+import { isValidCalloutType } from "../../../utils/type-guards";
+
+type Props = HTMLAttributes<"div"> & {
+  label?: string | null | undefined;
+  role?: "alert" | "note" | "status" | undefined;
+  type?: CalloutType;
+};
+
+const {
+  "aria-label": ariaLabel,
+  class: className,
+  "data-type": dataType,
+  label,
+  role = "note",
+  slot,
+  type = "info",
+  ...attrs
+} = Astro.props;
+const { translate } = useI18n(Astro.currentLocale);
+const defaultLabel = {
+  critical: translate("callout.label.critical"),
+  discovery: translate("callout.label.discovery"),
+  idea: translate("callout.label.idea"),
+  info: translate("callout.label.info"),
+  success: translate("callout.label.success"),
+  warning: translate("callout.label.warning"),
+} satisfies Record<CalloutType, string>;
+const heading = label || defaultLabel[type];
+---
+
+<div
+  {...attrs}
+  aria-label={ariaLabel ?? heading}
+  class:list={[className, "callout"]}
+  data-type={dataType && isValidCalloutType(dataType) ? dataType : type}
+  role={role}
+>
+  <div aria-hidden="true" class="callout-heading">
+    <Icon name={type} />
+    {heading}
+  </div>
+  <slot />
+</div>
+
+<style>
+  .callout {
+    padding: 0 var(--spacing-md) var(--spacing-md);
+    border: var(--border-size-md) solid var(--callout-border-color);
+    border-left-width: var(--border-size-2xl);
+    border-radius: var(--border-radii-md);
+
+    &:where([data-type="critical"]) {
+      --callout-border-color: var(--color-critical);
+
+      background-color: var(--color-critical-low);
+      color: var(--color-critical-high);
+    }
+
+    &:where([data-type="discovery"]) {
+      --callout-border-color: var(--color-discovery);
+
+      background-color: var(--color-discovery-low);
+      color: var(--color-discovery-high);
+    }
+
+    &:where([data-type="idea"]) {
+      --callout-border-color: var(--color-idea);
+
+      background-color: var(--color-idea-low);
+      color: var(--color-idea-high);
+    }
+
+    &:where([data-type="info"]) {
+      --callout-border-color: var(--color-info);
+
+      background-color: var(--color-info-low);
+      color: var(--color-info-high);
+    }
+
+    &:where([data-type="success"]) {
+      --callout-border-color: var(--color-success);
+
+      background-color: var(--color-success-low);
+      color: var(--color-success-high);
+    }
+
+    &:where([data-type="warning"]) {
+      --callout-border-color: var(--color-warning);
+
+      background-color: var(--color-warning-low);
+      color: var(--color-warning-high);
+    }
+  }
+
+  .callout-heading {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    margin: 0 0 var(--spacing-md);
+    padding: var(--spacing-sm) 0;
+    border-block-end: var(--border-size-sm) solid var(--callout-border-color);
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-bold);
+
+    svg {
+      flex: 0 0 auto;
+      font-size: 1.5em;
+    }
+  }
+
+  .callout > :global(*:last-child:not(:only-child)) {
+    margin-block-end: 0;
+  }
+</style>

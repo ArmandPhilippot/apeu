@@ -1,0 +1,10 @@
+---
+import type { ComponentProps } from "astro/types";
+import FigureComponent from "../atoms/figure/figure.astro";
+
+type Props = ComponentProps<typeof FigureComponent>;
+
+const { isCentered = true, ...attrs } = Astro.props;
+---
+
+<FigureComponent {...attrs} isCentered={isCentered}><slot /></FigureComponent>

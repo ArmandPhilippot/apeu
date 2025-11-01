@@ -35,7 +35,6 @@ const getTokenValue = (token: HastText) => {
   return firstChar === "+" || firstChar === "-" ? firstChar : null;
 };
 
-
 /**
  * A Shiki transformer to support diff notation.
  *

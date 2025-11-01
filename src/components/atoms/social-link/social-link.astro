@@ -1,0 +1,119 @@
+---
+import type { ComponentProps } from "astro/types";
+import { Icon } from "astro-icon/components";
+import { useI18n } from "../../../services/i18n";
+import type { SocialMedium } from "../../../types/tokens";
+import Button from "../button/button.astro";
+
+type Props = Omit<
+  ComponentProps<typeof Button<"a">>,
+  "as" | "href" | "kind"
+> & {
+  hideLabel?: boolean | null | undefined;
+  iconSize?: number | null | undefined;
+  label?: string | null | undefined;
+  medium: SocialMedium;
+  url: string;
+};
+
+const {
+  class: className,
+  hideLabel = false,
+  iconSize,
+  label,
+  medium,
+  slot,
+  url,
+  ...attrs
+} = Astro.props;
+const { translate } = useI18n(Astro.currentLocale);
+const mediumLabel = label ?? translate(`social.medium.label.${medium}`);
+/* eslint-disable-next-line no-magic-numbers -- Self-explanatory. */
+const defaultIconSize = hideLabel ? 32 : 22;
+---
+
+<Button
+  {...attrs}
+  as="a"
+  class:list={[className, "social-link"]}
+  {...hideLabel && { "data-label": false }}
+  data-medium={medium}
+  href={url}
+  kind="discreet"
+>
+  <Icon
+    aria-hidden="true"
+    class="social-link-icon"
+    name={`social/${medium}`}
+    size={iconSize ?? defaultIconSize}
+  />
+  {hideLabel ? <span class="sr-only">{mediumLabel}</span> : mediumLabel}
+</Button>
+
+<style>
+  @layer components {
+    .social-link:where([data-label="false"]) {
+      padding: var(--spacing-xs);
+      aspect-ratio: 1 / 1;
+    }
+
+    .social-link-icon {
+      filter: drop-shadow(
+        var(--one-px-in-rem) var(--one-px-in-rem) 0
+          oklch(from var(--color-shadow) l c h / 75%)
+      );
+    }
+
+    :where([data-medium="bluesky"]) .social-link-icon {
+      color: #1185fe;
+    }
+
+    :where([data-medium="diaspora"]) .social-link-icon {
+      color: hsl(195deg 3% 25%);
+    }
+
+    :where([data-medium="email"]) .social-link-icon {
+      color: var(--color-on-regular);
+    }
+
+    :where([data-medium="facebook"]) .social-link-icon {
+      color: #1877f2;
+    }
+
+    :where([data-medium="github"]) .social-link-icon {
+      color: #1b1817;
+    }
+
+    :where([data-medium="gitlab"]) .social-link-icon {
+      color: #e24329;
+    }
+
+    :where([data-medium="linkedin"]) .social-link-icon {
+      color: #0a66c2;
+    }
+
+    :where([data-medium="mastodon"]) .social-link-icon {
+      color: #3088d4;
+    }
+
+    :where([data-medium="reddit"]) .social-link-icon {
+      color: #ff4500;
+    }
+
+    :where([data-medium="stackoverflow"]) .social-link-icon {
+      color: #f48024;
+    }
+
+    :where([data-medium="whatsapp"]) .social-link-icon {
+      color: #25cf43;
+    }
+
+    :where([data-medium="x"]) .social-link-icon {
+      color: hsl(0deg 0% 25%);
+    }
+
+    :global(:where([data-theme="dark"]) .social-link) .social-link-icon {
+      color: var(--color-on-regular);
+    }
+  }
+</style>

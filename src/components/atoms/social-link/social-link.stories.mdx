@@ -1,0 +1,148 @@
+---
+title: "SocialLink"
+---
+import { components as mdxComponents } from "../../mdx";
+import CodePreview from "../../molecules/code-preview/code-preview.astro";
+import SocialLink from "./social-link.astro";
+
+export const components = mdxComponents;
+
+## Introduction
+
+A `SocialLink` is a link designed as a button that should redirect the user to an external website.
+
+<CodePreview
+  code={`import SocialLink from "./components/atoms/social-link/social-link.astro";`}
+  label="How to import"
+  lang="ts"
+/>
+
+<CodePreview
+  code={`<SocialLink medium="email" url="#something" />`}
+  label="Basic use"
+  lang="astro"
+>
+  <SocialLink medium="email" url="#something" />
+</CodePreview>
+
+## Supported media
+
+<CodePreview
+  code={`<SocialLink medium="bluesky" url="#bluesky" />
+<br />
+<SocialLink medium="diaspora" url="#diaspora" />
+<br />
+<SocialLink medium="email" url="#email" />
+<br />
+<SocialLink medium="facebook" url="#facebook" />
+<br />
+<SocialLink medium="github" url="#github" />
+<br />
+<SocialLink medium="gitlab" url="#gitlab" />
+<br />
+<SocialLink medium="linkedin" url="#linkedin" />
+<br />
+<SocialLink medium="mastodon" url="#mastodon" />
+<br />
+<SocialLink medium="reddit" url="#reddit" />
+<br />
+<SocialLink medium="stackoverflow" url="#stackoverflow" />
+<br />
+<SocialLink medium="whatsapp" url="#whatsapp" />
+<br />
+<SocialLink medium="x" url="#x" />`}
+  label="Using the supported media"
+  lang="astro"
+>
+  <SocialLink medium="bluesky" url="#bluesky" />
+  <br />
+  <SocialLink medium="diaspora" url="#diaspora" />
+  <br />
+  <SocialLink medium="email" url="#email" />
+  <br />
+  <SocialLink medium="facebook" url="#facebook" />
+  <br />
+  <SocialLink medium="github" url="#github" />
+  <br />
+  <SocialLink medium="gitlab" url="#gitlab" />
+  <br />
+  <SocialLink medium="linkedin" url="#linkedin" />
+  <br />
+  <SocialLink medium="mastodon" url="#mastodon" />
+  <br />
+  <SocialLink medium="reddit" url="#reddit" />
+  <br />
+  <SocialLink medium="stackoverflow" url="#stackoverflow" />
+  <br />
+  <SocialLink medium="whatsapp" url="#whatsapp" />
+  <br />
+  <SocialLink medium="x" url="#x" />
+</CodePreview>
+
+### Hiding the label
+
+<CodePreview
+  code={`<SocialLink hideLabel medium="bluesky" url="#bluesky" />
+<br />
+<SocialLink hideLabel medium="diaspora" url="#diaspora" />
+<br />
+<SocialLink hideLabel medium="email" url="#email" />
+<br />
+<SocialLink hideLabel medium="facebook" url="#facebook" />
+<br />
+<SocialLink hideLabel medium="github" url="#github" />
+<br />
+<SocialLink hideLabel medium="gitlab" url="#gitlab" />
+<br />
+<SocialLink hideLabel medium="linkedin" url="#linkedin" />
+<br />
+<SocialLink hideLabel medium="mastodon" url="#mastodon" />
+<br />
+<SocialLink hideLabel medium="reddit" url="#reddit" />
+<br />
+<SocialLink hideLabel medium="stackoverflow" url="#stackoverflow" />
+<br />
+<SocialLink hideLabel medium="whatsapp" url="#whatsapp" />
+<br />
+<SocialLink hideLabel medium="x" url="#x" />`}
+  label="Using a social link without label"
+  lang="astro"
+>
+  <SocialLink hideLabel medium="bluesky" url="#bluesky" />
+  <br />
+  <SocialLink hideLabel medium="diaspora" url="#diaspora" />
+  <br />
+  <SocialLink hideLabel medium="email" url="#email" />
+  <br />
+  <SocialLink hideLabel medium="facebook" url="#facebook" />
+  <br />
+  <SocialLink hideLabel medium="github" url="#github" />
+  <br />
+  <SocialLink hideLabel medium="gitlab" url="#gitlab" />
+  <br />
+  <SocialLink hideLabel medium="linkedin" url="#linkedin" />
+  <br />
+  <SocialLink hideLabel medium="mastodon" url="#mastodon" />
+  <br />
+  <SocialLink hideLabel medium="reddit" url="#reddit" />
+  <br />
+  <SocialLink hideLabel medium="stackoverflow" url="#stackoverflow" />
+  <br />
+  <SocialLink hideLabel medium="whatsapp" url="#whatsapp" />
+  <br />
+  <SocialLink hideLabel medium="x" url="#x" />
+</CodePreview>
+
+### Using a custom label
+
+<CodePreview
+  code={`<SocialLink
+    label="Share on Mastodon"
+    medium="mastodon"
+    url="#mastodon"
+/>`}
+  label="Using a custom label"
+  lang="astro"
+>
+  <SocialLink label="Share on Mastodon" medium="mastodon" url="#mastodon" />
+</CodePreview>

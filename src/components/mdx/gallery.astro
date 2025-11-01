@@ -1,0 +1,50 @@
+---
+import type { ComponentProps } from "astro/types";
+import Grid from "../atoms/grid/grid.astro";
+
+type Props = ComponentProps<typeof Grid> & {
+  "data-align-content"?: ComponentProps<typeof Grid>["alignContent"];
+  "data-align-items"?: ComponentProps<typeof Grid>["alignItems"];
+  "data-cols"?: ComponentProps<typeof Grid>["cols"];
+  "data-gap"?: ComponentProps<typeof Grid>["gap"];
+  "data-justify-content"?: ComponentProps<typeof Grid>["justifyContent"];
+  "data-justify-items"?: ComponentProps<typeof Grid>["justifyItems"];
+  "data-rows"?: ComponentProps<typeof Grid>["rows"];
+  "data-size-max"?: ComponentProps<typeof Grid>["sizeMaxCols"];
+  "data-size-min"?: ComponentProps<typeof Grid>["sizeMinCols"];
+  "data-template-cols"?: ComponentProps<typeof Grid>["templateCols"];
+  "data-template-rows"?: ComponentProps<typeof Grid>["templateRows"];
+};
+
+const {
+  "data-align-content": dataAlignContent,
+  "data-align-items": dataAlignItems,
+  "data-cols": dataCols,
+  "data-gap": dataGap = "md",
+  "data-justify-content": dataJustifyContent,
+  "data-justify-items": dataJustifyItems,
+  "data-rows": dataRows,
+  "data-size-max": dataSizeMax,
+  "data-size-min": dataSizeMin,
+  "data-template-cols": dataTemplateCols,
+  "data-template-rows": dataTemplateRows,
+  ...attrs
+} = Astro.props;
+---
+
+<Grid
+  {...attrs}
+  alignContent={dataAlignContent}
+  alignItems={dataAlignItems}
+  cols={dataCols}
+  gap={dataGap}
+  justifyContent={dataJustifyContent}
+  justifyItems={dataJustifyItems}
+  rows={dataRows}
+  sizeMaxCols={dataSizeMax}
+  sizeMinCols={dataSizeMin}
+  templateCols={dataTemplateCols}
+  templateRows={dataTemplateRows}
+>
+  <slot />
+</Grid>

@@ -1,0 +1,51 @@
+---
+import type { ComponentProps } from "astro/types";
+import type { SocialMedium } from "../../../types/tokens";
+import { isValidSocialMedium } from "../../../utils/type-guards";
+import ListItem from "../../atoms/list/list-item.astro";
+import List from "../../atoms/list/list.astro";
+import SocialLink from "../../atoms/social-link/social-link.astro";
+
+type Props = Omit<
+  ComponentProps<typeof List>,
+  "as" | "hideMarker" | "isInline"
+> & {
+  addRelMe?: boolean | null | undefined;
+  hideLabels?: boolean | null | undefined;
+  links: Partial<Record<SocialMedium, string | null | undefined>>;
+};
+
+const {
+  addRelMe = false,
+  class: className,
+  hideLabels = false,
+  links,
+  slot,
+  ...attrs
+} = Astro.props;
+---
+
+<List {...attrs} class:list={[className, "social-links"]} hideMarker isInline>
+  {
+    Object.entries(links).map(([medium, url]) =>
+      url && isValidSocialMedium(medium) ? (
+        <ListItem>
+          <SocialLink
+            hideLabel={hideLabels}
+            medium={medium}
+            rel={addRelMe ? "me" : null}
+            url={url}
+          />
+        </ListItem>
+      ) : null
+    )
+  }
+</List>
+
+<style>
+  @layer components {
+    .social-links {
+      gap: var(--spacing-xs);
+    }
+  }
+</style>

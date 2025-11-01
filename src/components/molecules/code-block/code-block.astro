@@ -230,9 +230,11 @@ const cssVars = getCSSVars({
 
     .code-block-snippet {
       grid-row: 3;
+      width: 100%;
       border: var(--border-size-sm) solid var(--color-border-darker);
 
       & :global(code) {
+        min-width: 100%;
         border-radius: inherit;
       }
     }

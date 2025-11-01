@@ -97,7 +97,7 @@ const hasUseAndPreview = code && Astro.slots.has("default");
     }
 
     .preview-content {
-      padding: var(--spacing-md);
+      padding: clamp(var(--spacing-xs), 1dvi, var(--spacing-md));
       background: var(--color-regular);
       border: var(--border-size-sm) solid var(--color-border-lighter);
       border-radius: var(--border-radii-md);

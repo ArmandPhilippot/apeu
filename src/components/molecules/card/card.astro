@@ -1,0 +1,208 @@
+---
+import type { Polymorphic } from "astro/types";
+import type { Elevation } from "../../../types/tokens";
+
+type Props<T extends "article" | "section" = "article"> = Polymorphic<{
+  as: T;
+}> & {
+  elevation?: Elevation | null | undefined;
+};
+
+const {
+  as: Tag = "article",
+  class: className,
+  elevation,
+  slot,
+  ...attrs
+} = Astro.props;
+---
+
+<Tag
+  {...attrs}
+  class:list={[className, "card"]}
+  {...elevation ? { "data-elevation": elevation } : {}}
+>
+  {
+    Astro.slots.has("frontmatter") ||
+    Astro.slots.has("cover") ||
+    Astro.slots.has("heading") ? (
+      <header class="card-header">
+        {Astro.slots.has("frontmatter") ? (
+          <div class="card-frontmatter">
+            <slot name="frontmatter" />
+          </div>
+        ) : null}
+        {Astro.slots.has("cover") ? (
+          <div class="card-cover">
+            <slot name="cover" />
+          </div>
+        ) : null}
+        <div class="card-heading">
+          <slot name="heading" />
+        </div>
+      </header>
+    ) : null
+  }
+  <div class="card-body"><slot /></div>
+  {
+    Astro.slots.has("meta") || Astro.slots.has("cta") ? (
+      <footer
+        class:list={["card-footer", { "has-meta": Astro.slots.has("meta") }]}
+      >
+        <slot name="meta" />
+        <slot name="cta" />
+      </footer>
+    ) : null
+  }
+</Tag>
+
+<style>
+  @layer components {
+    .card {
+      display: grid;
+      grid-template-columns: minmax(0, 35%) minmax(0, 1fr);
+      grid-template-rows: max-content;
+      max-width: var(--size-prose);
+      background: var(--color-regular);
+      border: var(--border-size-sm) solid var(--color-border);
+      border-radius: var(--border-radii-md);
+
+      &:where([data-elevation="elevated"]) {
+        box-shadow: var(--shadow-elevated-to-top-center);
+
+        @media (--prose) {
+          box-shadow: var(--shadow-elevated-to-top-left);
+        }
+      }
+
+      &:where([data-elevation="floating"]) {
+        box-shadow: var(--shadow-floating-to-top-center);
+
+        @media (--prose) {
+          box-shadow: var(--shadow-floating-to-top-left);
+        }
+      }
+
+      &:where([data-elevation="raised"]) {
+        box-shadow: var(--shadow-raised-to-top-center);
+
+        @media (--prose) {
+          box-shadow: var(--shadow-raised-to-top-left);
+        }
+      }
+    }
+
+    .card-header {
+      grid-column: 1 / -1;
+      grid-row: 1 / -1;
+
+      @container (width > 55em) {
+        display: contents;
+      }
+    }
+
+    .card-heading,
+    .card-body,
+    .card-footer {
+      grid-column: 1 / -1;
+      margin-inline: var(--gutter);
+    }
+
+    :where(.card:has(.card-cover)) {
+      .card-heading,
+      .card-body,
+      .card-footer {
+        @container (width > 55em) {
+          grid-column: 2;
+          margin-inline-start: calc(var(--gutter) / 1.5);
+        }
+      }
+    }
+
+    .card-frontmatter,
+    .card-footer {
+      display: flex;
+      flex-flow: row wrap;
+      align-items: center;
+    }
+
+    .card-frontmatter {
+      grid-column: 1 / -1;
+      grid-row: 1;
+      gap: var(--spacing-xs);
+      padding: var(--spacing-sm) var(--gutter);
+      border-block-end: var(--border-size-sm) solid var(--color-border);
+      color: var(--color-primary-faded);
+      font-weight: var(--font-weight-bold);
+      text-transform: uppercase;
+
+      & > :global(*) {
+        font-size: var(--font-size-xs);
+      }
+    }
+
+    .card-cover {
+      grid-column: 1 / -1;
+      align-self: center;
+      width: 100%;
+      max-width: calc(100% - 2 * var(--spacing-md));
+      margin: var(--spacing-sm) auto 0;
+
+      @container (width > 55em) {
+        grid-column: 1;
+        grid-row: 1 / span 3;
+        align-self: unset;
+        max-width: 100%;
+        margin: 0;
+        padding: var(--spacing-sm);
+      }
+
+      & :global(img) {
+        max-height: calc(var(--one-px-in-rem) * 240);
+        border: var(--border-size-sm) solid var(--color-border);
+        border-radius: var(--border-radii-md);
+        box-shadow: var(--shadow-raised-to-top-left);
+
+        @container (width > 55em) {
+          height: 100%;
+          max-height: 100%;
+        }
+      }
+    }
+
+    :where(.card:has(.card-frontmatter)) {
+      .card-cover {
+        @container (width > 55em) {
+          grid-row-start: 2;
+        }
+      }
+
+      .card-heading {
+        grid-row: 2;
+      }
+    }
+
+    .card-heading {
+      padding-block-start: calc(var(--gutter) / 1.5);
+    }
+
+    .card-body {
+      padding-block: calc(var(--gutter) / 2) calc(var(--gutter) / 1.5);
+
+      &:first-child {
+        padding-block-start: var(--gutter);
+      }
+
+      &:last-child {
+        padding-block-end: var(--gutter);
+      }
+    }
+
+    .card-footer {
+      justify-content: space-between;
+      gap: var(--spacing-md);
+      padding-block: calc(var(--gutter) / 1.5);
+      border-block-start: var(--border-size-sm) solid var(--color-border);
+    }
+  }
+</style>

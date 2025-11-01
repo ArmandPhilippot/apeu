@@ -58,12 +58,11 @@ const themes = {
 >
   <Label aria-label={ariaLabel} class="switch-label" data-inline={isInline}>
     <span class:list={{ "sr-only": hideLabel }}>{label}</span>
-    <Button aria-checked="true" class="switch-btn" kind="neutral" role="switch">
+    <Button class="switch-btn" kind="neutral" role="switch">
       <Icon
         aria-hidden="true"
         class="switch-option"
         name={themes.light.icon}
-        size={themes.light.iconSize}
         title={themes.light.label}
       />
       <span aria-hidden="true" class="switch-indicator"></span>
@@ -71,7 +70,6 @@ const themes = {
         aria-hidden="true"
         class="switch-option"
         name={themes.dark.icon}
-        size={themes.dark.iconSize}
         title={themes.dark.label}
       />
     </Button>
@@ -90,7 +88,13 @@ const themes = {
     }
 
     .switch {
-      --switch-size: calc(var(--one-px-in-rem) * 35);
+      --switch-size: calc(var(--one-px-in-em) * 20);
+
+      font-size: 1.5em;
+
+      @media screen and (any-pointer: fine) {
+        font-size: 1.2em;
+      }
     }
 
     .switch-label {
@@ -106,12 +110,18 @@ const themes = {
 
     .switch-btn {
       flex-direction: column;
+      gap: var(--spacing-2xs);
       padding: var(--spacing-xs) 0;
       border-radius: var(--border-radii-pill);
+      font-size: inherit;
 
-      @container (width >= 320px) {
+      @container (width >= 250px) {
         flex-flow: row wrap;
       }
+    }
+
+    .switch-option {
+      font-size: inherit;
     }
 
     .switch-indicator {
@@ -124,7 +134,7 @@ const themes = {
       border-radius: var(--border-radii-pill);
       box-shadow: inset 0 0 var(--border-size-xl) 0 var(--color-black);
 
-      @container (width >= 320px) {
+      @container (width >= 250px) {
         width: unset;
         height: var(--switch-size);
         aspect-ratio: 2 / 1;
@@ -147,10 +157,10 @@ const themes = {
           box-shadow 0.25s ease 0s,
           transform 0.25s ease 0s;
 
-        @container (width >= 320px) {
+        @container (width >= 250px) {
           inset-block: 0;
           inset-inline: 0 auto;
-          transform: translateX(0);
+          transform: translateX(calc(var(--border-size-sm) * -1));
         }
       }
     }
@@ -161,9 +171,16 @@ const themes = {
         var(--shadow-raised-to-top-right);
       transform: translateY(calc(100% + var(--border-size-sm)));
 
-      @container (width >= 320px) {
+      @container (width >= 250px) {
         transform: translateX(calc(100% + var(--border-size-sm)));
       }
+    }
+
+    /* Prevent the transition between vertical/horizontal shapes on page
+     * refresh. There's still a transition between light and dark, but this is
+     * less annoying. */
+    :where(.switch:not([data-hydrated])) .switch-indicator::after {
+      transition: none;
     }
   }
 </style>
@@ -201,6 +218,7 @@ const themes = {
       });
 
       this.updateVisualState(settings.get());
+      this.setAttribute("data-hydrated", "true");
     }
 
     disconnectedCallback() {

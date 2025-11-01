@@ -16,13 +16,13 @@
   --color-grey-darker: hsl(211deg 22% 8%);
   --color-grey-low: hsl(221deg 12% 5%);
   /* Slate */
-  --color-slate-high: hsl(209deg 15% 70%);
+  --color-slate-high: hsl(209deg 30% 77%);
   --color-slate-lighter: hsl(219deg 20% 17%);
   --color-slate-light: hsl(217deg 22% 13%);
   --color-slate: hsl(215deg 30% 10%);
   --color-slate-dark: hsl(213deg 35% 8%);
   --color-slate-darker: hsl(211deg 34% 7%);
-  --color-slate-low: hsl(221deg 30% 4%);
+  --color-slate-low: hsl(221deg 15% 4%);
   /* Blue */
   --color-blue-high: hsl(206deg 75% 85%);
   --color-blue-lighter: hsl(216deg 61% 82%);

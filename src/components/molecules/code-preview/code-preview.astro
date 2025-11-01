@@ -1,8 +1,8 @@
 ---
 import type { ComponentProps, HTMLAttributes } from "astro/types";
 import { Code } from "astro:components";
-import { shikiTheme } from "../../../lib/shiki/theme";
 import { useI18n } from "../../../services/i18n";
+import CodeBlock from "../code-block/code-block.astro";
 
 type Props = HTMLAttributes<"figure"> &
   Pick<ComponentProps<typeof Code>, "lang" | "wrap"> & {
@@ -31,8 +31,12 @@ const hasUseAndPreview = code && Astro.slots.has("default");
         {hasUseAndPreview && (
           <div class="use-label">{translate("code.preview.use.label")}</div>
         )}
-        {/* prettier-ignore */}
-        <Code class="use-content" code={code} lang={lang} theme={shikiTheme} wrap={wrap} />
+        <CodeBlock
+          class="use-content"
+          code={code}
+          lang={lang}
+          showLineNumbers
+        />
       </div>
     ) : null
   }
@@ -68,8 +72,7 @@ const hasUseAndPreview = code && Astro.slots.has("default");
     figcaption {
       margin: var(--spacing-2xs) var(--spacing-2xs) 0;
       padding: var(--spacing-xs) var(--spacing-sm);
-      background: var(--color-regular-high);
-      color: var(--color-on-regular-high);
+      border: var(--border-size-sm) solid var(--color-border-light);
       border-radius: var(--border-radii-md);
     }
 
@@ -93,10 +96,9 @@ const hasUseAndPreview = code && Astro.slots.has("default");
       border-block-start: var(--border-size-sm) solid var(--color-border);
     }
 
-    .use-content,
     .preview-content {
       padding: var(--spacing-md);
-      background: var(--color-regular-low);
+      background: var(--color-regular);
       border: var(--border-size-sm) solid var(--color-border-lighter);
       border-radius: var(--border-radii-md);
     }

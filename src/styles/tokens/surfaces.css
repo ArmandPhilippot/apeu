@@ -118,11 +118,14 @@
 }
 
 :root[data-shiki] pre {
+  --color-shiki-background: var(--color-slate);
   --color-shiki-line-added: var(--color-green-low);
   --color-shiki-on-line-added: var(--color-green-darker);
   --color-shiki-line-removed: var(--color-red-low);
   --color-shiki-on-line-removed: var(--color-red-darker);
-  --color-shiki-gutter-border: var(--color-grey);
+  --color-shiki-gutter-border: var(--color-grey-darker);
+  --color-shiki-gutter: var(--color-slate-lighter);
+  --color-shiki-on-gutter: var(--color-grey-high);
   --color-shiki-token-attribute: var(--color-purple);
   --color-shiki-token-comment: var(--color-grey-high);
   --color-shiki-token-constant: var(--color-yellow);
@@ -142,15 +145,9 @@
 }
 
 :root[data-shiki="dark"] pre {
-  --color-shiki-background: var(--color-black);
   --color-shiki-on-background: var(--color-white);
-  --color-shiki-gutter: var(--color-black-dark);
-  --color-shiki-on-gutter: var(--color-grey-high);
 }
 
 :root[data-shiki="light"] pre {
-  --color-shiki-background: var(--color-white);
   --color-shiki-on-background: var(--color-black);
-  --color-shiki-gutter: var(--color-white-dark);
-  --color-shiki-on-gutter: var(--color-grey-high);
 }

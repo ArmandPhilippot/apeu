@@ -1,0 +1,349 @@
+---
+import type { ComponentProps } from "astro/types";
+import { Code } from "astro:components";
+import { shikiTheme } from "../../../lib/shiki/theme";
+import { shikiDiffNotation } from "../../../lib/shiki/transformers/diff-notation";
+import { useI18n } from "../../../services/i18n";
+import { SETTING_KEYS } from "../../../services/stores";
+import { InvalidPropsError } from "../../../utils/exceptions";
+import { getCSSVars } from "../../../utils/html-attributes";
+import Figure from "../../atoms/figure/figure.astro";
+import CopyToClipboard from "../copy-to-clipboard/copy-to-clipboard.astro";
+import ThemeSwitch from "../theme-switch/theme-switch.astro";
+
+type Props = Omit<ComponentProps<typeof Figure>, "isFullWidth"> &
+  Pick<ComponentProps<typeof Code>, "code" | "lang" | "wrap"> & {
+    /**
+     * The showcased file path.
+     */
+    filePath?: string | null | undefined;
+    /**
+     * Is it a diff code?
+     *
+     * Instead of using `lang="diff"`, you can use this option to support
+     * syntax highlighting in addition to diff notation.
+     *
+     * @default false
+     */
+    isDiff?: boolean | null | undefined;
+    /**
+     * The starting line number.
+     *
+     * @default 1
+     */
+    lineStart?: number | null | undefined;
+    /**
+     * The database selected when using SQL server.
+     *
+     * @default none
+     */
+    promptDB?: string | null | undefined;
+    /**
+     * The machine name to display inside the prompt.
+     *
+     * @default localhost || mysql
+     */
+    promptHost?: string | null | undefined;
+    /**
+     * The username to display inside the prompt.
+     *
+     * @default user
+     */
+    promptUser?: string | null | undefined;
+    /**
+     * Should we add line numbers in front of the code?
+     *
+     * @default false
+     */
+    showLineNumbers?: boolean | null | undefined;
+    /**
+     * Should we show prompt in front of command lines?
+     *
+     * @default false
+     */
+    showPrompt?: boolean | null | undefined;
+  };
+
+const {
+  class: className,
+  code,
+  filePath,
+  isDiff = false,
+  lang = "plaintext",
+  lineStart = 1,
+  promptDB = "none",
+  promptHost = lang === "sql" ? "SQL" : "localhost",
+  promptUser = "user",
+  showLineNumbers = false,
+  showPrompt = false,
+  slot,
+  style = "",
+  wrap = false,
+  ...attrs
+} = Astro.props;
+
+if (showLineNumbers && showPrompt) {
+  throw new InvalidPropsError(
+    "`showLineNumbers` and `showPrompt` can't be used together."
+  );
+}
+
+const { translate } = useI18n(Astro.currentLocale);
+const trimmedCode = code.replaceAll(/^\n|\n$/g, "");
+const commandLineLanguages = [
+  "bash",
+  "console",
+  "sh",
+  "shell",
+  // cSpell:ignore shellsession
+  "shellsession",
+  "zsh",
+];
+const isCommandLine = commandLineLanguages.includes(lang);
+const isSQL = lang === "sql";
+const cssVars = getCSSVars({
+  "line-start": showLineNumbers ? lineStart : null,
+  "prompt-db": showPrompt && isSQL ? `"${promptDB}"` : null,
+  "prompt-host": showPrompt ? `"${promptHost}"` : null,
+  "prompt-user": showPrompt && !isSQL ? `"${promptUser}"` : null,
+});
+---
+
+<Figure
+  {...attrs}
+  class:list={[className, "code-block"]}
+  {...isCommandLine ? { "data-cli": true } : {}}
+  data-diff={isDiff}
+  data-line-numbers={showLineNumbers}
+  data-path={!!filePath}
+  data-prompt={showPrompt}
+  data-root={isCommandLine && promptUser === "root" ? "" : null}
+  {...showPrompt && isSQL ? { "data-sql-server": true } : {}}
+  isFullWidth
+  style={`${cssVars}${style}`}
+>
+  <figcaption
+    aria-label={filePath
+      ? translate("code.block.caption.path.a11y").replace("{path}", filePath)
+      : translate("code.block.caption.lang.a11y").replace("{lang}", lang)}
+    class="code-block-caption"
+  >
+    {filePath ?? lang}
+  </figcaption>
+  <div class:list={["js-only", "code-block-toolbar"]}>
+    <ThemeSwitch
+      hideLabel
+      label={translate("code.block.toolbar.theme.switch.label")}
+      setting={SETTING_KEYS.SHIKI}
+    />
+    <CopyToClipboard
+      aria-live="polite"
+      feedback={translate("code.block.toolbar.copy.feedback")}
+      label={translate("code.block.toolbar.copy.label")}
+      lookUpNodeLvl={2}
+      selector="code"
+    />
+  </div>
+  <Code
+    class="code-block-snippet"
+    code={trimmedCode}
+    lang={lang}
+    theme={shikiTheme}
+    transformers={[shikiDiffNotation()]}
+    wrap={wrap}
+  />
+</Figure>
+
+<style>
+  @layer components {
+    .code-block {
+      container: code-block / inline-size;
+      display: grid;
+      grid-template-columns: minmax(auto, 1fr) auto;
+      grid-template-rows: minmax(0, 1fr) auto;
+
+      &::after {
+        inset: var(--spacing-2xs);
+      }
+    }
+
+    .code-block :global(:is(code, .line)) {
+      display: inline-block;
+      font-family: var(--font-family-mono);
+    }
+
+    .code-block :global(code) {
+      min-width: 100%;
+    }
+
+    .code-block :global(.line) {
+      width: 100%;
+    }
+
+    .code-block-caption,
+    .code-block-toolbar,
+    .code-block-snippet {
+      grid-column: 1 / -1;
+    }
+
+    :where(.code-block[data-path="false"]) .code-block-caption {
+      text-transform: uppercase;
+    }
+
+    .code-block .code-block-caption {
+      grid-row: 1;
+      border: var(--border-size-sm) solid var(--color-border-darker);
+      border-block-end: none;
+
+      @container (width >= 400px) {
+        grid-column: 1;
+        display: flex;
+        flex-flow: row wrap;
+        align-items: center;
+        border-start-end-radius: 0;
+        text-align: start;
+      }
+    }
+
+    .code-block-toolbar {
+      grid-row: 2;
+      display: flex;
+      flex-flow: row wrap;
+      place-items: center;
+      place-content: center;
+      justify-content: space-between;
+      gap: var(--spacing-sm);
+      padding: var(--spacing-xs) var(--spacing-sm);
+      background: var(--color-regular-lighter);
+      border: var(--border-size-sm) solid var(--color-border-darker);
+      border-block-end: none;
+      box-shadow: var(--shadow-raised-to-top-center);
+
+      @container (width >= 400px) {
+        grid-column: 2;
+        grid-row: 1;
+        justify-content: end;
+        border-inline-start: none;
+        border-start-end-radius: inherit;
+      }
+    }
+
+    .code-block-snippet {
+      grid-row: 3;
+      border: var(--border-size-sm) solid var(--color-border-darker);
+
+      & :global(code) {
+        border-radius: inherit;
+      }
+    }
+
+    :where(.code-block[data-line-numbers="false"][data-prompt="false"])
+      :global(code) {
+      padding: var(--spacing-xs) var(--spacing-sm);
+    }
+
+    :where(.code-block[data-line-numbers="true"]) :global(code) {
+      counter-reset: line-number calc(var(--line-start, 1) - 1);
+    }
+
+    :where(
+        .code-block[data-line-numbers="true"],
+        .code-block[data-prompt="true"]
+      )
+      :global(.line) {
+      padding-inline-end: var(--spacing-sm);
+    }
+
+    :where(
+        .code-block[data-line-numbers="true"],
+        .code-block[data-prompt="true"]
+      )
+      :global(.line::before) {
+      display: inline-block;
+      margin-inline: 0 var(--spacing-xs);
+      padding-inline: var(--spacing-xs);
+      position: sticky;
+      inset-inline-start: 0;
+      background: var(--color-shiki-gutter);
+      box-shadow:
+        var(--border-size-sm) 0 0 0 var(--color-shiki-gutter-border),
+        var(--shadow-raised-to-top-left);
+      color: var(--color-shiki-on-gutter);
+      letter-spacing: -1px;
+      pointer-events: none;
+      text-align: right;
+      user-select: none;
+    }
+
+    :where(
+        .code-block[data-line-numbers="true"],
+        .code-block[data-prompt="true"]
+      )
+      :global(.line:first-of-type::before) {
+      padding-block-start: var(--spacing-xs);
+    }
+
+    :where(
+        .code-block[data-line-numbers="true"],
+        .code-block[data-prompt="true"]
+      )
+      :global(.line:last-of-type::before) {
+      padding-block-end: var(--spacing-xs);
+    }
+
+    :where(.code-block[data-line-numbers="true"]) :global(.line) {
+      counter-increment: line-number;
+    }
+
+    :where(.code-block[data-line-numbers="true"]) :global(.line::before) {
+      content: counter(line-number);
+      /* This should be suitable for line numbers up to 4 digits with diff
+       * token (+ or -). */
+      min-width: 4em;
+    }
+
+    :where(.code-block[data-line-numbers="true"])
+      :global(.line:where(.diff.remove) + .line:not(.diff.remove)) {
+      counter-increment: none;
+    }
+
+    :where([data-prompt="true"][data-sql-server="true"])
+      :global(.line::before) {
+      content: var(--prompt-host) " [(" var(--prompt-db) ")] >";
+    }
+
+    :where([data-prompt="true"]:not([data-sql-server="true"]))
+      :global(.line::before) {
+      content: var(--prompt-user) "@" var(--prompt-host) ": "
+        var(--prompt-glyph);
+    }
+
+    :where([data-prompt="true"][data-root]) :global(.line::before) {
+      --prompt-glyph: "#";
+    }
+
+    :where([data-prompt="true"]:not([data-root])) :global(.line::before) {
+      --prompt-glyph: "$";
+    }
+
+    :where([data-diff="true"], [data-language="diff"]) :global(.line.add) {
+      background: var(--color-shiki-line-added);
+    }
+
+    :where([data-diff="true"], [data-language="diff"])
+      :global(.line.add::before) {
+      content: "+" counter(line-number);
+      color: var(--color-shiki-on-line-added);
+    }
+
+    :where([data-diff="true"], [data-language="diff"]) :global(.line.remove) {
+      background: var(--color-shiki-line-removed);
+    }
+
+    :where([data-diff="true"], [data-language="diff"])
+      :global(.line.remove::before) {
+      content: "-" counter(line-number);
+      color: var(--color-shiki-on-line-removed);
+    }
+  }
+</style>

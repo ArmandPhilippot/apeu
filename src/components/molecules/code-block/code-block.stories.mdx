@@ -1,0 +1,278 @@
+---
+title: "CodeBlock"
+---
+import { components as mdxComponents } from "../../mdx";
+import CodePreview from "../code-preview/code-preview.astro";
+import CodeBlock from "./code-block.astro";
+
+export const components = mdxComponents;
+
+export const jsCodeSample = `
+console.log("Hello world!");
+const foo = 42;
+`;
+
+export const commandLineCodeSample = `
+git add README.md
+git commit -m "Added documentation"
+`;
+
+export const sqlCodeSample = `
+ALTER USER 'root'@'localhost'
+`;
+
+export const diffCodeSample = `
+const breadcrumb = [
+  { label: 'Home', slug: '/' },
+  { label: 'Design system', slug: '/design-system' },
+-  { label: 'Foo', slug: '/design-system/foo' },
++  { label: 'Components', slug: '/design-system/components' },
+  { label: 'Molecules', slug: '/design-system/components/molecules' },
+  {
+    label: title,
+    slug: '/design-system/components/molecules/code-blocks',
+  },
+];
+`;
+
+export const complexDiffCodeSample = `
+.container {
+-  display: "block";
++  display: "flex";
++  flex-flow: row wrap;
++  align-items: "center";
+  margin: 0;
+-  padding: 1px;
+-  font-size: 10px;
++  padding: 5px;
+  position: relative;
+}
+`;
+
+## Introduction
+
+<CodePreview
+  code={`import CodeBlock from "./components/molecules/code-block/code-block.astro";`}
+  label="How to import"
+  lang="ts"
+/>
+
+<CodePreview
+  code={`<CodeBlock code={jsCodeSample} />`}
+  label="Basic use"
+  lang="astro"
+>
+  <CodeBlock code={jsCodeSample} />
+</CodePreview>
+
+## With lang
+
+<CodePreview
+  code={`<CodeBlock code={jsCodeSample} lang="js" />`}
+  label="Using a lang"
+  lang="astro"
+>
+  <CodeBlock code={jsCodeSample} lang="js" />
+</CodePreview>
+
+## With file path
+
+<CodePreview
+  code={`<CodeBlock code={jsCodeSample} filePath="./hello-world.js" lang="js" />`}
+  label="Using a lang with a file path"
+  lang="astro"
+>
+  <CodeBlock
+    code={jsCodeSample}
+    filePath="./src/utils/nested/hello-world.js"
+    lang="js"
+  />
+</CodePreview>
+
+## With line numbers
+
+<CodePreview
+  code={`<CodeBlock code={jsCodeSample} lang="js" showLineNumbers />`}
+  label="Using line numbers"
+  lang="astro"
+>
+  <CodeBlock code={jsCodeSample} lang="js" showLineNumbers />
+</CodePreview>
+
+## With line numbers and custom starting line
+
+<CodePreview
+  code={`<CodeBlock
+    code={jsCodeSample}
+    lang="js"
+    lineStart={1505}
+    showLineNumbers
+/>`}
+  label="Using line numbers with a custom starting line"
+  lang="astro"
+>
+  <CodeBlock
+    code={jsCodeSample}
+    lang="js"
+    lineStart={1505}
+    showLineNumbers
+  />
+</CodePreview>
+
+## With prompt
+
+<CodePreview
+  code={`<CodeBlock code={commandLineCodeSample} lang="shell" showPrompt />`}
+  label="Using a prompt"
+  lang="astro"
+>
+  <CodeBlock
+    code={commandLineCodeSample}
+    lang="shell"
+    showPrompt
+  />
+</CodePreview>
+
+## With prompt and custom username
+
+<CodePreview
+  code={`<CodeBlock
+    code={commandLineCodeSample}
+    lang="shell"
+    promptUser="john"
+    showPrompt
+/>`}
+  label="Using a prompt with a custom user"
+  lang="astro"
+>
+  <CodeBlock
+    code={commandLineCodeSample}
+    lang="shell"
+    promptUser="john"
+    showPrompt
+  />
+</CodePreview>
+
+## With prompt and custom host
+
+<CodePreview
+  code={`<CodeBlock
+    code={commandLineCodeSample}
+    lang="shell"
+    promptHost="doe"
+    promptUser="john"
+    showPrompt
+/>`}
+  label="Using a prompt with a custom host"
+  lang="astro"
+>
+  <CodeBlock
+    code={commandLineCodeSample}
+    lang="shell"
+    promptHost="doe"
+    promptUser="john"
+    showPrompt
+  />
+</CodePreview>
+
+## With prompt as root
+
+<CodePreview
+  code={`<CodeBlock
+    code={commandLineCodeSample}
+    lang="shell"
+    promptUser="root"
+    showPrompt
+/>`}
+  label="Using a prompt as root"
+  lang="astro"
+>
+  <CodeBlock
+    code={commandLineCodeSample}
+    lang="shell"
+    promptUser="root"
+    showPrompt
+  />
+</CodePreview>
+
+## With SQL prompt
+
+<CodePreview
+  code={`<CodeBlock code={sqlCodeSample} lang="sql" showPrompt />`}
+  label="Using an SQL prompt"
+  lang="astro"
+>
+  <CodeBlock code={sqlCodeSample} lang="sql" showPrompt />
+</CodePreview>
+
+## With SQL prompt and custom prompt host
+
+<CodePreview
+  code={`<CodeBlock code={sqlCodeSample} lang="sql" promptHost="MariaDB" showPrompt />`}
+  label="Using a prompt with a custom host"
+  lang="astro"
+>
+  <CodeBlock
+    code={sqlCodeSample}
+    lang="sql"
+    promptHost="MariaDB"
+    showPrompt
+  />
+</CodePreview>
+
+## With SQL prompt and custom database name
+
+<CodePreview
+  code={`<CodeBlock code={sqlCodeSample} lang="sql" promptDB="recipes" showPrompt />`}
+  label="Using a prompt with a custom database"
+  lang="astro"
+>
+  <CodeBlock
+    code={sqlCodeSample}
+    lang="sql"
+    promptDB="recipes"
+    showPrompt
+  />
+</CodePreview>
+
+## Diff
+
+<CodePreview
+  code={`<CodeBlock code={diffCodeSample} lang="diff" showLineNumbers />`}
+  label="Using a diff"
+  lang="astro"
+>
+  <CodeBlock code={diffCodeSample} lang="diff" showLineNumbers />
+</CodePreview>
+
+## Diff with syntax highlighting
+
+<CodePreview
+  code={`<CodeBlock code={diffCodeSample} isDiff lang="ts" showLineNumbers />`}
+  label="Using a diff with syntax highlighting"
+  lang="astro"
+>
+  <CodeBlock
+    code={diffCodeSample}
+    isDiff
+    lang="ts"
+    showLineNumbers
+  />
+</CodePreview>
+
+## Limitations
+
+Ideally, I'd like that removed lines affects the line numbers for the next lines but due to `counter` limitations, it seems impossible with CSS only when having multiple removed lines at once. So this type of blocks should be avoided.
+
+<CodePreview
+  code={`<CodeBlock code={complexDiffCodeSample} isDiff lang="css" showLineNumbers />`}
+  label="Using a diff with syntax highlighting"
+  lang="astro"
+>
+  <CodeBlock
+    code={complexDiffCodeSample}
+    isDiff
+    lang="css"
+    showLineNumbers
+  />
+</CodePreview>

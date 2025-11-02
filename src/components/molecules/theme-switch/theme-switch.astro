@@ -46,8 +46,8 @@ const {
   ...attrs
 } = Astro.props;
 const themes = {
-  dark: { label: "Dark", icon: "moon", iconSize: 24 },
-  light: { label: "Light", icon: "sun", iconSize: 24 },
+  dark: { label: "Dark", icon: { name: "moon" } },
+  light: { label: "Light", icon: { name: "sun" } },
 } satisfies WithIcon<Themes>;
 ---
 
@@ -62,14 +62,14 @@ const themes = {
       <Icon
         aria-hidden="true"
         class="switch-option"
-        name={themes.light.icon}
+        name={themes.light.icon.name}
         title={themes.light.label}
       />
       <span aria-hidden="true" class="switch-indicator"></span>
       <Icon
         aria-hidden="true"
         class="switch-option"
-        name={themes.dark.icon}
+        name={themes.dark.icon.name}
         title={themes.dark.label}
       />
     </Button>

@@ -16,8 +16,7 @@ export type Route = {
 };
 
 export type WithIcon<T> = T & {
-  icon?: IconName | null | undefined;
-  iconSize?: number | undefined;
+  icon?: { name: IconName; size?: number } | null | undefined;
 };
 
 export type AltLanguage = {

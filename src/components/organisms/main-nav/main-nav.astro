@@ -15,6 +15,7 @@ type Props = Omit<ComponentProps<typeof List>, "children" | "hideMarker"> & {
 
 const { class: className, items, slot, ...attrs } = Astro.props;
 const { locale } = useI18n(Astro.currentLocale);
+const defaultIconSize = 24;
 const isCurrentRouteOrNested = (url: string) => {
   if (isHomePage(url)) return Astro.url.pathname === url;
   /* eslint-disable-next-line no-magic-numbers -- When this is not the default locale, the slug is prefixed by the locale so we need to go further. */
@@ -28,7 +29,7 @@ const isCurrentRouteOrNested = (url: string) => {
 
 <List {...attrs} class:list={[className, "main-nav", "paper"]} hideMarker>
   {
-    items.map(({ icon, iconSize = 24, label, path }) => {
+    items.map(({ icon, label, path }) => {
       const isSelected = isCurrentRouteOrNested(path);
 
       return (
@@ -39,7 +40,13 @@ const isCurrentRouteOrNested = (url: string) => {
             {...(isSelected && { "data-selected": true })}
             href={path}
           >
-            {icon && <Icon aria-hidden="true" name={icon} size={iconSize} />}
+            {icon && (
+              <Icon
+                aria-hidden="true"
+                name={icon.name}
+                size={icon.size ?? defaultIconSize}
+              />
+            )}
             {label}
           </Link>
         </ListItem>

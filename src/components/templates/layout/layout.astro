@@ -32,28 +32,32 @@ const { locale, translate } = useI18n(Astro.currentLocale);
 const { routeById } = await useRouting(locale);
 
 const pagesRoutes = {
-  blog: { ...routeById("blog"), icon: "blog" },
-  blogroll: { ...routeById("blogroll"), icon: "globe" },
-  bookmarks: { ...routeById("bookmarks"), icon: "bookmark" },
-  contact: { ...routeById("contact"), icon: "contact" },
-  feeds: { ...routeById("feeds"), icon: "feed" },
-  guides: { ...routeById("guides"), icon: "guide" },
-  home: { ...routeById("home"), icon: "home" },
+  blog: { ...routeById("blog"), icon: { name: "blog" } },
+  blogroll: { ...routeById("blogroll"), icon: { name: "globe" } },
+  bookmarks: { ...routeById("bookmarks"), icon: { name: "bookmark" } },
+  contact: { ...routeById("contact"), icon: { name: "contact" } },
+  feeds: { ...routeById("feeds"), icon: { name: "feed" } },
+  guides: { ...routeById("guides"), icon: { name: "guide" } },
+  home: { ...routeById("home"), icon: { name: "home" } },
   legalNotice: routeById("legal-notice"),
-  notes: { ...routeById("notes"), icon: "notepad" },
-  projects: { ...routeById("projects"), icon: "project" },
+  notes: { ...routeById("notes"), icon: { name: "notepad" } },
+  projects: { ...routeById("projects"), icon: { name: "project" } },
   search: routeById("search"),
-} satisfies Record<string, Omit<WithIcon<Route>, "iconSize">>;
+} satisfies Record<string, WithIcon<Route>>;
 
-const getLinks = <T extends keyof typeof pagesRoutes>(
-  keys: T[],
-  target: "header" | "footer"
-) =>
-  keys.map((key): WithIcon<Route> => {
+const getLinks = (
+  keys: (keyof typeof pagesRoutes)[],
+  context: "header" | "footer"
+): WithIcon<Route>[] =>
+  keys.map((key) => {
+    const page = pagesRoutes[key];
     return {
-      ...pagesRoutes[key],
-      // eslint-disable-next-line no-magic-numbers -- Explicit enough.
-      iconSize: target === "footer" ? 17 : 28,
+      ...page,
+      icon:
+        "icon" in page
+          ? // eslint-disable-next-line no-magic-numbers -- Explicit enough.
+            { ...page.icon, size: context === "footer" ? 17 : 28 }
+          : null,
     };
   });
 

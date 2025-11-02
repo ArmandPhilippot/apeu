@@ -89,6 +89,8 @@ const themes = {
 
     .switch {
       --switch-size: calc(var(--one-px-in-em) * 20);
+      /* stylelint-disable-next-line -- The duplicated declaration above is a fallback for older browsers. */
+      --switch-size: round(calc(var(--one-px-in-em) * 20), 1px);
 
       font-size: 1.5em;
 

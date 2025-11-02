@@ -1,6 +1,8 @@
 ---
 import type { ComponentProps } from "astro/types";
 import { Icon } from "astro-icon/components";
+import type { Graph } from "schema-dts";
+import { getJsonLdSchema } from "../../../lib/schema-dts/schema";
 import { useI18n } from "../../../services/i18n";
 import { useRouting } from "../../../services/routing";
 import "../../../styles/global.css";
@@ -21,10 +23,11 @@ import Head from "./head.astro";
 
 type Props = {
   breadcrumb?: ComponentProps<typeof Breadcrumb>["items"] | null | undefined;
+  graphs?: Graph["@graph"] | null | undefined;
   seo: SEO;
 };
 
-const { breadcrumb, seo } = Astro.props;
+const { breadcrumb, graphs, seo } = Astro.props;
 const { locale, translate } = useI18n(Astro.currentLocale);
 const { routeById } = await useRouting(locale);
 
@@ -115,6 +118,15 @@ const topId = translate("anchor.site.top");
         @layer reset, themes, tokens, base, components, layout, utils;
       </style>
     </Fragment>
+    {
+      graphs ? (
+        <script
+          is:inline
+          set:html={JSON.stringify(getJsonLdSchema(graphs))}
+          type="application/ld+json"
+        />
+      ) : null
+    }
     <noscript>
       <style>
         .js-only {

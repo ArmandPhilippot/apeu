@@ -1,7 +1,11 @@
 ---
 import type { ComponentProps } from "astro/types";
+import logo from "../../assets/logo-unpressed.svg";
 import Layout from "../../components/templates/layout/layout.astro";
-import type { QueriedEntry } from "../../services/collections";
+import { getPersonGraph } from "../../lib/schema-dts/graphs/person-graph";
+import { getWebPageGraph } from "../../lib/schema-dts/graphs/webpage-graph";
+import { getWebSiteGraph } from "../../lib/schema-dts/graphs/website-graph";
+import { queryEntry, type QueriedEntry } from "../../services/collections";
 
 type Props = Partial<ComponentProps<typeof Layout>> & {
   entry: QueriedEntry<"pages">;
@@ -11,6 +15,22 @@ const {
   entry: { Content, hasContent, ...page },
   ...props
 } = Astro.props;
+const author = await queryEntry({
+  collection: "authors",
+  id: "armand-philippot",
+});
+const graphs: ComponentProps<typeof Layout>["graphs"] = [
+  await getPersonGraph(author, page.locale),
+  await getWebSiteGraph({
+    description: page.seo.description ?? page.description,
+    locale: page.locale,
+    logo: logo.src,
+  }),
+  await getWebPageGraph({
+    ...page,
+    title: page.seo.title,
+  }),
+];
 ---
 
-<Layout seo={page.seo} {...props}>HomepageView</Layout>
+<Layout graphs={graphs} seo={page.seo} {...props}>HomepageView</Layout>

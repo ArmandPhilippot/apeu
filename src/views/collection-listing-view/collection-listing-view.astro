@@ -4,6 +4,7 @@ import type { ComponentProps } from "astro/types";
 import { components } from "../../components/mdx";
 import Page from "../../components/organisms/page/page.astro";
 import Layout from "../../components/templates/layout/layout.astro";
+import { getWebPageGraph } from "../../lib/schema-dts/graphs/webpage-graph";
 import { getBreadcrumb } from "../../services/breadcrumb";
 import type {
   EnrichedPage,
@@ -24,9 +25,12 @@ const {
   ...props
 } = Astro.props;
 const breadcrumb = await getBreadcrumb({ route: Astro.url.pathname });
+const graphs: ComponentProps<typeof Layout>["graphs"] = [
+  await getWebPageGraph({ ...page, breadcrumb }),
+];
 ---
 
-<Layout breadcrumb={breadcrumb} seo={page.seo} {...props}>
+<Layout breadcrumb={breadcrumb} graphs={graphs} seo={page.seo} {...props}>
   <Page headings={page.headings} title={page.title}>
     {hasContent && <Content components={components} />}
   </Page>

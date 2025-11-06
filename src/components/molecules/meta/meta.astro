@@ -1,14 +1,13 @@
 ---
-import type { HTMLAttributes } from "astro/types";
+import type { ComponentProps } from "astro/types";
 import { Icon } from "astro-icon/components";
 import type { MetaItem } from "../../../types/data";
 import type { Gap } from "../../../types/tokens";
-import { getCSSVars, getSpacingVarValue } from "../../../utils/html-attributes";
-import { isString } from "../../../utils/type-guards";
+import DescriptionList from "../../atoms/description-list/description-list.astro";
 import Link from "../../atoms/link/link.astro";
 import Time from "../../atoms/time/time.astro";
 
-type Props = HTMLAttributes<"dl"> & {
+type Props = ComponentProps<typeof DescriptionList> & {
   gap?: Gap | null | undefined;
   hideLabel?: boolean | null | undefined;
   items: MetaItem[];
@@ -19,21 +18,12 @@ const {
   gap = { col: "2xs" },
   hideLabel = false,
   items,
-  style = "",
   ...attrs
 } = Astro.props;
 const defaultIconSize = 22;
-const cssVars = getCSSVars({
-  "col-gap": getSpacingVarValue(isString(gap) ? gap : gap?.col),
-  "row-gap": getSpacingVarValue(isString(gap) ? gap : gap?.row),
-});
 ---
 
-<dl
-  {...attrs}
-  class:list={[className, "meta"]}
-  style={`${cssVars}${style}`}
->
+<DescriptionList {...attrs} class:list={[className, "meta"]} gap={gap}>
   {
     items.map((item) => (
       <div class="meta-item">
@@ -45,10 +35,10 @@ const cssVars = getCSSVars({
               name={item.icon.name}
               size={item.icon.size ?? defaultIconSize}
             />
-          ) : null}<!--
-          --><span class:list={{ "sr-only": hideLabel }}>{item.label}</span><!--
-        --></dt><!--
-        -->{item.values.map((value) => {
+          ) : null}
+          <span class:list={{ "sr-only": hideLabel }}>{item.label}</span>
+        </dt>
+        {item.values.map((value) => {
           let content = value;
 
           if (value instanceof Date) {
@@ -62,23 +52,11 @@ const cssVars = getCSSVars({
       </div>
     ))
   }
-</dl>
+</DescriptionList>
 
 <style>
   .meta-icon {
     margin-inline-end: var(--spacing-3xs);
     vertical-align: text-bottom;
-  }
-
-  .meta-item + .meta-item {
-    margin-block-start: var(--row-gap, 0);
-  }
-
-  .meta dt:where(:not(:has(.sr-only))) + dd {
-    margin-inline-start: var(--col-gap, 0);
-  }
-
-  .meta :is(dt + dt, dd + dd)::before {
-    content: " / " / "";
   }
 </style>

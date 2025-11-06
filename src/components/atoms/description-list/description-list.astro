@@ -1,0 +1,76 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import type { Gap } from "../../../types/tokens";
+import { getCSSVars, getSpacingVarValue } from "../../../utils/html-attributes";
+import { isString } from "../../../utils/type-guards";
+
+type Props = HTMLAttributes<"dl"> & {
+  gap?: Gap | null | undefined;
+  /**
+   * Should the items be inlined?
+   *
+   * @default false
+   */
+  isInline?: boolean | null | undefined;
+};
+
+const {
+  class: className,
+  gap = { col: "2xs" },
+  isInline = false,
+  style = "",
+  ...attrs
+} = Astro.props;
+const cssVars = getCSSVars({
+  "col-gap": getSpacingVarValue(isString(gap) ? gap : gap?.col),
+  "row-gap": getSpacingVarValue(isString(gap) ? gap : gap?.row),
+});
+const content = await Astro.slots.render("default");
+const trimmedContent = content
+  .replaceAll(/>\s+</g, "><") // Removes whitespace between elements
+  .replaceAll(/(?<=>)\s+/g, "") // Removes leading spaces after opening tag
+  .replaceAll(/\s+(?=<)/g, ""); // Removes trailing spaces before closing tag
+---
+
+<dl
+  {...attrs}
+  class:list={[className, "description-list"]}
+  {...isInline ? { "data-inline": true } : {}}
+  set:html={trimmedContent}
+  style={`${cssVars}${style}`}
+/>
+
+<style>
+  .description-list :global(dt:where(:not(:has(.sr-only))) + dd) {
+    margin-inline-start: var(--col-gap, 0);
+  }
+
+  .description-list:where([data-inline="true"]) {
+    &:has(> div) {
+      display: flex;
+      flex-flow: row wrap;
+      gap: var(--row-gap, 0) var(--col-gap, 0);
+    }
+
+    & > :global(dd + dt) {
+      margin-inline-start: var(--col-gap, 0);
+    }
+  }
+
+  .description-list:where(:not([data-inline="true"])) {
+    & > :global(:is(dd + dt, dt + dd)::before) {
+      display: block;
+      content: "";
+    }
+
+    & > :global(:is(dd + dt)::before),
+    & > :global(div + div) {
+      margin-block-start: var(--row-gap, 0);
+    }
+
+    & :global(:is(dt + dt, dd + dd)::before) {
+      /* I'd prefer a comma but this is not correctly aligned.' */
+      content: " / " / "";
+    }
+  }
+</style>

@@ -1,0 +1,203 @@
+---
+title: "DescriptionList"
+---
+import { components as mdxComponents } from "../../mdx";
+import CodePreview from "../../molecules/code-preview/code-preview.astro";
+import DescriptionList from "./description-list.astro";
+
+export const components = mdxComponents;
+
+## Introduction
+
+In a description list, you can:
+
+* Use a single term associated to a single description
+* Use multiple terms associated to a single description
+* Use a single term associated to multiple descriptions
+* Wrap each couple with an `div` component
+
+<CodePreview
+  code={`import DescriptionList from "./components/atoms/description-list/description-list.astro"`}
+  label="How to import"
+  lang="ts"
+/>
+<CodePreview
+  code={`<DescriptionList>
+    <dt>Term 1 - Variant 1</dt>
+    <dt>Term 1 - Variant 2</dt>
+    <dd>The description of Term 1 variants</dd>
+    <dt>Term 2</dt>
+    <dd>The description of term 2</dd>
+    <dt>Term 3</dt>
+    <dd>The first description of term 3</dd>
+    <dd>The second description of term 3</dd>
+</DescriptionList>`}
+  label="Basic use"
+  lang="astro"
+>
+  <DescriptionList>
+    <dt>Term 1 - Variant 1</dt>
+    <dt>Term 1 - Variant 2</dt>
+    <dd>The description of Term 1 variants</dd>
+    <dt>Term 2</dt>
+    <dd>The description of term 2</dd>
+    <dt>Term 3</dt>
+    <dd>The first description of term 3</dd>
+    <dd>The second description of term 3</dd>
+  </DescriptionList>
+</CodePreview>
+
+This is the same as using a `dl` tag directly with a few adjustments:
+* spaces between elements are automatically trimmed
+* spacing and inlining is handled directly through props
+
+## With `isInline: false` (default)
+
+### Without `div` component
+
+#### No spacing (default)
+
+<DescriptionList>
+  <dt>Term 1 - Variant 1</dt>
+  <dt>Term 1 - Variant 2</dt>
+  <dd>The description of Term 1 variants</dd>
+  <dt>Term 2</dt>
+  <dd>The description of term 2</dd>
+  <dt>Term 3</dt>
+  <dd>The first description of term 3</dd>
+  <dd>The second description of term 3</dd>
+</DescriptionList>
+
+#### With a `gap` for columns
+
+This option has no effects with this configuration.
+
+<DescriptionList gap={{col: "sm"}}>
+  <dt>Term 1 - Variant 1</dt>
+  <dt>Term 1 - Variant 2</dt>
+  <dd>The description of Term 1 variants</dd>
+  <dt>Term 2</dt>
+  <dd>The description of term 2</dd>
+  <dt>Term 3</dt>
+  <dd>The first description of term 3</dd>
+  <dd>The second description of term 3</dd>
+</DescriptionList>
+
+#### With a `gap` for rows
+
+<DescriptionList gap={{row: "sm"}}>
+  <dt>Term 1 - Variant 1</dt>
+  <dt>Term 1 - Variant 2</dt>
+  <dd>The description of Term 1 variants</dd>
+  <dt>Term 2</dt>
+  <dd>The description of term 2</dd>
+  <dt>Term 3</dt>
+  <dd>The first description of term 3</dd>
+  <dd>The second description of term 3</dd>
+</DescriptionList>
+
+### Wrapping in a div component
+
+#### No custom spacing
+
+<DescriptionList>
+  <div>
+    <dt>Term 1 - Variant 1</dt>
+    <dt>Term 1 - Variant 2</dt>
+    <dd>The description of Term 1 variants</dd>
+  </div>
+  <div>
+    <dt>Term 2</dt>
+    <dd>The description of term 2</dd>
+  </div>
+  <div>
+    <dt>Term 3</dt>
+    <dd>The first description of term 3</dd>
+    <dd>The second description of term 3</dd>
+  </div>
+</DescriptionList>
+
+#### With a `gap` for columns
+
+<p>This option has no effects with this configuration.</p>
+<DescriptionList gap={{col: "sm"}}>
+  <div>
+    <dt>Term 1 - Variant 1</dt>
+    <dt>Term 1 - Variant 2</dt>
+    <dd>The description of Term 1 variants</dd>
+  </div>
+  <div>
+    <dt>Term 2</dt>
+    <dd>The description of term 2</dd>
+  </div>
+  <div>
+    <dt>Term 3</dt>
+    <dd>The first description of term 3</dd>
+    <dd>The second description of term 3</dd>
+  </div>
+</DescriptionList>
+
+#### With a `gap` for rows
+
+<DescriptionList gap={{row: "sm"}}>
+  <div>
+    <dt>Term 1 - Variant 1</dt>
+    <dt>Term 1 - Variant 2</dt>
+    <dd>The description of Term 1 variants</dd>
+  </div>
+  <div>
+    <dt>Term 2</dt>
+    <dd>The description of term 2</dd>
+  </div>
+  <div>
+    <dt>Term 3</dt>
+    <dd>The first description of term 3</dd>
+    <dd>The second description of term 3</dd>
+  </div>
+</DescriptionList>
+
+## With `isInline: true`
+
+### Without `div` component
+
+You can use `isInline` without wrapping each couple with an div component, but it's best if you do it.
+
+#### No spacing (default)
+
+<DescriptionList isInline>
+  <dt>Term 1 - Variant 1</dt>
+  <dt>Term 1 - Variant 2</dt>
+  <dd>The description of Term 1 variants</dd>
+  <dt>Term 2</dt>
+  <dd>The description of term 2</dd>
+  <dt>Term 3</dt>
+  <dd>The first description of term 3</dd>
+  <dd>The second description of term 3</dd>
+</DescriptionList>
+
+#### With a `gap` for columns
+
+<DescriptionList gap={{col: "sm"}} isInline>
+  <dt>Term 1 - Variant 1</dt>
+  <dt>Term 1 - Variant 2</dt>
+  <dd>The description of Term 1 variants</dd>
+  <dt>Term 2</dt>
+  <dd>The description of term 2</dd>
+  <dt>Term 3</dt>
+  <dd>The first description of term 3</dd>
+  <dd>The second description of term 3</dd>
+</DescriptionList>
+
+#### With a `gap` for rows
+
+<p>This option has no effects with this configuration.</p>
+<DescriptionList gap={{row: "sm"}} isInline>
+  <dt>Term 1 - Variant 1</dt>
+  <dt>Term 1 - Variant 2</dt>
+  <dd>The description of Term 1 variants</dd>
+  <dt>Term 2</dt>
+  <dd>The description of term 2</dd>
+  <dt>Term 3</dt>
+  <dd>The first description of term 3</dd>
+  <dd>The second description of term 3</dd>
+</DescriptionList>

@@ -1,318 +1,333 @@
 ---
-import type { MarkdownHeading } from "astro";
 import type { HTMLAttributes } from "astro/types";
 import { Icon } from "astro-icon/components";
+import type { RoutableCollectionKey } from "../../../lib/astro/collections/types";
+import type { QueriedEntry } from "../../../services/collections";
 import { useI18n } from "../../../services/i18n";
 import { buildToc } from "../../../services/toc";
 import type { Img as ImgType } from "../../../types/data";
-import Box from "../../atoms/box/box.astro";
 import Button from "../../atoms/button/button.astro";
-import Heading from "../../atoms/heading/heading.astro";
 import Img from "../../atoms/img/img.astro";
 import Collapsible from "../../molecules/collapsible/collapsible.astro";
-import TableOfContents from "../table-of-contents/table-of-contents.astro";
+import TableOfContents from "../../molecules/table-of-contents/table-of-contents.astro";
 
-type Props = HTMLAttributes<"article"> & {
+type Props = Omit<HTMLAttributes<"article">, "title"> & {
   cover?: Omit<ImgType, "alt"> | null | undefined;
   feed?: string | URL | null | undefined;
-  heading?: string | null | undefined;
-  isIndex?: boolean | null | undefined;
-  toc?: MarkdownHeading[] | null | undefined;
+  headings?: QueriedEntry<RoutableCollectionKey>["headings"] | null | undefined;
+  title: string;
 };
 
 const {
   class: className,
   cover,
   feed,
-  heading,
-  isIndex = false,
-  toc,
+  headings,
+  title,
   ...attrs
 } = Astro.props;
 const { translate } = useI18n(Astro.currentLocale);
+const body = await Astro.slots.render("default");
 ---
 
-<article
-  {...attrs}
-  class:list={["page", className]}
-  data-disconnected-body={Astro.slots.has("disconnected-body")}
-  data-index={isIndex}
->
+<article {...attrs} class:list={[className, "page"]}>
+  <header class="page-header">
+    <div class="page-title">
+      <h1>{title}</h1>
+      {
+        feed ? (
+          <Button
+            aria-label={translate("cta.subscribe.a11y", { title })}
+            as="a"
+            class="page-feed"
+            href={feed}
+          >
+            <Icon aria-hidden="true" name="feed" />
+            {translate("cta.subscribe")}
+          </Button>
+        ) : null
+      }
+    </div>
+    {
+      cover ? (
+        <Img
+          {...cover}
+          alt=""
+          loading="eager"
+          pictureAttributes={{ class: "page-cover" }}
+        />
+      ) : null
+    }
+    {
+      Astro.slots.has("meta") ? (
+        <div class="page-meta">
+          <slot name="meta" />
+        </div>
+      ) : null
+    }
+  </header>
   {
-    heading || cover || Astro.slots.has("meta") ? (
-      <Box
-        as="header"
-        class="page-header"
-        elevation="raised"
-        isBordered
-        isCentered
-        isProse
-        isRounded
-      >
-        {heading ? (
-          <Box class="page-heading" isPadded isProse>
-            <Heading as="h1">{heading}</Heading>
-            {feed ? (
-              <Button
-                aria-label={translate("cta.subscribe.a11y", { title: heading })}
-                as="a"
-                href={feed}
-              >
-                <Icon aria-hidden="true" name="feed" />
-                {translate("cta.subscribe")}
-              </Button>
-            ) : null}
-          </Box>
-        ) : null}
-        {cover ? (
-          <Img
-            {...cover}
-            alt=""
-            loading="eager"
-            pictureAttributes={{ class: "page-cover" }}
-          />
-        ) : null}
-        {Astro.slots.has("meta") ? (
-          <div class="page-meta">
-            <slot name="meta" />
-          </div>
-        ) : null}
-      </Box>
-    ) : null
-  }
-  {
-    toc?.length ? (
+    headings?.length ? (
       <div class="page-sidebar">
-        <Collapsible
-          class="page-toc"
-          elevation="raised"
-          isCentered
-          isProse
-          isRounded
-          open
-        >
-          <Heading as="h2" class="page-toc-title" slot="label">
-            {translate("collapsible.toc.title")}
-          </Heading>
-          <Box class="page-toc-body" isPadded isProse>
-            <TableOfContents headings={buildToc(toc)} />
-          </Box>
+        <Collapsible class="page-toc" open>
+          <h2 slot="label">{translate("collapsible.toc.title")}</h2>
+          <TableOfContents
+            class="page-toc-body"
+            headings={buildToc(headings)}
+          />
         </Collapsible>
       </div>
     ) : null
   }
+  {body ? <div class="page-body" set:html={body} /> : null}
   {
-    Astro.slots.has("body") ? (
-      <Box
-        class="page-body"
-        elevation="raised"
-        isBordered
-        isCentered
-        isPadded
-        isProse
-        isRounded
-      >
-        <slot name="body" />
-      </Box>
+    Astro.slots.has("disconnected") ? (
+      <div class="page-disconnected">
+        <slot name="disconnected" />
+      </div>
     ) : null
   }
-  <slot name="disconnected-body" />
   {
     Astro.slots.has("footer") ? (
-      <Box
-        as="footer"
-        class="page-footer"
-        elevation="raised"
-        isBordered
-        isCentered
-        isPadded
-        isProse
-        isRounded
-      >
+      <footer class="page-footer">
         <slot name="footer" />
-      </Box>
+      </footer>
     ) : null
   }
 </article>
 
 <style>
-  .page:has(.page-toc) {
-    /* Uses grid only when the size matches prose + 1/3 of prose */
-    @container (width > calc(55em * 4 / 3)) {
+  @layer components {
+    .page {
+      --main-col-width: 100%;
+      --sidebar-col-width: 0;
+
       display: grid;
       grid-template-columns:
-        minmax(calc(var(--size-prose) / 2), var(--size-prose))
-        minmax(0, calc(var(--size-prose) / 2));
-      grid-template-rows: minmax(0, auto);
-      column-gap: var(--spacing-md);
+        minmax(calc(var(--main-col-width) / 2), var(--main-col-width))
+        minmax(0, var(--sidebar-col-width));
+      grid-template-rows: repeat(5, minmax(0, auto));
+      column-gap: calc(var(--gutter) / 2);
+      justify-content: center;
+
+      @media (--prose) {
+        --main-col-width: calc(var(--size-prose) + 2.5 * var(--gutter));
+        --sidebar-col-width: calc(var(--size-prose) / 2.5 + 2 * var(--gutter));
+      }
     }
-  }
 
-  .page-toc,
-  .page-body,
-  .page-footer {
-    margin-block-start: calc(var(--border-size-sm) * -1);
-  }
+    .page-header,
+    .page-sidebar,
+    .page-body,
+    .page-disconnected,
+    .page-footer {
+      grid-column: 1 / -1;
 
-  :where(.page:has(.page-toc)) {
-    @container (width > calc(55em * 4 / 3)) {
-      .page-header,
-      .page-body,
-      .page-footer {
+      &:where(:first-child) {
+        padding-block-start: var(--gutter);
+
+        @media (--prose) {
+          border-block-start: var(--border-size-sm) solid var(--color-border);
+          border-start-start-radius: var(--border-radii-md);
+          border-start-end-radius: var(--border-radii-md);
+        }
+      }
+    }
+
+    .page-header,
+    .page-toc,
+    .page-body,
+    .page-footer {
+      background: var(--color-regular);
+      box-shadow: var(--shadow-raised-to-top-center);
+      color: var(--color-on-regular);
+
+      @media (--prose) {
+        border-inline: var(--border-size-sm) solid var(--color-border);
+        box-shadow: var(--shadow-raised-to-top-left);
+      }
+    }
+
+    .page-header,
+    .page-body,
+    .page-footer {
+      &:where(:last-child) {
+        padding-block-end: calc(var(--gutter) * 1.5);
+        border-block-end: var(--border-size-sm) solid var(--color-border);
+
+        @media (--prose) {
+          border-end-start-radius: var(--border-radii-md);
+          border-end-end-radius: var(--border-radii-md);
+        }
+      }
+    }
+
+    .page-header,
+    .page-toc,
+    .page-body,
+    .page-disconnected,
+    .page-footer {
+      @media (--prose-sidebar) {
         grid-column: 1;
       }
     }
-  }
 
-  .page-header {
-    @container (width >= calc(55em / 1.5)) {
+    .page-title,
+    .page-meta,
+    .page-toc-body,
+    .page-body,
+    .page-footer {
+      padding-inline: var(--gutter);
+    }
+
+    .page-header {
       display: grid;
-      grid-auto-columns: minmax(0, 1fr);
+      grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
     }
-  }
 
-  :where(.page:has(.page-body)) .page-header {
-    border-end-start-radius: 0;
-    border-end-end-radius: 0;
-  }
+    :where(.page:has(.page-disconnected):not(:has(.page-body))) .page-header {
+      margin-block-end: var(--gutter);
 
-  .page-heading {
-    display: flex;
-    flex-flow: column wrap;
-    align-items: center;
-    place-content: center;
-    gap: var(--spacing-sm) var(--spacing-md);
-    text-align: center;
-
-    @container (width >= calc(55em / 1.25)) {
-      flex-flow: row wrap;
+      @media (--prose) {
+        border-end-start-radius: var(--border-radii-md);
+        border-end-end-radius: var(--border-radii-md);
+      }
     }
-  }
 
-  :where(.page:has(.page-cover, .page-meta)) .page-heading {
-    border-block-end: var(--border-size-sm) solid var(--color-border);
-  }
-
-  :where(.page:has(.page-cover):has(.page-meta)) .page-heading {
-    @container (width >= calc(55em / 1.5)) {
-      grid-column: 1 / span 2;
+    .page-title,
+    .page-cover,
+    .page-meta {
+      grid-column: 1 / -1;
     }
-  }
 
-  .page-cover {
-    display: block;
-    height: 100%;
-    max-width: 100%;
+    :where(.page:has(.page-meta, .page-cover)) {
+      .page-header,
+      .page-title {
+        border-block-end: var(--border-size-sm) solid var(--color-border);
+      }
+    }
 
-    & :global(img) {
+    :where(.page:has(.page-meta)) .page-cover {
+      border-block-end: var(--border-size-sm) solid var(--color-border);
+
+      @media (--prose) {
+        grid-column: 1;
+        border-block-end: none;
+        border-inline-end: var(--border-size-sm) solid var(--color-border);
+      }
+    }
+
+    :where(.page:has(.page-cover)) .page-meta {
+      @media (--prose) {
+        grid-column: 2;
+      }
+    }
+
+    .page-title {
+      display: flex;
+      flex-flow: column wrap;
+      place-items: center;
+      place-content: center;
+      gap: var(--spacing-sm) var(--spacing-md);
+      padding-block-end: var(--gutter);
+
+      @media (--prose) {
+        flex-direction: row;
+      }
+
+      & h1 {
+        text-align: center;
+        text-wrap: balance;
+      }
+    }
+
+    .page-cover :global(img) {
       max-height: calc(var(--one-px-in-rem) * 250);
+      width: 100%;
 
-      @container (width >= calc(55em / 1.5)) {
+      @media (--prose-x2) {
         max-height: calc(var(--one-px-in-rem) * 375);
       }
     }
-  }
 
-  :where(.page:has(.page-meta)) .page-cover {
-    border-block-end: var(--border-size-sm) solid var(--color-border);
-
-    @container (width >= calc(55em / 1.5)) {
-      grid-column: 1;
-      border-block-end: none;
-      border-inline-end: var(--border-size-sm) solid var(--color-border);
-    }
-  }
-
-  .page-meta {
-    padding: clamp(var(--spacing-md), 1.5dvi, var(--spacing-xl));
-    text-align: center;
-  }
-
-  :where(.page:has(.page-cover)) .page-meta {
-    @container (width >= calc(55em / 1.5)) {
-      grid-column: 2;
-      align-self: center;
-      text-align: start;
-    }
-  }
-
-  .page-sidebar {
-    @container (width > calc(55em * 4 / 3)) {
-      grid-column: 2;
-      grid-row: 1 / span 3;
-    }
-  }
-
-  .page-toc {
-    @container (55em < width < calc(55em * 4 / 3)) {
-      border-radius: 0;
+    .page-meta {
+      padding-block: var(--spacing-md);
+      text-align: center;
     }
 
-    @container (width > calc(55em * 4 / 3)) {
-      position: sticky;
-      top: var(--spacing-md);
-    }
-  }
-
-  .page-toc-title {
-    font-size: var(--font-size-2xl);
-  }
-
-  /* We need to increase specificity because of inconsistencies between
-   * dev/build modes. */
-  .page .page-toc > :global(:is(summary)),
-  .page .page-toc-body {
-    @container (width > calc(55em * 4 / 3)) {
-      padding-inline-start: clamp(var(--spacing-sm), 1.5dvi, var(--spacing-md));
-    }
-  }
-
-  .page .page-toc-body {
-    @container (width > calc(55em * 4 / 3)) {
-      max-height: calc(100dvh - (var(--one-px-in-rem) * 130));
-      overflow-y: auto;
+    .page-sidebar {
+      @media (--prose-sidebar) {
+        grid-column: 2;
+        grid-row: 1 / -1;
+      }
     }
 
-    @media (any-pointer: fine) {
-      font-size: var(--font-size-sm);
+    .page-toc {
+      border-block-end: var(--border-size-sm) solid var(--color-border);
+
+      @media (--prose-sidebar) {
+        position: sticky;
+        top: calc(var(--gutter) / 2);
+        border-block-start: var(--border-size-sm) solid var(--color-border);
+        border-radius: var(--border-radii-md);
+      }
+
+      & h2 {
+        font-size: var(--font-size-2xl);
+
+        @media (--prose-x2) {
+          font-size: var(--font-size-lg);
+        }
+      }
     }
-  }
 
-  .page-body {
-    border-start-start-radius: 0;
-    border-start-end-radius: 0;
+    :where(.page:not(:has(.page-cover, .page-meta))) .page-toc {
+      border-block-start: var(--border-size-sm) solid var(--color-border);
+    }
 
-    &
+    .page-toc-body {
+      padding-block: var(--spacing-md);
+    }
+
+    .page-body:where(:not(:last-child)) {
+      padding-block-end: var(--gutter);
+    }
+
+    :where(.page:has(.page-cover, .page-meta)) .page-body {
+      padding-block-start: var(--gutter);
+    }
+
+    :where(.page:not(:has(.page-cover, .page-meta))) .page-body {
+      padding-block-start: var(--spacing-sm);
+    }
+
+    :where(.page:has(.page-disconnected)) .page-body {
+      margin-block-end: var(--gutter);
+      border-block-end: var(--border-size-sm) solid var(--color-border);
+
+      @media (--prose) {
+        border-end-start-radius: var(--border-radii-md);
+        border-end-end-radius: var(--border-radii-md);
+      }
+    }
+
+    .page-body
       > :global(
-        /* The list might not be complete... */
-        *:where(:not(a:not(.btn), code, em, input, img, span, strong))
-          + *:where(:not(a:not(.btn), code, em, img, input, span, strong))
+        :not(a, strong, em, del, span, input, code, br)
+          + :not(a, strong, em, del, span, input, code, br)
       ) {
       margin-block: var(--spacing-md);
     }
-  }
 
-  :where([data-index="false"]) .page-body {
-    padding-block: clamp(var(--spacing-md), 3dvi, var(--spacing-lg))
-      clamp(var(--spacing-lg), 4dvi, var(--spacing-xl));
-  }
+    :where(.page:has(.page-disconnected)) .page-footer {
+      margin-block-start: var(--gutter);
+      padding-block: var(--gutter);
+      border-block-start: var(--border-size-sm) solid var(--color-border);
 
-  :where([data-disconnected-body="true"]):not(:has(.page-body)) .page-header,
-  :where([data-disconnected-body="true"]) .page-body {
-    margin-block-end: clamp(var(--spacing-2xs), 4dvi, var(--spacing-md));
-  }
-
-  :where([data-disconnected-body="true"]) .page-footer {
-    margin-block-start: clamp(var(--spacing-2xs), 4dvi, var(--spacing-md));
-  }
-
-  :where([data-disconnected-body="false"]:has(.page-footer)) .page-body {
-    border-end-start-radius: 0;
-    border-end-end-radius: 0;
-  }
-
-  :where([data-disconnected-body="false"]) .page-footer {
-    border-start-start-radius: 0;
-    border-start-end-radius: 0;
+      @media (--prose) {
+        border-start-start-radius: var(--border-radii-md);
+        border-start-end-radius: var(--border-radii-md);
+      }
+    }
   }
 </style>

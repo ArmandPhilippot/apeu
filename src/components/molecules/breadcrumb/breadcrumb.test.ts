@@ -39,24 +39,4 @@ describe("Breadcrumb", () => {
     /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- `path` index. */
     expect(result).not.toContain(props.items[2]?.path);
   });
-
-  it<LocalTestContext>("can render the items centered", async ({
-    container,
-  }) => {
-    expect.assertions(1);
-
-    const props = {
-      isCentered: true,
-      items: [
-        { label: "omnis assumenda aut", path: "#voluptate-est-sed" },
-        { label: "voluptas odio voluptatem", path: "#est-ducimus-sit" },
-        { label: "sunt ratione quis", path: "#sunt-illo-iusto" },
-      ],
-    } satisfies ComponentProps<typeof Breadcrumb>;
-    const result = await container.renderToString(Breadcrumb, {
-      props,
-    });
-
-    expect(result).toContain('data-centered="true"');
-  });
 });

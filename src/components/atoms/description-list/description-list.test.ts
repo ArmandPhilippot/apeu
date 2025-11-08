@@ -48,7 +48,7 @@ describe("DescriptionList", () => {
     expect.assertions(1);
 
     const props = {
-      colSpacing: "lg",
+      gap: { col: "lg" },
     } satisfies ComponentProps<typeof DescriptionList>;
     const body = "pariatur dolorem ipsum";
     const result = await container.renderToString(DescriptionList, {
@@ -56,14 +56,14 @@ describe("DescriptionList", () => {
       slots: { default: body },
     });
 
-    expect(result).toContain(`var(--spacing-${props.colSpacing})`);
+    expect(result).toContain(`var(--spacing-${props.gap.col})`);
   });
 
   it<LocalTestContext>("can use a row spacing", async ({ container }) => {
     expect.assertions(1);
 
     const props = {
-      rowSpacing: "lg",
+      gap: { row: "lg" },
     } satisfies ComponentProps<typeof DescriptionList>;
     const body = "pariatur dolorem ipsum";
     const result = await container.renderToString(DescriptionList, {
@@ -71,6 +71,6 @@ describe("DescriptionList", () => {
       slots: { default: body },
     });
 
-    expect(result).toContain(`var(--spacing-${props.rowSpacing})`);
+    expect(result).toContain(`var(--spacing-${props.gap.row})`);
   });
 });

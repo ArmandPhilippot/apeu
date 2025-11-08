@@ -103,7 +103,7 @@ describe("SearchView", () => {
       props,
     });
 
-    expect(result).toContain("</ap-pagefind-search>");
+    expect(result).toContain("</apeu-pagefind-search>");
     expect(result).toContain(`id="pagefind"`);
   });
 });

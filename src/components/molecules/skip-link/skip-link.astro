@@ -1,0 +1,42 @@
+---
+import type { ComponentProps } from "astro/types";
+import { InvalidAnchorFormatError } from "../../../utils/exceptions";
+import Button from "../../atoms/button/button.astro";
+
+type Props = Omit<
+  ComponentProps<typeof Button<"a">>,
+  "as" | "href" | "isExternal" | "kind"
+> & {
+  to: `#${string}`;
+};
+
+const { class: className, slot, to, ...attrs } = Astro.props;
+
+if (!to.startsWith("#")) throw new InvalidAnchorFormatError("to", to);
+---
+
+<Button
+  {...attrs}
+  as="a"
+  class:list={[className, "sr-only", "skip-link"]}
+  href={to}
+  kind="secondary"><slot /></Button
+>
+
+<style>
+  @layer components {
+    .skip-link {
+      position: fixed;
+      top: var(--spacing-sm);
+      inset-inline-start: var(--spacing-sm);
+      z-index: 99;
+      user-select: none;
+      box-shadow: var(--shadow-floating-to-top-left);
+      outline-offset: calc(var(--border-size-md) * -3);
+
+      &:focus {
+        box-shadow: var(--shadow-floating-to-top-left);
+      }
+    }
+  }
+</style>

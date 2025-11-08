@@ -15,9 +15,19 @@ export type Route = {
   path: string;
 };
 
+export type Icon = { name: IconName; size?: number };
+
 export type WithIcon<T> = T & {
-  icon?: IconName | null | undefined;
-  iconSize?: number | undefined;
+  icon?: Icon | null | undefined;
+};
+
+type MetaValue = string | Date | Route;
+
+export type MetaItem = {
+  label: string;
+  values: MetaValue[];
+  icon?: { name: IconName; size?: number | string } | undefined | null;
+  description?: string;
 };
 
 export type AltLanguage = {

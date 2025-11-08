@@ -159,4 +159,18 @@ describe("Layout", () => {
 
     expect(result).not.toContain("/design-system");
   });
+
+  it<LocalTestContext>("renders the JSON-LD graphs", async ({ container }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(2);
+
+    const props = {
+      graphs: [{ "@type": "WebPage" }],
+      seo: { title: "est et fugiat" },
+    } satisfies ComponentProps<typeof Layout>;
+    const result = await container.renderToString(Layout, { props });
+
+    expect(result).toContain("application/ld+json");
+    expect(result).toContain("WebPage");
+  });
 });

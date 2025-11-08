@@ -1,0 +1,15 @@
+---
+title: "Page has title, body and disconnected body"
+wrapInPage: false
+---
+import { components as mdxComponents } from "../../../mdx";
+import Page from "../page.astro";
+
+export const components = mdxComponents;
+
+<Page title={frontmatter.title}>
+  <p>This is the main content of the page.</p>
+  <div slot="disconnected">
+    This is the content of a disconnected body.
+  </div>
+</Page>

@@ -23,13 +23,13 @@ const {
   {...elevation ? { "data-elevation": elevation } : {}}
 >
   {
-    Astro.slots.has("frontmatter") ||
+    Astro.slots.has("overline") ||
     Astro.slots.has("cover") ||
     Astro.slots.has("heading") ? (
       <header class="card-header">
-        {Astro.slots.has("frontmatter") ? (
-          <div class="card-frontmatter">
-            <slot name="frontmatter" />
+        {Astro.slots.has("overline") ? (
+          <div class="card-overline">
+            <slot name="overline" />
           </div>
         ) : null}
         {Astro.slots.has("cover") ? (
@@ -119,14 +119,14 @@ const {
       }
     }
 
-    .card-frontmatter,
+    .card-overline,
     .card-footer {
       display: flex;
       flex-flow: row wrap;
       align-items: center;
     }
 
-    .card-frontmatter {
+    .card-overline {
       grid-column: 1 / -1;
       grid-row: 1;
       gap: var(--spacing-xs);
@@ -170,7 +170,7 @@ const {
       }
     }
 
-    :where(.card:has(.card-frontmatter)) {
+    :where(.card:has(.card-overline)) {
       .card-cover {
         @container (width > 55em) {
           grid-row-start: 2;

@@ -1,0 +1,131 @@
+---
+import type { ComponentProps } from "astro/types";
+import { Icon } from "astro-icon/components";
+import type { EntryPreview } from "../../../types/data";
+import type { HeadingLvl } from "../../../types/tokens";
+import { isString } from "../../../utils/type-guards";
+import Button from "../../atoms/button/button.astro";
+import Img from "../../atoms/img/img.astro";
+import Link from "../../atoms/link/link.astro";
+import Card from "../../molecules/card/card.astro";
+import Metadata from "../../molecules/meta/meta.astro";
+
+type Props = ComponentProps<typeof Card> & {
+  entry: EntryPreview;
+  headingLvl?: HeadingLvl | undefined;
+};
+
+const {
+  class: className,
+  entry,
+  headingLvl: Heading = "h2",
+  slot,
+  ...attrs
+} = Astro.props;
+const {
+  cover,
+  cta,
+  description,
+  featuredMeta,
+  heading,
+  isQuote = false,
+  locale,
+  meta,
+} = entry;
+const defaultCTAIconSize = 22;
+---
+
+<Card {...attrs} class:list={[className, "preview-card"]}>
+  {
+    featuredMeta ? (
+      <Metadata
+        class="preview-card-overline"
+        hideLabel
+        items={[featuredMeta]}
+        slot={featuredMeta ? "overline" : ""}
+      />
+    ) : null
+  }
+  {cover ? <Img {...cover} alt="" slot={cover ? "cover" : ""} /> : null}
+  <Heading lang={locale} slot="heading">
+    {
+      isString(heading) ? (
+        heading
+      ) : (
+        <Link href={heading.path}>{heading.label}</Link>
+      )
+    }
+  </Heading>
+  {
+    isQuote ? (
+      <q lang={locale}>{description}</q>
+    ) : (
+      <div lang={locale}>{description}</div>
+    )
+  }
+  {
+    meta ? (
+      <Metadata
+        class="preview-card-meta"
+        items={meta}
+        slot={meta ? "meta" : ""}
+      />
+    ) : null
+  }
+  {
+    cta && cta.length > 0 ? (
+      <div class="preview-card-cta" slot={cta ? "cta" : ""}>
+        {cta.map((btn) => (
+          <Button
+            aria-label={btn.ariaLabel}
+            as="a"
+            href={btn.path}
+            isExternal={btn.isExternal}
+          >
+            {btn.icon ? (
+              <Icon
+                aria-hidden="true"
+                name={btn.icon.name}
+                size={btn.icon.size ?? defaultCTAIconSize}
+              />
+            ) : null}
+            {btn.label}
+          </Button>
+        ))}
+      </div>
+    ) : null
+  }
+</Card>
+
+<style>
+  .preview-card:has(header a):not(:has(footer a)) {
+    position: relative;
+
+    &:focus-within {
+      outline: var(--border-size-lg) solid var(--color-primary-lighter);
+      outline-offset: calc(var(--border-size-lg) * -1);
+    }
+
+    & header a {
+      &::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+      }
+
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+
+  .preview-card-cta {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: end;
+    gap: var(--spacing-sm);
+    margin-inline-start: auto;
+  }
+</style>

@@ -30,6 +30,22 @@ export type MetaItem = {
   description?: string;
 };
 
+type EntryPreviewCTA = WithIcon<Route> & {
+  ariaLabel?: string | null | undefined;
+  isExternal?: boolean | null | undefined;
+};
+
+export type EntryPreview = {
+  cover?: Img | null | undefined;
+  cta?: EntryPreviewCTA[] | null | undefined;
+  description: string;
+  featuredMeta?: MetaItem | null | undefined;
+  heading: string | Route;
+  isQuote?: boolean | null | undefined;
+  locale?: string | null | undefined;
+  meta?: MetaItem[] | null | undefined;
+};
+
 export type AltLanguage = {
   locale: AvailableLocale;
   route: string;

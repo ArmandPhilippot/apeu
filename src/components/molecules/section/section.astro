@@ -32,13 +32,20 @@ const { class: className, slot, ...attrs } = Astro.props;
 
     .section-header {
       display: flex;
-      align-items: center;
+      flex-flow: column wrap;
+      place-items: center;
+      text-align: center;
       gap: var(--spacing-sm) var(--spacing-md);
       margin-block-end: var(--gutter);
       padding: var(--gutter);
       background: var(--color-regular);
       border-block: var(--border-size-sm) solid var(--color-border);
       box-shadow: var(--shadow-raised-to-top-center);
+
+      @media (--sm-or-above) {
+        flex-flow: row nowrap;
+        text-align: left;
+      }
 
       @media (--prose) {
         border-inline: var(--border-size-sm) solid var(--color-border);
@@ -47,12 +54,20 @@ const { class: className, slot, ...attrs } = Astro.props;
       }
     }
 
+    .section-header > :global(:is(h1, h2, h3, h4, h5, h6)) {
+      flex: 1;
+    }
+
     .section-cta {
       display: flex;
       flex-flow: row wrap;
-      align-items: center;
+      place-items: center;
+      justify-content: center;
       gap: var(--spacing-sm);
-      margin-inline-start: auto;
+
+      @media (--sm-or-above) {
+        margin-inline-start: auto;
+      }
     }
   }
 </style>

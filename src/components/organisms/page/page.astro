@@ -1,18 +1,16 @@
 ---
 import type { HTMLAttributes } from "astro/types";
-import { Icon } from "astro-icon/components";
 import type { RoutableCollectionKey } from "../../../lib/astro/collections/types";
 import type { QueriedEntry } from "../../../services/collections";
 import { useI18n } from "../../../services/i18n";
 import { buildToc } from "../../../services/toc";
-import type { Img as ImgType } from "../../../types/data";
-import Button from "../../atoms/button/button.astro";
-import Img from "../../atoms/img/img.astro";
+import type { Img } from "../../../types/data";
 import Collapsible from "../../molecules/collapsible/collapsible.astro";
+import PageOpener from "../../molecules/page-opener/page-opener.astro";
 import TableOfContents from "../../molecules/table-of-contents/table-of-contents.astro";
 
 type Props = Omit<HTMLAttributes<"article">, "title"> & {
-  cover?: Omit<ImgType, "alt"> | null | undefined;
+  cover?: Omit<Img, "alt"> | null | undefined;
   feed?: string | URL | null | undefined;
   headings?: QueriedEntry<RoutableCollectionKey>["headings"] | null | undefined;
   title: string;
@@ -28,44 +26,15 @@ const {
 } = Astro.props;
 const { translate } = useI18n(Astro.currentLocale);
 const body = await Astro.slots.render("default");
+const hasMeta = Astro.slots.has("meta");
+const hasIntro = Astro.slots.has("intro");
 ---
 
 <article {...attrs} class:list={[className, "page"]}>
-  <header class="page-header">
-    <div class="page-title">
-      <h1>{title}</h1>
-      {
-        feed ? (
-          <Button
-            aria-label={translate("cta.subscribe.a11y", { title })}
-            as="a"
-            class="page-feed"
-            href={feed}
-          >
-            <Icon aria-hidden="true" name="feed" />
-            {translate("cta.subscribe")}
-          </Button>
-        ) : null
-      }
-    </div>
-    {
-      cover ? (
-        <Img
-          {...cover}
-          alt=""
-          loading="eager"
-          pictureAttributes={{ class: "page-cover" }}
-        />
-      ) : null
-    }
-    {
-      Astro.slots.has("meta") ? (
-        <div class="page-meta">
-          <slot name="meta" />
-        </div>
-      ) : null
-    }
-  </header>
+  <PageOpener class="page-header" cover={cover} feed={feed} title={title}>
+    {hasMeta ? <slot name="meta" slot={hasMeta ? "meta" : ""} /> : null}
+    {hasIntro ? <slot name="intro" slot={hasIntro ? "intro" : ""} /> : null}
+  </PageOpener>
   {
     headings?.length ? (
       <div class="page-sidebar">
@@ -122,44 +91,6 @@ const body = await Astro.slots.render("default");
     .page-disconnected,
     .page-footer {
       grid-column: 1 / -1;
-
-      &:where(:first-child) {
-        padding-block-start: var(--gutter);
-
-        @media (--prose) {
-          border-block-start: var(--border-size-sm) solid var(--color-border);
-          border-start-start-radius: var(--border-radii-md);
-          border-start-end-radius: var(--border-radii-md);
-        }
-      }
-    }
-
-    .page-header,
-    .page-toc,
-    .page-body,
-    .page-footer {
-      background: var(--color-regular);
-      box-shadow: var(--shadow-raised-to-top-center);
-      color: var(--color-on-regular);
-
-      @media (--prose) {
-        border-inline: var(--border-size-sm) solid var(--color-border);
-        box-shadow: var(--shadow-raised-to-top-left);
-      }
-    }
-
-    .page-header,
-    .page-body,
-    .page-footer {
-      &:where(:last-child) {
-        padding-block-end: calc(var(--gutter) * 1.5);
-        border-block-end: var(--border-size-sm) solid var(--color-border);
-
-        @media (--prose) {
-          border-end-start-radius: var(--border-radii-md);
-          border-end-end-radius: var(--border-radii-md);
-        }
-      }
     }
 
     .page-header,
@@ -172,89 +103,6 @@ const body = await Astro.slots.render("default");
       }
     }
 
-    .page-title,
-    .page-meta,
-    .page-toc-body,
-    .page-body,
-    .page-footer {
-      padding-inline: var(--gutter);
-    }
-
-    .page-header {
-      display: grid;
-      grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
-    }
-
-    :where(.page:has(.page-disconnected):not(:has(.page-body))) .page-header {
-      margin-block-end: var(--gutter);
-
-      @media (--prose) {
-        border-end-start-radius: var(--border-radii-md);
-        border-end-end-radius: var(--border-radii-md);
-      }
-    }
-
-    .page-title,
-    .page-cover,
-    .page-meta {
-      grid-column: 1 / -1;
-    }
-
-    :where(.page:has(.page-meta, .page-cover)) {
-      .page-header,
-      .page-title {
-        border-block-end: var(--border-size-sm) solid var(--color-border);
-      }
-    }
-
-    :where(.page:has(.page-meta)) .page-cover {
-      border-block-end: var(--border-size-sm) solid var(--color-border);
-
-      @media (--prose) {
-        grid-column: 1;
-        border-block-end: none;
-        border-inline-end: var(--border-size-sm) solid var(--color-border);
-      }
-    }
-
-    :where(.page:has(.page-cover)) .page-meta {
-      @media (--prose) {
-        grid-column: 2;
-      }
-    }
-
-    .page-title {
-      display: flex;
-      flex-flow: column wrap;
-      place-items: center;
-      place-content: center;
-      gap: var(--spacing-sm) var(--spacing-md);
-      padding-block-end: var(--gutter);
-
-      @media (--prose) {
-        flex-direction: row;
-      }
-
-      & h1 {
-        text-align: center;
-        text-wrap: balance;
-      }
-    }
-
-    .page-cover :global(img) {
-      max-height: calc(var(--one-px-in-rem) * 250);
-      width: 100%;
-
-      @media (--prose-x2) {
-        max-height: calc(var(--one-px-in-rem) * 375);
-      }
-    }
-
-    .page-meta {
-      padding-block: var(--spacing-md);
-      text-align: center;
-    }
-
     .page-sidebar {
       @media (--prose-sidebar) {
         grid-column: 2;
@@ -262,13 +110,58 @@ const body = await Astro.slots.render("default");
       }
     }
 
-    .page-toc {
-      border-block-end: var(--border-size-sm) solid var(--color-border);
+    .page-header,
+    .page-toc,
+    .page-body,
+    .page-footer {
+      box-shadow: var(--shadow-raised-to-top-center);
 
+      @media (--prose) {
+        box-shadow: var(--shadow-raised-to-top-left);
+      }
+    }
+
+    .page-toc,
+    .page-body,
+    .page-footer {
+      background: var(--color-regular);
+      color: var(--color-on-regular);
+    }
+
+    .page-toc-body,
+    .page-body,
+    .page-footer {
+      padding-inline: var(--gutter);
+    }
+
+    .page-body,
+    .page-footer {
+      padding-block: var(--gutter);
+
+      @media (--prose) {
+        border-inline: var(--border-size-sm) solid var(--color-border);
+      }
+
+      &
+        > :global(
+          :not(a, strong, em, del, span, input, code, br)
+            + :not(a, strong, em, del, span, input, code, br)
+        ) {
+        margin-block: var(--spacing-md);
+      }
+    }
+
+    .page-header,
+    .page-toc {
+      @media (--smaller-than-prose) {
+        border-inline: none;
+      }
+    }
+
+    .page-toc {
       @media (--prose-sidebar) {
         position: sticky;
         top: calc(var(--gutter) / 2);
-        border-block-start: var(--border-size-sm) solid var(--color-border);
         border-radius: var(--border-radii-md);
       }
 
@@ -281,28 +174,29 @@ const body = await Astro.slots.render("default");
       }
     }
 
-    :where(.page:not(:has(.page-cover, .page-meta))) .page-toc {
-      border-block-start: var(--border-size-sm) solid var(--color-border);
-    }
-
     .page-toc-body {
       padding-block: var(--spacing-md);
     }
 
-    .page-body:where(:not(:last-child)) {
-      padding-block-end: var(--gutter);
+    :where(.page:has(.page-toc)) .page-header {
+      @media (--smaller-than-prose-sidebar) {
+        border-block-end: none;
+      }
     }
 
-    :where(.page:has(.page-cover, .page-meta)) .page-body {
-      padding-block-start: var(--gutter);
+    :where(.page:has(.page-body)) .page-header {
+      border-end-start-radius: 0;
+      border-end-end-radius: 0;
     }
 
-    :where(.page:not(:has(.page-cover, .page-meta))) .page-body {
-      padding-block-start: var(--spacing-sm);
-    }
-
+    :where(.page:has(.page-disconnected):not(:has(.page-body))) .page-header,
     :where(.page:has(.page-disconnected)) .page-body {
       margin-block-end: var(--gutter);
+    }
+
+    :where(.page:has(.page-disconnected)) .page-body,
+    .page-body:where(:last-child),
+    .page-footer {
       border-block-end: var(--border-size-sm) solid var(--color-border);
 
       @media (--prose) {
@@ -311,23 +205,15 @@ const body = await Astro.slots.render("default");
       }
     }
 
-    .page-body
-      > :global(
-        :not(a, strong, em, del, span, input, code, br)
-          + :not(a, strong, em, del, span, input, code, br)
-      ) {
-      margin-block: var(--spacing-md);
+    :where(.page:has(.page-body + .page-footer)) .page-body {
+      padding-block-end: 0;
     }
 
-    :where(.page:has(.page-disconnected)) .page-footer {
+    :where(.page:has(.page-disconnected + .page-footer)) .page-footer {
       margin-block-start: var(--gutter);
-      padding-block: var(--gutter);
       border-block-start: var(--border-size-sm) solid var(--color-border);
-
-      @media (--prose) {
-        border-start-start-radius: var(--border-radii-md);
-        border-start-end-radius: var(--border-radii-md);
-      }
+      border-start-start-radius: var(--border-radii-md);
+      border-start-end-radius: var(--border-radii-md);
     }
   }
 </style>

@@ -1,0 +1,145 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import { Icon } from "astro-icon/components";
+import { useI18n } from "../../../services/i18n";
+import type { Img as ImgType } from "../../../types/data";
+import Button from "../../atoms/button/button.astro";
+import Img from "../../atoms/img/img.astro";
+
+type Props = Omit<HTMLAttributes<"header">, "title"> & {
+  cover?: Omit<ImgType, "alt"> | null | undefined;
+  feed?: string | URL | null | undefined;
+  title: string;
+};
+
+const { class: className, cover, feed, title, ...attrs } = Astro.props;
+const { translate } = useI18n(Astro.currentLocale);
+---
+
+<header {...attrs} class:list={[className, "page-opener"]}>
+  <div class="page-opener-title">
+    <h1>{title}</h1>
+    {
+      feed ? (
+        <Button
+          aria-label={translate("cta.subscribe.a11y", { title })}
+          as="a"
+          class="page-opener-feed"
+          href={feed}
+        >
+          <Icon aria-hidden="true" name="feed" />
+          {translate("cta.subscribe")}
+        </Button>
+      ) : null
+    }
+  </div>
+  {
+    cover ? (
+      <Img
+        {...cover}
+        alt=""
+        loading="eager"
+        pictureAttributes={{ class: "page-opener-cover" }}
+      />
+    ) : null
+  }
+  {
+    Astro.slots.has("meta") ? (
+      <div class="page-opener-meta">
+        <slot name="meta" />
+      </div>
+    ) : null
+  }
+  {
+    Astro.slots.has("intro") ? (
+      <div class="page-opener-intro">
+        <slot name="intro" />
+      </div>
+    ) : null
+  }
+</header>
+
+<style>
+  @layer components {
+    .page-opener {
+      display: grid;
+      grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+      padding-block-start: var(--gutter);
+      background: var(--color-regular);
+      border: var(--border-size-sm) solid var(--color-border);
+      color: var(--color-on-regular);
+
+      @media (--prose) {
+        border-radius: var(--border-radii-md);
+      }
+    }
+
+    .page-opener-title,
+    .page-opener-cover,
+    .page-opener-meta,
+    .page-opener-intro {
+      grid-column: 1 / -1;
+    }
+
+    .page-opener-title {
+      display: flex;
+      flex-flow: column wrap;
+      place-items: center;
+      place-content: center;
+      gap: var(--spacing-sm) var(--spacing-md);
+      padding: 0 var(--gutter) var(--gutter);
+
+      &:not(:only-child) {
+        border-block-end: var(--border-size-sm) solid var(--color-border);
+      }
+
+      @media (--prose) {
+        flex-direction: row;
+      }
+
+      & h1 {
+        text-align: center;
+        text-wrap: balance;
+      }
+    }
+
+    .page-opener-cover :global(img) {
+      max-height: calc(var(--one-px-in-rem) * 250);
+      width: 100%;
+
+      @media (--prose-x2) {
+        max-height: calc(var(--one-px-in-rem) * 375);
+      }
+    }
+
+    .page-opener-meta {
+      padding: var(--spacing-md) var(--gutter);
+      text-align: center;
+    }
+
+    .page-opener-intro {
+      padding: var(--gutter);
+    }
+
+    :where(.page-opener:has(.page-opener-meta)) .page-opener-cover {
+      border-block-end: var(--border-size-sm) solid var(--color-border);
+
+      @media (--prose) {
+        grid-column: 1;
+        border-block-end: none;
+        border-inline-end: var(--border-size-sm) solid var(--color-border);
+      }
+    }
+
+    :where(.page-opener:has(.page-opener-cover)) .page-opener-meta {
+      @media (--prose) {
+        grid-column: 2;
+      }
+    }
+
+    :where(.page-opener:has(.page-opener-meta, .page-opener-cover))
+      .page-opener-intro {
+      border-block-start: var(--border-size-sm) solid var(--color-border);
+    }
+  }
+</style>

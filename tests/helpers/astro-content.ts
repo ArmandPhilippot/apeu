@@ -281,6 +281,11 @@ export const createLayoutMockEntries = (
       { collection: "pages", id: `${locale}/home`, data: { title: "Home" } },
       {
         collection: "pages",
+        id: `${locale}/404`,
+        data: { title: "Not found" },
+      },
+      {
+        collection: "pages",
         id: `${locale}/blogroll`,
         data: { title: "Blogroll" },
       },

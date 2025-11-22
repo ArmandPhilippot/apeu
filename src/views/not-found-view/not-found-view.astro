@@ -2,10 +2,12 @@
 import type { ComponentProps } from "astro/types";
 import { components } from "../../components/mdx";
 import ContentPage from "../../components/organisms/content-page/content-page.astro";
+import SearchForm from "../../components/organisms/search-form/search-form.astro";
 import Layout from "../../components/templates/layout/layout.astro";
 import { getWebPageGraph } from "../../lib/schema-dts/graphs/webpage-graph";
-import { getBreadcrumb } from "../../services/breadcrumb";
 import type { QueriedEntry } from "../../services/collections";
+import { useRouting } from "../../services/routing";
+import { CONFIG } from "../../utils/constants";
 
 type Props = Partial<ComponentProps<typeof Layout>> & {
   entry: QueriedEntry<"pages">;
@@ -15,7 +17,11 @@ const {
   entry: { Content, hasContent, ...page },
   ...props
 } = Astro.props;
-const breadcrumb = await getBreadcrumb({ route: Astro.url.pathname });
+const { routeById } = await useRouting(page.locale);
+const breadcrumb: ComponentProps<typeof Layout>["breadcrumb"] = [
+  routeById("home"),
+  routeById("404"),
+];
 const graphs: ComponentProps<typeof Layout>["graphs"] = [
   await getWebPageGraph({ ...page, breadcrumb }),
 ];
@@ -24,5 +30,10 @@ const graphs: ComponentProps<typeof Layout>["graphs"] = [
 <Layout breadcrumb={breadcrumb} graphs={graphs} seo={page.seo} {...props}>
   <ContentPage headings={page.headings} title={page.title}>
     {hasContent && <Content components={components} />}
+    <SearchForm
+      id="not-found-search"
+      queryParam={CONFIG.SEARCH.QUERY_PARAM}
+      resultsPage={routeById("search").path}
+    />
   </ContentPage>
 </Layout>

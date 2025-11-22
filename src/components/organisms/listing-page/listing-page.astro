@@ -1,0 +1,78 @@
+---
+import type { Page } from "astro";
+import type { HTMLAttributes } from "astro/types";
+import { useI18n } from "../../../services/i18n";
+import { renderPaginationLink } from "../../../services/pagination";
+import type { EntryPreview, Img } from "../../../types/data";
+import CardsList from "../../molecules/cards-list/cards-list.astro";
+import Meta from "../../molecules/meta/meta.astro";
+import PageOpener from "../../molecules/page-opener/page-opener.astro";
+import Pagination from "../../molecules/pagination/pagination.astro";
+import PreviewCard from "../preview-card/preview-card.astro";
+
+type Props = Omit<HTMLAttributes<"article">, "title"> & {
+  cover?: Omit<Img, "alt"> | null | undefined;
+  entries: EntryPreview[];
+  pagination: Pick<Page, "currentPage" | "lastPage">;
+  route: string;
+  title: string;
+  totalEntries: string;
+};
+
+const {
+  class: className,
+  cover,
+  entries,
+  pagination,
+  route,
+  title,
+  totalEntries,
+  ...attrs
+} = Astro.props;
+const { translate } = useI18n(Astro.currentLocale);
+const hasIntro = Astro.slots.has("intro");
+---
+
+<article {...attrs} class:list={[className, "listing-page"]}>
+  <PageOpener
+    class="listing-page-header"
+    cover={cover}
+    feed={`${route}/feed.xml`}
+    title={title}
+  >
+    <Meta
+      items={[{ label: translate("meta.label.total"), values: [totalEntries] }]}
+      slot="meta"
+    />
+    {hasIntro ? <slot name="intro" slot={hasIntro ? "intro" : ""} /> : null}
+  </PageOpener>
+  <CardsList items={entries} sizeMinCols="35rem">
+    {
+      (entry: (typeof entries)[number]) => (
+        <PreviewCard elevation="raised" entry={entry} />
+      )
+    }
+  </CardsList>
+  {
+    pagination.lastPage > 1 ? (
+      <Pagination
+        aria-label={translate("pagination.a11y")}
+        class="listing-page-pagination"
+        current={pagination.currentPage}
+        isCentered
+        last={pagination.lastPage}
+        renderLink={renderPaginationLink(route)}
+      />
+    ) : null
+  }
+</article>
+
+<style>
+  .listing-page-header {
+    margin-block-end: var(--gutter);
+  }
+
+  .listing-page-pagination {
+    margin-block-start: var(--gutter);
+  }
+</style>

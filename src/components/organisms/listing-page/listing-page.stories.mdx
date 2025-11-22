@@ -1,0 +1,19 @@
+---
+title: "ListingPage"
+wrapInPage: false
+---
+import { components as mdxComponents } from "../../mdx";
+import ListingPage from "./listing-page.astro";
+
+export const components = mdxComponents;
+export const entries = [
+  { description: "The card 1 excerpt.", heading: "Card 1" },
+  { description: "The card 2 excerpt.", heading: "Card 2" },
+  { description: "The card 3 excerpt.", heading: "Card 3" },
+  { description: "The card 4 excerpt.", heading: "Card 4" },
+  { description: "The card 5 excerpt.", heading: "Card 5" },
+]
+
+<ListingPage entries={entries} pagination={{currentPage: 1, lastPage: 6}} route="#route" title={frontmatter.title} totalEntries="10 entries">
+  <p>This is the main content of the page.</p>
+</ListingPage>

@@ -161,6 +161,10 @@ const ellipsis = "\u2026" as const;
       &:where([data-centered="true"]) {
         margin-inline: auto;
       }
+
+      &:where([data-centered="true"]) ol {
+        justify-content: center;
+      }
     }
 
     :where([data-centered="true"]) .pagination-list {

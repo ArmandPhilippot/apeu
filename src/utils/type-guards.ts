@@ -69,8 +69,12 @@ export const isString = (value: unknown): value is string =>
  * @param {string} locale - The locale to validate.
  * @returns {boolean} True if it is a valid locale.
  */
-export const isAvailableLocale = (locale: string): locale is AvailableLocale =>
-  (CONFIG.LANGUAGES.AVAILABLE as readonly string[]).includes(locale);
+export const isAvailableLocale = (
+  locale: string | null | undefined
+): locale is AvailableLocale => {
+  if (locale === undefined || locale === null) return false;
+  return (CONFIG.LANGUAGES.AVAILABLE as readonly string[]).includes(locale);
+};
 
 /**
  * Check if the given locale is the default one.

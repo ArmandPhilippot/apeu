@@ -1,37 +1,73 @@
 ---
-import type { Page as AstroPage } from "astro";
 import type { ComponentProps } from "astro/types";
-import { components } from "../../components/mdx";
-import Page from "../../components/organisms/page/page.astro";
+import ListingPage from "../../components/organisms/listing-page/listing-page.astro";
 import Layout from "../../components/templates/layout/layout.astro";
 import { getWebPageGraph } from "../../lib/schema-dts/graphs/webpage-graph";
 import { getBreadcrumb } from "../../services/breadcrumb";
-import type {
-  EnrichedPage,
-  ListingPageCollection,
+import {
+  convertToPreview,
+  type EnrichedPage,
+  type ListingPageCollection,
 } from "../../services/collections";
+import { useI18n, type PluralUIKey } from "../../services/i18n";
 
-type Props = Partial<ComponentProps<typeof Layout>> & {
-  entry: EnrichedPage<ListingPageCollection, "preview">;
-  pagination: Pick<
-    AstroPage<"index.pages" | "pages">,
-    "currentPage" | "end" | "lastPage" | "size" | "start" | "total"
-  >;
-};
+type Props = Partial<ComponentProps<typeof Layout>> &
+  Pick<ComponentProps<typeof ListingPage>, "pagination"> & {
+    entry: EnrichedPage<ListingPageCollection, "preview">;
+  };
 
 const {
   entry: { Content, hasContent, related, ...page },
   pagination,
   ...props
 } = Astro.props;
+const { locale, translate, translatePlural } = useI18n(page.locale);
 const breadcrumb = await getBreadcrumb({ route: Astro.url.pathname });
 const graphs: ComponentProps<typeof Layout>["graphs"] = [
   await getWebPageGraph({ ...page, breadcrumb }),
 ];
+
+const totalTranslationKey = {
+  "blog.categories": "meta.value.total.blog.categories",
+  "blog.posts": "meta.value.total.blog.posts",
+  blogroll: "meta.value.total.blogroll",
+  bookmarks: "meta.value.total.bookmarks",
+  guides: "meta.value.total.guides",
+  notes: "meta.value.total.notes",
+  projects: "meta.value.total.projects",
+  tags: "meta.value.total.tags",
+} satisfies Record<ListingPageCollection, PluralUIKey>;
+
+const collectionMetaTotal = translatePlural(
+  Array.isArray(related.collection)
+    ? "meta.value.total.entries"
+    : totalTranslationKey[related.collection],
+  {
+    count: related.total,
+  }
+);
+const entries = await Promise.all(
+  related.entries.map(
+    async (entry) =>
+      await convertToPreview(entry, {
+        currentRoute: Astro.url.pathname,
+        i18n: { locale, translate, translatePlural },
+        showAuthorsIfAvailable: false,
+        showCollectionLabel: Array.isArray(related.collection),
+      })
+  )
+);
 ---
 
 <Layout breadcrumb={breadcrumb} graphs={graphs} seo={page.seo} {...props}>
-  <Page headings={page.headings} title={page.title}>
-    {hasContent && <Content components={components} />}
-  </Page>
+  <ListingPage
+    cover={page.cover}
+    entries={entries}
+    pagination={pagination}
+    route={page.route}
+    title={page.title}
+    totalEntries={collectionMetaTotal}
+  >
+    {hasContent && <Content slot={hasContent ? "intro" : ""} />}
+  </ListingPage>
 </Layout>

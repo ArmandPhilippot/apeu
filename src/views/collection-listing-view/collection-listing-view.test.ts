@@ -199,14 +199,7 @@ describe("CollectionListingView", () => {
 
       const props = {
         entry,
-        pagination: {
-          currentPage: 1,
-          end: 2,
-          lastPage: 1,
-          size: 10,
-          start: 1,
-          total: 2,
-        },
+        pagination: { currentPage: 1, lastPage: 1 },
       } satisfies ComponentProps<typeof CollectionListingView>;
 
       const result = await container.renderToString(CollectionListingView, {
@@ -253,14 +246,7 @@ describe("CollectionListingView", () => {
 
       const props = {
         entry,
-        pagination: {
-          currentPage: 1,
-          end: 1,
-          lastPage: 1,
-          size: 10,
-          start: 1,
-          total: 1,
-        },
+        pagination: { currentPage: 1, lastPage: 1 },
       } satisfies ComponentProps<typeof CollectionListingView>;
 
       const result = await container.renderToString(CollectionListingView, {
@@ -299,14 +285,7 @@ describe("CollectionListingView", () => {
 
       const props = {
         entry,
-        pagination: {
-          currentPage: 1,
-          end: 1,
-          lastPage: 1,
-          size: 10,
-          start: 1,
-          total: 1,
-        },
+        pagination: { currentPage: 1, lastPage: 1 },
       } satisfies ComponentProps<typeof CollectionListingView>;
 
       const result = await container.renderToString(CollectionListingView, {
@@ -351,14 +330,7 @@ describe("CollectionListingView", () => {
 
       const props = {
         entry,
-        pagination: {
-          currentPage: 1,
-          end: 2,
-          lastPage: 1,
-          size: 10,
-          start: 1,
-          total: 2,
-        },
+        pagination: { currentPage: 1, lastPage: 1 },
       } satisfies ComponentProps<typeof CollectionListingView>;
 
       const result = await container.renderToString(CollectionListingView, {
@@ -413,14 +385,7 @@ describe("CollectionListingView", () => {
 
       const props = {
         entry,
-        pagination: {
-          currentPage: 1,
-          end: 2,
-          lastPage: 1,
-          size: 10,
-          start: 1,
-          total: 2,
-        },
+        pagination: { currentPage: 1, lastPage: 1 },
       } satisfies ComponentProps<typeof CollectionListingView>;
 
       const result = await container.renderToString(CollectionListingView, {
@@ -466,14 +431,7 @@ describe("CollectionListingView", () => {
 
       const props = {
         entry,
-        pagination: {
-          currentPage: 1,
-          end: 2,
-          lastPage: 1,
-          size: 10,
-          start: 1,
-          total: 2,
-        },
+        pagination: { currentPage: 1, lastPage: 1 },
       } satisfies ComponentProps<typeof CollectionListingView>;
 
       const result = await container.renderToString(CollectionListingView, {
@@ -525,14 +483,7 @@ describe("CollectionListingView", () => {
 
       const props = {
         entry,
-        pagination: {
-          currentPage: 1,
-          end: 2,
-          lastPage: 1,
-          size: 10,
-          start: 1,
-          total: 2,
-        },
+        pagination: { currentPage: 1, lastPage: 1 },
       } satisfies ComponentProps<typeof CollectionListingView>;
 
       const result = await container.renderToString(CollectionListingView, {
@@ -580,14 +531,7 @@ describe("CollectionListingView", () => {
             total: 25,
           },
         },
-        pagination: {
-          currentPage: 2,
-          end: 15,
-          lastPage: 3,
-          size: 10,
-          start: 11,
-          total: 25,
-        },
+        pagination: { currentPage: 2, lastPage: 3 },
       } satisfies ComponentProps<typeof CollectionListingView>;
 
       const result = await container.renderToString(CollectionListingView, {
@@ -626,14 +570,7 @@ describe("CollectionListingView", () => {
 
       const props = {
         entry,
-        pagination: {
-          currentPage: 1,
-          end: 1,
-          lastPage: 1,
-          size: 10,
-          start: 1,
-          total: 1,
-        },
+        pagination: { currentPage: 1, lastPage: 1 },
       } satisfies ComponentProps<typeof CollectionListingView>;
 
       const result = await container.renderToString(CollectionListingView, {

@@ -6,6 +6,6 @@ import { CONFIG } from "./constants";
  * @param {string} path - The path the check.
  * @returns {boolean} True if the path matches the homepage.
  */
-export const isHomePage = (path: string) =>
+export const isHomePage = (path: string): boolean =>
   path === "/" ||
   CONFIG.LANGUAGES.AVAILABLE.some((lang) => path === `/${lang}`);

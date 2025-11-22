@@ -20,6 +20,7 @@ pagefind
 permaslug
 pnpmDedupe
 popovertarget
+Previewable
 rehype
 routability
 shiki

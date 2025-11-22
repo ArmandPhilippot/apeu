@@ -1,11 +1,23 @@
 ---
 import type { ComponentProps } from "astro/types";
+import { Icon } from "astro-icon/components";
+import Button from "../../components/atoms/button/button.astro";
 import { components } from "../../components/mdx";
-import Page from "../../components/organisms/page/page.astro";
+import CardsList from "../../components/molecules/cards-list/cards-list.astro";
+import PageOpener from "../../components/molecules/page-opener/page-opener.astro";
+import Section from "../../components/molecules/section/section.astro";
+import PreviewCard from "../../components/organisms/preview-card/preview-card.astro";
 import Layout from "../../components/templates/layout/layout.astro";
 import { getWebPageGraph } from "../../lib/schema-dts/graphs/webpage-graph";
 import { getBreadcrumb } from "../../services/breadcrumb";
-import type { QueriedEntry } from "../../services/collections";
+import {
+  convertBlogPostToPreview,
+  convertTaxonomyToPreview,
+  queryCollection,
+  type QueriedEntry,
+} from "../../services/collections";
+import { useI18n } from "../../services/i18n";
+import { useRouting } from "../../services/routing";
 
 type Props = Partial<ComponentProps<typeof Layout>> & {
   entry: QueriedEntry<"index.pages">;
@@ -15,6 +27,22 @@ const {
   entry: { Content, hasContent, ...page },
   ...props
 } = Astro.props;
+const { translate, translatePlural } = useI18n(page.locale);
+const { routeById } = await useRouting(page.locale);
+const { entries: categories } = await queryCollection("blog.categories", {
+  format: "preview",
+  orderBy: { key: "title", order: "ASC" },
+  where: { locale: page.locale },
+});
+const { entries: recentPosts, total: totalPosts } = await queryCollection(
+  "blog.posts",
+  {
+    first: 2,
+    format: "preview",
+    orderBy: { key: "publishedOn", order: "DESC" },
+    where: { locale: page.locale },
+  }
+);
 const breadcrumb = await getBreadcrumb({ route: Astro.url.pathname });
 const graphs: ComponentProps<typeof Layout>["graphs"] = [
   await getWebPageGraph({ ...page, breadcrumb }),
@@ -22,7 +50,63 @@ const graphs: ComponentProps<typeof Layout>["graphs"] = [
 ---
 
 <Layout breadcrumb={breadcrumb} graphs={graphs} seo={page.seo} {...props}>
-  <Page headings={page.headings} title={page.title}>
-    {hasContent && <Content components={components} />}
-  </Page>
+  <PageOpener title={page.title}>
+    {hasContent && <Content components={components} slot="intro" />}
+  </PageOpener>
+  <Section>
+    <h2 slot="heading">
+      {translate("page.blog.section.recent.posts.heading")}
+    </h2>
+    <Fragment slot="cta">
+      <Button as="a" href={routeById("blog/posts").path}>
+        {translatePlural("cta.see.all.posts", { count: totalPosts })}
+      </Button>
+      <Button
+        aria-label={translate("cta.subscribe.a11y", {
+          title: translate("page.blog.posts.title"),
+        })}
+        as="a"
+        href={`${routeById("blog/posts").path}/feed.xml`}
+      >
+        <Icon aria-hidden="true" name="feed" />
+        {translate("cta.subscribe")}
+      </Button>
+    </Fragment>
+    <CardsList isContainer items={recentPosts} sizeMinCols="35rem">
+      {
+        (post: (typeof recentPosts)[number]) => (
+          <PreviewCard
+            elevation="raised"
+            entry={convertBlogPostToPreview(post, {
+              featuredMetaItem: { icon: "blog", key: "publishedOn" },
+              i18n: { translate, translatePlural },
+              showAuthorsIfAvailable: false,
+              showCover: true,
+              showCta: true,
+              showMeta: true,
+            })}
+            headingLvl="h3"
+          />
+        )
+      }
+    </CardsList>
+  </Section>
+  <Section>
+    <h2 slot="heading">
+      {translate("page.blog.section.categories.heading")}
+    </h2>
+    <CardsList isContainer items={categories} sizeMinCols="27rem">
+      {
+        (cat: (typeof categories)[number]) => (
+          <PreviewCard
+            elevation="raised"
+            entry={convertTaxonomyToPreview(cat, {
+              i18n: { translate, translatePlural },
+            })}
+            headingLvl="h3"
+          />
+        )
+      }
+    </CardsList>
+  </Section>
 </Layout>

@@ -10,7 +10,7 @@ import {
   queryCollection,
   type QueriedCollectionEntry,
 } from "./query-collection";
-import type { QueriedEntry } from "./query-entry";
+import type { QueriedEntry } from "./types";
 
 export type PageableCollection =
   | "blog.categories"

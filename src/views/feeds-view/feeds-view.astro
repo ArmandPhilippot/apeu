@@ -1,11 +1,19 @@
 ---
 import type { ComponentProps } from "astro/types";
+import { Icon } from "astro-icon/components";
+import Button from "../../components/atoms/button/button.astro";
+import Link from "../../components/atoms/link/link.astro";
+import ListItem from "../../components/atoms/list/list-item.astro";
+import List from "../../components/atoms/list/list.astro";
 import { components } from "../../components/mdx";
 import Page from "../../components/organisms/page/page.astro";
 import Layout from "../../components/templates/layout/layout.astro";
 import { getWebPageGraph } from "../../lib/schema-dts/graphs/webpage-graph";
 import { getBreadcrumb } from "../../services/breadcrumb";
 import type { QueriedEntry } from "../../services/collections";
+import { getCollectionsFeeds } from "../../services/feeds";
+import { useI18n } from "../../services/i18n";
+import { useRouting } from "../../services/routing";
 
 type Props = Partial<ComponentProps<typeof Layout>> & {
   entry: QueriedEntry<"pages">;
@@ -15,6 +23,9 @@ const {
   entry: { Content, hasContent, ...page },
   ...props
 } = Astro.props;
+const { translate } = useI18n(page.locale);
+const { routeById } = await useRouting(page.locale);
+const feeds = await getCollectionsFeeds(page.locale);
 const breadcrumb = await getBreadcrumb({ route: Astro.url.pathname });
 const graphs: ComponentProps<typeof Layout>["graphs"] = [
   await getWebPageGraph({ ...page, breadcrumb }),
@@ -24,5 +35,22 @@ const graphs: ComponentProps<typeof Layout>["graphs"] = [
 <Layout breadcrumb={breadcrumb} graphs={graphs} seo={page.seo} {...props}>
   <Page headings={page.headings} title={page.title}>
     {hasContent && <Content components={components} />}
+    <p>{translate("page.feeds.global.feed.introduction")}</p>
+    <p>
+      <Button as="a" href={`${routeById("home").path}feed.xml`}>
+        <Icon aria-hidden="true" name="feed" />
+        {translate("cta.subscribe.to.website")}
+      </Button>
+    </p>
+    <p>{translate("page.feeds.individual.feeds.introduction")}</p>
+    <List>
+      {
+        feeds?.map((feed) => (
+          <ListItem>
+            <Link href={feed.path}>{feed.label}</Link>
+          </ListItem>
+        ))
+      }
+    </List>
   </Page>
 </Layout>

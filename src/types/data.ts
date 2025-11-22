@@ -30,7 +30,7 @@ export type MetaItem = {
   description?: string;
 };
 
-type EntryPreviewCTA = WithIcon<Route> & {
+export type EntryPreviewCTA = WithIcon<Route> & {
   ariaLabel?: string | null | undefined;
   isExternal?: boolean | null | undefined;
 };

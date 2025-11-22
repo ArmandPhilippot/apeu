@@ -122,7 +122,7 @@ describe("StoryLayout", () => {
           title: "My SEO title for this story",
         },
         title: "First story",
-        wrapInPage: false,
+        wrapInContentPage: false,
       },
       headings: [],
       label: "My awesome story",

@@ -9,7 +9,7 @@ This is a breaking change related to stories writing. Instead of using `.astro` 
 Your component/view stories can stay in the same place as before but you'll need to convert them to MDX. The following frontmatter properties are supported:
 * `title`: to define the title of your story
 * `wrapInLayout: false`: to prevent the story to be wrapped in a layout, useful for stories related to the global layout.
-* `wrapInPage: false`: to prevent the story to be wrapped in a page component, useful for stories related to page layouts.
+* `wrapInContentPage: false`: to prevent the story to be wrapped in a `ContentPage` component, useful for stories related to page layouts.
 
 If you had stories in `src/pages/_dev_design-system`, you'll need to convert them to MDX and to move them to `src/stories`.
 

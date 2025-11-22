@@ -1,7 +1,7 @@
 ---
 import type { ComponentProps } from "astro/types";
 import { components } from "../../components/mdx";
-import Page from "../../components/organisms/page/page.astro";
+import ContentPage from "../../components/organisms/content-page/content-page.astro";
 import Layout from "../../components/templates/layout/layout.astro";
 import { getWebPageGraph } from "../../lib/schema-dts/graphs/webpage-graph";
 import { getBreadcrumb } from "../../services/breadcrumb";
@@ -26,7 +26,7 @@ const graphs: ComponentProps<typeof Layout>["graphs"] = [
 ---
 
 <Layout breadcrumb={breadcrumb} graphs={graphs} seo={page.seo} {...props}>
-  <Page headings={page.headings} title={page.title}>
+  <ContentPage headings={page.headings} title={page.title}>
     {hasContent && <Content components={components} />}
-  </Page>
+  </ContentPage>
 </Layout>

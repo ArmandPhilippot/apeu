@@ -2,14 +2,14 @@
 import type { StoryLayoutProps } from "../../../lib/astro/integrations/astro-stories";
 import type { SEO } from "../../../types/data";
 import { getStorySeo } from "../../../utils/stories";
-import Page from "../../organisms/page/page.astro";
+import ContentPage from "../../organisms/content-page/content-page.astro";
 import Layout from "../layout/layout.astro";
 
 type FrontMatter = {
   seo?: Partial<SEO> | undefined;
   title: string;
   wrapInLayout?: boolean | undefined;
-  wrapInPage?: boolean | undefined;
+  wrapInContentPage?: boolean | undefined;
 };
 
 type Props = StoryLayoutProps<FrontMatter>;
@@ -24,8 +24,10 @@ const seo = getStorySeo({
 });
 const useLayout = isStory ? (story.frontmatter.wrapInLayout ?? true) : true;
 const LayoutComponent = useLayout ? Layout : Fragment;
-const usePage = isStory ? (story.frontmatter.wrapInPage ?? true) : true;
-const PageComponent = usePage ? Page : Fragment;
+const useContentPage = isStory
+  ? (story.frontmatter.wrapInContentPage ?? true)
+  : true;
+const PageComponent = useContentPage ? ContentPage : Fragment;
 ---
 
 <LayoutComponent breadcrumb={story.breadcrumb} seo={seo}>

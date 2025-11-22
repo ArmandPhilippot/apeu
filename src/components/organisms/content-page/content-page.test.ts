@@ -1,13 +1,13 @@
 import { experimental_AstroContainer as AstroContainer } from "astro/container";
 import type { ComponentProps } from "astro/types";
 import { beforeEach, describe, expect, it } from "vitest";
-import Page from "./page.astro";
+import ContentPage from "./content-page.astro";
 
 type LocalTestContext = {
   container: AstroContainer;
 };
 
-describe("Page", () => {
+describe("ContentPage", () => {
   beforeEach<LocalTestContext>(async (context) => {
     context.container = await AstroContainer.create();
   });
@@ -18,9 +18,9 @@ describe("Page", () => {
 
     const props = {
       title: "unde non eum",
-    } satisfies ComponentProps<typeof Page>;
+    } satisfies ComponentProps<typeof ContentPage>;
     const body = "consequatur placeat explicabo";
-    const result = await container.renderToString(Page, {
+    const result = await container.renderToString(ContentPage, {
       props,
       slots: { default: body },
     });
@@ -36,9 +36,9 @@ describe("Page", () => {
 
     const props = {
       title: "unde non eum",
-    } satisfies ComponentProps<typeof Page>;
+    } satisfies ComponentProps<typeof ContentPage>;
     const disconnectedBody = "consequatur placeat explicabo";
-    const result = await container.renderToString(Page, {
+    const result = await container.renderToString(ContentPage, {
       props,
       slots: { disconnected: disconnectedBody },
     });
@@ -56,28 +56,12 @@ describe("Page", () => {
         width: 640,
       },
       title: "unde non eum",
-    } satisfies ComponentProps<typeof Page>;
-    const result = await container.renderToString(Page, {
+    } satisfies ComponentProps<typeof ContentPage>;
+    const result = await container.renderToString(ContentPage, {
       props,
     });
 
     expect(result).toContain(props.cover.src);
-  });
-
-  it<LocalTestContext>("can render a subscribe button", async ({
-    container,
-  }) => {
-    expect.assertions(1);
-
-    const props = {
-      feed: "#perspiciatis-excepturi-repellendus",
-      title: "unde non eum",
-    } satisfies ComponentProps<typeof Page>;
-    const result = await container.renderToString(Page, {
-      props,
-    });
-
-    expect(result).toContain(props.feed);
   });
 
   it<LocalTestContext>("can render the page meta", async ({ container }) => {
@@ -85,9 +69,9 @@ describe("Page", () => {
 
     const props = {
       title: "unde non eum",
-    } satisfies ComponentProps<typeof Page>;
+    } satisfies ComponentProps<typeof ContentPage>;
     const meta = "quasi numquam explicabo";
-    const result = await container.renderToString(Page, {
+    const result = await container.renderToString(ContentPage, {
       props,
       slots: { meta },
     });
@@ -100,9 +84,9 @@ describe("Page", () => {
 
     const props = {
       title: "unde non eum",
-    } satisfies ComponentProps<typeof Page>;
+    } satisfies ComponentProps<typeof ContentPage>;
     const footer = "quasi numquam explicabo";
-    const result = await container.renderToString(Page, {
+    const result = await container.renderToString(ContentPage, {
       props,
       slots: { footer },
     });
@@ -122,8 +106,8 @@ describe("Page", () => {
         { depth: 1, slug: "#heading2", text: "Heading 2" },
       ] as const,
       title: "unde non eum",
-    } satisfies ComponentProps<typeof Page>;
-    const result = await container.renderToString(Page, {
+    } satisfies ComponentProps<typeof ContentPage>;
+    const result = await container.renderToString(ContentPage, {
       props,
     });
 

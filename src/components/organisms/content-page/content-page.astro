@@ -11,54 +11,45 @@ import TableOfContents from "../../molecules/table-of-contents/table-of-contents
 
 type Props = Omit<HTMLAttributes<"article">, "title"> & {
   cover?: Omit<Img, "alt"> | null | undefined;
-  feed?: string | URL | null | undefined;
   headings?: QueriedEntry<RoutableCollectionKey>["headings"] | null | undefined;
   title: string;
 };
 
-const {
-  class: className,
-  cover,
-  feed,
-  headings,
-  title,
-  ...attrs
-} = Astro.props;
+const { class: className, cover, headings, title, ...attrs } = Astro.props;
 const { translate } = useI18n(Astro.currentLocale);
-const body = await Astro.slots.render("default");
 const hasMeta = Astro.slots.has("meta");
 const hasIntro = Astro.slots.has("intro");
 ---
 
-<article {...attrs} class:list={[className, "page"]}>
-  <PageOpener class="page-header" cover={cover} feed={feed} title={title}>
+<article {...attrs} class:list={[className, "content-page"]}>
+  <PageOpener class="content-page-header" cover={cover} title={title}>
     {hasMeta ? <slot name="meta" slot={hasMeta ? "meta" : ""} /> : null}
     {hasIntro ? <slot name="intro" slot={hasIntro ? "intro" : ""} /> : null}
   </PageOpener>
   {
     headings?.length ? (
-      <div class="page-sidebar">
-        <Collapsible class="page-toc" open>
+      <div class="content-page-sidebar">
+        <Collapsible class="content-page-toc" open>
           <h2 slot="label">{translate("collapsible.toc.title")}</h2>
           <TableOfContents
-            class="page-toc-body"
+            class="content-page-toc-body"
             headings={buildToc(headings)}
           />
         </Collapsible>
       </div>
     ) : null
   }
-  {body ? <div class="page-body" set:html={body} /> : null}
+  <div class="content-page-body"><slot /></div>
   {
     Astro.slots.has("disconnected") ? (
-      <div class="page-disconnected">
+      <div class="content-page-disconnected">
         <slot name="disconnected" />
       </div>
     ) : null
   }
   {
     Astro.slots.has("footer") ? (
-      <footer class="page-footer">
+      <footer class="content-page-footer">
         <slot name="footer" />
       </footer>
     ) : null
@@ -67,7 +58,7 @@ const hasIntro = Astro.slots.has("intro");
 
 <style>
   @layer components {
-    .page {
+    .content-page {
       --main-col-width: 100%;
       --sidebar-col-width: 0;
 
@@ -85,35 +76,35 @@ const hasIntro = Astro.slots.has("intro");
       }
     }
 
-    .page-header,
-    .page-sidebar,
-    .page-body,
-    .page-disconnected,
-    .page-footer {
+    .content-page-header,
+    .content-page-sidebar,
+    .content-page-body,
+    .content-page-disconnected,
+    .content-page-footer {
       grid-column: 1 / -1;
     }
 
-    .page-header,
-    .page-toc,
-    .page-body,
-    .page-disconnected,
-    .page-footer {
+    .content-page-header,
+    .content-page-toc,
+    .content-page-body,
+    .content-page-disconnected,
+    .content-page-footer {
       @media (--prose-sidebar) {
         grid-column: 1;
       }
     }
 
-    .page-sidebar {
+    .content-page-sidebar {
       @media (--prose-sidebar) {
         grid-column: 2;
         grid-row: 1 / -1;
       }
     }
 
-    .page-header,
-    .page-toc,
-    .page-body,
-    .page-footer {
+    .content-page-header,
+    .content-page-toc,
+    .content-page-body,
+    .content-page-footer {
       box-shadow: var(--shadow-raised-to-top-center);
 
       @media (--prose) {
@@ -121,21 +112,21 @@ const hasIntro = Astro.slots.has("intro");
       }
     }
 
-    .page-toc,
-    .page-body,
-    .page-footer {
+    .content-page-toc,
+    .content-page-body,
+    .content-page-footer {
       background: var(--color-regular);
       color: var(--color-on-regular);
     }
 
-    .page-toc-body,
-    .page-body,
-    .page-footer {
+    .content-page-toc-body,
+    .content-page-body,
+    .content-page-footer {
       padding-inline: var(--gutter);
     }
 
-    .page-body,
-    .page-footer {
+    .content-page-body,
+    .content-page-footer {
       padding-block: var(--gutter);
 
       @media (--prose) {
@@ -151,14 +142,19 @@ const hasIntro = Astro.slots.has("intro");
       }
     }
 
-    .page-header,
-    .page-toc {
+    .content-page-header,
+    .content-page-toc {
       @media (--smaller-than-prose) {
         border-inline: none;
       }
     }
 
-    .page-toc {
+    .content-page-header {
+      border-end-start-radius: 0;
+      border-end-end-radius: 0;
+    }
+
+    .content-page-toc {
       @media (--prose-sidebar) {
         position: sticky;
         top: calc(var(--gutter) / 2);
@@ -174,29 +170,23 @@ const hasIntro = Astro.slots.has("intro");
       }
     }
 
-    .page-toc-body {
+    .content-page-toc-body {
       padding-block: var(--spacing-md);
     }
 
-    :where(.page:has(.page-toc)) .page-header {
+    :where(.content-page:has(.content-page-toc)) .content-page-header {
       @media (--smaller-than-prose-sidebar) {
         border-block-end: none;
       }
     }
 
-    :where(.page:has(.page-body)) .page-header {
-      border-end-start-radius: 0;
-      border-end-end-radius: 0;
-    }
-
-    :where(.page:has(.page-disconnected):not(:has(.page-body))) .page-header,
-    :where(.page:has(.page-disconnected)) .page-body {
+    :where(.content-page:has(.content-page-disconnected)) .content-page-body {
       margin-block-end: var(--gutter);
     }
 
-    :where(.page:has(.page-disconnected)) .page-body,
-    .page-body:where(:last-child),
-    .page-footer {
+    :where(.content-page:has(.content-page-disconnected)) .content-page-body,
+    .content-page-body:where(:last-child),
+    .content-page-footer {
       border-block-end: var(--border-size-sm) solid var(--color-border);
 
       @media (--prose) {
@@ -205,11 +195,13 @@ const hasIntro = Astro.slots.has("intro");
       }
     }
 
-    :where(.page:has(.page-body + .page-footer)) .page-body {
+    :where(.content-page:has(.content-page-body + .content-page-footer))
+      .content-page-body {
       padding-block-end: 0;
     }
 
-    :where(.page:has(.page-disconnected + .page-footer)) .page-footer {
+    :where(.content-page:has(.content-page-disconnected + .content-page-footer))
+      .content-page-footer {
       margin-block-start: var(--gutter);
       border-block-start: var(--border-size-sm) solid var(--color-border);
       border-start-start-radius: var(--border-radii-md);

@@ -2,7 +2,7 @@
 import type { ComponentProps } from "astro/types";
 import { components } from "../../components/mdx";
 import Meta from "../../components/molecules/meta/meta.astro";
-import Page from "../../components/organisms/page/page.astro";
+import ContentPage from "../../components/organisms/content-page/content-page.astro";
 import Layout from "../../components/templates/layout/layout.astro";
 import type { RoutableCollectionKey } from "../../lib/astro/collections/types";
 import { getWebPageGraph } from "../../lib/schema-dts/graphs/webpage-graph";
@@ -29,7 +29,7 @@ const graphs: ComponentProps<typeof Layout>["graphs"] = [
 ---
 
 <Layout breadcrumb={breadcrumb} graphs={graphs} seo={page.seo} {...props}>
-  <Page headings={page.headings} title={page.title}>
+  <ContentPage headings={page.headings} title={page.title}>
     <Meta
       items={convertCollectionMetaToMetaItem(page.meta, {
         i18n: { translate, translatePlural },
@@ -37,5 +37,5 @@ const graphs: ComponentProps<typeof Layout>["graphs"] = [
       slot="meta"
     />
     {hasContent && <Content components={components} />}
-  </Page>
+  </ContentPage>
 </Layout>

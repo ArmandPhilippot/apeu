@@ -43,7 +43,7 @@ const {
       </header>
     ) : null
   }
-  <div class="card-body"><slot /></div>
+  <div class="card-body prose"><slot /></div>
   {
     Astro.slots.has("meta") || Astro.slots.has("cta") ? (
       <footer
@@ -62,7 +62,6 @@ const {
       display: grid;
       grid-template-columns: minmax(0, 35%) minmax(0, 1fr);
       grid-template-rows: max-content;
-      max-width: var(--size-prose);
       background: var(--color-regular);
       border: var(--border-size-sm) solid var(--color-border);
       border-radius: var(--border-radii-md);

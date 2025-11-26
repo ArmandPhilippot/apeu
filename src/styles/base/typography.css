@@ -275,3 +275,17 @@ table {
 :root:lang(en) {
   quotes: "“" "”" "‘" "’";
 }
+
+section + section {
+  margin-block: var(--gutter);
+}
+
+.prose > * {
+  &:not(:first-child) {
+    margin-block-start: var(--spacing-md);
+  }
+
+  &:not(:last-child) {
+    margin-block-end: var(--spacing-md);
+  }
+}

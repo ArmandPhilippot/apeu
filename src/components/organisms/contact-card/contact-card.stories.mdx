@@ -1,0 +1,59 @@
+---
+title: "ContactCard"
+---
+import { components as mdxComponents } from "../../mdx";
+import CodePreview from "../../molecules/code-preview/code-preview.astro";
+import ContactCard from "./contact-card.astro";
+
+export const components = mdxComponents;
+export const socialMedia = {
+  diaspora: "#diaspora",
+  github: "#github",
+  linkedin: "#linkedin",
+  stackoverflow: "#stackoverflow",
+}
+
+## Introduction
+
+An `ContactCard` component should be used to display contact methods.
+
+<CodePreview
+  code={`import ContactCard from "./components/organisms/contact-card/contact-card.astro";`}
+  label="How to import"
+  lang="ts"
+/>
+
+<CodePreview
+  code={`<ContactCard contactPageRoute="#contact" heading="Contact me" />`}
+  label="Basic use"
+  lang="astro"
+>
+  <ContactCard contactPageRoute="#contact" heading="Contact me" />
+</CodePreview>
+
+## With social links
+
+<CodePreview
+  code={`---
+const socialMedia = {
+    diaspora: "#diaspora",
+    github: "#github",
+    linkedin: "#linkedin",
+    stackoverflow: "#stackoverflow",
+}
+---
+<ContactCard contactPageRoute="#contact" heading="Contact me" socialMedia={socialMedia} />`}
+  label="Showing social media"
+  lang="astro"
+>
+  <ContactCard
+    contactPageRoute="#contact"
+    heading="Contact me"
+    socialMedia={{
+      diaspora: "#diaspora",
+      github: "#github",
+      linkedin: "#linkedin",
+      stackoverflow: "#stackoverflow",
+    }}
+  />
+</CodePreview>

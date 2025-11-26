@@ -39,7 +39,7 @@ const hasIntro = Astro.slots.has("intro");
       </div>
     ) : null
   }
-  <div class="content-page-body"><slot /></div>
+  <div class="content-page-body prose"><slot /></div>
   {
     Astro.slots.has("disconnected") ? (
       <div class="content-page-disconnected">
@@ -49,7 +49,7 @@ const hasIntro = Astro.slots.has("intro");
   }
   {
     Astro.slots.has("footer") ? (
-      <footer class="content-page-footer">
+      <footer class="content-page-footer prose">
         <slot name="footer" />
       </footer>
     ) : null
@@ -67,7 +67,7 @@ const hasIntro = Astro.slots.has("intro");
         minmax(calc(var(--main-col-width) / 2), var(--main-col-width))
         minmax(0, var(--sidebar-col-width));
       grid-template-rows: repeat(5, minmax(0, auto));
-      column-gap: calc(var(--gutter) / 2);
+      column-gap: var(--gutter);
       justify-content: center;
 
       @media (--prose) {
@@ -131,14 +131,6 @@ const hasIntro = Astro.slots.has("intro");
 
       @media (--prose) {
         border-inline: var(--border-size-sm) solid var(--color-border);
-      }
-
-      &
-        > :global(
-          :not(a, strong, em, del, span, input, code, br)
-            + :not(a, strong, em, del, span, input, code, br)
-        ) {
-        margin-block: var(--spacing-md);
       }
     }
 

@@ -1,0 +1,130 @@
+---
+title: "IdentityCard"
+---
+import { components as mdxComponents } from "../../mdx";
+import CodePreview from "../../molecules/code-preview/code-preview.astro";
+import IdentityCard from "./identity-card.astro";
+
+export const components = mdxComponents;
+
+export const authorPreview = {
+  name: "John Doe",
+};
+
+export const authorPreviewWithAvatar = {
+  ...authorPreview,
+  avatar: {
+    format: "jpg",
+    height: 200,
+    src: "https://picsum.photos/150/200",
+    width: 150,
+  },
+};
+
+export const authorPreviewWithAllInfo = {
+  ...authorPreview,
+  avatar: {
+    format: "jpg",
+    height: 200,
+    src: "https://picsum.photos/150/200",
+    width: 150,
+  },
+  country: "FR",
+  job: "Astronaut",
+  // cSpell:ignore ˈdʒɑn ˈdoʊ
+  nameIPA: `/ˈdʒɑn/ /ˈdoʊ/`,
+  nationality: "FR",
+  spokenLanguages: ["en", "fr"],
+};
+
+## Introduction
+
+An `IdentityCard` component should be used to display information about an author.
+
+<CodePreview
+  code={`import IdentityCard from "./components/organisms/identity-card/identity-card.astro";`}
+  label="How to import"
+  lang="ts"
+/>
+
+<CodePreview
+  code={`<IdentityCard author={{ name: "John Doe" }} heading="Contact me" />`}
+  label="Basic use"
+  lang="astro"
+>
+  <IdentityCard author={{ name: "John Doe" }} heading="Contact me" />
+</CodePreview>
+
+## With avatar
+
+<CodePreview
+  code={`---
+const authorPreviewWithAvatar = {
+    avatar: {
+      format: "jpg",
+      height: 200,
+      src: "https://picsum.photos/150/200",
+      width: 150,
+    },
+    name: "John Doe"
+}
+---
+<IdentityCard author={authorPreviewWithAvatar} heading="Contact me" />`}
+  label="Adding an avatar"
+  lang="astro"
+>
+  <IdentityCard
+    author={{
+      avatar: {
+        format: "jpg",
+        height: 200,
+        src: "https://picsum.photos/150/200",
+        width: 150,
+      },
+      name: "John Doe",
+    }}
+    heading="Contact me"
+  />
+</CodePreview>
+
+## With all available data
+
+<CodePreview
+  code={`---
+const authorPreviewWithAllInfo = {
+    avatar: {
+      format: "jpg",
+      height: 200,
+      src: "https://picsum.photos/150/200",
+      width: 150,
+    },
+    country: "FR",
+    job: "Astronaut",
+    name: "John Doe",
+    nameIPA: "/ˈdʒɑn/ /ˈdoʊ/",
+    nationality: "FR",
+    spokenLanguages: ["en", "fr"],
+}
+---
+<IdentityCard author={authorPreviewWithAvatar} heading="Contact me" />`}
+  label="Using all supported data"
+  lang="astro"
+>
+  <IdentityCard
+    author={{
+      avatar: {
+        format: "jpg",
+        height: 200,
+        src: "https://picsum.photos/150/200",
+        width: 150,
+      },
+      country: "FR",
+      job: "Astronaut",
+      name: "John Doe",
+      nameIPA: "/ˈdʒɑn/ /ˈdoʊ/",
+      nationality: "FR",
+      spokenLanguages: ["en", "fr"],
+    }}
+    heading="Contact me"
+  />
+</CodePreview>

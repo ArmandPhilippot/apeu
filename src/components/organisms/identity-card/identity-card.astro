@@ -1,0 +1,118 @@
+---
+import type { ComponentProps } from "astro/types";
+import { useI18n } from "../../../services/i18n";
+import type { Author } from "../../../types/data";
+import type { HeadingLvl } from "../../../types/tokens";
+import { toLowerCase } from "../../../utils/strings";
+import DescriptionList from "../../atoms/description-list/description-list.astro";
+import Figure from "../../atoms/figure/figure.astro";
+import Img from "../../atoms/img/img.astro";
+import Card from "../../molecules/card/card.astro";
+
+type Props = ComponentProps<typeof Card> & {
+  author: Pick<
+    Author,
+    | "avatar"
+    | "country"
+    | "job"
+    | "name"
+    | "nameIPA"
+    | "nationality"
+    | "spokenLanguages"
+  >;
+  heading: string;
+  headingLvl?: HeadingLvl | undefined;
+};
+
+const {
+  author,
+  class: className,
+  heading,
+  headingLvl: Heading = "h2",
+  ...attrs
+} = Astro.props;
+const { translate } = useI18n(Astro.currentLocale);
+---
+
+<Card {...attrs} class:list={[className, "identity-card"]}>
+  <Heading slot="heading">{heading}</Heading>
+  {
+    author.avatar ? (
+      <Figure
+        aria-label={translate("card.identity.avatar.a11y", {
+          name: author.name,
+        })}
+        class="identity-card-avatar"
+      >
+        <Img {...author.avatar} alt="" loading="eager" />
+      </Figure>
+    ) : null
+  }
+  <DescriptionList class="identity-card-meta" gap={{ col: "2xs", row: "4xs" }}>
+    <div>
+      <dt>{translate("meta.label.name")}</dt>
+      <dd>{author.name}</dd>
+    </div>
+    {
+      author.nameIPA ? (
+        <div>
+          <dt>{translate("meta.label.pronunciation")}</dt>
+          <dd>{author.nameIPA}</dd>
+        </div>
+      ) : null
+    }
+    {
+      author.country ? (
+        <div>
+          <dt>{translate("meta.label.country")}</dt>
+          <dd>
+            {translate(
+              `meta.value.country.name.${toLowerCase(author.country)}`
+            )}
+          </dd>
+        </div>
+      ) : null
+    }
+    {
+      author.job ? (
+        <div>
+          <dt>{translate("meta.label.job")}</dt>
+          <dd>{author.job}</dd>
+        </div>
+      ) : null
+    }
+    {
+      author.nationality ? (
+        <div>
+          <dt>{translate("meta.label.nationality")}</dt>
+          <dd>
+            {translate(
+              `meta.value.nationality.${toLowerCase(author.nationality)}`
+            )}
+          </dd>
+        </div>
+      ) : null
+    }
+    {
+      author.spokenLanguages ? (
+        <div>
+          <dt>{translate("meta.label.speak")}</dt>
+          {author.spokenLanguages.map((language) => (
+            <dd>{translate(`language.name.${language}`)}</dd>
+          ))}
+        </div>
+      ) : null
+    }
+  </DescriptionList>
+</Card>
+
+<style>
+  @layer components {
+    .identity-card > :global(*:last-child) {
+      display: flex;
+      flex-flow: row wrap;
+      gap: var(--spacing-md);
+      align-items: start;
+    }
+  }
+</style>

@@ -1,11 +1,14 @@
 ---
 import type { ComponentProps } from "astro/types";
+import Callout from "../../components/atoms/callout/callout.astro";
 import { components } from "../../components/mdx";
+import ContactForm from "../../components/organisms/contact-form/contact-form.astro";
 import ContentPage from "../../components/organisms/content-page/content-page.astro";
 import Layout from "../../components/templates/layout/layout.astro";
 import { getWebPageGraph } from "../../lib/schema-dts/graphs/webpage-graph";
 import { getBreadcrumb } from "../../services/breadcrumb";
 import type { QueriedEntry } from "../../services/collections";
+import { useI18n } from "../../services/i18n";
 
 type Props = Partial<ComponentProps<typeof Layout>> & {
   entry: QueriedEntry<"pages">;
@@ -15,6 +18,7 @@ const {
   entry: { Content, hasContent, ...page },
   ...props
 } = Astro.props;
+const { translate } = useI18n(page.locale);
 const breadcrumb = await getBreadcrumb({ route: Astro.url.pathname });
 const graphs: ComponentProps<typeof Layout>["graphs"] = [
   await getWebPageGraph({
@@ -28,5 +32,11 @@ const graphs: ComponentProps<typeof Layout>["graphs"] = [
 <Layout breadcrumb={breadcrumb} graphs={graphs} seo={page.seo} {...props}>
   <ContentPage headings={page.headings} title={page.title}>
     {hasContent && <Content components={components} />}
+    <noscript>
+      <Callout style="margin-block-end: var(--spacing-md);" type="warning">
+        {translate("no.js.contact.form.text")}
+      </Callout>
+    </noscript>
+    <ContactForm id="contact-page-form" />
   </ContentPage>
 </Layout>

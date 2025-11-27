@@ -1,0 +1,254 @@
+---
+title: "LabelledField"
+---
+import { components as mdxComponents } from "../../mdx";
+import Label from "../../atoms/label/label.astro";
+import ListItem from "../../atoms/list/list-item.astro";
+import List from "../../atoms/list/list.astro";
+import TextField from "../../atoms/text-field/text-field.astro";
+import CodePreview from "../code-preview/code-preview.astro";
+import LabelledField from "./labelled-field.astro";
+
+export const components = mdxComponents;
+
+## Introduction
+
+This component is used to display a field and a label tied together.
+
+<CodePreview
+  code={`import LabelledField from "./components/molecules/labelled-field/labelled-field.astro";`}
+  label="How to import"
+  lang="ts"
+/>
+
+<CodePreview
+  code={`<LabelledField>
+    <Label for="use-example" slot="label">A label</Label>
+    <TextField id="use-example" slot="field" type="text" />
+</LabelledField>`}
+  label="Basic use"
+  lang="astro"
+>
+  <LabelledField>
+    <Label for="use-example" slot="label">A label</Label>
+    <TextField id="use-example" slot="field" type="text" />
+  </LabelledField>
+</CodePreview>
+
+## Variants
+
+Reversing order can be useful with boolean fields like a checkbox.
+
+<CodePreview
+  code={`<LabelledField variant="vertical">
+    <Label for="variant-vertical-example" slot="label">A label</Label>
+    <TextField id="variant-vertical-example" slot="field" type="text" />
+</LabelledField>
+<br />
+<LabelledField variant="inline">
+    <Label for="variant-inline-example" slot="label">A label</Label>
+    <TextField id="variant-inline-example" slot="field" type="text" />
+</LabelledField>
+<br />
+<LabelledField variant="inline-reversed">
+    <Label for="variant-inline-reversed-example" slot="label">A label</Label>
+    <input id="variant-inline-reversed-example" slot="field" type="checkbox" />
+</LabelledField>`}
+  label="Using different variants"
+  lang="astro"
+>
+  <LabelledField variant="vertical">
+    <Label for="variant-vertical-example" slot="label">A label</Label>
+    <TextField id="variant-vertical-example" slot="field" type="text" />
+  </LabelledField>
+  <br />
+  <LabelledField variant="inline">
+    <Label for="variant-inline-example" slot="label">A label</Label>
+    <TextField id="variant-inline-example" slot="field" type="text" />
+  </LabelledField>
+  <br />
+  <LabelledField variant="inline-reversed">
+    <Label for="variant-inline-reversed-example" slot="label">A label</Label>
+    <input
+      id="variant-inline-reversed-example"
+      slot="field"
+      type="checkbox"
+    />
+  </LabelledField>
+</CodePreview>
+
+## Hints
+
+<CodePreview
+  code={`<LabelledField variant="vertical">
+    <Label for="hint-vertical-example" slot="label">A label</Label>
+    <TextField id="hint-vertical-example" slot="field" type="text" />
+    <Fragment slot="hint">A hint about this field.</Fragment>
+</LabelledField>
+<br />
+<LabelledField variant="inline">
+    <Label for="hint-inline-example" slot="label">A label</Label>
+    <TextField id="hint-inline-example" slot="field" type="text" />
+    <Fragment slot="hint">A hint about this field.</Fragment>
+</LabelledField>
+<br />
+<LabelledField variant="inline-reversed">
+    <Label for="hint-inline-reversed-example" slot="label">A label</Label>
+    <input id="hint-inline-reversed-example" slot="field" type="checkbox" />
+    <Fragment slot="hint">A hint about this field.</Fragment>
+</LabelledField>`}
+  label="Using different variants with hints"
+  lang="astro"
+>
+  <LabelledField variant="vertical">
+    <Label for="hint-vertical-example" slot="label">A label</Label>
+    <TextField id="hint-vertical-example" slot="field" type="text" />
+    <Fragment slot="hint">A hint about this field.</Fragment>
+  </LabelledField>
+  <br />
+  <LabelledField variant="inline">
+    <Label for="hint-inline-example" slot="label">A label</Label>
+    <TextField id="hint-inline-example" slot="field" type="text" />
+    <Fragment slot="hint">A hint about this field.</Fragment>
+  </LabelledField>
+  <br />
+  <LabelledField variant="inline-reversed">
+    <Label for="hint-inline-reversed-example" slot="label">A label</Label>
+    <input id="hint-inline-reversed-example" slot="field" type="checkbox" />
+    <Fragment slot="hint">A hint about this field.</Fragment>
+  </LabelledField>
+</CodePreview>
+
+## Errors
+
+<CodePreview
+  code={`<LabelledField variant="vertical">
+    <Label for="errors-vertical-example" slot="label">A label</Label>
+    <TextField id="errors-vertical-example" slot="field" type="text" />
+    <List slot="errors">
+      <ListItem>error 1 because...</ListItem>
+      <ListItem>error 2 because...</ListItem>
+    </List>
+</LabelledField>
+<br />
+<LabelledField variant="inline">
+    <Label for="errors-inline-example" slot="label">A label</Label>
+    <TextField id="errors-inline-example" slot="field" type="text" />
+    <List slot="errors">
+      <ListItem>error 1 because...</ListItem>
+      <ListItem>error 2 because...</ListItem>
+    </List>
+</LabelledField>
+<br />
+<LabelledField variant="inline-reversed">
+    <Label for="errors-inline-reversed-example" slot="label">A label</Label>
+    <input id="errors-inline-reversed-example" slot="field" type="checkbox" />
+    <List slot="errors">
+      <ListItem>error 1 because...</ListItem>
+      <ListItem>error 2 because...</ListItem>
+    </List>
+</LabelledField>`}
+  label="Using different variants with errors"
+  lang="astro"
+>
+  <LabelledField variant="vertical">
+    <Label for="errors-vertical-example" slot="label">A label</Label>
+    <TextField id="errors-vertical-example" slot="field" type="text" />
+    <List slot="errors">
+      <ListItem>error 1 because...</ListItem>
+      <ListItem>error 2 because...</ListItem>
+    </List>
+  </LabelledField>
+  <br />
+  <LabelledField variant="inline">
+    <Label for="errors-inline-example" slot="label">A label</Label>
+    <TextField id="errors-inline-example" slot="field" type="text" />
+    <List slot="errors">
+      <ListItem>error 1 because...</ListItem>
+      <ListItem>error 2 because...</ListItem>
+    </List>
+  </LabelledField>
+  <br />
+  <LabelledField variant="inline-reversed">
+    <Label for="errors-inline-reversed-example" slot="label">A label</Label>
+    <input
+      id="errors-inline-reversed-example"
+      slot="field"
+      type="checkbox"
+    />
+    <List slot="errors">
+      <ListItem>error 1 because...</ListItem>
+      <ListItem>error 2 because...</ListItem>
+    </List>
+  </LabelledField>
+</CodePreview>
+
+## Hint and errors
+
+<CodePreview
+  code={`<LabelledField variant="vertical">
+    <Label for="hint-errors-vertical-example" slot="label">A label</Label>
+    <TextField id="hint-errors-vertical-example" slot="field" type="text" />
+    <Fragment slot="hint">A hint about this field.</Fragment>
+    <List slot="errors">
+      <ListItem>error 1 because...</ListItem>
+      <ListItem>error 2 because...</ListItem>
+    </List>
+</LabelledField>
+<br />
+<LabelledField variant="inline">
+    <Label for="hint-errors-inline-example" slot="label">A label</Label>
+    <TextField id="hint-errors-inline-example" slot="field" type="text" />
+    <Fragment slot="hint">A hint about this field.</Fragment>
+    <List slot="errors">
+      <ListItem>error 1 because...</ListItem>
+      <ListItem>error 2 because...</ListItem>
+    </List>
+</LabelledField>
+<br />
+<LabelledField variant="inline-reversed">
+    <Label for="hint-errors-inline-reversed-example" slot="label">A label</Label>
+    <input id="hint-errors-inline-reversed-example" slot="field" type="checkbox" />
+    <Fragment slot="hint">A hint about this field.</Fragment>
+    <List slot="errors">
+      <ListItem>error 1 because...</ListItem>
+      <ListItem>error 2 because...</ListItem>
+    </List>
+</LabelledField>`}
+  label="Using different variants with hint and errors"
+  lang="astro"
+>
+  <LabelledField variant="vertical">
+    <Label for="hint-errors-vertical-example" slot="label">A label</Label>
+    <TextField id="hint-errors-vertical-example" slot="field" type="text" />
+    <Fragment slot="hint">A hint about this field.</Fragment>
+    <List slot="errors">
+      <ListItem>error 1 because...</ListItem>
+      <ListItem>error 2 because...</ListItem>
+    </List>
+  </LabelledField>
+  <br />
+  <LabelledField variant="inline">
+    <Label for="hint-errors-inline-example" slot="label">A label</Label>
+    <TextField id="hint-errors-inline-example" slot="field" type="text" />
+    <Fragment slot="hint">A hint about this field.</Fragment>
+    <List slot="errors">
+      <ListItem>error 1 because...</ListItem>
+      <ListItem>error 2 because...</ListItem>
+    </List>
+  </LabelledField>
+  <br />
+  <LabelledField variant="inline-reversed">
+    <Label for="hint-errors-inline-reversed-example" slot="label">A label</Label>
+    <input
+      id="hint-errors-inline-reversed-example"
+      slot="field"
+      type="checkbox"
+    />
+    <Fragment slot="hint">A hint about this field.</Fragment>
+    <List slot="errors">
+      <ListItem>error 1 because...</ListItem>
+      <ListItem>error 2 because...</ListItem>
+    </List>
+  </LabelledField>
+</CodePreview>

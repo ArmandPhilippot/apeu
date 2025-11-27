@@ -96,6 +96,10 @@ const heading = label || defaultLabel[type];
         background-color: var(--color-warning-low);
         color: var(--color-warning-high);
       }
+
+      &:where(:not(:has(.callout-heading))) {
+        padding-block-start: var(--spacing-md);
+      }
     }
 
     .callout-heading {

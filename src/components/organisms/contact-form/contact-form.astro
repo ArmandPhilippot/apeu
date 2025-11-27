@@ -1,0 +1,301 @@
+---
+import type { JSX } from "astro/jsx-runtime";
+import { useI18n } from "../../../services/i18n";
+import type { MailDataSchema } from "../../../services/mailer/schema";
+import type { FormField } from "../../../types/forms";
+import Button from "../../atoms/button/button.astro";
+import Callout from "../../atoms/callout/callout.astro";
+import Label from "../../atoms/label/label.astro";
+import List from "../../atoms/list/list.astro";
+import Spinner from "../../atoms/spinner/spinner.astro";
+import TextField from "../../atoms/text-field/text-field.astro";
+import LabelledField from "../../molecules/labelled-field/labelled-field.astro";
+
+type Props = JSX.HTMLAttributes & {
+  id: string;
+};
+
+const { id, ...attrs } = Astro.props;
+const { translate } = useI18n(Astro.currentLocale);
+
+const fields = [
+  {
+    id: `${id}-name`,
+    isRequired: true,
+    label: translate("form.contact.label.name"),
+    name: "name",
+    type: "text",
+    validation: {
+      minlength: 2,
+    },
+    value: "",
+  },
+  {
+    id: `${id}-email`,
+    isRequired: true,
+    label: translate("form.contact.label.email"),
+    name: "email",
+    type: "email",
+    validation: {
+      minlength: 6,
+    },
+    value: "",
+  },
+  {
+    id: `${id}-object`,
+    label: translate("form.contact.label.object"),
+    name: "object",
+    type: "text",
+    validation: {
+      minlength: 2,
+    },
+    value: "",
+  },
+  {
+    id: `${id}-message`,
+    isRequired: true,
+    label: translate("form.contact.label.message"),
+    name: "message",
+    type: "textarea",
+    validation: {
+      minlength: 5,
+    },
+    value: "",
+  },
+] satisfies FormField<Required<MailDataSchema>>[];
+---
+
+<apeu-contact-form {...attrs} id={id}>
+  <form class="contact-form" method="post">
+    {
+      fields.map((field) => (
+        <LabelledField>
+          <Label for={field.id} isRequired={field.isRequired} slot="label">
+            {field.label}
+          </Label>
+          <TextField
+            {...field}
+            {...field.validation}
+            required={field.isRequired}
+            slot="field"
+          />
+          <List hidden="true" id={`${id}-${field.name}-errors`} slot="errors" />
+        </LabelledField>
+      ))
+    }
+    <Button class="contact-form-btn" kind="primary" type="submit">
+      {translate("form.contact.btn")}
+    </Button>
+    <Spinner
+      class="contact-form-spinner"
+      hidden="true"
+      id={`${id}-spinner`}
+      isInline
+    >
+      {translate("form.contact.spinner.text")}
+    </Spinner>
+    <Callout
+      class="contact-form-callout"
+      hidden="true"
+      id={`${id}-feedback`}
+      role="alert"
+      type="info"
+    />
+  </form>
+</apeu-contact-form>
+
+<style>
+  .contact-form {
+    display: flex;
+    flex-flow: column wrap;
+    gap: var(--spacing-sm);
+    max-width: 60ch;
+    margin-inline: auto;
+
+    & :global(*[hidden]) {
+      display: none;
+    }
+  }
+
+  .contact-form-btn,
+  .contact-form-spinner {
+    margin-inline: auto;
+  }
+
+  .contact-form-spinner,
+  .contact-form-callout {
+    margin-block: var(--spacing-md);
+  }
+</style>
+
+<script>
+  import {
+    isMailError,
+    isMailSuccess,
+    type MailError,
+  } from "../../../services/mailer/helpers";
+  import type { MailDataSchema } from "../../../services/mailer/schema";
+  import type { CalloutType } from "../../../types/tokens";
+  import { API_ROUTES } from "../../../utils/constants";
+
+  class APEUContactForm extends HTMLElement {
+    #callout: HTMLDivElement | null;
+    #spinner: HTMLDivElement | null;
+
+    constructor() {
+      super();
+      this.handleSubmit = this.handleSubmit.bind(this);
+      this.#callout = this.querySelector(`#${this.id}-feedback`);
+      this.#spinner = this.querySelector(`#${this.id}-spinner`);
+    }
+
+    connectedCallback() {
+      this.addEventListener("submit", this.handleSubmit);
+    }
+
+    disconnectedCallback() {
+      this.removeEventListener("submit", this.handleSubmit);
+    }
+
+    /**
+     * Hide the given element.
+     *
+     * @param {HTMLElement | null} el - The element to hide.
+     */
+    #hide(el: HTMLElement | null) {
+      if (!el) return;
+
+      el.hidden = true;
+    }
+
+    /**
+     * Show the given element.
+     *
+     * @param {HTMLElement | null} el - The element to hide.
+     */
+    #show(el: HTMLElement | null) {
+      if (!el) return;
+
+      el.hidden = false;
+    }
+
+    /**
+     * Reset the errors list for each field.
+     *
+     * @param {Array<keyof MailDataSchema>} fieldNames - The fields to reset.
+     */
+    #resetFieldsErrorsLists(fieldNames: (keyof MailDataSchema)[]) {
+      for (const fieldName of fieldNames) {
+        const list = this.querySelector<HTMLUListElement>(
+          `#${this.id}-${fieldName}-errors`
+        );
+
+        if (list) {
+          list.innerHTML = "";
+          list.hidden = true;
+        }
+      }
+    }
+
+    /**
+     * Update the errors list with the given errors.
+     *
+     * @param {keyof MailDataSchema} fieldName - The name of the field.
+     * @param {string[]} errors - The errors to print.
+     */
+    #updateFieldErrorsList(fieldName: keyof MailDataSchema, errors: string[]) {
+      const list = this.querySelector<HTMLUListElement>(
+        `#${this.id}-${fieldName}-errors`
+      );
+
+      if (list) {
+        const items = errors.map((err) => {
+          const item = document.createElement("li");
+          item.textContent = err;
+
+          return item;
+        });
+
+        list.append(...items);
+        list.hidden = false;
+      }
+    }
+
+    /**
+     * Update the callout with the given kind and message.
+     *
+     * @param {CalloutType} kind - The message kind.
+     * @param {string | undefined} message - The message to print.
+     */
+    #updateAlert(kind: CalloutType, message: string | undefined) {
+      if (!this.#callout) return;
+
+      this.#callout.textContent = "";
+      this.#callout.dataset.type = kind;
+
+      if (message) {
+        this.#callout.textContent = message;
+        this.#show(this.#callout);
+      } else {
+        this.#hide(this.#callout);
+      }
+    }
+
+    /**
+     * Print all the received error messages.
+     *
+     * @param {MailError} data - The error messages.
+     */
+    #printMailErrors(data: MailError) {
+      if (data.error.fieldErrors?.email?.length)
+        this.#updateFieldErrorsList("email", data.error.fieldErrors.email);
+
+      if (data.error.fieldErrors?.message?.length)
+        this.#updateFieldErrorsList("message", data.error.fieldErrors.message);
+
+      if (data.error.fieldErrors?.name?.length)
+        this.#updateFieldErrorsList("name", data.error.fieldErrors.name);
+
+      if (data.error.fieldErrors?.object?.length)
+        this.#updateFieldErrorsList("object", data.error.fieldErrors.object);
+
+      this.#updateAlert("critical", data.error.formErrors?.join(". "));
+    }
+
+    /**
+     * Handle submit event inside the component.
+     *
+     * @param {SubmitEvent} e - The submit event.
+     */
+    async handleSubmit(e: SubmitEvent) {
+      e.preventDefault();
+
+      if (!(e.target instanceof HTMLFormElement)) return;
+
+      this.#resetFieldsErrorsLists(["email", "message", "name", "object"]);
+      this.#hide(this.#callout);
+      this.#show(this.#spinner);
+
+      const formData = new FormData(e.target);
+      const response = await fetch(API_ROUTES.SEND_EMAIL, {
+        method: "POST",
+        body: formData,
+        headers: {
+          Accept: "application/json",
+        },
+      });
+      const data = await response.json();
+
+      if (isMailSuccess(data)) {
+        this.#hide(this.#spinner);
+        this.#updateAlert("success", data.message);
+        e.target.reset();
+      } else if (isMailError(data)) {
+        this.#hide(this.#spinner);
+        this.#printMailErrors(data);
+      }
+    }
+  }
+
+  customElements.define("apeu-contact-form", APEUContactForm);
+</script>

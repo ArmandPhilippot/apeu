@@ -33,7 +33,7 @@ vi.mock("../../utils/constants", async (importOriginal) => {
       ...mod.CONFIG,
       LANGUAGES: {
         DEFAULT: "en",
-        AVAILABLE: ["en", "es", "fr"],
+        AVAILABLE: ["en", "fr"],
       },
     },
   };
@@ -134,10 +134,31 @@ async function setupTestWithMockEntries({
   testEntries,
 }: SetupTestWithMockEntriesConfig) {
   const layoutEntries = createLayoutMockEntries(["en", "fr"]);
+  // cSpell:ignore Étiquettes Catégories
+  const collectionListingViewRequiredEntries = createMockEntriesByCollection({
+    "index.pages": [
+      { collection: "index.pages", id: "en/tags", data: { title: "Tags" } },
+      {
+        collection: "index.pages",
+        id: "fr/tags",
+        data: { title: "Étiquettes" },
+      },
+      {
+        collection: "index.pages",
+        id: "en/blog/categories",
+        data: { title: "Categories" },
+      },
+      {
+        collection: "index.pages",
+        id: "fr/blog/categories",
+        data: { title: "Catégories" },
+      },
+    ],
+  });
   const mockEntries = createMockEntriesByCollection(testEntries);
   const mergedMockEntries = mergeEntriesByCollection(
     layoutEntries,
-    mockEntries
+    mergeEntriesByCollection(collectionListingViewRequiredEntries, mockEntries)
   );
   setupCollectionMocks(mergedMockEntries);
 
@@ -380,6 +401,7 @@ describe("CollectionListingView", () => {
           "index.pages": [
             { collection: "index.pages", id: "en/blog/categories" },
           ],
+          tags: [], // ADD THIS - empty array is fine
         },
       });
 

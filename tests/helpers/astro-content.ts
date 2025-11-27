@@ -276,6 +276,11 @@ export const createLayoutMockEntries = (
         id: `${locale}/projects`,
         data: { title: "Projects" },
       },
+      {
+        collection: "index.pages",
+        id: `${locale}/tags`,
+        data: { title: "Tags" },
+      },
     ]),
     pages: locales.flatMap((locale) => [
       { collection: "pages", id: `${locale}/home`, data: { title: "Home" } },

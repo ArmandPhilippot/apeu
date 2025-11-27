@@ -3,8 +3,13 @@ import type { ComponentProps } from "astro/types";
 import { Icon } from "astro-icon/components";
 import logo from "../../assets/logo-unpressed.svg";
 import Button from "../../components/atoms/button/button.astro";
+import { components } from "../../components/mdx";
+import Card from "../../components/molecules/card/card.astro";
 import CardsList from "../../components/molecules/cards-list/cards-list.astro";
+import Greetings from "../../components/molecules/greetings/greetings.astro";
 import Section from "../../components/molecules/section/section.astro";
+import ContactCard from "../../components/organisms/contact-card/contact-card.astro";
+import IdentityCard from "../../components/organisms/identity-card/identity-card.astro";
 import PreviewCard from "../../components/organisms/preview-card/preview-card.astro";
 import Layout from "../../components/templates/layout/layout.astro";
 import { getPersonGraph } from "../../lib/schema-dts/graphs/person-graph";
@@ -17,6 +22,7 @@ import {
   type QueriedEntry,
 } from "../../services/collections";
 import { useI18n } from "../../services/i18n";
+import { useRouting } from "../../services/routing";
 
 type Props = Partial<ComponentProps<typeof Layout>> & {
   entry: QueriedEntry<"pages">;
@@ -26,7 +32,8 @@ const {
   entry: { Content, hasContent, ...page },
   ...props
 } = Astro.props;
-const { translate, translatePlural } = useI18n(Astro.currentLocale);
+const { locale, translate, translatePlural } = useI18n(Astro.currentLocale);
+const { routeById } = await useRouting(locale);
 const author = await queryEntry({
   collection: "authors",
   id: "armand-philippot",
@@ -65,7 +72,34 @@ const { entries: collections } = await queryCollection(
 );
 ---
 
-<Layout graphs={graphs} seo={page.seo} {...props}>
+<Layout class="homepage" graphs={graphs} seo={page.seo} {...props}>
+  <Greetings class="homepage-greetings" name={author.name} />
+  <IdentityCard
+    as="section"
+    author={{
+      ...author,
+      avatar: author.avatar ? { ...author.avatar, loading: "eager" } : null,
+    }}
+    class="homepage-about"
+    elevation="raised"
+    heading={translate("page.home.section.about.heading")}
+  />
+  <ContactCard
+    addRelMe
+    as="section"
+    class="homepage-contact"
+    contactPageRoute={routeById("contact").path}
+    elevation="raised"
+    heading={translate("page.home.section.contact.heading")}
+    socialMedia={author.socialMedia}
+  />
+  {
+    hasContent ? (
+      <Card as="section" class="homepage-content" elevation="raised">
+        <Content components={components} />
+      </Card>
+    ) : null
+  }
   {
     collections?.length ? (
       <Section class="homepage-collections">
@@ -88,7 +122,6 @@ const { entries: collections } = await queryCollection(
         >
           {(entry: (typeof collections)[number]) => (
             <PreviewCard
-              class="homepage-collection"
               elevation="raised"
               entry={convertPageToPreview(entry, {
                 i18n: { translate, translatePlural },
@@ -101,3 +134,73 @@ const { entries: collections } = await queryCollection(
     ) : null
   }
 </Layout>
+
+<style>
+  @layer layout {
+    .homepage {
+      display: grid;
+      grid-template-columns: minmax(0, auto);
+      gap: var(--gutter);
+
+      @container (width > 55em) {
+        grid-template-columns: repeat(2, minmax(0, auto));
+      }
+
+      @container (width > 86em) {
+        &:where(:has(.homepage-content)) {
+          grid-template-columns: repeat(3, minmax(0, auto));
+        }
+      }
+    }
+
+    .homepage-about,
+    .homepage-contact,
+    .homepage-content,
+    .homepage-collections {
+      min-width: min(var(--size-prose), 100%);
+      margin-inline: auto;
+    }
+
+    .homepage-greetings {
+      @container (width > 55em) {
+        grid-column: 1 / -1;
+        justify-self: center;
+      }
+    }
+
+    .homepage-about {
+      @container (width > 55em) {
+        grid-column: 1;
+        margin-inline: unset;
+      }
+    }
+
+    .homepage-contact {
+      @container (width > 55em) {
+        grid-column: 2;
+        margin-inline: unset;
+      }
+    }
+
+    .homepage-content {
+      @container (width > 55em) {
+        grid-column: 1 / -1;
+        justify-self: center;
+      }
+
+      @container (width > 86em) {
+        grid-column: 3;
+        justify-self: unset;
+        margin-inline: unset;
+      }
+    }
+
+    .homepage-collections {
+      @container (width > 55em) {
+        grid-column: 1 / -1;
+        min-width: unset;
+        margin: unset;
+      }
+    }
+  }
+</style>

@@ -22,14 +22,6 @@ const { class: className, slot, ...attrs } = Astro.props;
 
 <style>
   @layer components {
-    .section {
-      margin-block-end: var(--gutter);
-
-      &:not(:first-child) {
-        margin-block-start: var(--gutter);
-      }
-    }
-
     .section-header {
       display: flex;
       flex-flow: column wrap;

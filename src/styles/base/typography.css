@@ -276,10 +276,6 @@ table {
   quotes: "“" "”" "‘" "’";
 }
 
-section + section {
-  margin-block: var(--gutter);
-}
-
 .prose > * {
   &:not(:first-child) {
     margin-block-start: var(--spacing-md);

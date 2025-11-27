@@ -1,5 +1,5 @@
 ---
-import type { ComponentProps } from "astro/types";
+import type { ComponentProps, HTMLAttributes } from "astro/types";
 import { Icon } from "astro-icon/components";
 import type { Graph } from "schema-dts";
 import { getJsonLdSchema } from "../../../lib/schema-dts/schema";
@@ -21,13 +21,13 @@ import PageTransitionProvider from "../../providers/page-transition-provider.ast
 import ThemeProvider from "../../providers/theme-provider.astro";
 import Head from "./head.astro";
 
-type Props = {
+type Props = Omit<HTMLAttributes<"main">, "id"> & {
   breadcrumb?: ComponentProps<typeof Breadcrumb>["items"] | null | undefined;
   graphs?: Graph["@graph"] | null | undefined;
   seo: SEO;
 };
 
-const { breadcrumb, graphs, seo } = Astro.props;
+const { breadcrumb, class: className, graphs, seo, ...attrs } = Astro.props;
 const { locale, translate } = useI18n(Astro.currentLocale);
 const { routeById } = await useRouting(locale);
 
@@ -166,7 +166,12 @@ const topId = translate("anchor.site.top");
               </nav>
             ) : null
           }
-          <main class="site-main paper-dark" data-pagefind-body id={contentsId}>
+          <main
+            {...attrs}
+            class:list={[className, "site-main", "paper-dark"]}
+            data-pagefind-body
+            id={contentsId}
+          >
             <slot />
           </main>
         </div>
@@ -350,7 +355,7 @@ const topId = translate("anchor.site.top");
       }
 
       @media (--prose) {
-        padding: clamp(var(--spacing-xs), 2cqi, var(--spacing-xl));
+        padding: clamp(var(--spacing-xs), 3cqi, var(--gutter));
       }
     }
 

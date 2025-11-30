@@ -9,7 +9,7 @@ type Props = Omit<ComponentProps<typeof List<"ol">>, "as"> & {
   headings: HeadingNode[];
 };
 
-const { class: className, headings, ...attrs } = Astro.props;
+const { class: className, headings, slot, ...attrs } = Astro.props;
 ---
 
 <List {...attrs} as="ol" class:list={[className, "toc"]} spacing="3xs">

@@ -15,7 +15,7 @@ type Props = JSX.HTMLAttributes & {
   id: string;
 };
 
-const { id, ...attrs } = Astro.props;
+const { id, slot, ...attrs } = Astro.props;
 const { translate } = useI18n(Astro.currentLocale);
 
 const fields = [
@@ -105,26 +105,28 @@ const fields = [
 </apeu-contact-form>
 
 <style>
-  .contact-form {
-    display: flex;
-    flex-flow: column wrap;
-    gap: var(--spacing-sm);
-    max-width: 60ch;
-    margin-inline: auto;
+  @layer components {
+    .contact-form {
+      display: flex;
+      flex-flow: column wrap;
+      gap: var(--spacing-sm);
+      max-width: 60ch;
+      margin-inline: auto;
 
-    & :global(*[hidden]) {
-      display: none;
+      & :global(*[hidden]) {
+        display: none;
+      }
     }
-  }
 
-  .contact-form-btn,
-  .contact-form-spinner {
-    margin-inline: auto;
-  }
+    .contact-form-btn,
+    .contact-form-spinner {
+      margin-inline: auto;
+    }
 
-  .contact-form-spinner,
-  .contact-form-callout {
-    margin-block: var(--spacing-md);
+    .contact-form-spinner,
+    .contact-form-callout {
+      margin-block: var(--spacing-md);
+    }
   }
 </style>
 

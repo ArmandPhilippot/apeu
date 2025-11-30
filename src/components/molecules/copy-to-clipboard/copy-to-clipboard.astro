@@ -58,37 +58,39 @@ const {
 </apeu-copy-to-clipboard>
 
 <style>
-  .copy-to-clipboard {
-    display: block;
-    position: relative;
-  }
-
-  .copy-to-clipboard-btn {
-    min-width: calc(var(--one-px-in-rem) * 48);
-    padding: var(--spacing-2xs);
-    aspect-ratio: 1 / 1;
-    font-size: 1.75em;
-
-    @media screen and (any-pointer: fine) {
-      min-width: unset;
-      font-size: 1.15em;
+  @layer components {
+    .copy-to-clipboard {
+      display: block;
+      position: relative;
     }
-  }
 
-  .copy-to-clipboard-feedback {
-    width: max-content;
-    padding: var(--spacing-2xs) var(--spacing-xs);
-    position: absolute;
-    bottom: calc(100% + var(--spacing-2xs));
-    left: calc(var(--spacing-3xs) * -1);
-    background: var(--color-regular);
-    border: var(--border-size-sm) solid var(--color-border);
-    border-radius: var(--border-radii-md);
-    box-shadow: var(--shadow-floating-to-top-left);
-    font-size: var(--font-size-sm);
-    user-select: none;
-    opacity: 0;
-    visibility: hidden;
+    .copy-to-clipboard-btn {
+      min-width: calc(var(--one-px-in-rem) * 48);
+      padding: var(--spacing-2xs);
+      aspect-ratio: 1 / 1;
+      font-size: 1.75em;
+
+      @media screen and (any-pointer: fine) {
+        min-width: unset;
+        font-size: 1.15em;
+      }
+    }
+
+    .copy-to-clipboard-feedback {
+      width: max-content;
+      padding: var(--spacing-2xs) var(--spacing-xs);
+      position: absolute;
+      bottom: calc(100% + var(--spacing-2xs));
+      left: calc(var(--spacing-3xs) * -1);
+      background: var(--color-regular);
+      border: var(--border-size-sm) solid var(--color-border);
+      border-radius: var(--border-radii-md);
+      box-shadow: var(--shadow-floating-to-top-left);
+      font-size: var(--font-size-sm);
+      user-select: none;
+      opacity: 0;
+      visibility: hidden;
+    }
   }
 </style>
 

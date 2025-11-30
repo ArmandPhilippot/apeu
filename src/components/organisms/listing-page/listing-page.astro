@@ -25,6 +25,7 @@ const {
   entries,
   pagination,
   route,
+  slot,
   title,
   totalEntries,
   ...attrs
@@ -68,11 +69,13 @@ const hasIntro = Astro.slots.has("intro");
 </article>
 
 <style>
-  .listing-page-header {
-    margin-block-end: var(--gutter);
-  }
+  @layer components {
+    .listing-page-header {
+      margin-block-end: var(--gutter);
+    }
 
-  .listing-page-pagination {
-    margin-block-start: var(--gutter);
+    .listing-page-pagination {
+      margin-block-start: var(--gutter);
+    }
   }
 </style>

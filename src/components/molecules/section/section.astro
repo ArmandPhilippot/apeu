@@ -6,7 +6,7 @@ type Props = HTMLAttributes<"section">;
 const { class: className, slot, ...attrs } = Astro.props;
 ---
 
-<section {...attrs} class:list={["section", className]}>
+<section {...attrs} class:list={[className, "section"]}>
   <header class="section-header">
     <slot name="heading" />
     {

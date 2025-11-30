@@ -12,7 +12,7 @@ type Props = HTMLAttributes<"form"> & {
   altLanguages?: AltLanguage[] | null | undefined;
 };
 
-const { altLanguages, class: className, id, ...attrs } = Astro.props;
+const { altLanguages, class: className, id, slot, ...attrs } = Astro.props;
 const { locale, translate } = useI18n(Astro.currentLocale);
 const { routeById } = await useRouting(locale);
 const languages = Object.fromEntries(

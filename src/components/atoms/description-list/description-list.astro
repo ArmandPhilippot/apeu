@@ -18,6 +18,7 @@ const {
   class: className,
   gap = { col: "2xs" },
   isInline = false,
+  slot,
   style = "",
   ...attrs
 } = Astro.props;
@@ -41,36 +42,38 @@ const trimmedContent = content
 />
 
 <style>
-  .description-list :global(dt:where(:not(:has(.sr-only))) + dd) {
-    margin-inline-start: var(--col-gap, 0);
-  }
-
-  .description-list:where([data-inline="true"]) {
-    &:has(> div) {
-      display: flex;
-      flex-flow: row wrap;
-      gap: var(--row-gap, 0) var(--col-gap, 0);
-    }
-
-    & > :global(dd + dt) {
+  @layer components {
+    .description-list :global(dt:where(:not(:has(.sr-only))) + dd) {
       margin-inline-start: var(--col-gap, 0);
     }
-  }
 
-  .description-list:where(:not([data-inline="true"])) {
-    & > :global(:is(dd + dt, dt + dd)::before) {
-      display: block;
-      content: "";
+    .description-list:where([data-inline="true"]) {
+      &:has(> div) {
+        display: flex;
+        flex-flow: row wrap;
+        gap: var(--row-gap, 0) var(--col-gap, 0);
+      }
+
+      & > :global(dd + dt) {
+        margin-inline-start: var(--col-gap, 0);
+      }
     }
 
-    & > :global(:is(dd + dt)::before),
-    & > :global(div + div) {
-      margin-block-start: var(--row-gap, 0);
-    }
+    .description-list:where(:not([data-inline="true"])) {
+      & > :global(:is(dd + dt, dt + dd)::before) {
+        display: block;
+        content: "";
+      }
 
-    & :global(:is(dt + dt, dd + dd)::before) {
-      /* I'd prefer a comma but this is not correctly aligned.' */
-      content: " / " / "";
+      & > :global(:is(dd + dt)::before),
+      & > :global(div + div) {
+        margin-block-start: var(--row-gap, 0);
+      }
+
+      & :global(:is(dt + dt, dd + dd)::before) {
+        /* I'd prefer a comma but this is not correctly aligned.' */
+        content: " / " / "";
+      }
     }
   }
 </style>

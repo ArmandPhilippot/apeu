@@ -18,6 +18,7 @@ const {
   gap = { col: "2xs" },
   hideLabel = false,
   items,
+  slot,
   ...attrs
 } = Astro.props;
 const defaultIconSize = 22;
@@ -55,8 +56,10 @@ const defaultIconSize = 22;
 </DescriptionList>
 
 <style>
-  .meta-icon {
-    margin-inline-end: var(--spacing-3xs);
-    vertical-align: text-bottom;
+  @layer components {
+    .meta-icon {
+      margin-inline-end: var(--spacing-3xs);
+      vertical-align: text-bottom;
+    }
   }
 </style>

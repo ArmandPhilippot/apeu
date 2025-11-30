@@ -98,34 +98,36 @@ const defaultCTAIconSize = 22;
 </Card>
 
 <style>
-  .preview-card:has(header a):not(:has(footer a)) {
-    position: relative;
+  @layer components {
+    .preview-card:has(header a):not(:has(footer a)) {
+      position: relative;
 
-    &:focus-within {
-      outline: var(--border-size-lg) solid var(--color-primary-lighter);
-      outline-offset: calc(var(--border-size-lg) * -1);
-    }
-
-    & header a {
-      &::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        z-index: 1;
+      &:focus-within {
+        outline: var(--border-size-lg) solid var(--color-primary-lighter);
+        outline-offset: calc(var(--border-size-lg) * -1);
       }
 
-      &:focus {
-        outline: none;
+      & header a {
+        &::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          z-index: 1;
+        }
+
+        &:focus {
+          outline: none;
+        }
       }
     }
-  }
 
-  .preview-card-cta {
-    display: flex;
-    flex-flow: row wrap;
-    align-items: center;
-    justify-content: end;
-    gap: var(--spacing-sm);
-    margin-inline-start: auto;
+    .preview-card-cta {
+      display: flex;
+      flex-flow: row wrap;
+      align-items: center;
+      justify-content: end;
+      gap: var(--spacing-sm);
+      margin-inline-start: auto;
+    }
   }
 </style>

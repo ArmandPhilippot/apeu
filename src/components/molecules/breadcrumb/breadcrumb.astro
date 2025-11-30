@@ -84,29 +84,31 @@ const scaleToRightTransition = {
 </List>
 
 <style>
-  .breadcrumb {
-    flex-wrap: nowrap;
-    max-width: 100%;
-    padding: calc(var(--gutter) / 2) var(--spacing-md);
-    white-space: nowrap;
-    overflow-x: auto;
-  }
+  @layer components {
+    .breadcrumb {
+      flex-wrap: nowrap;
+      max-width: 100%;
+      padding: calc(var(--gutter) / 2) var(--spacing-md);
+      white-space: nowrap;
+      overflow-x: auto;
+    }
 
-  .breadcrumb-item {
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: center;
-    gap: var(--spacing-2xs);
-  }
+    .breadcrumb-item {
+      display: flex;
+      flex-flow: row nowrap;
+      align-items: center;
+      gap: var(--spacing-2xs);
+    }
 
-  .breadcrumb-link {
-    font-size: var(--font-size-sm);
-  }
+    .breadcrumb-link {
+      font-size: var(--font-size-sm);
+    }
 
-  .breadcrumb-link[aria-current="page"],
-  .breadcrumb-sep {
-    color: var(--color-muted-high);
-    font-weight: var(--font-weight-bold);
+    .breadcrumb-link[aria-current="page"],
+    .breadcrumb-sep {
+      color: var(--color-muted-high);
+      font-weight: var(--font-weight-bold);
+    }
   }
 </style>
 

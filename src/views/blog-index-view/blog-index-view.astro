@@ -53,7 +53,7 @@ const graphs: ComponentProps<typeof Layout>["graphs"] = [
   <PageOpener title={page.title}>
     {hasContent && <Content components={components} slot="intro" />}
   </PageOpener>
-  <Section>
+  <Section class="blog-index-section">
     <h2 slot="heading">
       {translate("page.blog.section.recent.posts.heading")}
     </h2>
@@ -91,7 +91,7 @@ const graphs: ComponentProps<typeof Layout>["graphs"] = [
       }
     </CardsList>
   </Section>
-  <Section>
+  <Section class="blog-index-section">
     <h2 slot="heading">
       {translate("page.blog.section.categories.heading")}
     </h2>
@@ -110,3 +110,11 @@ const graphs: ComponentProps<typeof Layout>["graphs"] = [
     </CardsList>
   </Section>
 </Layout>
+
+<style>
+  @layer layout {
+    .blog-index-section {
+      margin-block: var(--gutter);
+    }
+  }
+</style>

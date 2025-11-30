@@ -12,7 +12,7 @@ type Props = Omit<HTMLAttributes<"header">, "title"> & {
   title: string;
 };
 
-const { class: className, cover, feed, title, ...attrs } = Astro.props;
+const { class: className, cover, feed, slot, title, ...attrs } = Astro.props;
 const { translate } = useI18n(Astro.currentLocale);
 ---
 

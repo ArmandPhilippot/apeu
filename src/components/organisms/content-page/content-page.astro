@@ -15,7 +15,14 @@ type Props = Omit<HTMLAttributes<"article">, "title"> & {
   title: string;
 };
 
-const { class: className, cover, headings, title, ...attrs } = Astro.props;
+const {
+  class: className,
+  cover,
+  headings,
+  slot,
+  title,
+  ...attrs
+} = Astro.props;
 const { translate } = useI18n(Astro.currentLocale);
 const hasMeta = Astro.slots.has("meta");
 const hasIntro = Astro.slots.has("intro");

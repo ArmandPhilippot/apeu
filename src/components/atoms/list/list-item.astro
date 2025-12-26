@@ -17,7 +17,7 @@ const { class: className, hideMarker = false, slot, ...attrs } = Astro.props;
 </li>
 
 <style>
-  @layer components {
+  @layer atoms {
     .list-item:where([data-marker="false"]) {
       list-style-type: none;
     }

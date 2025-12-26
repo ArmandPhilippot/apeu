@@ -59,7 +59,13 @@ const entries = await Promise.all(
 );
 ---
 
-<Layout breadcrumb={breadcrumb} graphs={graphs} seo={page.seo} {...props}>
+<Layout
+  breadcrumb={breadcrumb}
+  graphs={graphs}
+  pageTitle={page.title}
+  seo={page.seo}
+  {...props}
+>
   <ListingPage
     cover={page.cover}
     entries={entries}

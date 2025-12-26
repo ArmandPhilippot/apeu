@@ -72,7 +72,13 @@ const { entries: collections } = await queryCollection(
 );
 ---
 
-<Layout class="homepage" graphs={graphs} seo={page.seo} {...props}>
+<Layout
+  class="homepage"
+  graphs={graphs}
+  pageTitle={page.title}
+  seo={page.seo}
+  {...props}
+>
   <Greetings class="homepage-greetings" name={author.name} />
   <IdentityCard
     as="section"

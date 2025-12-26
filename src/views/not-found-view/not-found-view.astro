@@ -27,7 +27,13 @@ const graphs: ComponentProps<typeof Layout>["graphs"] = [
 ];
 ---
 
-<Layout breadcrumb={breadcrumb} graphs={graphs} seo={page.seo} {...props}>
+<Layout
+  breadcrumb={breadcrumb}
+  graphs={graphs}
+  pageTitle={page.title}
+  seo={page.seo}
+  {...props}
+>
   <ContentPage headings={page.headings} title={page.title}>
     {hasContent && <Content components={components} />}
     <SearchForm

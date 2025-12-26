@@ -6,8 +6,11 @@ import faviconPng from "../../../assets/favicon.png";
 import faviconSvg from "../../../assets/logo-unpressed.svg";
 import { getJsonLdSchema } from "../../../lib/schema-dts/schema";
 import { getCollectionsFeeds } from "../../../services/feeds";
-import { useI18n } from "../../../services/i18n";
+import { getLanguageTerritory, useI18n } from "../../../services/i18n";
 import type { SEO } from "../../../types/data";
+import { WEBSITE_URL } from "../../../utils/constants";
+import { removeTrailingSlashes } from "../../../utils/strings";
+import { isDefaultLocale } from "../../../utils/type-guards";
 
 type ColorScheme =
   | "normal"
@@ -17,23 +20,32 @@ type ColorScheme =
   | "light dark"
   | "dark light";
 
+type OpenGraphType =
+  | "article"
+  | "book"
+  | "music.album"
+  | "music.playlist"
+  | "music.radio_station"
+  | "music.song"
+  | "profile"
+  | "video.episode"
+  | "video.movie"
+  | "video.other"
+  | "video.tv_show"
+  | "website";
+
 type Props = {
-  addBrandToTitle?: boolean | null | undefined;
   brand: string;
   colorScheme?: ColorScheme | null | undefined;
   graphs?: Graph["@graph"] | null | undefined;
+  isHome: boolean;
   seo: SEO;
   themeColor?: string | null | undefined;
+  title: string;
 };
 
-const {
-  addBrandToTitle = false,
-  colorScheme,
-  brand,
-  graphs,
-  seo,
-  themeColor,
-} = Astro.props;
+const { brand, colorScheme, graphs, isHome, seo, themeColor, title } =
+  Astro.props;
 const { locale, translate } = useI18n(Astro.currentLocale);
 const appleTouchIcon = await getImage({
   src: faviconPng,
@@ -43,6 +55,22 @@ const appleTouchIcon = await getImage({
 });
 const icon = await getImage({ src: faviconSvg, format: "svg" });
 const feeds = await getCollectionsFeeds(locale);
+const addBrandToTitle = !isHome;
+const ogType: OpenGraphType = isHome ? "website" : "article";
+const localeTerritory = locale.includes("_")
+  ? locale
+  : getLanguageTerritory(locale);
+const altLocales = seo.languages?.map((altLocale) =>
+  getLanguageTerritory(altLocale.locale)
+);
+const ogHomeImgPath = isDefaultLocale(locale) ? "home" : `${locale}/home`;
+const ogImgPath = isHome ? ogHomeImgPath : Astro.url.pathname.slice(1);
+const socialImg = {
+  height: 630,
+  type: "image/png",
+  url: new URL(`/og/${removeTrailingSlashes(ogImgPath)}.png`, WEBSITE_URL).href,
+  width: 1200,
+} as const;
 
 /* eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair -- No need to pollute the template with an enable pair. */
 /* eslint-disable astro/sort-attributes -- Sorting is fine for custom components, but I think meta are easier to read with name first. */
@@ -94,6 +122,34 @@ const feeds = await getCollectionsFeeds(locale);
   }
   {colorScheme ? <meta name="color-scheme" content={colorScheme} /> : null}
   {themeColor ? <meta name="theme-color" content={themeColor} /> : null}
+  <meta content={title} property="og:title" />
+  <meta content={ogType} property="og:type" />
+  <meta content={socialImg.url} property="og:image" />
+  <meta content={socialImg.type} property="og:image:type" />
+  <meta content={`${socialImg.width}`} property="og:image:width" />
+  <meta content={`${socialImg.height}`} property="og:image:height" />
+  <meta content={Astro.url} property="og:url" />
+  {
+    seo.description ? (
+      <meta content={seo.description} property="og:description" />
+    ) : null
+  }
+  <meta content={localeTerritory} property="og:locale" />
+  {
+    altLocales?.map((lang) => (
+      <meta content={lang} property="og:locale:alternate" />
+    ))
+  }
+  <meta content={brand} property="og:site_name" />
+  <slot name="open-graph" />
+  <meta content="summary_large_image" name="twitter:card" />
+  <meta content={socialImg.url} name="twitter:image" />
+  <meta content={title} name="twitter:title" />
+  {
+    seo.description ? (
+      <meta content={seo.description} name="twitter:description" />
+    ) : null
+  }
   <link rel="icon" href="/favicon.ico" sizes="32x32" />
   <link rel="icon" href={icon.src} type="image/svg+xml" />
   <link rel="apple-touch-icon" href={appleTouchIcon.src} />

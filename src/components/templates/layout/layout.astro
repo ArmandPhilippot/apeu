@@ -24,10 +24,18 @@ import Head from "./head.astro";
 type Props = Omit<HTMLAttributes<"main">, "id"> & {
   breadcrumb?: ComponentProps<typeof Breadcrumb>["items"] | null | undefined;
   graphs?: Graph["@graph"] | null | undefined;
+  pageTitle: string;
   seo: SEO;
 };
 
-const { breadcrumb, class: className, graphs, seo, ...attrs } = Astro.props;
+const {
+  breadcrumb,
+  class: className,
+  graphs,
+  pageTitle,
+  seo,
+  ...attrs
+} = Astro.props;
 const { locale, translate } = useI18n(Astro.currentLocale);
 const { routeById } = await useRouting(locale);
 
@@ -87,11 +95,12 @@ const topId = translate("anchor.site.top");
 
 <html data-shiki="light" data-theme="light" lang={locale}>
   <Head
-    addBrandToTitle={!isHome}
     brand={CONFIG.BRAND}
     colorScheme="light dark"
+    isHome={isHome}
     seo={seo}
     themeColor="#13436c"
+    title={pageTitle}
   >
     <Fragment slot="blocking">
       {/* These scripts are intentionally inlined to avoid FOUC. */}
@@ -139,6 +148,7 @@ const topId = translate("anchor.site.top");
         }
       </style>
     </noscript>
+    <slot name="open-graph" slot="open-graph" />
   </Head>
   <body class="site paper" id={topId}>
     <ThemeProvider>

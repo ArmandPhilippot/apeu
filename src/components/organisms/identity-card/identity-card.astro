@@ -109,6 +109,11 @@ const { translate } = useI18n(Astro.currentLocale);
 
 <style>
   @layer components {
+    .identity-card :global(figure),
+    .identity-card-meta {
+      margin: 0;
+    }
+
     .identity-card > :global(*:last-child) {
       display: flex;
       flex-flow: row wrap;

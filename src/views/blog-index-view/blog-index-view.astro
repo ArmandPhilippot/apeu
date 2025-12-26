@@ -114,7 +114,11 @@ const graphs: ComponentProps<typeof Layout>["graphs"] = [
 <style>
   @layer layout {
     .blog-index-section {
-      margin-block: var(--gutter);
+      margin-block-start: var(--gutter);
+
+      &:not(:last-child) {
+        margin-block-end: var(--gutter);
+      }
     }
   }
 </style>

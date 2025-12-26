@@ -88,6 +88,7 @@ describe("Layout", () => {
     expect.assertions(4);
 
     const props = {
+      pageTitle: "the page title",
       seo: {
         title: "est et fugiat",
       },
@@ -108,6 +109,7 @@ describe("Layout", () => {
     expect.assertions(1);
 
     const props = {
+      pageTitle: "the page title",
       seo: {
         title: "est et fugiat",
       },
@@ -129,6 +131,7 @@ describe("Layout", () => {
     vi.stubEnv("MODE", "development");
 
     const props = {
+      pageTitle: "the page title",
       seo: {
         title: "est et fugiat",
       },
@@ -149,6 +152,7 @@ describe("Layout", () => {
     vi.stubEnv("DEV", false);
 
     const props = {
+      pageTitle: "the page title",
       seo: {
         title: "est et fugiat",
       },
@@ -166,6 +170,7 @@ describe("Layout", () => {
 
     const props = {
       graphs: [{ "@type": "WebPage" }],
+      pageTitle: "the page title",
       seo: { title: "est et fugiat" },
     } satisfies ComponentProps<typeof Layout>;
     const result = await container.renderToString(Layout, { props });

@@ -30,13 +30,20 @@ function getFirstLine(node: HastElement): HastElement {
  * @throws When the text can't be extracted.
  */
 function extractTextFromNode(node: HastElement): string {
-  const [line] = node.children;
-  if (line?.type !== "element") {
+  const [firstChild] = node.children;
+
+  if (firstChild?.type === "comment") return firstChild.value;
+
+  if (firstChild?.type !== "element") {
     throw new Error("Unable to extract text from node");
   }
 
-  const [tokenNode] = line.children;
-  if (tokenNode?.type !== "text") {
+  const [tokenNode] = firstChild.children;
+
+  if (
+    tokenNode === undefined ||
+    (tokenNode.type !== "text" && tokenNode.type !== "comment")
+  ) {
     throw new Error("Unable to extract text from node");
   }
 
@@ -163,6 +170,32 @@ describe("shikiDiffNotation transformer", () => {
     const firstLine = getFirstLine(mockNode);
 
     expect(extractTextFromNode(firstLine)).toBe("Normal line");
+    expect(firstLine.properties.className).toBeUndefined();
+  });
+
+  it("should ignore `---` code fences", () => {
+    const mockNode = createMockNode("---", "comment");
+    const context = createTransformerContext();
+    const transformer = shikiDiffNotation();
+
+    transformer.code?.call(context, mockNode);
+
+    const firstLine = getFirstLine(mockNode);
+
+    expect(extractTextFromNode(firstLine)).toBe("---");
+    expect(firstLine.properties.className).toBeUndefined();
+  });
+
+  it("should ignore `+++` code fences", () => {
+    const mockNode = createMockNode("+++", "comment");
+    const context = createTransformerContext();
+    const transformer = shikiDiffNotation();
+
+    transformer.code?.call(context, mockNode);
+
+    const firstLine = getFirstLine(mockNode);
+
+    expect(extractTextFromNode(firstLine)).toBe("+++");
     expect(firstLine.properties.className).toBeUndefined();
   });
 

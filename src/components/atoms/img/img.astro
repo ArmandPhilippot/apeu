@@ -66,14 +66,14 @@ const img = await getImage({
 });
 const mergedAttrs = { ...img.attributes, ...attrs };
 const Wrapper = isClickable ? Link : Fragment;
-/* When used in class:list it seems the picture class is overridden... */
+/* With `class:list` it seems the `picture` class is overridden... */
 const pictureClass = pictureAttributes?.class
   ? `picture ${pictureAttributes.class}`
   : "picture";
 ---
 
 <Wrapper href={img.src}>
-  {/* @ts-expect-error ts(2375) -- Not sure where the issue comes from... */}
+  {/* @ts-expect-error ts(2375) -- Not sure where the conflict comes from... */}
   <AstroPicture
     {...mergedAttrs}
     alt={alt}
@@ -87,16 +87,14 @@ const pictureClass = pictureAttributes?.class
 </Wrapper>
 
 <style>
-  img {
-    display: block;
-    max-width: 100%;
-  }
+  @layer atoms {
+    img {
+      display: block;
+      max-width: 100%;
+    }
 
-  :global(:where([data-theme="dark"])) .picture {
-    filter: brightness(0.9) contrast(1.025);
-
-    &:active {
-      filter: none;
+    :global(:where([data-theme="dark"])) .picture:where(:not(:active)) {
+      filter: brightness(0.9) contrast(1.025);
     }
   }
 </style>

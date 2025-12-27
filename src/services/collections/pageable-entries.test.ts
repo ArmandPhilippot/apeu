@@ -12,7 +12,8 @@ import {
   getDisplayedCollectionName,
   isPageableEntry,
 } from "./pageable-entries";
-import { queryEntry, type QueriedEntry } from "./query-entry";
+import { queryEntry } from "./query-entry";
+import type { QueriedEntry } from "./types";
 
 vi.mock("astro:content", async (importOriginal) => {
   const mod = await importOriginal<typeof import("astro:content")>();

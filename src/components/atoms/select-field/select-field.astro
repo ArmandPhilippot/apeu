@@ -1,0 +1,180 @@
+---
+import type { ComponentProps, HTMLAttributes } from "astro/types";
+import { Icon } from "astro-icon/components";
+import type { IconName } from "../../../types/tokens";
+
+type Option = {
+  label: string;
+  value: string;
+};
+
+type Props = HTMLAttributes<"div"> & {
+  icon?: IconName | null | undefined;
+  iconSize?: ComponentProps<typeof Icon>["size"];
+  isRequired?: boolean | null | undefined;
+  options: Option[];
+  value: string;
+};
+
+const {
+  class: className,
+  icon,
+  iconSize = 20,
+  isRequired = false,
+  options,
+  slot,
+  value,
+  ...attrs
+} = Astro.props;
+
+const currentOption = options.find((option) => option.value === value);
+
+if (currentOption === undefined) {
+  throw new Error(
+    `The provided value does not match any value in your "options". Received: ${value}`
+  );
+}
+---
+
+<div {...attrs} class:list={[className, "select-field"]}>
+  {
+    icon ? (
+      <Icon aria-hidden class="select-field-icon" name={icon} size={iconSize} />
+    ) : null
+  }
+  <select autocomplete="off" required={isRequired}>
+    {
+      options.map((option) => (
+        <option selected={option.value === value} value={option.value}>
+          {option.label}
+        </option>
+      ))
+    }
+  </select>
+  <Icon aria-hidden="true" class="select-field-caret" name="caret-down" />
+</div>
+
+<style
+  define:vars={icon
+    ? {
+        "icon-size": `calc(${iconSize} * var(--one-px-in-rem))`,
+      }
+    : {}}
+>
+  @layer atoms {
+    .select-field {
+      --caret-size: calc(10 * var(--one-px-in-rem));
+
+      display: grid;
+      width: fit-content;
+      background: var(--color-regular-light);
+      border: var(--border-size-sm) solid var(--color-border);
+      border-radius: var(--border-radii-lg);
+      box-shadow:
+        inset 0 0 var(--border-size-sm) var(--border-size-sm)
+          var(--color-shadow-inset),
+        var(--shadow-raised-to-top-left),
+        var(--border-size-md) var(--border-size-md) 0 0 var(--color-shadow);
+      color: var(--color-primary-high);
+      cursor: pointer;
+      outline: var(--border-size-md) solid transparent;
+      transition:
+        box-shadow 0.1s linear 0s,
+        outline 0.1s ease-in-out 0s,
+        transform 0.1s linear 0s;
+
+      &:has(.select-field-icon) {
+        grid-template-columns: minmax(0, auto) minmax(0, 1fr) minmax(0, auto);
+      }
+
+      &:not(:has(.select-field-icon)) {
+        grid-template-columns: minmax(0, 1fr) minmax(0, auto);
+      }
+
+      &:hover {
+        background: var(--color-regular-lighter);
+      }
+
+      &:focus-within {
+        background: var(--color-regular-dark);
+        box-shadow:
+          inset 0 0 var(--border-size-md) var(--border-size-md)
+            var(--color-shadow-inset-dark),
+          0 0 0 0 var(--color-shadow),
+          0 0 0 0 var(--color-muted-darker);
+        outline-color: var(--color-primary);
+        transform: translateY(var(--border-size-md))
+          translateX(var(--border-size-md));
+      }
+    }
+
+    .select-field-icon {
+      grid-column: 1;
+      grid-row: 1;
+      align-self: center;
+      fill: currentcolor;
+      margin-inline: var(--spacing-sm) var(--spacing-xs);
+      z-index: 1;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    select {
+      grid-column-start: 1;
+      grid-row: 1;
+      min-height: calc(var(--one-px-in-rem) * 54);
+      padding: var(--spacing-xs) calc(var(--spacing-sm) * 2 + var(--caret-size))
+        var(--spacing-xs) var(--spacing-sm);
+      appearance: none;
+      background: inherit;
+      border: none;
+      border-radius: inherit;
+      color: inherit;
+      cursor: pointer;
+      font-weight: var(--font-weight-bold);
+
+      @media (any-pointer: fine) {
+        min-height: calc(var(--one-px-in-rem) * 48);
+      }
+
+      &:where(:focus) {
+        outline: none;
+      }
+    }
+
+    :where(.select-field:has(.select-field-icon)) select {
+      grid-column-end: 4;
+      padding-inline-start: calc(
+        var(--icon-size) + var(--spacing-sm) + var(--spacing-xs)
+      );
+    }
+
+    :where(.select-field:not(:has(.select-field-icon))) select {
+      grid-column-end: 3;
+    }
+
+    option {
+      background: var(--color-regular-light);
+      border: var(--border-size-sm) solid var(--color-border);
+      color: var(--color-on-regular);
+    }
+
+    .select-field-caret {
+      grid-row: 1;
+      align-self: center;
+      width: var(--caret-size);
+      aspect-ratio: 1 / 1;
+      margin-inline-end: var(--spacing-sm);
+      pointer-events: none;
+      user-select: none;
+    }
+
+    :where(.select-field:has(.select-field-icon)) .select-field-caret {
+      grid-column: 3;
+    }
+
+    :where(.select-field:not(:has(.select-field-icon))) .select-field-caret {
+      grid-column: 2;
+    }
+  }
+</style>

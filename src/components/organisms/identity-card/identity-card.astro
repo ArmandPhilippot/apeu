@@ -2,9 +2,9 @@
 import type { ComponentProps } from "astro/types";
 import { useI18n } from "../../../services/i18n";
 import type { Author } from "../../../types/data";
+import type { HeadingLvl } from "../../../types/tokens";
 import { toLowerCase } from "../../../utils/strings";
 import DescriptionList from "../../atoms/description-list/description-list.astro";
-import Item from "../../atoms/description-list/item.astro";
 import Figure from "../../atoms/figure/figure.astro";
 import Img from "../../atoms/img/img.astro";
 import Card from "../../molecules/card/card.astro";
@@ -20,14 +20,23 @@ type Props = ComponentProps<typeof Card> & {
     | "nationality"
     | "spokenLanguages"
   >;
+  heading: string;
+  headingLvl?: HeadingLvl | undefined;
 };
 
-const { author, class: className, ...attrs } = Astro.props;
+const {
+  author,
+  class: className,
+  heading,
+  headingLvl: Heading = "h2",
+  slot,
+  ...attrs
+} = Astro.props;
 const { translate } = useI18n(Astro.currentLocale);
 ---
 
-<Card {...attrs} class:list={["identity-card", className]}>
-  <slot name="heading" slot={Astro.slots.has("heading") ? "heading" : ""} />
+<Card {...attrs} class:list={[className, "identity-card"]}>
+  <Heading slot="heading">{heading}</Heading>
   {
     author.avatar ? (
       <Figure
@@ -40,73 +49,76 @@ const { translate } = useI18n(Astro.currentLocale);
       </Figure>
     ) : null
   }
-  <DescriptionList class="identity-card-meta" rowSpacing="4xs">
-    <Item colSpacing="2xs" isInline>
+  <DescriptionList class="identity-card-meta" gap={{ col: "2xs", row: "4xs" }}>
+    <div>
       <dt>{translate("meta.label.name")}</dt>
       <dd>{author.name}</dd>
-    </Item>
+    </div>
     {
       author.nameIPA ? (
-        <Item colSpacing="2xs" isInline>
+        <div>
           <dt>{translate("meta.label.pronunciation")}</dt>
           <dd>{author.nameIPA}</dd>
-        </Item>
+        </div>
       ) : null
     }
     {
       author.country ? (
-        <Item colSpacing="2xs" isInline>
+        <div>
           <dt>{translate("meta.label.country")}</dt>
           <dd>
             {translate(
               `meta.value.country.name.${toLowerCase(author.country)}`
             )}
           </dd>
-        </Item>
+        </div>
       ) : null
     }
     {
       author.job ? (
-        <Item colSpacing="2xs" isInline>
+        <div>
           <dt>{translate("meta.label.job")}</dt>
           <dd>{author.job}</dd>
-        </Item>
+        </div>
       ) : null
     }
     {
       author.nationality ? (
-        <Item colSpacing="2xs" isInline>
+        <div>
           <dt>{translate("meta.label.nationality")}</dt>
           <dd>
             {translate(
               `meta.value.nationality.${toLowerCase(author.nationality)}`
             )}
           </dd>
-        </Item>
+        </div>
       ) : null
     }
     {
       author.spokenLanguages ? (
-        <Item colSpacing="2xs" isInline>
+        <div>
           <dt>{translate("meta.label.speak")}</dt>
           {author.spokenLanguages.map((language) => (
             <dd>{translate(`language.name.${language}`)}</dd>
           ))}
-        </Item>
+        </div>
       ) : null
     }
   </DescriptionList>
 </Card>
 
 <style>
-  .identity-card > :global(*:last-child) {
-    flex: 1;
-    display: flex;
-    flex-flow: row wrap;
-    gap: var(--spacing-md);
-  }
+  @layer organisms {
+    .identity-card :global(figure),
+    .identity-card-meta {
+      margin: 0;
+    }
 
-  .identity-card-avatar {
-    min-width: calc(var(--one-px-in-rem) * 200);
+    .identity-card > :global(*:last-child) {
+      display: flex;
+      flex-flow: row wrap;
+      gap: var(--spacing-md);
+      align-items: start;
+    }
   }
 </style>

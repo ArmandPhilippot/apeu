@@ -1,7 +1,6 @@
 ---
 title: "ContactCard"
 ---
-import Heading from "../../atoms/heading/heading.astro";
 import { components as mdxComponents } from "../../mdx";
 import CodePreview from "../../molecules/code-preview/code-preview.astro";
 import ContactCard from "./contact-card.astro";
@@ -25,11 +24,11 @@ An `ContactCard` component should be used to display contact methods.
 />
 
 <CodePreview
-  code={`<ContactCard contactPageRoute="#contact" />`}
+  code={`<ContactCard contactPageRoute="#contact" heading="Contact me" />`}
   label="Basic use"
   lang="astro"
 >
-  <ContactCard contactPageRoute="#contact" />
+  <ContactCard contactPageRoute="#contact" heading="Contact me" />
 </CodePreview>
 
 ## With social links
@@ -43,12 +42,13 @@ const socialMedia = {
     stackoverflow: "#stackoverflow",
 }
 ---
-<ContactCard contactPageRoute="#contact" socialMedia={socialMedia} />`}
+<ContactCard contactPageRoute="#contact" heading="Contact me" socialMedia={socialMedia} />`}
   label="Showing social media"
   lang="astro"
 >
   <ContactCard
     contactPageRoute="#contact"
+    heading="Contact me"
     socialMedia={{
       diaspora: "#diaspora",
       github: "#github",
@@ -56,34 +56,4 @@ const socialMedia = {
       stackoverflow: "#stackoverflow",
     }}
   />
-</CodePreview>
-
-## With heading
-
-<CodePreview
-  code={`---
-const socialMedia = {
-    diaspora: "#diaspora",
-    github: "#github",
-    linkedin: "#linkedin",
-    stackoverflow: "#stackoverflow",
-}
----
-<ContactCard contactPageRoute="#contact" socialMedia={socialMedia}>
-    <Heading as="h3" slot="heading">Contact</Heading>
-</ContactCard>`}
-  label="Adding a heading"
-  lang="astro"
->
-  <ContactCard
-    contactPageRoute="#contact"
-    socialMedia={{
-      diaspora: "#diaspora",
-      github: "#github",
-      linkedin: "#linkedin",
-      stackoverflow: "#stackoverflow",
-    }}
-  >
-    <Heading as="h3" slot="heading">Contact</Heading>
-  </ContactCard>
 </CodePreview>

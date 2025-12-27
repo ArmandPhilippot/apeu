@@ -21,6 +21,7 @@ const {
   class: className,
   isInline = false,
   isReversed = false,
+  slot,
   style = "",
   ...attrs
 } = Astro.props;
@@ -32,7 +33,7 @@ const spinnerVars = getCSSVars({
 
 <div
   {...attrs}
-  class:list={["spinner", className]}
+  class:list={[className, "spinner"]}
   style={`${spinnerVars}${style}`}
 >
   <div aria-hidden="true" class="spinner-icon"></div>
@@ -40,49 +41,51 @@ const spinnerVars = getCSSVars({
 </div>
 
 <style>
-  .spinner {
-    display: flex;
-    flex-flow: var(--spinner-flow) wrap;
-    align-items: center;
-    gap: var(--spacing-xs);
-    width: fit-content;
-    color: var(--color-primary-faded);
-    font-size: var(--font-size-sm);
-    font-weight: var(--font-weight-bold);
-  }
+  @layer atoms {
+    .spinner {
+      display: flex;
+      flex-flow: var(--spinner-flow) wrap;
+      align-items: center;
+      gap: var(--spacing-xs);
+      width: fit-content;
+      color: var(--color-primary-high);
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-bold);
+    }
 
-  .spinner-icon {
-    --border-size: calc(var(--one-px-in-rem) * 5);
+    .spinner-icon {
+      --border-size: calc(var(--one-px-in-rem) * 5);
 
-    width: calc(var(--one-px-in-rem) * 30);
-    aspect-ratio: 1 / 1;
-    background: conic-gradient(
-        var(--color-primary-subtle) 10%,
-        var(--color-primary)
-      )
-      content-box;
-    border-radius: 50%;
-    mask:
-      repeating-conic-gradient(
-        hsl(from var(--color-regular) h s l / 0%) 0deg,
-        var(--color-primary) 1deg,
-        var(--color-primary) 20deg,
-        hsl(from var(--color-regular) h s l / 0%) 21deg,
-        hsl(from var(--color-regular) h s l / 0%) 36deg
-      ),
-      radial-gradient(
-        farthest-side,
-        hsl(from var(--color-regular) h s l / 0%)
-          calc(100% - var(--border-size) - 1px),
-        var(--color-primary) calc(100% - var(--border-size))
-      );
-    mask-composite: intersect;
-    animation: spinner 1.2s infinite steps(10);
-  }
+      width: calc(var(--one-px-in-rem) * 30);
+      aspect-ratio: 1 / 1;
+      background: conic-gradient(
+          var(--color-primary-low) 10%,
+          var(--color-primary)
+        )
+        content-box;
+      border-radius: 50%;
+      mask:
+        repeating-conic-gradient(
+          hsl(from var(--color-regular) h s l / 0%) 0deg,
+          var(--color-primary) 1deg,
+          var(--color-primary) 20deg,
+          hsl(from var(--color-regular) h s l / 0%) 21deg,
+          hsl(from var(--color-regular) h s l / 0%) 36deg
+        ),
+        radial-gradient(
+          farthest-side,
+          hsl(from var(--color-regular) h s l / 0%)
+            calc(100% - var(--border-size) - 1px),
+          var(--color-primary) calc(100% - var(--border-size))
+        );
+      mask-composite: intersect;
+      animation: spinner 1.1s infinite steps(10);
+    }
 
-  @keyframes spinner {
-    to {
-      transform: rotate(1turn);
+    @keyframes spinner {
+      to {
+        transform: rotate(1turn);
+      }
     }
   }
 </style>

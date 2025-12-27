@@ -1,0 +1,15 @@
+---
+title: "ContentPage has title, disconnected body and footer"
+wrapInContentPage: false
+---
+import { components as mdxComponents } from "../../../mdx";
+import ContentPage from "../content-page.astro";
+
+export const components = mdxComponents;
+
+<ContentPage title={frontmatter.title}>
+  <div slot="disconnected">
+    This is the content of a disconnected body.
+  </div>
+  <div slot="footer">Some footer contents.</div>
+</ContentPage>

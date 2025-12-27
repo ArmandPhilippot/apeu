@@ -1,0 +1,97 @@
+---
+title: "Meta"
+---
+import { components as mdxComponents } from "../../mdx";
+import CodePreview from "../code-preview/code-preview.astro";
+import Meta from "./meta.astro";
+
+export const components = mdxComponents;
+export const items = [
+  { label: "Label 1", values: ["something"] },
+  { label: "Label 2", values: [ { label: "Path 1", path: "#path1" }, { label: "Path 2", path: "#path2" }] },
+];
+export const itemsWithIcons = [
+  { icon: { name: "project" }, label: "Label 1", values: ["something"] },
+  { icon: {name: "tag" }, label: "Label 2", values: [ { label: "Path 1", path: "#path1" }, { label: "Path 2", path: "#path2" }] },
+];
+export const itemWithIcon = [
+  { icon: { name: "blog" }, label: "Label 1", values: ["something"] },
+];
+
+## Introduction
+
+This component is used to display metadata for a page or collection for example.
+
+<CodePreview
+  code={`import Meta from "./components/molecules/meta/meta.astro";`}
+  label="How to import"
+  lang="ts"
+/>
+
+<CodePreview
+  code={`<Meta items={items} />`}
+  label="Basic use"
+  lang="astro"
+>
+  <Meta items={items} />
+</CodePreview>
+
+## Options
+
+### Adding icons to metadata items
+
+<CodePreview
+  code={`<Meta items={itemsWithIcons} />`}
+  label="With icons"
+  lang="astro"
+>
+  <Meta items={itemsWithIcons} />
+</CodePreview>
+
+### Adding a description to a metadata item
+
+Sometimes a value by itself doesn't mean much and needs extra context. You can add a `title` attribute to a meta item by providing a `description` property.
+
+<CodePreview
+  code={`<Meta items={[{ description: "This is a more detailed description of the item accessible on hover.", label: "Label 1", values: ["something"] }]} />`}
+  label="Using an item description"
+  lang="astro"
+>
+  <Meta items={[{ description: "This is a more detailed description of the item accessible on hover.", label: "Label 1", values: ["something"] }]} />
+</CodePreview>
+
+### `hideLabel`
+
+When you only have one item with an icon, you might prefer to visually hide the label:
+
+<CodePreview
+  code={`<Meta hideLabel items={itemWithIcon} />`}
+  label="With hidden label"
+  lang="astro"
+>
+  <Meta hideLabel items={itemWithIcon} />
+</CodePreview>
+
+### `gap`
+
+Passing a `gap` property allows you to control the spacing both vertically (between items or between a term and its description) and horizontally.
+
+#### Single value
+
+<CodePreview
+  code={`<Meta items={items} />`}
+  label="Using a single value for gap"
+  lang="astro"
+>
+  <Meta items={items} gap="md" />
+</CodePreview>
+
+#### Separated values
+
+<CodePreview
+  code={`<Meta items={items} />`}
+  label="Using separated values for gap"
+  lang="astro"
+>
+  <Meta items={items} gap={{col: "md", row: "xs"}} />
+</CodePreview>

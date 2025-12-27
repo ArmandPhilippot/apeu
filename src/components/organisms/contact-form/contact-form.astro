@@ -15,7 +15,7 @@ type Props = JSX.HTMLAttributes & {
   id: string;
 };
 
-const { id, ...attrs } = Astro.props;
+const { id, slot, ...attrs } = Astro.props;
 const { translate } = useI18n(Astro.currentLocale);
 
 const fields = [
@@ -65,7 +65,7 @@ const fields = [
 ] satisfies FormField<Required<MailDataSchema>>[];
 ---
 
-<ap-contact-form {...attrs} id={id}>
+<apeu-contact-form {...attrs} id={id}>
   <form class="contact-form" method="post">
     {
       fields.map((field) => (
@@ -102,29 +102,31 @@ const fields = [
       type="info"
     />
   </form>
-</ap-contact-form>
+</apeu-contact-form>
 
 <style>
-  .contact-form {
-    display: flex;
-    flex-flow: column wrap;
-    gap: var(--spacing-sm);
-    max-width: 60ch;
-    margin-inline: auto;
+  @layer organisms {
+    .contact-form {
+      display: flex;
+      flex-flow: column wrap;
+      gap: var(--spacing-sm);
+      max-width: 60ch;
+      margin-inline: auto;
 
-    & :global(*[hidden]) {
-      display: none;
+      & :global(*[hidden]) {
+        display: none;
+      }
     }
-  }
 
-  .contact-form-btn,
-  .contact-form-spinner {
-    margin-inline: auto;
-  }
+    .contact-form-btn,
+    .contact-form-spinner {
+      margin-inline: auto;
+    }
 
-  .contact-form-spinner,
-  .contact-form-callout {
-    margin-block: var(--spacing-md);
+    .contact-form-spinner,
+    .contact-form-callout {
+      margin-block: var(--spacing-md);
+    }
   }
 </style>
 
@@ -138,7 +140,7 @@ const fields = [
   import type { CalloutType } from "../../../types/tokens";
   import { API_ROUTES } from "../../../utils/constants";
 
-  class APContactForm extends HTMLElement {
+  class APEUContactForm extends HTMLElement {
     #callout: HTMLDivElement | null;
     #spinner: HTMLDivElement | null;
 
@@ -297,5 +299,5 @@ const fields = [
     }
   }
 
-  customElements.define("ap-contact-form", APContactForm);
+  customElements.define("apeu-contact-form", APEUContactForm);
 </script>

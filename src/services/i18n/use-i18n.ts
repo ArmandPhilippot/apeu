@@ -46,9 +46,7 @@ export type TranslateSingularKeys = (
   interpolations?: Interpolations
 ) => string;
 
-type UseI18n = (
-  currentLocale: LooseAutocomplete<AvailableLocale> | undefined
-) => {
+export type I18nContext = {
   /**
    * The locale used for translations.
    */
@@ -62,6 +60,10 @@ type UseI18n = (
    */
   translatePlural: TranslatePluralKeys;
 };
+
+type UseI18n = (
+  currentLocale: LooseAutocomplete<AvailableLocale> | undefined
+) => I18nContext;
 
 /**
  * Init translation functions and return the locale.

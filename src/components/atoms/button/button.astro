@@ -24,6 +24,7 @@ const {
   class: className,
   isExternal = false,
   kind = "secondary",
+  slot,
   ...attrs
 } = Astro.props;
 
@@ -34,204 +35,197 @@ if (isExternal && kind === "primary") {
 
 <Tag
   {...attrs}
-  class:list={["btn", className]}
+  class:list={[className, "btn"]}
   {...isExternal && { "data-external": true }}
   data-type={kind}><slot /></Tag
 >
 
 <style>
-  .btn {
-    display: flex;
-    flex-flow: row wrap;
-    place-content: center;
-    place-items: center;
-    gap: var(--spacing-xs);
-    width: fit-content;
-    min-width: calc(var(--one-px-in-rem) * 54);
-    min-height: calc(var(--one-px-in-rem) * 54);
-    padding: var(--spacing-xs) var(--spacing-sm);
-    cursor: pointer;
-    font-size: var(--font-size-md);
-    font-weight: var(--font-weight-bold);
-    line-height: var(--line-height);
-    text-decoration: none;
+  @layer atoms {
+    .btn {
+      display: flex;
+      flex-flow: row wrap;
+      place-content: center;
+      place-items: center;
+      gap: var(--spacing-xs);
+      width: fit-content;
+      min-width: calc(var(--one-px-in-rem) * 48);
+      min-height: calc(var(--one-px-in-rem) * 48);
+      padding: var(--spacing-xs) var(--spacing-sm);
+      cursor: pointer;
+      background: var(--btn-bg);
+      color: var(--btn-fg);
+      font-size: var(--font-size-md);
+      font-weight: var(--font-weight-bold);
+      line-height: var(--line-height);
+      outline: var(--border-size-md) solid transparent;
+      outline-offset: calc(var(--border-size-md) * -1);
+      text-decoration: none;
 
-    @media (any-pointer: fine) {
-      min-width: unset;
-      min-height: unset;
-    }
-
-    &:where([data-external="true"])::after {
-      display: inline-block;
-      content: var(--external-icon);
-    }
-
-    &:where([data-type="neutral"]) {
-      background: transparent;
-      border: none;
-      color: inherit;
-    }
-
-    &:where([data-type="primary"]) {
-      background: var(--color-primary);
-      border: var(--border-size-md) solid var(--color-primary);
-      border-radius: var(--border-radii-md);
-      box-shadow:
-        inset 0 0 0 var(--border-size-md) var(--color-primary-subtle),
-        var(--border-size-lg) var(--border-size-lg) 0 0
-          var(--color-primary-darker);
-      color: var(--color-on-primary);
-
-      &:where([aria-disabled="true"], :disabled) {
-        border-color: var(--color-muted-light);
-        box-shadow:
-          inset 0 0 0 var(--border-size-md) var(--color-muted-subtle),
-          var(--border-size-lg) var(--border-size-lg) 0 0
-            var(--color-muted-dark);
+      @media screen and (any-pointer: fine) {
+        min-width: unset;
+        min-height: unset;
       }
 
-      &:where(:not([aria-disabled="true"], :disabled)) {
-        &:where(:focus-visible) {
-          outline: var(--color-primary-subtle) solid var(--border-size-md);
-          outline-offset: calc(var(--border-size-md) * -4);
+      &[aria-busy="true"] {
+        cursor: wait;
+      }
+
+      &[data-external="true"]::after {
+        display: inline-block;
+        content: var(--external-icon);
+      }
+
+      &:is([aria-disabled="true"], :disabled) {
+        cursor: not-allowed;
+      }
+
+      &:not([data-type="neutral"]) {
+        border: var(--btn-border-size) solid var(--btn-border);
+        border-radius: var(--border-radii-md);
+        transition:
+          box-shadow 0.15s ease-in-out 0s,
+          color 0.15s linear 0s,
+          outline-offset 0.1s linear 0s,
+          transform 0.15s ease-in-out 0s;
+      }
+
+      &:where(:not([data-type="neutral"], [aria-disabled="true"], :disabled)) {
+        &:hover {
+          transform: translateX(calc(var(--btn-border-size) * -2))
+            translateY(calc(var(--btn-border-size) * -2));
         }
 
-        &:where(:not(:focus-visible)) {
+        &:active {
+          transform: translateY(var(--btn-border-size))
+            translateX(var(--btn-border-size));
+        }
+      }
+
+      &[data-type="neutral"] {
+        background: none;
+        border: none;
+        color: inherit;
+
+        &:focus-visible {
+          outline-color: var(--color-primary);
+        }
+      }
+
+      &[data-type="primary"] {
+        --btn-bg: var(--color-primary);
+        --btn-fg: var(--color-on-primary);
+        --btn-border: var(--color-primary-dark);
+        --btn-border-size: var(--border-size-sm);
+        --btn-shadow-color: var(--btn-border);
+        --btn-shadow-size: calc(var(--btn-border-size) * 2);
+        --btn-inset-shadow-color: var(--color-border);
+
+        box-shadow:
+          inset 0 0 0 var(--border-size-sm) var(--btn-inset-shadow-color),
+          var(--btn-shadow-size) var(--btn-shadow-size) 0 0
+            var(--btn-shadow-color);
+
+        &:focus-visible {
+          outline-color: var(--color-on-primary);
+          outline-offset: calc(var(--border-size-md) * -3);
+        }
+
+        &:is([aria-disabled="true"], :disabled) {
+          --btn-bg: var(--color-muted-lighter);
+          --btn-fg: var(--color-on-muted);
+          --btn-border: var(--color-muted-dark);
+          --btn-inset-shadow-color: var(--color-regular-low);
+        }
+
+        &:not([aria-disabled="true"], :disabled) {
+          &:hover {
+            --btn-bg: var(--color-primary-light);
+            --btn-border: var(--color-primary);
+            --btn-shadow-size: calc(var(--btn-border-size) * 4);
+          }
+
+          &:active {
+            --btn-bg: var(--color-primary-dark);
+            --btn-border: var(--color-primary-darker);
+            --btn-shadow-size: 0;
+          }
+        }
+      }
+
+      &[data-type="secondary"] {
+        --btn-bg: var(--color-regular-light);
+        --btn-fg: var(--color-primary);
+        --btn-border: var(--color-primary);
+        --btn-border-size: var(--border-size-sm);
+        --btn-shadow-color: var(--btn-border);
+        --btn-shadow-size: calc(var(--btn-border-size) * 2);
+
+        box-shadow: var(--btn-shadow-size) var(--btn-shadow-size) 0 0
+          var(--btn-shadow-color);
+
+        &:focus-visible {
+          outline-color: var(--color-primary);
           outline-offset: calc(var(--border-size-md) * -2);
         }
-      }
 
-      &:where(:not([aria-busy="true"], [aria-disabled="true"], :disabled)) {
-        &:where(:focus, :hover) {
-          border-color: var(--color-primary-light);
-          box-shadow:
-            inset 0 0 0 var(--border-size-md) var(--color-primary-subtle),
-            calc(var(--border-size-lg) * 2) calc(var(--border-size-lg) * 2) 0 0
-              var(--color-primary-dark);
-          transform: translateX(calc(var(--border-size-lg) * -1))
-            translateY(calc(var(--border-size-lg) * -1));
+        &:is([aria-disabled="true"], :disabled) {
+          --btn-bg: var(--color-muted-lighter);
+          --btn-fg: var(--color-on-muted);
+          --btn-border: var(--color-muted-dark);
         }
 
-        &:where(:active) {
-          background: var(--color-primary-dark);
-          border-color: var(--color-primary-dark);
-          box-shadow:
-            inset 0 0 0 var(--border-size-md) var(--color-primary-subtle),
-            var(--border-size-sm) var(--border-size-sm) 0 0
-              var(--color-primary-subtle);
-          transform: translateX(var(--border-size-lg))
-            translateY(var(--border-size-lg));
-        }
-      }
-    }
+        &:not([aria-disabled="true"], :disabled) {
+          &:hover {
+            --btn-bg: var(--color-regular-lighter);
+            --btn-border: var(--color-primary-light);
+            --btn-shadow-size: calc(var(--btn-border-size) * 4);
+          }
 
-    &:where([data-type="discreet"]) {
-      border-color: var(--color-border-light);
-      box-shadow: var(--border-size-lg) var(--border-size-lg) 0 0
-        var(--color-muted-dark);
-      color: var(--color-on-regular);
-
-      &:where(:not([aria-disabled="true"], :disabled)) {
-        outline-color: var(--color-regular-faded);
-      }
-
-      &:where(:not([aria-busy="true"], [aria-disabled="true"], :disabled)) {
-        &:where(:focus, :hover) {
-          background: var(--color-regular-lighter);
-          box-shadow: calc(var(--border-size-lg) * 2)
-            calc(var(--border-size-lg) * 2) 0 0 var(--color-muted-dark);
-        }
-
-        &:where(:active) {
-          box-shadow: var(--border-size-sm) var(--border-size-sm) 0 0
-            var(--color-muted);
-        }
-      }
-    }
-
-    &:where([data-type="secondary"]) {
-      border-color: var(--color-primary-dark);
-      box-shadow: var(--border-size-lg) var(--border-size-lg) 0 0
-        var(--color-primary-darker);
-      color: var(--color-primary);
-
-      &:where(:not([aria-disabled="true"], :disabled)) {
-        outline-color: var(--color-primary-light);
-      }
-
-      &:where(:not([aria-busy="true"], [aria-disabled="true"], :disabled)) {
-        &:where(:focus, :hover) {
-          border-color: var(--color-primary);
-          box-shadow: calc(var(--border-size-lg) * 2)
-            calc(var(--border-size-lg) * 2) 0 0 var(--color-primary-dark);
-        }
-
-        &:where(:active) {
-          box-shadow: var(--border-size-sm) var(--border-size-sm) 0 0
-            var(--color-primary-subtle);
-          color: var(--color-primary-dark);
-        }
-      }
-    }
-
-    &:where([data-type="discreet"], [data-type="secondary"]) {
-      background: var(--color-regular-light);
-      border-radius: var(--border-radii-md);
-      border-style: solid;
-      border-width: var(--border-size-sm);
-
-      &:where([aria-disabled="true"], :disabled) {
-        border-color: var(--color-muted-dark);
-        box-shadow: var(--border-size-lg) var(--border-size-lg) 0 0
-          var(--color-muted-dark);
-      }
-
-      &:where(:not([aria-disabled="true"], :disabled)) {
-        &:where(:focus-visible) {
-          outline-offset: calc(var(--border-size-md) * -3);
-          outline-style: solid;
-          outline-width: var(--border-size-md);
-        }
-
-        &:where(:not(:focus-visible)) {
-          outline-offset: calc(var(--border-size-md) * -1);
+          &:active {
+            --btn-bg: var(--color-regular);
+            --btn-border: var(--color-primary-dark);
+            --btn-shadow-size: 0;
+          }
         }
       }
 
-      &:where(:not([aria-busy="true"], [aria-disabled="true"], :disabled)) {
-        &:where(:focus, :hover) {
-          background: var(--color-regular-lighter);
-          transform: translateX(calc(var(--border-size-lg) * -1))
-            translateY(calc(var(--border-size-lg) * -1));
+      &[data-type="discreet"] {
+        --btn-bg: var(--color-regular-light);
+        --btn-fg: var(--color-on-regular);
+        --btn-border: var(--color-border-light);
+        --btn-border-size: var(--border-size-sm);
+        --btn-shadow-color: var(--btn-border);
+        --btn-shadow-size: calc(var(--btn-border-size) * 2);
+
+        box-shadow: var(--btn-shadow-size) var(--btn-shadow-size) 0 0
+          var(--btn-shadow-color);
+
+        &:focus-visible {
+          outline-color: var(--color-on-regular);
+          outline-offset: calc(var(--border-size-md) * -2);
         }
 
-        &:where(:active) {
-          transform: translateX(var(--border-size-lg))
-            translateY(var(--border-size-lg));
+        &:is([aria-disabled="true"], :disabled) {
+          --btn-bg: var(--color-muted-lighter);
+          --btn-fg: var(--color-on-muted);
+          --btn-border: var(--color-muted-dark);
+        }
+
+        &:not([aria-disabled="true"], :disabled) {
+          &:hover {
+            --btn-bg: var(--color-regular-lighter);
+            --btn-border: var(--color-border-lighter);
+            --btn-shadow-size: calc(var(--btn-border-size) * 4);
+          }
+
+          &:active {
+            --btn-bg: var(--color-regular);
+            --btn-border: var(--color-border-dark);
+            --btn-shadow-size: 0;
+          }
         }
       }
-    }
-
-    &:where(
-      [data-type="discreet"],
-      [data-type="primary"],
-      [data-type="secondary"]
-    ) {
-      transition:
-        box-shadow 0.15s linear 0s,
-        color 0.15s linear 0s,
-        outline-offset 0.1s linear 0s,
-        transform 0.15s linear 0s;
-    }
-
-    &:is([aria-busy="true"]) {
-      cursor: wait;
-    }
-
-    &:is([aria-disabled="true"], :disabled) {
-      background: var(--color-muted-light);
-      color: var(--color-on-muted);
-      cursor: not-allowed;
     }
   }
 </style>

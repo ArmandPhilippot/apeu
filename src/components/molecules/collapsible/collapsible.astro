@@ -1,92 +1,88 @@
 ---
-import type { ComponentProps } from "astro/types";
+import type { HTMLAttributes } from "astro/types";
 import { MissingSlotError } from "../../../utils/exceptions";
-import Box from "../../atoms/box/box.astro";
 
-type Props = Omit<ComponentProps<typeof Box<"details">>, "as" | "isBordered">;
+type Props = HTMLAttributes<"details">;
 
-const { class: className, isProse, ...attrs } = Astro.props;
+const { class: className, slot, ...attrs } = Astro.props;
 
 if (!Astro.slots.has("label")) throw new MissingSlotError("label");
 ---
 
-<Box
-  {...attrs}
-  as="details"
-  class:list={["collapsible", className]}
-  isBordered
-  isProse={isProse}
->
-  <Box as="summary" class="collapsible-label" isPadded isProse={isProse}>
+<details {...attrs} class:list={[className, "collapsible"]}>
+  <summary class="collapsible-label">
     <slot name="label" />
     <span aria-hidden="true" class="collapsible-icon"></span>
-  </Box>
+  </summary>
   <slot />
-</Box>
+</details>
 
 <style>
-  /* We need to increase specificity because of inconsistencies between
-   * dev/build modes. */
-  .collapsible .collapsible-label {
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: center;
-    padding-inline-end: var(--spacing-md);
-    color: var(--color-primary-faded);
-    cursor: pointer;
-    font-weight: var(--font-weight-bold);
-
-    &:where(:hover, :focus) {
-      color: var(--color-primary);
+  @layer molecules {
+    .collapsible {
+      background: var(--color-regular);
+      border: var(--border-size-sm) solid var(--color-border);
+      color: var(--color-on-regular);
     }
 
-    &:where([data-prose="true"]) {
-      padding-block: var(--spacing-sm);
+    .collapsible-label {
+      display: flex;
+      flex-flow: row nowrap;
+      padding-inline-start: var(--spacing-md);
+      color: var(--color-primary-high);
+      cursor: pointer;
+      font-weight: var(--font-weight-bold);
+
+      &:where(:hover, :focus) {
+        color: var(--color-primary);
+      }
+
+      & > :global(*:not(.collapsible-icon)) {
+        padding: var(--spacing-sm) var(--spacing-md) var(--spacing-sm) 0;
+      }
     }
 
-    & > :global(*:not(.collapsible-icon)) {
-      margin-block: 0;
-      padding-inline-end: var(--spacing-md);
-    }
-  }
-
-  .collapsible:is([open]) .collapsible-label {
-    border-block-end: var(--border-size-sm) solid var(--color-border);
-  }
-
-  .collapsible-icon {
-    --icon-size: calc(var(--one-px-in-rem) * 48);
-
-    display: flex;
-    place-content: center;
-    place-items: center;
-    min-width: var(--icon-size);
-    aspect-ratio: 1 / 1;
-    margin-inline-start: auto;
-    padding-inline-start: var(--spacing-md);
-    position: relative;
-    border-inline-start: var(--border-size-sm) solid var(--color-border);
-
-    &::before,
-    &::after {
-      content: "";
-      position: absolute;
-      background: currentcolor;
-      transition: transform 0.25s ease-out 0s;
+    :where(.collapsible:is([open])) .collapsible-label {
+      border-block-end: var(--border-size-sm) solid var(--color-border);
     }
 
-    &::before {
-      width: calc(var(--one-px-in-rem) * 4);
-      height: 50%;
+    .collapsible-icon {
+      --icon-size: calc(var(--one-px-in-em) * 16);
+      --icon-thickness: calc(var(--one-px-in-em) * 3);
+
+      display: flex;
+      place-content: center;
+      place-items: center;
+      padding: 0 var(--spacing-md);
+      margin-inline-start: auto;
+      aspect-ratio: 1 / 1;
+      position: relative;
+      border-inline-start: var(--border-size-sm) solid var(--color-border);
+
+      &::before,
+      &::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        background: currentcolor;
+        transform: translate(-50%, -50%);
+        transition: transform 0.2s ease-out 0s;
+      }
+
+      &::before {
+        width: var(--icon-thickness);
+        height: var(--icon-size);
+      }
+
+      &::after {
+        width: var(--icon-size);
+        height: var(--icon-thickness);
+      }
     }
 
-    &::after {
-      width: 50%;
-      height: calc(var(--one-px-in-rem) * 4);
+    :where(.collapsible:is([open])) .collapsible-icon::before {
+      transform: translate(-50%, -50%) scaleY(0);
     }
-  }
-
-  :where(.collapsible:is([open])) .collapsible-icon::before {
-    transform: scaleY(0);
   }
 </style>

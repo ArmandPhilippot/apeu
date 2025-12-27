@@ -20,11 +20,12 @@ const {
   class: className,
   hideLabels = false,
   links,
+  slot,
   ...attrs
 } = Astro.props;
 ---
 
-<List {...attrs} class:list={["social-links", className]} hideMarker isInline>
+<List {...attrs} class:list={[className, "social-links"]} hideMarker isInline>
   {
     Object.entries(links).map(([medium, url]) =>
       url && isValidSocialMedium(medium) ? (
@@ -42,7 +43,9 @@ const {
 </List>
 
 <style>
-  .social-links {
-    gap: var(--spacing-xs);
+  @layer molecules {
+    .social-links {
+      gap: var(--spacing-xs);
+    }
   }
 </style>

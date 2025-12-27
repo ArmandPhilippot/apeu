@@ -1,0 +1,116 @@
+---
+title: "TableOfContents"
+---
+import { components as mdxComponents } from "../../mdx";
+import CodePreview from "../code-preview/code-preview.astro";
+import TableOfContents from "./table-of-contents.astro";
+
+export const components = mdxComponents;
+
+## Introduction
+
+A `TableOfContents` component should be used on a page to help user navigates through that page using headings.
+
+<CodePreview
+  code={`import TableOfContents from "./components/molecules/table-of-contents/table-of-contents.astro";`}
+  label="How to import"
+  lang="ts"
+/>
+
+<CodePreview
+  code={`<TableOfContents
+    headings={[
+      { label: "qui velit ratione", slug: "#rerum-velit-dolorem" },
+      { label: "dolorem sit omnis", slug: "#quam-fuga-voluptas" },
+      { label: "inventore qui suscipit", slug: "#culpa-asperiores-atque" },
+    ]}
+/>`}
+  label="Basic use"
+  lang="astro"
+>
+  <TableOfContents
+    headings={[
+      { label: "qui velit ratione", slug: "#rerum-velit-dolorem" },
+      { label: "dolorem sit omnis", slug: "#quam-fuga-voluptas" },
+      { label: "inventore qui suscipit", slug: "#culpa-asperiores-atque" },
+    ]}
+  />
+</CodePreview>
+
+## Nested structure
+
+<CodePreview
+  code={`<TableOfContents
+    headings={[
+      { label: "dolorum nihil nobis", slug: "#dignissimos-ipsa-ex" },
+      {
+        label: "quam eum corrupti",
+        slug: "#et-blanditiis-ducimus",
+        children: [
+          {
+            label: "nam explicabo facere",
+            slug: "#voluptates-minus-molestiae",
+          },
+          { label: "minus non aut", slug: "#doloremque-cum-neque" },
+        ],
+      },
+      {
+        label: "cupiditate atque reprehenderit",
+        slug: "#eum-vero-consequatur",
+        children: [
+          {
+            label: "similique soluta adipisci",
+            slug: "#aperiam-autem-aut",
+            children: [
+              {
+                label: "doloribus molestiae eos",
+                slug: "#molestias-sint-et",
+              },
+              { label: "aut illo quibusdam", slug: "#a-cum-eum" },
+            ],
+          },
+          { label: "labore labore qui", slug: "#quaerat-et-amet" },
+        ],
+      },
+      { label: "laudantium quia recusandae", slug: "#iste-accusamus-quod" },
+    ]}
+/>`}
+  label="Basic use"
+  lang="astro"
+>
+  <TableOfContents
+    headings={[
+      { label: "dolorum nihil nobis", slug: "#dignissimos-ipsa-ex" },
+      {
+        label: "quam eum corrupti",
+        slug: "#et-blanditiis-ducimus",
+        children: [
+          {
+            label: "nam explicabo facere",
+            slug: "#voluptates-minus-molestiae",
+          },
+          { label: "minus non aut", slug: "#doloremque-cum-neque" },
+        ],
+      },
+      {
+        label: "cupiditate atque reprehenderit",
+        slug: "#eum-vero-consequatur",
+        children: [
+          {
+            label: "similique soluta adipisci",
+            slug: "#aperiam-autem-aut",
+            children: [
+              {
+                label: "doloribus molestiae eos",
+                slug: "#molestias-sint-et",
+              },
+              { label: "aut illo quibusdam", slug: "#a-cum-eum" },
+            ],
+          },
+          { label: "labore labore qui", slug: "#quaerat-et-amet" },
+        ],
+      },
+      { label: "laudantium quia recusandae", slug: "#iste-accusamus-quod" },
+    ]}
+  />
+</CodePreview>

@@ -1,273 +1,215 @@
 ---
 import type { HTMLAttributes } from "astro/types";
+import { Icon } from "astro-icon/components";
 import { useI18n } from "../../../services/i18n";
-import { MissingSlotError } from "../../../utils/exceptions";
-import Box from "../../atoms/box/box.astro";
-import NavItem from "../../molecules/nav-item/nav-item.astro";
-import Popover from "../../molecules/popover/popover.astro";
+import { useRouting } from "../../../services/routing";
+import type { AltLanguage, Route, WithIcon } from "../../../types/data";
+import { CONFIG } from "../../../utils/constants";
+import Button from "../../atoms/button/button.astro";
+import MainNav from "../main-nav/main-nav.astro";
+import SearchForm from "../search-form/search-form.astro";
+import SettingsForm from "../settings-form/settings-form.astro";
 
 type Props = HTMLAttributes<"nav"> & {
-  id: string;
+  altLanguages?: AltLanguage[] | null | undefined;
+  mainNav: WithIcon<Route>[];
 };
 
-const { class: className, id, ...attrs } = Astro.props;
-
-if (!Astro.slots.has("nav")) throw new MissingSlotError("nav");
-if (!Astro.slots.has("search")) throw new MissingSlotError("search");
-if (!Astro.slots.has("settings")) throw new MissingSlotError("settings");
-
-const { translate } = useI18n(Astro.currentLocale);
+const { altLanguages, class: className, mainNav, slot, ...attrs } = Astro.props;
+const { locale, translate } = useI18n(Astro.currentLocale);
+const { routeById } = await useRouting(locale);
 ---
 
-<nav {...attrs} class:list={["navbar", className]} id={id}>
-  <Popover
-    {...attrs}
-    class="navbar-item"
-    controllerId={`${id}-menu-controller`}
-    data-item="menu"
-    modalId={`${id}-menu-modal`}
-    openTo="top"
-  >
-    <fragment slot="label">
-      {
-        (controllerId: string) => (
-          <NavItem
-            as="label"
-            class="navbar-item-label"
-            for={controllerId}
-            icon="hamburger"
-            iconSize={28}
-            isBlock
-            isRounded
-          >
-            {translate("navbar.main.nav.label")}
-          </NavItem>
-        )
-      }
-    </fragment>
-    <fragment slot="modal">
-      {
-        (modalId: string) => (
-          <Box class="navbar-item-modal" id={modalId}>
-            <slot name="nav" />
-          </Box>
-        )
-      }
-    </fragment>
-  </Popover>
-  <Popover
-    {...attrs}
-    class:list={["navbar-item", "js-only"]}
-    controllerId={`${id}-search-controller`}
-    data-item="search"
-    modalId={`${id}-search-modal`}
-    openTo="top"
-  >
-    <fragment slot="label">
-      {
-        (controllerId: string) => (
-          <NavItem
-            as="label"
-            class="navbar-item-label"
-            for={controllerId}
-            icon="search"
-            iconSize={28}
-            isBlock
-            isRounded
-          >
-            {translate("navbar.search.label")}
-          </NavItem>
-        )
-      }
-    </fragment>
-    <fragment slot="modal">
-      {
-        (modalId: string) => (
-          <Box class="navbar-item-modal" id={modalId} isPadded>
-            <slot name="search" />
-          </Box>
-        )
-      }
-    </fragment>
-  </Popover>
-  <Popover
-    {...attrs}
-    class:list={["navbar-item", "js-only"]}
-    controllerId={`${id}-settings-controller`}
-    data-item="settings"
-    modalId={`${id}-settings-modal`}
-    openTo="top"
-  >
-    <fragment slot="label">
-      {
-        (controllerId: string) => (
-          <NavItem
-            as="label"
-            class="navbar-item-label"
-            for={controllerId}
-            icon="gear"
-            iconSize={28}
-            isBlock
-            isRounded
-          >
-            {translate("navbar.settings.label")}
-          </NavItem>
-        )
-      }
-    </fragment>
-    <fragment slot="modal">
-      {
-        (modalId: string) => (
-          <Box class="navbar-item-modal" id={modalId} isPadded>
-            <slot name="settings" />
-          </Box>
-        )
-      }
-    </fragment>
-  </Popover>
+<nav {...attrs} class:list={[className, "navbar"]}>
+  <div class="navbar-item" data-item="menu">
+    <Button
+      class="navbar-controller"
+      kind="neutral"
+      popovertarget="navbar-menu-modal"
+    >
+      <Icon aria-hidden="true" name="hamburger" size={28} />
+      {translate("navbar.main.nav.label")}
+    </Button>
+    <div class="navbar-modal" id="navbar-menu-modal" popover>
+      <MainNav class="navbar-content" items={mainNav} />
+    </div>
+  </div>
+  <div class="navbar-item" data-item="search">
+    <Button
+      class="navbar-controller"
+      kind="neutral"
+      popovertarget="navbar-search-modal"
+    >
+      <Icon aria-hidden="true" name="search" size={28} />
+      {translate("navbar.search.label")}
+    </Button>
+    <div class="navbar-modal" id="navbar-search-modal" popover>
+      <SearchForm
+        class="navbar-content"
+        id="navbar-search"
+        isInline
+        queryParam={CONFIG.SEARCH.QUERY_PARAM}
+        resultsPage={routeById("search").path}
+      />
+    </div>
+  </div>
+  <div class="navbar-item js-only" data-item="settings">
+    <Button
+      class="navbar-controller"
+      kind="neutral"
+      popovertarget="navbar-settings-modal"
+    >
+      <Icon aria-hidden="true" name="gear" size={28} />
+      {translate("navbar.settings.label")}
+    </Button>
+    <div class="navbar-modal" id="navbar-settings-modal" popover>
+      <SettingsForm
+        altLanguages={altLanguages}
+        class="navbar-content"
+        id="navbar-settings"
+      />
+    </div>
+  </div>
 </nav>
 
 <style>
-  .navbar {
-    display: grid;
-    grid-auto-columns: minmax(0, 1fr);
-    grid-auto-flow: column dense;
-    position: relative;
+  @layer organisms {
+    .navbar {
+      display: grid;
+      grid-auto-columns: minmax(0, 1fr);
+      grid-auto-flow: column;
+      height: var(--size-navbar);
 
-    @media (--md-or-above) {
+      @media (--md-or-above) {
+        display: flex;
+        flex-flow: column;
+        gap: var(--spacing-md);
+        align-items: stretch;
+        height: auto;
+      }
+    }
+
+    .navbar-item {
       display: flex;
-      flex-flow: column;
-      gap: clamp(var(--spacing-2xs), 1.5dvi, var(--spacing-md));
-      padding-inline: clamp(var(--spacing-sm), 2dvi, var(--spacing-2xl));
-    }
-  }
+      color: var(--color-primary);
 
-  .navbar-item {
-    position: unset;
+      &:where(:not(:last-child)) {
+        border-inline-end: var(--border-size-sm) solid var(--color-border);
 
-    @media (--sm-or-above) {
-      position: relative;
-    }
-
-    &:where(:not(:last-child)) {
-      border-inline-end: var(--border-size-sm) solid var(--color-border);
-
-      @media (--md-or-above) {
-        border-inline-end: none;
-      }
-    }
-
-    &:where([data-item="menu"]) {
-      @media (--md-or-above) {
-        border-radius: var(--border-radii-md);
-        box-shadow: var(--shadow-raised-to-top-left);
-      }
-
-      & > :global(:is(input, label)) {
         @media (--md-or-above) {
-          display: none;
+          border-inline-end: none;
         }
       }
     }
-  }
 
-  .navbar-item-label {
-    font-size: var(--font-size-xs);
-    text-transform: uppercase;
+    .navbar-controller {
+      flex: 1;
+      flex-direction: column;
+      row-gap: var(--spacing-2xs);
+      font-size: var(--font-size-xs);
+      word-break: break-all;
+      text-transform: uppercase;
+      outline-offset: calc(var(--border-size-md) * -2);
 
-    @media (--md-or-above) {
-      flex-flow: row wrap;
-      justify-content: start;
-      padding: var(--spacing-xs)
-        clamp(var(--spacing-2xs), 1dvi, var(--spacing-lg));
-      background-color: var(--color-regular-light);
-      border-color: var(--color-border);
-      box-shadow: var(--shadow-raised-to-top-left);
-      font-size: var(--font-size-sm);
-      text-transform: none;
-
-      &:where(:active) {
-        background: var(--color-regular);
-        box-shadow:
-          inset 0 0 var(--border-size-md) var(--border-size-sm)
-            oklch(from var(--color-shadow) l c h / 65%),
-          var(--shadow-raised-to-top-left);
+      @media (--md-or-above) {
+        display: none;
       }
     }
-  }
 
-  .navbar-item-modal {
-    --x: 0;
-
-    left: 0;
-    right: 0;
-    bottom: calc(100% + var(--spacing-4xs) - var(--border-size-sm));
-    z-index: 10;
-    background: var(--color-regular-lighter);
-    border-block: var(--border-size-sm) solid var(--color-border);
-    box-shadow: var(--shadow-elevated-to-bottom-center);
-
-    @media (--sm-or-above) {
-      min-width: max-content;
-      left: auto;
-      bottom: unset;
-      top: 100%;
-      border-inline: var(--border-size-sm) solid var(--color-border);
-      box-shadow: var(--shadow-elevated-to-top-center);
+    :where(.navbar-item:has(:popover-open)) .navbar-controller {
+      box-shadow: inset 0 0 0 var(--border-size-md) var(--color-primary);
     }
 
-    @media (--md-or-above) {
-      min-width: max-content;
-      box-shadow: var(--shadow-elevated-to-top-left);
+    .navbar-modal {
+      --translate-x: 0;
+      --transform-origin-x: 50%;
+      --transform-origin-y: 100%;
+
+      width: 100%;
+      inset-block: auto var(--size-navbar);
+      background: var(--color-regular);
+      border-color: var(--color-border);
+      border-style: solid;
+      border-block-width: var(--border-size-sm);
+      border-inline-width: 0;
+      box-shadow: var(--shadow-elevated-to-bottom-center);
+      opacity: 0;
+      transform: translate3d(var(--translate-x), 0, 100px) scale(0);
+      transform-origin: var(--transform-origin-x) var(--transform-origin-y);
+      transition:
+        opacity 0.35s ease-in-out 0s,
+        transform 0.35s ease-in-out 0s,
+        overlay 0.35s ease-in-out 0s,
+        display 0.35s ease-in-out 0s;
+      /* stylelint-disable-next-line */
+      transition-behavior: allow-discrete;
+
+      @media (--sm-or-above) {
+        --transform-origin-y: 0;
+
+        width: auto;
+        inset-block: var(--size-navbar) auto;
+        border-inline: var(--border-size-sm) solid var(--color-border);
+        box-shadow: var(--shadow-elevated-to-top-left);
+      }
+
+      @media (--md-or-above) {
+        display: contents;
+      }
+
+      &:where(:popover-open) {
+        opacity: 1;
+        transform: translate3d(var(--translate-x), 0, 0) scale(1);
+
+        @starting-style {
+          opacity: 0;
+          transform: translate3d(var(--translate-x), 0, 100px) scale(0);
+        }
+      }
     }
-  }
 
-  :where([data-item="menu"]) .navbar-item-modal {
-    transform-origin: 20% 100%;
+    :where([data-item="menu"]) .navbar-modal {
+      --transform-origin-x: 20%;
 
-    @media (--sm-or-above) {
-      --x: -40%;
+      padding: 0;
 
-      right: auto;
-      transform-origin: 25% calc(var(--one-px-in-rem) * -25);
+      @media (--sm-or-above) {
+        --translate-x: -50%;
+        --transform-origin-x: 50%;
+
+        inset-inline: 50% 0;
+      }
     }
 
-    @media (--md-or-above) {
-      display: contents;
-      position: relative;
-      inset: unset;
-      visibility: visible;
-      opacity: 1;
-      transform: none;
+    :where([data-item="search"], [data-item="settings"]) .navbar-modal {
+      padding: var(--spacing-md);
     }
-  }
 
-  :where([data-item="search"]) .navbar-item-modal {
-    transform-origin: 50% 100%;
+    :where([data-item="search"]) .navbar-modal {
+      --transform-origin-x: 50%;
 
-    @media (--sm-or-above) {
-      --x: 25%;
+      @media (--sm-or-above) {
+        --translate-x: -5%;
 
-      transform-origin: 90% calc(var(--one-px-in-rem) * -25);
+        left: 50%;
+      }
     }
-  }
 
-  :where([data-item="settings"]) .navbar-item-modal {
-    transform-origin: 80% 100%;
+    :where([data-item="settings"]) .navbar-modal {
+      --transform-origin-x: 80%;
 
-    @media (--sm-or-above) {
-      transform-origin: 85% calc(var(--one-px-in-rem) * -25);
+      @media (--sm-or-above) {
+        --transform-origin-x: 70%;
+
+        min-width: 25dvw;
+        inset-inline: auto 0;
+      }
     }
-  }
 
-  :where([data-item="search"], [data-item="settings"]) .navbar-item-modal {
-    @media (--md-or-above) {
-      --x: var(--spacing-sm);
-      --y: -50%;
-
-      top: 50%;
-      left: 100%;
-      transform-origin: -125px 5%;
+    .navbar-content {
+      @media (--md-or-above) {
+        flex: 1;
+      }
     }
   }
 </style>

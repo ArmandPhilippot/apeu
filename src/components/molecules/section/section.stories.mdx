@@ -1,0 +1,52 @@
+---
+title: "Section"
+---
+import { components as mdxComponents } from "../../mdx";
+import CodePreview from "../code-preview/code-preview.astro";
+import Section from "./section.astro";
+
+export const components = mdxComponents;
+
+## Introduction
+
+A Section component can be used to divide a page into different sections.
+
+<CodePreview
+  code={`import Section from "./components/molecules/section/section.astro";`}
+  label="How to import"
+  lang="ts"
+/>
+
+<CodePreview
+  code={`<Section>
+    <h3 slot="heading">The section heading</h3>
+    <p>The section contents.</p>
+  </Section>`}
+  label="Basic use"
+  lang="astro"
+>
+  <Section>
+    <h3 slot="heading">The section heading</h3>
+    <p>The section contents.</p>
+  </Section>
+</CodePreview>
+
+## Add CTAs
+
+A section header can contain call to actions.
+
+<CodePreview
+  code={`<Section>
+    <h3 slot="heading">The section heading</h3>
+    <a href="#cta" slot="cta">Call to action</a>
+    <p>The section contents.</p>
+  </Section>`}
+  label="Adding a CTA"
+  lang="astro"
+>
+  <Section>
+    <h3 slot="heading">The section heading</h3>
+    <a href="#cta" slot="cta">Call to action</a>
+    <p>The section contents.</p>
+  </Section>
+</CodePreview>

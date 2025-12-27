@@ -1,0 +1,121 @@
+---
+import type { JSX } from "astro/jsx-runtime";
+import type { ComponentProps } from "astro/types";
+import type { Route } from "../../../types/data";
+import Label from "../../atoms/label/label.astro";
+import SelectField from "../../atoms/select-field/select-field.astro";
+
+type Languages = Record<string, Route>;
+
+type Props = JSX.HTMLAttributes & {
+  /**
+   * The current locale.
+   */
+  current: keyof Languages;
+  /**
+   * Should the label be visually hidden?
+   *
+   * @default false
+   */
+  hideLabel?: boolean | null | undefined;
+  /**
+   * The field label.
+   */
+  label: string;
+  /**
+   * An object with the locale as key associated to a route as value.
+   */
+  languages: Languages;
+  /**
+   * Should we add an icon in front of the field?
+   *
+   * @default false
+   */
+  showIcon?: boolean | null | undefined;
+};
+
+const {
+  class: className,
+  current,
+  hideLabel,
+  label,
+  languages,
+  showIcon = false,
+  slot,
+  ...attrs
+} = Astro.props;
+const options: ComponentProps<typeof SelectField>["options"] = Object.values(
+  languages
+).map((route) => {
+  return { label: route.label, value: route.path };
+});
+const currentLocale = languages[current];
+
+if (!currentLocale) {
+  throw new Error(
+    `The provided value for "current" does not match any "languages" key. Received: ${current}`
+  );
+}
+---
+
+<apeu-language-select {...attrs} class:list={[className, "language-select"]}>
+  <Label>
+    <span class:list={{ "sr-only": hideLabel, "language-select-label": true }}
+      >{label}</span
+    >
+    <SelectField
+      class="language-select-field"
+      icon={showIcon ? "locale" : null}
+      iconSize={22}
+      options={options}
+      value={currentLocale.path}
+    />
+  </Label>
+</apeu-language-select>
+
+<style>
+  @layer molecules {
+    .language-select,
+    .language-select label {
+      display: flex;
+      flex-flow: row wrap;
+      align-items: center;
+    }
+
+    .language-select-label:not(.sr-only) {
+      margin-inline-end: var(--spacing-sm);
+    }
+
+    .language-select-field {
+      flex: 1;
+    }
+  }
+</style>
+
+<script>
+  class APEULanguageSelect extends HTMLElement {
+    #select: HTMLSelectElement | null = null;
+
+    constructor() {
+      super();
+      this.handleLanguageChange = this.handleLanguageChange.bind(this);
+    }
+
+    connectedCallback() {
+      this.#select = this.querySelector("select");
+      this.#select?.addEventListener("change", this.handleLanguageChange);
+    }
+
+    disconnectedCallback() {
+      this.#select?.removeEventListener("change", this.handleLanguageChange);
+    }
+
+    handleLanguageChange(e: Event) {
+      if (e.currentTarget instanceof HTMLSelectElement) {
+        window.location.pathname = e.currentTarget.value;
+      }
+    }
+  }
+
+  customElements.define("apeu-language-select", APEULanguageSelect);
+</script>

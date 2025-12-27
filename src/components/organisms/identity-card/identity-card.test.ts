@@ -15,13 +15,16 @@ describe("IdentityCard", () => {
     context.container = await AstroContainer.create();
   });
 
-  it<LocalTestContext>("renders the author name", async ({ container }) => {
+  it<LocalTestContext>("renders a heading and the author name", async ({
+    container,
+  }) => {
     expect.assertions(1);
 
     const props = {
       author: {
         name: "John Doe",
       },
+      heading: "Contact me",
     } satisfies ComponentProps<typeof IdentityCard>;
     const result = await container.renderToString(IdentityCard, {
       props,
@@ -40,6 +43,7 @@ describe("IdentityCard", () => {
         name: "John Doe",
         nameIPA: "voluptatem maxime cupiditate",
       },
+      heading: "Contact me",
     } satisfies ComponentProps<typeof IdentityCard>;
     const result = await container.renderToString(IdentityCard, {
       props,
@@ -61,6 +65,7 @@ describe("IdentityCard", () => {
           width: 150,
         },
       },
+      heading: "Contact me",
     } satisfies ComponentProps<typeof IdentityCard>;
     const result = await container.renderToString(IdentityCard, {
       props,
@@ -77,6 +82,7 @@ describe("IdentityCard", () => {
         name: "John Doe",
         country: "FR",
       },
+      heading: "Contact me",
     } satisfies ComponentProps<typeof IdentityCard>;
     const result = await container.renderToString(IdentityCard, {
       props,
@@ -97,6 +103,7 @@ describe("IdentityCard", () => {
         name: "John Doe",
         job: "nam dignissimos et",
       },
+      heading: "Contact me",
     } satisfies ComponentProps<typeof IdentityCard>;
     const result = await container.renderToString(IdentityCard, {
       props,
@@ -113,6 +120,7 @@ describe("IdentityCard", () => {
         name: "John Doe",
         nationality: "FR",
       },
+      heading: "Contact me",
     } satisfies ComponentProps<typeof IdentityCard>;
     const result = await container.renderToString(IdentityCard, {
       props,
@@ -135,6 +143,7 @@ describe("IdentityCard", () => {
         name: "John Doe",
         spokenLanguages: ["es"] as const,
       },
+      heading: "Contact me",
     } satisfies ComponentProps<typeof IdentityCard>;
     const result = await container.renderToString(IdentityCard, {
       props,
@@ -145,22 +154,5 @@ describe("IdentityCard", () => {
         `language.name.${props.author.spokenLanguages[0]}`
       )
     );
-  });
-
-  it<LocalTestContext>("can render a heading", async ({ container }) => {
-    expect.assertions(1);
-
-    const heading = "dicta hic rerum";
-    const props = {
-      author: {
-        name: "John Doe",
-      },
-    } satisfies ComponentProps<typeof IdentityCard>;
-    const result = await container.renderToString(IdentityCard, {
-      props,
-      slots: { heading },
-    });
-
-    expect(result).toContain(heading);
   });
 });

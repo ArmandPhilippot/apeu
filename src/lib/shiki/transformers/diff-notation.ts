@@ -26,10 +26,13 @@ const getToken = (el: ElementContent | undefined) => {
   return null;
 };
 
+const isCodeFence = (value: string) =>
+  value.startsWith("---") || value.startsWith("+++");
+
 const getTokenValue = (token: HastText) => {
-  if (token.value.startsWith("+")) return "+";
-  if (token.value.startsWith("-")) return "-";
-  return null;
+  if (isCodeFence(token.value)) return null;
+  const [firstChar] = token.value;
+  return firstChar === "+" || firstChar === "-" ? firstChar : null;
 };
 
 /**

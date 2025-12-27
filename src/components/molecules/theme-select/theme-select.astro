@@ -1,0 +1,171 @@
+---
+import type { JSX } from "astro/jsx-runtime";
+import type { ComponentProps } from "astro/types";
+import { SETTING_KEYS, type Settings } from "../../../services/stores";
+import type { IconName, Theme } from "../../../types/tokens";
+import { isKeyExistIn } from "../../../utils/type-guards";
+import Label from "../../atoms/label/label.astro";
+import SelectField from "../../atoms/select-field/select-field.astro";
+
+type Themes = Record<Theme, string>;
+
+type Props = JSX.HTMLAttributes & {
+  /**
+   * The current theme.
+   */
+  current: Theme;
+  /**
+   * Should the label be visually hidden?
+   *
+   * @default false
+   */
+  hideLabel?: boolean | null | undefined;
+  /**
+   * The field label.
+   */
+  label: string;
+  /**
+   * The controlled setting key.
+   */
+  setting?: keyof Settings | null | undefined;
+  /**
+   * Should we add an icon in front of the field?
+   *
+   * @default false
+   */
+  showIcon?: boolean | null | undefined;
+  /**
+   * An object with the theme as key associated to a label.
+   */
+  themes: Themes;
+};
+
+const {
+  class: className,
+  current,
+  hideLabel,
+  label,
+  setting = SETTING_KEYS.THEME,
+  showIcon = false,
+  slot,
+  themes,
+  ...attrs
+} = Astro.props;
+const options: ComponentProps<typeof SelectField>["options"] = Object.entries(
+  themes
+).map(([theme, themeLabel]) => {
+  return { label: themeLabel, value: theme };
+});
+const isValidTheme = isKeyExistIn(themes, current);
+
+if (!isValidTheme) {
+  throw new Error(
+    `The provided value for "current" does not match any "themes" key. Received: ${current}`
+  );
+}
+
+const icon: IconName = setting === "shiki" ? "code-editor" : "monitor";
+---
+
+<apeu-theme-select
+  {...attrs}
+  class:list={[className, "theme-select"]}
+  data-setting={setting}
+>
+  <Label>
+    <span class:list={{ "sr-only": hideLabel, "theme-select-label": true }}
+      >{label}</span
+    >
+    <SelectField
+      class="theme-select-field"
+      icon={showIcon ? icon : null}
+      iconSize={22}
+      options={options}
+      value={current}
+    />
+  </Label>
+</apeu-theme-select>
+
+<style>
+  @layer molecules {
+    .theme-select,
+    .theme-select label {
+      display: flex;
+      flex-flow: row wrap;
+      align-items: center;
+    }
+
+    .theme-select-label:not(.sr-only) {
+      margin-inline-end: var(--spacing-sm);
+    }
+
+    .theme-select-field {
+      flex: 1;
+    }
+  }
+</style>
+
+<script>
+  import {
+    isValidSettingsKey,
+    SETTING_KEYS,
+    settings,
+    type Settings,
+  } from "../../../services/stores";
+  import { isValidTheme } from "../../../utils/type-guards";
+
+  class APEUThemeSelect extends HTMLElement {
+    #select: HTMLSelectElement | null = null;
+    #settingKey: keyof Settings = SETTING_KEYS.THEME;
+    #unsubscribe: (() => void) | null = null;
+
+    constructor() {
+      super();
+      this.handleThemeChange = this.handleThemeChange.bind(this);
+    }
+
+    connectedCallback() {
+      this.#select = this.querySelector("select");
+      this.#select?.addEventListener("change", this.handleThemeChange);
+
+      if (isValidSettingsKey(this.dataset.setting)) {
+        this.#settingKey = this.dataset.setting;
+      }
+
+      this.#updateSelectedOption(settings.get()[this.#settingKey]);
+      this.#unsubscribe = settings.subscribe((currentSettings) => {
+        this.#updateSelectedOption(currentSettings[this.#settingKey]);
+      });
+    }
+
+    disconnectedCallback() {
+      this.#select?.removeEventListener("change", this.handleThemeChange);
+
+      if (this.#unsubscribe) {
+        this.#unsubscribe();
+      }
+    }
+
+    #updateSelectedOption = (value: string) => {
+      if (!this.#select) return;
+      this.#select.value = value;
+    };
+
+    handleThemeChange(e: Event) {
+      if (!(e.currentTarget instanceof HTMLSelectElement)) return;
+
+      e.stopImmediatePropagation();
+
+      const newTheme = isValidTheme(e.currentTarget.value)
+        ? e.currentTarget.value
+        : null;
+
+      if (newTheme === null) return;
+
+      this.#updateSelectedOption(newTheme);
+      settings.setKey(this.#settingKey, newTheme);
+    }
+  }
+
+  customElements.define("apeu-theme-select", APEUThemeSelect);
+</script>

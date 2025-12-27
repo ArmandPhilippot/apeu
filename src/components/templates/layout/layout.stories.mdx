@@ -1,9 +1,9 @@
 ---
 title: "Layout"
-isStandalone: true
+wrapInLayout: false
+wrapInContentPage: false
 ---
 import { components as mdxComponents } from "../../mdx";
-import Heading from "../../atoms/heading/heading.astro";
 import Layout from "./layout.astro";
 
 export const components = mdxComponents;
@@ -15,6 +15,6 @@ export const seo = {
 };
 
 <Layout seo={seo}>
-  <Heading as="h1">{title}</Heading>
+  <h1>{title}</h1>
   <p>This is the main content of the page.</p>
 </Layout>

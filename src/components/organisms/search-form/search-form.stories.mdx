@@ -31,15 +31,46 @@ A `SearchForm` component should be used to authorize the user to search a page o
 
 ## Options
 
+### `hideLabel`
+
+<CodePreview
+  code={`<SearchForm id="hidden-label-example" hideLabel queryParam="query" resultsPage="/#results" />`}
+  label="Using an hidden label"
+  lang="astro"
+>
+  <SearchForm
+    id="hidden-label-example"
+    hideLabel
+    queryParam="query"
+    resultsPage="/#results"
+  />
+</CodePreview>
+
 ### `isInline`
 
 <CodePreview
-  code={`<SearchForm id="inlined-example" isInline queryParam="query" resultsPage="/#results" />`}
+  code={`<SearchForm id="inline-example" isInline queryParam="query" resultsPage="/#results" />`}
   label="Using an inlined search form"
   lang="astro"
 >
   <SearchForm
-    id="inlined-example"
+    id="inline-example"
+    isInline
+    queryParam="query"
+    resultsPage="/#results"
+  />
+</CodePreview>
+
+#### Combining `isInline` with `hideLabel`
+
+<CodePreview
+  code={`<SearchForm hideLabel id="inline-hidden-label-example" isInline queryParam="query" resultsPage="/#results" />`}
+  label="Using an inlined search form with an hidden label"
+  lang="astro"
+>
+  <SearchForm
+    hideLabel
+    id="inline-hidden-label-example"
     isInline
     queryParam="query"
     resultsPage="/#results"

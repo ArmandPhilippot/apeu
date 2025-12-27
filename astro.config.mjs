@@ -99,7 +99,7 @@ export default defineConfig({
     astroStories({
       base: "/design-system",
       layout: "./src/components/templates/story-layout/story-layout.astro",
-      patterns: ["{components,views}/**/*.stories.mdx", "stories/**/*.mdx"],
+      patterns: ["{components,views}/**/*.stories.mdx", "**/stories/**/*.mdx"],
     }),
     icon({
       iconDir: "src/assets/icons",

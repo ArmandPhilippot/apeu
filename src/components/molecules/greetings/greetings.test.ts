@@ -12,7 +12,9 @@ describe("Greetings", () => {
     context.container = await AstroContainer.create();
   });
 
-  it<LocalTestContext>("renders the name", async ({ container }) => {
+  it<LocalTestContext>("renders a greetings message with the given name", async ({
+    container,
+  }) => {
     expect.assertions(1);
 
     const props = {

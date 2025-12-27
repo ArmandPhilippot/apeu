@@ -15,9 +15,35 @@ export type Route = {
   path: string;
 };
 
+export type Icon = { name: IconName; size?: number };
+
 export type WithIcon<T> = T & {
-  icon?: IconName | null | undefined;
-  iconSize?: number | undefined;
+  icon?: Icon | null | undefined;
+};
+
+type MetaValue = string | Date | Route;
+
+export type MetaItem = {
+  label: string;
+  values: MetaValue[];
+  icon?: { name: IconName; size?: number | string } | undefined | null;
+  description?: string;
+};
+
+export type EntryPreviewCTA = WithIcon<Route> & {
+  ariaLabel?: string | null | undefined;
+  isExternal?: boolean | null | undefined;
+};
+
+export type EntryPreview = {
+  cover?: Img | null | undefined;
+  cta?: EntryPreviewCTA[] | null | undefined;
+  description: string;
+  featuredMeta?: MetaItem | null | undefined;
+  heading: string | Route;
+  isQuote?: boolean | null | undefined;
+  locale?: string | null | undefined;
+  meta?: MetaItem[] | null | undefined;
 };
 
 export type AltLanguage = {

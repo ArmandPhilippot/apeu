@@ -40,20 +40,20 @@ describe("Card", () => {
     expect(result).toContain("</header>");
   });
 
-  it<LocalTestContext>("can render the card frontmatter", async ({
+  it<LocalTestContext>("can render the card overline", async ({
     container,
   }) => {
     /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
     expect.assertions(2);
 
     const props = {} satisfies ComponentProps<typeof Card>;
-    const frontmatter = "a molestiae placeat";
+    const overline = "a molestiae placeat";
     const result = await container.renderToString(Card, {
       props,
-      slots: { frontmatter },
+      slots: { overline },
     });
 
-    expect(result).toContain(frontmatter);
+    expect(result).toContain(overline);
     expect(result).toContain("</header>");
   });
 

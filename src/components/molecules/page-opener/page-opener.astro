@@ -67,10 +67,12 @@ const { translate } = useI18n(Astro.currentLocale);
       padding-block-start: var(--gutter);
       background: var(--color-regular);
       border: var(--border-size-sm) solid var(--color-border);
+      box-shadow: var(--shadow-raised-to-top-center);
       color: var(--color-on-regular);
 
       @media (--prose) {
         border-radius: var(--border-radii-md);
+        box-shadow: var(--shadow-raised-to-top-left);
       }
     }
 

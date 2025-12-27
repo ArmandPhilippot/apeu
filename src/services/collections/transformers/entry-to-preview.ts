@@ -215,10 +215,7 @@ const getFeaturedMetaPerCollection = (): SingleFeaturedMetaConfig => {
       icon: "project",
       key: "kind",
     },
-    tags: {
-      icon: "tag",
-      key: "publishedOn",
-    },
+    tags: null,
   };
 };
 

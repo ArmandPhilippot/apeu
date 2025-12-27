@@ -175,7 +175,6 @@ dt {
 :is(h1, h2, h3, h4, h5, h6) {
   color: var(--color-primary-high);
   font-weight: var(--font-weight-bold);
-  text-wrap: balance;
 }
 
 h1 {
@@ -263,7 +262,8 @@ table {
   }
 }
 
-*:is(h2, h3, h4, h5, h6, p, figure) + *:is(h2, h3, h4, h5, h6, p, figure) {
+*:is(h2, h3, h4, h5, h6, p, figure, ol, ul)
+  + *:is(h2, h3, h4, h5, h6, p, figure, ol, ul) {
   margin-block: var(--spacing-md);
 }
 

@@ -275,14 +275,15 @@ const topId = translate("anchor.site.top");
       grid-column: 1 / -1;
       grid-row: 1;
       place-self: center;
-      padding: var(--spacing-sm);
+      margin: var(--spacing-sm);
 
       @media (--sm-or-above) {
         grid-column: 1;
+        margin-block: 0;
       }
 
       @media (--md-or-above) {
-        padding: var(--gutter);
+        margin: var(--gutter);
       }
     }
 
@@ -402,6 +403,10 @@ const topId = translate("anchor.site.top");
       bottom: calc(var(--size-navbar) + 1dvi + var(--spacing-sm));
       right: calc(1dvi + var(--spacing-sm));
       z-index: 2;
+
+      @media (--sm-or-above) {
+        bottom: calc(1dvi + var(--spacing-sm));
+      }
     }
   }
 </style>

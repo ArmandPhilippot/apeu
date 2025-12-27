@@ -156,6 +156,13 @@ const {
         padding: var(--spacing-sm);
       }
 
+      &,
+      & :global(picture) {
+        @container (width > 55em) {
+          display: flex;
+        }
+      }
+
       & :global(img) {
         max-height: calc(var(--one-px-in-rem) * 240);
         border: var(--border-size-sm) solid var(--color-border);

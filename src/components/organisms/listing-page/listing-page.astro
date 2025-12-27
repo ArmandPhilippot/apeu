@@ -47,7 +47,7 @@ const hasIntro = Astro.slots.has("intro");
     />
     {hasIntro ? <slot name="intro" slot={hasIntro ? "intro" : ""} /> : null}
   </PageOpener>
-  <CardsList items={entries} sizeMinCols="35rem">
+  <CardsList isContainer items={entries} sizeMinCols="35rem">
     {
       (entry: (typeof entries)[number]) => (
         <PreviewCard elevation="raised" entry={entry} />

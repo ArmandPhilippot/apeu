@@ -1,10 +1,5 @@
 :root {
   /* I'd like to use ch unit but this causes CLS with custom font so... */
   --size-prose: 40em;
-  --size-navbar: 5em;
-
-  @media (--prose) {
-    /* stylelint-disable-next-line -- We need a unit for calc to work. */
-    --size-navbar: 0px;
-  }
+  --size-navbar: 5.5em;
 }

@@ -171,6 +171,13 @@ const hasIntro = Astro.slots.has("intro");
 
     .content-page-toc-body {
       padding-block: var(--spacing-md);
+
+      @media (--prose-sidebar) {
+        max-height: calc(100dvh - 3 * var(--gutter));
+        padding-inline: var(--spacing-md);
+        overflow-y: auto;
+        font-size: var(--font-size-sm);
+      }
     }
 
     :where(.content-page:has(.content-page-toc)) .content-page-header {

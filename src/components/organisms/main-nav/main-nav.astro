@@ -1,6 +1,5 @@
 ---
 import type { ComponentProps } from "astro/types";
-import { Icon } from "astro-icon/components";
 import { useI18n } from "../../../services/i18n";
 import type { Route, WithIcon } from "../../../types/data";
 import { CONFIG } from "../../../utils/constants";
@@ -31,6 +30,9 @@ const isCurrentRouteOrNested = (url: string) => {
   {
     items.map(({ icon, label, path }) => {
       const isSelected = isCurrentRouteOrNested(path);
+      const iconWithSize = icon
+        ? { name: icon.name, size: icon.size ?? defaultIconSize }
+        : null;
 
       return (
         <ListItem class="main-nav-item">
@@ -39,14 +41,8 @@ const isCurrentRouteOrNested = (url: string) => {
             class:list={["main-nav-link", { paper: isSelected }]}
             {...(isSelected && { "data-selected": true })}
             href={path}
+            icon={iconWithSize}
           >
-            {icon && (
-              <Icon
-                aria-hidden="true"
-                name={icon.name}
-                size={icon.size ?? defaultIconSize}
-              />
-            )}
             {label}
           </Link>
         </ListItem>

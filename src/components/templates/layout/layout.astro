@@ -82,7 +82,9 @@ const mainNavRoutes = getLinks(
   ],
   "header"
 );
-const devOnlyRoutes = [{ label: "Design system", path: "/design-system" }];
+const devOnlyRoutes: WithIcon<Route>[] = [
+  { label: "Design system", path: "/design-system" },
+];
 const footerRoutes = [
   ...getLinks(["legalNotice", "feeds"], "footer"),
   ...(import.meta.env.DEV ? devOnlyRoutes : []),
@@ -198,9 +200,9 @@ const topId = translate("anchor.site.top");
           />
           <List class="site-footer-nav" isInline spacing="xs">
             {
-              footerRoutes.map(({ label, path, ...item }) => (
+              footerRoutes.map(({ icon, label, path }) => (
                 <ListItem>
-                  <Link {...item} href={path}>
+                  <Link href={path} icon={icon}>
                     {label}
                   </Link>
                 </ListItem>

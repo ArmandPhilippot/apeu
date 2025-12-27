@@ -1,5 +1,6 @@
 ---
 import type { ComponentProps } from "astro/types";
+import { components } from "../../components/mdx";
 import ListingPage from "../../components/organisms/listing-page/listing-page.astro";
 import Layout from "../../components/templates/layout/layout.astro";
 import { getWebPageGraph } from "../../lib/schema-dts/graphs/webpage-graph";
@@ -74,6 +75,10 @@ const entries = await Promise.all(
     title={page.title}
     totalEntries={collectionMetaTotal}
   >
-    {hasContent && <Content slot={hasContent ? "intro" : ""} />}
+    {
+      hasContent && (
+        <Content components={components} slot={hasContent ? "intro" : ""} />
+      )
+    }
   </ListingPage>
 </Layout>

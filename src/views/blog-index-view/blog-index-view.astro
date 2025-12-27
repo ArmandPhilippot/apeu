@@ -57,7 +57,11 @@ const graphs: ComponentProps<typeof Layout>["graphs"] = [
   {...props}
 >
   <PageOpener title={page.title}>
-    {hasContent && <Content components={components} slot="intro" />}
+    {
+      hasContent && (
+        <Content components={components} slot={hasContent ? "intro" : ""} />
+      )
+    }
   </PageOpener>
   <Section class="blog-index-section">
     <h2 slot="heading">

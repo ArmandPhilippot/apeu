@@ -91,6 +91,7 @@
     --color-regular-lighter: var(--color-slate-lighter);
     --color-regular-light: var(--color-slate-light);
     --color-regular: var(--color-slate);
+    --color-on-regular: var(--color-white);
     --color-regular-dark: var(--color-slate-dark);
     --color-regular-darker: var(--color-slate-darker);
     --color-regular-high: var(--color-slate-high);
@@ -107,6 +108,7 @@
     --color-regular-lighter: var(--color-slate-lighter);
     --color-regular-light: var(--color-slate-light);
     --color-regular: var(--color-slate);
+    --color-on-regular: var(--color-black);
     --color-regular-dark: var(--color-slate-dark);
     --color-regular-darker: var(--color-slate-darker);
     --color-regular-high: var(--color-slate-high);

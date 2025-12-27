@@ -38,6 +38,6 @@
 
   .paper-dark::before {
     background-image: url("../../assets/paper-dark.svg");
-    filter: hue-rotate(-2deg) saturate(110%) brightness(0.9) contrast(102%);
+    filter: hue-rotate(-8deg) saturate(75%) brightness(0.7);
   }
 }

@@ -17,7 +17,7 @@
       <feDiffuseLighting
         diffuseConstant="1.24"
         in="noise"
-        lighting-color="hsl(215deg 30% 10%)"
+        lighting-color="hsl(212deg 24% 10%)"
         surfaceScale="1.15"
       >
         <feDistantLight azimuth="80" elevation="54" />

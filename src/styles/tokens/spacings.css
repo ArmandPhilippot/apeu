@@ -15,8 +15,8 @@
   @media (--prose) {
     --gutter: clamp(
       var(--spacing-md),
-      calc((var(--spacing-md) + 1dvw)),
-      var(--spacing-xl)
+      calc((var(--spacing-md) + 1.5dvw)),
+      var(--spacing-2xl)
     );
   }
 }

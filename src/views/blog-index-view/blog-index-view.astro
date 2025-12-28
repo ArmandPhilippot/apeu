@@ -4,7 +4,6 @@ import { Icon } from "astro-icon/components";
 import Button from "../../components/atoms/button/button.astro";
 import { components } from "../../components/mdx";
 import CardsList from "../../components/molecules/cards-list/cards-list.astro";
-import PageOpener from "../../components/molecules/page-opener/page-opener.astro";
 import Section from "../../components/molecules/section/section.astro";
 import PreviewCard from "../../components/organisms/preview-card/preview-card.astro";
 import Layout from "../../components/templates/layout/layout.astro";
@@ -56,13 +55,16 @@ const graphs: ComponentProps<typeof Layout>["graphs"] = [
   seo={page.seo}
   {...props}
 >
-  <PageOpener title={page.title}>
+  <header class="blog-index-header">
+    <h1 class="blog-index-title">{page.title}</h1>
     {
-      hasContent && (
-        <Content components={components} slot={hasContent ? "intro" : ""} />
-      )
+      hasContent ? (
+        <div class="blog-index-intro">
+          <Content components={components} />
+        </div>
+      ) : null
     }
-  </PageOpener>
+  </header>
   <Section class="blog-index-section">
     <h2 slot="heading">
       {translate("page.blog.section.recent.posts.heading")}
@@ -123,6 +125,21 @@ const graphs: ComponentProps<typeof Layout>["graphs"] = [
 
 <style>
   @layer views {
+    .blog-index-header {
+      padding: var(--gutter);
+      background: var(--color-regular);
+      border: var(--border-size-sm) solid var(--color-border);
+      color: var(--color-on-regular);
+    }
+
+    .blog-index-title {
+      text-align: center;
+    }
+
+    .blog-index-intro {
+      margin-block-start: var(--gutter);
+    }
+
     .blog-index-section {
       margin-block-start: var(--gutter);
 

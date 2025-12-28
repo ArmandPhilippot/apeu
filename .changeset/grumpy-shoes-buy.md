@@ -2,4 +2,4 @@
 "apeu": minor
 ---
 
-Adds new components: `SelectField`, `PageOpener`, `Section`, and `CodePreview`.
+Adds new components: `SelectField`, `Section`, and `CodePreview`.

@@ -179,6 +179,7 @@ dt {
 
 h1 {
   font-size: var(--font-size-5xl);
+  text-wrap: balance;
 }
 
 h2 {

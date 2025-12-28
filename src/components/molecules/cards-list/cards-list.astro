@@ -5,7 +5,7 @@ import ListItem from "../../atoms/list/list-item.astro";
 
 type Props = Omit<
   ComponentProps<typeof Grid>,
-  "as" | "cols" | "gap" | "justifyContent"
+  "as" | "gap" | "justifyContent"
 > & {
   isContainer?: boolean | null | undefined;
   isOrdered?: boolean | null | undefined;
@@ -34,7 +34,6 @@ const tag = isOrdered ? "ol" : "ul";
   {...attrs}
   as={tag}
   class:list={[className, "cards-list"]}
-  cols="auto-fit"
   justifyContent="center"
 >
   {

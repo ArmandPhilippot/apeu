@@ -26,13 +26,13 @@ export const colors = {
 
 ## Neutral
 
-<div class="wrapper grid">
+<div class="story-wrapper story-grid">
   {colors.neutral.map((color) => {
     const token = `--color-${color}`;
     return (
-      <div class="wrapper flex">
+      <div class="story-wrapper story-flex">
         <TokenPreview token={token}>
-          <div class="token-box" style={`background: var(${token});`} />
+          <div class="story-token-box" style={`background: var(${token});`} />
         </TokenPreview>
       </div>
     );
@@ -41,9 +41,9 @@ export const colors = {
 
 ## With variants
 
-<div class="wrapper grid">
+<div class="story-wrapper story-grid">
   {colors.others.colors.map((color) => (
-    <div class="wrapper flex">
+    <div class="story-wrapper story-flex">
       {colors.others.variants.map((variant) => {
         const token =
           variant === "default"
@@ -51,7 +51,7 @@ export const colors = {
             : `--color-${color}-${variant}`;
         return (
           <TokenPreview token={token}>
-            <div class="token-box" style={`background: var(${token});`} />
+            <div class="story-token-box" style={`background: var(${token});`} />
           </TokenPreview>
         );
       })}

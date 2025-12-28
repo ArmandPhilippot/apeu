@@ -69,7 +69,7 @@ export const spacings = [
 
 ### Family
 
-<div class="wrapper flex">
+<div class="story-wrapper story-flex">
   {
   fonts.families.map((family) => (
     <TokenPreview isInline token={`--font-family-${family}`}>
@@ -83,7 +83,7 @@ export const spacings = [
 
 ### Size
 
-<div class="wrapper flex">
+<div class="story-wrapper story-flex">
   {
   fonts.sizes.map((size) => (
     <TokenPreview isInline token={`--font-size-${size}`}>
@@ -97,7 +97,7 @@ export const spacings = [
 
 ### Weights
 
-<div class="wrapper flex">
+<div class="story-wrapper story-flex">
   {
   fonts.weights.map((weight) => (
     <TokenPreview isInline token={`--font-weight-${weight}`}>
@@ -111,15 +111,15 @@ export const spacings = [
 
 ## Spacings
 
-<div class="wrapper flex">
+<div class="story-wrapper story-flex">
   {
   spacings.map((spacing) => (
     <TokenPreview isInline token={`--spacing-${spacing}`}>
       <div
         style={`display:flex;flex-flow:row nowrap;gap: var(--spacing-${spacing});`}
       >
-        <div class="token-box" style="border-color: var(--color-border);" />
-        <div class="token-box" style="border-color: var(--color-border);" />
+        <div class="story-token-box" style="border-color: var(--color-border);" />
+        <div class="story-token-box" style="border-color: var(--color-border);" />
       </div>
     </TokenPreview>
   ))
@@ -130,12 +130,12 @@ export const spacings = [
 
 ### Size
 
-<div class="wrapper flex">
+<div class="story-wrapper story-flex">
   {
   borders.sizes.map((size) => (
     <TokenPreview isInline token={`--border-size-${size}`}>
       <div
-        class="token-box"
+        class="story-token-box"
         style={`border-color: var(--color-border);border-width: var(--border-size-${size});`}
       />
     </TokenPreview>
@@ -145,12 +145,12 @@ export const spacings = [
 
 ### Radius
 
-<div class="wrapper flex">
+<div class="story-wrapper story-flex">
   {
   borders.radius.map((radii) => (
     <TokenPreview isInline token={`--border-radii-${radii}`}>
       <div
-        class="token-box"
+        class="story-token-box"
         style={`border-color: var(--color-border);border-radius: var(--border-radii-${radii});`}
       />
     </TokenPreview>
@@ -160,17 +160,17 @@ export const spacings = [
 
 ## Surfaces
 
-<div class="wrapper grid">
+<div class="story-wrapper story-grid">
   {
   surfaces.names.map((context) => (
-    <div class="wrapper flex">
+    <div class="story-wrapper story-flex">
       {surfaces.variants.map((variant) => {
         const token = variant === "default"
           ? `--color-${context}`
           : `--color-${context}-${variant}`;
         return (
           <TokenPreview token={token}>
-            <div class="token-box" style={`background: var(${token});`} />
+            <div class="story-token-box" style={`background: var(${token});`} />
           </TokenPreview>
         );
       })}
@@ -181,13 +181,13 @@ export const spacings = [
 
 ### Texts on surfaces
 
-<div class="wrapper grid">
+<div class="story-wrapper story-grid">
   {
   surfaces.names.map((context) => (
-    <div class="wrapper flex">
+    <div class="story-wrapper story-flex">
       <TokenPreview token={`--color-on-${context}`}>
         <div
-          class="token-box"
+          class="story-token-box"
           style={`background: var(--color-${context});color: var(--color-on-${context});`}
         >
           Preview
@@ -202,16 +202,16 @@ export const spacings = [
 
 ### Elevation
 
-<div class="wrapper flex">
+<div class="story-wrapper story-flex">
   {
   shadows.elevations.map((elevation) => (
     <TokenPreview isInline token={`--shadow-${elevation}-to-top-left`}>
       <div
-        class="token-box"
+        class="story-token-box"
         style={`background: var(--color-regular);padding: var(--spacing-md);`}
       >
         <div
-          class="token-box"
+          class="story-token-box"
           style={`background: var(--color-regular);border-color: var(--color-border);box-shadow: var(--shadow-${elevation}-to-top-left);`}
         />
       </div>
@@ -224,12 +224,12 @@ export const spacings = [
 
 {
   shadows.directions.y.map((y) => (
-  <div class="wrapper grid">
+  <div class="story-wrapper story-grid">
     {shadows.directions.x.map((x) => (
       <TokenPreview token={`--shadow-elevated-to-${y}-${x}`}>
-        <div class="token-box" style={`padding: var(--spacing-md);`}>
+        <div class="story-token-box" style={`padding: var(--spacing-md);`}>
           <div
-            class="token-box"
+            class="story-token-box"
             style={`--shadow-color: var(--color-black);background: var(--color-regular);border-color: var(--color-border);box-shadow: var(--shadow-elevated-to-${y}-${x});`}
           />
         </div>
@@ -249,11 +249,11 @@ Inner shadows can be used to create a relief effect. Two tokens are available to
 
 <TokenPreview isInline token={`--color-shadow-inset`}>
 <div
-  class="token-box"
+  class="story-token-box"
   style={`background: var(--color-regular-light);padding: var(--spacing-md);`}
 >
   <div
-    class="token-box"
+    class="story-token-box"
     style={`background: var(--color-regular);box-shadow: 0 0 0 2px var(--color-shadow-inset);`}
   />
 </div>
@@ -261,11 +261,11 @@ Inner shadows can be used to create a relief effect. Two tokens are available to
 
 <TokenPreview isInline token={`--color-shadow-inset-dark`}>
 <div
-  class="token-box"
+  class="story-token-box"
   style={`background: var(--color-regular);padding: var(--spacing-md);`}
 >
   <div
-    class="token-box"
+    class="story-token-box"
     style={`background: var(--color-regular-dark);box-shadow: 0 0 0 2px var(--color-shadow-inset-dark);`}
   />
 </div>

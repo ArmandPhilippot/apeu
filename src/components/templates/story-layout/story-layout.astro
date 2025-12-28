@@ -38,11 +38,11 @@ const PageComponent = useContentPage ? ContentPage : Fragment;
 
 <style is:global>
   @layer layout {
-    .wrapper {
+    .story-wrapper {
       margin-block-end: var(--spacing-md);
     }
 
-    .grid {
+    .story-grid {
       display: grid;
       grid-template-columns: repeat(
         auto-fit,
@@ -54,13 +54,13 @@ const PageComponent = useContentPage ? ContentPage : Fragment;
       gap: var(--spacing-md);
     }
 
-    .flex {
+    .story-flex {
       display: flex;
       flex-flow: column wrap;
       gap: var(--spacing-sm);
     }
 
-    .token-box {
+    .story-token-box {
       display: flex;
       flex-flow: row wrap;
       place-items: center;

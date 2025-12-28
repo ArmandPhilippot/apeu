@@ -52,7 +52,11 @@ const graphs: ComponentProps<typeof Layout>["graphs"] = [
         : null
     }
   </Fragment>
-  <ContentPage headings={page.headings} title={page.title}>
+  <ContentPage
+    {..."cover" in page ? { cover: page.cover } : {}}
+    headings={page.headings}
+    title={page.title}
+  >
     <Meta
       items={convertCollectionMetaToMetaItem(page.meta, {
         i18n: { translate, translatePlural },

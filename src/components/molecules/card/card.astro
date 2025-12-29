@@ -207,8 +207,12 @@ const {
     .card-footer {
       justify-content: space-between;
       gap: var(--spacing-md);
-      padding-block: calc(var(--gutter) / 1.5);
+      padding-block: var(--gutter);
       border-block-start: var(--border-size-sm) solid var(--color-border);
+
+      @media (--prose) {
+        padding-block: calc(var(--gutter) / 1.5);
+      }
     }
   }
 </style>

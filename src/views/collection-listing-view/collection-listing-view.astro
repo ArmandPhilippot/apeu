@@ -13,9 +13,9 @@ import {
 import { useI18n, type PluralUIKey } from "../../services/i18n";
 
 type Props = Partial<ComponentProps<typeof Layout>> & {
-    entry: EnrichedPage<ListableCollectionKey, "preview">;
-    pagination?: ComponentProps<typeof ListingPage>["pagination"];
-  };
+  entry: EnrichedPage<ListableCollectionKey, "preview">;
+  pagination?: ComponentProps<typeof ListingPage>["pagination"];
+};
 
 const {
   entry: { Content, hasContent, related, ...page },

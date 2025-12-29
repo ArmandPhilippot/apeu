@@ -126,18 +126,46 @@ const graphs: ComponentProps<typeof Layout>["graphs"] = [
 <style>
   @layer views {
     .blog-index-header {
-      padding: var(--gutter);
       background: var(--color-regular);
-      border: var(--border-size-sm) solid var(--color-border);
+      border-block: var(--border-size-sm) solid var(--color-border);
+      box-shadow: var(--shadow-raised-to-top-center);
       color: var(--color-on-regular);
+
+      @media (--prose) {
+        border-inline: var(--border-size-sm) solid var(--color-border);
+        border-radius: var(--border-radii-md);
+        box-shadow: var(--shadow-raised-to-top-left);
+      }
+
+      &:has(.blog-index-intro) {
+        @media (--prose-sidebar) {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          grid-template-rows: auto minmax(0, 1fr);
+          max-width: unset;
+        }
+      }
     }
 
     .blog-index-title {
+      padding-block-start: var(--gutter);
       text-align: center;
+
+      &:where(:last-child) {
+        padding-block-end: var(--gutter);
+      }
     }
 
     .blog-index-intro {
-      margin-block-start: var(--gutter);
+      padding: var(--gutter);
+
+      @media (--prose-sidebar) {
+        grid-column: 2;
+        grid-row: 1 / span 2;
+        max-width: var(--size-prose);
+        border-block-start: none;
+        border-inline-start: var(--border-size-sm) solid var(--color-border);
+      }
     }
 
     .blog-index-section {

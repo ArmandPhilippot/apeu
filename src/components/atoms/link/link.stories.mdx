@@ -1,6 +1,7 @@
 ---
 title: "Link"
 ---
+
 import { components as mdxComponents } from "../../mdx";
 import CodePreview from "../../molecules/code-preview/code-preview.astro";
 import Link from "./link.astro";
@@ -26,6 +27,18 @@ A link can be used as internal or external navigation. It can provide extra info
 </CodePreview>
 
 ## Options
+
+### `icon`
+
+Use this when you want to prefix your link with an icon.
+
+<CodePreview
+  code={`<Link href="/destination" icon={{name: "feed"}}>Text used as anchor</Link>`}
+  label="Prefixing with an icon"
+  lang="astro"
+>
+  <Link href="/destination" icon={{name: "feed"}}>Text used as anchor</Link>
+</CodePreview>
 
 ### `hreflang`
 
@@ -92,12 +105,13 @@ Sometimes you might need to mix the previous options to represent an external li
 When creating a gallery, it is common to wrap images with a link. This component also supports this.
 
 <CodePreview
-  code={`<Link href="/target"><img alt="" src="https://picsum.photos/640/480" />
-</Link>`}
+  code={`<Link href="/target"><img alt="" src="https://picsum.photos/640/480" /></Link>`}
   label="Using an image inside a link"
   lang="astro"
 >
-  <Link href="/target"><img alt="" src="https://picsum.photos/640/480" /></Link>
+  <Link href="/target">
+    <img alt="" src="https://picsum.photos/640/480" />
+  </Link>
 </CodePreview>
 
 ## HTML spacing handling
@@ -105,6 +119,10 @@ When creating a gallery, it is common to wrap images with a link. This component
 When used at the beginning or at the end of a sentence, a link should not display an extra space before or after.
 
 <CodePreview label="No extra spaces">
-  <p><Link href="#destination">A link</Link> at the beginning of a sentence.</p>
-  <p>A sentence ending with <Link href="#destination">a link</Link>.</p>
+  <p>
+    <Link href="#destination">A link</Link> at the beginning of a sentence.
+  </p>
+  <p>
+    A sentence ending with <Link href="#destination">a link</Link>.
+  </p>
 </CodePreview>

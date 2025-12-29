@@ -1,28 +1,20 @@
 ---
-import type { Page } from "astro";
 import type { ComponentProps } from "astro/types";
-import CardsList from "../../components/molecules/cards-list/cards-list.astro";
-import CollectionCard from "../../components/organisms/collection-card/collection-card.astro";
-import CollectionMeta from "../../components/organisms/collection-meta/collection-meta.astro";
-import Pagination from "../../components/organisms/pagination/pagination.astro";
-import PageLayout from "../../components/templates/page-layout/page-layout.astro";
+import { components } from "../../components/mdx";
+import ListingPage from "../../components/organisms/listing-page/listing-page.astro";
+import Layout from "../../components/templates/layout/layout.astro";
 import { getWebPageGraph } from "../../lib/schema-dts/graphs/webpage-graph";
 import { getBreadcrumb } from "../../services/breadcrumb";
-import type {
-  EnrichedPage,
-  ListingPageCollection,
-  QueriedCollectionEntry,
+import {
+  convertToPreview,
+  type EnrichedPage,
+  type ListableCollectionKey,
 } from "../../services/collections";
-import { useI18n } from "../../services/i18n";
-import { renderPaginationLink } from "../../services/pagination";
-import type { WithOptionalKey } from "../../types/utilities";
+import { useI18n, type PluralUIKey } from "../../services/i18n";
 
-type Props = Partial<ComponentProps<typeof PageLayout>> & {
-  entry: EnrichedPage<ListingPageCollection, "preview">;
-  pagination: Pick<
-    Page<"index.pages" | "pages">,
-    "currentPage" | "end" | "lastPage" | "size" | "start" | "total"
-  >;
+type Props = Partial<ComponentProps<typeof Layout>> & {
+  entry: EnrichedPage<ListableCollectionKey, "preview">;
+  pagination?: ComponentProps<typeof ListingPage>["pagination"];
 };
 
 const {
@@ -30,256 +22,63 @@ const {
   pagination,
   ...props
 } = Astro.props;
-const { translate, translatePlural } = useI18n(page.locale);
+const { locale, translate, translatePlural } = useI18n(page.locale);
 const breadcrumb = await getBreadcrumb({ route: Astro.url.pathname });
-const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
+const graphs: ComponentProps<typeof Layout>["graphs"] = [
   await getWebPageGraph({ ...page, breadcrumb }),
 ];
 
-const isTagPage = (
-  entry: QueriedCollectionEntry<ListingPageCollection, "preview">
-) => {
-  if (!("tags" in entry.meta) || !entry.meta.tags) return false;
-  return entry.meta.tags.some((tag) => tag.path === page.route);
-};
+const totalTranslationKey = {
+  "blog.categories": "meta.value.total.blog.categories",
+  "blog.posts": "meta.value.total.blog.posts",
+  blogroll: "meta.value.total.blogroll",
+  bookmarks: "meta.value.total.bookmarks",
+  guides: "meta.value.total.guides",
+  notes: "meta.value.total.notes",
+  projects: "meta.value.total.projects",
+  tags: "meta.value.total.tags",
+} satisfies Record<ListableCollectionKey, PluralUIKey>;
 
-const filterCurrentTag = <
-  T extends QueriedCollectionEntry<ListingPageCollection, "preview">["meta"],
->(
-  meta: T
-): T => {
-  if (!("tags" in meta) || !meta.tags) return meta;
-  return {
-    ...meta,
-    tags: meta.tags.filter((tag) => tag.path !== page.route),
-  };
-};
-
-type CollectionConfig<K extends ListingPageCollection> =
-  K extends ListingPageCollection
-    ? {
-        featuredMeta?: ComponentProps<typeof CollectionCard>["featuredMeta"];
-        filterMeta: (
-          entry: QueriedCollectionEntry<ListingPageCollection, "preview">
-        ) => WithOptionalKey<
-          QueriedCollectionEntry<ListingPageCollection, "preview">,
-          "meta"
-        >;
-        getCTA: (title: string) => ComponentProps<typeof CollectionCard>["cta"];
-        total: string;
-      }
-    : never;
-
-type CollectionConfigMap = {
-  [K in ListingPageCollection]: CollectionConfig<K>;
-};
-
-const config: CollectionConfigMap = {
-  "blog.categories": {
-    filterMeta: (entry) => {
-      const { meta, ...rest } = entry;
-      return rest;
-    },
-    getCTA: () => null,
-    total: translatePlural("meta.value.total.blog.categories", {
-      count: related.total,
-    }),
-  },
-  "blog.posts": {
-    featuredMeta: { icon: "blog", key: "publishedOn" },
-    filterMeta: (entry) => {
-      if ("category" in entry.meta) {
-        const { authors, category, ...rest } = entry.meta;
-        const filteredMeta = filterCurrentTag(rest);
-        return page.route === category?.path
-          ? { ...entry, meta: { ...filteredMeta } }
-          : { ...entry, meta: { ...filteredMeta, category } };
-      }
-      return entry;
-    },
-    getCTA: (title) => {
-      return {
-        ariaLabel: translate("cta.read.more.a11y", { title }),
-        label: translate("cta.read.more"),
-      };
-    },
-    total: translatePlural("meta.value.total.blog.posts", {
-      count: related.total,
-    }),
-  },
-  blogroll: {
-    featuredMeta: { icon: "locale", key: "inLanguages" },
-    filterMeta: (entry) => {
-      return { ...entry, meta: filterCurrentTag(entry.meta) };
-    },
-    getCTA: () => {
-      return {
-        ariaLabel: translate("cta.open.website.a11y"),
-        icon: "globe",
-        isExternal: true,
-        label: translate("cta.open.website"),
-      };
-    },
-    total: translatePlural("meta.value.total.blogroll", {
-      count: related.total,
-    }),
-  },
-  bookmarks: {
-    featuredMeta: { icon: "bookmark", key: "publishedOn" },
-    filterMeta: (entry) => {
-      return { ...entry, meta: filterCurrentTag(entry.meta) };
-    },
-    getCTA: (title) => {
-      return {
-        ariaLabel: translate("cta.read.more.a11y", { title }),
-        isExternal: true,
-        label: translate("cta.read.more"),
-      };
-    },
-    total: translatePlural("meta.value.total.bookmarks", {
-      count: related.total,
-    }),
-  },
-  guides: {
-    featuredMeta: { icon: "guide", key: "publishedOn" },
-    filterMeta: (entry) => {
-      if ("authors" in entry.meta) {
-        const { authors, ...rest } = entry.meta;
-        return { ...entry, meta: filterCurrentTag(rest) };
-      }
-      return { ...entry, meta: filterCurrentTag(entry.meta) };
-    },
-    getCTA: (title) => {
-      return {
-        ariaLabel: translate("cta.read.more.a11y", { title }),
-        label: translate("cta.read.more"),
-      };
-    },
-    total: translatePlural("meta.value.total.guides", {
-      count: related.total,
-    }),
-  },
-  notes: {
-    featuredMeta: { icon: "notepad", key: "publishedOn" },
-    filterMeta: (entry) => {
-      return { ...entry, meta: filterCurrentTag(entry.meta) };
-    },
-    getCTA: (title) => {
-      return {
-        ariaLabel: translate("cta.read.more.a11y", { title }),
-        label: translate("cta.read.more"),
-      };
-    },
-    total: translatePlural("meta.value.total.notes", {
-      count: related.total,
-    }),
-  },
-  projects: {
-    featuredMeta: { icon: "project", key: "kind" },
-    filterMeta: (entry) => {
-      return { ...entry, meta: filterCurrentTag(entry.meta) };
-    },
-    getCTA: (title) => {
-      return {
-        ariaLabel: translate("cta.discover.a11y", { title }),
-        label: translate("cta.discover"),
-      };
-    },
-    total: translatePlural("meta.value.total.projects", {
-      count: related.total,
-    }),
-  },
-  tags: {
-    filterMeta: (entry) => {
-      const { meta, ...rest } = entry;
-      return rest;
-    },
-    getCTA: () => null,
-    total: translatePlural("meta.value.total.tags", {
-      count: related.total,
-    }),
-  },
-};
-
-type EntryData = {
-  cta: ComponentProps<typeof CollectionCard>["cta"];
-  featuredMeta: ComponentProps<typeof CollectionCard>["featuredMeta"];
-  showCollection: ComponentProps<typeof CollectionCard>["showCollection"];
-  updatedEntry: ComponentProps<typeof CollectionCard>["entry"];
-};
-
-const getEntryData = (
-  entry: QueriedCollectionEntry<ListingPageCollection, "preview">
-): EntryData => {
-  const { featuredMeta, filterMeta, getCTA } = config[entry.collection];
-  const updatedEntry = filterMeta(entry);
-  const shouldShowCollection = isTagPage(entry);
-
-  return {
-    cta: getCTA(entry.title),
-    featuredMeta: shouldShowCollection ? null : featuredMeta,
-    showCollection: shouldShowCollection,
-    updatedEntry,
-  };
-};
-
-const mixedTotal = translatePlural("meta.value.total.entries", {
-  count: related.total,
-});
-const collectionMetaTotal = Array.isArray(related.collection)
-  ? mixedTotal
-  : config[related.collection].total;
+const collectionMetaTotal = translatePlural(
+  Array.isArray(related.collection)
+    ? "meta.value.total.entries"
+    : totalTranslationKey[related.collection],
+  {
+    count: related.total,
+  }
+);
+const entries = await Promise.all(
+  related.entries.map(
+    async (entry) =>
+      await convertToPreview(entry, {
+        currentRoute: Astro.url.pathname,
+        i18n: { locale, translate, translatePlural },
+        showAuthorsIfAvailable: false,
+        showCollectionLabel: Array.isArray(related.collection),
+      })
+  )
+);
 ---
 
-<PageLayout
+<Layout
   breadcrumb={breadcrumb}
-  description={page.description}
-  feed={`${page.route}/feed.xml`}
   graphs={graphs}
-  headings={page.headings}
-  isIndex
+  pageTitle={page.title}
   seo={page.seo}
-  title={page.title}
   {...props}
 >
-  <CollectionMeta data={{ total: collectionMetaTotal }} slot="meta" />
-  {hasContent && <Content slot={hasContent ? "body" : ""} />}
-  <Fragment slot="disconnected-body">
-    <CardsList items={related.entries} sizeMinCols="35rem">
-      {
-        (entry: (typeof related.entries)[number]) => {
-          const { cta, featuredMeta, showCollection, updatedEntry } =
-            getEntryData(entry);
-
-          return (
-            <CollectionCard
-              cta={cta}
-              elevation="raised"
-              entry={updatedEntry}
-              featuredMeta={featuredMeta}
-              showCollection={showCollection}
-            />
-          );
-        }
-      }
-    </CardsList>
+  <ListingPage
+    cover={page.cover}
+    entries={entries}
+    pagination={pagination}
+    route={page.route}
+    title={page.title}
+    totalEntries={collectionMetaTotal}
+  >
     {
-      pagination.lastPage > 1 ? (
-        <Pagination
-          aria-label={translate("pagination.a11y")}
-          class="pagination"
-          current={pagination.currentPage}
-          isCentered
-          last={pagination.lastPage}
-          renderLink={renderPaginationLink(page.route)}
-        />
-      ) : null
+      hasContent && (
+        <Content components={components} slot={hasContent ? "intro" : ""} />
+      )
     }
-  </Fragment>
-</PageLayout>
-
-<style>
-  .pagination {
-    margin-block: var(--spacing-lg);
-  }
-</style>
+  </ListingPage>
+</Layout>

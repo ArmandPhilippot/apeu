@@ -11,7 +11,7 @@ import { clearEntriesIndexCache } from "../../lib/astro/collections/indexes";
 import {
   addRelatedItemsToPage,
   queryEntry,
-  type PageableCollection,
+  type CollectionSupportingRelatedEntries,
 } from "../../services/collections";
 import type { AvailableLocale } from "../../types/tokens";
 import CollectionListingView from "./collection-listing-view.astro";
@@ -33,7 +33,7 @@ vi.mock("../../utils/constants", async (importOriginal) => {
       ...mod.CONFIG,
       LANGUAGES: {
         DEFAULT: "en",
-        AVAILABLE: ["en", "es", "fr"],
+        AVAILABLE: ["en", "fr"],
       },
     },
   };
@@ -123,7 +123,7 @@ vi.mock("../../services/pagination", async (importOriginal) => {
 type SetupTestWithMockEntriesConfig = {
   testEntries: Parameters<typeof createMockEntriesByCollection>[0];
   pageQuery: {
-    collection: PageableCollection;
+    collection: CollectionSupportingRelatedEntries;
     id: string;
     locale?: AvailableLocale;
   };
@@ -134,10 +134,31 @@ async function setupTestWithMockEntries({
   testEntries,
 }: SetupTestWithMockEntriesConfig) {
   const layoutEntries = createLayoutMockEntries(["en", "fr"]);
+  // cSpell:ignore Étiquettes Catégories
+  const collectionListingViewRequiredEntries = createMockEntriesByCollection({
+    "index.pages": [
+      { collection: "index.pages", id: "en/tags", data: { title: "Tags" } },
+      {
+        collection: "index.pages",
+        id: "fr/tags",
+        data: { title: "Étiquettes" },
+      },
+      {
+        collection: "index.pages",
+        id: "en/blog/categories",
+        data: { title: "Categories" },
+      },
+      {
+        collection: "index.pages",
+        id: "fr/blog/categories",
+        data: { title: "Catégories" },
+      },
+    ],
+  });
   const mockEntries = createMockEntriesByCollection(testEntries);
   const mergedMockEntries = mergeEntriesByCollection(
     layoutEntries,
-    mockEntries
+    mergeEntriesByCollection(collectionListingViewRequiredEntries, mockEntries)
   );
   setupCollectionMocks(mergedMockEntries);
 
@@ -199,14 +220,7 @@ describe("CollectionListingView", () => {
 
       const props = {
         entry,
-        pagination: {
-          currentPage: 1,
-          end: 2,
-          lastPage: 1,
-          size: 10,
-          start: 1,
-          total: 2,
-        },
+        pagination: { currentPage: 1, lastPage: 1 },
       } satisfies ComponentProps<typeof CollectionListingView>;
 
       const result = await container.renderToString(CollectionListingView, {
@@ -253,14 +267,7 @@ describe("CollectionListingView", () => {
 
       const props = {
         entry,
-        pagination: {
-          currentPage: 1,
-          end: 1,
-          lastPage: 1,
-          size: 10,
-          start: 1,
-          total: 1,
-        },
+        pagination: { currentPage: 1, lastPage: 1 },
       } satisfies ComponentProps<typeof CollectionListingView>;
 
       const result = await container.renderToString(CollectionListingView, {
@@ -299,14 +306,7 @@ describe("CollectionListingView", () => {
 
       const props = {
         entry,
-        pagination: {
-          currentPage: 1,
-          end: 1,
-          lastPage: 1,
-          size: 10,
-          start: 1,
-          total: 1,
-        },
+        pagination: { currentPage: 1, lastPage: 1 },
       } satisfies ComponentProps<typeof CollectionListingView>;
 
       const result = await container.renderToString(CollectionListingView, {
@@ -351,14 +351,7 @@ describe("CollectionListingView", () => {
 
       const props = {
         entry,
-        pagination: {
-          currentPage: 1,
-          end: 2,
-          lastPage: 1,
-          size: 10,
-          start: 1,
-          total: 2,
-        },
+        pagination: { currentPage: 1, lastPage: 1 },
       } satisfies ComponentProps<typeof CollectionListingView>;
 
       const result = await container.renderToString(CollectionListingView, {
@@ -408,19 +401,13 @@ describe("CollectionListingView", () => {
           "index.pages": [
             { collection: "index.pages", id: "en/blog/categories" },
           ],
+          tags: [], // ADD THIS - empty array is fine
         },
       });
 
       const props = {
         entry,
-        pagination: {
-          currentPage: 1,
-          end: 2,
-          lastPage: 1,
-          size: 10,
-          start: 1,
-          total: 2,
-        },
+        pagination: { currentPage: 1, lastPage: 1 },
       } satisfies ComponentProps<typeof CollectionListingView>;
 
       const result = await container.renderToString(CollectionListingView, {
@@ -466,14 +453,7 @@ describe("CollectionListingView", () => {
 
       const props = {
         entry,
-        pagination: {
-          currentPage: 1,
-          end: 2,
-          lastPage: 1,
-          size: 10,
-          start: 1,
-          total: 2,
-        },
+        pagination: { currentPage: 1, lastPage: 1 },
       } satisfies ComponentProps<typeof CollectionListingView>;
 
       const result = await container.renderToString(CollectionListingView, {
@@ -525,14 +505,7 @@ describe("CollectionListingView", () => {
 
       const props = {
         entry,
-        pagination: {
-          currentPage: 1,
-          end: 2,
-          lastPage: 1,
-          size: 10,
-          start: 1,
-          total: 2,
-        },
+        pagination: { currentPage: 1, lastPage: 1 },
       } satisfies ComponentProps<typeof CollectionListingView>;
 
       const result = await container.renderToString(CollectionListingView, {
@@ -580,14 +553,7 @@ describe("CollectionListingView", () => {
             total: 25,
           },
         },
-        pagination: {
-          currentPage: 2,
-          end: 15,
-          lastPage: 3,
-          size: 10,
-          start: 11,
-          total: 25,
-        },
+        pagination: { currentPage: 2, lastPage: 3 },
       } satisfies ComponentProps<typeof CollectionListingView>;
 
       const result = await container.renderToString(CollectionListingView, {
@@ -626,14 +592,7 @@ describe("CollectionListingView", () => {
 
       const props = {
         entry,
-        pagination: {
-          currentPage: 1,
-          end: 1,
-          lastPage: 1,
-          size: 10,
-          start: 1,
-          total: 1,
-        },
+        pagination: { currentPage: 1, lastPage: 1 },
       } satisfies ComponentProps<typeof CollectionListingView>;
 
       const result = await container.renderToString(CollectionListingView, {

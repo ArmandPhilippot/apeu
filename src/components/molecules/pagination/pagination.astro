@@ -1,0 +1,195 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import { Icon } from "astro-icon/components";
+import { useI18n } from "../../../services/i18n";
+import { getPagination } from "../../../services/pagination";
+import Button from "../../atoms/button/button.astro";
+import ListItem from "../../atoms/list/list-item.astro";
+import List from "../../atoms/list/list.astro";
+
+type Props = HTMLAttributes<"nav"> & {
+  /**
+   * The current page number.
+   */
+  current: number;
+  /**
+   * Should the pagination be centered?
+   */
+  isCentered?: boolean | null | undefined;
+  /**
+   * The page number of the last page.
+   */
+  last: number;
+  /**
+   * A function that provides the page link.
+   *
+   * @param {number} page - The page number.
+   * @returns {string} The page link.
+   */
+  renderLink: (page: number) => string;
+  /**
+   * The number of additional pages to show on one side of the current page.
+   *
+   * @default 1
+   */
+  siblings?: number | undefined;
+};
+
+const {
+  class: className,
+  current,
+  isCentered = false,
+  last,
+  renderLink,
+  siblings = 1,
+  slot,
+  ...attrs
+} = Astro.props;
+const { translate } = useI18n(Astro.currentLocale);
+const pages = getPagination({
+  currentPage: current,
+  siblings,
+  totalPages: last,
+});
+const hasPreviousPage = current > 1;
+const hasNextPage = current < last;
+const ellipsis = "\u2026" as const;
+---
+
+<nav
+  {...attrs}
+  class:list={[className, "pagination"]}
+  data-centered={isCentered}
+>
+  <List as="ol" hideMarker isInline spacing={{ col: "xs", row: "sm" }}>
+    {
+      hasPreviousPage ? (
+        <ListItem>
+          <Button
+            aria-label={translate("pagination.previous.page.a11y", {
+              number: `${current - 1}`,
+            })}
+            as="a"
+            class="pagination-link"
+            href={renderLink(current - 1)}
+          >
+            <Icon
+              aria-hidden
+              class="pagination-icon-previous"
+              name="arrow-right"
+              size={24}
+            />
+          </Button>
+        </ListItem>
+      ) : null
+    }
+    {
+      pages.map((page, index, list) => {
+        const isCurrentPage = page === current;
+        const nextPage = list[index + 1];
+
+        if (isCurrentPage) {
+          return (
+            <ListItem>
+              <span
+                aria-label={translate("pagination.item.current.a11y", {
+                  number: `${page}`,
+                })}
+                class:list={["pagination-link", "disabled"]}
+              >
+                {page}
+              </span>
+            </ListItem>
+          );
+        }
+
+        return (
+          <Fragment>
+            <ListItem>
+              <Button
+                aria-label={translate("pagination.item.a11y", {
+                  number: `${page}`,
+                })}
+                as="a"
+                class="pagination-link"
+                href={renderLink(page)}
+              >
+                {page}
+              </Button>
+            </ListItem>
+            {nextPage && page + 1 !== nextPage ? (
+              <ListItem>
+                <span
+                  aria-label={translate("pagination.ellipsis.a11y", {
+                    from: `${page + 1}`,
+                    to: `${nextPage - 1}`,
+                  })}
+                  class="pagination-link"
+                >
+                  {ellipsis}
+                </span>
+              </ListItem>
+            ) : null}
+          </Fragment>
+        );
+      })
+    }
+    {
+      hasNextPage ? (
+        <ListItem>
+          <Button
+            aria-label={translate("pagination.next.page.a11y", {
+              number: `${current + 1}`,
+            })}
+            as="a"
+            class="pagination-link"
+            href={renderLink(current + 1)}
+          >
+            <Icon aria-hidden name="arrow-right" size={24} />
+          </Button>
+        </ListItem>
+      ) : null
+    }
+  </List>
+</nav>
+
+<style>
+  @layer molecules {
+    .pagination {
+      max-width: var(--size-prose);
+
+      &:where([data-centered="true"]) {
+        margin-inline: auto;
+      }
+
+      &:where([data-centered="true"]) ol {
+        justify-content: center;
+      }
+    }
+
+    :where([data-centered="true"]) .pagination-list {
+      justify-content: center;
+    }
+
+    .pagination-link {
+      display: flex;
+      align-items: center;
+      place-content: center;
+      min-width: calc(var(--one-px-in-rem) * 54);
+      min-height: calc(var(--one-px-in-rem) * 54);
+      border-radius: var(--border-radii-md);
+      font-weight: var(--font-weight-bold);
+
+      &:not(:is(a)) {
+        background: var(--color-regular-dark);
+        border: var(--border-size-sm) solid var(--color-muted);
+        color: var(--color-primary-faded);
+        transform: translateY(var(--border-size-lg));
+      }
+    }
+
+    .pagination-icon-previous {
+      transform: rotate(180deg);
+    }
+  }
+</style>

@@ -1,10 +1,10 @@
 ---
 import type { ComponentProps } from "astro/types";
-import AstroFigure from "../atoms/figure/figure.astro";
+import FigureComponent from "../atoms/figure/figure.astro";
 
-type Props = ComponentProps<typeof AstroFigure>;
+type Props = ComponentProps<typeof FigureComponent>;
 
 const { isCentered = true, ...attrs } = Astro.props;
 ---
 
-<AstroFigure {...attrs} isCentered={isCentered}><slot /></AstroFigure>
+<FigureComponent {...attrs} isCentered={isCentered}><slot /></FigureComponent>

@@ -1,0 +1,159 @@
+---
+title: "PreviewCard"
+---
+import { components as mdxComponents } from "../../mdx";
+import CodePreview from "../../molecules/code-preview/code-preview.astro";
+import PreviewCard from "./preview-card.astro";
+
+export const components = mdxComponents;
+export const basicEntry = {
+  description: "The entry excerpt.",
+  heading: "The card heading"
+};
+
+## Introduction
+
+A `PreviewCard` component should be used to display an entry preview with either a link or a call to action to learn more about this entry.
+
+<CodePreview
+  code={`import PreviewCard from "./components/organisms/preview-card/preview-card.astro";`}
+  label="How to import"
+  lang="ts"
+/>
+
+<CodePreview
+  code={`---
+  const basicEntry = {
+    description: "The entry excerpt.",
+    heading: "The card heading"
+  };
+  ---
+  <PreviewCard entry={basicEntry} headingLvl="h3" />`}
+  label="Basic use"
+  lang="astro"
+>
+  <PreviewCard entry={basicEntry} headingLvl="h3" />
+</CodePreview>
+
+## Calls to action
+
+### With a linked heading
+
+<CodePreview
+  code={`---
+  const entryWithLink = {
+    description: "The entry excerpt.",
+    heading: { label: "The card heading", path: "#a-link" }
+  }
+  ---
+  <PreviewCard entry={entryWithLink} headingLvl="h3" />`}
+  label="Wrapping with a link"
+  lang="astro"
+>
+  <PreviewCard entry={{...basicEntry, heading: { label: "The card heading", path: "#a-link" }}} headingLvl="h3" />
+</CodePreview>
+
+### With a call to action
+
+<CodePreview
+  code={`---
+  const entryWithCta = {
+    cta: [{label: "Call to action", path: "#call-to-action"}],
+    description: "The entry excerpt.",
+    heading: "The card heading"
+  }
+  ---
+  <PreviewCard entry={entryWithCta} headingLvl="h3" />`}
+  label="Using a call to action"
+  lang="astro"
+>
+  <PreviewCard entry={{...basicEntry, cta: [{label: "Call to action", path: "#call-to-action"}]}} headingLvl="h3" />
+</CodePreview>
+
+### With multiple calls to action
+
+<CodePreview
+  code={`---
+  const entryWithCta = {
+    cta: [{label: "Call to action", path: "#call-to-action"}, {label: "Subscribe", path: "#feed"}],
+    description: "The entry excerpt.",
+    heading: "The card heading"
+  }
+  ---
+  <PreviewCard entry={entryWithCta} headingLvl="h3" />`}
+  label="Using multiple calls to action"
+  lang="astro"
+>
+  <PreviewCard entry={{...basicEntry, cta: [{label: "Call to action", path: "#call-to-action"}, {label: "Subscribe", path: "#feed"}]}} headingLvl="h3" />
+</CodePreview>
+
+### With a link on title and a call to action
+
+<CodePreview
+  code={`---
+  const entryWithLinkedTitleAndCta = {
+    cta: [{label: "Call to action", path: "#call-to-action"}],
+    description: "The entry excerpt.",
+    heading: { label: "The card heading", path: "#a-link" }
+  }
+  ---
+  <PreviewCard entry={entryWithLinkedTitleAndCta} headingLvl="h3" />`}
+  label="Using both a link and a call to action"
+  lang="astro"
+>
+  <PreviewCard entry={{...basicEntry, cta: [{label: "Call to action", path: "#call-to-action"}], heading: { label: "The card heading", path: "#a-link" }}} headingLvl="h3" />
+</CodePreview>
+
+## Metadata
+
+### Featured meta
+
+<CodePreview
+  code={`---
+  const entryWithFeaturedMeta = {
+    description: "The entry excerpt.",
+    featuredMeta: {label: "Featured", values: ["featured value"]},
+    heading: "The card heading"
+  };
+  ---
+  <PreviewCard entry={entryWithFeaturedMeta} headingLvl="h3" />`}
+  label="Using featured metadata"
+  lang="astro"
+>
+  <PreviewCard entry={{...basicEntry, featuredMeta: {label: "Featured", values: ["featured value"]}}} headingLvl="h3" />
+</CodePreview>
+
+### Regular meta
+
+<CodePreview
+  code={`---
+  const entryWithRegularMeta = {
+    description: "The entry excerpt.",
+    heading: "The card heading",
+    meta: [{label: "Meta 1", values: ["value 1"]}, {label: "Meta 2", values: ["value 2", "value 3"]}],
+  };
+  ---
+  <PreviewCard entry={entryWithRegularMeta} headingLvl="h3" />`}
+  label="Using regular metadata"
+  lang="astro"
+>
+  <PreviewCard entry={{...basicEntry, meta: [{label: "Meta 1", values: ["value 1"]}, {label: "Meta 2", values: ["value 2", "value 3"]}]}} headingLvl="h3" />
+</CodePreview>
+
+## Combine call to action and metadata
+
+<CodePreview
+  code={`---
+  const entryWithCtaAndMeta = {
+    cta: [{label: "Call to action", path: "#call-to-action"}],
+    description: "The entry excerpt.",
+    heading: "The card heading",
+    meta: [{label: "Meta 1", values: ["value 1"]}, {label: "Meta 2", values: ["value 2", "value 3"]}],
+  }
+  ---
+  <PreviewCard entry={entryWithCtaAndMeta} headingLvl="h3" />`}
+  label="Using a call to action and metadata"
+  lang="astro"
+>
+  <PreviewCard entry={{...basicEntry, cta: [{label: "Call to action", path: "#call-to-action"}], meta: [{label: "Meta 1", values: ["value 1"]}, {label: "Meta 2", values: ["value 2", "value 3"]}]}} headingLvl="h3" />
+</CodePreview>

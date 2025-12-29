@@ -1,15 +1,19 @@
 ---
-import type { HTMLAttributes } from "astro/types";
+import type { ComponentProps } from "astro/types";
+import { Icon } from "astro-icon/components";
 import type { Route } from "../../../types/data";
-import NavItem from "../nav-item/nav-item.astro";
-import NavList from "../nav-list/nav-list.astro";
+import Link from "../../atoms/link/link.astro";
+import ListItem from "../../atoms/list/list-item.astro";
+import List from "../../atoms/list/list.astro";
 
-type Props = HTMLAttributes<"nav"> & {
-  isCentered?: boolean | null | undefined;
+type Props = Omit<
+  ComponentProps<typeof List<"ol">>,
+  "as" | "hideMarker" | "isInline"
+> & {
   items: Route[];
 };
 
-const { class: className, isCentered = false, items, ...attrs } = Astro.props;
+const { class: className, items, slot, ...attrs } = Astro.props;
 
 const scaleToRight = {
   old: {
@@ -31,92 +35,78 @@ const scaleToRightTransition = {
 };
 ---
 
-<nav
+<List
   {...attrs}
+  as="ol"
   class:list={["breadcrumb", className]}
-  {...isCentered && { "data-centered": true }}
+  hideMarker
+  isInline
+  spacing="2xs"
 >
-  <NavList class="breadcrumb-list" hideMarker isInline isOrdered items={items}>
-    {
-      ({ label, path, ...item }, index, crumbs) => {
-        const isFirstItem = index === 0;
-        const isLastItem = index + 1 === crumbs.length;
+  {
+    items.map(({ label, path }, index, crumbs) => {
+      const isFirstItem = index === 0;
+      const isLastItem = index + 1 === crumbs.length;
 
-        return isLastItem ? (
-          <span
-            aria-current="page"
-            class="breadcrumb-item"
-            transition:animate={scaleToRightTransition}
-            transition:name="breadcrumb-current"
-          >
-            {label}
-          </span>
-        ) : (
-          <Fragment>
-            <NavItem
-              {...item}
-              class="breadcrumb-item"
-              href={path}
-              isRounded
+      return (
+        <ListItem class="breadcrumb-item">
+          {isLastItem ? (
+            <span
+              aria-current="page"
+              class="breadcrumb-link"
               transition:animate={scaleToRightTransition}
-              transition:name={
-                isFirstItem ? "breadcrumb-home" : `item-${index}`
-              }
+              transition:name="breadcrumb-current"
             >
               {label}
-            </NavItem>
-            <span
-              aria-hidden="true"
-              {...(isFirstItem
-                ? {}
-                : {
-                    "transition:animate": scaleToRightTransition,
-                  })}
-            >
-              &gt;
             </span>
-          </Fragment>
-        );
-      }
-    }
-  </NavList>
-</nav>
+          ) : (
+            <Fragment>
+              <Link class="breadcrumb-link" href={path}>
+                {label}
+              </Link>
+              <Icon
+                aria-hidden="true"
+                class="breadcrumb-sep"
+                name="caret-right"
+                size="10"
+                {...(isFirstItem
+                  ? {}
+                  : {
+                      "transition:animate": scaleToRightTransition,
+                    })}
+              />
+            </Fragment>
+          )}
+        </ListItem>
+      );
+    })
+  }
+</List>
 
 <style>
-  .breadcrumb {
-    padding-block: var(--spacing-xs);
-    overflow-x: auto;
-  }
-
-  .breadcrumb-list {
-    flex-wrap: nowrap;
-    white-space: nowrap;
-  }
-
-  :where(.breadcrumb[data-centered="true"]) .breadcrumb-list {
-    & > :global(li:first-child) {
-      margin-inline-start: auto;
+  @layer molecules {
+    .breadcrumb {
+      flex-wrap: nowrap;
+      max-width: 100%;
+      padding: calc(var(--gutter) / 2) var(--spacing-md);
+      white-space: nowrap;
+      overflow-x: auto;
     }
 
-    & > :global(li:last-child) {
-      margin-inline-end: auto;
+    .breadcrumb-item {
+      display: flex;
+      flex-flow: row nowrap;
+      align-items: center;
+      gap: var(--spacing-2xs);
     }
-  }
 
-  .breadcrumb-list > :global(li),
-  .breadcrumb-item {
-    display: flex;
-    flex-flow: row;
-    align-items: center;
-  }
+    .breadcrumb-link {
+      font-size: var(--font-size-sm);
+    }
 
-  .breadcrumb-item {
-    padding: var(--spacing-2xs);
-    font-size: var(--font-size-sm);
-    outline-offset: calc(var(--spacing-3xs) * -1);
-
-    &:where(span) {
-      color: var(--color-muted-faded);
+    .breadcrumb-link[aria-current="page"],
+    .breadcrumb-sep {
+      color: var(--color-muted-high);
       font-weight: var(--font-weight-bold);
     }
   }

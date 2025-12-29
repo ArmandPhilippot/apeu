@@ -1,0 +1,12 @@
+---
+title: "ContentPage has title and body"
+wrapInContentPage: false
+---
+import { components as mdxComponents } from "../../../mdx";
+import ContentPage from "../content-page.astro";
+
+export const components = mdxComponents;
+
+<ContentPage title={frontmatter.title}>
+  <p>This is the main content of the page.</p>
+</ContentPage>

@@ -41,6 +41,20 @@ export type Direction = "bottom" | "left" | "right" | "top";
  */
 export type Elevation = "raised" | "elevated" | "floating";
 
+export type FieldTextType =
+  | "date"
+  | "datetime-local"
+  | "email"
+  | "month"
+  | "password"
+  | "search"
+  | "tel"
+  | "text"
+  | "textarea"
+  | "time"
+  | "url"
+  | "week";
+
 export type HeadingLvl = (typeof HEADING_TAGS)[number];
 
 /**
@@ -54,8 +68,11 @@ export type IconName =
   | "arrow-right"
   | "blog"
   | "bookmark"
-  | "caret"
+  | "caret-down"
+  | "caret-right"
+  | "caret-top"
   | "cc-by-sa"
+  | "code-editor"
   | "contact"
   | "copy"
   | "feed"
@@ -66,6 +83,7 @@ export type IconName =
   | "hamburger"
   | "home"
   | "locale"
+  | "monitor"
   | "moon"
   | "page"
   | "notepad"

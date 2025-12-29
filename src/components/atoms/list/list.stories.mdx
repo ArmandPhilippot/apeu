@@ -161,3 +161,61 @@ import ListItem from "./components/atoms/list-item/list-item.astro";`}
     <ListItem>Item 3</ListItem>
   </List>
 </CodePreview>
+
+### `spacing`
+
+#### With a regular list
+
+<CodePreview
+  code={`<List spacing="md">
+    <ListItem>Item 1</ListItem>
+    <ListItem>Item 2</ListItem>
+    <ListItem>Item 3</ListItem>
+</List>`}
+  label="Using spacing with a list"
+  lang="astro"
+>
+  <List spacing="md">
+    <ListItem>Item 1</ListItem>
+    <ListItem>Item 2</ListItem>
+    <ListItem>Item 3</ListItem>
+  </List>
+</CodePreview>
+
+#### With an inline list
+
+##### Single spacing value
+
+<CodePreview
+  code={`<List isInline spacing="md">
+    <ListItem>Item 1</ListItem>
+    <ListItem>Item 2</ListItem>
+    <ListItem>Item 3</ListItem>
+</List>`}
+  label="Using spacing with an inline list"
+  lang="astro"
+>
+  <List isInline spacing="md">
+    <ListItem>Item 1</ListItem>
+    <ListItem>Item 2</ListItem>
+    <ListItem>Item 3</ListItem>
+  </List>
+</CodePreview>
+
+##### Different spacing values
+
+<CodePreview
+  code={`<List isInline spacing={{col: "md", row: "xs"}}>
+    <ListItem>Item 1</ListItem>
+    <ListItem>Item 2</ListItem>
+    <ListItem>Item 3</ListItem>
+</List>`}
+  label="Using a different spacing for cols and rows"
+  lang="astro"
+>
+  <List isInline spacing={{col: "md", row: "xs"}}>
+    <ListItem>Item 1</ListItem>
+    <ListItem>Item 2</ListItem>
+    <ListItem>Item 3</ListItem>
+  </List>
+</CodePreview>

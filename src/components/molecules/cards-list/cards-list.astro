@@ -5,7 +5,7 @@ import ListItem from "../../atoms/list/list-item.astro";
 
 type Props = Omit<
   ComponentProps<typeof Grid>,
-  "as" | "cols" | "gap" | "justifyContent"
+  "as" | "gap" | "justifyContent"
 > & {
   isContainer?: boolean | null | undefined;
   isOrdered?: boolean | null | undefined;
@@ -17,6 +17,7 @@ const {
   isContainer = false,
   isOrdered = false,
   items,
+  slot,
   ...attrs
 } = Astro.props;
 
@@ -32,8 +33,7 @@ const tag = isOrdered ? "ol" : "ul";
 <Grid
   {...attrs}
   as={tag}
-  class:list={["cards-list", className]}
-  cols="auto-fit"
+  class:list={[className, "cards-list"]}
   justifyContent="center"
 >
   {
@@ -48,19 +48,21 @@ const tag = isOrdered ? "ol" : "ul";
 </Grid>
 
 <style>
-  .cards-list {
-    margin: clamp(var(--spacing-2xs), 4dvi, var(--spacing-md)) 0 0;
-    gap: clamp(var(--spacing-2xs), 4dvi, var(--spacing-md));
-  }
-
-  .cards-list-item {
-    &:where([data-container="true"]) {
-      container: item / inline-size;
+  @layer molecules {
+    .cards-list {
+      gap: var(--gutter);
     }
 
-    & > :global(*) {
-      height: 100%;
-      margin-inline: auto;
+    .cards-list-item {
+      &:where([data-container="true"]) {
+        container: item / inline-size;
+      }
+
+      & > :global(*) {
+        height: 100%;
+        max-width: var(--size-prose);
+        margin-inline: auto;
+      }
     }
   }
 </style>

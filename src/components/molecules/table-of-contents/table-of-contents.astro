@@ -1,0 +1,51 @@
+---
+import type { ComponentProps } from "astro/types";
+import type { HeadingNode } from "../../../types/data";
+import Link from "../../atoms/link/link.astro";
+import ListItem from "../../atoms/list/list-item.astro";
+import List from "../../atoms/list/list.astro";
+
+type Props = Omit<ComponentProps<typeof List<"ol">>, "as"> & {
+  headings: HeadingNode[];
+};
+
+const { class: className, headings, slot, ...attrs } = Astro.props;
+---
+
+<List {...attrs} as="ol" class:list={[className, "toc"]} spacing="3xs">
+  {
+    headings.map((heading) => (
+      <ListItem class="toc-item">
+        <Link href={heading.slug}>{heading.label}</Link>
+        {heading.children?.length ? (
+          <Astro.self headings={heading.children} />
+        ) : null}
+      </ListItem>
+    ))
+  }
+</List>
+
+<style>
+  @layer molecules {
+    .toc {
+      padding: 0;
+      counter-reset: item;
+    }
+
+    .toc-item {
+      display: table;
+      counter-increment: item;
+
+      &::before {
+        content: counters(item, ".") ". ";
+        display: table-cell;
+        padding-inline-end: var(--spacing-2xs);
+        color: var(--color-primary-faded);
+      }
+
+      & > .toc {
+        margin-block-start: var(--spacing-3xs);
+      }
+    }
+  }
+</style>

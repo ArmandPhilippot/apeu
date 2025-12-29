@@ -1,0 +1,117 @@
+---
+title: "ThemeSelect"
+---
+import { components as mdxComponents } from "../../mdx";
+import CodePreview from "../code-preview/code-preview.astro";
+import ThemeSelect from "./theme-select.astro";
+
+export const components = mdxComponents;
+export const themes = {
+  auto: "Auto",
+  dark: "Dark",
+  light: "Light",
+};
+
+## Introduction
+
+A `ThemeSelect` component is used to let the user choose the he wants to use for the website.
+
+<CodePreview
+  code={`import ThemeSelect from "./components/molecules/theme-select/theme-select.astro";`}
+  label="How to import"
+  lang="ts"
+/>
+
+<CodePreview
+  code={`<ThemeSelect current="auto" label="Choose a theme:" themes={themes} />`}
+  label="Basic use"
+  lang="astro"
+>
+  <ThemeSelect current="auto" label="Choose a theme:" themes={themes} />
+</CodePreview>
+
+## Controlling code blocks theme
+
+By default, the `ThemeSelect` component will fall back on the global theme, but you can also provide `shiki` as value for `theme` to control code blocks theme.
+
+<CodePreview
+  code={`<ThemeSelect
+    current="auto"
+    label="Choose a code block theme:"
+    setting="shiki"
+    themes={themes}
+  />`}
+  label="Defining code block themes"
+  lang="astro"
+>
+  <ThemeSelect
+    current="auto"
+    label="Choose a code block theme:"
+    setting="shiki"
+    themes={themes}
+  />
+</CodePreview>
+
+## Options
+
+### With an icon
+
+<CodePreview
+  code={`<ThemeSelect
+    current="auto"
+    label="Choose a theme:"
+    showIcon
+    themes={themes}
+/>`}
+  label="Showing an icon"
+  lang="astro"
+>
+  <ThemeSelect
+    current="auto"
+    label="Choose a theme:"
+    showIcon
+    themes={themes}
+  />
+</CodePreview>
+
+### Without label
+
+<CodePreview
+  code={`<ThemeSelect
+    current="auto"
+    hideLabel
+    label="Choose a theme:"
+    themes={themes}
+/>`}
+  label="Hiding the label"
+  lang="astro"
+>
+  <ThemeSelect
+    current="auto"
+    hideLabel
+    label="Choose a theme:"
+    themes={themes}
+  />
+</CodePreview>
+
+### Without label but with an icon
+
+<CodePreview
+  code={`<ThemeSelect
+    current="auto"
+    hideLabel
+    label="Choose a theme:"
+    showIcon
+    themes={themes}
+/>`}
+  label="Showing an icon without label"
+  lang="astro"
+>
+  <ThemeSelect
+    current="auto"
+    hideLabel
+    label="Choose a theme:"
+    showIcon
+    themes={themes}
+  />
+</CodePreview>

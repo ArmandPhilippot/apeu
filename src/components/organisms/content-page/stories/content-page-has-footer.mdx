@@ -1,0 +1,13 @@
+---
+title: "ContentPage has footer"
+wrapInContentPage: false
+---
+import { components as mdxComponents } from "../../../mdx";
+import ContentPage from "../content-page.astro";
+
+export const components = mdxComponents;
+
+<ContentPage title={frontmatter.title}>
+  <p>This is the main content of the page.</p>
+  <div slot="footer">Some footer contents.</div>
+</ContentPage>

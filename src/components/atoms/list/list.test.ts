@@ -90,4 +90,19 @@ describe("List", () => {
 
     expect(result).toContain('data-marker="false"');
   });
+
+  it<LocalTestContext>("should generate correct CSS variables for spacing", async ({
+    container,
+  }) => {
+    expect.assertions(1);
+
+    const props: ComponentProps<typeof List> = { spacing: "md" };
+    const body = "id quibusdam eius";
+    const result = await container.renderToString(List, {
+      props,
+      slots: { default: body },
+    });
+
+    expect(result).toMatch(/--gap: var\(--spacing-md\)/);
+  });
 });

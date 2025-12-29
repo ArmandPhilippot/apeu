@@ -1,10 +1,24 @@
 import { describe, expect, it } from "vitest";
 import {
+  InvalidAnchorFormatError,
   InvalidPropsError,
   MissingSiteConfigError,
   MissingSlotError,
   UnsupportedLocaleError,
 } from "./exceptions";
+
+describe("InvalidAnchorFormatError", () => {
+  it("returns an Error instance", () => {
+    const propName = "natus";
+    const currentValue = "something";
+    const exception = new InvalidAnchorFormatError(propName, currentValue);
+
+    expect(exception instanceof Error).toBe(true);
+    expect(exception.message).toBe(
+      `The "${propName}" property should be a valid anchor starting with "#". Received: ${currentValue}`
+    );
+  });
+});
 
 describe("InvalidPropsError", () => {
   it("returns an Error instance", () => {

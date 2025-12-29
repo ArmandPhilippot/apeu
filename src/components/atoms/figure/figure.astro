@@ -10,13 +10,14 @@ const {
   class: className,
   isCentered = false,
   isFullWidth = false,
+  slot,
   ...attrs
 } = Astro.props;
 ---
 
 <figure
   {...attrs}
-  class:list={["figure", className]}
+  class:list={[className, "paper-dark", "figure"]}
   data-centered={isCentered}
   data-full-width={isFullWidth}
 >
@@ -24,101 +25,71 @@ const {
 </figure>
 
 <style>
-  .figure {
-    padding: var(--spacing-xs);
-    position: relative;
-    z-index: 1;
-    border: var(--border-size-sm) solid var(--color-border-dark);
-    border-radius: var(--border-radii-lg);
-
-    &:where([data-centered="true"]) {
-      margin: 0 auto;
-    }
-
-    &:where([data-centered="false"]) {
-      margin: 0;
-    }
-
-    &:where([data-full-width="false"]) {
-      max-width: fit-content;
-    }
-
-    &::before,
-    &::after {
-      content: "";
-      position: absolute;
-      z-index: -1;
-      pointer-events: none;
-      user-select: none;
-      border-radius: inherit;
-    }
-
-    &::before {
-      inset: 0;
-      background: var(--color-regular-dark);
-      mask: linear-gradient(var(--color-regular) 0 0);
-    }
-
-    &::after {
-      inset: calc(var(--spacing-xs) - var(--border-size-md));
-      background: var(--color-regular);
+  @layer atoms {
+    .figure {
+      padding: var(--spacing-2xs);
+      z-index: 1;
       border: var(--border-size-sm) solid var(--color-border-dark);
-      box-shadow:
-        var(--shadow-raised-to-top-left), var(--shadow-raised-to-bottom-right);
-    }
+      border-radius: var(--border-radii-lg);
 
-    & > :global(figcaption) {
-      padding: var(--spacing-3xs) var(--spacing-sm);
-      text-align: center;
-
-      &:first-child {
-        border-block-end: var(--border-size-sm) solid var(--color-border);
+      &:where([data-centered="true"]) {
+        margin-inline: auto;
       }
 
-      &:last-child {
-        border-block-start: var(--border-size-sm) solid var(--color-border);
-      }
-    }
-
-    & > :global(*) {
-      max-width: 100%;
-
-      &:first-child {
-        border-start-start-radius: inherit;
-        border-start-end-radius: inherit;
+      &:where([data-full-width="false"]) {
+        max-width: fit-content;
       }
 
-      &:last-child {
-        border-end-start-radius: inherit;
-        border-end-end-radius: inherit;
-      }
-
-      & > :global(*) {
+      &::before {
         border-radius: inherit;
+        box-shadow: inset 0 0 var(--border-size-md) var(--border-size-md)
+          var(--color-shadow-inset-dark);
+      }
+
+      &::after {
+        content: "";
+        position: absolute;
+        inset: calc(var(--spacing-2xs) - var(--border-size-lg));
+        z-index: -1;
+        background: var(--color-regular-light);
+        border: var(--border-size-sm) solid var(--color-border-dark);
+        border-radius: inherit;
+        box-shadow:
+          var(--shadow-raised-to-top-left), var(--shadow-raised-to-bottom-right);
+        pointer-events: none;
+        user-select: none;
       }
     }
 
-    &:where([data-full-width="true"]) :global(:is(picture, img)) {
+    :where(.figure[data-full-width="true"]) :global(:is(picture, img)) {
       width: 100%;
       max-height: unset;
     }
 
-    &:where([data-full-width="false"]) > :global(picture) {
+    :where(.figure[data-full-width="false"]) > :global(picture) {
       max-width: fit-content;
     }
 
-    & > :global(* img) {
+    .figure:has(> picture, > img) > :global(figcaption:first-child) {
+      margin-block-end: var(--border-size-md);
+    }
+
+    .figure:has(> picture, > img) > :global(figcaption:last-child) {
+      margin-block-start: var(--border-size-md);
+    }
+
+    .figure > :global(picture > img) {
       border-radius: inherit;
     }
-  }
 
-  :global(:where([data-theme="light"])) .figure::before {
-    filter: url("#paper-filter") brightness(0.985) contrast(98.5%)
-      saturate(103%);
-  }
+    .figure > :global(*:first-child) {
+      border-start-start-radius: var(--border-radii-md);
+      border-start-end-radius: var(--border-radii-md);
+    }
 
-  :global(:where([data-theme="dark"])) .figure::before {
-    filter: url("#dark-paper-filter") brightness(0.85) contrast(103%)
-      saturate(120%);
+    .figure > :global(*:last-child) {
+      border-end-start-radius: var(--border-radii-md);
+      border-end-end-radius: var(--border-radii-md);
+    }
   }
 </style>

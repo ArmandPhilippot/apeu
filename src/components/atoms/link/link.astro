@@ -1,24 +1,58 @@
 ---
 import type { HTMLAttributes } from "astro/types";
+import { Icon } from "astro-icon/components";
+import type { Icon as IconType } from "../../../types/data";
 
 type Props = HTMLAttributes<"a"> & {
+  icon?: IconType | null | undefined;
   isDownload?: boolean | null | undefined;
   isExternal?: boolean | null | undefined;
 };
 
 const {
-  class: className,
+  icon,
   isDownload = false,
   isExternal = false,
-  rel,
+  rel = "",
+  slot,
   ...attrs
 } = Astro.props;
-const linkRel =
-  isExternal && !rel?.includes("external") ? `external ${rel}` : rel;
+const shouldAddExternal = isExternal && !rel?.includes("external");
+const linkRel = shouldAddExternal ? `external ${rel}`.trim() : rel;
 ---
 
-<a
-  {...attrs}
-  class:list={["link", { download: isDownload }, className]}
-  rel={linkRel}><slot /></a
->
+{
+  /* Compiler issue with inline elements: https://github.com/withastro/compiler/issues/1003#issuecomment-3426351769 */
+}
+<>
+  <a
+    {...attrs}
+    {...isDownload ? { "data-download": true } : {}}
+    {...icon ? { "data-icon": true } : {}}
+    rel={linkRel}
+  >
+    {
+      icon ? (
+        <Icon
+          aria-hidden="true"
+          {...(icon.size !== undefined && { size: icon.size })}
+          name={icon.name}
+        />
+      ) : null
+    }
+    <slot />
+  </a>
+</>
+
+<style>
+  @layer atoms {
+    a[data-icon] {
+      display: inline-flex;
+      gap: var(--spacing-3xs);
+
+      & :global(svg) {
+        align-self: center;
+      }
+    }
+  }
+</style>

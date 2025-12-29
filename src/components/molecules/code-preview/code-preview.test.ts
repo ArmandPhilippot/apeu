@@ -1,7 +1,21 @@
 import { experimental_AstroContainer as AstroContainer } from "astro/container";
 import type { ComponentProps } from "astro/types";
-import { beforeEach, describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import CodePreview from "./code-preview.astro";
+
+vi.mock("../../../utils/constants", async (importOriginal) => {
+  const mod = await importOriginal<typeof import("../../../utils/constants")>();
+  return {
+    ...mod,
+    CONFIG: {
+      ...mod.CONFIG,
+      LANGUAGES: {
+        DEFAULT: "en",
+        AVAILABLE: ["en"],
+      },
+    },
+  };
+});
 
 type LocalTestContext = {
   container: AstroContainer;

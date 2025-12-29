@@ -1,13 +1,19 @@
 ---
 import type { ComponentProps } from "astro/types";
-import CollectionMeta from "../../components/organisms/collection-meta/collection-meta.astro";
-import PageLayout from "../../components/templates/page-layout/page-layout.astro";
+import { components } from "../../components/mdx";
+import Meta from "../../components/molecules/meta/meta.astro";
+import ContentPage from "../../components/organisms/content-page/content-page.astro";
+import Layout from "../../components/templates/layout/layout.astro";
 import type { RoutableCollectionKey } from "../../lib/astro/collections/types";
 import { getWebPageGraph } from "../../lib/schema-dts/graphs/webpage-graph";
 import { getBreadcrumb } from "../../services/breadcrumb";
-import type { QueriedEntry } from "../../services/collections";
+import {
+  convertCollectionMetaToMetaItem,
+  type QueriedEntry,
+} from "../../services/collections";
+import { useI18n } from "../../services/i18n";
 
-type Props = Partial<ComponentProps<typeof PageLayout>> & {
+type Props = Partial<ComponentProps<typeof Layout>> & {
   entry: QueriedEntry<RoutableCollectionKey>;
 };
 
@@ -15,21 +21,48 @@ const {
   entry: { Content, hasContent, ...page },
   ...props
 } = Astro.props;
+const { translate, translatePlural } = useI18n(page.locale);
 const breadcrumb = await getBreadcrumb({ route: Astro.url.pathname });
-const graphs: ComponentProps<typeof PageLayout>["graphs"] = [
+const graphs: ComponentProps<typeof Layout>["graphs"] = [
   await getWebPageGraph({ ...page, breadcrumb }),
 ];
 ---
 
-<PageLayout
+<Layout
   breadcrumb={breadcrumb}
-  description={page.description}
   graphs={graphs}
-  headings={page.headings}
+  pageTitle={page.title}
   seo={page.seo}
-  title={page.title}
   {...props}
 >
-  <CollectionMeta data={page.meta} slot="meta" />
-  {hasContent && <Content slot={hasContent ? "body" : ""} />}
-</PageLayout>
+  <Fragment slot="open-graph">
+    <meta
+      content={page.meta.publishedOn.toISOString()}
+      property="article:published_time"
+    />
+    <meta
+      content={page.meta.updatedOn.toISOString()}
+      property="article:modified_time"
+    />
+    {
+      "tags" in page.meta
+        ? page.meta.tags?.map((tag) => (
+            <meta content={tag.label} property="article:tag" />
+          ))
+        : null
+    }
+  </Fragment>
+  <ContentPage
+    {..."cover" in page ? { cover: page.cover } : {}}
+    headings={page.headings}
+    title={page.title}
+  >
+    <Meta
+      items={convertCollectionMetaToMetaItem(page.meta, {
+        i18n: { translate, translatePlural },
+      })}
+      slot="meta"
+    />
+    {hasContent && <Content components={components} />}
+  </ContentPage>
+</Layout>

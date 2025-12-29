@@ -1,0 +1,16 @@
+---
+title: "ContentPage has headings"
+wrapInContentPage: false
+---
+import { components as mdxComponents } from "../../../mdx";
+import ContentPage from "../content-page.astro";
+
+export const components = mdxComponents;
+export const headings = [
+  { depth: 1, slug: "#heading1", text: "Heading 1" },
+  { depth: 1, slug: "#heading2", text: "Heading 2" },
+];
+
+<ContentPage headings={headings} title={frontmatter.title}>
+  <p>This is the main content of the page.</p>
+</ContentPage>

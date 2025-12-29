@@ -1,0 +1,22 @@
+:root {
+  --spacing-ratio: 1.618;
+  --spacing-5xs: calc(var(--spacing-md) / pow(var(--spacing-ratio), 6));
+  --spacing-4xs: calc(var(--spacing-md) / pow(var(--spacing-ratio), 5));
+  --spacing-3xs: calc(var(--spacing-md) / pow(var(--spacing-ratio), 4));
+  --spacing-2xs: calc(var(--spacing-md) / pow(var(--spacing-ratio), 3));
+  --spacing-xs: calc(var(--spacing-md) / pow(var(--spacing-ratio), 2));
+  --spacing-sm: calc(var(--spacing-md) / var(--spacing-ratio));
+  --spacing-md: calc(var(--one-px-in-rem) * 16 * var(--spacing-ratio));
+  --spacing-lg: calc(var(--spacing-md) * pow(var(--spacing-ratio), 2));
+  --spacing-xl: calc(var(--spacing-md) * pow(var(--spacing-ratio), 3));
+  --spacing-2xl: calc(var(--spacing-md) * pow(var(--spacing-ratio), 4));
+  --gutter: var(--spacing-md);
+
+  @media (--prose) {
+    --gutter: clamp(
+      var(--spacing-md),
+      calc((var(--spacing-md) + 1.5dvw)),
+      var(--spacing-2xl)
+    );
+  }
+}

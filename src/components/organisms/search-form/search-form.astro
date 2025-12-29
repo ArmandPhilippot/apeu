@@ -7,6 +7,12 @@ import Label from "../../atoms/label/label.astro";
 import TextField from "../../atoms/text-field/text-field.astro";
 
 type Props = JSX.HTMLAttributes & {
+  /**
+   * Should we hide the field label?
+   *
+   * @default false
+   */
+  hideLabel?: boolean | null | undefined;
   id: string;
   /**
    * Should the form be inlined?
@@ -26,33 +32,38 @@ type Props = JSX.HTMLAttributes & {
 
 const {
   class: className,
+  hideLabel = false,
   id,
   isInline = false,
   queryParam,
   resultsPage,
+  slot,
   ...attrs
 } = Astro.props;
-const fieldId = `${id}-field`;
 
 if (!resultsPage.startsWith("/")) {
   throw new Error("`resultsPage` must be a valid route starting with `/`.");
 }
 
 const { translate } = useI18n(Astro.currentLocale);
-
+const fieldId = `${id}-field`;
 /* eslint-disable-next-line no-magic-numbers -- Self-explanatory. */
 const defaultIconSize = isInline ? 30 : 25;
 ---
 
-<ap-search-form
+<apeu-search-form
   {...attrs}
-  class:list={["search-form-wrapper", className]}
+  class:list={[className, "search-form"]}
   data-query-param={queryParam}
   data-results-page={resultsPage}
   id={id}
 >
-  <form class="search-form" data-inlined={isInline}>
-    <Label class:list={[{ "sr-only": isInline }]} for={fieldId} slot="label">
+  <form data-inlined={isInline}>
+    <Label
+      class:list={["search-form-label", { "sr-only": hideLabel }]}
+      for={fieldId}
+      slot="label"
+    >
       {translate("form.search.label")}
     </Label>
     <TextField
@@ -74,77 +85,100 @@ const defaultIconSize = isInline ? 30 : 25;
       >
     </Button>
   </form>
-</ap-search-form>
+</apeu-search-form>
 
 <style>
-  .search-form {
-    display: flex;
-    position: relative;
-
-    &:where([data-inlined="true"]) {
-      --btn-size: calc(var(--one-px-in-rem) * 54);
-
-      flex-flow: row wrap;
+  @layer organisms {
+    .search-form {
+      display: flex;
+      max-width: 100%;
     }
 
-    &:where([data-inlined="false"]) {
-      flex-flow: column wrap;
-      gap: var(--spacing-sm);
-    }
-  }
+    .search-form form {
+      flex: 1;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) var(--btn-size, 0);
 
-  :where([data-inlined="true"]) .search-form-field {
-    flex: 1;
-    max-width: 100%;
-    min-height: var(--btn-size);
-    padding-inline-end: calc(var(--btn-size) + var(--spacing-2xs));
-  }
-
-  :where([data-inlined="true"]) .search-form-btn {
-    width: var(--btn-size);
-    aspect-ratio: 1 / 1;
-    padding: 0;
-    position: absolute;
-    inset-block-start: 0;
-    inset-inline-end: 0;
-    border-inline-start: var(--border-size-sm) solid var(--color-border);
-    border-start-end-radius: var(--border-radii-md);
-    border-end-end-radius: var(--border-radii-md);
-    color: var(--color-primary);
-    transition: transform 0.15s ease-in-out 0s;
-
-    &:where(:focus) {
-      outline: var(--border-size-md) solid var(--color-primary-lighter);
-      outline-offset: calc(var(--border-size-sm) * -2);
+      &:where([data-inlined="true"]) {
+        --btn-size: calc(var(--one-px-in-rem) * 54);
+      }
     }
 
-    & > :global(svg) {
-      transition: transform 0.3s ease-in-out 0s;
+    :where([data-inlined="true"]) .search-form-field {
+      grid-column: 1 / -1;
+      grid-row: 2;
+      max-width: 100%;
+      min-height: var(--btn-size);
+      padding-inline-end: calc(var(--btn-size) + var(--spacing-sm));
     }
 
-    &:where(:focus, :hover) > :global(svg) {
-      transform: rotate(-12deg);
+    :where([data-inlined="true"]) .search-form-btn {
+      grid-column: 2;
+      grid-row: 2;
+      width: var(--btn-size);
+      aspect-ratio: 1 / 1;
+      padding: 0;
+      background: var(--color-regular-light);
+      border: var(--border-size-sm) solid var(--color-border-light);
+      border-start-end-radius: var(--border-radii-lg);
+      border-end-end-radius: var(--border-radii-lg);
+      color: var(--color-primary);
+      outline: var(--border-size-md) solid transparent;
+      outline-offset: calc(var(--border-size-md) * -1);
+      transition:
+        box-shadow 0.1s linear 0s,
+        outline 0.1s ease-in-out 0s,
+        transform 0.1s linear 0s;
+
+      &:where(:hover) {
+        background: var(--color-regular-lighter);
+      }
+
+      & > :global(svg) {
+        transition: transform 0.3s ease-in-out 0s;
+      }
+
+      &:where(:focus, :hover) > :global(svg) {
+        transform: rotate(-12deg);
+      }
+
+      &:where(:active) > :global(svg) {
+        transform: scale(0.9);
+      }
     }
 
-    &:where(:active) > :global(svg) {
-      transform: scale(0.9);
+    :where([data-inlined="true"] .search-form-field:focus) ~ .search-form-btn {
+      transform: translateY(var(--border-size-md))
+        translateX(var(--border-size-md));
     }
-  }
 
-  :where([data-inlined="true"] .search-form-field:focus-within)
-    ~ .search-form-btn {
-    border-inline-start-color: var(--color-primary);
-    transform: translateY(var(--border-size-lg))
-      translateX(var(--border-size-lg));
-  }
+    :where([data-inlined="true"] .search-form-field:focus-visible)
+      ~ .search-form-btn {
+      outline-color: var(--color-primary);
+    }
 
-  :where([data-inlined="false"]) .search-form-btn {
-    align-self: center;
+    :where([data-inlined="false"]) .search-form-field {
+      grid-row: 2;
+    }
+
+    :where([data-inlined="false"]) .search-form-btn {
+      grid-row: 3;
+      justify-self: center;
+      margin-block-start: var(--spacing-sm);
+    }
+
+    :where([data-inlined="true"]) .search-form-btn:focus-visible {
+      outline-color: var(--color-primary);
+    }
+
+    .search-form-label:not(.sr-only) {
+      padding-block-end: var(--spacing-xs);
+    }
   }
 </style>
 
 <script>
-  class APSearchForm extends HTMLElement {
+  class APEUSearchForm extends HTMLElement {
     #query: string | null = null;
     #queryParam: string | null | undefined = null;
     #resultsPage: string | null | undefined = null;
@@ -204,5 +238,5 @@ const defaultIconSize = isInline ? 30 : 25;
     }
   }
 
-  customElements.define("ap-search-form", APSearchForm);
+  customElements.define("apeu-search-form", APEUSearchForm);
 </script>

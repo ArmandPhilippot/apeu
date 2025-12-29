@@ -5,19 +5,21 @@ type Props = HTMLAttributes<"li"> & {
   hideMarker?: boolean | null | undefined;
 };
 
-const { class: className, hideMarker = false, ...attrs } = Astro.props;
+const { class: className, hideMarker = false, slot, ...attrs } = Astro.props;
 ---
 
 <li
   {...attrs}
-  class:list={["list-item", className]}
+  class:list={[className, "list-item"]}
   {...hideMarker && { "data-marker": false }}
 >
   <slot />
 </li>
 
 <style>
-  .list-item:where([data-marker="false"]) {
-    list-style-type: none;
+  @layer atoms {
+    .list-item:where([data-marker="false"]) {
+      list-style-type: none;
+    }
   }
 </style>

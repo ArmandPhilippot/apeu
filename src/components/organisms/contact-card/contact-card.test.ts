@@ -14,13 +14,16 @@ describe("ContactCard", () => {
     context.container = await AstroContainer.create();
   });
 
-  it<LocalTestContext>("renders a contact button", async ({ container }) => {
+  it<LocalTestContext>("renders a contact button and a heading", async ({
+    container,
+  }) => {
     /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
-    expect.assertions(2);
+    expect.assertions(3);
 
-    const props = { contactPageRoute: "#contact" } satisfies ComponentProps<
-      typeof ContactCard
-    >;
+    const props = {
+      contactPageRoute: "#contact",
+      heading: "Any heading",
+    } satisfies ComponentProps<typeof ContactCard>;
     const result = await container.renderToString(ContactCard, {
       props,
     });
@@ -28,6 +31,7 @@ describe("ContactCard", () => {
 
     expect(result).toContain(translate("cta.contact.me"));
     expect(result).toContain(`href="${props.contactPageRoute}"`);
+    expect(result).toContain(props.heading);
   });
 
   it<LocalTestContext>("can render a list of social links", async ({
@@ -37,6 +41,7 @@ describe("ContactCard", () => {
 
     const props = {
       contactPageRoute: "#contact",
+      heading: "Any heading",
       socialMedia: {
         diaspora: "#diaspora",
         github: "#github",
@@ -51,20 +56,5 @@ describe("ContactCard", () => {
     const listItems = [...result.matchAll(/<li.*?<\/li>/g)];
 
     expect(listItems).toHaveLength(Object.keys(props.socialMedia).length);
-  });
-
-  it<LocalTestContext>("can render a heading", async ({ container }) => {
-    expect.assertions(1);
-
-    const heading = "nobis in ullam";
-    const props = { contactPageRoute: "#contact" } satisfies ComponentProps<
-      typeof ContactCard
-    >;
-    const result = await container.renderToString(ContactCard, {
-      props,
-      slots: { heading },
-    });
-
-    expect(result).toContain(heading);
   });
 });

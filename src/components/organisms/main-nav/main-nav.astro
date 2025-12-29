@@ -1,16 +1,20 @@
 ---
 import type { ComponentProps } from "astro/types";
 import { useI18n } from "../../../services/i18n";
+import type { Route, WithIcon } from "../../../types/data";
 import { CONFIG } from "../../../utils/constants";
-import NavItem from "../../molecules/nav-item/nav-item.astro";
-import NavList from "../../molecules/nav-list/nav-list.astro";
+import { isHomePage } from "../../../utils/urls";
+import Link from "../../atoms/link/link.astro";
+import ListItem from "../../atoms/list/list-item.astro";
+import List from "../../atoms/list/list.astro";
 
-type Props = Omit<ComponentProps<typeof NavList>, "children" | "hideMarker">;
+type Props = Omit<ComponentProps<typeof List>, "children" | "hideMarker"> & {
+  items: WithIcon<Route>[];
+};
 
-const { class: className, items, ...attrs } = Astro.props;
+const { class: className, items, slot, ...attrs } = Astro.props;
 const { locale } = useI18n(Astro.currentLocale);
-const isHomePage = (url: string) =>
-  url === "/" || CONFIG.LANGUAGES.AVAILABLE.some((lang) => url === `/${lang}`);
+const defaultIconSize = 24;
 const isCurrentRouteOrNested = (url: string) => {
   if (isHomePage(url)) return Astro.url.pathname === url;
   /* eslint-disable-next-line no-magic-numbers -- When this is not the default locale, the slug is prefixed by the locale so we need to go further. */
@@ -22,115 +26,131 @@ const isCurrentRouteOrNested = (url: string) => {
 };
 ---
 
-<NavList
-  {...attrs}
-  class:list={["main-nav", className]}
-  hideMarker
-  items={items}
->
+<List {...attrs} class:list={[className, "main-nav", "paper"]} hideMarker>
   {
-    ({ label, path, ...item }) => {
+    items.map(({ icon, label, path }) => {
       const isSelected = isCurrentRouteOrNested(path);
+      const iconWithSize = icon
+        ? { name: icon.name, size: icon.size ?? defaultIconSize }
+        : null;
 
       return (
-        <NavItem
-          {...item}
-          aria-current={path === Astro.url.pathname ? "page" : undefined}
-          class="main-nav-item"
-          {...(isSelected && { "data-selected": true })}
-          href={path}
-          isBlock
-          isBordered={isSelected}
-          isRounded
-        >
-          {label}
-        </NavItem>
+        <ListItem class="main-nav-item">
+          <Link
+            aria-current={path === Astro.url.pathname ? "page" : undefined}
+            class:list={["main-nav-link", { paper: isSelected }]}
+            {...(isSelected && { "data-selected": true })}
+            href={path}
+            icon={iconWithSize}
+          >
+            {label}
+          </Link>
+        </ListItem>
       );
-    }
+    })
   }
-</NavList>
+</List>
 
 <style>
-  .main-nav {
-    &:where(:not(:has(> :only-child))) {
-      column-count: 2;
-      column-gap: 0;
-      column-rule: var(--border-size-sm) solid var(--color-border-light);
+  @layer organisms {
+    .main-nav {
+      --cols: 2;
+
+      display: grid;
+      grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+      gap: var(--border-size-sm);
+      background: var(--color-border);
 
       @media (--xxs-or-above) {
-        column-count: 3;
+        --cols: 3;
       }
 
       @media (--md-or-above) {
+        --cols: 1;
+
         border: var(--border-size-sm) solid var(--color-border);
-        border-radius: var(--border-radii-md);
-        column-count: unset;
+        border-radius: var(--border-radii-lg);
+        box-shadow:
+          var(--shadow-raised-to-top-left),
+          var(--border-size-md) var(--border-size-md) 0 0 var(--color-shadow);
       }
     }
 
-    & > :global(*) {
-      padding: var(--spacing-3xs);
-      border-block-start: var(--border-size-sm) solid var(--color-border-light);
+    .main-nav-item {
+      background: var(--color-regular);
 
       @media (--md-or-above) {
-        padding: 0;
         background: var(--color-regular-light);
-        border-color: var(--color-border);
+      }
 
-        &:first-child {
-          border-block-start: 0;
-          border-start-start-radius: inherit;
-          border-start-end-radius: inherit;
-        }
+      &:first-child {
+        border-start-start-radius: inherit;
+        border-start-end-radius: inherit;
+      }
 
-        &:last-child {
-          border-end-start-radius: inherit;
-          border-end-end-radius: inherit;
-        }
-
-        &:where(:has(> [data-selected="true"])) {
-          background: transparent;
-          box-shadow: inset 0 0 var(--border-size-sm) var(--border-size-sm)
-            oklch(from var(--color-shadow) l c h / 50%);
-        }
+      &:last-child {
+        border-end-start-radius: inherit;
+        border-end-end-radius: inherit;
       }
     }
 
-    &:where(:has(> :last-child:not(:nth-child(2n)))) > :global(*:last-child) {
-      border-block-end: var(--border-size-sm) solid var(--color-border-light);
+    .main-nav-link {
+      display: flex;
+      flex-flow: column nowrap;
+      place-items: center;
+      gap: var(--spacing-2xs) var(--spacing-xs);
+      min-height: calc(var(--one-px-in-rem) * 54);
+      padding: var(--spacing-2xs) var(--spacing-xs);
+      z-index: 1;
+      border-radius: var(--border-radii-md);
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-bold);
+      text-decoration: none;
 
-      @media (--xxs-or-above) {
-        border-block-end: unset;
+      @media (any-pointer: fine) {
+        min-height: calc(var(--one-px-in-rem) * 48);
       }
-    }
 
-    &:where(:has(> :last-child:not(:nth-child(3n)))) > :global(*:last-child) {
       @media (--xxs-or-above) {
-        border-block-end: var(--border-size-sm) solid var(--color-border-light);
+        flex-direction: row;
       }
 
       @media (--md-or-above) {
-        border-block-end: 0;
+        border-radius: inherit;
       }
-    }
-  }
 
-  .main-nav-item {
-    break-inside: avoid-column;
-    outline-offset: calc(var(--border-size-md) * -1);
+      &:focus-visible {
+        outline-offset: calc(var(--border-size-sm) * -1);
+      }
 
-    @media (--xxs-or-above) {
-      flex-flow: row wrap;
-      justify-content: start;
-      padding-inline: clamp(var(--spacing-xs), 1dvi, var(--spacing-sm));
-    }
+      &:hover,
+      &:focus {
+        background: var(--color-regular-lighter);
+      }
 
-    @media (--md-or-above) {
-      padding: var(--spacing-xs)
-        clamp(var(--spacing-2xs), 1dvi, var(--spacing-lg));
-      border: 0;
-      border-radius: inherit;
-      outline-offset: calc(var(--border-size-sm) * -1);
+      &:active {
+        background: var(--color-regular);
+      }
+
+      &[data-selected="true"] {
+        &::before {
+          border-radius: inherit;
+          box-shadow: inset 0 0 var(--border-size-md) var(--border-size-md)
+            var(--color-shadow-inset);
+        }
+
+        &:where(:hover, :focus)::before {
+          filter: brightness(102%);
+        }
+
+        &:where(:hover, :focus):not(:active)::before {
+          box-shadow: none;
+        }
+
+        &:active::before {
+          filter: brightness(98%);
+        }
+      }
     }
   }
 </style>

@@ -2,31 +2,31 @@
 import type { HTMLAttributes } from "astro/types";
 import { useI18n } from "../../../services/i18n";
 import { useRouting } from "../../../services/routing";
-import type { AltLanguage } from "../../../types/data";
+import type { AltLanguage, Route } from "../../../types/data";
 import { LOCALE_DISPLAY_NAMES } from "../../../utils/constants";
 import { isAvailableLocale } from "../../../utils/type-guards";
-import LanguagePicker from "../../molecules/language-picker/language-picker.astro";
-import ThemeSetting from "../../molecules/theme-setting/theme-setting.astro";
+import LanguageSelect from "../../molecules/language-select/language-select.astro";
+import ThemeSelect from "../../molecules/theme-select/theme-select.astro";
 
 type Props = HTMLAttributes<"form"> & {
   altLanguages?: AltLanguage[] | null | undefined;
 };
 
-const { altLanguages, class: className, id, ...attrs } = Astro.props;
+const { altLanguages, class: className, id, slot, ...attrs } = Astro.props;
 const { locale, translate } = useI18n(Astro.currentLocale);
 const { routeById } = await useRouting(locale);
 const languages = Object.fromEntries(
   Object.entries(LOCALE_DISPLAY_NAMES)
-    .map(([lang, langName]) => {
+    .map(([lang, langName]): [string, Route] | null => {
       if (!isAvailableLocale(lang)) return null;
 
       return [
         lang,
         {
-          name: langName,
-          route:
+          label: langName,
+          path:
             lang === locale
-              ? Astro.url.href
+              ? Astro.url.pathname
               : (altLanguages?.find((altLang) => altLang.locale === lang)
                   ?.route ?? routeById("home", lang).path),
         },
@@ -36,63 +36,72 @@ const languages = Object.fromEntries(
 );
 ---
 
-<form {...attrs} class:list={["settings-form", className]} id={id}>
-  {
-    Object.keys(languages).length > 1 ? (
-      <LanguagePicker
-        class="settings-form-language"
-        current={locale}
-        id={`${id}-language-picker`}
-        label={translate("form.settings.label.language")}
-        languages={languages}
-      />
-    ) : null
-  }
-  <ThemeSetting
-    class="settings-form-theme"
-    id={`${id}-theme`}
-    label={translate("form.settings.label.theme.website")}
-    setting="theme"
-  />
-  <ThemeSetting
-    class="settings-form-theme"
-    id={`${id}-shiki`}
-    label={translate("form.settings.label.theme.shiki")}
-    setting="shiki"
-  />
+<form {...attrs} class:list={[className, "settings-form"]} id={id}>
+  <fieldset>
+    <legend>{translate("form.settings.label")}</legend>
+    {
+      Object.keys(languages).length > 1 ? (
+        <LanguageSelect
+          class="settings-form-language"
+          current={locale}
+          hideLabel
+          label={translate("form.settings.label.language")}
+          languages={languages}
+          showIcon
+        />
+      ) : null
+    }
+    <ThemeSelect
+      class="settings-form-theme"
+      current="auto"
+      hideLabel
+      label={translate("form.settings.label.theme.website")}
+      setting="theme"
+      showIcon
+      themes={{
+        auto: translate("theme.label.auto"),
+        dark: translate("theme.label.dark"),
+        light: translate("theme.label.light"),
+      }}
+    />
+    <ThemeSelect
+      class="settings-form-theme"
+      current="auto"
+      hideLabel
+      label={translate("form.settings.label.theme.shiki")}
+      setting="shiki"
+      showIcon
+      themes={{
+        auto: translate("theme.label.auto"),
+        dark: translate("theme.label.dark"),
+        light: translate("theme.label.light"),
+      }}
+    />
+  </fieldset>
 </form>
 
 <style>
-  .settings-form {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: auto;
-    place-items: center center;
-
-    @media (--xxs-or-above) {
-      grid-template-columns: max-content minmax(0, 1fr);
-      justify-items: end;
-      gap: var(--spacing-sm);
-      width: fit-content;
+  @layer organisms {
+    .settings-form fieldset {
+      display: flex;
+      flex-flow: column;
+      gap: var(--spacing-xs);
+      margin-inline: 0;
+      padding-inline: 0;
+      border: none;
     }
-  }
 
-  /* We need to increase specificity because of inconsistencies between
-   * dev/build modes. */
-  .settings-form .settings-form-language,
-  .settings-form .settings-form-theme > :global(*) {
-    display: flex;
-    flex-flow: column;
-    align-items: center;
-  }
+    .settings-form legend {
+      margin-block-end: var(--spacing-3xs);
+    }
 
-  /* We need to increase specificity because of inconsistencies between
-   * dev/build modes. */
-  .settings-form .settings-form-language,
-  .settings-form .settings-form-theme,
-  .settings-form .settings-form-theme > :global(*) {
-    @media (--xxs-or-above) {
-      display: contents;
+    .settings-form-language,
+    .settings-form-theme {
+      flex: 1;
+
+      & :global(label) {
+        flex: 1;
+      }
     }
   }
 </style>

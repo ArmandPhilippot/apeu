@@ -3,7 +3,6 @@ title: "Card"
 ---
 import { components as mdxComponents } from "../../mdx";
 import Button from "../../atoms/button/button.astro";
-import Heading from "../../atoms/heading/heading.astro";
 import Img from "../../atoms/img/img.astro";
 import Link from "../../atoms/link/link.astro";
 import CodePreview from "../code-preview/code-preview.astro";
@@ -45,7 +44,7 @@ If you don't wrap the Card in a CSS container, its appearance on large screens w
 
 <CodePreview
   code={`<Card>
-    <Heading as="h3" slot="heading">The card title</Heading>
+    <h3 slot="heading">The card title</h3>
     <p>Ut consequuntur modi. Accusantium quia unde sint suscipit ipsum. Sunt
     voluptates earum ea cumque eligendi voluptate iste architecto dolores.
     Sit impedit cum non voluptates at qui ducimus eveniet reiciendis. Ad
@@ -55,7 +54,7 @@ If you don't wrap the Card in a CSS container, its appearance on large screens w
   lang="astro"
 >
   <Card>
-    <Heading as="h3" slot="heading">The card title</Heading>
+    <h3 slot="heading">The card title</h3>
 
     Ut consequuntur modi. Accusantium quia unde sint suscipit ipsum. Sunt
     voluptates earum ea cumque eligendi voluptate iste architecto dolores.
@@ -64,23 +63,23 @@ If you don't wrap the Card in a CSS container, its appearance on large screens w
   </Card>
 </CodePreview>
 
-## With heading, body and frontmatter
+## With heading, body and overline
 
 <CodePreview
   code={`<Card>
-    <span slot="frontmatter">Category</span>
-    <Heading as="h3" slot="heading">The card title</Heading>
+    <span slot="overline">Category</span>
+    <h3 slot="heading">The card title</h3>
     <p>Ut consequuntur modi. Accusantium quia unde sint suscipit ipsum. Sunt
     voluptates earum ea cumque eligendi voluptate iste architecto dolores.
     Sit impedit cum non voluptates at qui ducimus eveniet reiciendis. Ad
     voluptate dolor dicta ea sit amet facere. Blanditiis non et.</p>
 </Card>`}
-  label="Using a heading and a frontmatter"
+  label="Using a heading and an overline"
   lang="astro"
 >
   <Card>
-    <span slot="frontmatter">Category</span>
-    <Heading as="h3" slot="heading">The card title</Heading>
+    <span slot="overline">Category</span>
+    <h3 slot="heading">The card title</h3>
 
     Ut consequuntur modi. Accusantium quia unde sint suscipit ipsum. Sunt
     voluptates earum ea cumque eligendi voluptate iste architecto dolores.
@@ -93,7 +92,7 @@ If you don't wrap the Card in a CSS container, its appearance on large screens w
 
 <CodePreview
   code={`<Card>
-    <Heading as="h3" slot="heading">The card title</Heading>
+    <h3 slot="heading">The card title</h3>
     <p>Ut consequuntur modi. Accusantium quia unde sint suscipit ipsum. Sunt
     voluptates earum ea cumque eligendi voluptate iste architecto dolores.
     Sit impedit cum non voluptates at qui ducimus eveniet reiciendis. Ad
@@ -104,7 +103,7 @@ If you don't wrap the Card in a CSS container, its appearance on large screens w
   lang="astro"
 >
   <Card>
-    <Heading as="h3" slot="heading">The card title</Heading>
+    <h3 slot="heading">The card title</h3>
 
     Ut consequuntur modi. Accusantium quia unde sint suscipit ipsum. Sunt
     voluptates earum ea cumque eligendi voluptate iste architecto dolores.
@@ -119,7 +118,7 @@ If you don't wrap the Card in a CSS container, its appearance on large screens w
 
 <CodePreview
   code={`<Card>
-    <Heading as="h3" slot="heading">The card title</Heading>
+    <h3 slot="heading">The card title</h3>
     <p>Ut consequuntur modi. Accusantium quia unde sint suscipit ipsum. Sunt
     voluptates earum ea cumque eligendi voluptate iste architecto dolores.
     Sit impedit cum non voluptates at qui ducimus eveniet reiciendis. Ad
@@ -130,7 +129,7 @@ If you don't wrap the Card in a CSS container, its appearance on large screens w
   lang="astro"
 >
   <Card>
-    <Heading as="h3" slot="heading">The card title</Heading>
+    <h3 slot="heading">The card title</h3>
 
     Ut consequuntur modi. Accusantium quia unde sint suscipit ipsum. Sunt
     voluptates earum ea cumque eligendi voluptate iste architecto dolores.
@@ -145,7 +144,7 @@ If you don't wrap the Card in a CSS container, its appearance on large screens w
 
 <CodePreview
   code={`<Card>
-    <Heading as="h3" slot="heading">The card title</Heading>
+    <h3 slot="heading">The card title</h3>
     <p>Ut consequuntur modi. Accusantium quia unde sint suscipit ipsum. Sunt
     voluptates earum ea cumque eligendi voluptate iste architecto dolores.
     Sit impedit cum non voluptates at qui ducimus eveniet reiciendis. Ad
@@ -157,7 +156,7 @@ If you don't wrap the Card in a CSS container, its appearance on large screens w
   lang="astro"
 >
   <Card>
-    <Heading as="h3" slot="heading">The card title</Heading>
+    <h3 slot="heading">The card title</h3>
 
     Ut consequuntur modi. Accusantium quia unde sint suscipit ipsum. Sunt
     voluptates earum ea cumque eligendi voluptate iste architecto dolores.
@@ -180,7 +179,7 @@ If you don't wrap the Card in a CSS container, its appearance on large screens w
       src="https://picsum.photos/640/480"
       width={640}
     />
-    <Heading as="h3" slot="heading">The card title</Heading>
+    <h3 slot="heading">The card title</h3>
     <p>Ut consequuntur modi. Accusantium quia unde sint suscipit ipsum. Sunt
     voluptates earum ea cumque eligendi voluptate iste architecto dolores.
     Sit impedit cum non voluptates at qui ducimus eveniet reiciendis. Ad
@@ -197,7 +196,7 @@ If you don't wrap the Card in a CSS container, its appearance on large screens w
       src="https://picsum.photos/640/480"
       width={640}
     />
-    <Heading as="h3" slot="heading">The card title</Heading>
+    <h3 slot="heading">The card title</h3>
 
     Ut consequuntur modi. Accusantium quia unde sint suscipit ipsum. Sunt
     voluptates earum ea cumque eligendi voluptate iste architecto dolores.
@@ -217,7 +216,7 @@ If you don't wrap the Card in a CSS container, its appearance on large screens w
       src="https://picsum.photos/640/480"
       width={640}
     />
-    <Heading as="h3" slot="heading">The card title</Heading>
+    <h3 slot="heading">The card title</h3>
     <p>Ut consequuntur modi. Accusantium quia unde sint suscipit ipsum. Sunt
     voluptates earum ea cumque eligendi voluptate iste architecto dolores.
     Sit impedit cum non voluptates at qui ducimus eveniet reiciendis. Ad
@@ -235,7 +234,7 @@ If you don't wrap the Card in a CSS container, its appearance on large screens w
       src="https://picsum.photos/640/480"
       width={640}
     />
-    <Heading as="h3" slot="heading">The card title</Heading>
+    <h3 slot="heading">The card title</h3>
 
     Ut consequuntur modi. Accusantium quia unde sint suscipit ipsum. Sunt
     voluptates earum ea cumque eligendi voluptate iste architecto dolores.
@@ -250,7 +249,7 @@ If you don't wrap the Card in a CSS container, its appearance on large screens w
 
 <CodePreview
   code={`<Card>
-    <span slot="frontmatter">Category</span>
+    <span slot="overline">Category</span>
     <Img
       alt="The card cover"
       height={480}
@@ -258,7 +257,7 @@ If you don't wrap the Card in a CSS container, its appearance on large screens w
       src="https://picsum.photos/640/480"
       width={640}
     />
-    <Heading as="h3" slot="heading">The card title</Heading>
+    <h3 slot="heading">The card title</h3>
     <p>Ut consequuntur modi. Accusantium quia unde sint suscipit ipsum. Sunt
     voluptates earum ea cumque eligendi voluptate iste architecto dolores.
     Sit impedit cum non voluptates at qui ducimus eveniet reiciendis. Ad
@@ -270,7 +269,7 @@ If you don't wrap the Card in a CSS container, its appearance on large screens w
   lang="astro"
 >
   <Card>
-    <span slot="frontmatter">Category</span>
+    <span slot="overline">Category</span>
     <Img
       alt="The card cover"
       height={480}
@@ -278,7 +277,7 @@ If you don't wrap the Card in a CSS container, its appearance on large screens w
       src="https://picsum.photos/640/480"
       width={640}
     />
-    <Heading as="h3" slot="heading">The card title</Heading>
+    <h3 slot="heading">The card title</h3>
 
     Ut consequuntur modi. Accusantium quia unde sint suscipit ipsum. Sunt
     voluptates earum ea cumque eligendi voluptate iste architecto dolores.
@@ -301,9 +300,9 @@ If you don't wrap the Card in a CSS container, its appearance on large screens w
       src="https://picsum.photos/640/480"
       width={640}
     />
-    <Heading as="h3" slot="heading">
+    <h3 slot="heading">
       <Link href="#the-post">The card title</Link>
-    </Heading>
+    </h3>
     <p>Ut consequuntur modi. Accusantium quia unde sint suscipit ipsum. Sunt
     voluptates earum ea cumque eligendi voluptate iste architecto dolores.
     Sit impedit cum non voluptates at qui ducimus eveniet reiciendis. Ad
@@ -321,9 +320,9 @@ If you don't wrap the Card in a CSS container, its appearance on large screens w
       src="https://picsum.photos/640/480"
       width={640}
     />
-    <Heading as="h3" slot="heading">
+    <h3 slot="heading">
       <Link href="#the-post">The card title</Link>
-    </Heading>
+    </h3>
 
     Ut consequuntur modi. Accusantium quia unde sint suscipit ipsum. Sunt
     voluptates earum ea cumque eligendi voluptate iste architecto dolores.
@@ -338,7 +337,7 @@ If you don't wrap the Card in a CSS container, its appearance on large screens w
 
 <CodePreview
   code={`<Card>
-    <span slot="frontmatter">Category</span>
+    <span slot="overline">Category</span>
     <Img
       alt="The card cover"
       height={480}
@@ -346,7 +345,7 @@ If you don't wrap the Card in a CSS container, its appearance on large screens w
       src="https://picsum.photos/640/480"
       width={640}
     />
-    <Heading as="h3" slot="heading">The card title</Heading>
+    <h3 slot="heading">The card title</h3>
     <p>Ut consequuntur modi. Accusantium quia unde sint suscipit ipsum. Sunt
     voluptates earum ea cumque eligendi voluptate iste architecto dolores.
     Sit impedit cum non voluptates at qui ducimus eveniet reiciendis. Ad
@@ -371,7 +370,7 @@ If you don't wrap the Card in a CSS container, its appearance on large screens w
   lang="astro"
 >
   <Card>
-    <span slot="frontmatter">Category</span>
+    <span slot="overline">Category</span>
     <Img
       alt="The card cover"
       height={480}
@@ -379,7 +378,7 @@ If you don't wrap the Card in a CSS container, its appearance on large screens w
       src="https://picsum.photos/640/480"
       width={640}
     />
-    <Heading as="h3" slot="heading">The card title</Heading>
+    <h3 slot="heading">The card title</h3>
 
     Ut consequuntur modi. Accusantium quia unde sint suscipit ipsum. Sunt
     voluptates earum ea cumque eligendi voluptate iste architecto dolores.

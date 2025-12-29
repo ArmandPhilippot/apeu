@@ -1,0 +1,65 @@
+---
+import type { ComponentProps } from "astro/types";
+import { Icon } from "astro-icon/components";
+import type { MetaItem } from "../../../types/data";
+import type { Gap } from "../../../types/tokens";
+import DescriptionList from "../../atoms/description-list/description-list.astro";
+import Link from "../../atoms/link/link.astro";
+import Time from "../../atoms/time/time.astro";
+
+type Props = ComponentProps<typeof DescriptionList> & {
+  gap?: Gap | null | undefined;
+  hideLabel?: boolean | null | undefined;
+  items: MetaItem[];
+};
+
+const {
+  class: className,
+  gap = { col: "2xs" },
+  hideLabel = false,
+  items,
+  slot,
+  ...attrs
+} = Astro.props;
+const defaultIconSize = 22;
+---
+
+<DescriptionList {...attrs} class:list={[className, "meta"]} gap={gap}>
+  {
+    items.map((item) => (
+      <div class="meta-item">
+        <dt>
+          {item.icon?.name ? (
+            <Icon
+              aria-hidden="true"
+              class="meta-icon"
+              name={item.icon.name}
+              size={item.icon.size ?? defaultIconSize}
+            />
+          ) : null}
+          <span class:list={{ "sr-only": hideLabel }}>{item.label}</span>
+        </dt>
+        {item.values.map((value) => {
+          let content = value;
+
+          if (value instanceof Date) {
+            content = <Time date={value} />;
+          } else if (typeof value === "object") {
+            content = <Link href={value.path}>{value.label}</Link>;
+          }
+
+          return <dd title={item.description}>{content}</dd>;
+        })}
+      </div>
+    ))
+  }
+</DescriptionList>
+
+<style>
+  @layer molecules {
+    .meta-icon {
+      margin-inline-end: var(--spacing-2xs);
+      vertical-align: text-bottom;
+    }
+  }
+</style>

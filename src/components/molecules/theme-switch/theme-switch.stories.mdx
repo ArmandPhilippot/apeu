@@ -1,0 +1,60 @@
+---
+title: "ThemeSwitch"
+---
+import { components as mdxComponents } from "../../mdx";
+import CodePreview from "../code-preview/code-preview.astro";
+import ThemeSwitch from "./theme-switch.astro";
+
+export const components = mdxComponents;
+
+## Introduction
+
+A `ThemeSwitch` component should be used with boolean settings.
+
+<CodePreview
+  code={`import ThemeSwitch from "./components/molecules/theme-switch/theme-switch.astro";`}
+  label="How to import"
+  lang="ts"
+/>
+
+<CodePreview
+  code={`<ThemeSwitch label="Use Example" />`}
+  label="Basic use"
+  lang="astro"
+>
+  <ThemeSwitch label="Use Example" />
+</CodePreview>
+
+## Options
+
+### `hideLabel`
+
+<CodePreview
+  code={`<ThemeSwitch hideLabel label="Hidden Items Label Example" />`}
+  label="Using a hidden label"
+  lang="astro"
+>
+  <ThemeSwitch hideLabel label="Hidden Items Label Example" />
+</CodePreview>
+
+### `isInline`
+
+<CodePreview
+  code={`<ThemeSwitch isInline label="Inline Example" />`}
+  label="Inlining the label"
+  lang="astro"
+>
+  <ThemeSwitch isInline label="Inline Example" />
+</CodePreview>
+
+### `setting`
+
+You can choose which setting is controlled by the switch, either `theme` or `shiki`.
+
+<CodePreview
+  code={`<ThemeSwitch label="Use Example" setting="shiki" />`}
+  label="Controlling Shiki theme"
+  lang="astro"
+>
+  <ThemeSwitch label="Use Example" setting="shiki" />
+</CodePreview>

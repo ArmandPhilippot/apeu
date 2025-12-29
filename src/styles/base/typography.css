@@ -1,11 +1,17 @@
 a {
   color: var(--color-primary);
-  text-decoration-thickness: 0.2ex;
-  text-underline-offset: 0.4ex;
-  transition: text-decoration 0.18s linear 0s;
+  outline-offset: var(--border-size-sm);
+  text-decoration-thickness: 0.1ex;
+  text-underline-offset: 0.35ex;
+  transition: text-decoration-thickness 0.1s linear 0s;
 
   &:where(:hover, :focus) {
     color: var(--color-primary-light);
+  }
+
+  &:where(:focus-visible) {
+    outline: var(--border-size-sm) solid var(--color-primary-lighter);
+    transition: none;
   }
 
   &:has(> img, > svg) {
@@ -17,12 +23,13 @@ a {
     }
   }
 
-  &:has(> picture) {
+  &:has(> picture, > img) {
     display: block;
+    width: fit-content;
   }
 
   &:hover {
-    text-decoration-thickness: 0.4ex;
+    text-decoration-thickness: 0.3ex;
   }
 
   &:active {
@@ -31,12 +38,13 @@ a {
   }
 
   &:focus-visible {
-    border-radius: var(--border-radii-sm);
+    border-radius: var(--border-radii-md);
     text-decoration-color: transparent;
     outline: var(--border-size-md) solid var(--color-primary-lighter);
+    outline-offset: var(--border-size-md);
   }
 
-  &:where(.download, [hreflang], [rel~="external"]) {
+  &:where([data-download="true"], [hreflang], [rel~="external"]) {
     &::after {
       display: inline-block;
       content: var(--is-lang-hidden, "\0000a0" var(--lang-icon, ""))
@@ -53,15 +61,15 @@ a {
     --is-lang-hidden: "";
   }
 
-  &[rel~="external"]:not(.download) {
+  &[rel~="external"]:not([data-download="true"]) {
     --link-icon: var(--external-icon);
   }
 
-  &.download:not([rel~="external"]) {
+  &[data-download="true"]:not([rel~="external"]) {
     --link-icon: var(--download-icon);
   }
 
-  &.download[rel~="external"] {
+  &[data-download="true"][rel~="external"] {
     --link-icon: var(--download-icon) "\0000a0" var(--external-icon);
   }
 
@@ -77,9 +85,12 @@ address {
 }
 
 :where(caption, figcaption) {
-  color: var(--color-primary-faded);
+  padding: var(--spacing-3xs) var(--spacing-sm);
+  background: var(--color-regular-lighter);
+  color: var(--color-regular-high);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-bold);
+  text-align: center;
 }
 
 caption {
@@ -87,7 +98,7 @@ caption {
 }
 
 cite {
-  color: var(--color-primary-faded);
+  color: var(--color-regular-high);
   font-style: italic;
 }
 
@@ -109,31 +120,31 @@ samp {
 
 :where(:not(pre)) > code {
   padding: var(--spacing-5xs) var(--spacing-3xs);
-  background: var(--color-regular-darker);
-  border: var(--border-size-sm) solid var(--color-border);
+  background: var(--color-regular-low);
+  border: var(--border-size-sm) solid var(--color-border-light);
+  color: var(--color-on-regular-low);
 }
 
 :where(:not(samp)) > kbd {
-  padding: var(--spacing-4xs) var(--spacing-2xs);
-  color: var(--color-muted-faded);
+  padding: var(--spacing-3xs) var(--spacing-2xs) var(--spacing-4xs);
+  color: var(--color-regular-high);
 
   &:not(:has(kbd, samp)) {
     background: var(--color-regular-lighter);
     box-shadow:
       inset 0 0 var(--border-size-sm) var(--border-size-sm)
         var(--color-muted-light),
-      inset 0 0 0 var(--border-size-sm) var(--color-muted-light),
       0 0 0 var(--border-size-sm) var(--color-muted),
-      var(--border-size-md) var(--border-size-md) 0 var(--border-size-sm)
+      var(--border-size-sm) var(--border-size-sm) 0 var(--border-size-sm)
         var(--color-shadow);
   }
 
   &:has(samp) {
-    padding: var(--spacing-4xs) var(--spacing-2xs);
-    background: var(--color-regular-darker);
-    border: var(--border-size-sm) solid var(--color-border-light);
-    box-shadow: inset 0 calc(var(--border-size-sm) * -1) var(--border-size-md) 0
-      var(--color-muted-darker);
+    padding: var(--spacing-3xs) var(--spacing-2xs) var(--spacing-4xs);
+    background: var(--color-regular-lighter);
+    border: var(--border-size-sm) solid var(--color-border);
+    box-shadow: var(--border-size-sm) var(--border-size-sm) 0 0
+      var(--color-shadow);
     font-style: italic;
   }
 }
@@ -145,7 +156,7 @@ samp {
   font-style: italic;
 
   &:not(:has(kbd)) {
-    background: var(--color-regular-darker);
+    background: var(--color-regular-dark);
   }
 }
 
@@ -162,13 +173,13 @@ dt {
 }
 
 :is(h1, h2, h3, h4, h5, h6) {
-  color: var(--color-primary-faded);
+  color: var(--color-primary-high);
   font-weight: var(--font-weight-bold);
-  text-wrap: balance;
 }
 
 h1 {
   font-size: var(--font-size-5xl);
+  text-wrap: balance;
 }
 
 h2 {
@@ -192,7 +203,7 @@ h6 {
 }
 
 label {
-  color: var(--color-primary-faded);
+  color: var(--color-primary-high);
   font-weight: var(--font-weight-bold);
 
   &:where([for]) {
@@ -201,7 +212,7 @@ label {
 }
 
 legend {
-  color: var(--color-primary-faded);
+  color: var(--color-primary-high);
   font-weight: var(--font-weight-bold);
 }
 
@@ -249,5 +260,29 @@ table {
     &:last-child {
       margin-block-start: var(--spacing-4xs);
     }
+  }
+}
+
+*:is(h2, h3, h4, h5, h6, p, figure, ol, ul)
+  + *:is(h2, h3, h4, h5, h6, p, figure, ol, ul) {
+  margin-block: var(--spacing-md);
+}
+
+/* Browsers default quotes do not use a space after/before French quotes which is a mistake, so we need custom styles. */
+:root:lang(fr) {
+  quotes: "« " " »" "‹ " " ›";
+}
+
+:root:lang(en) {
+  quotes: "“" "”" "‘" "’";
+}
+
+.prose > * {
+  &:not(:first-child) {
+    margin-block-start: var(--spacing-md);
+  }
+
+  &:not(:last-child) {
+    margin-block-end: var(--spacing-md);
   }
 }

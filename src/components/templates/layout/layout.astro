@@ -1,126 +1,147 @@
 ---
 import type { ComponentProps, HTMLAttributes } from "astro/types";
-import { Font } from "astro:assets";
-import { ClientRouter } from "astro:transitions";
+import { Icon } from "astro-icon/components";
+import type { Graph } from "schema-dts";
+import { getJsonLdSchema } from "../../../lib/schema-dts/schema";
 import { useI18n } from "../../../services/i18n";
 import { useRouting } from "../../../services/routing";
 import "../../../styles/global.css";
+import type { Route, SEO, WithIcon } from "../../../types/data";
 import { CONFIG } from "../../../utils/constants";
 import Copyright from "../../atoms/copyright/copyright.astro";
-import Head from "../../atoms/head/head.astro";
-import License from "../../atoms/license/license.astro";
+import Link from "../../atoms/link/link.astro";
+import ListItem from "../../atoms/list/list-item.astro";
+import List from "../../atoms/list/list.astro";
 import BackToTop from "../../molecules/back-to-top/back-to-top.astro";
 import Branding from "../../molecules/branding/branding.astro";
-import NavItem from "../../molecules/nav-item/nav-item.astro";
-import NavList from "../../molecules/nav-list/nav-list.astro";
-import SkipTo from "../../molecules/skip-to/skip-to.astro";
-import MainNav from "../../organisms/main-nav/main-nav.astro";
+import Breadcrumb from "../../molecules/breadcrumb/breadcrumb.astro";
+import SkipLink from "../../molecules/skip-link/skip-link.astro";
 import Navbar from "../../organisms/navbar/navbar.astro";
-import SearchForm from "../../organisms/search-form/search-form.astro";
-import SettingsForm from "../../organisms/settings-form/settings-form.astro";
 import PageTransitionProvider from "../../providers/page-transition-provider.astro";
-import SvgFiltersProvider from "../../providers/svg-filters-provider.astro";
 import ThemeProvider from "../../providers/theme-provider.astro";
-import GlobalThemeInit from "../../utilities/global-theme-init.astro";
-import ShikiThemeInit from "../../utilities/shiki-theme-init.astro";
+import Head from "./head.astro";
 
-type Props = Pick<ComponentProps<typeof Head>, "seo"> &
-  Omit<HTMLAttributes<"div">, "id">;
+type Props = Omit<HTMLAttributes<"main">, "id"> & {
+  breadcrumb?: ComponentProps<typeof Breadcrumb>["items"] | null | undefined;
+  graphs?: Graph["@graph"] | null | undefined;
+  pageTitle: string;
+  seo: SEO;
+};
 
-const { class: className, seo, ...attrs } = Astro.props;
+const {
+  breadcrumb,
+  class: className,
+  graphs,
+  pageTitle,
+  seo,
+  ...attrs
+} = Astro.props;
 const { locale, translate } = useI18n(Astro.currentLocale);
 const { routeById } = await useRouting(locale);
-const homeRoute = routeById("home");
-const isHome = Astro.url.pathname === homeRoute.path;
-const mainNav = [
-  {
-    icon: "home",
-    iconSize: 28,
-    label: translate("page.home.title"),
-    path: homeRoute.path,
-  },
-  {
-    icon: "blog",
-    iconSize: 28,
-    label: translate("page.blog.title"),
-    path: routeById("blog").path,
-  },
-  {
-    icon: "guide",
-    iconSize: 28,
-    label: translate("page.guides.title"),
-    path: routeById("guides").path,
-  },
-  {
-    icon: "notepad",
-    iconSize: 28,
-    label: translate("page.notes.title"),
-    path: routeById("notes").path,
-  },
-  {
-    icon: "project",
-    iconSize: 28,
-    label: translate("page.projects.title"),
-    path: routeById("projects").path,
-  },
-  {
-    icon: "bookmark",
-    iconSize: 28,
-    label: translate("page.bookmarks.title"),
-    path: routeById("bookmarks").path,
-  },
-  {
-    icon: "globe",
-    iconSize: 28,
-    label: translate("page.blogroll.title"),
-    path: routeById("blogroll").path,
-  },
-  {
-    icon: "contact",
-    iconSize: 28,
-    label: translate("page.contact.title"),
-    path: routeById("contact").path,
-  },
-] satisfies ComponentProps<typeof NavList>["items"];
-const devOnlyLinks = import.meta.env.DEV
-  ? [{ label: "Design system", path: "/design-system" }]
-  : [];
-const footerLinks = [
-  {
-    label: translate("page.legal.notice.title"),
-    path: routeById("legal-notice").path,
-  },
-  {
-    icon: "feed",
-    iconSize: 17,
-    label: translate("page.feeds.title"),
-    path: routeById("feeds").path,
-  },
-  ...devOnlyLinks,
-] satisfies ComponentProps<typeof NavList>["items"];
+
+const pagesRoutes = {
+  blog: { ...routeById("blog"), icon: { name: "blog" } },
+  blogroll: { ...routeById("blogroll"), icon: { name: "globe" } },
+  bookmarks: { ...routeById("bookmarks"), icon: { name: "bookmark" } },
+  contact: { ...routeById("contact"), icon: { name: "contact" } },
+  feeds: { ...routeById("feeds"), icon: { name: "feed" } },
+  guides: { ...routeById("guides"), icon: { name: "guide" } },
+  home: { ...routeById("home"), icon: { name: "home" } },
+  legalNotice: routeById("legal-notice"),
+  notes: { ...routeById("notes"), icon: { name: "notepad" } },
+  projects: { ...routeById("projects"), icon: { name: "project" } },
+  search: routeById("search"),
+} satisfies Record<string, WithIcon<Route>>;
+
+const getLinks = (
+  keys: (keyof typeof pagesRoutes)[],
+  context: "header" | "footer"
+): WithIcon<Route>[] =>
+  keys.map((key) => {
+    const page = pagesRoutes[key];
+    return {
+      ...page,
+      icon:
+        "icon" in page
+          ? // eslint-disable-next-line no-magic-numbers -- Explicit enough.
+            { ...page.icon, size: context === "footer" ? 17 : 28 }
+          : null,
+    };
+  });
+
+const mainNavRoutes = getLinks(
+  [
+    "home",
+    "blog",
+    "guides",
+    "notes",
+    "projects",
+    "bookmarks",
+    "blogroll",
+    "contact",
+  ],
+  "header"
+);
+const devOnlyRoutes: WithIcon<Route>[] = [
+  { label: "Design system", path: "/design-system" },
+];
+const footerRoutes = [
+  ...getLinks(["legalNotice", "feeds"], "footer"),
+  ...(import.meta.env.DEV ? devOnlyRoutes : []),
+];
+
+const isHome = Astro.url.pathname === pagesRoutes.home.path;
 const contentsId = translate("anchor.site.content");
 const topId = translate("anchor.site.top");
 ---
 
-<html
-  data-shiki="light"
-  data-theme="light"
-  lang={locale}
-  style="color-scheme: light;"
->
+<html data-shiki="light" data-theme="light" lang={locale}>
   <Head
-    addBrandToTitle={!isHome}
     brand={CONFIG.BRAND}
     colorScheme="light dark"
+    isHome={isHome}
     seo={seo}
-    themeColor="#214769"
+    themeColor="#13436c"
+    title={pageTitle}
   >
-    <ClientRouter fallback="swap" />
-    <Font cssVariable="--font-inter" preload />
-    <Font cssVariable="--font-cousine" preload />
-    <slot name="head" />
-    <GlobalThemeInit />
-    <ShikiThemeInit />
+    <Fragment slot="blocking">
+      {/* These scripts are intentionally inlined to avoid FOUC. */}
+      <script is:inline>
+        !(function () {
+          const e = localStorage.getItem("apeu-settings:theme"),
+            t = "string" == typeof e ? JSON.parse(e) : void 0,
+            o = window.matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light",
+            c = e && ["dark", "light"].includes(t) ? t : o;
+          document.documentElement.setAttribute("data-theme", c);
+        })();
+      </script>
+      <script is:inline>
+        !(function () {
+          const e = localStorage.getItem("apeu-settings:shiki"),
+            t = "string" == typeof e ? JSON.parse(e) : void 0,
+            o = document.documentElement.getAttribute("data-theme"),
+            s = window.matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light",
+            c = e && ["dark", "light"].includes(t) ? t : o === "auto" ? s : o;
+          document.documentElement.setAttribute("data-shiki", c);
+        })();
+      </script>
+      <style is:inline transition:persist>
+        @layer reset, themes, tokens, base, atoms, molecules, organisms, layout, views, utils;
+      </style>
+    </Fragment>
+    {
+      graphs ? (
+        <script
+          is:inline
+          set:html={JSON.stringify(getJsonLdSchema(graphs))}
+          type="application/ld+json"
+        />
+      ) : null
+    }
     <noscript>
       <style>
         .js-only {
@@ -129,194 +150,263 @@ const topId = translate("anchor.site.top");
         }
       </style>
     </noscript>
+    <slot name="open-graph" slot="open-graph" />
   </Head>
-  <body class="site svg-filter-paper" id={topId}>
+  <body class="site paper" id={topId}>
     <ThemeProvider>
-      <SvgFiltersProvider>
-        <PageTransitionProvider>
-          <SkipTo anchor={`#${contentsId}`}>
-            {translate("cta.skip.to.content")}
-          </SkipTo>
-          <header class="site-header">
-            <div class="site-branding">
-              <Branding brand={CONFIG.BRAND} url={homeRoute.path} />
-            </div>
-            <Navbar
-              aria-label={translate("nav.label.primary")}
-              class="site-navbar"
-              id="site-navbar"
-            >
-              <MainNav items={mainNav} slot="nav" />
-              <SearchForm
-                id="site-search"
-                isInline
-                queryParam={CONFIG.SEARCH.QUERY_PARAM}
-                resultsPage={routeById("search").path}
-                slot="search"
-              />
-              <SettingsForm
-                altLanguages={seo.languages}
-                id="site-settings"
-                slot="settings"
-              />
-            </Navbar>
-          </header>
-          <div {...attrs} class:list={["site-body", className]} id={contentsId}>
+      <PageTransitionProvider>
+        <SkipLink to={`#${contentsId}`}>
+          {translate("cta.skip.to.content")}
+        </SkipLink>
+        <header class="site-header">
+          <Branding
+            brand={CONFIG.BRAND}
+            class="site-branding"
+            url={pagesRoutes.home.path}
+          />
+          <Navbar
+            altLanguages={seo.languages}
+            class="site-navbar paper"
+            mainNav={mainNavRoutes}
+          />
+        </header>
+        <div class="site-body">
+          {
+            breadcrumb ? (
+              <nav class="site-breadcrumb">
+                <Breadcrumb items={breadcrumb} />
+              </nav>
+            ) : null
+          }
+          <main
+            {...attrs}
+            class:list={[className, "site-main", "paper-dark"]}
+            data-pagefind-body
+            id={contentsId}
+          >
             <slot />
-          </div>
-          <footer class="site-footer">
-            <Copyright
-              creationYear={CONFIG.CREATION_YEAR}
-              owner={CONFIG.BRAND}
-            />
-            <License />
-            <NavList class="site-footer-nav" isInline items={footerLinks}>
-              {
-                ({ label, path, ...item }) => (
-                  <NavItem {...item} href={path}>
+          </main>
+        </div>
+        <footer class="site-footer">
+          <Copyright
+            class="site-copyright"
+            creationYear={CONFIG.CREATION_YEAR}
+            owner={CONFIG.BRAND}
+          />
+          <Icon
+            class="site-license"
+            name="cc-by-sa"
+            title={translate("license.title")}
+          />
+          <List class="site-footer-nav" isInline spacing="xs">
+            {
+              footerRoutes.map(({ icon, label, path }) => (
+                <ListItem>
+                  <Link href={path} icon={icon}>
                     {label}
-                  </NavItem>
-                )
-              }
-            </NavList>
-            <BackToTop
-              anchor={`#${topId}`}
-              class="site-back-to-top"
-              label={translate("cta.back.to.top")}
-            />
-          </footer>
-        </PageTransitionProvider>
-      </SvgFiltersProvider>
+                  </Link>
+                </ListItem>
+              ))
+            }
+          </List>
+          <BackToTop
+            anchor={`#${topId}`}
+            class="site-back-to-top"
+            label={translate("cta.back.to.top")}
+          />
+        </footer>
+      </PageTransitionProvider>
     </ThemeProvider>
   </body>
 </html>
 
 <style>
-  .site {
-    display: flex;
-    flex-flow: column;
-    min-height: 100dvh;
+  @layer layout {
+    .site {
+      --site-col1-width: minmax(0, 1fr);
 
-    @media (--md-or-above) {
       display: grid;
-      grid-template-columns:
-        minmax(calc(var(--one-px-in-rem) * 200), 22dvw)
-        minmax(0, 1fr);
-      grid-template-rows: minmax(0, 1fr) minmax(0, auto);
+      grid-template-columns: var(--site-col1-width) minmax(0, 1fr);
+      grid-template-rows:
+        minmax(0, auto) minmax(0, 1fr) minmax(0, auto)
+        minmax(0, auto);
+      min-height: 100dvh;
+      accent-color: var(--color-primary);
+      background: var(--color-regular);
+      color: var(--color-on-regular);
+      font-family: var(--font-family-regular);
+      font-size: var(--font-size-md);
+      line-height: var(--line-height);
+
+      @media (--md-or-above) {
+        --site-col1-width: clamp(
+          calc(300 * var(--one-px-in-rem)),
+          21dvi,
+          calc(600 * var(--one-px-in-rem))
+        );
+      }
+
+      ::selection {
+        background: var(--color-primary);
+        color: var(--color-on-primary);
+      }
     }
-  }
 
-  .site-header {
-    display: contents;
+    .site-header {
+      grid-column: 1 / -1;
+      grid-row: 1 / -1;
+      display: grid;
+      grid-template-columns: subgrid;
+      grid-template-rows: subgrid;
+      align-items: center;
 
-    @media (--sm-or-above) {
-      display: flex;
-      flex-flow: row wrap;
-      gap: var(--spacing-md);
-      border-block-end: var(--border-size-sm) solid var(--color-border);
-      box-shadow: var(--shadow-raised-to-top-center);
+      @media (--sm-or-above) {
+        grid-row: 1;
+      }
+
+      @media (--md-or-above) {
+        grid-column: 1;
+        grid-row: 1 / 4;
+        align-items: start;
+      }
     }
 
-    @media (--md-or-above) {
-      grid-column: 1;
+    .site-branding {
+      grid-column: 1 / -1;
       grid-row: 1;
-      flex-flow: column;
-      gap: clamp(var(--spacing-sm), 2dvi, var(--spacing-2xl));
-      padding: clamp(var(--spacing-4xs), 1.5dvi, var(--spacing-2xl))
-        var(--spacing-xs) 0;
-      border-block-end: none;
-      box-shadow: none;
-    }
-  }
+      place-self: center;
+      margin: var(--spacing-sm);
 
-  .site-branding,
-  .site-footer {
-    display: flex;
-    flex-flow: row wrap;
-    align-items: center;
-  }
+      @media (--sm-or-above) {
+        grid-column: 1;
+        margin-block: 0;
+      }
 
-  .site-branding {
-    justify-content: center;
-    padding: var(--spacing-2xs);
-    border-block-end: var(--border-size-sm) solid var(--color-border);
-
-    @media (--sm-or-above) {
-      border-block: none;
-    }
-  }
-
-  .site-navbar {
-    order: 1;
-    position: sticky;
-    bottom: 0;
-    z-index: 10;
-    border-block-start: var(--border-size-sm) solid var(--color-border);
-    box-shadow: var(--shadow-raised-to-bottom-center);
-
-    &::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      z-index: -1;
-      clip-path: inset(0);
-      pointer-events: none;
-      user-select: none;
+      @media (--md-or-above) {
+        margin: var(--gutter);
+      }
     }
 
-    @media (--sm-or-above) {
-      flex: 1;
-      order: unset;
-      position: relative;
-      border-block-start: none;
-      border-inline-start: var(--border-size-sm) solid var(--color-border);
-      box-shadow: none;
+    .site-navbar {
+      grid-column: 1 / -1;
+      grid-row: 4;
+      position: sticky;
+      bottom: 0;
+      z-index: 10;
+      border-block-start: var(--border-size-sm) solid var(--color-border);
+      box-shadow: var(--shadow-raised-to-bottom-center);
+
+      @media (--sm-or-above) {
+        grid-column: 2;
+        grid-row: 1;
+        position: relative;
+        border-block-start: none;
+        border-inline-start: var(--border-size-sm) solid var(--color-border);
+        box-shadow: none;
+
+        /* The SVG background is no longer needed. */
+        &::before {
+          display: none;
+        }
+      }
+
+      @media (--md-or-above) {
+        grid-row: 2 / 3;
+        padding-inline: var(--gutter);
+      }
     }
 
-    @media (--md-or-above) {
-      border-inline-start: none;
-    }
-  }
-
-  .site-body {
-    container: body / inline-size;
-    flex: 1;
-
-    @media (--md-or-above) {
-      grid-column: 2;
-      grid-row: 1;
-    }
-  }
-
-  .site-footer {
-    justify-content: center;
-    gap: var(--spacing-4xs);
-    padding: clamp(var(--spacing-md), 4dvh, var(--spacing-lg)) var(--spacing-md);
-    font-size: var(--font-size-sm);
-
-    @media (--md-or-above) {
+    .site-body {
+      container: body / inline-size;
       grid-column: 1 / -1;
       grid-row: 2;
+      display: flex;
+      flex-flow: column nowrap;
+
+      @media (--md-or-above) {
+        grid-column: 2;
+        grid-row: 1 / 3;
+        padding-inline-end: var(--gutter);
+      }
     }
-  }
 
-  .site-footer-nav {
-    gap: var(--spacing-xs);
-    margin-inline-start: var(--spacing-xs);
-  }
+    :global(:where(.site:not(:has(.site-breadcrumb)))) .site-body {
+      @media (--md-or-above) {
+        margin-block-start: var(--gutter);
+      }
+    }
 
-  .site-back-to-top {
-    position: fixed;
-    /* This not ideal because the navbar height could change but setting a fix
-     * height to the navbar is not ideal neither so I prefer to use a "magic"
-     * number here. */
-    bottom: 6.5rem;
-    right: calc(1dvi + var(--spacing-sm));
-    z-index: 2;
+    .site-breadcrumb {
+      display: flex;
+      justify-content: center;
+      border-block-start: var(--border-size-sm) solid var(--color-border);
 
-    @media (--sm-or-above) {
-      bottom: calc(1dvi + var(--spacing-md));
-      right: calc(1dvi + var(--spacing-md));
+      @media (--md-or-above) {
+        justify-content: start;
+        border-block-start: none;
+      }
+
+      @media (--prose) {
+        padding-inline: clamp(var(--spacing-xs), 2cqi, var(--spacing-xl));
+      }
+    }
+
+    .site-main {
+      flex: 1;
+      padding: var(--spacing-md) 0;
+      border-block: var(--border-size-sm) solid var(--color-border);
+      box-shadow:
+        inset 0 var(--border-size-md) var(--border-size-md)
+          calc(var(--border-size-md) * -1) var(--color-shadow-inset-dark),
+        inset 0 calc(var(--border-size-md) * -1) var(--border-size-md)
+          calc(var(--border-size-md) * -1) var(--color-shadow-inset-dark);
+
+      @media (--md-or-above) {
+        border-inline: var(--border-size-sm) solid var(--color-border);
+        border-radius: var(--border-radii-md);
+        box-shadow: inset 0 0 var(--border-size-md) var(--border-size-md)
+          var(--color-shadow-inset-dark);
+      }
+
+      @media (--prose) {
+        padding: clamp(var(--spacing-xs), 3cqi, var(--gutter));
+      }
+    }
+
+    .site-footer {
+      grid-column: 1 / -1;
+      grid-row: 3;
+      display: flex;
+      flex-flow: row wrap;
+      align-items: center;
+      justify-content: center;
+      gap: var(--spacing-3xs);
+      padding: var(--gutter) var(--spacing-md);
+      font-size: var(--font-size-sm);
+    }
+
+    .site-copyright {
+      text-align: center;
+    }
+
+    .site-license {
+      font-size: 1.25em;
+      vertical-align: text-top;
+    }
+
+    .site-footer-nav {
+      margin-inline-start: var(--spacing-2xs);
+    }
+
+    .site-back-to-top {
+      position: fixed;
+      bottom: calc(var(--size-navbar) + 1dvi + var(--spacing-sm));
+      right: calc(1dvi + var(--spacing-sm));
+      z-index: 2;
+
+      @media (--sm-or-above) {
+        bottom: calc(1dvi + var(--spacing-sm));
+      }
     }
   }
 </style>

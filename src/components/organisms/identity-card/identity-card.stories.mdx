@@ -1,7 +1,6 @@
 ---
 title: "IdentityCard"
 ---
-import Heading from "../../atoms/heading/heading.astro";
 import { components as mdxComponents } from "../../mdx";
 import CodePreview from "../../molecules/code-preview/code-preview.astro";
 import IdentityCard from "./identity-card.astro";
@@ -49,11 +48,11 @@ An `IdentityCard` component should be used to display information about an autho
 />
 
 <CodePreview
-  code={`<IdentityCard author={{ name: "John Doe" }} />`}
+  code={`<IdentityCard author={{ name: "John Doe" }} heading="Contact me" />`}
   label="Basic use"
   lang="astro"
 >
-  <IdentityCard author={{ name: "John Doe" }} />
+  <IdentityCard author={{ name: "John Doe" }} heading="Contact me" />
 </CodePreview>
 
 ## With avatar
@@ -70,7 +69,7 @@ const authorPreviewWithAvatar = {
     name: "John Doe"
 }
 ---
-<IdentityCard author={authorPreviewWithAvatar} />`}
+<IdentityCard author={authorPreviewWithAvatar} heading="Contact me" />`}
   label="Adding an avatar"
   lang="astro"
 >
@@ -84,6 +83,7 @@ const authorPreviewWithAvatar = {
       },
       name: "John Doe",
     }}
+    heading="Contact me"
   />
 </CodePreview>
 
@@ -106,7 +106,7 @@ const authorPreviewWithAllInfo = {
     spokenLanguages: ["en", "fr"],
 }
 ---
-<IdentityCard author={authorPreviewWithAvatar} />`}
+<IdentityCard author={authorPreviewWithAvatar} heading="Contact me" />`}
   label="Using all supported data"
   lang="astro"
 >
@@ -125,50 +125,6 @@ const authorPreviewWithAllInfo = {
       nationality: "FR",
       spokenLanguages: ["en", "fr"],
     }}
+    heading="Contact me"
   />
-</CodePreview>
-
-## With a heading
-
-<CodePreview
-  code={`---
-const authorPreviewWithAllInfo = {
-    avatar: {
-      format: "jpg",
-      height: 200,
-      src: "https://picsum.photos/150/200",
-      width: 150,
-    },
-    country: "FR",
-    job: "Astronaut",
-    name: "John Doe",
-    nameIPA: "/ˈdʒɑn/ /ˈdoʊ/",
-    nationality: "FR",
-    spokenLanguages: ["en", "fr"],
-}
----
-<IdentityCard author={authorPreviewWithAvatar}>
-    <Heading as="h3" slot="heading">About John Doe</Heading>
-</IdentityCard>`}
-  label="Using all supported data"
-  lang="astro"
->
-  <IdentityCard
-    author={{
-      avatar: {
-        format: "jpg",
-        height: 200,
-        src: "https://picsum.photos/150/200",
-        width: 150,
-      },
-      country: "FR",
-      job: "Astronaut",
-      name: "John Doe",
-      nameIPA: "/ˈdʒɑn/ /ˈdoʊ/",
-      nationality: "FR",
-      spokenLanguages: ["en", "fr"],
-    }}
-  >
-    <Heading as="h3" slot="heading">About John Doe</Heading>
-  </IdentityCard>
 </CodePreview>

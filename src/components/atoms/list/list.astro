@@ -1,11 +1,17 @@
 ---
 import type { HTMLTag, Polymorphic } from "astro/types";
+import type { Gap } from "../../../types/tokens";
+import {
+  getCSSVars,
+  getSpacingVarFromGap,
+} from "../../../utils/html-attributes";
 
 type Props<T extends Extract<HTMLTag, "ol" | "ul"> = "ul"> = Polymorphic<{
   as: T;
 }> & {
   hideMarker?: boolean | null | undefined;
   isInline?: boolean | null | undefined;
+  spacing?: Gap | null | undefined;
 };
 
 const {
@@ -13,38 +19,50 @@ const {
   class: className,
   hideMarker = false,
   isInline = false,
+  spacing,
+  slot,
+  style = "",
   ...attrs
 } = Astro.props;
+const cssVars = getCSSVars({
+  gap: getSpacingVarFromGap(spacing),
+});
 ---
 
 <Tag
   {...attrs}
-  class:list={["list", className]}
+  class:list={[className, "list"]}
   {...isInline && { "data-inline": true }}
-  {...hideMarker && { "data-marker": false }}><slot /></Tag
+  {...hideMarker && { "data-marker": false }}
+  style={`${cssVars}${style}`}><slot /></Tag
 >
 
 <style>
-  .list {
-    margin: 0;
+  @layer atoms {
+    .list {
+      &:where([data-inline="true"]) {
+        display: flex;
+        flex-flow: row wrap;
+        align-items: center;
+        gap: var(--gap);
+        list-style-position: inside;
+      }
 
-    &:where([data-inline="true"]) {
-      display: flex;
-      flex-flow: row wrap;
-      align-items: center;
-      list-style-position: inside;
-    }
+      &:where([data-marker="false"]) {
+        list-style-type: none;
+      }
 
-    &:where([data-marker="false"]) {
-      list-style-type: none;
-    }
+      &:where([data-inline="true"], [data-marker="false"]) {
+        padding-inline-start: 0;
+      }
 
-    &:where([data-inline="true"], [data-marker="false"]) {
-      padding-inline-start: 0;
-    }
+      &:where(:not([data-inline="true"], [data-marker="false"])) {
+        padding-inline-start: var(--spacing-md);
+      }
 
-    &:where(:not([data-inline="true"], [data-marker="false"])) {
-      padding-inline-start: var(--spacing-md);
+      &:where(:not([data-inline="true"])) :global(li + li) {
+        margin-block-start: var(--gap);
+      }
     }
   }
 </style>

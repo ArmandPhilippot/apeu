@@ -1,12 +1,10 @@
 import type { CollectionEntry, CollectionKey } from "astro:content";
-import {
-  formatEntry,
-  type FormatEntryReturnMap,
-} from "../../lib/astro/collections/formatters";
+import { formatEntry } from "../../lib/astro/collections/formatters";
 import { getEntriesIndex } from "../../lib/astro/collections/indexes";
 import { isInCollection } from "../../lib/astro/collections/type-guards";
 import type { QueryMode } from "../../types/data";
 import type { AvailableLocale } from "../../types/tokens";
+import type { QueriedEntry } from "./types";
 import { updateEntryTagsForLocale } from "./utils";
 
 type QueryEntryOptions<
@@ -18,11 +16,6 @@ type QueryEntryOptions<
   id: CollectionEntry<C>["id"];
   locale?: AvailableLocale | undefined;
 };
-
-export type QueriedEntry<
-  C extends CollectionKey,
-  F extends QueryMode = "full",
-> = Awaited<ReturnType<FormatEntryReturnMap<F>[C]>>;
 
 /**
  * Query a single entry in any collection.

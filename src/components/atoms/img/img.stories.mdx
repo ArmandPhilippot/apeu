@@ -1,7 +1,8 @@
 ---
 title: "Img"
 ---
-import logo from "../../../assets/logo.svg"
+
+import logo from "../../../assets/logo-unpressed.svg";
 import { components as mdxComponents } from "../../mdx";
 import CodePreview from "../../molecules/code-preview/code-preview.astro";
 import Img from "./img.astro";
@@ -20,7 +21,7 @@ export const components = mdxComponents;
 
 <CodePreview
   code={`---
-import logo from "../../../assets/logo.svg";
+import logo from "../../../assets/logo-unpressed.svg";
 ---
 <Img alt="The logo" src={logo} />`}
   label="Basic use"
@@ -35,7 +36,7 @@ The image can be linked to its source with the `data-clickable` attribute.
 
 <CodePreview
   code={`---
-import logo from "../../../assets/logo.svg";
+import logo from "../../../assets/logo-unpressed.svg";
 ---
 <Img alt="The logo" data-clickable="true" src={logo} />`}
   label="Using a clickable image"
@@ -61,5 +62,6 @@ import logo from "../../../assets/logo.svg";
     height={480}
     src="https://picsum.photos/640/480"
     width={640}
+    pictureAttributes={{class: "test"}}
   />
 </CodePreview>

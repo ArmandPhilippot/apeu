@@ -1,0 +1,60 @@
+---
+title: "Colors"
+---
+
+import TokenPreview from "../components/stories/token-preview.astro";
+import { components } from "../components/mdx";
+
+export { components };
+
+{/* See `src/styles/themes/light.css` for the available colors. */}
+export const colors = {
+  neutral: ["white", "black"],
+  others: {
+    colors: ["blue", "cyan", "green", "grey", "slate", "orange", "pink", "purple", "red", "yellow"],
+    variants: [
+    "low",
+    "lighter",
+    "light",
+    "default",
+    "dark",
+    "darker",
+    "high",
+    ]
+  },
+}
+
+## Neutral
+
+<div class="story-wrapper story-grid">
+  {colors.neutral.map((color) => {
+    const token = `--color-${color}`;
+    return (
+      <div class="story-wrapper story-flex">
+        <TokenPreview token={token}>
+          <div class="story-token-box" style={`background: var(${token});`} />
+        </TokenPreview>
+      </div>
+    );
+  })}
+</div>
+
+## With variants
+
+<div class="story-wrapper story-grid">
+  {colors.others.colors.map((color) => (
+    <div class="story-wrapper story-flex">
+      {colors.others.variants.map((variant) => {
+        const token =
+          variant === "default"
+            ? `--color-${color}`
+            : `--color-${color}-${variant}`;
+        return (
+          <TokenPreview token={token}>
+            <div class="story-token-box" style={`background: var(${token});`} />
+          </TokenPreview>
+        );
+      })}
+    </div>
+  ))}
+</div>

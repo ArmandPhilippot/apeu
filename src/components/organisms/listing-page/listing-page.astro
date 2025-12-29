@@ -1,0 +1,164 @@
+---
+import type { Page } from "astro";
+import type { HTMLAttributes } from "astro/types";
+import { Icon } from "astro-icon/components";
+import { useI18n } from "../../../services/i18n";
+import { renderPaginationLink } from "../../../services/pagination";
+import type { EntryPreview, Img as ImgType } from "../../../types/data";
+import Button from "../../atoms/button/button.astro";
+import Img from "../../atoms/img/img.astro";
+import CardsList from "../../molecules/cards-list/cards-list.astro";
+import Meta from "../../molecules/meta/meta.astro";
+import Pagination from "../../molecules/pagination/pagination.astro";
+import PreviewCard from "../preview-card/preview-card.astro";
+
+type Props = Omit<HTMLAttributes<"article">, "title"> & {
+  cover?: Omit<ImgType, "alt"> | null | undefined;
+  entries: EntryPreview[];
+  pagination?: Pick<Page, "currentPage" | "lastPage"> | null | undefined;
+  route: string;
+  title: string;
+  totalEntries: string;
+};
+
+const {
+  class: className,
+  cover,
+  entries,
+  pagination,
+  route,
+  slot,
+  title,
+  totalEntries,
+  ...attrs
+} = Astro.props;
+const { translate } = useI18n(Astro.currentLocale);
+---
+
+<article {...attrs} class:list={[className, "listing-page"]}>
+  <header class="listing-page-header">
+    <h1 class="listing-page-title">{title}</h1>
+    <div class="listing-page-meta">
+      <Meta
+        items={[
+          { label: translate("meta.label.total"), values: [totalEntries] },
+        ]}
+      />
+      <Button
+        aria-label={translate("cta.subscribe.a11y", { title })}
+        as="a"
+        class="listing-page-feed"
+        href={`${route}/feed.xml`}
+      >
+        <Icon aria-hidden="true" name="feed" />
+        {translate("cta.subscribe")}
+      </Button>
+    </div>
+    {
+      cover ? (
+        <Img
+          {...cover}
+          alt=""
+          loading="eager"
+          pictureAttributes={{ class: "listing-page-cover" }}
+        />
+      ) : null
+    }
+    {
+      Astro.slots.has("intro") ? (
+        <div class="listing-page-intro">
+          <slot name="intro" />
+        </div>
+      ) : null
+    }
+  </header>
+  <CardsList cols="auto-fill" isContainer items={entries} sizeMinCols="26em">
+    {
+      (entry: (typeof entries)[number]) => (
+        <PreviewCard elevation="raised" entry={entry} />
+      )
+    }
+  </CardsList>
+  {
+    pagination !== undefined &&
+    pagination !== null &&
+    pagination.lastPage > 1 ? (
+      <Pagination
+        aria-label={translate("pagination.a11y")}
+        class="listing-page-pagination"
+        current={pagination.currentPage}
+        isCentered
+        last={pagination.lastPage}
+        renderLink={renderPaginationLink(route)}
+      />
+    ) : null
+  }
+</article>
+
+<style>
+  @layer organisms {
+    .listing-page-header {
+      margin: 0 0 var(--gutter);
+      background: var(--color-regular);
+      border: var(--border-size-sm) solid var(--color-border);
+      color: var(--color-on-regular);
+      box-shadow: var(--shadow-raised-to-top-center);
+
+      @media (--prose) {
+        box-shadow: var(--shadow-raised-to-top-left);
+        border-radius: var(--border-radii-md);
+      }
+
+      &:has(.listing-page-intro) {
+        @media (--prose-sidebar) {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          grid-template-rows: auto minmax(0, 1fr);
+          max-width: unset;
+        }
+      }
+    }
+
+    .listing-page-title {
+      padding-block-start: var(--gutter);
+      text-align: center;
+    }
+
+    .listing-page-meta {
+      margin-block-start: var(--spacing-md);
+      text-align: center;
+
+      &:where(:last-child) {
+        padding-block-end: var(--gutter);
+      }
+
+      @media (--prose-sidebar) {
+        padding-block-end: var(--gutter);
+      }
+    }
+
+    .listing-page-feed {
+      margin: var(--spacing-md) auto 0;
+    }
+
+    .listing-page-intro {
+      padding: var(--gutter);
+
+      @media (--prose-sidebar) {
+        grid-column: 2;
+        grid-row: 1 / span 2;
+        max-width: var(--size-prose);
+        border-block-start: none;
+        border-inline-start: var(--border-size-sm) solid var(--color-border);
+      }
+
+      & > :global(*:last-child) {
+        margin-block-end: 0;
+      }
+    }
+
+    .listing-page-pagination {
+      margin-block-start: var(--gutter);
+    }
+  }
+</style>

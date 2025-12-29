@@ -5,14 +5,14 @@ type Props = HTMLAttributes<"label"> & {
   isRequired?: boolean | null | undefined;
 };
 
-const { class: className, isRequired = false, ...attrs } = Astro.props;
+const { class: className, isRequired = false, slot, ...attrs } = Astro.props;
 ---
 
-<label {...attrs} class:list={["label", className]}>
+<label {...attrs} class:list={[className, "label"]}>
   <slot />
   {
     isRequired ? (
-      <span aria-hidden="true" class="label-star">
+      <span aria-hidden="true" class="label-required">
         *
       </span>
     ) : null
@@ -20,7 +20,9 @@ const { class: className, isRequired = false, ...attrs } = Astro.props;
 </label>
 
 <style>
-  .label-star {
-    color: var(--color-critical);
+  @layer atoms {
+    .label-required {
+      color: var(--color-critical);
+    }
   }
 </style>

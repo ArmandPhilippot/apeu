@@ -1,6 +1,6 @@
 ---
 import type { ComponentProps } from "astro/types";
-import Logo from "../../../assets/logo.svg";
+import Logo from "../../../assets/logo-animated.svg";
 import Link from "../../atoms/link/link.astro";
 
 type Props = Omit<ComponentProps<typeof Link>, "href"> & {
@@ -8,40 +8,44 @@ type Props = Omit<ComponentProps<typeof Link>, "href"> & {
   url: string;
 };
 
-const { brand, class: className, url, ...attrs } = Astro.props;
+const { brand, class: className, slot, url, ...attrs } = Astro.props;
 ---
 
-<Link {...attrs} class:list={["branding", className]} href={url}>
-  <Logo aria-hidden="true" class="logo" />
-  <span class="brand">{brand}</span>
+<Link {...attrs} class:list={[className, "branding"]} href={url}>
+  <Logo aria-hidden="true" />
+  <span>{brand}</span>
 </Link>
 
 <style>
-  .branding {
-    display: flex;
-    flex-flow: row wrap;
-    align-items: center;
-    place-content: center;
-    gap: var(--spacing-sm);
-    width: fit-content;
-    padding: var(--spacing-xs);
-    border-radius: var(--border-radii-lg);
-    text-align: center;
-    text-decoration: none;
+  @layer molecules {
+    .branding {
+      display: flex;
+      flex-flow: row wrap;
+      align-items: center;
+      place-content: center;
+      gap: var(--spacing-sm);
+      width: fit-content;
+      padding: var(--spacing-xs);
+      border-radius: var(--border-radii-lg);
+      font-size: var(--font-size-3xl);
+      font-weight: var(--font-weight-bold);
+      outline-width: var(--border-size-lg);
+      text-align: center;
+      text-decoration: none;
 
-    &:where(:focus-visible) {
-      outline: var(--border-size-lg) solid var(--color-primary-lighter);
-      outline-offset: calc(var(--border-size-md) * -2);
+      &:where(:focus-visible) {
+        outline-offset: calc(var(--border-size-lg) * -1);
+      }
+
+      svg {
+        width: auto;
+        height: 2.25em;
+      }
+
+      span {
+        text-shadow: var(--border-size-md) var(--border-size-md) 0
+          var(--color-regular-darker);
+      }
     }
-  }
-
-  .logo {
-    width: auto;
-    height: clamp(3em, 6dvi, 4em);
-  }
-
-  .brand {
-    font-size: var(--font-size-2xl);
-    font-weight: var(--font-weight-bold);
   }
 </style>

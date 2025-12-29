@@ -1,0 +1,270 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import type { RoutableCollectionKey } from "../../../lib/astro/collections/types";
+import type { QueriedEntry } from "../../../services/collections";
+import { useI18n } from "../../../services/i18n";
+import { buildToc } from "../../../services/toc";
+import type { Img as ImgType } from "../../../types/data";
+import Img from "../../atoms/img/img.astro";
+import Collapsible from "../../molecules/collapsible/collapsible.astro";
+import TableOfContents from "../../molecules/table-of-contents/table-of-contents.astro";
+
+type Props = Omit<HTMLAttributes<"article">, "title"> & {
+  cover?: Omit<ImgType, "alt"> | null | undefined;
+  headings?: QueriedEntry<RoutableCollectionKey>["headings"] | null | undefined;
+  title: string;
+};
+
+const {
+  class: className,
+  cover,
+  headings,
+  slot,
+  title,
+  ...attrs
+} = Astro.props;
+const { translate } = useI18n(Astro.currentLocale);
+---
+
+<article {...attrs} class:list={[className, "content-page"]}>
+  <header class="content-page-header">
+    <h1 class="content-page-title">{title}</h1>
+    {
+      Astro.slots.has("meta") ? (
+        <div class="content-page-meta">
+          <slot name="meta" />
+        </div>
+      ) : null
+    }
+    {
+      cover ? (
+        <Img
+          {...cover}
+          alt=""
+          loading="eager"
+          pictureAttributes={{ class: "content-page-cover" }}
+        />
+      ) : null
+    }
+  </header>
+  {
+    headings?.length ? (
+      <div class="content-page-sidebar">
+        <Collapsible class="content-page-toc" open>
+          <h2 slot="label">{translate("collapsible.toc.title")}</h2>
+          <TableOfContents
+            class="content-page-toc-body"
+            headings={buildToc(headings)}
+          />
+        </Collapsible>
+      </div>
+    ) : null
+  }
+  <div class="content-page-body prose"><slot /></div>
+  {
+    Astro.slots.has("disconnected") ? (
+      <div class="content-page-disconnected">
+        <slot name="disconnected" />
+      </div>
+    ) : null
+  }
+  {
+    Astro.slots.has("footer") ? (
+      <footer class="content-page-footer prose">
+        <slot name="footer" />
+      </footer>
+    ) : null
+  }
+</article>
+
+<style>
+  @layer organisms {
+    .content-page {
+      --main-col-width: var(--size-prose);
+      --sidebar-col-width: 0;
+
+      display: grid;
+      grid-template-columns:
+        minmax(calc(var(--main-col-width) / 2), var(--main-col-width))
+        minmax(0, var(--sidebar-col-width));
+      grid-template-rows: repeat(5, minmax(0, auto));
+      column-gap: var(--gutter);
+      justify-content: center;
+
+      @media (--prose-sidebar) {
+        --main-col-width: calc(var(--size-prose) + 2.5 * var(--gutter));
+        --sidebar-col-width: calc(var(--size-prose) / 2.5 + 2 * var(--gutter));
+      }
+    }
+
+    .content-page-header,
+    .content-page-sidebar,
+    .content-page-body,
+    .content-page-disconnected,
+    .content-page-footer {
+      grid-column: 1 / -1;
+    }
+
+    .content-page-header,
+    .content-page-toc,
+    .content-page-body,
+    .content-page-disconnected,
+    .content-page-footer {
+      @media (--prose-sidebar) {
+        grid-column: 1;
+      }
+    }
+
+    .content-page-sidebar {
+      @media (--prose-sidebar) {
+        grid-column: 2;
+        grid-row: 1 / -1;
+      }
+    }
+
+    .content-page-header,
+    .content-page-toc,
+    .content-page-body,
+    .content-page-footer {
+      background: var(--color-regular);
+      box-shadow: var(--shadow-raised-to-top-center);
+      color: var(--color-on-regular);
+
+      @media (--prose) {
+        box-shadow: var(--shadow-raised-to-top-left);
+      }
+    }
+
+    .content-page-title,
+    .content-page-meta,
+    .content-page-toc-body,
+    .content-page-body,
+    .content-page-footer {
+      padding-inline: var(--gutter);
+    }
+
+    .content-page-header,
+    .content-page-body,
+    .content-page-footer {
+      padding-block-end: var(--gutter);
+
+      @media (--prose) {
+        border-inline: var(--border-size-sm) solid var(--color-border);
+      }
+    }
+
+    .content-page-header:where(:has(.content-page-cover)) {
+      padding-block-end: 0;
+    }
+
+    .content-page-header,
+    .content-page-footer {
+      padding-block-start: var(--gutter);
+    }
+
+    .content-page-header {
+      border-block-start: var(--border-size-sm) solid var(--color-border);
+      border-start-start-radius: var(--border-radii-md);
+      border-start-end-radius: var(--border-radii-md);
+    }
+
+    .content-page-title {
+      text-align: center;
+    }
+
+    .content-page-cover {
+      display: block;
+      margin-block-start: var(--spacing-md);
+
+      @media (--prose) {
+        margin: var(--spacing-md) var(--spacing-md) var(--gutter);
+      }
+
+      & :global(img) {
+        margin-inline: auto;
+        border-block-start: var(--border-size-sm) solid var(--color-border);
+
+        @media (--prose) {
+          border-inline: var(--border-size-sm) solid var(--color-border);
+          border-block-end: var(--border-size-sm) solid var(--color-border);
+        }
+      }
+    }
+
+    .content-page-meta {
+      margin-block-start: var(--spacing-md);
+      text-align: center;
+    }
+
+    .content-page-toc {
+      @media (--smaller-than-prose) {
+        border-inline: none;
+      }
+
+      @media (--prose-sidebar) {
+        position: sticky;
+        top: calc(var(--gutter) / 2);
+        border-radius: var(--border-radii-md);
+      }
+
+      & h2 {
+        font-size: var(--font-size-2xl);
+
+        @media (--prose-sidebar) {
+          font-size: var(--font-size-xl);
+        }
+      }
+    }
+
+    .content-page-toc-body {
+      padding-block: var(--spacing-md);
+
+      @media (--prose-sidebar) {
+        max-height: calc(100dvh - 3 * var(--gutter));
+        padding-inline: var(--spacing-md);
+        overflow-y: auto;
+        font-size: var(--font-size-sm);
+      }
+    }
+
+    :where(.content-page:has(.content-page-toc)) .content-page-header {
+      @media (--smaller-than-prose-sidebar) {
+        border-block-end: none;
+      }
+    }
+
+    :where(.content-page:has(.content-page-disconnected)) .content-page-body {
+      margin-block-end: var(--gutter);
+    }
+
+    :where(.content-page:has(.content-page-toc)) .content-page-body {
+      @media (--smaller-than-prose-sidebar) {
+        padding-block-start: var(--gutter);
+      }
+    }
+
+    :where(.content-page:has(.content-page-disconnected)) .content-page-body,
+    .content-page-body:where(:last-child),
+    .content-page-footer {
+      border-block-end: var(--border-size-sm) solid var(--color-border);
+
+      @media (--prose) {
+        border-end-start-radius: var(--border-radii-md);
+        border-end-end-radius: var(--border-radii-md);
+      }
+    }
+
+    :where(.content-page:has(.content-page-body + .content-page-footer))
+      .content-page-body {
+      padding-block-end: 0;
+    }
+
+    :where(.content-page:has(.content-page-disconnected + .content-page-footer))
+      .content-page-footer {
+      margin-block-start: var(--gutter);
+      border-block-start: var(--border-size-sm) solid var(--color-border);
+      border-start-start-radius: var(--border-radii-md);
+      border-start-end-radius: var(--border-radii-md);
+    }
+  }
+</style>

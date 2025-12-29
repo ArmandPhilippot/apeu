@@ -1,0 +1,90 @@
+:root[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+:root[data-theme="dark"],
+:root[data-shiki="dark"] pre {
+  /* Neutral */
+  --color-white: hsl(216deg 22% 85%);
+  --color-black: hsl(209deg 40% 4%);
+  /* Grey */
+  --color-grey-high: hsl(209deg 24% 70%);
+  --color-grey-lighter: hsl(219deg 14% 24%);
+  --color-grey-light: hsl(217deg 16% 23%);
+  --color-grey: hsl(215deg 18% 19%);
+  --color-grey-dark: hsl(213deg 20% 15%);
+  --color-grey-darker: hsl(211deg 22% 8%);
+  --color-grey-low: hsl(221deg 12% 5%);
+  /* Slate */
+  --color-slate-high: hsl(206deg 10% 77%);
+  --color-slate-lighter: hsl(220deg 16% 16%);
+  --color-slate-light: hsl(216deg 22% 13%);
+  --color-slate: hsl(212deg 24% 10%);
+  --color-slate-dark: hsl(208deg 22% 8%);
+  --color-slate-darker: hsl(204deg 16% 6%);
+  --color-slate-low: hsl(218deg 10% 3%);
+  /* Blue */
+  --color-blue-high: hsl(206deg 65% 85%);
+  --color-blue-lighter: hsl(216deg 51% 79%);
+  --color-blue-light: hsl(214deg 53% 77%);
+  --color-blue: hsl(212deg 55% 75%);
+  --color-blue-dark: hsl(210deg 57% 73%);
+  --color-blue-darker: hsl(208deg 59% 71%);
+  --color-blue-low: hsl(218deg 45% 13%);
+  /* Cyan */
+  --color-cyan-high: hsl(174deg 55% 88%);
+  --color-cyan-lighter: hsl(184deg 41% 74%);
+  --color-cyan-light: hsl(182deg 43% 72%);
+  --color-cyan: hsl(180deg 45% 70%);
+  --color-cyan-dark: hsl(178deg 47% 68%);
+  --color-cyan-darker: hsl(176deg 49% 66%);
+  --color-cyan-low: hsl(186deg 35% 12%);
+  /* Green */
+  --color-green-high: hsl(96deg 55% 88%);
+  --color-green-lighter: hsl(106deg 41% 69%);
+  --color-green-light: hsl(104deg 43% 67%);
+  --color-green: hsl(102deg 45% 65%);
+  --color-green-dark: hsl(100deg 47% 63%);
+  --color-green-darker: hsl(98deg 49% 61%);
+  --color-green-low: hsl(108deg 35% 12%);
+  /* Orange */
+  --color-orange-high: hsl(26deg 55% 88%);
+  --color-orange-lighter: hsl(36deg 41% 70%);
+  --color-orange-light: hsl(34deg 43% 68%);
+  --color-orange: hsl(32deg 45% 66%);
+  --color-orange-dark: hsl(30deg 47% 64%);
+  --color-orange-darker: hsl(28deg 49% 62%);
+  --color-orange-low: hsl(38deg 35% 11%);
+  /* Pink */
+  --color-pink-high: hsl(318deg 55% 90%);
+  --color-pink-lighter: hsl(328deg 41% 82%);
+  --color-pink-light: hsl(326deg 43% 80%);
+  --color-pink: hsl(324deg 45% 78%);
+  --color-pink-dark: hsl(322deg 47% 76%);
+  --color-pink-darker: hsl(320deg 49% 74%);
+  --color-pink-low: hsl(330deg 35% 12%);
+  /* Purple */
+  --color-purple-high: hsl(248deg 60% 90%);
+  --color-purple-lighter: hsl(258deg 46% 84%);
+  --color-purple-light: hsl(256deg 48% 82%);
+  --color-purple: hsl(254deg 50% 80%);
+  --color-purple-dark: hsl(252deg 52% 78%);
+  --color-purple-darker: hsl(250deg 54% 76%);
+  --color-purple-low: hsl(260deg 40% 12%);
+  /* Red */
+  --color-red-high: hsl(12deg 55% 88%);
+  --color-red-lighter: hsl(10deg 41% 79%);
+  --color-red-light: hsl(8deg 43% 77%);
+  --color-red: hsl(6deg 45% 75%);
+  --color-red-dark: hsl(4deg 47% 73%);
+  --color-red-darker: hsl(2deg 49% 71%);
+  --color-red-low: hsl(0deg 35% 12%);
+  /* Yellow */
+  --color-yellow-high: hsl(46deg 55% 88%);
+  --color-yellow-lighter: hsl(56deg 41% 69%);
+  --color-yellow-light: hsl(54deg 43% 67%);
+  --color-yellow: hsl(52deg 45% 65%);
+  --color-yellow-dark: hsl(50deg 47% 63%);
+  --color-yellow-darker: hsl(48deg 49% 61%);
+  --color-yellow-low: hsl(58deg 35% 12%);
+}

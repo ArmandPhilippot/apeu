@@ -78,8 +78,7 @@ describe("SettingsForm", () => {
   });
 
   it<LocalTestContext>("renders a settings form", async ({ container }) => {
-    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
-    expect.assertions(2);
+    expect.assertions(1);
 
     const props = {} satisfies ComponentProps<typeof SettingsForm>;
     const result = await container.renderToString(SettingsForm, {
@@ -87,22 +86,6 @@ describe("SettingsForm", () => {
     });
 
     expect(result).toContain("</form>");
-    expect(result).toContain("translated_form.settings.label.theme.website");
-  });
-
-  it<LocalTestContext>("can use an id", async ({ container }) => {
-    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
-    expect.assertions(2);
-
-    const props = {
-      id: "voluptates",
-    } satisfies ComponentProps<typeof SettingsForm>;
-    const result = await container.renderToString(SettingsForm, {
-      props,
-    });
-
-    expect(result).toContain(`id="${props.id}"`);
-    expect(result).toContain(`${props.id}-theme`);
   });
 
   it<LocalTestContext>("can use the given routes in the language picker", async ({

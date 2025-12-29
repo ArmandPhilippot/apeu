@@ -42,7 +42,7 @@ describe("Link", () => {
       slots: { default: anchor },
     });
 
-    expect(result).toContain("download");
+    expect(result).toContain('data-download="true"');
   });
 
   it<LocalTestContext>("can render an external link using rel", async ({

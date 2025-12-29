@@ -9,9 +9,9 @@ import { clearEntriesIndexCache } from "../../lib/astro/collections/indexes";
 import type { AvailableLocale } from "../../types/tokens";
 import {
   addRelatedItemsToPage,
-  getDisplayedCollectionName,
-  isPageableEntry,
-} from "./pageable-entries";
+  getPageRelatedCollectionKeys,
+  isListingRelatedEntries,
+} from "./listable-entries";
 import { queryEntry } from "./query-entry";
 import type { QueriedEntry } from "./types";
 
@@ -38,8 +38,13 @@ vi.mock("../../utils/constants", async (importOriginal) => {
   };
 });
 
-type SetupTestWithMockEntryConfig = {
-  testEntry: Parameters<typeof createMockEntry>[0];
+type SetupTestWithMockEntryConfig<
+  T extends Exclude<CollectionKey, "authors"> = Exclude<
+    CollectionKey,
+    "authors"
+  >,
+> = {
+  testEntry: Parameters<typeof createMockEntry<T>>[0];
   pageQuery: {
     collection: CollectionKey;
     id: string;
@@ -47,17 +52,19 @@ type SetupTestWithMockEntryConfig = {
   };
 };
 
-async function setupTestWithMockEntry({
+async function setupTestWithMockEntry<
+  T extends Exclude<CollectionKey, "authors">,
+>({
   pageQuery,
   testEntry,
-}: SetupTestWithMockEntryConfig) {
+}: SetupTestWithMockEntryConfig<T>): Promise<QueriedEntry<T>> {
   const mockEntry = createMockEntry(testEntry);
   setupCollectionMocks([mockEntry]);
 
-  return queryEntry(pageQuery);
+  return queryEntry(pageQuery) as Promise<QueriedEntry<T>>;
 }
 
-describe("getDisplayedCollectionName", () => {
+describe("getPageRelatedCollectionKeys", () => {
   afterEach(() => {
     clearEntriesIndexCache();
     vi.clearAllMocks();
@@ -66,7 +73,7 @@ describe("getDisplayedCollectionName", () => {
   it("returns the collection name of entries to display on the page", async () => {
     expect.assertions(1);
 
-    const indexPage = await setupTestWithMockEntry({
+    const indexPage = await setupTestWithMockEntry<"index.pages">({
       pageQuery: {
         collection: "index.pages",
         id: "projects",
@@ -77,7 +84,7 @@ describe("getDisplayedCollectionName", () => {
         id: "en/projects",
       },
     });
-    const collection = getDisplayedCollectionName(indexPage);
+    const collection = getPageRelatedCollectionKeys(indexPage);
 
     expect(collection).toBe("projects");
   });
@@ -96,7 +103,7 @@ describe("getDisplayedCollectionName", () => {
         id: "en/home",
       },
     });
-    const collections = getDisplayedCollectionName(indexPage);
+    const collections = getPageRelatedCollectionKeys(indexPage);
 
     expect(collections).toMatchInlineSnapshot(`
       [
@@ -125,9 +132,9 @@ describe("getDisplayedCollectionName", () => {
     });
 
     expect(() =>
-      getDisplayedCollectionName(regularPage)
+      getPageRelatedCollectionKeys(regularPage)
     ).toThrowErrorMatchingInlineSnapshot(
-      `[Error: Entry is not an index page, received collection: guides]`
+      `[Error: The id doesn't match a valid listing page. Received: en/any-guide]`
     );
   });
 
@@ -147,9 +154,9 @@ describe("getDisplayedCollectionName", () => {
     });
 
     expect(() =>
-      getDisplayedCollectionName(indexPage)
+      getPageRelatedCollectionKeys(indexPage)
     ).toThrowErrorMatchingInlineSnapshot(
-      `[Error: Collection not supported, received: non-existent]`
+      `[Error: The id doesn't match a valid listing page. Received: en/non-existent]`
     );
   });
 
@@ -169,7 +176,7 @@ describe("getDisplayedCollectionName", () => {
     });
 
     expect(() =>
-      getDisplayedCollectionName(indexPage)
+      getPageRelatedCollectionKeys(indexPage)
     ).toThrowErrorMatchingInlineSnapshot(
       `[Error: Invalid collection, authors does not support listing entries.]`
     );
@@ -195,7 +202,7 @@ async function setupTestWithMockEntries<T extends CollectionKey>({
   return queryEntry(pageQuery);
 }
 
-describe("isPageableEntry", () => {
+describe("isListingRelatedEntries", () => {
   afterEach(() => {
     clearEntriesIndexCache();
     vi.clearAllMocks();
@@ -215,7 +222,7 @@ describe("isPageableEntry", () => {
       },
     });
 
-    expect(isPageableEntry(entry)).toBe(true);
+    expect(isListingRelatedEntries(entry)).toBe(true);
   });
 
   it("returns false for invalid pageable entries", async () => {
@@ -232,7 +239,7 @@ describe("isPageableEntry", () => {
       },
     });
 
-    expect(isPageableEntry(entry)).toBe(false);
+    expect(isListingRelatedEntries(entry)).toBe(false);
   });
 
   it("returns false for invalid collections", async () => {
@@ -248,7 +255,7 @@ describe("isPageableEntry", () => {
       },
     });
 
-    expect(isPageableEntry(entry)).toBe(false);
+    expect(isListingRelatedEntries(entry)).toBe(false);
   });
 });
 

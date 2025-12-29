@@ -11,7 +11,7 @@ import { clearEntriesIndexCache } from "../../lib/astro/collections/indexes";
 import {
   addRelatedItemsToPage,
   queryEntry,
-  type PageableCollection,
+  type CollectionSupportingRelatedEntries,
 } from "../../services/collections";
 import type { AvailableLocale } from "../../types/tokens";
 import CollectionListingView from "./collection-listing-view.astro";
@@ -123,7 +123,7 @@ vi.mock("../../services/pagination", async (importOriginal) => {
 type SetupTestWithMockEntriesConfig = {
   testEntries: Parameters<typeof createMockEntriesByCollection>[0];
   pageQuery: {
-    collection: PageableCollection;
+    collection: CollectionSupportingRelatedEntries;
     id: string;
     locale?: AvailableLocale;
   };

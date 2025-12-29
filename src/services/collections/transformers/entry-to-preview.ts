@@ -3,7 +3,7 @@ import type { IconName } from "../../../types/tokens";
 import type { AllKeysOf } from "../../../types/utilities";
 import type { I18nContext } from "../../i18n";
 import { useRouting } from "../../routing";
-import type { ListingPageCollection } from "../pageable-entries";
+import type { ListableCollectionKey } from "../listable-entries";
 import type { QueriedCollectionEntry } from "../query-collection";
 import type {
   PreviewableCollectionKey,
@@ -234,12 +234,12 @@ type ConfigureEntryOptions = {
  * - Configuring featured metadata
  * - Applying collection-specific display settings (covers, CTAs, metadata visibility).
  *
- * @param {QueriedCollectionEntry<ListingPageCollection, "preview">} entry - The collection entry to convert.
+ * @param {QueriedCollectionEntry<ListableCollectionKey, "preview">} entry - The collection entry to convert.
  * @param {ConfigureEntryOptions} options - Configuration options.
  * @returns {Promise<EntryPreview>} The converted entry ready for display in a PreviewCard.
  */
 export const convertToPreview = async (
-  entry: QueriedCollectionEntry<ListingPageCollection, "preview">,
+  entry: QueriedCollectionEntry<ListableCollectionKey, "preview">,
   {
     currentRoute,
     i18n,

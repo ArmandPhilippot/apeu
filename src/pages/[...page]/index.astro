@@ -5,8 +5,9 @@ import type { CollectionKey } from "astro:content";
 import { ROUTABLE_COLLECTIONS } from "../../lib/astro/collections/constants";
 import {
   addRelatedItemsToPages,
-  isPageableEntry,
+  isListingRelatedEntries,
   queryCollection,
+  shouldPaginateListing,
 } from "../../services/collections";
 import { partitionByType } from "../../utils/arrays";
 import { CONFIG } from "../../utils/constants";
@@ -20,20 +21,29 @@ import SearchView from "../../views/search-view/search-view.astro";
 
 export const getStaticPaths = (async ({ paginate }) => {
   const { entries } = await queryCollection(ROUTABLE_COLLECTIONS);
-  const filteredEntries = entries.filter((entry) => {
+  const routableEntries = entries.filter((entry) => {
     if (entry.collection === "pages") {
       return entry.id !== `${entry.locale}/404`;
     }
     return true;
   });
-  const [paginated, regular] = partitionByType(
-    filteredEntries,
-    isPageableEntry
+  const [listingPages, regularPages] = partitionByType(
+    routableEntries,
+    isListingRelatedEntries
   );
-  const enrichedPaginatedPages = await addRelatedItemsToPages(paginated, {
-    format: "preview",
-  });
-  const paginatedPaths = enrichedPaginatedPages.flatMap(
+  const [paginatedListingPages, nonPaginatedListingPages] = partitionByType(
+    listingPages,
+    shouldPaginateListing
+  );
+  const enrichedPaginatedListings = await addRelatedItemsToPages(
+    paginatedListingPages,
+    { format: "preview" }
+  );
+  const enrichedNonPaginatedListings = await addRelatedItemsToPages(
+    nonPaginatedListingPages,
+    { format: "preview" }
+  );
+  const paginatedPaths = enrichedPaginatedListings.flatMap(
     (enrichedPaginatedPage) =>
       paginate(enrichedPaginatedPage.related.entries, {
         pageSize: CONFIG.ITEMS_PER_PAGE,
@@ -56,10 +66,21 @@ export const getStaticPaths = (async ({ paginate }) => {
         };
       })
   );
-  const regularPaths = regular.map((regularPage) => {
+  const nonPaginatedListingPaths = enrichedNonPaginatedListings.map(
+    (listingPage) => {
+      return {
+        params: {
+          page: listingPage.route.slice(1),
+        },
+        props: listingPage,
+      };
+    }
+  );
+  const regularPaths = regularPages.map((regularPage) => {
     const isDefaultLocaleHome =
       regularPage.id === `${regularPage.locale}/home` &&
       CONFIG.LANGUAGES.DEFAULT === regularPage.locale;
+
     return {
       params: {
         page: isDefaultLocaleHome ? undefined : regularPage.route.slice(1),
@@ -68,7 +89,7 @@ export const getStaticPaths = (async ({ paginate }) => {
     };
   });
 
-  return [...paginatedPaths, ...regularPaths];
+  return [...paginatedPaths, ...nonPaginatedListingPaths, ...regularPaths];
 }) satisfies GetStaticPaths;
 
 const { pagination, ...page } = Astro.props;

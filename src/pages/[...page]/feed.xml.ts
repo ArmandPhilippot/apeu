@@ -5,7 +5,7 @@ import {
   addRelatedItemsToPages,
   queryCollection,
   type EnrichedPage,
-  type ListingPageCollection,
+  type ListableCollectionKey,
   type RelatedEntries,
 } from "../../services/collections";
 import {
@@ -42,7 +42,7 @@ export const getStaticPaths = (async () => {
 
 type GetTitleAndDescriptionConfig = {
   page: Pick<EnrichedPage, "id" | "locale" | "title">;
-  relatedCollections: RelatedEntries<ListingPageCollection>["collection"];
+  relatedCollections: RelatedEntries<ListableCollectionKey>["collection"];
 };
 
 const getTitleAndDescription = ({

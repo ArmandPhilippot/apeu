@@ -15,7 +15,7 @@ import PreviewCard from "../preview-card/preview-card.astro";
 type Props = Omit<HTMLAttributes<"article">, "title"> & {
   cover?: Omit<ImgType, "alt"> | null | undefined;
   entries: EntryPreview[];
-  pagination: Pick<Page, "currentPage" | "lastPage">;
+  pagination?: Pick<Page, "currentPage" | "lastPage"> | null | undefined;
   route: string;
   title: string;
   totalEntries: string;
@@ -80,6 +80,8 @@ const { translate } = useI18n(Astro.currentLocale);
     }
   </CardsList>
   {
+    pagination !== undefined &&
+    pagination !== null &&
     pagination.lastPage > 1 ? (
       <Pagination
         aria-label={translate("pagination.a11y")}

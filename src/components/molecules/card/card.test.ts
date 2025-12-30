@@ -102,4 +102,38 @@ describe("Card", () => {
     expect(result).toContain(cta);
     expect(result).toContain("</footer>");
   });
+
+  it<LocalTestContext>("can adapt the styles to its container", async ({
+    container,
+  }) => {
+    expect.assertions(1);
+
+    const props = {
+      adaptTo: "container",
+    } satisfies ComponentProps<typeof Card>;
+    const body = "a molestiae placeat";
+    const result = await container.renderToString(Card, {
+      props,
+      slots: { default: body },
+    });
+
+    expect(result).toContain(`data-constraint="container"`);
+  });
+
+  it<LocalTestContext>("can adapt the styles to the viewport", async ({
+    container,
+  }) => {
+    expect.assertions(1);
+
+    const props = {
+      adaptTo: "viewport",
+    } satisfies ComponentProps<typeof Card>;
+    const body = "a molestiae placeat";
+    const result = await container.renderToString(Card, {
+      props,
+      slots: { default: body },
+    });
+
+    expect(result).toContain(`data-constraint="viewport"`);
+  });
 });

@@ -6,9 +6,11 @@ type Props<T extends "article" | "section" = "article"> = Polymorphic<{
   as: T;
 }> & {
   elevation?: Elevation | null | undefined;
+  adaptTo?: "viewport" | "container" | null;
 };
 
 const {
+  adaptTo = null,
   as: Tag = "article",
   class: className,
   elevation,
@@ -19,6 +21,7 @@ const {
 
 <Tag
   {...attrs}
+  {...adaptTo === null ? {} : { "data-constraint": adaptTo }}
   class:list={[className, "card"]}
   {...elevation ? { "data-elevation": elevation } : {}}
 >
@@ -66,28 +69,78 @@ const {
       border: var(--border-size-sm) solid var(--color-border);
       border-radius: var(--border-radii-md);
 
-      &:where([data-elevation="elevated"]) {
-        box-shadow: var(--shadow-elevated-to-top-center);
+      &:where([data-constraint="container"]) {
+        @container (width < 40em) {
+          border-inline: none;
+          border-radius: 0;
+        }
+      }
 
+      &:where([data-constraint="viewport"]) {
+        @media (--smaller-than-prose) {
+          border-inline: none;
+          border-radius: 0;
+        }
+      }
+
+      &:where([data-constraint][data-elevation="elevated"]) {
+        box-shadow: var(--shadow-elevated-to-top-center);
+      }
+
+      &:where([data-constraint="container"][data-elevation="elevated"]) {
+        @container (width >= 40em) {
+          box-shadow: var(--shadow-elevated-to-top-left);
+        }
+      }
+
+      &:where([data-constraint="viewport"][data-elevation="elevated"]) {
         @media (--prose) {
           box-shadow: var(--shadow-elevated-to-top-left);
         }
       }
 
-      &:where([data-elevation="floating"]) {
-        box-shadow: var(--shadow-floating-to-top-center);
+      &:where([data-elevation="elevated"]:not([data-constraint])) {
+        box-shadow: var(--shadow-elevated-to-top-left);
+      }
 
+      &:where([data-constraint][data-elevation="floating"]) {
+        box-shadow: var(--shadow-floating-to-top-center);
+      }
+
+      &:where([data-constraint="container"][data-elevation="floating"]) {
+        @container (width >= 40em) {
+          box-shadow: var(--shadow-floating-to-top-left);
+        }
+      }
+
+      &:where([data-constraint="viewport"][data-elevation="floating"]) {
         @media (--prose) {
           box-shadow: var(--shadow-floating-to-top-left);
         }
       }
 
-      &:where([data-elevation="raised"]) {
-        box-shadow: var(--shadow-raised-to-top-center);
+      &:where([data-elevation="floating"]:not([data-constraint])) {
+        box-shadow: var(--shadow-floating-to-top-left);
+      }
 
+      &:where([data-constraint][data-elevation="raised"]) {
+        box-shadow: var(--shadow-raised-to-top-center);
+      }
+
+      &:where([data-constraint="container"][data-elevation="raised"]) {
+        @container (width >= 40em) {
+          box-shadow: var(--shadow-raised-to-top-left);
+        }
+      }
+
+      &:where([data-constraint="viewport"][data-elevation="raised"]) {
         @media (--prose) {
           box-shadow: var(--shadow-raised-to-top-left);
         }
+      }
+
+      &:where([data-elevation="raised"]:not([data-constraint])) {
+        box-shadow: var(--shadow-raised-to-top-left);
       }
     }
 

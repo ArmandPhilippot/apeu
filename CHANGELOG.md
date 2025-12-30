@@ -1,5 +1,23 @@
 # apeu
 
+## 2.0.1
+
+### Patch Changes
+
+- 54f960d: Fixes styles on the search page view.
+
+  The `search-view.astro` view no longer uses CSS Cascade Layers because, with them, Pagefind overrides the custom styles.
+
+- b794178: Hides the search form when JavaScript is disabled.
+
+  The search form requires JavaScript to work. To prevent any frustration and to be consistent with how themes and language controls are rendered, the search form is no longer visible in the navbar when JavaScript is disabled.
+
+- 0ab0667: Fixes inconsistent use of inline borders on small viewports.
+
+  The `Card` can now adapt its styles based on the viewport or the container width preventing inline borders to be visible when edge-to-edge style is expected.
+
+- c393d58: Improves focus styles on various elements.
+
 ## 2.0.0
 
 ### Major Changes

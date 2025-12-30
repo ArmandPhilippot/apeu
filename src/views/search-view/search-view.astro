@@ -47,95 +47,95 @@ const graphs: ComponentProps<typeof Layout>["graphs"] = [
 </Layout>
 
 <style>
-  @layer views {
-    /* stylelint-disable selector-class-pattern -- The class names come from Pagefind so we don't have control over it. */
-    .pagefind-search {
-      --pagefind-ui-scale: 1.05;
-      --pagefind-ui-primary: var(--color-primary);
-      --pagefind-ui-text: var(--color-on-regular);
-      --pagefind-ui-tag: var(--color-regular-dark);
-      --pagefind-ui-background: var(--color-regular);
-      --pagefind-ui-border: var(--color-border);
-      --pagefind-ui-border-width: var(--border-size-sm);
-      --pagefind-ui-border-radius: var(--border-radii-md);
-      --pagefind-ui-font: inherit;
+  /* We cant' use the `views` layer here because Pagefind default styles
+   * will get priority over the following styles. */
+  /* stylelint-disable selector-class-pattern -- The class names come from Pagefind so we don't have control over it. */
+  .pagefind-search {
+    --pagefind-ui-scale: 1.05;
+    --pagefind-ui-primary: var(--color-primary);
+    --pagefind-ui-text: var(--color-on-regular);
+    --pagefind-ui-tag: var(--color-regular-dark);
+    --pagefind-ui-background: var(--color-regular);
+    --pagefind-ui-border: var(--color-border);
+    --pagefind-ui-border-width: var(--border-size-sm);
+    --pagefind-ui-border-radius: var(--border-radii-md);
+    --pagefind-ui-font: inherit;
 
-      &[data-has-content="true"] {
-        display: block;
-        margin-block-start: var(--spacing-md);
+    &[data-has-content="true"] {
+      display: block;
+      margin-block-start: var(--spacing-md);
+    }
+
+    & :global(mark) {
+      background: var(--color-info);
+      color: var(--color-on-info);
+    }
+
+    & :global(.pagefind-ui__search-input) {
+      --pagefind-ui-background: var(--color-regular-dark);
+
+      &:focus-visible {
+        background: var(--color-regular);
+        border-color: var(--color-primary);
+        box-shadow: none;
+        outline: var(--color-primary-lighter) solid var(--border-size-sm);
+      }
+    }
+
+    & :global(.pagefind-ui__search-input::placeholder) {
+      color: var(--color-muted-high);
+      /* stylelint-disable-next-line declaration-no-important -- We need to override Pagefind styles. */
+      opacity: 1 !important;
+    }
+
+    & :global(.pagefind-ui__button) {
+      --pagefind-ui-background: var(--color-regular-light);
+
+      transition: outline 0.18s ease-in-out 0s;
+
+      &:hover,
+      &:focus {
+        --pagefind-ui-background: var(--color-regular-lighter);
       }
 
-      & :global(mark) {
-        background: var(--color-info);
-        color: var(--color-on-info);
+      &:focus,
+      &:focus-visible {
+        outline: var(--color-primary-lighter) solid var(--border-size-md);
+      }
+    }
+
+    & :global(.pagefind-ui__search-clear) {
+      --pagefind-ui-background: var(--color-regular-light);
+
+      display: flex;
+      place-items: center;
+      padding-inline: var(--spacing-sm);
+      border: var(--border-size-sm) solid var(--color-border);
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      transition: outline 0.18s ease-in-out 0s;
+
+      &:hover,
+      &:focus {
+        --pagefind-ui-background: var(--color-regular-lighter);
       }
 
-      & :global(.pagefind-ui__search-input) {
-        --pagefind-ui-background: var(--color-regular-dark);
-
-        &:focus-visible {
-          background: var(--color-regular);
-          border-color: var(--color-primary);
-          box-shadow: none;
-          outline: var(--color-primary-lighter) solid var(--border-size-sm);
-        }
+      &:focus {
+        outline: var(--color-primary-lighter) solid var(--border-size-md);
+        outline-offset: calc(var(--border-size-md) * -1);
       }
+    }
 
-      & :global(.pagefind-ui__search-input::placeholder) {
-        color: var(--color-muted-high);
-        /* stylelint-disable-next-line declaration-no-important -- We need to override Pagefind styles. */
-        opacity: 1 !important;
-      }
+    & :global(.pagefind-ui__result-link) {
+      --pagefind-ui-text: var(--color-primary);
 
-      & :global(.pagefind-ui__button) {
-        --pagefind-ui-background: var(--color-regular-light);
+      text-underline-offset: 0.4ex;
+      transition: outline-offset 0.18s linear 0s;
 
-        transition: outline 0.18s ease-in-out 0s;
-
-        &:hover,
-        &:focus {
-          --pagefind-ui-background: var(--color-regular-lighter);
-        }
-
-        &:focus,
-        &:focus-visible {
-          outline: var(--color-primary-lighter) solid var(--border-size-md);
-        }
-      }
-
-      & :global(.pagefind-ui__search-clear) {
-        --pagefind-ui-background: var(--color-regular-light);
-
-        display: flex;
-        place-items: center;
-        padding-inline: var(--spacing-sm);
-        border: var(--border-size-sm) solid var(--color-border);
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;
-        transition: outline 0.18s ease-in-out 0s;
-
-        &:hover,
-        &:focus {
-          --pagefind-ui-background: var(--color-regular-lighter);
-        }
-
-        &:focus {
-          outline: var(--color-primary-lighter) solid var(--border-size-md);
-          outline-offset: calc(var(--border-size-md) * -1);
-        }
-      }
-
-      & :global(.pagefind-ui__result-link) {
-        --pagefind-ui-text: var(--color-primary);
-
-        text-underline-offset: 0.4ex;
-        transition: outline-offset 0.18s linear 0s;
-
-        &:focus-visible {
-          border-radius: var(--border-radii-sm);
-          outline: var(--color-primary-lighter) solid var(--border-size-md);
-          outline-offset: var(--border-size-md);
-        }
+      &:focus-visible {
+        border-radius: var(--border-radii-sm);
+        outline: var(--color-primary-lighter) solid var(--border-size-md);
+        outline-offset: var(--border-size-md);
       }
     }
   }

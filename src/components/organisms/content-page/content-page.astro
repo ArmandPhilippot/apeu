@@ -141,6 +141,10 @@ const { translate } = useI18n(Astro.currentLocale);
     .content-page-body,
     .content-page-footer {
       padding-inline: var(--gutter);
+
+      @media (--prose) {
+        padding-inline: calc(var(--gutter) * 1.5);
+      }
     }
 
     .content-page-header,

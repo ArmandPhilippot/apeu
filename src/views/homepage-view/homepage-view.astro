@@ -81,6 +81,7 @@ const { entries: collections } = await queryCollection(
 >
   <Greetings class="homepage-greetings" name={author.name} />
   <IdentityCard
+    adaptTo="viewport"
     as="section"
     author={{
       ...author,
@@ -91,6 +92,7 @@ const { entries: collections } = await queryCollection(
     heading={translate("page.home.section.about.heading")}
   />
   <ContactCard
+    adaptTo="viewport"
     addRelMe
     as="section"
     class="homepage-contact"
@@ -101,7 +103,12 @@ const { entries: collections } = await queryCollection(
   />
   {
     hasContent ? (
-      <Card as="section" class="homepage-content" elevation="raised">
+      <Card
+        adaptTo="viewport"
+        as="section"
+        class="homepage-content"
+        elevation="raised"
+      >
         <Content components={components} />
       </Card>
     ) : null
@@ -128,6 +135,7 @@ const { entries: collections } = await queryCollection(
         >
           {(entry: (typeof collections)[number]) => (
             <PreviewCard
+              adaptTo="viewport"
               elevation="raised"
               entry={convertPageToPreview(entry, {
                 i18n: { translate, translatePlural },

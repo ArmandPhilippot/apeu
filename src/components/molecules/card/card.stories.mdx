@@ -40,7 +40,9 @@ A card can be used inside or outside a container. When wrapped in a container, t
 
 If you don't wrap the Card in a CSS container, its appearance on large screens will be the same as the mobile view. You cannot see the difference here since main is a container.
 
-## With heading and body
+## Building a card
+
+### With heading and body
 
 <CodePreview
   code={`<Card>
@@ -63,7 +65,7 @@ If you don't wrap the Card in a CSS container, its appearance on large screens w
   </Card>
 </CodePreview>
 
-## With heading, body and overline
+### With heading, body and overline
 
 <CodePreview
   code={`<Card>
@@ -88,7 +90,7 @@ If you don't wrap the Card in a CSS container, its appearance on large screens w
   </Card>
 </CodePreview>
 
-## With heading, body and a call to action
+### With heading, body and a call to action
 
 <CodePreview
   code={`<Card>
@@ -114,7 +116,7 @@ If you don't wrap the Card in a CSS container, its appearance on large screens w
   </Card>
 </CodePreview>
 
-## With heading, body and meta
+### With heading, body and meta
 
 <CodePreview
   code={`<Card>
@@ -140,7 +142,7 @@ If you don't wrap the Card in a CSS container, its appearance on large screens w
   </Card>
 </CodePreview>
 
-## With heading, body, meta and a call to action
+### With heading, body, meta and a call to action
 
 <CodePreview
   code={`<Card>
@@ -168,7 +170,7 @@ If you don't wrap the Card in a CSS container, its appearance on large screens w
   </Card>
 </CodePreview>
 
-## With heading, body and cover
+### With heading, body and cover
 
 <CodePreview
   code={`<Card>
@@ -205,7 +207,7 @@ If you don't wrap the Card in a CSS container, its appearance on large screens w
   </Card>
 </CodePreview>
 
-## With heading, body, cover and meta
+### With heading, body, cover and meta
 
 <CodePreview
   code={`<Card>
@@ -245,7 +247,7 @@ If you don't wrap the Card in a CSS container, its appearance on large screens w
   </Card>
 </CodePreview>
 
-## With everything
+### With everything
 
 <CodePreview
   code={`<Card>
@@ -289,7 +291,7 @@ If you don't wrap the Card in a CSS container, its appearance on large screens w
   </Card>
 </CodePreview>
 
-## With a link wrapped in a heading and without cta
+### With a link wrapped in a heading and without cta
 
 <CodePreview
   code={`<Card>
@@ -333,7 +335,7 @@ If you don't wrap the Card in a CSS container, its appearance on large screens w
   </Card>
 </CodePreview>
 
-## With all and a very long excerpt
+### With all and a very long excerpt
 
 <CodePreview
   code={`<Card>
@@ -400,6 +402,66 @@ If you don't wrap the Card in a CSS container, its appearance on large screens w
     Dolores est quam rerum necessitatibus aut ad et doloremque. Quae quia
     sint quis nihil accusamus et. Explicabo placeat esse. Quo
     necessitatibus voluptate deleniti sequi debitis delectus.
+
+    <div slot="meta">Some meta</div>
+    <Button as="a" href="#post" slot="cta">Read more</Button>
+  </Card>
+</CodePreview>
+
+## Responsive behavior
+
+You can choose to let the viewport or container width adapting the card styles with `adaptTo`. This is useful to control both when the inline borders are visible and the shadow direction when `elevation` is provided.
+
+### Based on viewport
+
+<CodePreview
+  code={`<Card adaptTo="viewport">
+    <h3 slot="heading">The card title</h3>
+    <p>Ut consequuntur modi. Accusantium quia unde sint suscipit ipsum. Sunt
+    voluptates earum ea cumque eligendi voluptate iste architecto dolores.
+    Sit impedit cum non voluptates at qui ducimus eveniet reiciendis. Ad
+    voluptate dolor dicta ea sit amet facere. Blanditiis non et.</p>
+    <div slot="meta">Some meta</div>
+    <Button as="a" href="#post" slot="cta">Read more</Button>
+</Card>`}
+  label="Adapting the styles to the viewport"
+  lang="astro"
+>
+  <Card adaptTo="viewport">
+    <h3 slot="heading">The card title</h3>
+
+    Ut consequuntur modi. Accusantium quia unde sint suscipit ipsum. Sunt
+    voluptates earum ea cumque eligendi voluptate iste architecto dolores.
+    Sit impedit cum non voluptates at qui ducimus eveniet reiciendis. Ad
+    voluptate dolor dicta ea sit amet facere. Blanditiis non et.
+
+    <div slot="meta">Some meta</div>
+    <Button as="a" href="#post" slot="cta">Read more</Button>
+  </Card>
+</CodePreview>
+
+### Based on its container
+
+<CodePreview
+  code={`<Card adaptTo="container">
+    <h3 slot="heading">The card title</h3>
+    <p>Ut consequuntur modi. Accusantium quia unde sint suscipit ipsum. Sunt
+    voluptates earum ea cumque eligendi voluptate iste architecto dolores.
+    Sit impedit cum non voluptates at qui ducimus eveniet reiciendis. Ad
+    voluptate dolor dicta ea sit amet facere. Blanditiis non et.</p>
+    <div slot="meta">Some meta</div>
+    <Button as="a" href="#post" slot="cta">Read more</Button>
+</Card>`}
+  label="Adapting the styles to its container"
+  lang="astro"
+>
+  <Card adaptTo="container">
+    <h3 slot="heading">The card title</h3>
+
+    Ut consequuntur modi. Accusantium quia unde sint suscipit ipsum. Sunt
+    voluptates earum ea cumque eligendi voluptate iste architecto dolores.
+    Sit impedit cum non voluptates at qui ducimus eveniet reiciendis. Ad
+    voluptate dolor dicta ea sit amet facere. Blanditiis non et.
 
     <div slot="meta">Some meta</div>
     <Button as="a" href="#post" slot="cta">Read more</Button>

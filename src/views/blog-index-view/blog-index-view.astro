@@ -88,6 +88,7 @@ const graphs: ComponentProps<typeof Layout>["graphs"] = [
       {
         (post: (typeof recentPosts)[number]) => (
           <PreviewCard
+            adaptTo="viewport"
             elevation="raised"
             entry={convertBlogPostToPreview(post, {
               featuredMetaItem: { icon: "blog", key: "publishedOn" },
@@ -111,6 +112,7 @@ const graphs: ComponentProps<typeof Layout>["graphs"] = [
       {
         (cat: (typeof categories)[number]) => (
           <PreviewCard
+            adaptTo="viewport"
             elevation="raised"
             entry={convertTaxonomyToPreview(cat, {
               i18n: { translate, translatePlural },

@@ -75,7 +75,7 @@ const { translate } = useI18n(Astro.currentLocale);
   <CardsList cols="auto-fill" isContainer items={entries} sizeMinCols="26em">
     {
       (entry: (typeof entries)[number]) => (
-        <PreviewCard elevation="raised" entry={entry} />
+        <PreviewCard adaptTo="viewport" elevation="raised" entry={entry} />
       )
     }
   </CardsList>

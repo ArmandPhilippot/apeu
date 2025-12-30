@@ -83,6 +83,10 @@ if (!anchor.startsWith("#")) {
         box-shadow: var(--shadow-raised-to-top-left);
         transform: scale(0.95);
       }
+
+      &:is(:focus-visible) {
+        outline-offset: calc(var(--spacing-xs) * -1);
+      }
     }
   }
 </style>

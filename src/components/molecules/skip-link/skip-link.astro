@@ -31,12 +31,16 @@ if (!to.startsWith("#")) throw new InvalidAnchorFormatError("to", to);
       inset-inline-start: var(--spacing-sm);
       z-index: 99;
       user-select: none;
-      box-shadow: var(--shadow-floating-to-top-left);
+      /* This is the same values as var(--shadow-floating-to-top-left) but with a different color. */
+      box-shadow:
+        0.6px 0.6px 0.9px oklch(from var(--color-shadow-dark) l c h / 52%),
+        5px 5px 7.5px -0.7px oklch(from var(--color-shadow-dark) l c h / 45%),
+        13px 13px 19.3px -1.5px oklch(from var(--color-shadow-dark) l c h / 40%),
+        30.4px 30.4px 45px -2.2px
+          oklch(from var(--color-shadow-dark) l c h / 35%),
+        62.9px 62.9px 93.2px -3px
+          oklch(from var(--color-shadow-dark) l c h / 30%);
       outline-offset: calc(var(--border-size-md) * -3);
-
-      &:focus {
-        box-shadow: var(--shadow-floating-to-top-left);
-      }
     }
   }
 </style>

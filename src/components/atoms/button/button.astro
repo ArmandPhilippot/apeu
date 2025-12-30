@@ -76,6 +76,10 @@ if (isExternal && kind === "primary") {
         content: var(--external-icon);
       }
 
+      &:focus-visible {
+        outline-color: var(--color-primary);
+      }
+
       &:is([aria-disabled="true"], :disabled) {
         cursor: not-allowed;
       }
@@ -106,10 +110,6 @@ if (isExternal && kind === "primary") {
         background: none;
         border: none;
         color: inherit;
-
-        &:focus-visible {
-          outline-color: var(--color-primary);
-        }
       }
 
       &[data-type="primary"] {
@@ -153,6 +153,13 @@ if (isExternal && kind === "primary") {
         }
       }
 
+      &[data-type="secondary"],
+      &[data-type="discreet"] {
+        &:where(:focus-visible) {
+          outline-offset: calc(var(--border-size-md) * -2);
+        }
+      }
+
       &[data-type="secondary"] {
         --btn-bg: var(--color-regular-light);
         --btn-fg: var(--color-primary);
@@ -163,11 +170,6 @@ if (isExternal && kind === "primary") {
 
         box-shadow: var(--btn-shadow-size) var(--btn-shadow-size) 0 0
           var(--btn-shadow-color);
-
-        &:focus-visible {
-          outline-color: var(--color-primary);
-          outline-offset: calc(var(--border-size-md) * -2);
-        }
 
         &:is([aria-disabled="true"], :disabled) {
           --btn-bg: var(--color-muted-lighter);
@@ -200,11 +202,6 @@ if (isExternal && kind === "primary") {
 
         box-shadow: var(--btn-shadow-size) var(--btn-shadow-size) 0 0
           var(--btn-shadow-color);
-
-        &:focus-visible {
-          outline-color: var(--color-on-regular);
-          outline-offset: calc(var(--border-size-md) * -2);
-        }
 
         &:is([aria-disabled="true"], :disabled) {
           --btn-bg: var(--color-muted-lighter);

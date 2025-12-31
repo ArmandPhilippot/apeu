@@ -166,7 +166,7 @@ const {
       .card-footer {
         @container (width > 55em) {
           grid-column: 2;
-          margin-inline-start: calc(var(--gutter) / 1.5);
+          margin-inline-start: calc(var(--gutter) / 2);
         }
       }
     }
@@ -198,7 +198,7 @@ const {
       align-self: center;
       width: 100%;
       max-width: calc(100% - 2 * var(--spacing-md));
-      margin: var(--spacing-sm) auto 0;
+      margin: var(--spacing-md) auto 0;
 
       @container (width > 55em) {
         grid-column: 1;
@@ -246,14 +246,10 @@ const {
     }
 
     .card-body {
-      padding-block: calc(var(--gutter) / 2) calc(var(--gutter) / 1.5);
+      padding-block: calc(var(--gutter) / 2) var(--gutter);
 
       &:first-child {
         padding-block-start: var(--gutter);
-      }
-
-      &:last-child {
-        padding-block-end: var(--gutter);
       }
     }
 
@@ -264,7 +260,7 @@ const {
       border-block-start: var(--border-size-sm) solid var(--color-border);
 
       @media (--prose) {
-        padding-block: calc(var(--gutter) / 1.5);
+        padding-block-start: calc(var(--gutter) / 1.5);
       }
     }
   }

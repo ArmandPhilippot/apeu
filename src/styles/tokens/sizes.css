@@ -1,5 +1,5 @@
 :root {
   /* I'd like to use ch unit but this causes CLS with custom font so... */
-  --size-prose: 40em;
+  --size-prose: 44em;
   --size-navbar: 5.5em;
 }

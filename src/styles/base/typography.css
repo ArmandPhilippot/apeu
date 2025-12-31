@@ -177,6 +177,10 @@ dt {
   font-weight: var(--font-weight-bold);
 }
 
+:is(h2, h3, h4, h5, h6) {
+  text-wrap: pretty;
+}
+
 h1 {
   font-size: var(--font-size-5xl);
   text-wrap: balance;

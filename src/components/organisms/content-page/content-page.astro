@@ -261,7 +261,7 @@ const { translate } = useI18n(Astro.currentLocale);
 
       @media (--prose-sidebar) {
         max-height: calc(100dvh - 3 * var(--gutter));
-        padding-inline: var(--spacing-md);
+        padding: var(--spacing-md) var(--gutter) var(--gutter);
         overflow-y: auto;
         font-size: var(--font-size-sm);
       }

@@ -2,4 +2,4 @@
 "apeu": patch
 ---
 
-Refines layout spacings.
+Refines layout by adjusting spacings and sizes.

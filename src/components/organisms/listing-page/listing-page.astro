@@ -107,13 +107,14 @@ const { translate } = useI18n(Astro.currentLocale);
     .listing-page-header {
       margin: 0 0 var(--gutter);
       background: var(--color-regular);
-      border: var(--border-size-sm) solid var(--color-border);
+      border-block: var(--border-size-sm) solid var(--color-border);
       color: var(--color-on-regular);
       box-shadow: var(--shadow-raised-to-top-center);
 
       @media (--prose) {
-        box-shadow: var(--shadow-raised-to-top-left);
+        border-inline: var(--border-size-sm) solid var(--color-border);
         border-radius: var(--border-radii-md);
+        box-shadow: var(--shadow-raised-to-top-left);
       }
 
       &:has(.listing-page-intro) {

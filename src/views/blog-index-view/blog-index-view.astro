@@ -156,6 +156,10 @@ const graphs: ComponentProps<typeof Layout>["graphs"] = [
       &:where(:last-child) {
         padding-block-end: var(--gutter);
       }
+
+      @media (--prose-sidebar) {
+        padding-block-end: var(--gutter);
+      }
     }
 
     .blog-index-intro {

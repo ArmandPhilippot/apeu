@@ -1,5 +1,13 @@
 # apeu
 
+## 2.0.3
+
+### Patch Changes
+
+- 91abbc9: Removes an unwanted spacing between grid items used in contents.
+
+  A CSS rule wasn't smart enough to detect if a grid was being used. This resulted in extra spacing between grid elements used in a page's content.
+
 ## 2.0.2
 
 ### Patch Changes

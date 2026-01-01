@@ -1,5 +1,18 @@
 # apeu
 
+## 2.0.2
+
+### Patch Changes
+
+- 87241c1: Refines layout by adjusting spacings and sizes.
+- 6f5c169: Prevents the search form button to be misaligned on larger viewports.
+- 87241c1: Improves the cover rendering on content pages.
+- 87241c1: Cleans up unused code that should have been removed in v2.
+
+  In v2, the `disconnected` slot has been transferred from the page layout to the `ContentPage` component but this is no longer used and should have been removed.
+
+- e4ce9fe: Fixes cards ordering on listing pages.
+
 ## 2.0.1
 
 ### Patch Changes

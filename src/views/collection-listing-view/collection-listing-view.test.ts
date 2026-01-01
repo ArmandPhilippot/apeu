@@ -484,7 +484,10 @@ describe("CollectionListingView", () => {
               id: "en/post-1",
               data: {
                 title: "First post",
-                meta: { tags: [{ collection: "tags", id: "en/tags/tag-1" }] },
+                meta: {
+                  publishedOn: new Date(),
+                  tags: [{ collection: "tags", id: "en/tags/tag-1" }],
+                },
               },
             },
           ],
@@ -494,7 +497,10 @@ describe("CollectionListingView", () => {
               id: "en/project-1",
               data: {
                 title: "First project",
-                meta: { tags: [{ collection: "tags", id: "en/tags/tag-1" }] },
+                meta: {
+                  publishedOn: new Date(),
+                  tags: [{ collection: "tags", id: "en/tags/tag-1" }],
+                },
               },
             },
           ],

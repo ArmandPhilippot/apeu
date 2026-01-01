@@ -170,8 +170,9 @@ const fetchBlogCategoryRelatedEntries = async (
 
   const { format = "full" } = options;
   const { entries, total } = await queryCollection("blog.posts", {
-    where: { locale, categories: [id] },
     format,
+    orderBy: { key: "publishedOn", order: "DESC" },
+    where: { locale, categories: [id] },
   });
   return { collection: "blog.posts", entries, total };
 };
@@ -188,9 +189,18 @@ const fetchListingPageRelatedEntries = async (
 
   const { format = "full" } = options;
   const relatedCollections = getPageRelatedCollectionKeys(page);
+  const isTaxonomiesListing =
+    typeof relatedCollections === "string" &&
+    (relatedCollections === "blog.categories" || relatedCollections === "tags");
+  const isBlogrollListing =
+    typeof relatedCollections === "string" && relatedCollections === "blogroll";
   const { entries, total } = await queryCollection(relatedCollections, {
-    where: { locale: page.locale },
     format,
+    orderBy:
+      isTaxonomiesListing || isBlogrollListing
+        ? { key: "title", order: "ASC" }
+        : { key: "publishedOn", order: "DESC" },
+    where: { locale: page.locale },
   });
   return { collection: relatedCollections, entries, total };
 };
@@ -215,8 +225,9 @@ const fetchTagRelatedEntries = async (
     "projects",
   ] as const satisfies CollectionKey[];
   const { entries, total } = await queryCollection(withTags, {
-    where: { locale, tags: [id] },
     format,
+    orderBy: { key: "publishedOn", order: "DESC" },
+    where: { locale, tags: [id] },
   });
   return { collection: withTags, entries, total };
 };

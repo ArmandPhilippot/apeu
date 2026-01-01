@@ -33,7 +33,7 @@ if (!to.startsWith("#")) throw new InvalidAnchorFormatError("to", to);
       user-select: none;
       /* This is the same values as var(--shadow-floating-to-top-left) but with a different color. */
       box-shadow:
-        0.6px 0.6px 0.9px oklch(from var(--color-shadow-dark) l c h / 52%),
+        0.6px 0.6px 0.9px var(--color-shadow-dark),
         5px 5px 7.5px -0.7px oklch(from var(--color-shadow-dark) l c h / 45%),
         13px 13px 19.3px -1.5px oklch(from var(--color-shadow-dark) l c h / 40%),
         30.4px 30.4px 45px -2.2px

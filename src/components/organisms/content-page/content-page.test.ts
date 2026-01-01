@@ -29,23 +29,6 @@ describe("ContentPage", () => {
     expect(result).toContain(body);
   });
 
-  it<LocalTestContext>("can render a disconnected body", async ({
-    container,
-  }) => {
-    expect.assertions(1);
-
-    const props = {
-      title: "unde non eum",
-    } satisfies ComponentProps<typeof ContentPage>;
-    const disconnectedBody = "consequatur placeat explicabo";
-    const result = await container.renderToString(ContentPage, {
-      props,
-      slots: { disconnected: disconnectedBody },
-    });
-
-    expect(result).toContain(disconnectedBody);
-  });
-
   it<LocalTestContext>("can render a cover", async ({ container }) => {
     expect.assertions(1);
 

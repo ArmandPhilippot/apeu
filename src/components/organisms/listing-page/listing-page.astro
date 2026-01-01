@@ -1,6 +1,6 @@
 ---
 import type { Page } from "astro";
-import type { HTMLAttributes } from "astro/types";
+import type { ComponentProps, HTMLAttributes } from "astro/types";
 import { Icon } from "astro-icon/components";
 import { useI18n } from "../../../services/i18n";
 import { renderPaginationLink } from "../../../services/pagination";
@@ -12,14 +12,15 @@ import Meta from "../../molecules/meta/meta.astro";
 import Pagination from "../../molecules/pagination/pagination.astro";
 import PreviewCard from "../preview-card/preview-card.astro";
 
-type Props = Omit<HTMLAttributes<"article">, "title"> & {
-  cover?: Omit<ImgType, "alt"> | null | undefined;
-  entries: EntryPreview[];
-  pagination?: Pick<Page, "currentPage" | "lastPage"> | null | undefined;
-  route: string;
-  title: string;
-  totalEntries: string;
-};
+type Props = Omit<HTMLAttributes<"article">, "title"> &
+  Pick<ComponentProps<typeof CardsList>, "sizeMinCols"> & {
+    cover?: Omit<ImgType, "alt"> | null | undefined;
+    entries: EntryPreview[];
+    pagination?: Pick<Page, "currentPage" | "lastPage"> | null | undefined;
+    route: string;
+    title: string;
+    totalEntries: string;
+  };
 
 const {
   class: className,
@@ -27,6 +28,7 @@ const {
   entries,
   pagination,
   route,
+  sizeMinCols,
   slot,
   title,
   totalEntries,
@@ -72,7 +74,12 @@ const { translate } = useI18n(Astro.currentLocale);
       ) : null
     }
   </header>
-  <CardsList cols="auto-fill" isContainer items={entries} sizeMinCols="26em">
+  <CardsList
+    cols="auto-fill"
+    isContainer
+    items={entries}
+    sizeMinCols={sizeMinCols}
+  >
     {
       (entry: (typeof entries)[number]) => (
         <PreviewCard adaptTo="viewport" elevation="raised" entry={entry} />
@@ -100,13 +107,14 @@ const { translate } = useI18n(Astro.currentLocale);
     .listing-page-header {
       margin: 0 0 var(--gutter);
       background: var(--color-regular);
-      border: var(--border-size-sm) solid var(--color-border);
+      border-block: var(--border-size-sm) solid var(--color-border);
       color: var(--color-on-regular);
       box-shadow: var(--shadow-raised-to-top-center);
 
       @media (--prose) {
-        box-shadow: var(--shadow-raised-to-top-left);
+        border-inline: var(--border-size-sm) solid var(--color-border);
         border-radius: var(--border-radii-md);
+        box-shadow: var(--shadow-raised-to-top-left);
       }
 
       &:has(.listing-page-intro) {

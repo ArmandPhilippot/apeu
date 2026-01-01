@@ -161,10 +161,6 @@ const cssVars = getCSSVars({
       display: grid;
       grid-template-columns: minmax(auto, 1fr) auto;
       grid-template-rows: minmax(0, 1fr) auto;
-
-      &::after {
-        inset: var(--spacing-2xs);
-      }
     }
 
     .code-block :global(:is(code, .line)) {

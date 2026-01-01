@@ -93,7 +93,7 @@ const pictureClass = pictureAttributes?.class
       max-width: 100%;
     }
 
-    :global(:where([data-theme="dark"])) .picture:where(:not(:active)) {
+    :global(:where([data-theme="dark"])) img:where(:not(:active)) {
       filter: brightness(0.9) contrast(1.025);
     }
   }

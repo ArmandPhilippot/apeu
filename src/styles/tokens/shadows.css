@@ -1,80 +1,106 @@
 :root {
   --shadow-raised-to-bottom-center:
-    0 -0.6px 0.9px oklch(from var(--color-shadow) l c h / 68%),
-    0 -2.4px 3.6px -3px oklch(from var(--color-shadow) l c h / 57%);
+    0 -0.6px 0.9px var(--color-shadow),
+    0 -2.4px 3.6px -3px oklch(from var(--color-shadow) l c h / 50%);
   --shadow-raised-to-bottom-left:
-    0.6px -0.6px 0.9px oklch(from var(--color-shadow) l c h / 68%),
-    2.4px -2.4px 3.6px -3px oklch(from var(--color-shadow) l c h / 57%);
+    0.6px -0.6px 0.9px var(--color-shadow),
+    2.4px -2.4px 3.6px -3px oklch(from var(--color-shadow) l c h / 50%);
   --shadow-raised-to-bottom-right:
-    -0.6px -0.6px 0.9px oklch(from var(--color-shadow) l c h / 68%),
-    -2.4px -2.4px 3.6px -3px oklch(from var(--color-shadow) l c h / 57%);
+    -0.6px -0.6px 0.9px var(--color-shadow),
+    -2.4px -2.4px 3.6px -3px oklch(from var(--color-shadow) l c h / 50%);
+  --shadow-raised-to-center-left:
+    0.6px 0 0.9px var(--color-shadow),
+    2.4px 0 3.6px -3px oklch(from var(--color-shadow) l c h / 50%);
+  --shadow-raised-to-center-right:
+    -0.6px 0 0.9px var(--color-shadow),
+    -2.4px 0 3.6px -3px oklch(from var(--color-shadow) l c h / 50%);
   --shadow-raised-to-top-center:
-    0 0.6px 0.9px oklch(from var(--color-shadow) l c h / 68%),
-    0 2.4px 3.6px -3px oklch(from var(--color-shadow) l c h / 57%);
+    0 0.6px 0.9px var(--color-shadow),
+    0 2.4px 3.6px -3px oklch(from var(--color-shadow) l c h / 50%);
   --shadow-raised-to-top-left:
-    0.6px 0.6px 0.9px oklch(from var(--color-shadow) l c h / 68%),
-    2.4px 2.4px 3.6px -3px oklch(from var(--color-shadow) l c h / 57%);
+    0.6px 0.6px 0.9px var(--color-shadow),
+    2.4px 2.4px 3.6px -3px oklch(from var(--color-shadow) l c h / 50%);
   --shadow-raised-to-top-right:
-    -0.6px 0.6px 0.9px oklch(from var(--color-shadow) l c h / 68%),
-    -2.4px 2.4px 3.6px -3px oklch(from var(--color-shadow) l c h / 57%);
+    -0.6px 0.6px 0.9px var(--color-shadow),
+    -2.4px 2.4px 3.6px -3px oklch(from var(--color-shadow) l c h / 50%);
   --shadow-elevated-to-bottom-center:
-    0 -0.6px 0.9px oklch(from var(--color-shadow) l c h / 64%),
-    0 -2.9px 4.2px -1.5px oklch(from var(--color-shadow) l c h / 57%),
-    0 -12px 17.8px -3px oklch(from var(--color-shadow) l c h / 50%);
+    0 -0.6px 0.9px var(--color-shadow),
+    0 -2.9px 4.2px -1.5px oklch(from var(--color-shadow) l c h / 50%),
+    0 -12px 17.8px -3px oklch(from var(--color-shadow) l c h / 45%);
   --shadow-elevated-to-bottom-left:
-    0.6px -0.6px 0.9px oklch(from var(--color-shadow) l c h / 64%),
-    2.9px -2.9px 4.2px -1.5px oklch(from var(--color-shadow) l c h / 57%),
-    12px -12px 17.8px -3px oklch(from var(--color-shadow) l c h / 50%);
+    0.6px -0.6px 0.9px var(--color-shadow),
+    2.9px -2.9px 4.2px -1.5px oklch(from var(--color-shadow) l c h / 50%),
+    12px -12px 17.8px -3px oklch(from var(--color-shadow) l c h / 45%);
   --shadow-elevated-to-bottom-right:
-    -0.6px -0.6px 0.9px oklch(from var(--color-shadow) l c h / 64%),
-    -2.9px -2.9px 4.2px -1.5px oklch(from var(--color-shadow) l c h / 57%),
-    -12px -12px 17.8px -3px oklch(from var(--color-shadow) l c h / 50%);
+    -0.6px -0.6px 0.9px var(--color-shadow),
+    -2.9px -2.9px 4.2px -1.5px oklch(from var(--color-shadow) l c h / 50%),
+    -12px -12px 17.8px -3px oklch(from var(--color-shadow) l c h / 45%);
+  --shadow-elevated-to-center-left:
+    0.6px 0 0.9px var(--color-shadow),
+    2.9px 0 4.2px -1.5px oklch(from var(--color-shadow) l c h / 50%),
+    12px 0 17.8px -3px oklch(from var(--color-shadow) l c h / 45%);
+  --shadow-elevated-to-center-right:
+    -0.6px 0 0.9px var(--color-shadow),
+    -2.9px 0 4.2px -1.5px oklch(from var(--color-shadow) l c h / 50%),
+    -12px 0 17.8px -3px oklch(from var(--color-shadow) l c h / 45%);
   --shadow-elevated-to-top-center:
-    0 0.6px 0.9px oklch(from var(--color-shadow) l c h / 64%),
-    0 2.9px 4.2px -1.5px oklch(from var(--color-shadow) l c h / 57%),
-    0 12px 17.8px -3px oklch(from var(--color-shadow) l c h / 50%);
+    0 0.6px 0.9px var(--color-shadow),
+    0 2.9px 4.2px -1.5px oklch(from var(--color-shadow) l c h / 50%),
+    0 12px 17.8px -3px oklch(from var(--color-shadow) l c h / 45%);
   --shadow-elevated-to-top-left:
-    0.6px 0.6px 0.9px oklch(from var(--color-shadow) l c h / 64%),
-    2.9px 2.9px 4.2px -1.5px oklch(from var(--color-shadow) l c h / 57%),
-    12px 12px 17.8px -3px oklch(from var(--color-shadow) l c h / 50%);
+    0.6px 0.6px 0.9px var(--color-shadow),
+    2.9px 2.9px 4.2px -1.5px oklch(from var(--color-shadow) l c h / 50%),
+    12px 12px 17.8px -3px oklch(from var(--color-shadow) l c h / 45%);
   --shadow-elevated-to-top-right:
-    -0.6px 0.6px 0.9px oklch(from var(--color-shadow) l c h / 64%),
-    -2.9px 2.9px 4.2px -1.5px oklch(from var(--color-shadow) l c h / 57%),
-    -12px 12px 17.8px -3px oklch(from var(--color-shadow) l c h / 50%);
+    -0.6px 0.6px 0.9px var(--color-shadow),
+    -2.9px 2.9px 4.2px -1.5px oklch(from var(--color-shadow) l c h / 50%),
+    -12px 12px 17.8px -3px oklch(from var(--color-shadow) l c h / 45%);
   --shadow-floating-to-bottom-center:
-    0 -0.6px 0.9px oklch(from var(--color-shadow) l c h / 71%),
-    0 -5px 7.5px -0.7px oklch(from var(--color-shadow) l c h / 66%),
-    0 -13px 19.3px -1.5px oklch(from var(--color-shadow) l c h / 62%),
-    0 -30.4px 45px -2.2px oklch(from var(--color-shadow) l c h / 57%),
-    0 -62.9px 93.2px -3px oklch(from var(--color-shadow) l c h / 52%);
+    0 -0.6px 0.9px var(--color-shadow),
+    0 -5px 7.5px -0.7px oklch(from var(--color-shadow) l c h / 50%),
+    0 -13px 19.3px -1.5px oklch(from var(--color-shadow) l c h / 45%),
+    0 -30.4px 45px -2.2px oklch(from var(--color-shadow) l c h / 40%),
+    0 -62.9px 93.2px -3px oklch(from var(--color-shadow) l c h / 35%);
   --shadow-floating-to-bottom-left:
-    0.6px -0.6px 0.9px oklch(from var(--color-shadow) l c h / 71%),
-    5px -5px 7.5px -0.7px oklch(from var(--color-shadow) l c h / 66%),
-    13px -13px 19.3px -1.5px oklch(from var(--color-shadow) l c h / 62%),
-    30.4px -30.4px 45px -2.2px oklch(from var(--color-shadow) l c h / 57%),
-    62.9px -62.9px 93.2px -3px oklch(from var(--color-shadow) l c h / 52%);
+    0.6px -0.6px 0.9px var(--color-shadow),
+    5px -5px 7.5px -0.7px oklch(from var(--color-shadow) l c h / 50%),
+    13px -13px 19.3px -1.5px oklch(from var(--color-shadow) l c h / 45%),
+    30.4px -30.4px 45px -2.2px oklch(from var(--color-shadow) l c h / 40%),
+    62.9px -62.9px 93.2px -3px oklch(from var(--color-shadow) l c h / 35%);
   --shadow-floating-to-bottom-right:
-    -0.6px -0.6px 0.9px oklch(from var(--color-shadow) l c h / 71%),
-    -5px -5px 7.5px -0.7px oklch(from var(--color-shadow) l c h / 66%),
-    -13px -13px 19.3px -1.5px oklch(from var(--color-shadow) l c h / 62%),
-    -30.4px -30.4px 45px -2.2px oklch(from var(--color-shadow) l c h / 57%),
-    -62.9px -62.9px 93.2px -3px oklch(from var(--color-shadow) l c h / 52%);
+    -0.6px -0.6px 0.9px var(--color-shadow),
+    -5px -5px 7.5px -0.7px oklch(from var(--color-shadow) l c h / 50%),
+    -13px -13px 19.3px -1.5px oklch(from var(--color-shadow) l c h / 45%),
+    -30.4px -30.4px 45px -2.2px oklch(from var(--color-shadow) l c h / 40%),
+    -62.9px -62.9px 93.2px -3px oklch(from var(--color-shadow) l c h / 35%);
+  --shadow-floating-to-center-left:
+    0.6px 0 0.9px var(--color-shadow),
+    5px 0 7.5px -0.7px oklch(from var(--color-shadow) l c h / 50%),
+    13px 0 19.3px -1.5px oklch(from var(--color-shadow) l c h / 45%),
+    30.4px 0 45px -2.2px oklch(from var(--color-shadow) l c h / 40%),
+    62.9px 0 93.2px -3px oklch(from var(--color-shadow) l c h / 35%);
+  --shadow-floating-to-center-right:
+    -0.6px 0 0.9px var(--color-shadow),
+    -5px 0 7.5px -0.7px oklch(from var(--color-shadow) l c h / 50%),
+    -13px 0 19.3px -1.5px oklch(from var(--color-shadow) l c h / 45%),
+    -30.4px 0 45px -2.2px oklch(from var(--color-shadow) l c h / 40%),
+    -62.9px 0 93.2px -3px oklch(from var(--color-shadow) l c h / 35%);
   --shadow-floating-to-top-center:
-    0 0.6px 0.9px oklch(from var(--color-shadow) l c h / 71%),
-    0 5px 7.5px -0.7px oklch(from var(--color-shadow) l c h / 66%),
-    0 13px 19.3px -1.5px oklch(from var(--color-shadow) l c h / 62%),
-    0 30.4px 45px -2.2px oklch(from var(--color-shadow) l c h / 57%),
-    0 62.9px 93.2px -3px oklch(from var(--color-shadow) l c h / 52%);
+    0 0.6px 0.9px var(--color-shadow),
+    0 5px 7.5px -0.7px oklch(from var(--color-shadow) l c h / 50%),
+    0 13px 19.3px -1.5px oklch(from var(--color-shadow) l c h / 45%),
+    0 30.4px 45px -2.2px oklch(from var(--color-shadow) l c h / 40%),
+    0 62.9px 93.2px -3px oklch(from var(--color-shadow) l c h / 35%);
   --shadow-floating-to-top-left:
-    0.6px 0.6px 0.9px oklch(from var(--color-shadow) l c h / 71%),
-    5px 5px 7.5px -0.7px oklch(from var(--color-shadow) l c h / 66%),
-    13px 13px 19.3px -1.5px oklch(from var(--color-shadow) l c h / 62%),
-    30.4px 30.4px 45px -2.2px oklch(from var(--color-shadow) l c h / 57%),
-    62.9px 62.9px 93.2px -3px oklch(from var(--color-shadow) l c h / 52%);
+    0.6px 0.6px 0.9px var(--color-shadow),
+    5px 5px 7.5px -0.7px oklch(from var(--color-shadow) l c h / 45%),
+    13px 13px 19.3px -1.5px oklch(from var(--color-shadow) l c h / 40%),
+    30.4px 30.4px 45px -2.2px oklch(from var(--color-shadow) l c h / 35%),
+    62.9px 62.9px 93.2px -3px oklch(from var(--color-shadow) l c h / 30%);
   --shadow-floating-to-top-right:
-    -0.6px 0.6px 0.9px oklch(from var(--color-shadow) l c h / 71%),
-    -5px 5px 7.5px -0.7px oklch(from var(--color-shadow) l c h / 66%),
-    -13px 13px 19.3px -1.5px oklch(from var(--color-shadow) l c h / 62%),
-    -30.4px 30.4px 45px -2.2px oklch(from var(--color-shadow) l c h / 57%),
-    -62.9px 62.9px 93.2px -3px oklch(from var(--color-shadow) l c h / 52%);
+    -0.6px 0.6px 0.9px var(--color-shadow),
+    -5px 5px 7.5px -0.7px oklch(from var(--color-shadow) l c h / 50%),
+    -13px 13px 19.3px -1.5px oklch(from var(--color-shadow) l c h / 45%),
+    -30.4px 30.4px 45px -2.2px oklch(from var(--color-shadow) l c h / 40%),
+    -62.9px 62.9px 93.2px -3px oklch(from var(--color-shadow) l c h / 35%);
 }

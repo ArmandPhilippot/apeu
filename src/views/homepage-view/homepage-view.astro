@@ -128,11 +128,7 @@ const { entries: collections } = await queryCollection(
           <Icon aria-hidden="true" name="feed" />
           {translate("cta.subscribe")}
         </Button>
-        <CardsList
-          isContainer
-          items={collections}
-          sizeMinCols="clamp(26rem,20dvi,30rem)"
-        >
+        <CardsList isContainer items={collections} sizeMinCols="19em">
           {(entry: (typeof collections)[number]) => (
             <PreviewCard
               adaptTo="viewport"

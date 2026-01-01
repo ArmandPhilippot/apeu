@@ -58,6 +58,13 @@ const entries = await Promise.all(
       })
   )
 );
+/* TODO: Ideally, these ids shouldn't be hardcoded here and maybe this should be
+ * configurable through the frontmatter instead. So, while waiting for a minor
+ * to introduce this, I think this is okay to keep that at the moment. */
+const isSmallCardLayout =
+  page.collection === "index.pages" &&
+  (page.id === `${page.locale}/tags` ||
+    page.id === `${page.locale}/blog/categories`);
 ---
 
 <Layout
@@ -72,6 +79,7 @@ const entries = await Promise.all(
     entries={entries}
     pagination={pagination}
     route={page.route}
+    sizeMinCols={isSmallCardLayout ? "22em" : "30em"}
     title={page.title}
     totalEntries={collectionMetaTotal}
   >

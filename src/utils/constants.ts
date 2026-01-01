@@ -11,13 +11,6 @@ export const CALLOUT_TYPES = [
   "warning",
 ] as const;
 
-export const COMPONENT_KINDS = [
-  "atoms",
-  "molecules",
-  "organisms",
-  "templates",
-] as const;
-
 export const CONFIG = {
   BRAND: "Armand Philippot",
   CREATION_YEAR: 2024,

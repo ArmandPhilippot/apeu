@@ -27,7 +27,13 @@ const {
 <style>
   @layer atoms {
     .figure {
-      padding: var(--spacing-2xs);
+      --cut-off-padding: clamp(
+        var(--border-size-md),
+        0.5dvw,
+        var(--spacing-sm)
+      );
+
+      padding: var(--cut-off-padding);
       z-index: 1;
       border: var(--border-size-sm) solid var(--color-border-dark);
       border-radius: var(--border-radii-lg);
@@ -49,7 +55,7 @@ const {
       &::after {
         content: "";
         position: absolute;
-        inset: calc(var(--spacing-2xs) - var(--border-size-lg));
+        inset: calc(var(--cut-off-padding) - var(--border-size-lg));
         z-index: -1;
         background: var(--color-regular-light);
         border: var(--border-size-sm) solid var(--color-border-dark);

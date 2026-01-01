@@ -85,12 +85,12 @@ const isCurrentRouteOrNested = (url: string) => {
 
       &:first-child {
         border-start-start-radius: inherit;
-        border-start-end-radius: inherit;
+        border-start-end-radius: var(--border-radii-lg);
       }
 
       &:last-child {
         border-end-start-radius: inherit;
-        border-end-end-radius: inherit;
+        border-end-end-radius: var(--border-radii-md);
       }
     }
 
@@ -100,7 +100,7 @@ const isCurrentRouteOrNested = (url: string) => {
       place-items: center;
       gap: var(--spacing-2xs) var(--spacing-xs);
       min-height: calc(var(--one-px-in-rem) * 54);
-      padding: var(--spacing-2xs) var(--spacing-xs);
+      padding: var(--spacing-xs) var(--spacing-sm);
       z-index: 1;
       border-radius: var(--border-radii-md);
       font-size: var(--font-size-sm);
@@ -136,7 +136,7 @@ const isCurrentRouteOrNested = (url: string) => {
         &::before {
           border-radius: inherit;
           box-shadow: inset 0 0 var(--border-size-md) var(--border-size-md)
-            var(--color-shadow-inset);
+            var(--color-shadow-inset-dark);
         }
 
         &:where(:hover, :focus)::before {

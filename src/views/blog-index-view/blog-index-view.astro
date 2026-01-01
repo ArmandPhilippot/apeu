@@ -84,7 +84,7 @@ const graphs: ComponentProps<typeof Layout>["graphs"] = [
         {translate("cta.subscribe")}
       </Button>
     </Fragment>
-    <CardsList isContainer items={recentPosts} sizeMinCols="35rem">
+    <CardsList isContainer items={recentPosts} sizeMinCols="29em">
       {
         (post: (typeof recentPosts)[number]) => (
           <PreviewCard
@@ -108,7 +108,7 @@ const graphs: ComponentProps<typeof Layout>["graphs"] = [
     <h2 slot="heading">
       {translate("page.blog.section.categories.heading")}
     </h2>
-    <CardsList isContainer items={categories} sizeMinCols="27rem">
+    <CardsList isContainer items={categories} sizeMinCols="22em">
       {
         (cat: (typeof categories)[number]) => (
           <PreviewCard
@@ -154,6 +154,10 @@ const graphs: ComponentProps<typeof Layout>["graphs"] = [
       text-align: center;
 
       &:where(:last-child) {
+        padding-block-end: var(--gutter);
+      }
+
+      @media (--prose-sidebar) {
         padding-block-end: var(--gutter);
       }
     }

@@ -21,7 +21,7 @@ const { translate } = useI18n(Astro.currentLocale);
     .greetings {
       width: fit-content;
       max-width: calc(100% - var(--spacing-md));
-      padding: calc(var(--gutter) * 2);
+      padding: calc(var(--gutter) * 1.5);
       margin: var(--gutter) auto;
       position: relative;
       background: transparent;
@@ -30,6 +30,10 @@ const { translate } = useI18n(Astro.currentLocale);
       font-weight: var(--font-weight-bold);
       text-align: center;
       animation: scale-up 0.75s forwards;
+
+      @media (--prose) {
+        padding: calc(var(--gutter) * 2);
+      }
 
       &::after {
         content: "";

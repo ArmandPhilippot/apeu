@@ -96,8 +96,8 @@
     --color-regular-darker: var(--color-slate-darker);
     --color-regular-high: var(--color-slate-high);
     --color-on-regular-high: var(--color-slate-low);
-    --color-shadow: oklch(from var(--color-black) 17% c h);
-    --color-shadow-dark: oklch(from var(--color-black) 10% c h);
+    --color-shadow: oklch(from var(--color-slate) 15% c h);
+    --color-shadow-dark: oklch(from var(--color-shadow) 13% c h);
     --color-shadow-inset: oklch(from var(--color-shadow) l c h / 70%);
     --color-shadow-inset-dark: oklch(from var(--color-shadow) l c h / 90%);
   }
@@ -114,8 +114,8 @@
     --color-regular-darker: var(--color-slate-darker);
     --color-regular-high: var(--color-slate-high);
     --color-on-regular-high: var(--color-slate-low);
-    --color-shadow: oklch(from var(--color-black) 80% c h);
-    --color-shadow-dark: oklch(from var(--color-black) 40% c h);
+    --color-shadow: oklch(from var(--color-slate) 75% calc(c + 0.05) h / 70%);
+    --color-shadow-dark: oklch(from var(--color-slate) 50% calc(c + 0.05) h);
     --color-shadow-inset: oklch(from var(--color-shadow) l c h / 30%);
     --color-shadow-inset-dark: oklch(from var(--color-shadow) l c h / 50%);
   }

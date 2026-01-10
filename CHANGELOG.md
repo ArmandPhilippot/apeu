@@ -1,5 +1,13 @@
 # apeu
 
+## 2.0.4
+
+### Patch Changes
+
+- cafc35f: Replaces outdated Open Graph images.
+
+  The website background and logo have been updated, but not the files used to generate the Open Graph images.
+
 ## 2.0.3
 
 ### Patch Changes

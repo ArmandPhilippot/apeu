@@ -33,11 +33,11 @@ const individualPages = collections.entries.map(
   ({ description, id, route, title }) => {
     const pageId = getPageIdFromRoute(route);
 
-    return [pageId || "home", { description, id, title }];
+    return [pageId || "home", { description, id, title }] as const;
   }
 );
 
-export const { getStaticPaths, GET } = oGImageRoute({
+export const { getStaticPaths, GET } = await oGImageRoute({
   param: "slug",
   pages: Object.fromEntries(individualPages),
   getImageOptions: (_path, page) => {

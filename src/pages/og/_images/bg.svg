@@ -3,47 +3,42 @@
    height="630"
    viewBox="0 0 1200 630"
    xmlns="http://www.w3.org/2000/svg">
-   <defs
-      id="defs1">
+   <defs>
       <filter
-         color-interpolation-filters="sRGB"
          id="paper-filter"
+         filterUnits="objectBoundingBox"
          x="0"
          y="0"
          width="1"
-         height="1">
+         height="1"
+         color-interpolation-filters="sRGB">
          <feTurbulence
-            baseFrequency="0.020"
-            numOctaves="7"
-            result="noise"
-            seed="3"
             type="fractalNoise"
-            id="feTurbulence1" />
+            baseFrequency="0.015"
+            numOctaves="7"
+            seed="8"
+            stitchTiles="stitch"
+            result="noise" />
          <feDiffuseLighting
-            diffuseConstant="1.10000002"
             in="noise"
-            surfaceScale="0.60000002"
-            id="feDiffuseLighting1"
-            lighting-color="rgb(250,250,250)">
-            <feDistantLight
-               azimuth="60"
-               elevation="65"
-               id="feDistantLight1" />
+            lighting-color="hsl(216deg 22% 97%)"
+            surfaceScale="1.15"
+            diffuseConstant="1.05">
+            <feDistantLight azimuth="80" elevation="72" />
          </feDiffuseLighting>
       </filter>
    </defs>
    <rect
-      style="fill:#214769;stroke-width:0.262145;fill-opacity:1"
-      width="1200"
-      height="630"
       x="0"
       y="0"
-      id="rect1" />
+      width="1200"
+      height="630"
+      fill="#13436c" />
    <rect
-      style="fill:#f9fafb;fill-opacity:1;stroke-width:0.262145;filter:url(#paper-filter)"
-      width="1185"
-      height="620"
       x="10"
       y="5"
-      id="rect2" />
+      width="1185"
+      height="620"
+      fill="#f6f7f9"
+      filter="url(#paper-filter)" />
 </svg>

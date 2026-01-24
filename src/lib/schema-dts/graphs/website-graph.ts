@@ -5,7 +5,7 @@ import type { AvailableLocale } from "../../../types/tokens";
 import { CONFIG, WEBSITE_URL } from "../../../utils/constants";
 import { getLanguageGraph } from "./language-graph";
 
-export type CustomSearchAction = SearchAction & {
+type CustomSearchAction = SearchAction & {
   // Required by Google
   "query-input": string;
 };

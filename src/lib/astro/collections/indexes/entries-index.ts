@@ -323,7 +323,7 @@ export type EntryByRouteIndex = Map<
   IndexedEntry<RoutableCollectionKey>
 >;
 
-export type EntriesIndexes = {
+type EntriesIndexes = {
   /**
    * A Map indexing the entries by id.
    */

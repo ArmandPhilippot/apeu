@@ -20,7 +20,7 @@ const hasValue = <K extends keyof MetaData>(
   return Array.isArray(value) ? value.length > 0 : true;
 };
 
-export type MetaTransformConfig = {
+type MetaTransformConfig = {
   i18n: Omit<I18nContext, "locale">;
   icons?: CollectionMetaIcon | null | undefined;
   showAuthorsIfAvailable?: boolean | null | undefined;

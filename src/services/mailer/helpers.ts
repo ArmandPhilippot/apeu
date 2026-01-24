@@ -10,8 +10,6 @@ export type MailError = {
   error: Partial<z.inferFlattenedErrors<typeof mailData>>;
 };
 
-export type MailAPIResponse = MailSuccess | MailError;
-
 /**
  * Check if the given data matches the MailError shape.
  *

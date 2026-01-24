@@ -34,8 +34,6 @@ export type Gap = CSSDecompoundGap | Spacing;
 
 export type CountryCode = (typeof COUNTRY_CODES)[number];
 
-export type Direction = "bottom" | "left" | "right" | "top";
-
 /**
  * The elevations defined in `src/styles/variables/shadows.css`.
  */

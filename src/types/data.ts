@@ -306,7 +306,6 @@ export type AuthorPreview = Omit<
 export type AuthorLink = Pick<Author, "isWebsiteOwner" | "name" | "website">;
 
 export type BlogPost = FormattedEntry<"blog.posts", "full">;
-export type BlogPostPreview = FormattedEntry<"blog.posts">;
 export type BlogPostMetaData = BlogPost["meta"];
 
 export type Blog = FormattedEntry<"blogroll">;
@@ -316,29 +315,19 @@ export type Bookmark = FormattedEntry<"bookmarks">;
 export type BookmarkMetaData = Bookmark["meta"];
 
 export type Guide = FormattedEntry<"guides", "full">;
-export type GuidePreview = FormattedEntry<"guides">;
 export type GuideMetaData = Guide["meta"];
 
-export type IndexPage = FormattedEntry<"index.pages", "full">;
-export type IndexPagePreview = FormattedEntry<"index.pages">;
-export type IndexPageMetaData = IndexPage["meta"];
-
 export type Note = FormattedEntry<"notes", "full">;
-export type NotePreview = FormattedEntry<"notes">;
 export type NoteMetaData = Note["meta"];
 
 export type Page = FormattedEntry<"pages", "full">;
-export type PagePreview = FormattedEntry<"pages">;
 export type PageMetaData = Page["meta"];
 
 export type Project = FormattedEntry<"projects", "full">;
-export type ProjectPreview = FormattedEntry<"projects">;
 export type ProjectMetaData = Project["meta"];
 
 export type TaxonomyCollectionKey = "blog.categories" | "tags";
-export type RawTaxonomyEntry = CollectionEntry<TaxonomyCollectionKey>;
 export type Taxonomy = FormattedEntry<TaxonomyCollectionKey, "full">;
-export type TaxonomyPreview = FormattedEntry<TaxonomyCollectionKey>;
 export type TaxonomyMetaData = Taxonomy["meta"];
 
 export type CollectionMetaData =

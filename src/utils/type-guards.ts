@@ -108,7 +108,7 @@ export const isValidCalloutType = (value: unknown): value is CalloutType => {
 export const isValidCountryCode = (code: string): code is CountryCode =>
   (COUNTRY_CODES as readonly string[]).includes(code);
 
-export type LanguageCode = (typeof LANGUAGE_CODES)[number];
+type LanguageCode = (typeof LANGUAGE_CODES)[number];
 
 /**
  * Check if the given string is valid language code.

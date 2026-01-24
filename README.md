@@ -593,6 +593,7 @@ All commands are run from the root of the project, from a terminal.
 
 | Command                | Action                                      |
 | :--------------------- | :------------------------------------------ |
+| `pnpm knip`            | Run Knip to lint unused code and deps       |
 | `pnpm lint`            | Run all linters                             |
 | `pnpm lint:formatting` | Run Prettier to check files                 |
 | `pnpm lint:scripts`    | Lint astro and scripts files using ESlint   |
@@ -603,6 +604,8 @@ All commands are run from the root of the project, from a terminal.
 | `pnpm lint:formatting` | Run Prettier to format files                |
 | `pnpm fix:scripts`     | Fix astro and scripts files using ESlint    |
 | `pnpm fix:styles`      | Fix astro and styles files using Stylelint  |
+
+**Note:** Sometimes, Knip doesn't detect unused dependencies correctly. Do not remove them without checking if they are effectively unused.
 
 #### Testing
 

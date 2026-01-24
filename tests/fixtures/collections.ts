@@ -112,25 +112,6 @@ export const guideFixture = {
   id: "en/in-depth-guide",
 } as const satisfies CollectionEntry<"guides">;
 
-export const indexPageFixture = {
-  collection: "index.pages",
-  data: {
-    description: "The page description.",
-    locale: "en",
-    meta: {
-      isDraft: false,
-      publishedOn: new Date("2024-09-22T20:54:19.962Z"),
-      updatedOn: new Date("2024-09-22T20:54:19.962Z"),
-    },
-    seo: {
-      description: "The page description for search engines.",
-      title: "The page title for search engines",
-    },
-    title: "The page title",
-  },
-  id: "en/generic-page",
-} as const satisfies CollectionEntry<"index.pages">;
-
 export const noteFixture = {
   collection: "notes",
   data: {
@@ -150,48 +131,6 @@ export const noteFixture = {
   },
   id: "temporary-note",
 } as const satisfies CollectionEntry<"notes">;
-
-export const pageFixture = {
-  collection: "pages",
-  data: {
-    description: "The page description.",
-    locale: "en",
-    meta: {
-      isDraft: false,
-      publishedOn: new Date("2024-09-22T20:54:19.962Z"),
-      updatedOn: new Date("2024-09-22T20:54:19.962Z"),
-    },
-    seo: {
-      description: "The page description for search engines.",
-      title: "The page title for search engines",
-    },
-    title: "The page title",
-  },
-  id: "en/generic-page",
-} as const satisfies CollectionEntry<"pages">;
-
-export const projectFixture = {
-  collection: "projects",
-  data: {
-    description: "The project description.",
-    locale: "en",
-    meta: {
-      isArchived: false,
-      isDraft: false,
-      kind: "app",
-      publishedOn: new Date("2024-09-22T21:00:40.804Z"),
-      repository: undefined,
-      tags: undefined,
-      updatedOn: new Date("2024-09-22T21:00:40.804Z"),
-    },
-    seo: {
-      description: "The project description for search engines.",
-      title: "The project title for search engines",
-    },
-    title: "The project title",
-  },
-  id: "revolutionary-project",
-} as const satisfies CollectionEntry<"projects">;
 
 export const tagFixture = {
   collection: "tags",

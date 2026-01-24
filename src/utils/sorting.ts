@@ -8,8 +8,7 @@ import { isString } from "./type-guards";
  * @param {Date} b - Another Date.
  * @returns {number} The sort result.
  */
-export const compareDates = (a: Date, b: Date): number =>
-  a.getTime() - b.getTime();
+const compareDates = (a: Date, b: Date): number => a.getTime() - b.getTime();
 
 /**
  * Method to compare two strings. This should be used in `Array.sort()`.
@@ -18,7 +17,7 @@ export const compareDates = (a: Date, b: Date): number =>
  * @param {string} b - Another string.
  * @returns {number} The sort result.
  */
-export const compareNonAsciiStrings = (a: string, b: string): number =>
+const compareNonAsciiStrings = (a: string, b: string): number =>
   a.localeCompare(b);
 
 /**

@@ -264,7 +264,7 @@ export const getStories = ({ base, paths, src }: GetStoriesConfig): Stories => {
     ...stories.flatMap((story) => story.ancestors),
     base,
   ]);
-  const indexes = [...uniqueIndexes.values()].map((route) =>
+  const indexes = Array.from(uniqueIndexes.values(), (route) =>
     parseIndexRoute(route, base)
   );
 

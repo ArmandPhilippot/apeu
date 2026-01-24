@@ -172,7 +172,7 @@ console.log('The answer is:', 42);
       ...value.matchAll(new RegExp(`import ${CODE_BLOCK_NAME} from`, "g")),
     ];
     const codeBlocks = [
-      ...value.matchAll(new RegExp(`jsx\\(${CODE_BLOCK_NAME},`, "g")),
+      ...value.matchAll(new RegExp(String.raw`jsx\(${CODE_BLOCK_NAME},`, "g")),
     ];
 
     expect(importStatements).toHaveLength(1);

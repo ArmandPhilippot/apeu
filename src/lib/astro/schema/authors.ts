@@ -39,7 +39,9 @@ export const authors = defineCollection({
           .optional(),
         socialMedia: z
           .object({
+            bluesky: z.string().url().optional(),
             diaspora: z.string().url().optional(),
+            email: z.string().url().optional(),
             facebook: z.string().url().optional(),
             github: z.string().url().optional(),
             gitlab: z.string().url().optional(),
@@ -47,6 +49,7 @@ export const authors = defineCollection({
             mastodon: z.string().url().optional(),
             reddit: z.string().url().optional(),
             stackoverflow: z.string().url().optional(),
+            whatsapp: z.string().url().optional(),
             x: z.string().url().optional(),
           })
           .optional(),

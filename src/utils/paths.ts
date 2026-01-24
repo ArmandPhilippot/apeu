@@ -46,7 +46,7 @@ export const removeExtFromPath = (filePath: string): string => {
 export const getLocaleFromPath = (path: string): AvailableLocale => {
   // Get each `/[locale]/` directory encountered.
   const regex = new RegExp(
-    `(?<=\\/)(?:${CONFIG.LANGUAGES.AVAILABLE.join("|")})(?=\\/|$)`,
+    String.raw`(?<=\/)(?:${CONFIG.LANGUAGES.AVAILABLE.join("|")})(?=\/|$)`,
     "g"
   );
   const result = path.match(regex);

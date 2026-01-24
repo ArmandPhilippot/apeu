@@ -7,5 +7,6 @@
   ],
   "ignoreDependencies": ["modern-normalize", "pagefind"],
   "ignoreFiles": ["postcss.config.js"],
+  "postcss": true,
   "tags": ["-lintignore"]
 }

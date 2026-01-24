@@ -15,12 +15,11 @@ type HeadingNodeWithParentIndex = HeadingNode & {
 const addParentIndexToHeadings = (
   headings: MarkdownHeading[]
 ): HeadingNodeWithParentIndex[] => {
-  const depthLastIndexes = Array.from(
-    { length: HEADING_TAGS.length },
-    () => -1
-  );
+  const depthLastIndexes = Array.from<number>({
+    length: HEADING_TAGS.length,
+  }).fill(-1);
 
-  return [...headings].map((heading, index): HeadingNodeWithParentIndex => {
+  return Array.from(headings, (heading, index): HeadingNodeWithParentIndex => {
     const depth = (HEADING_TAGS as readonly string[]).indexOf(
       `h${heading.depth}`
     );

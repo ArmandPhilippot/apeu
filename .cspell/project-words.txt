@@ -20,6 +20,7 @@ pagefind
 permaslug
 pnpmDedupe
 popovertarget
+prefer-url-canparse
 Previewable
 rehype
 routability

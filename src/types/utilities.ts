@@ -104,10 +104,6 @@ type OmitNever<T extends Record<string, unknown>> = {
 
 export type SharedShape<T1, T2> = OmitNever<Pick<T1 & T2, keyof T1 & keyof T2>>;
 
-export type WithOptionalKey<T, K extends keyof T> = T extends unknown
-  ? Omit<T, K> & { [P in K]?: T[P] extends object ? Partial<T[P]> : T[P] }
-  : never;
-
 export type Expand<T> = T extends infer O ? { [K in keyof O]: O[K] } : never;
 
 export type RequireOnly<T, K extends keyof T> = Required<Pick<T, K>> &

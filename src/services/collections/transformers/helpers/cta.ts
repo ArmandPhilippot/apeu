@@ -1,10 +1,5 @@
-import type { EntryPreview, Route, WithIcon } from "../../../../types/data";
+import type { EntryPreview, EntryPreviewCTA } from "../../../../types/data";
 import type { I18nContext } from "../../../i18n";
-
-type EntryPreviewCTA = WithIcon<Route> & {
-  ariaLabel?: string | null | undefined;
-  isExternal?: boolean | null | undefined;
-};
 
 type CTAConfig = {
   i18n: Omit<I18nContext, "locale">;

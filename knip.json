@@ -1,0 +1,19 @@
+{
+  "$schema": "https://unpkg.com/knip@5/schema.json",
+  "entry": [
+    "content/**/*.mdx",
+    "src/**/stories/**/*.{md,mdx}",
+    "src/**/*.stories.{md,mdx}"
+  ],
+  "ignoreDependencies": [
+    "@eslint/js",
+    "@typescript-eslint/parser",
+    "baseline-browser-mapping",
+    "modern-normalize",
+    "pagefind",
+    "typescript-eslint"
+  ],
+  "ignoreFiles": ["postcss.config.js"],
+  "postcss": true,
+  "tags": ["-lintignore"]
+}

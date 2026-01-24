@@ -1,4 +1,4 @@
-import type { NonRoutableCollectionKey, RoutableCollectionKey } from "./types";
+import type { RoutableCollectionKey } from "./types";
 
 export const ROUTABLE_COLLECTIONS = [
   "blog.categories",
@@ -10,9 +10,3 @@ export const ROUTABLE_COLLECTIONS = [
   "projects",
   "tags",
 ] as const satisfies RoutableCollectionKey[];
-
-export const NON_ROUTABLE_COLLECTIONS = [
-  "authors",
-  "blogroll",
-  "bookmarks",
-] as const satisfies NonRoutableCollectionKey[];

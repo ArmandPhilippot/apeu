@@ -155,9 +155,7 @@ export type QueryMode = "full" | "preview";
  * type AuthorModes = ValidQueryMode<"authors">; // never
  * ```
  */
-export type ValidQueryMode<K> = K extends RoutableCollectionKey
-  ? QueryMode
-  : never;
+type ValidQueryMode<K> = K extends RoutableCollectionKey ? QueryMode : never;
 
 /**
  * Add rendered content fields only if the collection is routable and mode is "full".
@@ -305,51 +303,30 @@ export type AuthorPreview = Omit<
 >;
 export type AuthorLink = Pick<Author, "isWebsiteOwner" | "name" | "website">;
 
-export type BlogPost = FormattedEntry<"blog.posts", "full">;
-export type BlogPostPreview = FormattedEntry<"blog.posts">;
-export type BlogPostMetaData = BlogPost["meta"];
-
+export type BlogCategory<M extends QueryMode = "full"> = FormattedEntry<
+  "blog.categories",
+  M
+>;
+export type BlogPost<M extends QueryMode = "full"> = FormattedEntry<
+  "blog.posts",
+  M
+>;
 export type Blog = FormattedEntry<"blogroll">;
-export type BlogMetaData = Blog["meta"];
-
 export type Bookmark = FormattedEntry<"bookmarks">;
-export type BookmarkMetaData = Bookmark["meta"];
-
-export type Guide = FormattedEntry<"guides", "full">;
-export type GuidePreview = FormattedEntry<"guides">;
-export type GuideMetaData = Guide["meta"];
-
-export type IndexPage = FormattedEntry<"index.pages", "full">;
-export type IndexPagePreview = FormattedEntry<"index.pages">;
-export type IndexPageMetaData = IndexPage["meta"];
-
-export type Note = FormattedEntry<"notes", "full">;
-export type NotePreview = FormattedEntry<"notes">;
-export type NoteMetaData = Note["meta"];
-
-export type Page = FormattedEntry<"pages", "full">;
-export type PagePreview = FormattedEntry<"pages">;
-export type PageMetaData = Page["meta"];
-
-export type Project = FormattedEntry<"projects", "full">;
-export type ProjectPreview = FormattedEntry<"projects">;
-export type ProjectMetaData = Project["meta"];
-
+export type Guide<M extends QueryMode = "full"> = FormattedEntry<"guides", M>;
+export type IndexPage<M extends QueryMode = "full"> = FormattedEntry<
+  "index.pages",
+  M
+>;
+export type Note<M extends QueryMode = "full"> = FormattedEntry<"notes", M>;
+export type Page<M extends QueryMode = "full"> = FormattedEntry<"pages", M>;
+export type Project<M extends QueryMode = "full"> = FormattedEntry<
+  "projects",
+  M
+>;
+export type Tag<M extends QueryMode = "full"> = FormattedEntry<"tags", M>;
 export type TaxonomyCollectionKey = "blog.categories" | "tags";
-export type RawTaxonomyEntry = CollectionEntry<TaxonomyCollectionKey>;
-export type Taxonomy = FormattedEntry<TaxonomyCollectionKey, "full">;
-export type TaxonomyPreview = FormattedEntry<TaxonomyCollectionKey>;
-export type TaxonomyMetaData = Taxonomy["meta"];
-
-export type CollectionMetaData =
-  | BlogMetaData
-  | BlogPostMetaData
-  | BookmarkMetaData
-  | GuideMetaData
-  | NoteMetaData
-  | PageMetaData
-  | ProjectMetaData
-  | TaxonomyMetaData;
+export type Taxonomy<M extends QueryMode = "full"> = BlogCategory<M> | Tag<M>;
 
 export type FeedCompatibleEntry =
   | Blog

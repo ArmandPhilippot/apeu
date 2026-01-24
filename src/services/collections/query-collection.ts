@@ -260,7 +260,7 @@ export type QueriedCollectionEntry<
   F extends QueryMode,
 > = Awaited<ReturnType<FormatEntryReturnMap<F>[C]>>;
 
-export type QueriedCollection<C extends CollectionKey, F extends QueryMode> = {
+type QueriedCollection<C extends CollectionKey, F extends QueryMode> = {
   /**
    * The queried collection entries.
    */

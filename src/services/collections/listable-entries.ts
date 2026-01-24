@@ -35,12 +35,9 @@ export type PageWithRelatedEntries<
     CollectionSupportingRelatedEntries,
 > = QueriedCollectionEntry<T, "full">;
 
-export type PageableCollection = Exclude<
-  CollectionSupportingRelatedEntries,
-  "tags"
->;
+type PageableCollection = Exclude<CollectionSupportingRelatedEntries, "tags">;
 
-export type NonPageableCollection = Exclude<
+type NonPageableCollection = Exclude<
   CollectionSupportingRelatedEntries,
   PageableCollection
 >;

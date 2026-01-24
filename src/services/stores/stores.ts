@@ -14,19 +14,10 @@ export const SETTING_KEYS = {
   THEME: "theme",
 } as const;
 
-export const SETTING_DEFAULTS = {
+const SETTING_DEFAULTS = {
   [SETTING_KEYS.SHIKI]: "auto",
   [SETTING_KEYS.THEME]: "auto",
 } as const;
-
-/**
- * Retrieve the default value for the given setting key.
- *
- * @param {keyof Settings} key - The settings key.
- * @returns {Theme} The default value.
- */
-export const getSettingDefault = (key: keyof Settings): Theme =>
-  SETTING_DEFAULTS[key];
 
 export const settings = persistentMap<Settings>(
   "apeu-settings:",
@@ -53,7 +44,7 @@ export const isValidSettingsKey = (value: unknown): value is keyof Settings =>
 /**
  * Atom that tracks system color scheme preference.
  */
-export const systemColorScheme = atom<Exclude<Theme, "auto">>(
+const systemColorScheme = atom<Exclude<Theme, "auto">>(
   getPreferredColorScheme()
 );
 

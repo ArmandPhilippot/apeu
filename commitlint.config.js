@@ -1,1 +1,1 @@
-export default { extends: ["@arphi"] };
+export default { extends: ["@arphi/commitlint-config"] };

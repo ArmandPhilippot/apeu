@@ -1,0 +1,11 @@
+{
+  "$schema": "https://unpkg.com/knip@5/schema.json",
+  "entry": [
+    "content/**/*.mdx",
+    "src/**/stories/**/*.{md,mdx}",
+    "src/**/*.stories.{md,mdx}"
+  ],
+  "ignoreDependencies": ["modern-normalize", "pagefind"],
+  "ignoreFiles": ["postcss.config.js"],
+  "tags": ["-lintignore"]
+}

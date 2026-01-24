@@ -11,6 +11,7 @@ Français
 frontmatter
 globby
 linkedin
+lintignore
 mdast
 Mdxjs
 nanostores

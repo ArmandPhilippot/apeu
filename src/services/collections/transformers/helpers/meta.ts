@@ -1,7 +1,14 @@
 import type {
-  CollectionMetaData,
+  Blog,
+  BlogPost,
+  Bookmark,
+  Guide,
   Icon,
   MetaItem,
+  Note,
+  Page,
+  Project,
+  Taxonomy,
 } from "../../../../types/data";
 import type { AllKeysOf, Blend } from "../../../../types/utilities";
 import { splitObject } from "../../../../utils/objects";
@@ -9,7 +16,16 @@ import type { I18nContext } from "../../../i18n";
 import type { PreviewableCollectionKey, PreviewableEntry } from "../../types";
 import type { TransformEntryConfig } from "../types";
 
-type MetaData = Blend<CollectionMetaData>;
+type MetaData = Blend<
+  | Blog["meta"]
+  | BlogPost["meta"]
+  | Bookmark["meta"]
+  | Guide["meta"]
+  | Note["meta"]
+  | Page["meta"]
+  | Project["meta"]
+  | Taxonomy["meta"]
+>;
 type CollectionMetaIcon = Partial<Record<AllKeysOf<MetaData>, Icon>>;
 
 const hasValue = <K extends keyof MetaData>(

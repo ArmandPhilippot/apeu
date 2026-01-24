@@ -5,9 +5,16 @@ import {
 } from "astro:content";
 import type {
   AuthorLink,
-  FormattedEntry,
+  BlogCategory,
+  BlogPost,
+  Guide,
   Img,
+  IndexPage,
+  Note,
+  Page,
+  Project,
   QueryMode,
+  Tag,
 } from "../../../../types/data";
 import type { Blend } from "../../../../types/utilities";
 import type { EntryByIdIndex } from "../indexes";
@@ -41,14 +48,14 @@ function resolveAndMapAuthors(
 }
 
 export type FormatEntryReturnMap<F extends QueryMode> = {
-  "blog.categories": FormattedEntry<"blog.categories", F>;
-  "blog.posts": FormattedEntry<"blog.posts", F>;
-  guides: FormattedEntry<"guides", F>;
-  "index.pages": FormattedEntry<"index.pages", F>;
-  notes: FormattedEntry<"notes", F>;
-  pages: FormattedEntry<"pages", F>;
-  projects: FormattedEntry<"projects", F>;
-  tags: FormattedEntry<"tags", F>;
+  "blog.categories": BlogCategory<F>;
+  "blog.posts": BlogPost<F>;
+  guides: Guide<F>;
+  "index.pages": IndexPage<F>;
+  notes: Note<F>;
+  pages: Page<F>;
+  projects: Project<F>;
+  tags: Tag<F>;
 };
 
 /**
@@ -119,7 +126,7 @@ export async function getRoutableEntryPreview<T extends RoutableCollectionKey>(
  * @template T - The routable collection key.
  * @param {IndexedEntry<T>} entry - The collection entry.
  * @param {EntryByIdIndex} indexById - A map of indexed entries by id.
- * @returns {Promise<FormatEntryReturnMap<"preview">[T]>} The formatted entry.
+ * @returns {Promise<FormatEntryReturnMap<"full">[T]>} The formatted entry.
  */
 export async function getRoutableEntry<T extends RoutableCollectionKey>(
   entry: IndexedEntry<T>,

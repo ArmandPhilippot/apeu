@@ -5,6 +5,7 @@ blogroll
 bluesky
 canvaskit
 commitlint
+dotenvx
 esbuild
 FOUC
 Français

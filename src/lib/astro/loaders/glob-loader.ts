@@ -1,9 +1,6 @@
 import { glob, type Loader } from "astro/loaders";
+import { CONTENT_PATH } from "astro:env/server";
 import { CONFIG } from "../../../utils/constants";
-
-/* This is not a supported usage, so it could break but I need this to be able
- * to separate the code from the contents (ie. when using a Git submodules). */
-const CONTENT_DIR: string = process.env.CONTENT_PATH ?? "./content";
 
 const getLocalesPattern = () => {
   /* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- The languages number could change so it is safe to expect that a single language is configured. */
@@ -46,6 +43,6 @@ type Collection = keyof typeof collectionsPattern;
  */
 export const globLoader = (collection: Collection): Loader =>
   glob({
-    base: CONTENT_DIR,
+    base: CONTENT_PATH,
     pattern: collectionsPattern[collection],
   });

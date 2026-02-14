@@ -2,7 +2,7 @@
 import mdx from "@astrojs/mdx";
 import node from "@astrojs/node";
 import sitemap from "@astrojs/sitemap";
-import { defineConfig, fontProviders } from "astro/config";
+import { defineConfig, envField, fontProviders } from "astro/config";
 import icon from "astro-icon";
 import remarkDirective from "remark-directive";
 import { astroStories } from "./src/lib/astro/integrations/astro-stories";
@@ -23,6 +23,25 @@ export default defineConfig({
   }),
   build: {
     format: "preserve",
+  },
+  env: {
+    schema: {
+      CONTACT_EMAIL: envField.string({
+        access: "secret",
+        context: "server",
+        includes: "@",
+        min: 5,
+      }),
+      CONTENT_PATH: envField.string({
+        access: "secret",
+        context: "server",
+        default: "./content",
+      }),
+      SMTP_HOST: envField.string({ access: "secret", context: "server" }),
+      SMTP_PORT: envField.number({ access: "secret", context: "server" }),
+      SMTP_USER: envField.string({ access: "secret", context: "server" }),
+      SMTP_PASSWORD: envField.string({ access: "secret", context: "server" }),
+    },
   },
   experimental: {
     contentIntellisense: true,

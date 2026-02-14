@@ -19,7 +19,10 @@ export const blogroll = defineCollection({
         seo: true,
       })
       .extend({
-        description: z.record(z.string().refine(isAvailableLocale), z.string()),
+        description: z.partialRecord(
+          z.string().refine(isAvailableLocale),
+          z.string()
+        ),
         feed: z.url().optional(),
         inLanguages: z.array(z.string().refine(isValidLanguageCode)),
         tags: z.array(reference("tags")).optional(),

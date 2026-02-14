@@ -55,7 +55,7 @@ const dateSchema = z.coerce
  * @returns The zod schema.
  */
 export const i18nSchema = (collection: CollectionKey) =>
-  z.record(z.string().refine(isAvailableLocale), reference(collection));
+  z.partialRecord(z.string().refine(isAvailableLocale), reference(collection));
 
 const localeSchema = z
   .string()

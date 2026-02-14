@@ -18,6 +18,11 @@ defaults:
 env:
   CI: true
   FORCE_COLOR: true
+  CONTACT_EMAIL: ""
+  SMTP_HOST: ""
+  SMTP_PORT: 465
+  SMTP_USER: ""
+  SMTP_PASSWORD: ""
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name == 'pull_request_target' && github.head_ref || github.ref }}

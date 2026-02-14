@@ -1,10 +1,10 @@
-import { z } from "astro:schema";
+import { z } from "astro/zod";
 import { zfd } from "zod-form-data";
 
 /* eslint-disable @typescript-eslint/no-magic-numbers -- Self-explanatory in a Zod schema */
 export const mailData = zfd.formData({
   name: zfd.text(z.string().min(2)),
-  email: zfd.text(z.string().email().min(6)),
+  email: zfd.text(z.email().min(6)),
   object: zfd.text(z.string().min(2).optional()),
   message: zfd.text(z.string().min(5)),
 });

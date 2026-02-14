@@ -1,4 +1,5 @@
-import { defineCollection, reference, z } from "astro:content";
+import { z } from "astro/zod";
+import { defineCollection, reference } from "astro:content";
 import { globLoader } from "../loaders";
 import { contentsBaseSchema, i18nSchema } from "./partials";
 

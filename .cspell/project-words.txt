@@ -5,6 +5,7 @@ blogroll
 bluesky
 canvaskit
 commitlint
+dotenvx
 esbuild
 FOUC
 Français
@@ -28,6 +29,7 @@ routability
 shiki
 stackoverflow
 stylelint
+treeifyError
 tsconfigs
 tseslint
 unrs

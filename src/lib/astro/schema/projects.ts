@@ -1,4 +1,5 @@
-import { defineCollection, reference, z } from "astro:content";
+import { z } from "astro/zod";
+import { defineCollection, reference } from "astro:content";
 import { globLoader } from "../loaders";
 import { contentsBaseSchema, i18nSchema } from "./partials";
 
@@ -17,7 +18,7 @@ export const projects = defineCollection({
         repository: z
           .object({
             name: z.string(),
-            url: z.string().url(),
+            url: z.url(),
           })
           .optional(),
         tags: z.array(reference("tags")).optional(),

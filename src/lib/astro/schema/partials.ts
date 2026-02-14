@@ -1,9 +1,9 @@
+import { z } from "astro/zod";
 import {
   reference,
   type CollectionKey,
   type ImageFunction,
 } from "astro:content";
-import { z } from "astro:schema";
 import { CONFIG } from "../../../utils/constants";
 import { applyTimezone } from "../../../utils/dates";
 import { isAvailableLocale } from "../../../utils/type-guards";

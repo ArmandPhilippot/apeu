@@ -1,4 +1,5 @@
-import { defineCollection, reference, z } from "astro:content";
+import { z } from "astro/zod";
+import { defineCollection, reference } from "astro:content";
 import {
   isAvailableLocale,
   isValidLanguageCode,
@@ -19,10 +20,10 @@ export const blogroll = defineCollection({
       })
       .extend({
         description: z.record(z.string().refine(isAvailableLocale), z.string()),
-        feed: z.string().url().optional(),
+        feed: z.url().optional(),
         inLanguages: z.array(z.string().refine(isValidLanguageCode)),
         tags: z.array(reference("tags")).optional(),
-        url: z.string().url(),
+        url: z.url(),
       })
       .transform(
         ({ inLanguages, isDraft, publishedOn, tags, updatedOn, ...blog }) => {

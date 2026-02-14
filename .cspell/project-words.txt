@@ -29,6 +29,7 @@ routability
 shiki
 stackoverflow
 stylelint
+treeifyError
 tsconfigs
 tseslint
 unrs

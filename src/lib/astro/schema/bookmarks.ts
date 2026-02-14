@@ -1,4 +1,5 @@
-import { defineCollection, reference, z } from "astro:content";
+import { z } from "astro/zod";
+import { defineCollection, reference } from "astro:content";
 import { isValidLanguageCode } from "../../../utils/type-guards";
 import { globLoader } from "../loaders";
 import { contentsBaseSchema } from "./partials";
@@ -21,7 +22,7 @@ export const bookmarks = defineCollection({
          */
         isQuote: z.boolean().optional().default(false),
         tags: z.array(reference("tags")).optional(),
-        url: z.string().url(),
+        url: z.url(),
       })
       .transform(({ inLanguage, isDraft, publishedOn, tags, ...bookmark }) => {
         return {

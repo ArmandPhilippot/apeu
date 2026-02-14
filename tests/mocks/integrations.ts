@@ -26,7 +26,6 @@ export const createAstroBuildDoneMockContext = (
     dir: new URL("file:///mock/out"),
     logger,
     pages: [],
-    routes: [],
     ...overrides,
   };
 };

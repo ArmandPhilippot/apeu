@@ -1,4 +1,4 @@
-import type { z } from "astro:schema";
+import type { z } from "astro/zod";
 import { isKeyExistIn, isObject, isString } from "../../utils/type-guards";
 import type { mailData } from "./schema";
 
@@ -7,7 +7,7 @@ export type MailSuccess = {
 };
 
 export type MailError = {
-  error: Partial<z.inferFlattenedErrors<typeof mailData>>;
+  error: Partial<z.core.$ZodFlattenedError<z.infer<typeof mailData>>>;
 };
 
 /**

@@ -300,6 +300,7 @@ const cssVars = getCSSVars({
       min-width: 4em;
     }
 
+    /* stylelint-disable-next-line selector-max-class -- Sounds silly when we don't have controlled over generated classes. */
     :where(.code-block[data-line-numbers="true"])
       :global(.line:where(.diff.remove) + .line:not(.diff.remove)) {
       counter-increment: none;

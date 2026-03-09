@@ -105,7 +105,7 @@
     "@types/hast": "^3.0.4",
     "@types/mdast": "^4.0.4",
     "@types/nlcst": "^2.0.3",
-    "@types/node": "^25.3.2",
+    "@types/node": "^25.3.5",
     "@types/nodemailer": "^7.0.11",
     "@types/web-app-manifest": "^1.0.9",
     "@typescript-eslint/parser": "^8.56.1",

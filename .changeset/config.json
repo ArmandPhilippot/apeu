@@ -5,7 +5,7 @@
   "fixed": [],
   "linked": [],
   "access": "restricted",
-  "baseBranch": "origin/next",
+  "baseBranch": "origin/main",
   "privatePackages": { "tag": true, "version": true },
   "updateInternalDependencies": "patch",
   "ignore": []

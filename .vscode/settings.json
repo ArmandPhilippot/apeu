@@ -11,5 +11,10 @@
   "editor.formatOnSave": true,
   "eslint.validate": ["javascript", "astro", "typescript"],
   "stylelint.validate": ["astro", "css", "postcss", "scss"],
-  "typescript.preferences.autoImportFileExcludePatterns": ["**/*.stories.astro"]
+  "typescript.preferences.autoImportFileExcludePatterns": [
+    "**/*.stories.astro"
+  ],
+  "json.schemaDownload.trustedDomains": {
+    "https://unpkg.com/%40changesets/config%403.0.3/schema.json": true
+  }
 }

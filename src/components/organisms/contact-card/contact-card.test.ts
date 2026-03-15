@@ -52,8 +52,7 @@ describe("ContactCard", () => {
     const result = await container.renderToString(ContactCard, {
       props,
     });
-
-    const listItems = [...result.matchAll(/<li.*?<\/li>/g)];
+    const listItems = [...result.matchAll(/<li.*?<\/li>/gs)];
 
     expect(listItems).toHaveLength(Object.keys(props.socialMedia).length);
   });

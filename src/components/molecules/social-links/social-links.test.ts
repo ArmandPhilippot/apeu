@@ -27,7 +27,7 @@ describe("SocialLinks", () => {
       props,
     });
 
-    const listItems = [...result.matchAll(/<li.*?<\/li>/g)];
+    const listItems = [...result.matchAll(/<li.*?<\/li>/gs)];
 
     expect(listItems).toHaveLength(Object.keys(props.links).length);
   });
@@ -47,7 +47,7 @@ describe("SocialLinks", () => {
       props,
     });
 
-    const listItems = [...result.matchAll(/<li.*?<\/li>/g)];
+    const listItems = [...result.matchAll(/<li.*?<\/li>/gs)];
 
     expect(listItems).toHaveLength(0);
   });
@@ -67,7 +67,7 @@ describe("SocialLinks", () => {
       props,
     });
 
-    const listItems = [...result.matchAll(/<li.*?<\/li>/g)];
+    const listItems = [...result.matchAll(/<li.*?<\/li>/gs)];
 
     // Only diaspora
     expect(listItems).toHaveLength(1);

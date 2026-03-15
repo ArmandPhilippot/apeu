@@ -29,7 +29,7 @@ describe("SelectField", () => {
     const result = await container.renderToString(SelectField, {
       props,
     });
-    const optionsEl = [...result.matchAll(/<option.*?<\/option>/g)];
+    const optionsEl = [...result.matchAll(/<option.*?<\/option>/gs)];
 
     expect(result).toContain("</select>");
     expect(optionsEl).toHaveLength(props.options.length);

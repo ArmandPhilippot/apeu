@@ -25,7 +25,7 @@ describe("Pagination", () => {
       props,
     });
 
-    const listItems = [...result.matchAll(/<li.*?<\/li>/g)];
+    const listItems = [...result.matchAll(/<li.*?<\/li>/gs)];
     /**
      * Current page + 1 page on the right + ellipsis + last page + next page
      * link.
@@ -53,7 +53,7 @@ describe("Pagination", () => {
       props,
     });
 
-    const listItems = [...result.matchAll(/<li.*?<\/li>/g)];
+    const listItems = [...result.matchAll(/<li.*?<\/li>/gs)];
     /**
      * Current page + 1 page on the left + ellipsis + first page + previous
      * page link.
@@ -80,7 +80,7 @@ describe("Pagination", () => {
       props,
     });
 
-    const listItems = [...result.matchAll(/<li.*?<\/li>/g)];
+    const listItems = [...result.matchAll(/<li.*?<\/li>/gs)];
     /**
      * Current page + 1 page on each side + 2 ellipsis + first page + last page
      * + previous page link + next page link.
@@ -108,7 +108,7 @@ describe("Pagination", () => {
       props,
     });
 
-    const listItems = [...result.matchAll(/<li.*?<\/li>/g)];
+    const listItems = [...result.matchAll(/<li.*?<\/li>/gs)];
     /**
      * Current page + 3 pages on each side + 2 ellipsis + first page + last page
      * + previous page link + next page link.

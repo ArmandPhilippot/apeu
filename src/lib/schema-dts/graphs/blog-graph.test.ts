@@ -97,7 +97,7 @@ describe("get-blog-graph", () => {
       cover: {
         alt: "ea consectetur perferendis",
         height: 480,
-        src: "https://picsum.photos/640/480",
+        src: "https://placehold.co/600x400",
         width: 640,
       },
       description: "Quam omnis in temporibus.",
@@ -137,7 +137,7 @@ describe("get-blog-graph", () => {
         "publisher": {
           "@id": "https://example.test#author",
         },
-        "thumbnailUrl": "https://picsum.photos/640/480",
+        "thumbnailUrl": "https://placehold.co/600x400",
         "url": "https://example.test/blog",
       }
     `);

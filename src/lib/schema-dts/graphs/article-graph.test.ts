@@ -197,7 +197,7 @@ describe("getArticleGraph", () => {
         cover: {
           alt: "ea consectetur perferendis",
           height: 480,
-          src: "https://picsum.photos/640/480",
+          src: "https://placehold.co/600x400",
           width: 640,
         },
         description: "Description",
@@ -210,8 +210,8 @@ describe("getArticleGraph", () => {
         title: "Title",
       });
 
-      expect(graph.image).toBe("https://picsum.photos/640/480");
-      expect(graph.thumbnailUrl).toBe("https://picsum.photos/640/480");
+      expect(graph.image).toBe("https://placehold.co/600x400");
+      expect(graph.thumbnailUrl).toBe("https://placehold.co/600x400");
     });
 
     it("includes reading time information when available", async () => {
@@ -302,7 +302,7 @@ describe("getArticleGraph", () => {
         cover: {
           alt: "ea consectetur perferendis",
           height: 480,
-          src: "https://picsum.photos/640/480",
+          src: "https://placehold.co/600x400",
           width: 640,
         },
         description: "Quam omnis in temporibus.",

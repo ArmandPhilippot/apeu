@@ -34,7 +34,7 @@ describe("CardsList", () => {
       slots: { default: (item: (typeof props.items)[number]) => item.body },
     });
 
-    const listItems = [...result.matchAll(/<li.*?<\/li>/g)];
+    const listItems = [...result.matchAll(/<li.*?<\/li>/gs)];
 
     expect(listItems).toHaveLength(props.items.length);
   });

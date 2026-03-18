@@ -2,8 +2,8 @@
 minimumReleaseAge: 4320
 minimumReleaseAgeExclude:
   - "@arphi/*"
-  # Renovate security update: @astrojs/node@9.5.4
-  - "@astrojs/node@9.5.4"
+  # This is too recent, but this should fix my issue. To remove later.
+  - "@astrojs/compiler-*"
 onlyBuiltDependencies:
   - cypress
   - esbuild

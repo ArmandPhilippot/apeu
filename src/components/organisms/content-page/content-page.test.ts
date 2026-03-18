@@ -35,7 +35,7 @@ describe("ContentPage", () => {
     const props = {
       cover: {
         height: 480,
-        src: "https://picsum.photos/640/480",
+        src: "https://placehold.co/600x400",
         width: 640,
       },
       title: "unde non eum",

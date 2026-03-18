@@ -2,4 +2,4 @@
 "apeu": minor
 ---
 
-Upgrade to Astro v6
+Upgrades to Astro v6 and Vite v7.

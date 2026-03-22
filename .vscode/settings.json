@@ -15,6 +15,7 @@
     "**/*.stories.astro"
   ],
   "json.schemaDownload.trustedDomains": {
-    "https://unpkg.com/%40changesets/config%403.0.3/schema.json": true
+    "https://unpkg.com/%40changesets/config%403.0.3/schema.json": true,
+    "https://unpkg.com/knip%405/schema.json": true
   }
 }

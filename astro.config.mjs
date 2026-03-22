@@ -60,8 +60,9 @@ export default defineConfig({
         "Arial",
         "sans-serif",
       ],
+      formats: ["woff"],
       name: "Inter",
-      provider: fontProviders.fontsource(),
+      provider: fontProviders.bunny(),
       styles: ["italic", "normal", "oblique"],
       subsets: ["latin"],
       unicodeRange: [

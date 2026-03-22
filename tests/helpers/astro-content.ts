@@ -19,7 +19,7 @@ type MockEntry<T extends CollectionKey> = {
   data?: DeepPartial<CollectionEntry<T>["data"]>;
 };
 
-export type EntriesByCollection = Partial<
+type EntriesByCollection = Partial<
   Record<CollectionKey, CollectionEntry<CollectionKey>[]>
 >;
 

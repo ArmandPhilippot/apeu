@@ -6,6 +6,7 @@
     "src/**/*.stories.{md,mdx}"
   ],
   "ignoreDependencies": [
+    "@astrojs/compiler-rs",
     "@eslint/js",
     "@typescript-eslint/parser",
     "baseline-browser-mapping",
@@ -13,7 +14,6 @@
     "pagefind",
     "typescript-eslint"
   ],
-  "ignoreFiles": ["postcss.config.js"],
   "postcss": true,
   "tags": ["-lintignore"]
 }

@@ -71,7 +71,7 @@ describe("is-key-exist", () => {
   });
 
   it("throws an error if the first argument is not an object", () => {
-    expect(() => isKeyExistIn([], "foo")).toThrowError(
+    expect(() => isKeyExistIn([], "foo")).toThrow(
       "First argument must be an object."
     );
   });

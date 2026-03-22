@@ -1,5 +1,35 @@
 # apeu
 
+## 2.1.0
+
+### Minor Changes
+
+- b31f96a: Uses Satori to generate OpenGraph images.
+
+  The `astro-og-canvas` package is great, but I'd like to be able to customize a bit more the OpenGraph image in the future. So, this replaces it with `satori-astro` and `satori-html`. For now, the generated images should remain essentially the same.
+
+- e87b10f: Switches to Astro built-in type-safe environment variables
+
+  Previously, some environment variables such as the SMTP credentials were using `process.env`. This required to use tools like `dotenvx` to load them from a `.env` file. Using Astro built-in features, they are now directly loaded which should improve DX. This also means providing those environment variables is now required and a build will fail if they are not set.
+
+- 10e2011: Enables Astro's experimental queue rendering.
+- dca9396: Upgrades to Astro v6 and Vite v7.
+- 10e2011: Enables Astro's experimental Rust compiler.
+
+### Patch Changes
+
+- b31f96a: Uses Bunny as font provider instead of Fontsource.
+
+  Satori doesn't support `.woff2` fonts and Fontsource doesn't seem to support Inter in `.woff` format. To fix this issue, I swap the font provider to Bunny.
+
+- b31f96a: Uses `.woff` fonts instead of `.woff2`.
+
+  Satori doesn't support `.woff2` fonts. To avoid downloading the Inter font twice, I swapped the default font format (`.woff2`) with `.woff`. This is only effective for the regular font, not for the monospace font.
+
+- b31f96a: Uses the SEO description for OpenGraph images when available.
+
+  The OG images used the regular description, the one that is generally used for display on the website. Those descriptions are not always suited to display on external websites. To fix that, the OG images now use the SEO description when available.
+
 ## 2.0.5
 
 ### Patch Changes

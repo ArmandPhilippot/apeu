@@ -46,7 +46,17 @@ const defaultCTAIconSize = 22;
       />
     ) : null
   }
-  {cover ? <Img {...cover} alt="" slot={cover ? "cover" : ""} /> : null}
+  {
+    cover ? (
+      <Img
+        {...cover}
+        alt=""
+        fit="cover"
+        layout="constrained"
+        slot={cover ? "cover" : ""}
+      />
+    ) : null
+  }
   <Heading lang={locale} slot="heading">
     {
       isString(heading) ? (

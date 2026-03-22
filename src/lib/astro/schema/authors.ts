@@ -1,4 +1,5 @@
-import { defineCollection, z } from "astro:content";
+import { z } from "astro/zod";
+import { defineCollection } from "astro:content";
 import {
   isString,
   isValidCountryCode,
@@ -12,12 +13,12 @@ export const authors = defineCollection({
     z
       .object({
         avatar: image().optional(),
-        email: z.string().email().optional(),
+        email: z.email().optional(),
         firstName: z.string(),
         firstNameIPA: z.string().optional(),
         lastName: z.string(),
         lastNameIPA: z.string().optional(),
-        website: z.string().url().optional(),
+        website: z.url().optional(),
         isWebsiteOwner: z.boolean().optional().default(false),
         job: z.string().optional(),
         country: z
@@ -39,18 +40,18 @@ export const authors = defineCollection({
           .optional(),
         socialMedia: z
           .object({
-            bluesky: z.string().url().optional(),
-            diaspora: z.string().url().optional(),
-            email: z.string().url().optional(),
-            facebook: z.string().url().optional(),
-            github: z.string().url().optional(),
-            gitlab: z.string().url().optional(),
-            linkedin: z.string().url().optional(),
-            mastodon: z.string().url().optional(),
-            reddit: z.string().url().optional(),
-            stackoverflow: z.string().url().optional(),
-            whatsapp: z.string().url().optional(),
-            x: z.string().url().optional(),
+            bluesky: z.url().optional(),
+            diaspora: z.url().optional(),
+            email: z.url().optional(),
+            facebook: z.url().optional(),
+            github: z.url().optional(),
+            gitlab: z.url().optional(),
+            linkedin: z.url().optional(),
+            mastodon: z.url().optional(),
+            reddit: z.url().optional(),
+            stackoverflow: z.url().optional(),
+            whatsapp: z.url().optional(),
+            x: z.url().optional(),
           })
           .optional(),
       })

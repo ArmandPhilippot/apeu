@@ -47,7 +47,7 @@ describe("getGMTOffset", () => {
 
     expect(() =>
       getGMTOffset(date, { lang: "en-US", timezone: "Europe/Paris" })
-    ).toThrowError("Unable to determine GMT offset for timezone: Europe/Paris");
+    ).toThrow("Unable to determine GMT offset for timezone: Europe/Paris");
 
     formatterMock.mockRestore();
   });
@@ -66,7 +66,7 @@ describe("getGMTOffset", () => {
 
     expect(() =>
       getGMTOffset(date, { lang: "en-US", timezone: "Europe/Paris" })
-    ).toThrowError("Unable to determine GMT offset for timezone: Europe/Paris");
+    ).toThrow("Unable to determine GMT offset for timezone: Europe/Paris");
 
     formatterMock.mockRestore();
   });
@@ -84,7 +84,7 @@ describe("getGMTOffset", () => {
 
     expect(() =>
       getGMTOffset(date, { lang: "en-US", timezone: "Europe/Paris" })
-    ).toThrowError("Unexpected offset format: InvalidOffset");
+    ).toThrow("Unexpected offset format: InvalidOffset");
 
     formatterMock.mockRestore();
   });

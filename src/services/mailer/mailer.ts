@@ -1,18 +1,8 @@
+import { CONTACT_EMAIL } from "astro:env/server";
 import type SMTPTransport from "nodemailer/lib/smtp-transport";
 import { createSMTPTransporter } from "../../lib/nodemailer";
 import { CONFIG } from "../../utils/constants";
-import { isString } from "../../utils/type-guards";
 import type { MailDataSchema } from "./schema";
-
-const getRecipientFromEnv = () => {
-  const recipient = process.env.CONTACT_EMAIL;
-
-  if (!isString(recipient)) {
-    throw new Error("Mailer is misconfigured: contact's email missing.");
-  }
-
-  return recipient;
-};
 
 /**
  * Send an email using an SMTP transporter.
@@ -26,7 +16,6 @@ export const sendMail = async ({
   name: sender,
   object,
 }: MailDataSchema): Promise<SMTPTransport.SentMessageInfo> => {
-  const recipient = getRecipientFromEnv();
   const transporter = createSMTPTransporter();
 
   transporter.verify((error) => {
@@ -38,8 +27,8 @@ export const sendMail = async ({
   });
 
   return transporter.sendMail({
-    from: { address: recipient, name: CONFIG.BRAND },
-    to: recipient,
+    from: { address: CONTACT_EMAIL, name: CONFIG.BRAND },
+    to: CONTACT_EMAIL,
     replyTo: { address: email, name: sender },
     subject: `[${CONFIG.HOST}] ${object}`,
     text: message,

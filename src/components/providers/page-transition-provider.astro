@@ -25,11 +25,6 @@ const { translate } = useI18n(Astro.currentLocale);
 </style>
 
 <script>
-  import {
-    TRANSITION_BEFORE_PREPARATION,
-    TRANSITION_PAGE_LOAD,
-  } from "astro:transitions/client";
-
   let progressBarTimer: NodeJS.Timeout | undefined;
   const DELAY_IN_MS = 200;
   const MIN_DISPLAY_TIME_IN_MS = 500;
@@ -70,6 +65,6 @@ const { translate } = useI18n(Astro.currentLocale);
     }, DELAY_IN_MS);
   };
 
-  document.addEventListener(TRANSITION_BEFORE_PREPARATION, showProgressBar);
-  document.addEventListener(TRANSITION_PAGE_LOAD, hideProgressBar);
+  document.addEventListener("astro:before-preparation", showProgressBar);
+  document.addEventListener("astro:page-load", hideProgressBar);
 </script>

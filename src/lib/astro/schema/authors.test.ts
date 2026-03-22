@@ -1,4 +1,4 @@
-import { z } from "astro:content";
+import { z } from "astro/zod";
 import { describe, expect, it, vi } from "vitest";
 import { authors } from "./authors";
 

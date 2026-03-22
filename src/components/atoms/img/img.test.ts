@@ -16,7 +16,7 @@ describe("Img", () => {
     expect.assertions(3);
 
     const alt = "voluptas repellendus nobis";
-    const src = "https://picsum.photos/640/480";
+    const src = "https://placehold.co/600x400";
     const result = await container.renderToString(Img, {
       props: { alt, height: 480, src, width: 640 },
     });
@@ -33,7 +33,7 @@ describe("Img", () => {
     expect.assertions(5);
 
     const alt = "voluptas repellendus nobis";
-    const src = "https://picsum.photos/640/480";
+    const src = "https://placehold.co/600x400";
     const result = await container.renderToString(Img, {
       props: { "data-clickable": "true", alt, height: 480, src, width: 640 },
     });

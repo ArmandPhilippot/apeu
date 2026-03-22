@@ -26,7 +26,7 @@ describe("TableOfContents", () => {
       props: { headings },
     });
 
-    const listItems = [...result.matchAll(/<li/g)];
+    const listItems = [...result.matchAll(/<li/gs)];
 
     expect(result).toContain("<ol");
     expect(listItems).toHaveLength(headings.length);
@@ -82,7 +82,7 @@ describe("TableOfContents", () => {
         return heading;
       });
 
-    const listItems = [...result.matchAll(/<li/g)];
+    const listItems = [...result.matchAll(/<li/gs)];
 
     expect(result).toContain("<ol");
     expect(listItems).toHaveLength(flattenHeadings(headings).length);

@@ -30,7 +30,7 @@ export type CollectionSupportingRelatedEntries =
   | "pages"
   | "tags";
 
-export type PageWithRelatedEntries<
+type PageWithRelatedEntries<
   T extends CollectionSupportingRelatedEntries =
     CollectionSupportingRelatedEntries,
 > = QueriedCollectionEntry<T, "full">;
@@ -42,7 +42,7 @@ type NonPageableCollection = Exclude<
   PageableCollection
 >;
 
-export type PageableEntry = QueriedCollectionEntry<PageableCollection, "full">;
+type PageableEntry = QueriedCollectionEntry<PageableCollection, "full">;
 
 /**
  * Retrieves the key of a collection to display on the page based on its id.

@@ -1,29 +1,11 @@
+import {
+  SMTP_HOST,
+  SMTP_PASSWORD,
+  SMTP_PORT,
+  SMTP_USER,
+} from "astro:env/server";
 import { createTransport, type Transporter } from "nodemailer";
-import type { Options } from "nodemailer/lib/smtp-connection";
 import type SMTPTransport from "nodemailer/lib/smtp-transport";
-
-const SECURE_PORT = 465;
-
-/**
- * Retrieve the SMTP options from environment variables.
- *
- * @returns {Options} The SMTP options.
- */
-const getSMTPOptionsFromEnv = (): Options => {
-  const port = Number(process.env.SMTP_PORT);
-
-  return {
-    host: process.env.SMTP_HOST,
-    port,
-    /* The secure option should only be `true` with port `465`, so it should be
-     * safe to set the option by checking the port */
-    secure: port === SECURE_PORT,
-    auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASSWORD,
-    },
-  };
-};
 
 /**
  * Create an SMTP transporter using Nodemailer.
@@ -34,9 +16,18 @@ export const createSMTPTransporter = (): Transporter<
   SMTPTransport.SentMessageInfo,
   SMTPTransport.Options
 > => {
-  const config = getSMTPOptionsFromEnv();
+  const SECURE_PORT = 465;
+
   const transporter = createTransport({
-    ...config,
+    host: SMTP_HOST,
+    port: SMTP_PORT,
+    /* The secure option should only be `true` with port `465`, so it should be
+     * safe to set the option by checking the port */
+    secure: SMTP_PORT === SECURE_PORT,
+    auth: {
+      user: SMTP_USER,
+      pass: SMTP_PASSWORD,
+    },
     connectionTimeout: 10_000,
     socketTimeout: 10_000,
   });

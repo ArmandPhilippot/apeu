@@ -5,11 +5,7 @@ on:
   push:
     branches:
       - main
-      - next
   pull_request:
-    branches:
-      - main
-      - next
 
 defaults:
   run:
@@ -18,6 +14,11 @@ defaults:
 env:
   CI: true
   FORCE_COLOR: true
+  CONTACT_EMAIL: "anyone@example.test"
+  SMTP_HOST: "smtp.example.test"
+  SMTP_PORT: 465
+  SMTP_USER: "anyone"
+  SMTP_PASSWORD: "foo"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name == 'pull_request_target' && github.head_ref || github.ref }}

@@ -39,17 +39,18 @@ const defaultIconSize = 22;
           ) : null}
           <span class:list={{ "sr-only": hideLabel }}>{item.label}</span>
         </dt>
-        {item.values.map((value) => {
-          let content = value;
-
-          if (value instanceof Date) {
-            content = <Time date={value} />;
-          } else if (typeof value === "object") {
-            content = <Link href={value.path}>{value.label}</Link>;
-          }
-
-          return <dd title={item.description}>{content}</dd>;
-        })}
+        {item.values.map((value) => (
+          <dd title={item.description}>
+            {value instanceof Date ? (
+              <Time date={value} />
+            ) : /* eslint-disable-next-line unicorn/no-nested-ternary -- formatter conflict */
+            typeof value === "object" ? (
+              <Link href={value.path}>{value.label}</Link>
+            ) : (
+              value
+            )}
+          </dd>
+        ))}
       </div>
     ))
   }

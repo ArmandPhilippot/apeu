@@ -1,5 +1,5 @@
 import type { APIContext, APIRoute } from "astro";
-import { zodErrorMap } from "../../lib/zod/error-map";
+import { z } from "astro/zod";
 import { useI18n } from "../../services/i18n";
 import type { MailError, MailSuccess } from "../../services/mailer/helpers";
 import { sendMail } from "../../services/mailer/mailer";
@@ -19,15 +19,16 @@ export const POST: APIRoute = async ({
   request,
 }: APIContext): Promise<Response> => {
   const { translate } = useI18n(currentLocale);
-  const result = mailData.safeParse(await request.formData(), {
-    errorMap: zodErrorMap(translate),
-  });
+  const result = mailData.safeParse(await request.formData());
 
   if (!result.success) {
-    return new Response(JSON.stringify({ error: result.error.flatten() }), {
-      status: HTTP_STATUS.BAD_REQUEST.CODE,
-      statusText: HTTP_STATUS.BAD_REQUEST.TEXT,
-    });
+    return new Response(
+      JSON.stringify({ error: z.treeifyError(result.error) }),
+      {
+        status: HTTP_STATUS.BAD_REQUEST.CODE,
+        statusText: HTTP_STATUS.BAD_REQUEST.TEXT,
+      }
+    );
   }
 
   try {

@@ -9,7 +9,7 @@ describe("get-img-src", () => {
     const img = {
       alt: "",
       height: 480,
-      src: "https://picsum.photos/640/480",
+      src: "https://placehold.co/600x400",
       width: 640,
     } satisfies Img;
     const src = await getImgSrc(img);
@@ -25,7 +25,7 @@ describe("get-img-src", () => {
       src: {
         format: "jpg",
         height: 480,
-        src: "https://picsum.photos/640/480",
+        src: "https://placehold.co/600x400",
         width: 640,
       },
     } satisfies Img;
@@ -37,7 +37,7 @@ describe("get-img-src", () => {
   it("can return the src from the promise of an imported image", async () => {
     expect.assertions(1);
 
-    const src = "https://picsum.photos/640/480";
+    const src = "https://placehold.co/600x400";
     const img = {
       alt: "",
       src: new Promise((resolve) => {

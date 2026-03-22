@@ -18,6 +18,6 @@ describe("mailData", () => {
 
   it("throws on invalid data", () => {
     /* eslint-disable-next-line vitest/require-to-throw-message -- We don't control the message so there is difference while running vitest alone or with coverage */
-    expect(() => mailData.parse("invalid-data")).toThrowError();
+    expect(() => mailData.parse("invalid-data")).toThrow();
   });
 });

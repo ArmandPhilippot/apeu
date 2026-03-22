@@ -47,7 +47,7 @@ function resolveAndMapAuthors(
   return resolved?.map((author) => getAuthorLink(author.raw)) ?? [];
 }
 
-export type FormatEntryReturnMap<F extends QueryMode> = {
+type FormatEntryReturnMap<F extends QueryMode> = {
   "blog.categories": BlogCategory<F>;
   "blog.posts": BlogPost<F>;
   guides: Guide<F>;

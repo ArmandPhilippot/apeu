@@ -1,10 +1,11 @@
-import { z } from "astro:content";
-import type { ZodEffects, ZodString } from "zod";
+import { z, type ZodPipe, type ZodTransform, type ZodString } from "astro/zod";
 
-type ReferenceMock = ZodEffects<
+type ReferenceMock = ZodPipe<
   ZodString,
-  { collection: string; slug: string; data: { name: string } },
-  string
+  ZodTransform<
+    { collection: string; slug: string; data: { name: string } },
+    string
+  >
 >;
 
 /**

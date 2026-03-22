@@ -47,7 +47,7 @@ describe("get-person-graph", () => {
     const graph = await getPersonGraph(
       {
         avatar: {
-          src: "https://picsum.photos/640/480",
+          src: "https://placehold.co/600x400",
         },
         firstName: "John",
         isWebsiteOwner: false,
@@ -66,7 +66,7 @@ describe("get-person-graph", () => {
         "@type": "Person",
         "familyName": "Doe",
         "givenName": "John",
-        "image": "https://picsum.photos/640/480",
+        "image": "https://placehold.co/600x400",
         "jobTitle": "unknown",
         "knowsLanguage": [
           {

@@ -1,9 +1,9 @@
+import { z } from "astro/zod";
 import {
   reference,
   type CollectionKey,
   type ImageFunction,
 } from "astro:content";
-import { z } from "astro:schema";
 import { CONFIG } from "../../../utils/constants";
 import { applyTimezone } from "../../../utils/dates";
 import { isAvailableLocale } from "../../../utils/type-guards";
@@ -55,7 +55,7 @@ const dateSchema = z.coerce
  * @returns The zod schema.
  */
 export const i18nSchema = (collection: CollectionKey) =>
-  z.record(z.string().refine(isAvailableLocale), reference(collection));
+  z.partialRecord(z.string().refine(isAvailableLocale), reference(collection));
 
 const localeSchema = z
   .string()

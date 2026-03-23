@@ -1,5 +1,4 @@
 import { glob, type Loader } from "astro/loaders";
-import { CONTENT_PATH } from "astro:env/server";
 import { CONFIG } from "../../../utils/constants";
 
 const getLocalesPattern = () => {
@@ -43,6 +42,6 @@ type Collection = keyof typeof collectionsPattern;
  */
 export const globLoader = (collection: Collection): Loader =>
   glob({
-    base: CONTENT_PATH,
+    base: process.env.CONTENT_PATH ?? "./content",
     pattern: collectionsPattern[collection],
   });

@@ -32,11 +32,6 @@ export default defineConfig({
         includes: "@",
         min: 5,
       }),
-      CONTENT_PATH: envField.string({
-        access: "secret",
-        context: "server",
-        default: "./content",
-      }),
       SMTP_HOST: envField.string({ access: "secret", context: "server" }),
       SMTP_PORT: envField.number({ access: "secret", context: "server" }),
       SMTP_USER: envField.string({ access: "secret", context: "server" }),

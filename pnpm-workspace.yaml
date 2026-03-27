@@ -4,6 +4,8 @@ minimumReleaseAgeExclude:
   - "@arphi/*"
   # This is too recent, but this should fix my issue. To remove later.
   - "@astrojs/compiler-*"
+  # Renovate security update: nodemailer@8.0.4
+  - nodemailer@8.0.4
 onlyBuiltDependencies:
   - cypress
   - esbuild

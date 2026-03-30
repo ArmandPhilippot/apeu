@@ -115,7 +115,7 @@
     "autoprefixer": "^10.4.27",
     "baseline-browser-mapping": "^2.10.10",
     "cspell": "^9.7.0",
-    "cypress": "^15.12.0",
+    "cypress": "^15.13.0",
     "eslint": "^9.39.4",
     "eslint-config-prettier": "^10.1.8",
     "eslint-import-resolver-typescript": "^4.4.4",

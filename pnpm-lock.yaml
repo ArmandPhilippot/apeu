@@ -208,7 +208,7 @@ importers:
         specifier: ^9.7.0
         version: 9.7.0
       cypress:
-        specifier: ^15.12.0
+        specifier: ^15.13.0
         version: 15.13.0
       eslint:
         specifier: ^9.39.4

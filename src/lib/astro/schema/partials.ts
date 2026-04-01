@@ -86,6 +86,7 @@ export const contentsBaseSchema = (image: ImageFunction) =>
     locale: localeSchema,
     permaslug: z.string().optional(),
     publishedOn: dateSchema,
+    minCardSize: z.string().optional(),
     seo: seoSchema,
     title: z.string(),
     updatedOn: dateSchema.optional(),

@@ -2,6 +2,7 @@
 title: Catégories
 description: "C'est un extrait de la page d'index des catégories du blog."
 publishedOn: "2024-12-19T14:50"
+minCardSize: "22em"
 seo:
   title: "Catégories"
   description: "Il s'agit d'une description utilisée par les moteurs de recherche."

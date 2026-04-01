@@ -74,4 +74,30 @@ describe("index-pages", () => {
       result.data.meta.publishedOn
     );
   });
+
+  it("should preserve minCardSize when provided", () => {
+    const page = {
+      title: "The title of the page",
+      description: "A description of the page.",
+      minCardSize: "22em",
+      publishedOn: new Date("2023-01-01"),
+      seo: {
+        title: "qui sit vero",
+        description: "Vel voluptatem laboriosam.",
+      },
+    };
+
+    if (typeof indexPages.schema !== "function") {
+      throw new TypeError("The schema is not callable");
+    }
+
+    const parsedSchema = indexPages.schema({ image: mockImage });
+    const result = parsedSchema.safeParse(page);
+
+    expect(result.success).toBe(true);
+
+    if (!result.success) return;
+
+    expect(result.data.minCardSize).toBe("22em");
+  });
 });

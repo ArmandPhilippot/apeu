@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs";
+import { readFile } from "node:fs/promises";
 import type { APIRoute, GetStaticPaths, InferGetStaticPropsType } from "astro";
 import { fontData } from "astro:assets";
 import { build } from "astro:config/server";
@@ -50,19 +50,16 @@ const individualPages = collections.entries.map(
 
 export const getStaticPaths = (() => {
   const data = fontData["--font-inter"];
-  const woff400Path = data.find(
+  const inter400Path = data.find(
     (font) => font.style === "normal" && font.weight === "400"
   )?.src[0]?.url;
-  const woff600Path = data.find(
+  const inter600Path = data.find(
     (font) => font.style === "normal" && font.weight === "600"
   )?.src[0]?.url;
 
-  if (woff400Path === undefined || woff600Path === undefined) {
+  if (inter400Path === undefined || inter600Path === undefined) {
     throw new Error("Cannot generate OG images because the font is missing.");
   }
-
-  const inter400Path = new URL(`.${woff400Path}`, build.client);
-  const inter600Path = new URL(`.${woff600Path}`, build.client);
 
   return individualPages.map(([slug, page]) => {
     return {
@@ -87,8 +84,20 @@ const replaceNonBreakingSpaces = (str: string) =>
  * @param {import("astro").APIContext} ctx - The Astro API context.
  * @returns {Promise<Response>} The response to generate OG images.
  */
-export const GET = (async ({ props }) =>
-  satoriAstroOG({
+export const GET = (async ({ props, url }) => {
+  const inter400Data = import.meta.env.DEV
+    ? await fetch(new URL(props.inter400Path, url.origin)).then(async (res) =>
+        res.arrayBuffer()
+      )
+    : await readFile(new URL(`.${props.inter400Path}`, build.client));
+
+  const inter600Data = import.meta.env.DEV
+    ? await fetch(new URL(props.inter600Path, url.origin)).then(async (res) =>
+        res.arrayBuffer()
+      )
+    : await readFile(new URL(`.${props.inter600Path}`, build.client));
+
+  return satoriAstroOG({
     template: html`
       <div
         style="display: flex; flex-flow: column; gap: 4rem; height: 100%; padding: 3rem 4rem 3rem 3rem; background-image: url(${bg}); border: 0.5rem solid #13436c; font-family: Inter; font-size: 16px;"
@@ -113,16 +122,17 @@ export const GET = (async ({ props }) =>
       fonts: [
         {
           name: "Inter",
-          data: readFileSync(props.inter400Path),
+          data: inter400Data,
           style: "normal",
           weight: 400,
         },
         {
           name: "Inter",
-          data: readFileSync(props.inter600Path),
+          data: inter600Data,
           style: "normal",
           weight: 600,
         },
       ],
     },
-  })) satisfies APIRoute<InferGetStaticPropsType<typeof getStaticPaths>>;
+  });
+}) satisfies APIRoute<InferGetStaticPropsType<typeof getStaticPaths>>;

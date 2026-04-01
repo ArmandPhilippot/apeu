@@ -278,7 +278,9 @@ describe("getEntriesIndex", () => {
     // eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory.
     expect.assertions(3);
 
-    const consoleSpy = vi.spyOn(console, "warn");
+    const consoleSpy = vi.spyOn(console, "warn").mockImplementation(() => {
+      /* Empty */
+    });
     const mockEntries = createMockEntries([
       { collection: "pages", id: "en/pages/projects" },
       { collection: "index.pages", id: "en/projects" },
@@ -299,7 +301,9 @@ describe("getEntriesIndex", () => {
     // eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory.
     expect.assertions(3);
 
-    const consoleSpy = vi.spyOn(console, "warn");
+    const consoleSpy = vi.spyOn(console, "warn").mockImplementation(() => {
+      /* Empty */
+    });
     const mockEntries = createMockEntries([
       { collection: "blogroll", id: "duplicated" },
       { collection: "bookmarks", id: "duplicated" },

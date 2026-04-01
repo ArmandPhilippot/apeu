@@ -175,6 +175,42 @@ export function mergeEntriesByCollection(
 }
 
 /**
+ * Remove entries whose ids are already defined in another EntriesByCollection object.
+ *
+ * This is useful when test-local fixtures should take precedence over shared
+ * fallback fixtures without triggering duplicate-entry warnings from the
+ * collections index.
+ *
+ * @param {EntriesByCollection} entries - Candidate fallback entries.
+ * @param {EntriesByCollection} existingEntries - Entries that should win when ids collide.
+ * @returns {EntriesByCollection} A copy of `entries` without duplicated ids.
+ */
+export function filterOutDuplicatedEntries(
+  entries: EntriesByCollection,
+  existingEntries: EntriesByCollection
+): EntriesByCollection {
+  const deduplicatedEntries: EntriesByCollection = {};
+
+  for (const [collection, collectionEntries] of Object.entries(entries)) {
+    if (!Array.isArray(collectionEntries)) continue;
+
+    const key = collection as CollectionKey;
+    const existingIds = new Set(
+      (existingEntries[key] ?? []).map((entry) => entry.id)
+    );
+    const filteredEntries = collectionEntries.filter(
+      (entry) => !existingIds.has(entry.id)
+    );
+
+    if (filteredEntries.length > 0) {
+      deduplicatedEntries[key] = filteredEntries;
+    }
+  }
+
+  return deduplicatedEntries;
+}
+
+/**
  * Sets up Vitest mocks for Astro's content functions with collection-specific data.
  *
  * @param {CollectionEntry<CollectionKey>[] | EntriesByCollection} entries - Either a flat array of entries or entries grouped by collection.

@@ -2,6 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
   createLayoutMockEntries,
   createMockEntriesByCollection,
+  filterOutDuplicatedEntries,
   mergeEntriesByCollection,
   setupCollectionMocks,
 } from "../../../../tests/helpers/astro-content";
@@ -66,9 +67,13 @@ function setupTestWithMockEntries() {
       },
     ],
   });
-  const mergedMockEntries = mergeEntriesByCollection(
+  const fallbackEntries = filterOutDuplicatedEntries(
     layoutEntries,
     entryPreviewMockEntries
+  );
+  const mergedMockEntries = mergeEntriesByCollection(
+    entryPreviewMockEntries,
+    fallbackEntries
   );
   setupCollectionMocks(mergedMockEntries);
 }

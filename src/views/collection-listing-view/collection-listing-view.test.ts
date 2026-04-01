@@ -4,6 +4,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
   createLayoutMockEntries,
   createMockEntriesByCollection,
+  filterOutDuplicatedEntries,
   mergeEntriesByCollection,
   setupCollectionMocks,
 } from "../../../tests/helpers/astro-content";
@@ -137,12 +138,6 @@ async function setupTestWithMockEntries({
   // cSpell:ignore Étiquettes Catégories
   const collectionListingViewRequiredEntries = createMockEntriesByCollection({
     "index.pages": [
-      { collection: "index.pages", id: "en/tags", data: { title: "Tags" } },
-      {
-        collection: "index.pages",
-        id: "fr/tags",
-        data: { title: "Étiquettes" },
-      },
       {
         collection: "index.pages",
         id: "en/blog/categories",
@@ -156,9 +151,16 @@ async function setupTestWithMockEntries({
     ],
   });
   const mockEntries = createMockEntriesByCollection(testEntries);
+  const fallbackEntries = filterOutDuplicatedEntries(
+    mergeEntriesByCollection(
+      collectionListingViewRequiredEntries,
+      layoutEntries
+    ),
+    mockEntries
+  );
   const mergedMockEntries = mergeEntriesByCollection(
-    layoutEntries,
-    mergeEntriesByCollection(collectionListingViewRequiredEntries, mockEntries)
+    mockEntries,
+    fallbackEntries
   );
   setupCollectionMocks(mergedMockEntries);
 

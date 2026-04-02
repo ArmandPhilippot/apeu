@@ -1,3 +1,4 @@
+import { z } from "astro/zod";
 import { defineCollection } from "astro:content";
 import { globLoader } from "../loaders";
 import { contentsBaseSchema, i18nSchema } from "./partials";
@@ -8,6 +9,7 @@ export const indexPages = defineCollection({
     contentsBaseSchema(image)
       .extend({
         i18n: i18nSchema("index.pages").optional(),
+        minCardSize: z.string().optional(),
       })
       .transform(({ isDraft, publishedOn, updatedOn, ...page }) => {
         return {

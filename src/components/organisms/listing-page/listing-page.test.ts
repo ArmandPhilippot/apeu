@@ -63,4 +63,43 @@ describe("ListingPage", () => {
     expect(result).toContain(props.route);
     expect(result).toContain("listing-page-pagination");
   });
+
+  it<LocalTestContext>("uses the default minimum card size when none is provided", async ({
+    container,
+  }) => {
+    expect.assertions(1);
+
+    const props = {
+      entries: [{ description: "The card excerpt.", heading: "Card 1" }],
+      pagination: { currentPage: 1, lastPage: 1 },
+      route: "#page-route",
+      totalEntries: "1 entries",
+      title: "unde non eum",
+    } satisfies ComponentProps<typeof ListingPage>;
+    const result = await container.renderToString(ListingPage, {
+      props,
+    });
+
+    expect(result).toMatch(/--size-min-cols: 30em/);
+  });
+
+  it<LocalTestContext>("uses the provided minimum card size when set", async ({
+    container,
+  }) => {
+    expect.assertions(1);
+
+    const props = {
+      entries: [{ description: "The card excerpt.", heading: "Card 1" }],
+      pagination: { currentPage: 1, lastPage: 1 },
+      route: "#page-route",
+      sizeMinCols: "22em",
+      totalEntries: "1 entries",
+      title: "unde non eum",
+    } satisfies ComponentProps<typeof ListingPage>;
+    const result = await container.renderToString(ListingPage, {
+      props,
+    });
+
+    expect(result).toMatch(/--size-min-cols: 22em/);
+  });
 });

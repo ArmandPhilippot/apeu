@@ -611,4 +611,45 @@ describe("CollectionListingView", () => {
       expect(result).not.toContain("pagination");
     });
   });
+
+  describe("Layout", () => {
+    it<LocalTestContext>("forwards minCardSize from frontmatter to the listing layout", async ({
+      container,
+    }) => {
+      expect.assertions(1);
+
+      const entry = await setupTestWithMockEntries({
+        pageQuery: {
+          collection: "index.pages",
+          id: "tags",
+          locale: "en",
+        },
+        testEntries: {
+          tags: [
+            {
+              collection: "tags",
+              id: "en/tags/tag-1",
+              data: { title: "First tag" },
+            },
+          ],
+          "index.pages": [
+            {
+              collection: "index.pages",
+              id: "en/tags",
+              data: { minCardSize: "22em" },
+            },
+          ],
+        },
+      });
+
+      const result = await container.renderToString(CollectionListingView, {
+        props: {
+          entry,
+          pagination: { currentPage: 1, lastPage: 1 },
+        } satisfies ComponentProps<typeof CollectionListingView>,
+      });
+
+      expect(result).toMatch(/--size-min-cols: 22em/);
+    });
+  });
 });

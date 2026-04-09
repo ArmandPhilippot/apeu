@@ -1,5 +1,17 @@
 # apeu
 
+## 2.2.0
+
+### Minor Changes
+
+- b3d4ee6: Adds support for setting card sizes at content level.
+
+  Previously, the minimal card size used on index pages could have two fixed value: either `30em` or `22em`. Now, the size can be defined per content in the frontmatter of index pages using `minCardSize`.
+
+### Patch Changes
+
+- cf72a31: Adds OG images generation support for both build and dev.
+
 ## 2.1.1
 
 ### Patch Changes

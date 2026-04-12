@@ -72,7 +72,9 @@ const entries = await Promise.all(
     entries={entries}
     pagination={pagination}
     route={page.route}
-    sizeMinCols={page.collection === "index.pages" ? page.minCardSize : null}
+    sizeMinCols={page.collection === "index.pages"
+      ? page.minCardSize
+      : undefined}
     title={page.title}
     totalEntries={collectionMetaTotal}
   >

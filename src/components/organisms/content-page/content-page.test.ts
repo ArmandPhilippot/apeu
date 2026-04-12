@@ -7,6 +7,9 @@ type LocalTestContext = {
   container: AstroContainer;
 };
 
+const getAstroImagePrefix = (src: string) =>
+  `/_image?href=${encodeURIComponent(src)}`;
+
 describe("ContentPage", () => {
   beforeEach<LocalTestContext>(async (context) => {
     context.container = await AstroContainer.create();
@@ -44,7 +47,7 @@ describe("ContentPage", () => {
       props,
     });
 
-    expect(result).toContain(props.cover.src);
+    expect(result).toContain(getAstroImagePrefix(props.cover.src));
   });
 
   it<LocalTestContext>("can render the page meta", async ({ container }) => {

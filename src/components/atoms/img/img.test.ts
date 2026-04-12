@@ -6,6 +6,9 @@ type LocalTestContext = {
   container: AstroContainer;
 };
 
+const getAstroImagePrefix = (src: string) =>
+  `/_image?href=${encodeURIComponent(src)}`;
+
 describe("Img", () => {
   beforeEach<LocalTestContext>(async (context) => {
     context.container = await AstroContainer.create();
@@ -17,13 +20,14 @@ describe("Img", () => {
 
     const alt = "voluptas repellendus nobis";
     const src = "https://placehold.co/600x400";
+    const optimizedSrc = getAstroImagePrefix(src);
     const result = await container.renderToString(Img, {
       props: { alt, height: 480, src, width: 640 },
     });
 
     expect(result).toContain("<img");
     expect(result).toContain(`alt="${alt}"`);
-    expect(result).toContain(`src="${src}"`);
+    expect(result).toContain(`src="${optimizedSrc}`);
   });
 
   it<LocalTestContext>("can wrap an image with a link", async ({
@@ -34,14 +38,15 @@ describe("Img", () => {
 
     const alt = "voluptas repellendus nobis";
     const src = "https://placehold.co/600x400";
+    const optimizedSrc = getAstroImagePrefix(src);
     const result = await container.renderToString(Img, {
       props: { "data-clickable": "true", alt, height: 480, src, width: 640 },
     });
 
     expect(result).toContain("<a");
-    expect(result).toContain(`href="${src}"`);
+    expect(result).toContain(`href="${optimizedSrc}`);
     expect(result).toContain("<img");
     expect(result).toContain(`alt="${alt}"`);
-    expect(result).toContain(`src="${src}"`);
+    expect(result).toContain(`src="${optimizedSrc}`);
   });
 });

@@ -20,6 +20,7 @@ nlcst
 Pageable
 pagefind
 permaslug
+placehold
 pnpmDedupe
 popovertarget
 prefer-url-canparse

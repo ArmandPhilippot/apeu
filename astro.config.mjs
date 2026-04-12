@@ -106,7 +106,6 @@ export default defineConfig({
     locales: [...CONFIG.LANGUAGES.AVAILABLE],
   },
   image: {
-    domains: import.meta.env.DEV ? ["placehold.co"] : [],
     layout: "constrained",
     objectFit: "cover",
     objectPosition: "top",

@@ -51,7 +51,7 @@
     "@astrojs/check": "0.9.8",
     "@astrojs/compiler-rs": "^0.1.6",
     "@astrojs/mdx": "5.0.3",
-    "@astrojs/node": "10.0.4",
+    "@astrojs/node": "10.0.5",
     "@astrojs/rss": "4.0.18",
     "@astrojs/sitemap": "^3.7.2",
     "@mdx-js/mdx": "^3.1.1",

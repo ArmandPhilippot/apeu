@@ -6,6 +6,8 @@ minimumReleaseAgeExclude:
   - "@astrojs/compiler-*"
   # Renovate security update: nodemailer@8.0.4 || 8.0.5
   - nodemailer@8.0.4 || 8.0.5
+  # Renovate security update: astro@6.1.6
+  - astro@6.1.6
 onlyBuiltDependencies:
   - cypress
   - esbuild

@@ -1,5 +1,29 @@
 # apeu
 
+## 2.2.0
+
+### Minor Changes
+
+- b3d4ee6: Adds support for setting card sizes at content level.
+
+  Previously, the minimal card size used on index pages could have two fixed value: either `30em` or `22em`. Now, the size can be defined per content in the frontmatter of index pages using `minCardSize` and the default value is always `30em`.
+
+  If some of your content relied on the previous behavior, you can set `minCardSize` to `22em` in the frontmatter to keep the same card size as before.
+
+  ```diff
+  ---
+  title: Tags
+  description: "This is an excerpt of tags index page."
+  publishedOn: "2024-11-11T17:40"
+  +minCardSize: "22em"
+  ---
+  ```
+
+### Patch Changes
+
+- cf72a31: Adds OG images generation support for both build and dev.
+- 01e8dfc: Allows remote placeholder images in dev and tests.
+
 ## 2.1.1
 
 ### Patch Changes

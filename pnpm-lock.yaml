@@ -4,27 +4,24 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-overrides:
-  '@typescript-eslint/utils': 8.58.1
-
 importers:
 
   .:
     dependencies:
       '@astrojs/check':
-        specifier: 0.9.8
+        specifier: ^0.9.8
         version: 0.9.8(prettier-plugin-astro@0.14.1)(prettier@3.8.2)(typescript@5.9.3)
       '@astrojs/compiler-rs':
         specifier: ^0.1.6
         version: 0.1.6(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2)
       '@astrojs/mdx':
-        specifier: 5.0.3
+        specifier: ^5.0.3
         version: 5.0.3(astro@6.1.10(@types/node@25.5.2)(jiti@2.6.1)(rollup@4.60.1)(typescript@5.9.3)(yaml@2.8.3))
       '@astrojs/node':
-        specifier: 10.0.5
+        specifier: ^10.0.5
         version: 10.0.5(astro@6.1.10(@types/node@25.5.2)(jiti@2.6.1)(rollup@4.60.1)(typescript@5.9.3)(yaml@2.8.3))
       '@astrojs/rss':
-        specifier: 4.0.18
+        specifier: ^4.0.18
         version: 4.0.18
       '@astrojs/sitemap':
         specifier: ^3.7.2
@@ -39,7 +36,7 @@ importers:
         specifier: ^1.5.0
         version: 1.5.0
       astro:
-        specifier: 6.1.10
+        specifier: ^6.1.10
         version: 6.1.10(@types/node@25.5.2)(jiti@2.6.1)(rollup@4.60.1)(typescript@5.9.3)(yaml@2.8.3)
       astro-icon:
         specifier: ^1.1.5
@@ -3501,7 +3498,7 @@ packages:
     resolution: {integrity: sha512-rM9K8UBHcWKpzQzStn1YRN2T5NvdeIfSVoKu/lKF41znQXHAUcBbYXe5wd6GNjZjTrP7viQ49n1D83x/2gYgIw==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
-      '@typescript-eslint/utils': 8.58.1
+      '@typescript-eslint/utils': ^8.56.0
       eslint: ^8.57.0 || ^9.0.0 || ^10.0.0
       eslint-import-resolver-node: '*'
     peerDependenciesMeta:

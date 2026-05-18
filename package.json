@@ -110,7 +110,7 @@
     "@types/nodemailer": "^8.0.0",
     "@types/web-app-manifest": "^1.0.9",
     "@typescript-eslint/parser": "^8.58.1",
-    "@vitest/coverage-v8": "^4.1.4",
+    "@vitest/coverage-v8": "^4.1.6",
     "astro-eslint-parser": "^1.4.0",
     "autoprefixer": "^10.4.27",
     "baseline-browser-mapping": "^2.10.27",
@@ -135,6 +135,6 @@
     "stylelint-config-html": "^1.1.0",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.58.1",
-    "vitest": "^4.1.4"
+    "vitest": "^4.1.6"
   }
 }

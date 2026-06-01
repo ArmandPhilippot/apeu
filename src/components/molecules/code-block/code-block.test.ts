@@ -105,8 +105,8 @@ describe("CodeBlock", () => {
       const result = await container.renderToString(CodeBlock, { props });
 
       expect(result).toContain('data-prompt="true"');
-      expect(result).toContain(`--prompt-host: &#34;localhost&#34;`);
-      expect(result).toContain(`--prompt-user: &#34;user&#34;`);
+      expect(result).toContain(`--prompt-host: &quot;localhost&quot;`);
+      expect(result).toContain(`--prompt-user: &quot;user&quot;`);
     });
 
     it<LocalTestContext>("should display a shell prompt with a custom user", async ({
@@ -123,8 +123,8 @@ describe("CodeBlock", () => {
       } satisfies ComponentProps<typeof CodeBlock>;
       const result = await container.renderToString(CodeBlock, { props });
 
-      expect(result).toContain(`--prompt-host: &#34;localhost&#34;`);
-      expect(result).toContain(`--prompt-user: &#34;${props.promptUser}&#34;`);
+      expect(result).toContain(`--prompt-host: &quot;localhost&quot;`);
+      expect(result).toContain(`--prompt-user: &quot;${props.promptUser}&quot;`);
     });
 
     it<LocalTestContext>("should display a shell prompt with a custom host", async ({
@@ -141,8 +141,8 @@ describe("CodeBlock", () => {
       } satisfies ComponentProps<typeof CodeBlock>;
       const result = await container.renderToString(CodeBlock, { props });
 
-      expect(result).toContain(`--prompt-host: &#34;${props.promptHost}&#34;`);
-      expect(result).toContain(`--prompt-user: &#34;user&#34;`);
+      expect(result).toContain(`--prompt-host: &quot;${props.promptHost}&quot;`);
+      expect(result).toContain(`--prompt-user: &quot;user&quot;`);
     });
 
     it<LocalTestContext>("should display a different shell prompt for root user", async ({
@@ -160,7 +160,7 @@ describe("CodeBlock", () => {
       const result = await container.renderToString(CodeBlock, { props });
 
       expect(result).toContain("data-root");
-      expect(result).toContain(`--prompt-user: &#34;${props.promptUser}&#34;`);
+      expect(result).toContain(`--prompt-user: &quot;${props.promptUser}&quot;`);
     });
 
     it<LocalTestContext>("should display an SQL prompt with default database", async ({
@@ -177,8 +177,8 @@ describe("CodeBlock", () => {
       const result = await container.renderToString(CodeBlock, { props });
 
       expect(result).toContain('data-prompt="true"');
-      expect(result).toContain(`--prompt-host: &#34;SQL&#34;`);
-      expect(result).toContain(`--prompt-db: &#34;none&#34;`);
+      expect(result).toContain(`--prompt-host: &quot;SQL&quot;`);
+      expect(result).toContain(`--prompt-db: &quot;none&quot;`);
       expect(result).not.toContain("prompt-user");
     });
 
@@ -196,8 +196,8 @@ describe("CodeBlock", () => {
       } satisfies ComponentProps<typeof CodeBlock>;
       const result = await container.renderToString(CodeBlock, { props });
 
-      expect(result).toContain(`--prompt-host: &#34;SQL&#34;`);
-      expect(result).toContain(`--prompt-db: &#34;${props.promptDB}&#34;`);
+      expect(result).toContain(`--prompt-host: &quot;SQL&quot;`);
+      expect(result).toContain(`--prompt-db: &quot;${props.promptDB}&quot;`);
     });
   });
 

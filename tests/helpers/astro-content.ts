@@ -94,7 +94,7 @@ export const createMockEntry = <T extends CollectionKey>({
  */
 export const createMockEntries = <T extends CollectionKey>(
   entries: MockEntry<T>[]
-): CollectionEntry<T>[] => entries.map(createMockEntry) as CollectionEntry<T>[];
+): CollectionEntry<T>[] => entries.map(createMockEntry);
 
 const groupEntriesByCollection = (
   entries: CollectionEntry<CollectionKey>[]

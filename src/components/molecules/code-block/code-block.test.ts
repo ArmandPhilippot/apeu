@@ -124,7 +124,9 @@ describe("CodeBlock", () => {
       const result = await container.renderToString(CodeBlock, { props });
 
       expect(result).toContain(`--prompt-host: &quot;localhost&quot;`);
-      expect(result).toContain(`--prompt-user: &quot;${props.promptUser}&quot;`);
+      expect(result).toContain(
+        `--prompt-user: &quot;${props.promptUser}&quot;`
+      );
     });
 
     it<LocalTestContext>("should display a shell prompt with a custom host", async ({
@@ -141,7 +143,9 @@ describe("CodeBlock", () => {
       } satisfies ComponentProps<typeof CodeBlock>;
       const result = await container.renderToString(CodeBlock, { props });
 
-      expect(result).toContain(`--prompt-host: &quot;${props.promptHost}&quot;`);
+      expect(result).toContain(
+        `--prompt-host: &quot;${props.promptHost}&quot;`
+      );
       expect(result).toContain(`--prompt-user: &quot;user&quot;`);
     });
 
@@ -160,7 +164,9 @@ describe("CodeBlock", () => {
       const result = await container.renderToString(CodeBlock, { props });
 
       expect(result).toContain("data-root");
-      expect(result).toContain(`--prompt-user: &quot;${props.promptUser}&quot;`);
+      expect(result).toContain(
+        `--prompt-user: &quot;${props.promptUser}&quot;`
+      );
     });
 
     it<LocalTestContext>("should display an SQL prompt with default database", async ({

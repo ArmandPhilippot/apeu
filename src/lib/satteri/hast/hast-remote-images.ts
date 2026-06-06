@@ -14,13 +14,7 @@ export const hastRemoteImages = defineHastPlugin({
         typeof width === "number" && typeof height === "number";
 
       if (!hasDimensions) {
-        ctx.replaceNode(node, {
-          ...node,
-          properties: {
-            ...node.properties,
-            inferSize: true,
-          },
-        });
+        ctx.setProperty(node, "inferSize", true);
       }
     },
   },

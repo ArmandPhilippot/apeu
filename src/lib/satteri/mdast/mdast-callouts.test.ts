@@ -66,15 +66,15 @@ Natus inventore eveniet est nulla veritatis aut.
     );
   });
 
-  it("should use raw Markdown text as the label when Markdown formatting is present", () => {
+  it("should remove Markdown syntax from the label when Markdown formatting is present", () => {
     const mdx = `
 :::warning[A **custom** title]
 Natus inventore eveniet est nulla veritatis aut.
 :::`;
     const result = mdxToJs(mdx, OPTIONS);
 
-    // Satteri's textContent preserves raw markdown syntax in the label
-    expect(result.code).toContain('label: "A **custom** title"');
+    // Satteri's textContent strips raw markdown syntax in the label
+    expect(result.code).toContain('label: "A custom title"');
     expect(result.code).toContain(
       "Natus inventore eveniet est nulla veritatis aut."
     );

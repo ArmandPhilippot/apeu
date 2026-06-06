@@ -35,8 +35,6 @@ export const mdastCallouts = defineMdastPlugin({
 
     /* We need to handle custom titles (e.g. `:::note[Custom title]`). This syntax will produce `<p>Custom title</p>` as first child. So, we need to add a label and update the children. */
     const [firstChild, ...children] = node.children;
-    console.log("firstChild", firstChild);
-    console.log("firstChild.data", firstChild?.data);
     const label = getCalloutLabel(firstChild, ctx.textContent.bind(ctx));
 
     ctx.replaceNode(node, {

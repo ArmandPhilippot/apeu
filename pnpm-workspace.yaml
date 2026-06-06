@@ -5,6 +5,7 @@ minimumReleaseAgeExclude:
   # Sätteri is new and gets frequent updates. We need to use the latest version to get bug fixes and be able to report remaining bugs.
   - "@astrojs/markdown-satteri@0.2.2"
   - astro@6.4.4
+  - '@astrojs/mdx@6.0.2'
 # We don’t need to run these build scripts, so explicitly disallow them as a minor security measure.
 allowBuilds:
   cypress: false

@@ -12,16 +12,17 @@ type MdastTextContent = (
   }
 ) => string;
 
-const hasDirectiveLabel = (node: BlockContent | DefinitionContent): boolean =>
-  node.type === "paragraph" &&
-  node.data?.directiveLabel === true &&
-  node.children.length > 0;
-
 const getCalloutLabel = (
   node: BlockContent | DefinitionContent | undefined,
-  callback: MdastTextContent
-): string | null =>
-  node !== undefined && hasDirectiveLabel(node) ? callback(node) : null;
+  getTextContent: MdastTextContent
+): string | null => {
+  const hasLabel =
+    node?.type === "paragraph" &&
+    node.data?.directiveLabel === true &&
+    node.children.length > 0;
+
+  return hasLabel ? getTextContent(node) : null;
+};
 
 /**
  * Mdast plugin to transform directives to a callout element that matches our

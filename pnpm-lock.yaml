@@ -15,14 +15,14 @@ importers:
         specifier: ^0.2.1
         version: 0.2.1(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)
       '@astrojs/markdown-satteri':
-        specifier: ^0.2.1
-        version: 0.2.1
+        specifier: ^0.2.2
+        version: 0.2.2
       '@astrojs/mdx':
         specifier: ^6.0.1
-        version: 6.0.1(@astrojs/markdown-satteri@0.2.1)(astro@6.4.2(@types/node@25.9.1)(jiti@2.7.0)(rollup@4.60.4)(yaml@2.9.0))
+        version: 6.0.1(@astrojs/markdown-satteri@0.2.2)(astro@6.4.4(@types/node@25.9.1)(jiti@2.7.0)(rollup@4.60.4)(yaml@2.9.0))
       '@astrojs/node':
         specifier: ^10.1.2
-        version: 10.1.2(astro@6.4.2(@types/node@25.9.1)(jiti@2.7.0)(rollup@4.60.4)(yaml@2.9.0))
+        version: 10.1.2(astro@6.4.4(@types/node@25.9.1)(jiti@2.7.0)(rollup@4.60.4)(yaml@2.9.0))
       '@astrojs/rss':
         specifier: ^4.0.18
         version: 4.0.18
@@ -39,8 +39,8 @@ importers:
         specifier: ^1.5.2
         version: 1.5.2
       astro:
-        specifier: ^6.4.2
-        version: 6.4.2(@types/node@25.9.1)(jiti@2.7.0)(rollup@4.60.4)(yaml@2.9.0)
+        specifier: ^6.4.4
+        version: 6.4.4(@types/node@25.9.1)(jiti@2.7.0)(rollup@4.60.4)(yaml@2.9.0)
       astro-icon:
         specifier: ^1.1.5
         version: 1.1.5
@@ -97,13 +97,13 @@ importers:
         version: 4.0.0
       satori-astro:
         specifier: ^0.4.0
-        version: 0.4.0(astro@6.4.2(@types/node@25.9.1)(jiti@2.7.0)(rollup@4.60.4)(yaml@2.9.0))(sharp@0.34.5)
+        version: 0.4.0(astro@6.4.4(@types/node@25.9.1)(jiti@2.7.0)(rollup@4.60.4)(yaml@2.9.0))(sharp@0.34.5)
       satori-html:
         specifier: ^0.3.2
         version: 0.3.2
       satteri:
-        specifier: ^0.6.3
-        version: 0.6.3
+        specifier: ^0.8.0
+        version: 0.8.0
       sharp:
         specifier: ^0.34.5
         version: 0.34.5
@@ -422,8 +422,8 @@ packages:
   '@astrojs/markdown-remark@7.2.0':
     resolution: {integrity: sha512-+YxmVQu1Bd+MFfSzjq1rOJvD9+nIOJzz5YIIhdIH01RrxRkKbyKoEgyIqP3yv51MhzMDgd79QaPv+kCVPT8vHw==}
 
-  '@astrojs/markdown-satteri@0.2.1':
-    resolution: {integrity: sha512-rsdT8ucMLmu1v/POYApJcfH/t30Yuae6pZdfFU0yG3Kya8pwNItcJ6TLqUACRlRV9W50g4gLIxCwwfWjKsJ67w==}
+  '@astrojs/markdown-satteri@0.2.2':
+    resolution: {integrity: sha512-F3jxs0QstnLL5Fa/Uq6idPZ2IsT8AKo/S+AvnIOvFX+8rst5j2MJBPllgzD1O5JbFqyiXs6Wx59o8h2O9U41pw==}
 
   '@astrojs/mdx@6.0.1':
     resolution: {integrity: sha512-J5K8F7A1LMH+cj+dcxm+uAeIznkfwxMcRpG7DD6ABNDOt8da98ph6ie4TD+4FV/ojVOJK0PQGWY4hmxQORLv0w==}
@@ -486,29 +486,29 @@ packages:
     resolution: {integrity: sha512-6zABk/ECA/QYSCQ1NGiVwwbQerUCZ+TQbp64Q3AgmfNvurHH0j8TtXa1qbShXA6qqkpAj4V5W8pP6mLe1mcMqA==}
     engines: {node: '>=18'}
 
-  '@bruits/satteri-darwin-arm64@0.6.3':
-    resolution: {integrity: sha512-oKgMfpmNzQ8vaqmkE37PBu8tOyVjoOc4s+DV2tLpWvO6WO467qn/+Nbcirm/ceer7wUM8v4vMLGcZO0gkRzBEg==}
+  '@bruits/satteri-darwin-arm64@0.8.0':
+    resolution: {integrity: sha512-/ocDvu5Z0ndgPgprx6jGEhAwSxMUw7KUzwHcXqeZD3/mvLakHpAW/+VV6/vpJJ+0PXPbd2mfiPL0DWDgmFxiVQ==}
     cpu: [arm64]
     os: [darwin]
 
-  '@bruits/satteri-darwin-x64@0.6.3':
-    resolution: {integrity: sha512-9I5pbwZRWH5LvhoCtwpRr4rYSDe43/dLvps6zO70ipVF2XbH4rJ20T+EfvPcmou5jsWMsq9Ybn5GX3PwlSrBaw==}
+  '@bruits/satteri-darwin-x64@0.8.0':
+    resolution: {integrity: sha512-XtgdjitWXgogb9G5wy6C5wR/n+CSJ++FDeTtVLMnpT4NtAgQMXs+h/erZr6/yHbK0p+cNbT60jmtoHPvIYLwFw==}
     cpu: [x64]
     os: [darwin]
 
-  '@bruits/satteri-linux-x64-gnu@0.6.3':
-    resolution: {integrity: sha512-aFfw2DL2HpIcAQ8I3ZEtKuz+/GoF0H0sq387jAlvr00Q7buiiFbvARFuQlvTk00N7u3SJIh/3+YkKssTJDT+yQ==}
+  '@bruits/satteri-linux-x64-gnu@0.8.0':
+    resolution: {integrity: sha512-YijsSxIN1azfkOFRwPuci6wfmEy3qREO6PU1Beyf0EtQgMxlb2o/OHEGXygU7vs6pDrSSt7LZooCVNKjEvZWlQ==}
     cpu: [x64]
     os: [linux]
     libc: [glibc]
 
-  '@bruits/satteri-wasm32-wasi@0.6.3':
-    resolution: {integrity: sha512-DdpfnJ+04Mb4YtHaxAeETUvhdxFKg3URnroGY39FvweJEgeXx8cFNutuF5w904BhqaiblhmF76AoBnJwNLxsXg==}
+  '@bruits/satteri-wasm32-wasi@0.8.0':
+    resolution: {integrity: sha512-4t/1iW0HnWe8MCdlH+RAhgiw1vNQEvn2+nNn9z3nFtBjn1T3+XemPt15A08U9Rp4FeqtyZ/+NUyvOC4A8t/sGA==}
     engines: {node: '>=14.0.0'}
     cpu: [wasm32]
 
-  '@bruits/satteri-win32-x64-msvc@0.6.3':
-    resolution: {integrity: sha512-J/CZqACnBbv77eImx/JeO5RmCuCyliihiC81u3M4VobA8eupsygaPen3/UFFqf3yfeHvMlE3myilouh/2iHMOA==}
+  '@bruits/satteri-win32-x64-msvc@0.8.0':
+    resolution: {integrity: sha512-ouw20cuhG+dpamPrNuGviNI+wRdcbu2wGaMbxILKIqMveKo94mJMXEQe5uDXT3O1SgXQ738YwTmT0tMJsIvM7w==}
     cpu: [x64]
     os: [win32]
 
@@ -2768,8 +2768,8 @@ packages:
   astro-icon@1.1.5:
     resolution: {integrity: sha512-CJYS5nWOw9jz4RpGWmzNQY7D0y2ZZacH7atL2K9DeJXJVaz7/5WrxeyIxO8KASk1jCM96Q4LjRx/F3R+InjJrw==}
 
-  astro@6.4.2:
-    resolution: {integrity: sha512-8H89CH2dKL5SCU99OCqdU9BGjmPkSJqaPurywj5XMo7eMFGUFD3vsNhdEKnEh4mK4LgGje3/QDTTSIIGst0G0Q==}
+  astro@6.4.4:
+    resolution: {integrity: sha512-hVe8tq3lqt/Dr0UyB//yUmQSlHMTU8scTiF/vQddQVahLE4TTaSdH5H0nb7OvRcwo0UmlAO8DWYar4jNaS7H+A==}
     engines: {node: '>=22.12.0', npm: '>=9.6.5', pnpm: '>=7.1.0'}
     hasBin: true
 
@@ -5602,8 +5602,8 @@ packages:
     resolution: {integrity: sha512-tkMFrfIs3l2mQ2JEcyW0ADTy3zGggFRFzi6Ef8YozQSFsFKEqaSO1Y8F9wJg4//PJGQauMalHGTUEkPrFwhVPA==}
     engines: {node: '>=16'}
 
-  satteri@0.6.3:
-    resolution: {integrity: sha512-iY5xd2tBDQveYRFkL1F0cegkabWSVoXHi64e1p49SiCs1bZDaqTQPGQI+PqEQIaWkz0iqK80CuQQUYvhsssviw==}
+  satteri@0.8.0:
+    resolution: {integrity: sha512-+NcnzVfFmAoOG3UBDHSFNaZ68jjXilmK3aUW0pasVcS0LyqaWnsrXBUHPpLr3nv1t3UAFmprfZZBMtjFIUhtiw==}
 
   sax@1.6.0:
     resolution: {integrity: sha512-6R3J5M4AcbtLUdZmRv2SygeVaM7IhrLXu9BmnOGmmACak8fiUtOsYNWUS4uK7upbmHIBbLBeFeI//477BKLBzA==}
@@ -6744,19 +6744,19 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@astrojs/markdown-satteri@0.2.1':
+  '@astrojs/markdown-satteri@0.2.2':
     dependencies:
       '@astrojs/internal-helpers': 0.10.0
       github-slugger: 2.0.0
-      satteri: 0.6.3
+      satteri: 0.8.0
 
-  '@astrojs/mdx@6.0.1(@astrojs/markdown-satteri@0.2.1)(astro@6.4.2(@types/node@25.9.1)(jiti@2.7.0)(rollup@4.60.4)(yaml@2.9.0))':
+  '@astrojs/mdx@6.0.1(@astrojs/markdown-satteri@0.2.2)(astro@6.4.4(@types/node@25.9.1)(jiti@2.7.0)(rollup@4.60.4)(yaml@2.9.0))':
     dependencies:
       '@astrojs/internal-helpers': 0.10.0
       '@astrojs/markdown-remark': 7.2.0
       '@mdx-js/mdx': 3.1.1
       acorn: 8.16.0
-      astro: 6.4.2(@types/node@25.9.1)(jiti@2.7.0)(rollup@4.60.4)(yaml@2.9.0)
+      astro: 6.4.4(@types/node@25.9.1)(jiti@2.7.0)(rollup@4.60.4)(yaml@2.9.0)
       es-module-lexer: 2.1.0
       estree-util-visit: 2.0.0
       hast-util-to-html: 9.0.5
@@ -6768,14 +6768,14 @@ snapshots:
       unist-util-visit: 5.1.0
       vfile: 6.0.3
     optionalDependencies:
-      '@astrojs/markdown-satteri': 0.2.1
+      '@astrojs/markdown-satteri': 0.2.2
     transitivePeerDependencies:
       - supports-color
 
-  '@astrojs/node@10.1.2(astro@6.4.2(@types/node@25.9.1)(jiti@2.7.0)(rollup@4.60.4)(yaml@2.9.0))':
+  '@astrojs/node@10.1.2(astro@6.4.4(@types/node@25.9.1)(jiti@2.7.0)(rollup@4.60.4)(yaml@2.9.0))':
     dependencies:
       '@astrojs/internal-helpers': 0.10.0
-      astro: 6.4.2(@types/node@25.9.1)(jiti@2.7.0)(rollup@4.60.4)(yaml@2.9.0)
+      astro: 6.4.4(@types/node@25.9.1)(jiti@2.7.0)(rollup@4.60.4)(yaml@2.9.0)
       send: 1.2.1
       server-destroy: 1.0.1
     transitivePeerDependencies:
@@ -6832,23 +6832,23 @@ snapshots:
 
   '@bcoe/v8-coverage@1.0.2': {}
 
-  '@bruits/satteri-darwin-arm64@0.6.3':
+  '@bruits/satteri-darwin-arm64@0.8.0':
     optional: true
 
-  '@bruits/satteri-darwin-x64@0.6.3':
+  '@bruits/satteri-darwin-x64@0.8.0':
     optional: true
 
-  '@bruits/satteri-linux-x64-gnu@0.6.3':
+  '@bruits/satteri-linux-x64-gnu@0.8.0':
     optional: true
 
-  '@bruits/satteri-wasm32-wasi@0.6.3':
+  '@bruits/satteri-wasm32-wasi@0.8.0':
     dependencies:
       '@emnapi/core': 1.9.1
       '@emnapi/runtime': 1.9.1
       '@napi-rs/wasm-runtime': 1.1.4(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)
     optional: true
 
-  '@bruits/satteri-win32-x64-msvc@0.6.3':
+  '@bruits/satteri-win32-x64-msvc@0.8.0':
     optional: true
 
   '@cacheable/memory@2.0.9':
@@ -9073,7 +9073,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  astro@6.4.2(@types/node@25.9.1)(jiti@2.7.0)(rollup@4.60.4)(yaml@2.9.0):
+  astro@6.4.4(@types/node@25.9.1)(jiti@2.7.0)(rollup@4.60.4)(yaml@2.9.0):
     dependencies:
       '@astrojs/compiler': 4.0.0
       '@astrojs/internal-helpers': 0.10.0
@@ -12810,9 +12810,9 @@ snapshots:
     dependencies:
       suf-log: 2.5.3
 
-  satori-astro@0.4.0(astro@6.4.2(@types/node@25.9.1)(jiti@2.7.0)(rollup@4.60.4)(yaml@2.9.0))(sharp@0.34.5):
+  satori-astro@0.4.0(astro@6.4.4(@types/node@25.9.1)(jiti@2.7.0)(rollup@4.60.4)(yaml@2.9.0))(sharp@0.34.5):
     dependencies:
-      astro: 6.4.2(@types/node@25.9.1)(jiti@2.7.0)(rollup@4.60.4)(yaml@2.9.0)
+      astro: 6.4.4(@types/node@25.9.1)(jiti@2.7.0)(rollup@4.60.4)(yaml@2.9.0)
       satori: 0.26.0
       sharp: 0.34.5
 
@@ -12834,18 +12834,18 @@ snapshots:
       postcss-value-parser: 4.2.0
       yoga-layout: 3.2.1
 
-  satteri@0.6.3:
+  satteri@0.8.0:
     dependencies:
       '@types/estree-jsx': 1.0.5
       '@types/hast': 3.0.4
       '@types/mdast': 4.0.4
       '@types/unist': 3.0.3
     optionalDependencies:
-      '@bruits/satteri-darwin-arm64': 0.6.3
-      '@bruits/satteri-darwin-x64': 0.6.3
-      '@bruits/satteri-linux-x64-gnu': 0.6.3
-      '@bruits/satteri-wasm32-wasi': 0.6.3
-      '@bruits/satteri-win32-x64-msvc': 0.6.3
+      '@bruits/satteri-darwin-arm64': 0.8.0
+      '@bruits/satteri-darwin-x64': 0.8.0
+      '@bruits/satteri-linux-x64-gnu': 0.8.0
+      '@bruits/satteri-wasm32-wasi': 0.8.0
+      '@bruits/satteri-win32-x64-msvc': 0.8.0
 
   sax@1.6.0: {}
 

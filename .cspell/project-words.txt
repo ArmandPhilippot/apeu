@@ -27,6 +27,7 @@ prefer-url-canparse
 Previewable
 rehype
 routability
+Sätteri
 shiki
 stackoverflow
 stylelint

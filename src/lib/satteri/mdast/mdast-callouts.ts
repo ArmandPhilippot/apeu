@@ -16,9 +16,11 @@ const getCalloutLabel = (
   getTextContent: MdastTextContent
 ): string | null => {
   const hasLabel =
-    node?.type === "paragraph" &&
-    node.data?.directiveLabel === true &&
-    node.children.length > 0;
+    node?.data !== undefined &&
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- It seems Sätteri sometimes sets data to null, even if the type doesn't allow it.
+    node.data !== null &&
+    "directiveLabel" in node.data &&
+    node.data.directiveLabel === true;
 
   return hasLabel ? getTextContent(node) : null;
 };

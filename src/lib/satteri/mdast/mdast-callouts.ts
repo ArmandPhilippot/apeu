@@ -1,4 +1,3 @@
-import { h } from "hastscript";
 import type { BlockContent, DefinitionContent, Nodes } from "mdast";
 import { defineMdastPlugin } from "satteri";
 import { isValidCalloutType } from "../../../utils/type-guards";
@@ -43,7 +42,8 @@ export const mdastCallouts = defineMdastPlugin({
       data: {
         hName: "callout",
         hProperties: {
-          ...h("callout", { ...node.attributes, label }).properties,
+          ...node.attributes,
+          label,
           type: node.name,
         },
       },

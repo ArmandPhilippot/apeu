@@ -1,18 +1,16 @@
 // @ts-check
+import { satteri } from "@astrojs/markdown-satteri";
 import mdx from "@astrojs/mdx";
 import node from "@astrojs/node";
 import sitemap from "@astrojs/sitemap";
 import { defineConfig, envField, fontProviders } from "astro/config";
 import icon from "astro-icon";
-import remarkDirective from "remark-directive";
 import { astroStories } from "./src/lib/astro/integrations/astro-stories";
 import { devOnlyPages } from "./src/lib/astro/integrations/dev-only-pages";
 import { pagefind } from "./src/lib/astro/integrations/pagefind";
-import { rehypeCodeBlocks } from "./src/lib/rehype/rehype-code-blocks";
-import { rehypeDisableExplicitJsx } from "./src/lib/rehype/rehype-disable-explicit-jsx";
-import { rehypeImages } from "./src/lib/rehype/rehype-images";
-import { remarkCallouts } from "./src/lib/remark/remark-callouts";
-import { remarkWordsCount } from "./src/lib/remark/remark-words-count";
+import { hastLinkedImages } from "./src/lib/satteri/hast/hast-linked-images";
+import { hastRemoteImages } from "./src/lib/satteri/hast/hast-remote-images";
+import { mdastCallouts } from "./src/lib/satteri/mdast/mdast-callouts";
 import { shikiTheme } from "./src/lib/shiki/theme";
 import { CONFIG } from "./src/utils/constants";
 
@@ -135,8 +133,11 @@ export default defineConfig({
     }),
   ],
   markdown: {
-    remarkPlugins: [remarkDirective, remarkCallouts, remarkWordsCount],
-    rehypePlugins: [rehypeDisableExplicitJsx, rehypeCodeBlocks, rehypeImages],
+    processor: satteri({
+      features: { directive: true },
+      hastPlugins: [hastLinkedImages, hastRemoteImages],
+      mdastPlugins: [mdastCallouts],
+    }),
     shikiConfig: {
       theme: shikiTheme,
     },

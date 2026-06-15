@@ -92,7 +92,7 @@
     "zod-form-data": "^3.0.1"
   },
   "devDependencies": {
-    "@arphi/commitlint-config": "^1.0.8",
+    "@arphi/commitlint-config": "^1.0.9",
     "@arphi/eslint-config": "^2.5.0",
     "@arphi/prettier-config": "^1.0.4",
     "@arphi/stylelint-config": "1.0.4",

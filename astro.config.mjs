@@ -40,8 +40,6 @@ export default defineConfig({
   },
   experimental: {
     contentIntellisense: true,
-    queuedRendering: { enabled: true },
-    rustCompiler: true,
   },
   fonts: [
     {

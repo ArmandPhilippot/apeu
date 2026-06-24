@@ -8,6 +8,7 @@ import icon from "astro-icon";
 import { astroStories } from "./src/lib/astro/integrations/astro-stories";
 import { devOnlyPages } from "./src/lib/astro/integrations/dev-only-pages";
 import { pagefind } from "./src/lib/astro/integrations/pagefind";
+import { hastLinkedImages } from "./src/lib/satteri/hast/hast-linked-images";
 import { mdastCallouts } from "./src/lib/satteri/mdast/mdast-callouts";
 import { shikiTheme } from "./src/lib/shiki/theme";
 import { CONFIG } from "./src/utils/constants";
@@ -131,6 +132,7 @@ export default defineConfig({
   markdown: {
     processor: satteri({
       features: { directive: true },
+      hastPlugins: [hastLinkedImages],
       mdastPlugins: [mdastCallouts],
     }),
     shikiConfig: {

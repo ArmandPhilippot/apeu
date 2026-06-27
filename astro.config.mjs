@@ -11,6 +11,7 @@ import { pagefind } from "./src/lib/astro/integrations/pagefind";
 import { hastInferRemoteImagesSize } from "./src/lib/satteri/hast/hast-infer-remote-images-size";
 import { hastLinkedImages } from "./src/lib/satteri/hast/hast-linked-images";
 import { mdastCallouts } from "./src/lib/satteri/mdast/mdast-callouts";
+import { mdastCodeBlocks } from "./src/lib/satteri/mdast/mdast-code-blocks";
 import { shikiTheme } from "./src/lib/shiki/theme";
 import { CONFIG } from "./src/utils/constants";
 
@@ -134,7 +135,7 @@ export default defineConfig({
     processor: satteri({
       features: { directive: true },
       hastPlugins: [hastLinkedImages, hastInferRemoteImagesSize],
-      mdastPlugins: [mdastCallouts],
+      mdastPlugins: [mdastCodeBlocks, mdastCallouts],
     }),
     shikiConfig: {
       theme: shikiTheme,

@@ -39,7 +39,7 @@ describe("CodeBlock", () => {
     } satisfies ComponentProps<typeof CodeBlock>;
     const result = await container.renderToString(CodeBlock, { props });
 
-    expect(result).toContain(`${props.lang} </figcaption>`);
+    expect(result).toContain(`${props.lang}</figcaption>`);
   });
 
   it<LocalTestContext>("should display the file path", async ({
@@ -54,7 +54,7 @@ describe("CodeBlock", () => {
     } satisfies ComponentProps<typeof CodeBlock>;
     const result = await container.renderToString(CodeBlock, { props });
 
-    expect(result).toContain(`${props.filePath} </figcaption>`);
+    expect(result).toContain(`${props.filePath}</figcaption>`);
   });
 
   describe("options: Line numbers", () => {

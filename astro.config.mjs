@@ -13,6 +13,7 @@ import { hastInferRemoteImagesSize } from "./src/lib/satteri/hast/hast-infer-rem
 import { hastLinkedImages } from "./src/lib/satteri/hast/hast-linked-images";
 import { mdastCallouts } from "./src/lib/satteri/mdast/mdast-callouts";
 import { mdastCodeBlocks } from "./src/lib/satteri/mdast/mdast-code-blocks";
+import { mdastWordsCount } from "./src/lib/satteri/mdast/mdast-words-count";
 import { shikiTheme } from "./src/lib/shiki/theme";
 import { CONFIG } from "./src/utils/constants";
 
@@ -140,7 +141,7 @@ export default defineConfig({
         hastLinkedImages,
         hastInferRemoteImagesSize,
       ],
-      mdastPlugins: [mdastCodeBlocks, mdastCallouts],
+      mdastPlugins: [mdastCodeBlocks, mdastCallouts, mdastWordsCount],
     }),
     shikiConfig: {
       theme: shikiTheme,

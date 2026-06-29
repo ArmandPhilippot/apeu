@@ -1,3 +1,4 @@
+import { Fragment } from "astro/jsx-runtime";
 import { describe, it, expect, vi } from "vitest";
 
 vi.mock("virtual:astro-stories/config", () => {
@@ -15,6 +16,18 @@ vi.mock("virtual:astro-stories/config", () => {
         slug: "index",
       },
     },
+  };
+});
+
+vi.mock("virtual:astro-stories/Layout", () => {
+  return {
+    default: Fragment,
+  };
+});
+
+vi.mock("virtual:astro-stories/registry", () => {
+  return {
+    storyRegistry: {},
   };
 });
 

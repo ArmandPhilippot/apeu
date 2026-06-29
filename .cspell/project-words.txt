@@ -21,11 +21,13 @@ Pageable
 pagefind
 permaslug
 placehold
+pluginutils
 pnpmDedupe
 popovertarget
 prefer-url-canparse
 Previewable
 rehype
+rolldown
 routability
 Sätteri
 shiki

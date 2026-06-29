@@ -1,5 +1,6 @@
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { exactRegex } from "@rolldown/pluginutils";
 import type { AstroIntegration, AstroIntegrationLogger } from "astro";
 import { globSync } from "tinyglobby";
 import { isString } from "../../../../utils/type-guards";
@@ -111,6 +112,7 @@ export function astroStories({
 }: AstroStoriesConfig): AstroIntegration {
   const integrationName = "astro-stories";
   const virtualModuleIdPrefix = `virtual:${integrationName}`;
+  const resolvedVirtualModuleId = `\0${virtualModuleIdPrefix}`;
 
   return {
     name: integrationName,
@@ -164,14 +166,20 @@ export function astroStories({
             plugins: [
               {
                 name: `vite-plugin-${integrationName}`,
-                resolveId(id) {
-                  if (id in modules) return resolveVirtualModuleId(id);
-                  return null;
+                resolveId: {
+                  filter: { id: exactRegex(resolvedVirtualModuleId) },
+                  handler(id) {
+                    if (id in modules) return resolveVirtualModuleId(id);
+                    return null;
+                  },
                 },
-                load(id) {
-                  const resolution = resolutionMap[id];
-                  if (resolution === undefined) return null;
-                  return modules[resolution];
+                load: {
+                  filter: { id: exactRegex(resolvedVirtualModuleId) },
+                  handler(id) {
+                    const resolution = resolutionMap[id];
+                    if (resolution === undefined) return null;
+                    return modules[resolution];
+                  },
                 },
               },
             ],

@@ -1,6 +1,6 @@
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { exactRegex } from "@rolldown/pluginutils";
+import { prefixRegex } from "@rolldown/pluginutils";
 import type { AstroIntegration, AstroIntegrationLogger } from "astro";
 import { globSync } from "tinyglobby";
 import { isString } from "../../../../utils/type-guards";
@@ -111,8 +111,8 @@ export function astroStories({
   patterns = ["**/*.stories.mdx", "**/stories/**/*.mdx"],
 }: AstroStoriesConfig): AstroIntegration {
   const integrationName = "astro-stories";
-  const virtualModuleIdPrefix = `virtual:${integrationName}`;
-  const resolvedVirtualModuleId = `\0${virtualModuleIdPrefix}`;
+  const pluginResolveIdFilter = `virtual:${integrationName}`;
+  const pluginLoadIdFilter = `\u0000${pluginResolveIdFilter}`;
 
   return {
     name: integrationName,
@@ -147,9 +147,9 @@ export function astroStories({
         });
 
         const modules = {
-          [`${virtualModuleIdPrefix}/config` as const]: `export const base = ${JSON.stringify(sanitizedBase)}; export const stories = ${JSON.stringify(stories)}; export default ${JSON.stringify({ base: sanitizedBase, stories })};`,
-          [`${virtualModuleIdPrefix}/Layout` as const]: `export { default } from ${JSON.stringify(layoutPath)};`,
-          [`${virtualModuleIdPrefix}/registry` as const]: storyRegistryModule,
+          [`${pluginResolveIdFilter}/config` as const]: `export const base = ${JSON.stringify(sanitizedBase)}; export const stories = ${JSON.stringify(stories)}; export default ${JSON.stringify({ base: sanitizedBase, stories })};`,
+          [`${pluginResolveIdFilter}/Layout` as const]: `export { default } from ${JSON.stringify(layoutPath)};`,
+          [`${pluginResolveIdFilter}/registry` as const]: storyRegistryModule,
           ...storyModules,
         } satisfies Record<string, string>;
 
@@ -167,14 +167,14 @@ export function astroStories({
               {
                 name: `vite-plugin-${integrationName}`,
                 resolveId: {
-                  filter: { id: exactRegex(resolvedVirtualModuleId) },
+                  filter: { id: prefixRegex(pluginResolveIdFilter) },
                   handler(id) {
                     if (id in modules) return resolveVirtualModuleId(id);
                     return null;
                   },
                 },
                 load: {
-                  filter: { id: exactRegex(resolvedVirtualModuleId) },
+                  filter: { id: prefixRegex(pluginLoadIdFilter) },
                   handler(id) {
                     const resolution = resolutionMap[id];
                     if (resolution === undefined) return null;

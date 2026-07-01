@@ -1,4 +1,5 @@
 import type { SatteriAstroData } from "@astrojs/markdown-satteri";
+import { isRemoteAllowed, type RemotePattern } from "astro/assets/utils";
 import type { Element as HastElement, Properties } from "hast";
 import {
   defineHastPlugin,
@@ -34,7 +35,8 @@ const collectProperties = (
 
 /**
  * Register a local relative image source in Astro's `localImagePaths` set so
- * the downstream `createImageMarkerPlugin` can process it.
+ * the downstream `createImageToComponentPlugin` (in `@astrojs/mdx`) can
+ * process it.
  *
  * @param {SatteriAstroData | undefined} astro - The Astro data bag for the current document.
  * @param {string} src - The image source attribute value.
@@ -43,60 +45,101 @@ const registerLocalSrc = (
   astro: SatteriAstroData | undefined,
   src: string
 ): void => {
-  if (isRelativeLocalSrc(src)) {
-    astro?.localImagePaths.add(decodeURI(src));
-  }
+  astro?.localImagePaths.add(decodeURI(src));
+};
+
+/**
+ * Register an allowed remote image source in Astro's `remoteImagePaths` set,
+ * same purpose as {@link registerLocalSrc} but for remote URLs.
+ *
+ * @param {SatteriAstroData | undefined} astro - The Astro data bag for the current document.
+ * @param {string} src - The image source attribute value.
+ */
+const registerRemoteSrc = (
+  astro: SatteriAstroData | undefined,
+  src: string
+): void => {
+  astro?.remoteImagePaths.add(decodeURI(src));
+};
+
+type RemoteImageConfig = {
+  domains: string[];
+  remotePatterns: RemotePattern[];
 };
 
 /**
  * Shared visitor for both flow and inline MDX JSX `<img>` nodes.
  *
  * Converts the node to a plain HAST `element` img and registers its source
- * for downstream image processing — **only** when the src is a local relative
- * path. Remote URLs and absolute paths are left as `mdxJsxFlowElement` so
- * the MDX compiler emits them as a raw `_jsx("img", {...})` call rather than
- * routing them through `_components.img` (Astro's Image component), which
- * would fail because those sources are not registered in `remoteImagePaths`.
+ * for downstream processing by `@astrojs/mdx` — local relative sources
+ * always, remote ones only when allowed by `image.domains` /
+ * `image.remotePatterns` (mirroring `createCollectImagesPlugin`, the
+ * equivalent collector for Markdown-syntax images). A disallowed remote
+ * source, or an absolute path, is left as `mdxJsxFlowElement` so the MDX
+ * compiler emits a literal `_jsx("img", {...})` instead of routing it
+ * through `_components.img`, which would otherwise reach Astro's image
+ * pipeline and fail.
  *
  * @param {{ attributes: readonly MdxJsxAttributeUnion[] }} node - The MDX JSX img node.
  * @param {readonly MdxJsxAttributeUnion[]} node.attributes - The JSX node attributes.
  * @param {HastVisitorContext} ctx - The Sätteri visitor context.
+ * @param {RemoteImageConfig} image - The allowed remote domains/patterns.
  * @returns {HastElement | undefined} The replacement HAST element, or `undefined` to leave the node unchanged.
  */
 const visitImgNode = (
   node: { attributes: readonly MdxJsxAttributeUnion[] },
-  ctx: HastVisitorContext
+  ctx: HastVisitorContext,
+  image: RemoteImageConfig
 ): HastElement | undefined => {
   const properties = collectProperties(node.attributes);
   const src = typeof properties.src === "string" ? properties.src : undefined;
 
-  if (src !== undefined && !isRelativeLocalSrc(src)) return undefined;
-
   if (src !== undefined) {
-    registerLocalSrc(ctx.data.astro, src);
+    if (isRelativeLocalSrc(src)) {
+      registerLocalSrc(ctx.data.astro, src);
+    } else if (isRemoteAllowed(src, image)) {
+      registerRemoteSrc(ctx.data.astro, src);
+    } else {
+      return undefined;
+    }
   }
 
   return { type: "element", tagName: "img", properties, children: [] };
 };
 
 /**
- * Convert `mdxJsxFlowElement` and `mdxJsxTextElement` `<img>` nodes (HTML
- * syntax in MDX) into regular HAST `element` img nodes, and register their
- * sources in `ctx.data.astro.localImagePaths` so the downstream image-marker
- * plugin can process them.
+ * Build a HAST plugin that converts `mdxJsxFlowElement` and
+ * `mdxJsxTextElement` `<img>` nodes (HTML syntax in MDX) into regular HAST
+ * `element` img nodes, registering their sources in `ctx.data.astro` so
+ * `@astrojs/mdx`'s image pipeline picks them up.
  *
  * This covers the gap left by `_mdxExplicitJsx` in the old `@mdx-js/mdx`
  * pipeline, where removing that flag allowed HTML tags to be treated as
  * Markdown-style images.
+ *
+ * @param {object} image - The same `domains`/`remotePatterns` passed to Astro's top-level `image` config.
+ * @param {readonly string[]} [image.domains] - Allowed remote image domains.
+ * @param {readonly RemotePattern[]} [image.remotePatterns] - Allowed remote image patterns.
+ * @returns {ReturnType<typeof defineHastPlugin>} A Sätteri HAST plugin.
  */
-export const hastHtmlImages = defineHastPlugin({
-  name: "hast-html-images",
-  mdxJsxFlowElement: {
-    filter: ["img"],
-    visit: visitImgNode,
-  },
-  mdxJsxTextElement: {
-    filter: ["img"],
-    visit: visitImgNode,
-  },
-});
+export const hastHtmlImages = (
+  image: {
+    domains?: readonly string[];
+    remotePatterns?: readonly RemotePattern[];
+  } = {}
+) => {
+  const remoteConfig: RemoteImageConfig = {
+    domains: [...(image.domains ?? [])],
+    remotePatterns: [...(image.remotePatterns ?? [])],
+  };
+  const visit = (
+    node: { attributes: readonly MdxJsxAttributeUnion[] },
+    ctx: HastVisitorContext
+  ): HastElement | undefined => visitImgNode(node, ctx, remoteConfig);
+
+  return defineHastPlugin({
+    name: "hast-html-images",
+    mdxJsxFlowElement: { filter: ["img"], visit },
+    mdxJsxTextElement: { filter: ["img"], visit },
+  });
+};

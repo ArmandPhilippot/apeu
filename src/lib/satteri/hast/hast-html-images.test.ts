@@ -13,7 +13,7 @@ const createAstroData = (): SatteriAstroData => {
 };
 
 const compileMdx = (source: string, options: MdxCompileOptions = {}) =>
-  mdxToJs(source, { hastPlugins: [hastHtmlImages], ...options });
+  mdxToJs(source, { hastPlugins: [hastHtmlImages()], ...options });
 
 describe("hast-html-images", () => {
   describe("Block-level (flow) HTML img", () => {
@@ -147,17 +147,43 @@ describe("hast-html-images", () => {
     });
   });
 
-  describe("Remote and absolute images are not converted", () => {
-    it("should not convert a remote URL src to an element node", () => {
-      // Remote images must remain as mdxJsxFlowElement so the MDX compiler
-      // emits _jsx("img", ...) rather than _jsx(_components.img, ...), which
-      // would route them through Astro's Image component and fail because the
-      // URL is not registered in remoteImagePaths.
-      const src = "https://example.test/my-image.jpg";
+  describe("Local and allowed-remote images are converted", () => {
+    it("should convert a local relative src to an element node", () => {
+      const src = "./my-image.jpg";
       const result = compileMdx(`<img alt="Example" src="${src}" />`);
+
+      expect(result.code).toContain("_components.img");
+      expect(result.code).not.toContain(`_jsx("img"`);
+    });
+
+    it("should convert and register a remote src whose domain is allowed", () => {
+      const src = "https://example.test/my-image.jpg";
+      const astro = createAstroData();
+      const result = compileMdx(`<img alt="Example" src="${src}" />`, {
+        data: { astro },
+        hastPlugins: [hastHtmlImages({ domains: ["example.test"] })],
+      });
+
+      expect(result.code).toContain("_components.img");
+      expect(result.code).not.toContain(`_jsx("img"`);
+      expect(astro.remoteImagePaths.has(src)).toBe(true);
+    });
+  });
+
+  describe("Disallowed-remote and absolute images are not converted", () => {
+    it("should not convert a remote URL src whose domain is not allowed", () => {
+      // Left as mdxJsxFlowElement so the MDX compiler emits a literal
+      // _jsx("img", ...) instead of routing it through _components.img,
+      // which would otherwise reach Astro's image pipeline and fail.
+      const src = "https://example.test/my-image.jpg";
+      const astro = createAstroData();
+      const result = compileMdx(`<img alt="Example" src="${src}" />`, {
+        data: { astro },
+      });
 
       expect(result.code).toContain(`_jsx("img"`);
       expect(result.code).not.toContain("_components.img");
+      expect(astro.remoteImagePaths.has(src)).toBe(false);
     });
 
     it("should not convert an absolute path src to an element node", () => {
@@ -166,16 +192,6 @@ describe("hast-html-images", () => {
 
       expect(result.code).toContain(`_jsx("img"`);
       expect(result.code).not.toContain("_components.img");
-    });
-
-    it("should still convert a local relative src to an element node", () => {
-      // Contrast with above: local images must be converted so they go through
-      // _components.img and Astro's image optimization pipeline.
-      const src = "./my-image.jpg";
-      const result = compileMdx(`<img alt="Example" src="${src}" />`);
-
-      expect(result.code).toContain("_components.img");
-      expect(result.code).not.toContain(`_jsx("img"`);
     });
   });
 

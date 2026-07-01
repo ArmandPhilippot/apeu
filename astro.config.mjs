@@ -8,6 +8,7 @@ import icon from "astro-icon";
 import { astroStories } from "./src/lib/astro/integrations/astro-stories";
 import { devOnlyPages } from "./src/lib/astro/integrations/dev-only-pages";
 import { pagefind } from "./src/lib/astro/integrations/pagefind";
+import { hastDisableExplicitJsx } from "./src/lib/satteri/hast/hast-disable-explicit-jsx";
 import { hastHtmlImages } from "./src/lib/satteri/hast/hast-html-images";
 import { hastInferRemoteImagesSize } from "./src/lib/satteri/hast/hast-infer-remote-images-size";
 import { hastLinkedImages } from "./src/lib/satteri/hast/hast-linked-images";
@@ -16,6 +17,8 @@ import { mdastCodeBlocks } from "./src/lib/satteri/mdast/mdast-code-blocks";
 import { mdastWordsCount } from "./src/lib/satteri/mdast/mdast-words-count";
 import { shikiTheme } from "./src/lib/shiki/theme";
 import { CONFIG } from "./src/utils/constants";
+
+const imageDomains = import.meta.env.DEV ? ["placehold.co"] : [];
 
 // https://astro.build/config
 export default defineConfig({
@@ -105,7 +108,7 @@ export default defineConfig({
     locales: [...CONFIG.LANGUAGES.AVAILABLE],
   },
   image: {
-    domains: import.meta.env.DEV ? ["placehold.co"] : [],
+    domains: imageDomains,
     layout: "constrained",
     objectFit: "cover",
     objectPosition: "top",
@@ -137,7 +140,8 @@ export default defineConfig({
     processor: satteri({
       features: { directive: true },
       hastPlugins: [
-        hastHtmlImages,
+        hastDisableExplicitJsx,
+        hastHtmlImages({ domains: imageDomains }),
         hastLinkedImages,
         hastInferRemoteImagesSize,
       ],

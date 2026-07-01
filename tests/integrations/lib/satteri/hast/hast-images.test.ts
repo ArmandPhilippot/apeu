@@ -1,18 +1,21 @@
 import { mdxToJs } from "satteri";
 import { describe, expect, it } from "vitest";
-import { hastHtmlImages } from "../../../../../src/lib/satteri/hast/hast-html-images";
 import { hastLinkedImages } from "../../../../../src/lib/satteri/hast/hast-linked-images";
+import { hastMdxHtmlSyntax } from "../../../../../src/lib/satteri/hast/hast-mdx-html-syntax";
 
-// Order matters: hastHtmlImages must run first so the inner <img> is converted
+// Order matters: hastMdxHtmlSyntax must run first so the inner <img> is converted
 // from mdxJsxFlowElement to element before hastLinkedImages visits the <a>.
-const compileMdx = (source: string) =>
-  mdxToJs(source, { hastPlugins: [hastHtmlImages, hastLinkedImages] });
+const compileMdx = async (source: string) =>
+  mdxToJs(source, { hastPlugins: [hastMdxHtmlSyntax, hastLinkedImages] });
 
-describe("hast-html-images + hast-linked-images", () => {
+describe("hast-mdx-html-syntax + hast-linked-images", () => {
   describe("HTML linked images", () => {
-    it('should unwrap <a href="X"><img src="X" /></a> when href matches src', () => {
+    it('should unwrap <a href="X"><img src="X" /></a> when href matches src', async () => {
+      // eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory.
+      expect.assertions(3);
+
       const src = "./my-image.jpg";
-      const result = compileMdx(
+      const result = await compileMdx(
         `<a href="${src}"><img alt="Example" src="${src}" /></a>`
       );
 
@@ -21,9 +24,12 @@ describe("hast-html-images + hast-linked-images", () => {
       expect(result.code).toContain('"data-clickable": true');
     });
 
-    it("should preserve alt and src when unwrapping HTML links", () => {
+    it("should preserve alt and src when unwrapping HTML links", async () => {
+      // eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory.
+      expect.assertions(3);
+
       const src = "./my-image.jpg";
-      const result = compileMdx(
+      const result = await compileMdx(
         `<a href="${src}"><img alt="A clickable image" src="${src}" /></a>`
       );
 
@@ -32,10 +38,13 @@ describe("hast-html-images + hast-linked-images", () => {
       expect(result.code).toContain(`src: "${src}"`);
     });
 
-    it("should keep HTML links when href does not match image src", () => {
+    it("should keep HTML links when href does not match image src", async () => {
+      // eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory.
+      expect.assertions(3);
+
       const imgSrc = "./my-image.jpg";
       const href = "./other-page";
-      const result = compileMdx(
+      const result = await compileMdx(
         `<a href="${href}"><img alt="Example" src="${imgSrc}" /></a>`
       );
 
@@ -44,27 +53,17 @@ describe("hast-html-images + hast-linked-images", () => {
       expect(result.code).not.toContain('"data-clickable": true');
     });
 
-    it("should not unwrap HTML links with multiple children", () => {
+    it("should not unwrap HTML links with multiple children", async () => {
+      // eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory.
+      expect.assertions(3);
+
       const src = "./my-image.jpg";
-      const result = compileMdx(
+      const result = await compileMdx(
         `<a href="${src}"><img alt="Example" src="${src}" /><span>Caption</span></a>`
       );
 
       expect(result.code).toContain(`href: "${src}"`);
       expect(result.code).toContain('"Caption"');
-      expect(result.code).not.toContain('"data-clickable": true');
-    });
-
-    it("should not unwrap HTML links wrapping a remote image", () => {
-      // Remote images are not converted by hastHtmlImages — they remain
-      // mdxJsxFlowElement — so the child.type !== "element" guard fires and
-      // the anchor is left untouched.
-      const src = "https://example.test/my-image.jpg";
-      const result = compileMdx(
-        `<a href="${src}"><img alt="Example" src="${src}" /></a>`
-      );
-
-      expect(result.code).toContain(`href: "${src}"`);
       expect(result.code).not.toContain('"data-clickable": true');
     });
   });

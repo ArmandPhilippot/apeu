@@ -26,6 +26,24 @@ describe("mdast-words-count", () => {
     expect(result.data.astro?.frontmatter.wordsCount).toBe(wordsInMarkdown);
   });
 
+  it("should count words inside HTML tags", () => {
+    const mdx = `Some words before.\n\n<div>some words inside div</div>\n\nMore words after.\n`;
+    const wordsInMarkdown = 10;
+    const result = mdxToJs(mdx, {
+      ...OPTIONS,
+      data: {
+        astro: {
+          headings: [],
+          localImagePaths: new Set(),
+          remoteImagePaths: new Set(),
+          frontmatter: { wordsCount: undefined },
+        },
+      },
+    });
+
+    expect(result.data.astro?.frontmatter.wordsCount).toBe(wordsInMarkdown);
+  });
+
   it("should not add the words count when frontmatter does not exist", () => {
     const mdx = `
 Natus inventore eveniet est nulla veritatis aut.

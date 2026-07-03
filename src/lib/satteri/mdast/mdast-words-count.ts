@@ -3,9 +3,25 @@ import { toNlcst } from "mdast-util-to-nlcst";
 import type { RootContent } from "nlcst";
 import { ParseEnglish } from "parse-english";
 import { ParseLatin } from "parse-latin";
-import { defineMdastPlugin, markdownToMdast } from "satteri";
+import { defineMdastPlugin, type MdastNode } from "satteri";
 import { VFile } from "vfile";
 import { getLocaleFromPath } from "../../../utils/paths";
+
+// Climbs the live tree via `ctx.parent` instead of re-parsing `ctx.source`: a
+// fresh reparse can't tell MDX from plain Markdown, so it would drop words
+// inside MDX-only constructs (e.g. `mdxJsxFlowElement`/`mdxJsxTextElement`).
+const findRoot = (
+  startNode: Readonly<MdastNode>,
+  getParent: (node: Readonly<MdastNode>) => Readonly<MdastNode> | undefined
+): Readonly<MdastNode> => {
+  let root = startNode;
+  let ancestor = getParent(root);
+  while (ancestor !== undefined) {
+    root = ancestor;
+    ancestor = getParent(root);
+  }
+  return root;
+};
 
 const flattenNlcstTree = (tree: RootContent[]): RootContent[] =>
   tree.flatMap((child) => {
@@ -20,11 +36,11 @@ const isWordNodeType = (node: RootContent) => node.type === "WordNode";
 
 export const mdastWordsCount = defineMdastPlugin({
   name: "mdast-words-count",
-  text: (_node, ctx) => {
+  text: (node, ctx) => {
     if (ctx.data.wordsCountProcessed === true) return;
     // eslint-disable-next-line no-param-reassign -- We need to mark the words count as processed to avoid processing it multiple times.
     ctx.data.wordsCountProcessed = true;
-    const tree = markdownToMdast(ctx.source, { features: { directive: true } });
+    const tree = findRoot(node, (n) => ctx.parent(n));
     const currentLocale = getLocaleFromPath(
       ctx.fileURL === undefined ? "unknown" : fileURLToPath(ctx.fileURL)
     );

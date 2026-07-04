@@ -98,6 +98,7 @@ export type SocialMedium = (typeof SOCIAL_MEDIA)[number];
  * Those tokens should match the ones defined in `spacing_levels` in
  * `src/styles/variables/spacings.css`.
  */
-export type Spacing = "4xs" | "3xs" | "2xs" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
+export type Spacing =
+  "4xs" | "3xs" | "2xs" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
 
 export type Theme = (typeof THEMES)[number];

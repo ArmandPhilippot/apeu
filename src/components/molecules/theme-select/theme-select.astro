@@ -73,9 +73,9 @@ const icon: IconName = setting === "shiki" ? "code-editor" : "monitor";
   data-setting={setting}
 >
   <Label>
-    <span class:list={{ "sr-only": hideLabel, "theme-select-label": true }}
-      >{label}</span
-    >
+    <span class:list={{ "sr-only": hideLabel, "theme-select-label": true }}>
+      {label}
+    </span>
     <SelectField
       class="theme-select-field"
       icon={showIcon ? icon : null}

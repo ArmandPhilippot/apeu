@@ -37,8 +37,10 @@ if (isExternal && kind === "primary") {
   {...attrs}
   class:list={[className, "btn"]}
   {...isExternal && { "data-external": true }}
-  data-type={kind}><slot /></Tag
+  data-type={kind}
 >
+  <slot />
+</Tag>
 
 <style>
   @layer atoms {

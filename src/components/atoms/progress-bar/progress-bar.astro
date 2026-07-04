@@ -33,8 +33,10 @@ const progressValueFallback = current ? `${current}/${max}` : null;
     aria-valuemin={ariaValueMin ?? 0}
     aria-valuenow={ariaValueNow ?? current}
     max={max}
-    value={current}>{progressValueFallback}</progress
+    value={current}
   >
+    {progressValueFallback}
+  </progress>
 </div>
 
 <style>

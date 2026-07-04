@@ -20,8 +20,10 @@ if (!to.startsWith("#")) throw new InvalidAnchorFormatError("to", to);
   as="a"
   class:list={[className, "sr-only", "skip-link"]}
   href={to}
-  kind="secondary"><slot /></Button
+  kind="secondary"
 >
+  <slot />
+</Button>
 
 <style>
   @layer molecules {

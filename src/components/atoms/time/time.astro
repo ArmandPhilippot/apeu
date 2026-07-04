@@ -36,10 +36,10 @@ const readableTime = date.toLocaleTimeString(Astro.currentLocale, {
 });
 ---
 
-<time {...attrs} datetime={date.toISOString()}
-  >{
+<time {...attrs} datetime={date.toISOString()}>
+  {
     showTime
       ? translate("date.at.time", { date: readableDate, time: readableTime })
       : readableDate
-  }</time
->
+  }
+</time>

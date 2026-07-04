@@ -99,14 +99,6 @@ export type SocialMedium = (typeof SOCIAL_MEDIA)[number];
  * `src/styles/variables/spacings.css`.
  */
 export type Spacing =
-  | "4xs"
-  | "3xs"
-  | "2xs"
-  | "xs"
-  | "sm"
-  | "md"
-  | "lg"
-  | "xl"
-  | "2xl";
+  "4xs" | "3xs" | "2xs" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
 
 export type Theme = (typeof THEMES)[number];

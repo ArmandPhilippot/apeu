@@ -23,9 +23,8 @@ type QueryCollectionOrderBy<C extends CollectionKey> = {
    * The key used to order the entries.
    */
   key: CollectionEntry<C>["data"] extends Record<"meta", unknown>
-    ?
-        | KeyOfType<CollectionEntry<C>["data"]["meta"], string | Date>
-        | KeyOfType<CollectionEntry<C>["data"], string | Date>
+    ? | KeyOfType<CollectionEntry<C>["data"]["meta"], string | Date>
+      | KeyOfType<CollectionEntry<C>["data"], string | Date>
     : KeyOfType<CollectionEntry<C>["data"], string | Date>;
   /**
    * The entries order.

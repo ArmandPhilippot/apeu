@@ -1,7 +1,6 @@
 import { persistentMap } from "@nanostores/persistent";
 import { atom, computed } from "nanostores";
 import type { Theme } from "../../types/tokens";
-import { isString } from "../../utils/type-guards";
 import { getPreferredColorScheme, resolveCurrentColorScheme } from "./themes";
 
 export type Settings = {
@@ -39,7 +38,8 @@ export const settings = persistentMap<Settings>(
  * @returns {boolean} True if the value is a valid key.
  */
 export const isValidSettingsKey = (value: unknown): value is keyof Settings =>
-  isString(value) && Object.values<string>(SETTING_KEYS).includes(value);
+  typeof value === "string" &&
+  Object.values<string>(SETTING_KEYS).includes(value);
 
 /**
  * Atom that tracks system color scheme preference.

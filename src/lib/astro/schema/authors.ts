@@ -1,7 +1,6 @@
 import { z } from "astro/zod";
 import { defineCollection } from "astro:content";
 import {
-  isString,
   isValidCountryCode,
   isValidLanguageCode,
 } from "../../../utils/type-guards";
@@ -59,13 +58,14 @@ export const authors = defineCollection({
         return {
           ...author,
           // `<Image />` component expect the src to be the full object.
-          ...(author.avatar === undefined
-            ? {}
-            : { avatar: { src: author.avatar } }),
+          ...(author.avatar === undefined && {
+            avatar: { src: author.avatar },
+          }),
           name: `${author.firstName} ${author.lastName}`,
-          ...(isString(author.firstNameIPA) && isString(author.lastNameIPA)
-            ? { nameIPA: `${author.firstNameIPA} ${author.lastNameIPA}` }
-            : {}),
+          ...(typeof author.firstNameIPA === "string" &&
+            typeof author.lastNameIPA === "string" && {
+              nameIPA: `${author.firstNameIPA} ${author.lastNameIPA}`,
+            }),
         };
       }),
 });

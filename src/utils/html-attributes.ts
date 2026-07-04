@@ -1,11 +1,11 @@
 import type { Gap, Spacing } from "../types/tokens";
-import { isNumber, isObject, isString } from "./type-guards";
+import { isObject } from "./type-guards";
 
 const isValidCssVar = (
   entry: [string, unknown]
 ): entry is [string, number | string] => {
   const [_key, value] = entry;
-  return isNumber(value) || isString(value);
+  return typeof value === "number" || typeof value === "string";
 };
 
 /**
@@ -53,7 +53,7 @@ export const getSpacingVarFromGap = (
     const colGap = gap.col ? getSpacingVarValue(gap.col) : 0;
     const rowGap = gap.row ? getSpacingVarValue(gap.row) : 0;
     return `${rowGap} ${colGap}`;
-  } else if (isString(gap)) {
+  } else if (typeof gap === "string") {
     return getSpacingVarValue(gap);
   }
 

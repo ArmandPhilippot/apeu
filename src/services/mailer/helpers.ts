@@ -1,5 +1,5 @@
 import type { z } from "astro/zod";
-import { isKeyExistIn, isObject, isString } from "../../utils/type-guards";
+import { isKeyExistIn, isObject } from "../../utils/type-guards";
 import type { mailData } from "./schema";
 
 export type MailSuccess = {
@@ -33,4 +33,6 @@ export const isMailError = (data: unknown): data is MailError => {
  * @returns {boolean} True if the shape matches a MailSuccess object.
  */
 export const isMailSuccess = (data: unknown): data is MailSuccess =>
-  isObject(data) && isKeyExistIn(data, "message") && isString(data.message);
+  isObject(data) &&
+  isKeyExistIn(data, "message") &&
+  typeof data.message === "string";

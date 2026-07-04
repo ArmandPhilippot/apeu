@@ -23,3 +23,13 @@ export const partitionByType = <T, S extends T>(
 
   return [matches, noMatches];
 };
+
+/**
+ * Ensures the given item is an array.
+ *
+ * @template T - The item type.
+ * @param {T | T[]} item - The item to ensure as an array.
+ * @returns {T[]} The item as an array.
+ */
+export const ensureArray = <T extends string>(item: T | T[]): T[] =>
+  typeof item === "string" ? [item] : item;

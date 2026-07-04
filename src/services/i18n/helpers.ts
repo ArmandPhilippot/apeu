@@ -1,6 +1,6 @@
 import type { AvailableLocale } from "../../types/tokens";
 import { CONFIG } from "../../utils/constants";
-import { isAvailableLocale, isString } from "../../utils/type-guards";
+import { isAvailableLocale } from "../../utils/type-guards";
 
 /**
  * Retrieve the current locale from an unknown locale.
@@ -16,7 +16,7 @@ import { isAvailableLocale, isString } from "../../utils/type-guards";
 export const getCurrentLocale = (
   locale: string | undefined
 ): AvailableLocale => {
-  if (isString(locale) && isAvailableLocale(locale)) return locale;
+  if (typeof locale === "string" && isAvailableLocale(locale)) return locale;
 
   return CONFIG.LANGUAGES.DEFAULT;
 };

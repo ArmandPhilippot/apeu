@@ -7,6 +7,7 @@ import {
   type MdxJsxAttributeValueExpressionNode,
   type MdxJsxAttributeUnion,
 } from "satteri";
+import { isNullish } from "../../../utils/type-guards";
 
 export const CODE_BLOCK_NAME = "CodeBlock";
 export const CODE_BLOCK_PATH = resolve(
@@ -84,7 +85,7 @@ const SPACES_OUTSIDE_QUOTES = /\s+(?=(?:(?:[^"']*["']){2})*[^"']*$)/;
 const getAttributesFromMetadata = (
   meta: string | null | undefined
 ): MdxJsxAttributeUnion[] => {
-  if (meta === null || meta === undefined) return [];
+  if (isNullish(meta)) return [];
 
   const attrs: MdxJsxAttributeUnion[] = [];
 

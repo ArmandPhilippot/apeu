@@ -3,7 +3,6 @@ import { fileURLToPath } from "node:url";
 import { prefixRegex } from "@rolldown/pluginutils";
 import type { AstroIntegration, AstroIntegrationLogger } from "astro";
 import { globSync } from "tinyglobby";
-import { isString } from "../../../../utils/type-guards";
 import type { Stories } from "./types/internal";
 import type { AstroStoriesConfig } from "./types/public";
 import { getStories } from "./utils";
@@ -127,9 +126,10 @@ export function astroStories({
         if (command !== "dev") return;
 
         const sanitizedBase = sanitizeBase(base, logger);
-        const layoutPath = isString(layout)
-          ? resolve(fileURLToPath(config.root), layout)
-          : DEFAULT_LAYOUT_PATH;
+        const layoutPath =
+          typeof layout === "string"
+            ? resolve(fileURLToPath(config.root), layout)
+            : DEFAULT_LAYOUT_PATH;
         const src = fileURLToPath(config.srcDir);
         const allPaths = globSync(patterns, { cwd: src });
         const mdxPaths = filterSupportedPaths(allPaths, logger);

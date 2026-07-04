@@ -3,7 +3,6 @@ import type { ComponentProps } from "astro/types";
 import { Icon } from "astro-icon/components";
 import type { EntryPreview } from "../../../types/data";
 import type { HeadingLvl } from "../../../types/tokens";
-import { isString } from "../../../utils/type-guards";
 import Button from "../../atoms/button/button.astro";
 import Img from "../../atoms/img/img.astro";
 import Link from "../../atoms/link/link.astro";
@@ -59,7 +58,7 @@ const defaultCTAIconSize = 22;
   }
   <Heading lang={locale} slot="heading">
     {
-      isString(heading) ? (
+      typeof heading === "string" ? (
         heading
       ) : (
         <Link href={heading.path}>{heading.label}</Link>

@@ -7,6 +7,7 @@ import {
   type MdxJsxFlowElementHast,
   type MdxJsxTextElementHast,
 } from "satteri";
+import { isNullish } from "../../../utils/type-guards";
 
 /**
  * A partial list of standard HTML element names. Contains only the most likely to be used in MDX.
@@ -85,7 +86,7 @@ const convertAttributesToProperties = (
   const properties: Properties = {};
   for (const attr of attributes) {
     if (attr.type !== "mdxJsxAttribute") continue;
-    if (attr.value === null || attr.value === undefined) {
+    if (isNullish(attr.value)) {
       properties[attr.name] = true;
     } else if (typeof attr.value === "string") {
       properties[attr.name] = attr.value;

@@ -13,9 +13,10 @@ import type {
   KeyOfType,
   LooseAutocomplete,
 } from "../../types/utilities";
+import { ensureArray } from "../../utils/arrays";
 import { hasCommonKey } from "../../utils/objects";
 import { sortByKey } from "../../utils/sorting";
-import { isObject, isString } from "../../utils/type-guards";
+import { isObject } from "../../utils/type-guards";
 import { updateEntriesTagsForLocale } from "./utils";
 
 type QueryCollectionOrderBy<C extends CollectionKey> = {
@@ -210,9 +211,6 @@ const getOrderedEntries = <C extends CollectionKey>(
 
   return order === "DESC" ? orderedEntries.toReversed() : orderedEntries;
 };
-
-const ensureArray = <T extends string>(item: T | T[]): T[] =>
-  isString(item) ? [item] : item;
 
 const paginateEntries = <C extends CollectionKey>(
   entries: IndexedEntry<C>[],

@@ -2,8 +2,8 @@ import { describe, expect, it, vi } from "vitest";
 import {
   isAvailableLocale,
   isKeyExistIn,
+  isNullish,
   isObject,
-  isString,
   isValidCalloutType,
   isValidCountryCode,
   isValidLanguageCode,
@@ -26,6 +26,36 @@ vi.mock("./constants", async (importOriginal) => {
 });
 
 const randomNumber = 42;
+
+describe("is-nullish", () => {
+  it("returns true if the value is null", () => {
+    expect(isNullish(null)).toBe(true);
+  });
+
+  it("returns true if the value is undefined", () => {
+    expect(isNullish(undefined)).toBe(true);
+  });
+
+  it("returns false if the value is a number", () => {
+    expect(isNullish(randomNumber)).toBe(false);
+  });
+
+  it("returns false if the value is a string", () => {
+    expect(isNullish("vitae")).toBe(false);
+  });
+
+  it("returns false if the value is an object", () => {
+    expect(isNullish({})).toBe(false);
+  });
+
+  it("returns false if the value is an array", () => {
+    expect(isNullish([])).toBe(false);
+  });
+
+  it("returns false if the value is a boolean", () => {
+    expect(isNullish(false)).toBe(false);
+  });
+});
 
 describe("is-object", () => {
   it("returns true if the value is an object", () => {
@@ -74,36 +104,6 @@ describe("is-key-exist", () => {
     expect(() => isKeyExistIn([], "foo")).toThrow(
       "First argument must be an object."
     );
-  });
-});
-
-describe("is-string", () => {
-  it("returns false if the value is a string", () => {
-    expect(isString("vitae")).toBe(true);
-  });
-
-  it("returns false if the value is an array", () => {
-    expect(isString([])).toBe(false);
-  });
-
-  it("returns false if the value is a boolean", () => {
-    expect(isString(false)).toBe(false);
-  });
-
-  it("returns false if the value is null", () => {
-    expect(isString(null)).toBe(false);
-  });
-
-  it("returns false if the value is a number", () => {
-    expect(isString(randomNumber)).toBe(false);
-  });
-
-  it("returns true if the value is an object", () => {
-    expect(isString({})).toBe(false);
-  });
-
-  it("returns false if the value is undefined", () => {
-    expect(isString(undefined)).toBe(false);
   });
 });
 
@@ -198,7 +198,7 @@ describe("is-valid-theme", () => {
     expect(isValidTheme("light")).toBe(true);
   });
 
-  it("returns true when the value is invalid", () => {
+  it("returns false when the value is invalid", () => {
     expect(isValidTheme("foo")).toBe(false);
   });
 });

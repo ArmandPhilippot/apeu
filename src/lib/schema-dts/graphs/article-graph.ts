@@ -5,7 +5,7 @@ import type { BlogPost, Guide, Img, Note, Project } from "../../../types/data";
 import type { Blend, RequireOnly } from "../../../types/utilities";
 import { WEBSITE_URL } from "../../../utils/constants";
 import { getImgSrc } from "../../../utils/images";
-import { isString } from "../../../utils/type-guards";
+import { isNullish } from "../../../utils/type-guards";
 import { getDurationFromReadingTime } from "../values/duration";
 import { getLanguageGraph } from "./language-graph";
 import { getPersonGraph } from "./person-graph";
@@ -43,8 +43,7 @@ export const getArticleGraph = async ({
   const { routeById } = await useRouting(locale);
   const websiteAuthor = `${WEBSITE_URL}#author` as const;
   const url = `${WEBSITE_URL}${articleRoute}`;
-  const coverUrl =
-    cover === null || cover === undefined ? null : await getImgSrc(cover);
+  const coverUrl = isNullish(cover) ? null : await getImgSrc(cover);
   const isBlogPost = collection === "blog.posts";
   const authors =
     "authors" in meta
@@ -67,7 +66,10 @@ export const getArticleGraph = async ({
     description,
     editor: { "@id": websiteAuthor },
     headline: title,
-    ...(isString(coverUrl) && { image: coverUrl, thumbnailUrl: coverUrl }),
+    ...(typeof coverUrl === "string" && {
+      image: coverUrl,
+      thumbnailUrl: coverUrl,
+    }),
     inLanguage: getLanguageGraph(locale, locale),
     isAccessibleForFree: true,
     ...(isBlogPost && {

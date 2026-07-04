@@ -58,9 +58,9 @@ export const authors = defineCollection({
         return {
           ...author,
           // `<Image />` component expect the src to be the full object.
-          ...(author.avatar === undefined && {
-            avatar: { src: author.avatar },
-          }),
+          ...(author.avatar === undefined
+            ? {}
+            : { avatar: { src: author.avatar } }),
           name: `${author.firstName} ${author.lastName}`,
           ...(typeof author.firstNameIPA === "string" &&
             typeof author.lastNameIPA === "string" && {

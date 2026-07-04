@@ -1,7 +1,7 @@
-import { readFile } from "node:fs/promises";
 import type { APIRoute, GetStaticPaths, InferGetStaticPropsType } from "astro";
-import { fontData } from "astro:assets";
-import { build } from "astro:config/server";
+
+// eslint-disable-next-line camelcase -- Astro prefixes experimental helpers.
+import { experimental_getFontFileURL, fontData } from "astro:assets";
 import { satoriAstroOG } from "satori-astro";
 import { html } from "satori-html";
 import logo from "../../assets/logo-unpressed.svg?url";
@@ -85,17 +85,15 @@ const replaceNonBreakingSpaces = (str: string) =>
  * @returns {Promise<Response>} The response to generate OG images.
  */
 export const GET = (async ({ props, url }) => {
-  const inter400Data = import.meta.env.DEV
-    ? await fetch(new URL(props.inter400Path, url.origin)).then(async (res) =>
-        res.arrayBuffer()
-      )
-    : await readFile(new URL(`.${props.inter400Path}`, build.client));
+  const inter400Url = experimental_getFontFileURL(props.inter400Path, url);
+  const inter400Data = await fetch(inter400Url).then(async (res) =>
+    res.arrayBuffer()
+  );
 
-  const inter600Data = import.meta.env.DEV
-    ? await fetch(new URL(props.inter600Path, url.origin)).then(async (res) =>
-        res.arrayBuffer()
-      )
-    : await readFile(new URL(`.${props.inter600Path}`, build.client));
+  const inter600Url = experimental_getFontFileURL(props.inter600Path, url);
+  const inter600Data = await fetch(inter600Url).then(async (res) =>
+    res.arrayBuffer()
+  );
 
   return satoriAstroOG({
     template: html`

@@ -329,10 +329,4 @@ export type TaxonomyCollectionKey = "blog.categories" | "tags";
 export type Taxonomy<M extends QueryMode = "full"> = BlogCategory<M> | Tag<M>;
 
 export type FeedCompatibleEntry =
-  | Blog
-  | BlogPost
-  | Bookmark
-  | Guide
-  | Note
-  | Project
-  | Taxonomy;
+  Blog | BlogPost | Bookmark | Guide | Note | Project | Taxonomy;

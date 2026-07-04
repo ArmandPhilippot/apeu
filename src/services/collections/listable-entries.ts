@@ -25,10 +25,7 @@ const LISTABLE_COLLECTION_KEYS = [
 export type ListableCollectionKey = (typeof LISTABLE_COLLECTION_KEYS)[number];
 
 export type CollectionSupportingRelatedEntries =
-  | "blog.categories"
-  | "index.pages"
-  | "pages"
-  | "tags";
+  "blog.categories" | "index.pages" | "pages" | "tags";
 
 type PageWithRelatedEntries<
   T extends CollectionSupportingRelatedEntries =
@@ -120,8 +117,7 @@ export const getPageRelatedCollectionKeys = ({
   id,
   locale,
 }: Pick<PageWithRelatedEntries<"index.pages" | "pages">, "id" | "locale">):
-  | ListableCollectionKey
-  | ListableCollectionKey[] => {
+  ListableCollectionKey | ListableCollectionKey[] => {
   const collection = getListableCollectionKey(id, locale);
 
   if (collection === "authors") {

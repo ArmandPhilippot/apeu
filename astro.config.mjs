@@ -1,20 +1,23 @@
 // @ts-check
+import { satteri } from "@astrojs/markdown-satteri";
 import mdx from "@astrojs/mdx";
 import node from "@astrojs/node";
 import sitemap from "@astrojs/sitemap";
 import { defineConfig, envField, fontProviders } from "astro/config";
 import icon from "astro-icon";
-import remarkDirective from "remark-directive";
 import { astroStories } from "./src/lib/astro/integrations/astro-stories";
 import { devOnlyPages } from "./src/lib/astro/integrations/dev-only-pages";
 import { pagefind } from "./src/lib/astro/integrations/pagefind";
-import { rehypeCodeBlocks } from "./src/lib/rehype/rehype-code-blocks";
-import { rehypeDisableExplicitJsx } from "./src/lib/rehype/rehype-disable-explicit-jsx";
-import { rehypeImages } from "./src/lib/rehype/rehype-images";
-import { remarkCallouts } from "./src/lib/remark/remark-callouts";
-import { remarkWordsCount } from "./src/lib/remark/remark-words-count";
+import { hastInferRemoteImagesSize } from "./src/lib/satteri/hast/hast-infer-remote-images-size";
+import { hastLinkedImages } from "./src/lib/satteri/hast/hast-linked-images";
+import { hastMdxHtmlSyntax } from "./src/lib/satteri/hast/hast-mdx-html-syntax";
+import { mdastCallouts } from "./src/lib/satteri/mdast/mdast-callouts";
+import { mdastCodeBlocks } from "./src/lib/satteri/mdast/mdast-code-blocks";
+import { mdastWordsCount } from "./src/lib/satteri/mdast/mdast-words-count";
 import { shikiTheme } from "./src/lib/shiki/theme";
 import { CONFIG } from "./src/utils/constants";
+
+const imageDomains = import.meta.env.DEV ? ["placehold.co"] : [];
 
 // https://astro.build/config
 export default defineConfig({
@@ -40,8 +43,6 @@ export default defineConfig({
   },
   experimental: {
     contentIntellisense: true,
-    queuedRendering: { enabled: true },
-    rustCompiler: true,
   },
   fonts: [
     {
@@ -106,7 +107,7 @@ export default defineConfig({
     locales: [...CONFIG.LANGUAGES.AVAILABLE],
   },
   image: {
-    domains: import.meta.env.DEV ? ["placehold.co"] : [],
+    domains: imageDomains,
     layout: "constrained",
     objectFit: "cover",
     objectPosition: "top",
@@ -135,8 +136,15 @@ export default defineConfig({
     }),
   ],
   markdown: {
-    remarkPlugins: [remarkDirective, remarkCallouts, remarkWordsCount],
-    rehypePlugins: [rehypeDisableExplicitJsx, rehypeCodeBlocks, rehypeImages],
+    processor: satteri({
+      features: { directive: true },
+      hastPlugins: [
+        hastMdxHtmlSyntax,
+        hastLinkedImages,
+        hastInferRemoteImagesSize,
+      ],
+      mdastPlugins: [mdastCodeBlocks, mdastCallouts, mdastWordsCount],
+    }),
     shikiConfig: {
       theme: shikiTheme,
     },

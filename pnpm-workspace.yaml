@@ -2,13 +2,8 @@
 minimumReleaseAge: 4320
 minimumReleaseAgeExclude:
   - "@arphi/*"
-  # Renovate security update: astro@6.4.6
-  - astro@6.4.6
-  # Renovate security update: nodemailer@9.0.1
-  - nodemailer@9.0.1
 # We don’t need to run these build scripts, so explicitly disallow them as a minor security measure.
 allowBuilds:
   cypress: false
   esbuild: false
-  sharp: false
   unrs-resolver: false

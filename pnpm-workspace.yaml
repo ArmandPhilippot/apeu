@@ -2,24 +2,8 @@
 minimumReleaseAge: 4320
 minimumReleaseAgeExclude:
   - "@arphi/*"
-  # Upgrading to v7, to remove after a few days:
-  - astro@7.0.2
-  - "@astrojs/markdown-satteri@0.3.2"
-  - "@astrojs/mdx@7.0.0"
-  - "@astrojs/node@11.0.0"
-  - satteri@0.9.4
-  - "@bruits/satteri-darwin-arm64@0.9.4"
-  - "@bruits/satteri-darwin-x64@0.9.4"
-  - "@bruits/satteri-linux-arm64-gnu@0.9.4"
-  - "@bruits/satteri-linux-arm64-musl@0.9.4"
-  - "@bruits/satteri-linux-x64-gnu@0.9.4"
-  - "@bruits/satteri-linux-x64-musl@0.9.4"
-  - "@bruits/satteri-wasm32-wasi@0.9.4"
-  - "@bruits/satteri-win32-arm64-msvc@0.9.4"
-  - "@bruits/satteri-win32-x64-msvc@0.9.4"
 # We don’t need to run these build scripts, so explicitly disallow them as a minor security measure.
 allowBuilds:
   cypress: false
   esbuild: false
-  sharp: false
   unrs-resolver: false

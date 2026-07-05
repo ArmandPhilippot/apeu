@@ -45,5 +45,22 @@ jobs:
       - name: Install dependencies
         run: pnpm i
 
+      - name: "Install Playwright browser"
+        run: "pnpm exec playwright install --with-deps chromium"
+
       - name: Unit Tests
         run: pnpm test:unit
+
+      - name: "E2E tests"
+        run: "pnpm test:e2e"
+
+      - name: "Upload Playwright artifacts"
+        if: ${{ failure() && !cancelled() }}
+        uses: "actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f" # v6.0.0
+        with:
+          name: "playwright-artifacts"
+          if-no-files-found: "ignore"
+          path: |
+            playwright/report/
+            playwright/artifacts/
+          retention-days: 7

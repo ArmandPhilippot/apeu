@@ -21,5 +21,6 @@ pnpm-debug.log*
 .DS_Store
 .idea/
 
-# tests coverage
+# tests
 coverage/
+playwright/

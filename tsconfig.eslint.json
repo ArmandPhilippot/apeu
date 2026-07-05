@@ -4,9 +4,9 @@
     "src/**/*",
     "astro.config.ts",
     "commitlint.config.js",
-    "cypress.config.ts",
     "eslint.config.js",
     "lint-staged.config.js",
+    "playwright.config.ts",
     "postcss.config.js",
     "stylelint.config.js",
     "vitest.config.ts"

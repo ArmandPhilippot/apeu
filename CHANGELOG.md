@@ -1,5 +1,46 @@
 # apeu
 
+## 2.2.0
+
+### Minor Changes
+
+- 797f642: Removes the `devOnlyPages` integration.
+
+  A first version of the project used the `devOnlyPages` integration to allow for pages that only exist in development mode. In a later version, the `astro-stories` integration replaced it, providing a more robust solution for managing a dev-only design system.
+
+  If you were using it, you either need to find an equivalent or browse the Git history to create and maintain your own integration.
+
+- d90e4af: Replaces remark/rehype plugins with mdast/hast plugins.
+
+  This project has been upgraded to Astro v7, which uses a new Markdown pipeline by default. The unified pipeline (remark/rehype) is slower, so existing plugins have been replaced with Sätteri's mdast/hast plugins.
+
+  This means you can no longer add remark/rehype plugins. You either need to convert your plugins to mdast/hast or remove this project's plugins to keep using your unified pipeline.
+
+- b3d4ee6: Adds support for setting card sizes at content level.
+
+  Previously, the minimal card size used on index pages could have two fixed value: either `30em` or `22em`. Now, the size can be defined per content in the frontmatter of index pages using `minCardSize` and the default value is always `30em`.
+
+  If some of your content relied on the previous behavior, you can set `minCardSize` to `22em` in the frontmatter to keep the same card size as before.
+
+  ```diff
+  ---
+  title: Tags
+  description: "This is an excerpt of tags index page."
+  publishedOn: "2024-11-11T17:40"
+  +minCardSize: "22em"
+  ---
+  ```
+
+### Patch Changes
+
+- 19f14d0: Enables SVG processing in dev through `image.dangerouslyProcessSVG`.
+
+  Fixing the double image processing in `Img.astro` surfaced an issue with SVG images that was previously swallowed silently. SVGs are now processed in dev mode only to be able to use SVGs as image fixtures.
+
+- cf72a31: Adds OG images generation support for both build and dev.
+- 01e8dfc: Allows remote placeholder images in dev and tests.
+- 19f14d0: Fixes double image processing in `Img.astro`.
+
 ## 2.1.1
 
 ### Patch Changes

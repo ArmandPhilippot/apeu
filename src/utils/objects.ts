@@ -1,5 +1,5 @@
 import type { OneOf, SharedShape } from "../types/utilities";
-import { isKeyExistIn, isString } from "./type-guards";
+import { isKeyExistIn } from "./type-guards";
 
 /**
  * Check if the given key is present in both objects.
@@ -45,7 +45,7 @@ export const splitObject = <
   key: K
 ): SplitObjectResult<T, K> => {
   if (obj === undefined) return {} as SplitObjectResult<T, K>;
-  if (!isString(key) || !isKeyExistIn(obj, key)) {
+  if (typeof key !== "string" || !isKeyExistIn(obj, key)) {
     return { remaining: obj } as SplitObjectResult<T, K>;
   }
 

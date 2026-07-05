@@ -34,8 +34,10 @@ const cssVars = getCSSVars({
   class:list={[className, "list"]}
   {...isInline && { "data-inline": true }}
   {...hideMarker && { "data-marker": false }}
-  style={`${cssVars}${style}`}><slot /></Tag
+  style={`${cssVars}${style}`}
 >
+  <slot />
+</Tag>
 
 <style>
   @layer atoms {

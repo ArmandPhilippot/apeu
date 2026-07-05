@@ -2,7 +2,6 @@
 import type { HTMLAttributes } from "astro/types";
 import type { Gap } from "../../../types/tokens";
 import { getCSSVars, getSpacingVarValue } from "../../../utils/html-attributes";
-import { isString } from "../../../utils/type-guards";
 
 type Props = HTMLAttributes<"dl"> & {
   gap?: Gap | null | undefined;
@@ -23,8 +22,8 @@ const {
   ...attrs
 } = Astro.props;
 const cssVars = getCSSVars({
-  "col-gap": getSpacingVarValue(isString(gap) ? gap : gap?.col),
-  "row-gap": getSpacingVarValue(isString(gap) ? gap : gap?.row),
+  "col-gap": getSpacingVarValue(typeof gap === "string" ? gap : gap?.col),
+  "row-gap": getSpacingVarValue(typeof gap === "string" ? gap : gap?.row),
 });
 const content = await Astro.slots.render("default");
 const trimmedContent = content

@@ -11,27 +11,6 @@ The source code of [my personal website](https://armand.philippot.eu).
 
 ## Features
 
-### Dev-only pages
-
-This project uses a custom Astro integration to support dev-only pages. Those pages are accessible in your browser in dev mode but they won't be built and are not available in preview mode. You can find them thanks to their `_dev_` prefix.
-
-Why `_dev_`? Because [Astro already uses a single underscore](https://docs.astro.build/en/guides/routing/#excluding-pages) to exclude the pages from being built so we need a different prefix to differentiate them and a double underscore could be confusing.
-
-> [!NOTE]
-> This integration only supports directories or pages using the Astro extension (e.g. `_dev_tokens.astro`). You won't be able to build dev-only pages from Markdown files.
-
-The following patterns are supported:
-
-- a dev-only folder containing regular pages anywhere inside the pages directory,
-- a dev-only page anywhere inside the pages directory, except in a dev-only folder (eg. `src/pages/_dev_design-system/_dev_non-accessible-page.astro` is not accessible in your browser but `src/pages/_dev_design-system/accessible-page.astro` is).
-
-> [!IMPORTANT]
-> The pages are injected right after reading the configuration file. So if you create a new dev-only page (or rename an existing one), the page will not be recognized. You'll need to reload the Astro dev server first.
->
-> I'm not sure why but, the Astro Dev Toolbar can't be displayed in some dev pages. This prevents access to its applications like the Audit app for example.
-
-To access a dev-only page in your browser, you need to remove the prefix from the slug. For example, the existing `src/pages/_dev_design-system` folder can be accessed in your browser with the following url `http://localhost:4321/design-system`.
-
 ### i18n
 
 This project is i18n-ready and currently supports both English and French.
@@ -626,7 +605,6 @@ All commands are run from the root of the project, from a terminal.
 
 ## Acknowledgments
 
-* Thanks to [@MoustaphaDev](https://github.com/MoustaphaDev) for the inspiration for my Dev-only pages feature with [astro-dev-only-routes](https://github.com/MoustaphaDev/astro-dev-only-routes).
 * Thanks [@Princesseuh](https://github.com/Princesseuh), [@delucis](https://github.com/delucis) and [@HiDeoo](https://github.com/HiDeoo) for the inspiration to handle RSS feeds.
 * Thanks [@Princesseuh](https://github.com/Princesseuh) for the inspiration for my custom glob loader.
 * Thanks to the [Starlight](https://github.com/withastro/starlight) team for the inspiration on how to handle custom layout for my stories.

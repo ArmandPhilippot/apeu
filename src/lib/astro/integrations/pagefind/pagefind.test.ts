@@ -4,7 +4,7 @@ import {
   createAstroBuildDoneMockContext,
   createAstroConfigSetupMockContext,
   createAstroServerSetupMockContext,
-} from "../../../../tests/mocks/integrations";
+} from "../../../../../tests/mocks/integrations";
 import { pagefind } from "./pagefind";
 
 vi.mock("node:child_process", () => {

@@ -1,7 +1,7 @@
 import type { Element as HastElement } from "hast";
 import type { ShikiTransformerContext } from "shiki";
 import { describe, expect, it } from "vitest";
-import { isString } from "../../../utils/type-guards";
+import { ensureArray } from "../../../utils/arrays";
 import { shikiDiffNotation } from "./diff-notation";
 
 /**
@@ -72,7 +72,7 @@ function createTransformerContext(): ShikiTransformerContext {
       hast: HastElement,
       className: string | string[]
     ): HastElement {
-      hast.properties.className = isString(className) ? [className] : className;
+      hast.properties.className = ensureArray(className);
       return hast;
     },
   } as ShikiTransformerContext;

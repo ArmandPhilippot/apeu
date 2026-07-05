@@ -15,6 +15,15 @@ import {
 } from "./constants";
 
 /**
+ * Check if a value is null or undefined.
+ *
+ * @param {unknown} value - The value to check.
+ * @returns {boolean} True if the value is null or undefined.
+ */
+export const isNullish = (value: unknown): value is null | undefined =>
+  value === null || value === undefined;
+
+/**
  * Check if a value is an object.
  *
  * @param {unknown} value - The value to check.
@@ -46,24 +55,6 @@ export const isKeyExistIn = <O extends object, K extends string>(
 };
 
 /**
- * Check if a value is a number.
- *
- * @param {unknown} value - The value to check.
- * @returns {boolean} True if the value is a number.
- */
-export const isNumber = (value: unknown): value is number =>
-  typeof value === "number";
-
-/**
- * Check if a value is a string.
- *
- * @param {unknown} value - The value to check.
- * @returns {boolean} True if the value is a string.
- */
-export const isString = (value: unknown): value is string =>
-  typeof value === "string";
-
-/**
  * Check if the given locale is an available locale.
  *
  * @param {string} locale - The locale to validate.
@@ -72,7 +63,7 @@ export const isString = (value: unknown): value is string =>
 export const isAvailableLocale = (
   locale: string | null | undefined
 ): locale is AvailableLocale => {
-  if (locale === undefined || locale === null) return false;
+  if (isNullish(locale)) return false;
   return (CONFIG.LANGUAGES.AVAILABLE as readonly string[]).includes(locale);
 };
 
@@ -93,11 +84,9 @@ export const isDefaultLocale = (
  * @param {unknown} value - Any value.
  * @returns {boolean} True if the value is a callout type.
  */
-export const isValidCalloutType = (value: unknown): value is CalloutType => {
-  if (!isString(value)) return false;
-
-  return (CALLOUT_TYPES as readonly string[]).includes(value);
-};
+export const isValidCalloutType = (value: unknown): value is CalloutType =>
+  typeof value === "string" &&
+  (CALLOUT_TYPES as readonly string[]).includes(value);
 
 /**
  * Check if the given string is a valid country code.
@@ -128,7 +117,7 @@ export const isValidLanguageCode = (code: string): code is LanguageCode =>
 export const isValidSocialMedium = (
   medium: unknown
 ): medium is SocialMedium => {
-  if (!isString(medium)) return false;
+  if (typeof medium !== "string") return false;
 
   return (SOCIAL_MEDIA as readonly string[]).includes(medium);
 };

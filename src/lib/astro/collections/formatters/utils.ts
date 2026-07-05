@@ -9,11 +9,7 @@ import type {
 import type { AvailableLocale } from "../../../../types/tokens";
 import { WORDS_PER_MINUTE } from "../../../../utils/constants";
 import { toUpperCase } from "../../../../utils/strings";
-import {
-  isAvailableLocale,
-  isNumber,
-  isString,
-} from "../../../../utils/type-guards";
+import { isAvailableLocale } from "../../../../utils/type-guards";
 import type { EntryByIdIndex } from "../indexes";
 import { isInCollection, isRoutableIndexedEntry } from "../type-guards";
 import type { CollectionReference, IndexedEntry } from "../types";
@@ -97,9 +93,10 @@ export const getMetaFromRemarkPluginFrontmatter = (
   remarkPluginFrontmatter: Record<string, unknown>,
   locale: AvailableLocale
 ): RemarkPluginFrontmatterMeta => {
-  const readingTime = isNumber(remarkPluginFrontmatter.wordsCount)
-    ? getReadingTime(remarkPluginFrontmatter.wordsCount, locale)
-    : undefined;
+  const readingTime =
+    typeof remarkPluginFrontmatter.wordsCount === "number"
+      ? getReadingTime(remarkPluginFrontmatter.wordsCount, locale)
+      : undefined;
 
   return {
     readingTime,
@@ -207,7 +204,7 @@ const resolveTranslationEntry =
       translation !== undefined && isRoutableIndexedEntry(translation)
         ? translation.route
         : null;
-    return isString(route) ? { locale: lang, route } : null;
+    return typeof route === "string" ? { locale: lang, route } : null;
   };
 
 type Translations<C extends CollectionKey> = Partial<

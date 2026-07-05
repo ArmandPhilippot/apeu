@@ -20,7 +20,7 @@ import type { FeedCompatibleEntry } from "../../types/data";
 import type { AvailableLocale } from "../../types/tokens";
 import { WEBSITE_URL } from "../../utils/constants";
 import { UnsupportedLocaleError } from "../../utils/exceptions";
-import { isAvailableLocale, isString } from "../../utils/type-guards";
+import { isAvailableLocale } from "../../utils/type-guards";
 import { useI18n } from "../i18n";
 
 /* eslint-disable no-param-reassign -- The file do a lot of node transformations to create the feed content, so it's expected that parameters will be reassigned. */
@@ -183,7 +183,7 @@ const getRSSItem =
 
     return {
       categories: getItemCategories(entry),
-      ...(isString(content) ? { content } : {}),
+      ...(typeof content === "string" ? { content } : {}),
       description: getItemDescription(entry, locale),
       link: "route" in entry ? entry.route : entry.url,
       pubDate: entry.meta.publishedOn,

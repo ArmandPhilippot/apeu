@@ -4,7 +4,6 @@ import { join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 import type { AstroIntegration } from "astro";
 import sirv from "sirv";
-import { isString } from "../../../utils/type-guards";
 
 // `sirv` will most likely only be used in this file so:
 // cSpell:ignore -- sirv
@@ -52,7 +51,7 @@ export const pagefind = (() => {
         });
 
         server.middlewares.use((req, res, next) => {
-          if (isString(req.url) && req.url.startsWith("/pagefind/")) {
+          if (typeof req.url === "string" && req.url.startsWith("/pagefind/")) {
             serve(req, res, next);
           } else {
             next();

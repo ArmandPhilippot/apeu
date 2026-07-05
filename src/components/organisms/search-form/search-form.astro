@@ -80,9 +80,9 @@ const defaultIconSize = isInline ? 30 : 25;
       type="submit"
     >
       <Icon aria-hidden="true" name="search" size={defaultIconSize} />
-      <span class:list={[{ "sr-only": isInline }]}
-        >{translate("form.search.btn")}</span
-      >
+      <span class:list={[{ "sr-only": isInline }]}>
+        {translate("form.search.btn")}
+      </span>
     </Button>
   </form>
 </apeu-search-form>

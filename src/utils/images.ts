@@ -1,5 +1,5 @@
+import { resolveSrc } from "astro/assets/utils";
 import type { Img } from "../types/data";
-import { isString } from "./type-guards";
 
 /**
  * Retrieve an image source from a path or an imported image.
@@ -8,8 +8,6 @@ import { isString } from "./type-guards";
  * @returns {Promise<string>} The resolved image src.
  */
 export const getImgSrc = async (img: Pick<Img, "src">): Promise<string> => {
-  if (isString(img.src)) return img.src;
-  const resolvedImg = await img.src;
-  if ("default" in resolvedImg) return resolvedImg.default.src;
-  return resolvedImg.src;
+  const src = await resolveSrc(img.src);
+  return typeof src === "string" ? src : src.src;
 };

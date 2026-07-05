@@ -1,5 +1,4 @@
 import type { SharedShape } from "../types/utilities";
-import { isString } from "./type-guards";
 
 /**
  * Method to compare two Date. This should be used in `Array.sort()`.
@@ -38,7 +37,7 @@ export const sortByKey = <T1, T2>(
   const valueA = a[key];
   const valueB = b[key];
 
-  if (isString(valueA) && isString(valueB)) {
+  if (typeof valueA === "string" && typeof valueB === "string") {
     return compareNonAsciiStrings(valueA, valueB);
   }
 

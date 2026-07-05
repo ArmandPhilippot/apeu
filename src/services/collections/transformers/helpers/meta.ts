@@ -12,6 +12,7 @@ import type {
 } from "../../../../types/data";
 import type { AllKeysOf, Blend } from "../../../../types/utilities";
 import { splitObject } from "../../../../utils/objects";
+import { isNullish } from "../../../../utils/type-guards";
 import type { I18nContext } from "../../../i18n";
 import type { PreviewableCollectionKey, PreviewableEntry } from "../../types";
 import type { TransformEntryConfig } from "../types";
@@ -31,8 +32,7 @@ type CollectionMetaIcon = Partial<Record<AllKeysOf<MetaData>, Icon>>;
 const hasValue = <K extends keyof MetaData>(
   value: MetaData[K]
 ): value is NonNullable<MetaData[K]> => {
-  /* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- Some MetaData fields can be null, so we need `=== null`. */
-  if (value === undefined || value === null) return false;
+  if (isNullish(value)) return false;
   return Array.isArray(value) ? value.length > 0 : true;
 };
 

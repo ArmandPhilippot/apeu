@@ -60,9 +60,9 @@ if (!currentLocale) {
 
 <apeu-language-select {...attrs} class:list={[className, "language-select"]}>
   <Label>
-    <span class:list={{ "sr-only": hideLabel, "language-select-label": true }}
-      >{label}</span
-    >
+    <span class:list={{ "sr-only": hideLabel, "language-select-label": true }}>
+      {label}
+    </span>
     <SelectField
       class="language-select-field"
       icon={showIcon ? "locale" : null}

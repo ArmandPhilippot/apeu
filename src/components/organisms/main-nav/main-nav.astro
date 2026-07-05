@@ -3,7 +3,6 @@ import type { ComponentProps } from "astro/types";
 import { useI18n } from "../../../services/i18n";
 import type { Route, WithIcon } from "../../../types/data";
 import { CONFIG } from "../../../utils/constants";
-import { isHomePage } from "../../../utils/urls";
 import Link from "../../atoms/link/link.astro";
 import ListItem from "../../atoms/list/list-item.astro";
 import List from "../../atoms/list/list.astro";
@@ -15,6 +14,9 @@ type Props = Omit<ComponentProps<typeof List>, "children" | "hideMarker"> & {
 const { class: className, items, slot, ...attrs } = Astro.props;
 const { locale } = useI18n(Astro.currentLocale);
 const defaultIconSize = 24;
+const isHomePage = (path: string): boolean =>
+  path === "/" ||
+  CONFIG.LANGUAGES.AVAILABLE.some((lang) => path === `/${lang}`);
 const isCurrentRouteOrNested = (url: string) => {
   if (isHomePage(url)) return Astro.url.pathname === url;
   /* eslint-disable-next-line no-magic-numbers -- When this is not the default locale, the slug is prefixed by the locale so we need to go further. */

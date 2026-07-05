@@ -588,13 +588,15 @@ All commands are run from the root of the project, from a terminal.
 
 #### Testing
 
-| Command                   | Action                                    |
-| :------------------------ | :---------------------------------------- |
-| `pnpm test:e2e`           | Run end-to-end tests using Cypress        |
-| `pnpm test:e2e:ui`        | Run end-to-end tests using the Cypress UI |
-| `pnpm test:unit`          | Run unit tests using Vitest               |
-| `pnpm test:unit:coverage` | Run unit tests using Vitest and coverage  |
-| `pnpm test:unit:watch`    | Run unit tests using Vitest and watch     |
+| Command                   | Action                                                |
+| :------------------------ | :---------------------------------------------------- |
+| `pnpm test`               | Run unit tests and end-to-end tests                   |
+| `pnpm test:e2e`           | Run Playwright against an Astro preview               |
+| `pnpm test:e2e:install`   | Download the Playwright Chromium browser              |
+| `pnpm test:e2e:ui`        | Open Playwright UI mode against an Astro preview      |
+| `pnpm test:unit`          | Run unit tests using Vitest                           |
+| `pnpm test:unit:coverage` | Run unit tests using Vitest and coverage              |
+| `pnpm test:unit:watch`    | Run unit tests using Vitest and watch                 |
 
 #### Github actions and/or maintainer only
 

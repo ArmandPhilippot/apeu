@@ -1,28 +1,15 @@
 ---
 import type { ComponentProps } from "astro/types";
-import { Picture as AstroPicture, getImage } from "astro:assets";
+import { Picture as AstroPicture } from "astro:assets";
+import { getImgSrc } from "../../../utils/images";
 import Link from "../link/link.astro";
 
-/* Without Pick, Typescript gives me an error when using the component. Not
- * sure which property is conflicting with exactOptionalPropertyTypes... */
-type PictureProps = Pick<
+/* `width`/`height` are excluded and redeclared below as plain numbers: Astro
+ * types them as `number | \`${number}\`` for HTML-attribute compatibility,
+ * which conflicts with exactOptionalPropertyTypes here. */
+type PictureProps = Omit<
   ComponentProps<typeof AstroPicture>,
-  | "alt"
-  | "class"
-  | "class:list"
-  | "decoding"
-  | "densities"
-  | "fit"
-  | "format"
-  | "formats"
-  | "layout"
-  | "loading"
-  | "pictureAttributes"
-  | "position"
-  | "quality"
-  | "src"
-  | "style"
-  | "widths"
+  "height" | "width"
 >;
 
 type Props = PictureProps & {
@@ -30,41 +17,24 @@ type Props = PictureProps & {
    * Should only be used with Remark/Rehype. It is an internal helper to wrap
    * images with a link pointing to the same file.
    *
-   * @see src/lib/rehype/rehype-images.ts
+   * @see src/lib/satteri/hast/hast-linked-images.ts
    */
   "data-clickable"?: `${boolean}` | null | undefined;
   height?: number | undefined;
-  inferSize?: boolean | null | undefined;
+  inferSize?: `${boolean}` | boolean | null | undefined;
   width?: number | undefined;
 };
 
 const {
   alt,
   "data-clickable": isClickable,
-  densities,
-  format,
   formats = ["avif", "webp"],
-  height,
-  inferSize,
   pictureAttributes,
-  quality,
   src,
-  width,
-  widths,
   ...attrs
 } = Astro.props;
 
-const img = await getImage({
-  densities,
-  format,
-  height,
-  ...(inferSize ? { inferSize } : {}),
-  quality,
-  src,
-  width,
-  widths,
-});
-const mergedAttrs = { ...img.attributes, ...attrs };
+const href = await getImgSrc({ src });
 const Wrapper = isClickable ? Link : Fragment;
 /* With `class:list` it seems the `picture` class is overridden... */
 const pictureClass = pictureAttributes?.class
@@ -72,17 +42,17 @@ const pictureClass = pictureAttributes?.class
   : "picture";
 ---
 
-<Wrapper href={img.src}>
-  {/* @ts-expect-error ts(2375) -- Not sure where the conflict comes from... */}
+<Wrapper href={href}>
+  {/* @ts-expect-error ts(2375) -- width/height type conflict */}
   <AstroPicture
-    {...mergedAttrs}
+    {...attrs}
     alt={alt}
     formats={formats}
     pictureAttributes={{
       ...pictureAttributes,
       class: pictureClass,
     }}
-    src={img.src}
+    src={src}
   />
 </Wrapper>
 

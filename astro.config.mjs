@@ -16,6 +16,7 @@ import { mdastWordsCount } from "./src/lib/satteri/mdast/mdast-words-count";
 import { shikiTheme } from "./src/lib/shiki/theme";
 import { CONFIG } from "./src/utils/constants";
 
+const dangerouslyProcessSVG = import.meta.env.DEV;
 const imageDomains = import.meta.env.DEV ? ["placehold.co"] : [];
 
 // https://astro.build/config
@@ -111,6 +112,7 @@ export default defineConfig({
     objectFit: "cover",
     objectPosition: "top",
     responsiveStyles: true,
+    dangerouslyProcessSVG,
   },
   integrations: [
     astroStories({

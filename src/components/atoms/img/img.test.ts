@@ -1,5 +1,6 @@
 import { experimental_AstroContainer as AstroContainer } from "astro/container";
 import { beforeEach, describe, expect, it } from "vitest";
+import favicon from "../../../assets/favicon.png";
 import Img from "./img.astro";
 
 type LocalTestContext = {
@@ -30,7 +31,7 @@ describe("Img", () => {
     expect(result).toContain(`src="${optimizedSrc}`);
   });
 
-  it<LocalTestContext>("can wrap an image with a link", async ({
+  it<LocalTestContext>("wraps a remote image with a link to the original source", async ({
     container,
   }) => {
     /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
@@ -44,9 +45,25 @@ describe("Img", () => {
     });
 
     expect(result).toContain("<a");
-    expect(result).toContain(`href="${optimizedSrc}`);
+    expect(result).toContain(`href="${src}"`);
     expect(result).toContain("<img");
     expect(result).toContain(`alt="${alt}"`);
     expect(result).toContain(`src="${optimizedSrc}`);
+  });
+
+  it<LocalTestContext>("wraps a local image with a link to the original, unoptimized source", async ({
+    container,
+  }) => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(2);
+
+    const alt = "voluptas repellendus nobis";
+    const result = await container.renderToString(Img, {
+      props: { "data-clickable": "true", alt, src: favicon },
+    });
+    const expectedHref = favicon.src.replaceAll("&", "&amp;");
+
+    expect(result).toContain("<a");
+    expect(result).toContain(`href="${expectedHref}"`);
   });
 });

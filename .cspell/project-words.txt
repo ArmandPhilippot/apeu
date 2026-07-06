@@ -6,6 +6,7 @@ bluesky
 canvaskit
 commitlint
 dotenvx
+EHLO
 esbuild
 FOUC
 Français
@@ -13,6 +14,7 @@ frontmatter
 globby
 linkedin
 lintignore
+mailparser
 mdast
 Mdxjs
 nanostores
@@ -32,6 +34,7 @@ routability
 Sätteri
 shiki
 stackoverflow
+STARTTLS
 stylelint
 treeifyError
 tsconfigs

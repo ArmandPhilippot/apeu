@@ -4,9 +4,7 @@ import fr from "../../src/translations/fr.json" with { type: "json" };
 
 // cSpell:ignore Catégorie matières
 test.describe("Single blog post", () => {
-  test("renders the French blog post with its content and category link", async ({
-    page,
-  }) => {
+  test("renders the French blog post with its content", async ({ page }) => {
     await page.goto("/blog/articles/post1");
 
     const main = page.getByRole("main");
@@ -27,15 +25,22 @@ test.describe("Single blog post", () => {
     await expect(
       main.getByRole("heading", { level: 2, name: "Heading 2" })
     ).toBeVisible();
+  });
 
-    await main.getByRole("link", { name: "Catégorie 1" }).click();
+  test("navigates to its category page when clicking the category link (French)", async ({
+    page,
+  }) => {
+    await page.goto("/blog/articles/post1");
+
+    await page
+      .getByRole("main")
+      .getByRole("link", { name: "Catégorie 1" })
+      .click();
 
     await expect(page).toHaveURL("/blog/categories/category1");
   });
 
-  test("renders the English blog post with its content and category link", async ({
-    page,
-  }) => {
+  test("renders the English blog post with its content", async ({ page }) => {
     await page.goto("/en/blog/posts/post1");
 
     const main = page.getByRole("main");
@@ -54,8 +59,17 @@ test.describe("Single blog post", () => {
     await expect(
       main.getByRole("heading", { level: 2, name: "Heading 2" })
     ).toBeVisible();
+  });
 
-    await main.getByRole("link", { name: "Category 1" }).click();
+  test("navigates to its category page when clicking the category link (English)", async ({
+    page,
+  }) => {
+    await page.goto("/en/blog/posts/post1");
+
+    await page
+      .getByRole("main")
+      .getByRole("link", { name: "Category 1" })
+      .click();
 
     await expect(page).toHaveURL("/en/blog/categories/category1");
   });

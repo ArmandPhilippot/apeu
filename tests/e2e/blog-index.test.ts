@@ -44,6 +44,22 @@ test.describe("Blog index", () => {
     await expect(
       categories.getByRole("heading", { level: 3, name: "Catégorie 2" })
     ).toBeVisible();
+  });
+
+  test("navigates to a post's page when clicking its read-more link (French)", async ({
+    page,
+  }) => {
+    await page.goto("/blog");
+
+    const recentPosts = page
+      .getByRole("main")
+      .locator("section")
+      .filter({
+        has: page.getByRole("heading", {
+          level: 2,
+          name: fr["page.blog.section.recent.posts.heading"],
+        }),
+      });
 
     /* Post cards render their title as plain text and expose a separate
      * "read more" CTA link instead. Whichever post is currently most recent is
@@ -92,6 +108,22 @@ test.describe("Blog index", () => {
     await expect(
       categories.getByRole("heading", { level: 3, name: "Category 2" })
     ).toBeVisible();
+  });
+
+  test("navigates to a post's page when clicking its read-more link (English)", async ({
+    page,
+  }) => {
+    await page.goto("/en/blog");
+
+    const recentPosts = page
+      .getByRole("main")
+      .locator("section")
+      .filter({
+        has: page.getByRole("heading", {
+          level: 2,
+          name: en["page.blog.section.recent.posts.heading"],
+        }),
+      });
 
     await recentPosts
       .getByRole("article")

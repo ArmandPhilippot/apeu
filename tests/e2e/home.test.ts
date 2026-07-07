@@ -37,6 +37,12 @@ test.describe("Homepage", () => {
         name: fr["page.home.section.collections.heading"],
       })
     ).toBeVisible();
+  });
+
+  test("navigates to the blog when clicking its link (French)", async ({
+    page,
+  }) => {
+    await page.goto("/");
 
     await page
       .getByRole("main")
@@ -79,6 +85,12 @@ test.describe("Homepage", () => {
         name: en["page.home.section.collections.heading"],
       })
     ).toBeVisible();
+  });
+
+  test("navigates to the blog when clicking its link (English)", async ({
+    page,
+  }) => {
+    await page.goto("/en/");
 
     await page
       .getByRole("main")

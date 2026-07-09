@@ -57,10 +57,7 @@ test.describe("Homepage", () => {
   }) => {
     await page.goto("/en/");
 
-    /* TODO: Unlike the default locale, the English homepage currently renders
-     * with the site-name suffix (isHome mismatch in layout.astro)
-     */
-    await expect(page).toHaveTitle("Home | Armand Philippot");
+    await expect(page).toHaveTitle("Home");
     await expect(page.getByRole("heading", { level: 1 })).toHaveText(
       "Armand Philippot."
     );

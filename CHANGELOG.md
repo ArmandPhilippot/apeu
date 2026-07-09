@@ -1,5 +1,17 @@
 # apeu
 
+## 2.2.1
+
+### Patch Changes
+
+- 7f0e507: Fixes an issue where the title tag suffix wasn't correctly applied.
+
+  The English homepage unexpectedly showing the site name suffix in its title, and stories were missing the suffix in their title tags. The homepage is now flagged explicitly by the view that renders it, instead of being inferred from a URL comparison.
+
+- 0ea1e86: Fixes a broken link on the feeds page, where the "subscribe to website" link was pointing to a non-existent `/enfeed.xml` URL.
+
+  <!-- cSpell:ignore enfeed -->
+
 ## 2.2.0
 
 ### Minor Changes

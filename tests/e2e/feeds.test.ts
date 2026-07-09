@@ -5,7 +5,7 @@ import { expect, test } from "@playwright/test";
  * an exact count. */
 const MINIMUM_FEED_LINKS = 8;
 
-// cSpell:ignore abonner enfeed
+// cSpell:ignore abonner
 test.describe("Feeds", () => {
   test("renders the French feeds page with its feed links", async ({
     page,
@@ -43,13 +43,9 @@ test.describe("Feeds", () => {
       main.getByRole("heading", { level: 1, name: "Feeds" })
     ).toBeVisible();
 
-    /* TODO: `routeById("home").path` lacks a trailing slash for non-default
-     * locales, so this concatenates to the malformed "/enfeed.xml" instead
-     * of "/en/feed.xml" — same root cause as the homepage title bug, see
-     * home.test.ts. Asserting current (broken) behavior here. */
     await expect(
       main.getByRole("link", { name: "Subscribe to website's feed" })
-    ).toHaveAttribute("href", "/enfeed.xml");
+    ).toHaveAttribute("href", "/en/feed.xml");
 
     const feedLinks = main.getByRole("listitem").getByRole("link");
 

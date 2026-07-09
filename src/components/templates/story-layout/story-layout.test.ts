@@ -135,7 +135,9 @@ describe("StoryLayout", () => {
       slots: { default: children },
     });
 
-    expect(result).toContain("<title>My SEO title for this story</title>");
+    expect(result).toContain(
+      "<title>My SEO title for this story | Armand Philippot</title>"
+    );
     expect(result).not.toContain("First story");
     expect(result).toContain(children);
   });

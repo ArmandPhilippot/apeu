@@ -44,11 +44,9 @@ export const getStaticPaths = (async ({ paginate }) => {
     nonPaginatedListingPages,
     { format: "preview" }
   );
-  /* `route` now always ends with a trailing slash (except the literal "/"),
-   * but the `page` rest-param is an internal detail of how this file
-   * generates static paths, decoupled from that public route string —
-   * left as-is it double-slashes (and fails to build), so it's normalized
-   * back to a slash-free form before use everywhere below. */
+  /* `route` always ends with a trailing slash (except the literal "/"), but
+   * the `page` rest-param determines how this file generates static paths, so
+   * it's normalized back to a slash-free form before use. */
   const paginatedPaths = enrichedPaginatedListings.flatMap(
     (enrichedPaginatedPage) => {
       const route = removeTrailingSlashes(enrichedPaginatedPage.route);

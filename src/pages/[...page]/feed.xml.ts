@@ -34,10 +34,6 @@ export const getStaticPaths = (async () => {
     const isDefaultLocale = CONFIG.LANGUAGES.DEFAULT === entry.locale;
     return {
       params: {
-        /* The "page" rest-param is an internal detail of how this file
-         * generates static paths, decoupled from the public route string,
-         * which now always ends with a slash — double-slashes (and fails
-         * to build) if not normalized back to a slash-free form first. */
         page:
           isHomepage && isDefaultLocale
             ? undefined

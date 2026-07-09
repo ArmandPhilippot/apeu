@@ -34,7 +34,7 @@ export const getWebPageGraph = async ({
   const { translate } = useI18n(locale);
   const { routeById } = await useRouting(locale);
   const websiteAuthor = `${WEBSITE_URL}#author` as const;
-  const url = `${WEBSITE_URL}${pageRoute}`;
+  const url = new URL(pageRoute, WEBSITE_URL).href;
 
   return {
     "@id": url,
@@ -52,7 +52,7 @@ export const getWebPageGraph = async ({
     editor: { "@id": websiteAuthor },
     headline: title,
     isAccessibleForFree: true,
-    isPartOf: { "@id": `${WEBSITE_URL}${routeById("home").path}` },
+    isPartOf: { "@id": new URL(routeById("home").path, WEBSITE_URL).href },
     lastReviewed: meta.updatedOn.toISOString(),
     license: translate("license.url"),
     name: title,

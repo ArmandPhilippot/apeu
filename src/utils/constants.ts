@@ -1,5 +1,5 @@
 export const API_ROUTES = {
-  SEND_EMAIL: "/api/send-email",
+  SEND_EMAIL: "/api/send-email/",
 } as const;
 
 export const CALLOUT_TYPES = [

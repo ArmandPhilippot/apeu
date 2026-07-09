@@ -11,6 +11,7 @@ import {
 } from "../../services/collections";
 import { partitionByType } from "../../utils/arrays";
 import { CONFIG } from "../../utils/constants";
+import { removeTrailingSlashes } from "../../utils/strings";
 import BlogIndexView from "../../views/blog-index-view/blog-index-view.astro";
 import CollectionListingView from "../../views/collection-listing-view/collection-listing-view.astro";
 import ContactView from "../../views/contact-view/contact-view.astro";
@@ -43,17 +44,24 @@ export const getStaticPaths = (async ({ paginate }) => {
     nonPaginatedListingPages,
     { format: "preview" }
   );
+  /* `route` now always ends with a trailing slash (except the literal "/"),
+   * but the `page` rest-param is an internal detail of how this file
+   * generates static paths, decoupled from that public route string —
+   * left as-is it double-slashes (and fails to build), so it's normalized
+   * back to a slash-free form before use everywhere below. */
   const paginatedPaths = enrichedPaginatedListings.flatMap(
-    (enrichedPaginatedPage) =>
-      paginate(enrichedPaginatedPage.related.entries, {
+    (enrichedPaginatedPage) => {
+      const route = removeTrailingSlashes(enrichedPaginatedPage.route);
+
+      return paginate(enrichedPaginatedPage.related.entries, {
         pageSize: CONFIG.ITEMS_PER_PAGE,
       }).map((paginatedItem) => {
         const { data, url, ...paginationData } = paginatedItem.props.page;
         return {
           params: {
             page: paginatedItem.params.page
-              ? `${enrichedPaginatedPage.route}/page/${paginatedItem.params.page}`
-              : enrichedPaginatedPage.route,
+              ? `${route}/page/${paginatedItem.params.page}`
+              : route,
           },
           props: {
             ...enrichedPaginatedPage,
@@ -64,13 +72,14 @@ export const getStaticPaths = (async ({ paginate }) => {
             },
           },
         };
-      })
+      });
+    }
   );
   const nonPaginatedListingPaths = enrichedNonPaginatedListings.map(
     (listingPage) => {
       return {
         params: {
-          page: listingPage.route.slice(1),
+          page: removeTrailingSlashes(listingPage.route).slice(1),
         },
         props: listingPage,
       };
@@ -83,7 +92,9 @@ export const getStaticPaths = (async ({ paginate }) => {
 
     return {
       params: {
-        page: isDefaultLocaleHome ? undefined : regularPage.route.slice(1),
+        page: isDefaultLocaleHome
+          ? undefined
+          : removeTrailingSlashes(regularPage.route).slice(1),
       },
       props: regularPage,
     };

@@ -15,6 +15,7 @@ import {
 import { useI18n } from "../../services/i18n";
 import { CONFIG } from "../../utils/constants";
 import { MissingSiteConfigError } from "../../utils/exceptions";
+import { removeTrailingSlashes } from "../../utils/strings";
 
 export const getStaticPaths = (async () => {
   const { entries } = await queryCollection(
@@ -33,7 +34,14 @@ export const getStaticPaths = (async () => {
     const isDefaultLocale = CONFIG.LANGUAGES.DEFAULT === entry.locale;
     return {
       params: {
-        page: isHomepage && isDefaultLocale ? undefined : entry.route.slice(1),
+        /* The "page" rest-param is an internal detail of how this file
+         * generates static paths, decoupled from the public route string,
+         * which now always ends with a slash — double-slashes (and fails
+         * to build) if not normalized back to a slash-free form first. */
+        page:
+          isHomepage && isDefaultLocale
+            ? undefined
+            : removeTrailingSlashes(entry.route).slice(1),
       },
       props: entry,
     };

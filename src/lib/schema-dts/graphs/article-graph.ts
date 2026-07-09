@@ -42,7 +42,7 @@ export const getArticleGraph = async ({
   const { translate } = useI18n(locale);
   const { routeById } = await useRouting(locale);
   const websiteAuthor = `${WEBSITE_URL}#author` as const;
-  const url = `${WEBSITE_URL}${articleRoute}`;
+  const url = new URL(articleRoute, WEBSITE_URL).href;
   const coverUrl = isNullish(cover) ? null : await getImgSrc(cover);
   const isBlogPost = collection === "blog.posts";
   const authors =
@@ -74,7 +74,7 @@ export const getArticleGraph = async ({
     isAccessibleForFree: true,
     ...(isBlogPost && {
       isPartOf: {
-        "@id": `${WEBSITE_URL}${routeById("blog").path}#blog`,
+        "@id": `${new URL(routeById("blog").path, WEBSITE_URL).href}#blog`,
       },
     }),
     ...(meta.tags !== null &&

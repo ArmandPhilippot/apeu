@@ -49,7 +49,7 @@ test.describe("Homepage", () => {
       .getByRole("link", { name: "Blog", exact: true })
       .click();
 
-    await expect(page).toHaveURL("/blog");
+    await expect(page).toHaveURL("/blog/");
   });
 
   test("renders the English homepage with its main sections", async ({
@@ -94,6 +94,6 @@ test.describe("Homepage", () => {
       .getByRole("link", { name: "Blog", exact: true })
       .click();
 
-    await expect(page).toHaveURL("/en/blog");
+    await expect(page).toHaveURL("/en/blog/");
   });
 });

@@ -148,7 +148,7 @@ const removeLeadingSlash = (path: string) => path.slice(1);
  * @param {AvailableLocale} locale - A supported entry's locale.
  * @param {string[]} segments - Path segments extracted from the entry ID.
  * @param {SlugInfoByIdMap} slugById - A map of entry IDs to slugs.
- * @returns {string} A route like `/fr/section/article`.
+ * @returns {string} A route like `/fr/section/article/`.
  */
 const buildEntryRoute = (
   locale: AvailableLocale,
@@ -166,7 +166,13 @@ const buildEntryRoute = (
     .filter((segment) => segment !== null);
   const route = `/${localizedSegments.join("/")}`;
 
-  return route === "/" ? route : removeTrailingSlashes(route);
+  /* The "home" slug resolves to an empty segment (see `getSlugFromEntry`).
+   * For the default locale that's the only segment, so `route` is already
+   * exactly "/" (handled above). For every other locale it's the *last* of
+   * several segments (e.g. ["en", ""]) so `route` already ends with a
+   * slash here (e.g. "/en/"): `removeTrailingSlashes` normalizes that back
+   * to zero before appending exactly one, instead of ending up with two. */
+  return route === "/" ? route : `${removeTrailingSlashes(route)}/`;
 };
 
 type RouteInfo = {
@@ -351,7 +357,14 @@ const buildEntriesIndexes = async (): Promise<EntriesIndexes> => {
     [...nonRoutable, ...routable],
     (entry) => entry.raw.id
   );
-  const entryByRoute = buildEntryIndex(routable, (entry) => entry.route);
+  /* Keyed without the trailing slash: `breadcrumb.ts` looks up ancestor
+   * routes by splitting/rejoining path segments, which can never reproduce
+   * one, so the lookup key must stay slash-free even though `entry.route`
+   * (the value) now always has one. */
+  const entryByRoute = buildEntryIndex(
+    routable,
+    (entry) => removeTrailingSlashes(entry.route) || "/"
+  );
 
   return {
     byId: entryById,

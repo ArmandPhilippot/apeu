@@ -286,7 +286,7 @@ describe("getArticleGraph", () => {
 
       expect(graph["@type"]).toBe("BlogPosting");
       expect(graph.isPartOf).toStrictEqual({
-        "@id": "https://example.test/blog#blog",
+        "@id": "https://example.test/blog/#blog",
       });
       expect(graph.author).toHaveLength(1);
     });

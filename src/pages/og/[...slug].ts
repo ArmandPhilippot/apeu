@@ -8,7 +8,7 @@ import logo from "../../assets/logo-unpressed.svg?url";
 import bg from "../../assets/paper-light.svg?inline";
 import { queryCollection } from "../../services/collections";
 import { CONFIG } from "../../utils/constants";
-import { removeTrailingSlashes } from "../../utils/strings";
+import { routeToParam } from "../../utils/paths";
 
 const collections = await queryCollection([
   "blog.categories",
@@ -22,11 +22,7 @@ const collections = await queryCollection([
 ]);
 const addPngExtension = (path: string) => `${path}.png`;
 const getPageIdFromRoute = (route: string) => {
-  /* `route` always ends with a trailing slash (except the literal "/"), so
-   * both slashes are stripped here to get a bare id like "" or "en" or
-   * "en/blog" — this also makes the locale-home check below reliable, since
-   * `CONFIG.LANGUAGES.AVAILABLE` entries never have a trailing slash. */
-  const routeId = removeTrailingSlashes(route).slice(1);
+  const routeId = routeToParam(route);
   const isDefaultHomePage = !routeId;
   const isLocalizedHomePage = (
     CONFIG.LANGUAGES.AVAILABLE as readonly string[]

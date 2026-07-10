@@ -2,6 +2,7 @@ import { join, normalize, parse, sep } from "node:path";
 import slash from "slash";
 import type { AvailableLocale } from "../types/tokens";
 import { CONFIG } from "./constants";
+import { removeTrailingSlashes } from "./strings";
 import { isAvailableLocale } from "./type-guards";
 
 /**
@@ -87,3 +88,37 @@ export const getCumulativePaths = (path: string): string[] => {
 
   return steps;
 };
+
+/**
+ * Remove the trailing slash from a route while collapsing an empty result back
+ * to the root route.
+ *
+ * @example "/blog/" -> "/blog", "/" -> "/"
+ * @param {string} route - A route to normalize.
+ * @returns {string} The route without a trailing slash.
+ */
+export const withoutTrailingSlash = (route: string): string =>
+  removeTrailingSlashes(route) || "/";
+
+/**
+ * Convert a route into its slash-free path form, dropping both the leading
+ * and trailing slash, except for the root route.
+ *
+ * @example "/blog/posts/" -> "blog/posts", "/" -> ""
+ * @param {string} route - A route to convert.
+ * @returns {string} The route without any slash.
+ */
+export const routeToParam = (route: string): string =>
+  withoutTrailingSlash(route).slice(1);
+
+/**
+ * Convert a route into the value expected by an Astro rest param, such as the
+ * `page` param of `[...page]`. Unlike `routeToParam`, the root route becomes
+ * `undefined` rather than an empty string.
+ *
+ * @example "/blog/posts/" -> "blog/posts", "/" -> undefined
+ * @param {string} route - A route to convert.
+ * @returns {string | undefined} The route as a rest-param value.
+ */
+export const routeToStaticPathParam = (route: string): string | undefined =>
+  routeToParam(route) || undefined;

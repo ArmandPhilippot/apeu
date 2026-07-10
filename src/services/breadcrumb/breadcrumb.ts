@@ -3,8 +3,7 @@ import {
   type EntryByRouteIndex,
 } from "../../lib/astro/collections/indexes";
 import type { Route } from "../../types/data";
-import { getCumulativePaths } from "../../utils/paths";
-import { removeTrailingSlashes } from "../../utils/strings";
+import { getCumulativePaths, withoutTrailingSlash } from "../../utils/paths";
 import { isLocalizedRoute } from "../i18n";
 
 /**
@@ -35,15 +34,6 @@ const getRouteCrumbs = (
     });
 };
 
-/**
- * Normalizes a route by removing the trailing slash.
- *
- * @param {string} route - The route to format.
- * @returns {string} The normalized route.
- */
-const normalizeRoute = (route: string): string =>
-  removeTrailingSlashes(route) || "/";
-
 type BreadcrumbConfig = {
   paginationLabel?: string | undefined;
   route: string;
@@ -60,7 +50,7 @@ export const getBreadcrumb = async ({
   route,
 }: BreadcrumbConfig): Promise<Route[]> => {
   const { byRoute } = await getEntriesIndex();
-  const normalizedRoute = normalizeRoute(route);
+  const normalizedRoute = withoutTrailingSlash(route);
   const crumbs = getRouteCrumbs(normalizedRoute, byRoute);
 
   if (paginationLabel !== undefined) {

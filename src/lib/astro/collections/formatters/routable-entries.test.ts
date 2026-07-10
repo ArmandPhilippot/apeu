@@ -26,7 +26,7 @@ describe("get-routable-entry-preview", () => {
     const mockEntriesIndex = new Map(
       mockEntries.map((entry) => [
         entry.id,
-        { raw: entry, route: entry.id, slug: entry.id },
+        { raw: entry, route: entry.id, routeParam: entry.id, slug: entry.id },
       ])
     );
 
@@ -34,6 +34,7 @@ describe("get-routable-entry-preview", () => {
       {
         raw: blogPostFixture,
         route: "/blog/post/my-awesome-post",
+        routeParam: "blog/post/my-awesome-post",
         slug: "my-awesome-post",
       },
       mockEntriesIndex
@@ -66,7 +67,7 @@ describe("get-routable-entry-preview", () => {
     const mockEntriesIndex = new Map(
       mockEntries.map((entry) => [
         entry.id,
-        { raw: entry, route: entry.id, slug: entry.id },
+        { raw: entry, route: entry.id, routeParam: entry.id, slug: entry.id },
       ])
     );
 
@@ -74,6 +75,7 @@ describe("get-routable-entry-preview", () => {
       {
         raw: noteFixture,
         route: "/notes/some-note",
+        routeParam: "notes/some-note",
         slug: "some-note",
       },
       mockEntriesIndex
@@ -89,7 +91,7 @@ describe("get-routable-entry-preview", () => {
     const mockEntriesIndex = new Map(
       mockEntries.map((entry) => [
         entry.id,
-        { raw: entry, route: entry.id, slug: entry.id },
+        { raw: entry, route: entry.id, routeParam: entry.id, slug: entry.id },
       ])
     );
 
@@ -97,6 +99,7 @@ describe("get-routable-entry-preview", () => {
       {
         raw: guideFixture,
         route: "/guides/in-depth-guide",
+        routeParam: "guides/in-depth-guide",
         slug: "in-depth-guide",
       },
       mockEntriesIndex
@@ -127,7 +130,7 @@ describe("get-routable-entry-preview", () => {
     const mockEntriesIndex = new Map(
       mockEntries.map((entry) => [
         entry.id,
-        { raw: entry, route: entry.id, slug: entry.id },
+        { raw: entry, route: entry.id, routeParam: entry.id, slug: entry.id },
       ])
     );
 
@@ -135,6 +138,7 @@ describe("get-routable-entry-preview", () => {
       {
         raw: guideWithCover,
         route: "/guides/in-depth-guide",
+        routeParam: "guides/in-depth-guide",
         slug: "in-depth-guide",
       },
       mockEntriesIndex
@@ -172,7 +176,7 @@ describe("get-routable-entry-preview", () => {
     const mockEntriesIndex = new Map(
       mockEntries.map((entry) => [
         entry.id,
-        { raw: entry, route: entry.id, slug: entry.id },
+        { raw: entry, route: entry.id, routeParam: entry.id, slug: entry.id },
       ])
     );
 
@@ -180,6 +184,7 @@ describe("get-routable-entry-preview", () => {
       {
         raw: guideWithUndefinedCover,
         route: "/guides/in-depth-guide",
+        routeParam: "guides/in-depth-guide",
         slug: "in-depth-guide",
       },
       mockEntriesIndex
@@ -195,7 +200,7 @@ describe("get-routable-entry-preview", () => {
     const mockEntriesIndex = new Map(
       mockEntries.map((entry) => [
         entry.id,
-        { raw: entry, route: entry.id, slug: entry.id },
+        { raw: entry, route: entry.id, routeParam: entry.id, slug: entry.id },
       ])
     );
 
@@ -203,6 +208,7 @@ describe("get-routable-entry-preview", () => {
       {
         raw: blogCategoryFixture,
         route: "/blog/category/astro",
+        routeParam: "blog/category/astro",
         slug: "astro",
       },
       mockEntriesIndex
@@ -220,7 +226,7 @@ describe("get-routable-entry", () => {
     const mockEntriesIndex = new Map(
       mockEntries.map((entry) => [
         entry.id,
-        { raw: entry, route: entry.id, slug: entry.id },
+        { raw: entry, route: entry.id, routeParam: entry.id, slug: entry.id },
       ])
     );
 
@@ -228,6 +234,7 @@ describe("get-routable-entry", () => {
       {
         raw: blogPostFixture,
         route: blogPostFixture.id,
+        routeParam: blogPostFixture.id,
         slug: blogPostFixture.id,
       },
       mockEntriesIndex

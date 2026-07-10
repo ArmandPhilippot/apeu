@@ -6,6 +6,9 @@ import {
   getParentDirPath,
   joinPaths,
   removeExtFromPath,
+  routeToParam,
+  routeToStaticPathParam,
+  withoutTrailingSlash,
 } from "./paths";
 
 vi.mock("./constants", async (importOriginal) => {
@@ -148,5 +151,43 @@ describe("getCumulativePaths", () => {
 
   it("returns empty array for empty string", () => {
     expect(getCumulativePaths("")).toStrictEqual([]);
+  });
+});
+
+describe("withoutTrailingSlash", () => {
+  it("removes the trailing slash from a route", () => {
+    expect(withoutTrailingSlash("/blog/")).toBe("/blog");
+  });
+
+  it("leaves a route without a trailing slash untouched", () => {
+    expect(withoutTrailingSlash("/blog")).toBe("/blog");
+  });
+
+  it("collapses the root route to '/'", () => {
+    expect(withoutTrailingSlash("/")).toBe("/");
+  });
+});
+
+describe("routeToParam", () => {
+  it("removes the leading and trailing slashes from a route", () => {
+    expect(routeToParam("/blog/posts/")).toBe("blog/posts");
+  });
+
+  it("removes the leading slash from a route without a trailing slash", () => {
+    expect(routeToParam("/blog/posts")).toBe("blog/posts");
+  });
+
+  it("returns an empty string for the root route", () => {
+    expect(routeToParam("/")).toBe("");
+  });
+});
+
+describe("routeToStaticPathParam", () => {
+  it("removes the leading and trailing slashes from a route", () => {
+    expect(routeToStaticPathParam("/blog/posts/")).toBe("blog/posts");
+  });
+
+  it("returns undefined for the root route", () => {
+    expect(routeToStaticPathParam("/")).toBeUndefined();
   });
 });

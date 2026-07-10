@@ -88,6 +88,7 @@ describe("format-entry", () => {
     const routableEntry: IndexedEntry<"blog.posts"> = {
       raw: blogPostFixture,
       route: "/blog/posts/post-1",
+      routeParam: "blog/posts/post-1",
       slug: "post-1",
     };
     const entriesIndex = new Map(
@@ -107,6 +108,7 @@ describe("format-entry", () => {
     const routableEntry: IndexedEntry<"blog.posts"> = {
       raw: blogPostFixture,
       route: "/blog/posts/post-1",
+      routeParam: "blog/posts/post-1",
       slug: "post-1",
     };
     const entriesIndex = new Map(

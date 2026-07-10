@@ -13,9 +13,8 @@ import {
   getRSSItemsFromEntries,
 } from "../../services/feeds";
 import { useI18n } from "../../services/i18n";
-import { CONFIG } from "../../utils/constants";
 import { MissingSiteConfigError } from "../../utils/exceptions";
-import { removeTrailingSlashes } from "../../utils/strings";
+import { routeToStaticPathParam } from "../../utils/paths";
 
 export const getStaticPaths = (async () => {
   const { entries } = await queryCollection(
@@ -30,14 +29,9 @@ export const getStaticPaths = (async () => {
   });
   const enrichedEntries = await addRelatedItemsToPages(filteredEntries);
   return enrichedEntries.map((entry) => {
-    const isHomepage = entry.id === `${entry.locale}/home`;
-    const isDefaultLocale = CONFIG.LANGUAGES.DEFAULT === entry.locale;
     return {
       params: {
-        page:
-          isHomepage && isDefaultLocale
-            ? undefined
-            : removeTrailingSlashes(entry.route).slice(1),
+        page: routeToStaticPathParam(entry.route),
       },
       props: entry,
     };

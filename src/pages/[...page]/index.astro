@@ -11,7 +11,7 @@ import {
 } from "../../services/collections";
 import { partitionByType } from "../../utils/arrays";
 import { CONFIG } from "../../utils/constants";
-import { removeTrailingSlashes } from "../../utils/strings";
+import { routeToParam, routeToStaticPathParam } from "../../utils/paths";
 import BlogIndexView from "../../views/blog-index-view/blog-index-view.astro";
 import CollectionListingView from "../../views/collection-listing-view/collection-listing-view.astro";
 import ContactView from "../../views/contact-view/contact-view.astro";
@@ -44,12 +44,9 @@ export const getStaticPaths = (async ({ paginate }) => {
     nonPaginatedListingPages,
     { format: "preview" }
   );
-  /* `route` always ends with a trailing slash (except the literal "/"), but
-   * the `page` rest-param determines how this file generates static paths, so
-   * it's normalized back to a slash-free form before use. */
   const paginatedPaths = enrichedPaginatedListings.flatMap(
     (enrichedPaginatedPage) => {
-      const route = removeTrailingSlashes(enrichedPaginatedPage.route);
+      const route = routeToParam(enrichedPaginatedPage.route);
 
       return paginate(enrichedPaginatedPage.related.entries, {
         pageSize: CONFIG.ITEMS_PER_PAGE,
@@ -77,22 +74,16 @@ export const getStaticPaths = (async ({ paginate }) => {
     (listingPage) => {
       return {
         params: {
-          page: removeTrailingSlashes(listingPage.route).slice(1),
+          page: routeToParam(listingPage.route),
         },
         props: listingPage,
       };
     }
   );
   const regularPaths = regularPages.map((regularPage) => {
-    const isDefaultLocaleHome =
-      regularPage.id === `${regularPage.locale}/home` &&
-      CONFIG.LANGUAGES.DEFAULT === regularPage.locale;
-
     return {
       params: {
-        page: isDefaultLocaleHome
-          ? undefined
-          : removeTrailingSlashes(regularPage.route).slice(1),
+        page: routeToStaticPathParam(regularPage.route),
       },
       props: regularPage,
     };

@@ -5,7 +5,11 @@ import {
 } from "astro:content";
 import { collections } from "../../../../content.config";
 import type { AvailableLocale } from "../../../../types/tokens";
-import { getCumulativePaths } from "../../../../utils/paths";
+import {
+  getCumulativePaths,
+  routeToParam,
+  withoutTrailingSlash,
+} from "../../../../utils/paths";
 import { removeTrailingSlashes } from "../../../../utils/strings";
 import {
   isAvailableLocale,
@@ -243,6 +247,7 @@ const buildRoutableIndexedEntry = <C extends RoutableCollectionKey>(
   return {
     raw: prepareEntry(entry, locale),
     route,
+    routeParam: routeToParam(route),
     slug,
   };
 };
@@ -356,9 +361,8 @@ const buildEntriesIndexes = async (): Promise<EntriesIndexes> => {
     [...nonRoutable, ...routable],
     (entry) => entry.raw.id
   );
-  const entryByRoute = buildEntryIndex(
-    routable,
-    (entry) => removeTrailingSlashes(entry.route) || "/"
+  const entryByRoute = buildEntryIndex(routable, (entry) =>
+    withoutTrailingSlash(entry.route)
   );
 
   return {

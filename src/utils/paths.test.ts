@@ -9,6 +9,7 @@ import {
   routeToParam,
   routeToStaticPathParam,
   withoutTrailingSlash,
+  withTrailingSlash,
 } from "./paths";
 
 vi.mock("./constants", async (importOriginal) => {
@@ -165,6 +166,20 @@ describe("withoutTrailingSlash", () => {
 
   it("collapses the root route to '/'", () => {
     expect(withoutTrailingSlash("/")).toBe("/");
+  });
+});
+
+describe("withTrailingSlash", () => {
+  it("adds a trailing slash to a route without one", () => {
+    expect(withTrailingSlash("/blog")).toBe("/blog/");
+  });
+
+  it("leaves a route with a trailing slash untouched", () => {
+    expect(withTrailingSlash("/blog/")).toBe("/blog/");
+  });
+
+  it("leaves the root route untouched", () => {
+    expect(withTrailingSlash("/")).toBe("/");
   });
 });
 

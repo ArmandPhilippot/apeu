@@ -17,6 +17,7 @@ import {
 } from "../../services/collections";
 import { useI18n } from "../../services/i18n";
 import { useRouting } from "../../services/routing";
+import { joinPaths } from "../../utils/paths";
 
 type Props = Partial<ComponentProps<typeof Layout>> & {
   entry: QueriedEntry<"index.pages">;
@@ -78,7 +79,7 @@ const graphs: ComponentProps<typeof Layout>["graphs"] = [
           title: translate("page.blog.posts.title"),
         })}
         as="a"
-        href={`${routeById("blog/posts").path}/feed.xml`}
+        href={joinPaths(routeById("blog/posts").path, "feed.xml")}
       >
         <Icon aria-hidden="true" name="feed" />
         {translate("cta.subscribe")}

@@ -27,7 +27,7 @@ describe("ListingPage", () => {
         { description: "The card 5 excerpt.", heading: "Card 5" },
       ],
       pagination: { currentPage: 1, lastPage: 1 },
-      route: "#page-route",
+      route: "/page-route/",
       totalEntries: "10 entries",
       title: "unde non eum",
     } satisfies ComponentProps<typeof ListingPage>;
@@ -42,9 +42,28 @@ describe("ListingPage", () => {
     expect(result).not.toContain("listing-page-pagination");
   });
 
+  it<LocalTestContext>("links to the feed without doubling the route's trailing slash", async ({
+    container,
+  }) => {
+    expect.assertions(1);
+
+    const props = {
+      entries: [{ description: "The card excerpt.", heading: "Card 1" }],
+      pagination: { currentPage: 1, lastPage: 1 },
+      route: "/page-route/",
+      totalEntries: "1 entries",
+      title: "unde non eum",
+    } satisfies ComponentProps<typeof ListingPage>;
+    const result = await container.renderToString(ListingPage, {
+      props,
+    });
+
+    expect(result).toContain('href="/page-route/feed.xml"');
+  });
+
   it<LocalTestContext>("can render a pagination", async ({ container }) => {
     /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
-    expect.assertions(2);
+    expect.assertions(3);
 
     const props = {
       entries: [
@@ -52,7 +71,7 @@ describe("ListingPage", () => {
         { description: "The card 2 excerpt.", heading: "Card 2" },
       ],
       pagination: { currentPage: 1, lastPage: 5 },
-      route: "#page-route",
+      route: "/page-route/",
       totalEntries: "10 entries",
       title: "unde non eum",
     } satisfies ComponentProps<typeof ListingPage>;
@@ -62,6 +81,7 @@ describe("ListingPage", () => {
 
     expect(result).toContain(props.route);
     expect(result).toContain("listing-page-pagination");
+    expect(result).toContain('href="/page-route/page/2"');
   });
 
   it<LocalTestContext>("uses the default minimum card size when none is provided", async ({
@@ -72,7 +92,7 @@ describe("ListingPage", () => {
     const props = {
       entries: [{ description: "The card excerpt.", heading: "Card 1" }],
       pagination: { currentPage: 1, lastPage: 1 },
-      route: "#page-route",
+      route: "/page-route/",
       totalEntries: "1 entries",
       title: "unde non eum",
     } satisfies ComponentProps<typeof ListingPage>;
@@ -91,7 +111,7 @@ describe("ListingPage", () => {
     const props = {
       entries: [{ description: "The card excerpt.", heading: "Card 1" }],
       pagination: { currentPage: 1, lastPage: 1 },
-      route: "#page-route",
+      route: "/page-route/",
       sizeMinCols: "22em",
       totalEntries: "1 entries",
       title: "unde non eum",

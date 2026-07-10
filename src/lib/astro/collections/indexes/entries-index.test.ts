@@ -117,7 +117,7 @@ describe("getEntriesIndex", () => {
     const expectedRoute = `/${normalizedId.replace(/^en\//, "")}`;
     const expectedSlug = normalizedId.split("/").pop();
     const indexedEntryById = result.byId.get(normalizedId);
-    const indexedEntryByRoute = result.byRoute.get(expectedRoute);
+    const indexedEntryByRoute = result.byRoute.get(`${expectedRoute}/`);
 
     expect(indexedEntryById).toStrictEqual({
       raw: { ...mockEntry, id: normalizedId },
@@ -397,10 +397,10 @@ describe("getEntriesIndex", () => {
 
     const result = await getEntriesIndex();
 
-    expect(result.byRoute.get("/fr/projets")).toBeDefined();
-    expect(result.byRoute.get("/fr/projets/sites-web")).toBeDefined();
+    expect(result.byRoute.get("/fr/projets/")).toBeDefined();
+    expect(result.byRoute.get("/fr/projets/sites-web/")).toBeDefined();
     expect(
-      result.byRoute.get("/fr/projets/sites-web/site-web-1")
+      result.byRoute.get("/fr/projets/sites-web/site-web-1/")
     ).toBeDefined();
   });
 });

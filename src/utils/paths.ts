@@ -101,6 +101,16 @@ export const withoutTrailingSlash = (route: string): string =>
   removeTrailingSlashes(route) || "/";
 
 /**
+ * Add a trailing slash to a route, unless it already has one.
+ *
+ * @example "/blog" -> "/blog/", "/blog/" -> "/blog/"
+ * @param {string} route - A route to normalize.
+ * @returns {string} The route with a trailing slash.
+ */
+export const withTrailingSlash = (route: string): string =>
+  route.endsWith("/") ? route : `${route}/`;
+
+/**
  * Convert a route into its slash-free path form, dropping both the leading
  * and trailing slash, except for the root route.
  *

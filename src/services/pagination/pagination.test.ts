@@ -55,15 +55,15 @@ describe("get-pagination", () => {
 
 describe("render-pagination-link", () => {
   it("should return the given route for the first page", () => {
-    const basePath = "/base-path";
+    const route = "/base-path/";
 
-    expect(renderPaginationLink(basePath)(1)).toBe(basePath);
+    expect(renderPaginationLink(route)(1)).toBe(route);
   });
 
   it("should return the given route suffixed with the page number of other pages", () => {
-    const basePath = "/base-path";
+    const route = "/base-path/";
 
-    expect(renderPaginationLink(basePath)(10)).toBe(`${basePath}/page/10`);
+    expect(renderPaginationLink(route)(10)).toBe("/base-path/page/10");
   });
 });
 /* eslint-enable @typescript-eslint/no-magic-numbers */

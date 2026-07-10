@@ -1,3 +1,5 @@
+import { joinPaths } from "../../utils/paths";
+
 const range = (start: number, end: number) =>
   Array.from({ length: end - start + 1 }, (_, i) => i + start);
 
@@ -79,5 +81,5 @@ export const renderPaginationLink =
   (route: string): ((pageNumber: number) => string) =>
   (pageNumber: number): string => {
     if (pageNumber === 1) return route;
-    return `${route}/page/${pageNumber}`;
+    return joinPaths(route, "page", `${pageNumber}`);
   };

@@ -3,7 +3,11 @@ import {
   type EntryByRouteIndex,
 } from "../../lib/astro/collections/indexes";
 import type { Route } from "../../types/data";
-import { getCumulativePaths, withoutTrailingSlash } from "../../utils/paths";
+import {
+  getCumulativePaths,
+  withoutTrailingSlash,
+  withTrailingSlash,
+} from "../../utils/paths";
 import { isLocalizedRoute } from "../i18n";
 
 /**
@@ -27,7 +31,7 @@ const getRouteCrumbs = (
   const segments = getRouteHierarchy(route);
 
   return segments
-    .map((segment) => routeIndex.get(segment))
+    .map((segment) => routeIndex.get(withTrailingSlash(segment)))
     .filter((entry) => entry !== undefined)
     .map((entry) => {
       return { label: entry.raw.data.title, path: entry.route };

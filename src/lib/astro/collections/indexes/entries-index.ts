@@ -8,9 +8,8 @@ import type { AvailableLocale } from "../../../../types/tokens";
 import {
   getCumulativePaths,
   routeToParam,
-  withoutTrailingSlash,
+  withTrailingSlash,
 } from "../../../../utils/paths";
-import { removeTrailingSlashes } from "../../../../utils/strings";
 import {
   isAvailableLocale,
   isDefaultLocale,
@@ -170,12 +169,7 @@ const buildEntryRoute = (
     .filter((segment) => segment !== null);
   const route = `/${localizedSegments.join("/")}`;
 
-  /* The "home" slug resolves to an empty segment. For the default locale
-   * that's the only segment and `route` is already exactly "/". For every
-   * other locale it's the last of several segments (e.g. ["en", ""]) so
-   * `route` already ends with a slash here (e.g. "/en/"). We normalize that
-   * back to zero before appending exactly one, instead of ending up with two. */
-  return route === "/" ? route : `${removeTrailingSlashes(route)}/`;
+  return withTrailingSlash(route);
 };
 
 type RouteInfo = {
@@ -328,6 +322,9 @@ export type EntryByIdIndex = Map<
   IndexedEntry<NonRoutableCollectionKey | RoutableCollectionKey>
 >;
 
+/**
+ * Keyed by each routable entry's `route`, verbatim (trailing slash included).
+ */
 export type EntryByRouteIndex = Map<
   string,
   IndexedEntry<RoutableCollectionKey>
@@ -339,7 +336,7 @@ type EntriesIndexes = {
    */
   byId: EntryByIdIndex;
   /**
-   * A Map indexing only the routable entries by route.
+   * A Map indexing only the routable entries by their route.
    */
   byRoute: EntryByRouteIndex;
 };
@@ -361,9 +358,7 @@ const buildEntriesIndexes = async (): Promise<EntriesIndexes> => {
     [...nonRoutable, ...routable],
     (entry) => entry.raw.id
   );
-  const entryByRoute = buildEntryIndex(routable, (entry) =>
-    withoutTrailingSlash(entry.route)
-  );
+  const entryByRoute = buildEntryIndex(routable, (entry) => entry.route);
 
   return {
     byId: entryById,

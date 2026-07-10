@@ -1,5 +1,6 @@
 import type { Route } from "../../types/data";
 import type { AvailableLocale } from "../../types/tokens";
+import { joinPaths } from "../../utils/paths";
 import { queryCollection } from "../collections";
 import { useI18n } from "../i18n";
 
@@ -44,7 +45,7 @@ export const getCollectionsFeeds = async (
   return entriesWithFeed.map((entry) => {
     return {
       label: translate("feed.link.title", { title: entry.title }),
-      path: `${entry.route}/feed.xml`,
+      path: joinPaths(entry.route, "feed.xml"),
     };
   });
 };

@@ -84,7 +84,7 @@ describe("get-website-graph", () => {
           "@type": "SearchAction",
           "query": "required",
           "query-input": "required name=query",
-          "target": "https://example.test/search?q={query}",
+          "target": "https://example.test/search/?q={query}",
         },
         "publisher": {
           "@id": "https://example.test#author",

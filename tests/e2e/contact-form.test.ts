@@ -48,7 +48,7 @@ test("submitting the contact form delivers the message through the real API and 
   const email = "e2e-tester@example.test";
   const message = `Hello from the contact form E2E test (${nonce}).`;
 
-  await page.goto("/en/contact");
+  await page.goto("/en/contact/");
 
   await page.getByLabel("Name").fill("E2E Tester");
   await page.getByLabel("Email").fill(email);

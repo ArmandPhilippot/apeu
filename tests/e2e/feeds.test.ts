@@ -10,7 +10,7 @@ test.describe("Feeds", () => {
   test("renders the French feeds page with its feed links", async ({
     page,
   }) => {
-    await page.goto("/flux");
+    await page.goto("/flux/");
 
     const main = page.getByRole("main");
 
@@ -34,7 +34,7 @@ test.describe("Feeds", () => {
   test("renders the English feeds page with its feed links", async ({
     page,
   }) => {
-    await page.goto("/en/feeds");
+    await page.goto("/en/feeds/");
 
     const main = page.getByRole("main");
 

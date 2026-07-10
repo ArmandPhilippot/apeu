@@ -6,7 +6,7 @@ import fr from "../../src/translations/fr.json" with { type: "json" };
  * pattern, at least one card) */
 test.describe("Notes listing", () => {
   test("renders the French notes listing", async ({ page }) => {
-    await page.goto("/notes");
+    await page.goto("/notes/");
 
     const main = page.getByRole("main");
 
@@ -19,7 +19,7 @@ test.describe("Notes listing", () => {
   test("navigates to a note's page when clicking its read-more link (French)", async ({
     page,
   }) => {
-    await page.goto("/notes");
+    await page.goto("/notes/");
 
     /* ListingPage itself renders as an <article>, and each card does too,
      * so the cards must be queried as nested articles to skip the wrapper. */
@@ -36,7 +36,7 @@ test.describe("Notes listing", () => {
   });
 
   test("renders the English notes listing", async ({ page }) => {
-    await page.goto("/en/notes");
+    await page.goto("/en/notes/");
 
     const main = page.getByRole("main");
 
@@ -49,7 +49,7 @@ test.describe("Notes listing", () => {
   test("navigates to a note's page when clicking its read-more link (English)", async ({
     page,
   }) => {
-    await page.goto("/en/notes");
+    await page.goto("/en/notes/");
 
     await page
       .getByRole("main")

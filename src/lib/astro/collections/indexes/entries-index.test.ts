@@ -121,12 +121,12 @@ describe("getEntriesIndex", () => {
 
     expect(indexedEntryById).toStrictEqual({
       raw: { ...mockEntry, id: normalizedId },
-      route: expectedRoute,
+      route: `${expectedRoute}/`,
       slug: expectedSlug,
     });
     expect(indexedEntryByRoute).toStrictEqual({
       raw: { ...mockEntry, id: normalizedId },
-      route: expectedRoute,
+      route: `${expectedRoute}/`,
       slug: expectedSlug,
     });
   });
@@ -166,7 +166,7 @@ describe("getEntriesIndex", () => {
     const indexedEntryById = result.byId.get(mockEntry.id);
 
     expect(indexedEntryById).toMatchObject({
-      route: "/blog/posts/post-1",
+      route: "/blog/posts/post-1/",
     });
   });
 
@@ -196,7 +196,7 @@ describe("getEntriesIndex", () => {
     expect(indexedEntryById.raw.data.locale).not.toBe(mockEntry.data.locale);
     expect(indexedEntryById).toMatchObject({
       raw: { ...mockEntry, data: { ...mockEntry.data, locale: "es" } },
-      route: "/es/blog/posts/post-1",
+      route: "/es/blog/posts/post-1/",
     });
   });
 
@@ -230,7 +230,7 @@ describe("getEntriesIndex", () => {
     const indexedEntryById = result.byId.get(normalizedId);
 
     expect(indexedEntryById).toMatchObject({
-      route: normalizedId.replace(/^en\//, "/"),
+      route: `${normalizedId.replace(/^en\//, "/")}/`,
       slug: normalizedId.split("/").at(-1),
     });
   });
@@ -249,7 +249,7 @@ describe("getEntriesIndex", () => {
     const indexedEntryById = result.byId.get(mockEntry.id);
 
     expect(indexedEntryById).toMatchObject({
-      route: "/blog/posts",
+      route: "/blog/posts/",
       slug: "posts",
     });
   });
@@ -363,7 +363,7 @@ describe("getEntriesIndex", () => {
 
     expect(indexedEntryById).toMatchObject({
       raw: { ...mockEntry, data: { ...mockEntry.data, locale: "fr" } },
-      route: `/${mockEntry.id.replace("blog", "journal")}`,
+      route: `/${mockEntry.id.replace("blog", "journal")}/`,
       slug: mockEntry.data.permaslug,
     });
   });

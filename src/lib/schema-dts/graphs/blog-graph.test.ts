@@ -59,7 +59,7 @@ describe("get-blog-graph", () => {
 
     expect(graph).toMatchInlineSnapshot(`
       {
-        "@id": "https://example.test/blog#blog",
+        "@id": "https://example.test/blog/#blog",
         "@type": "Blog",
         "author": {
           "@id": "https://example.test#author",
@@ -80,12 +80,12 @@ describe("get-blog-graph", () => {
           "@id": "https://example.test/",
         },
         "license": "https://creativecommons.org/licenses/by-sa/4.0/deed",
-        "mainEntityOfPage": "https://example.test/blog",
+        "mainEntityOfPage": "https://example.test/blog/",
         "name": "beatae autem in",
         "publisher": {
           "@id": "https://example.test#author",
         },
-        "url": "https://example.test/blog",
+        "url": "https://example.test/blog/",
       }
     `);
   });
@@ -111,7 +111,7 @@ describe("get-blog-graph", () => {
 
     expect(graph).toMatchInlineSnapshot(`
       {
-        "@id": "https://example.test/blog#blog",
+        "@id": "https://example.test/blog/#blog",
         "@type": "Blog",
         "author": {
           "@id": "https://example.test#author",
@@ -132,13 +132,13 @@ describe("get-blog-graph", () => {
           "@id": "https://example.test/",
         },
         "license": "https://creativecommons.org/licenses/by-sa/4.0/deed",
-        "mainEntityOfPage": "https://example.test/blog",
+        "mainEntityOfPage": "https://example.test/blog/",
         "name": "beatae autem in",
         "publisher": {
           "@id": "https://example.test#author",
         },
         "thumbnailUrl": "https://placehold.co/600x400",
-        "url": "https://example.test/blog",
+        "url": "https://example.test/blog/",
       }
     `);
   });

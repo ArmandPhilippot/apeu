@@ -34,12 +34,13 @@ export const getWebSiteGraph = async ({
     "@type": "SearchAction",
     query: "required",
     "query-input": "required name=query",
-    target: `${WEBSITE_URL}${routeById("search").path}?${CONFIG.SEARCH.QUERY_PARAM}={query}`,
+    target: `${new URL(routeById("search").path, WEBSITE_URL).href}?${CONFIG.SEARCH.QUERY_PARAM}={query}`,
   };
+  const homeUrl = new URL(routeById("home").path, WEBSITE_URL).href;
 
   return {
     "@type": "WebSite",
-    "@id": `${WEBSITE_URL}${routeById("home").path}`,
+    "@id": homeUrl,
     author: { "@id": websiteAuthor },
     copyrightHolder: { "@id": websiteAuthor },
     copyrightYear: CONFIG.CREATION_YEAR,
@@ -54,6 +55,6 @@ export const getWebSiteGraph = async ({
     potentialAction: searchAction,
     publisher: { "@id": websiteAuthor },
     thumbnailUrl: logo,
-    url: `${WEBSITE_URL}${routeById("home").path}`,
+    url: homeUrl,
   };
 };

@@ -102,9 +102,9 @@ describe("getBreadcrumb", () => {
     const result = await getBreadcrumb({ route: "/fr/blog/article" });
 
     expect(result).toStrictEqual([
-      { label: "Accueil", path: "/fr" },
-      { label: "Blog", path: "/fr/blog" },
-      { label: "Article", path: "/fr/blog/article" },
+      { label: "Accueil", path: "/fr/" },
+      { label: "Blog", path: "/fr/blog/" },
+      { label: "Article", path: "/fr/blog/article/" },
     ]);
   });
 
@@ -115,7 +115,7 @@ describe("getBreadcrumb", () => {
 
     expect(result).toStrictEqual([
       { label: "Home", path: "/" },
-      { label: "About", path: "/about" },
+      { label: "About", path: "/about/" },
     ]);
   });
 
@@ -142,8 +142,8 @@ describe("getBreadcrumb", () => {
 
     expect(result).toStrictEqual([
       { label: "Home", path: "/" },
-      { label: "Blog", path: "/blog" },
-      { label: "Post", path: "/blog/post" },
+      { label: "Blog", path: "/blog/" },
+      { label: "Post", path: "/blog/post/" },
       { label: "Page 2", path: "/blog/post" },
     ]);
   });

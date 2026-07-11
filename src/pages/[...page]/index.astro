@@ -9,9 +9,13 @@ import {
   queryCollection,
   shouldPaginateListing,
 } from "../../services/collections";
+import { getHomeEntryId } from "../../services/routing";
 import { partitionByType } from "../../utils/arrays";
 import { CONFIG } from "../../utils/constants";
-import { routeToParam, routeToStaticPathParam } from "../../utils/paths";
+import {
+  routeToStaticPathParam,
+  withoutOuterSlashes,
+} from "../../utils/paths";
 import BlogIndexView from "../../views/blog-index-view/blog-index-view.astro";
 import CollectionListingView from "../../views/collection-listing-view/collection-listing-view.astro";
 import ContactView from "../../views/contact-view/contact-view.astro";
@@ -46,7 +50,7 @@ export const getStaticPaths = (async ({ paginate }) => {
   );
   const paginatedPaths = enrichedPaginatedListings.flatMap(
     (enrichedPaginatedPage) => {
-      const route = routeToParam(enrichedPaginatedPage.route);
+      const route = withoutOuterSlashes(enrichedPaginatedPage.route);
 
       return paginate(enrichedPaginatedPage.related.entries, {
         pageSize: CONFIG.ITEMS_PER_PAGE,
@@ -74,7 +78,7 @@ export const getStaticPaths = (async ({ paginate }) => {
     (listingPage) => {
       return {
         params: {
-          page: routeToParam(listingPage.route),
+          page: withoutOuterSlashes(listingPage.route),
         },
         props: listingPage,
       };
@@ -102,7 +106,7 @@ const getPagesView = (currentPage: typeof page): PageComponent => {
     [`${currentPage.locale}/bookmarks`]: CollectionListingView,
     [`${currentPage.locale}/contact`]: ContactView,
     [`${currentPage.locale}/feeds`]: FeedsView,
-    [`${currentPage.locale}/home`]: HomepageView,
+    [getHomeEntryId(currentPage.locale)]: HomepageView,
     [`${currentPage.locale}/search`]: SearchView,
   };
 

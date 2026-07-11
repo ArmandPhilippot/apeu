@@ -20,7 +20,6 @@ describe("get-rss-items-from-entries", () => {
     const blogPostEntry: IndexedEntry<"blog.posts"> = {
       raw: blogPostFixture,
       route: "/blog/posts/post-1",
-      routeParam: "blog/posts/post-1",
       slug: "post-1",
     };
     const blogrollEntry: IndexedEntry<"blogroll"> = {

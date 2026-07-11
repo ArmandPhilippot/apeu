@@ -13,6 +13,7 @@ import {
   getRSSItemsFromEntries,
 } from "../../services/feeds";
 import { useI18n } from "../../services/i18n";
+import { isHomeEntryId } from "../../services/routing";
 import { MissingSiteConfigError } from "../../utils/exceptions";
 import { routeToStaticPathParam } from "../../utils/paths";
 
@@ -23,7 +24,9 @@ export const getStaticPaths = (async () => {
   );
   const filteredEntries = entries.filter((entry) => {
     if (!["index.pages", "pages"].includes(entry.collection)) return true;
-    return [...Object.keys(collections), "home"].includes(
+    if (isHomeEntryId(entry.id, entry.locale)) return true;
+
+    return Object.keys(collections).includes(
       entry.id.replace(`${entry.locale}/`, "").replaceAll("/", ".")
     );
   });
@@ -48,7 +51,7 @@ const getTitleAndDescription = ({
   relatedCollections,
 }: GetTitleAndDescriptionConfig) => {
   const { translate } = useI18n(page.locale);
-  const isHomepage = page.id === `${page.locale}/home`;
+  const isHomepage = isHomeEntryId(page.id, page.locale);
 
   if (isHomepage) {
     return {

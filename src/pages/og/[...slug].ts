@@ -7,8 +7,10 @@ import { html } from "satori-html";
 import logo from "../../assets/logo-unpressed.svg?url";
 import bg from "../../assets/paper-light.svg?inline";
 import { queryCollection } from "../../services/collections";
+import { getOgHomeSlug } from "../../services/routing";
 import { CONFIG } from "../../utils/constants";
-import { routeToParam } from "../../utils/paths";
+import { withoutOuterSlashes } from "../../utils/paths";
+import { isAvailableLocale } from "../../utils/type-guards";
 
 const collections = await queryCollection([
   "blog.categories",
@@ -22,15 +24,10 @@ const collections = await queryCollection([
 ]);
 const addPngExtension = (path: string) => `${path}.png`;
 const getPageIdFromRoute = (route: string) => {
-  const routeId = routeToParam(route);
-  const isDefaultHomePage = !routeId;
-  const isLocalizedHomePage = (
-    CONFIG.LANGUAGES.AVAILABLE as readonly string[]
-  ).includes(routeId);
-  const homeId = "home";
+  const routeId = withoutOuterSlashes(route);
 
-  if (isDefaultHomePage) return homeId;
-  if (isLocalizedHomePage) return `${routeId}/${homeId}`;
+  if (routeId === "") return getOgHomeSlug(CONFIG.LANGUAGES.DEFAULT);
+  if (isAvailableLocale(routeId)) return getOgHomeSlug(routeId);
 
   return routeId;
 };
@@ -38,10 +35,7 @@ const individualPages = collections.entries.map(
   ({ description, id, route, seo, title }) => {
     const pageId = getPageIdFromRoute(route);
 
-    return [
-      addPngExtension(pageId || "home"),
-      { description, id, seo, title },
-    ] as const;
+    return [addPngExtension(pageId), { description, id, seo, title }] as const;
   }
 );
 

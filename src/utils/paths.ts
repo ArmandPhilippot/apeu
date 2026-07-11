@@ -111,24 +111,30 @@ export const withTrailingSlash = (route: string): string =>
   route.endsWith("/") ? route : `${route}/`;
 
 /**
- * Convert a route into its slash-free path form, dropping both the leading
- * and trailing slash, except for the root route.
+ * Strip a route's outer slashes: the leading slash and, except for the root
+ * route, the trailing one. Slashes between segments are left untouched.
  *
  * @example "/blog/posts/" -> "blog/posts", "/" -> ""
- * @param {string} route - A route to convert.
- * @returns {string} The route without any slash.
+ * @param {string} route - A route to convert. Must start with "/".
+ * @returns {string} The route without its outer slashes.
+ * @throws {Error} If the route doesn't start with a slash.
  */
-export const routeToParam = (route: string): string =>
-  withoutTrailingSlash(route).slice(1);
+export const withoutOuterSlashes = (route: string): string => {
+  if (!route.startsWith("/")) {
+    throw new Error(`Expected a route starting with "/", received: "${route}"`);
+  }
+
+  return withoutTrailingSlash(route).slice(1);
+};
 
 /**
  * Convert a route into the value expected by an Astro rest param, such as the
- * `page` param of `[...page]`. Unlike `routeToParam`, the root route becomes
- * `undefined` rather than an empty string.
+ * `page` param of `[...page]`. Unlike `withoutOuterSlashes`, the root route
+ * becomes `undefined` rather than an empty string.
  *
  * @example "/blog/posts/" -> "blog/posts", "/" -> undefined
  * @param {string} route - A route to convert.
  * @returns {string | undefined} The route as a rest-param value.
  */
 export const routeToStaticPathParam = (route: string): string | undefined =>
-  routeToParam(route) || undefined;
+  withoutOuterSlashes(route) || undefined;

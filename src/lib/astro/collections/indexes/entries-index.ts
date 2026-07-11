@@ -5,11 +5,8 @@ import {
 } from "astro:content";
 import { collections } from "../../../../content.config";
 import type { AvailableLocale } from "../../../../types/tokens";
-import {
-  getCumulativePaths,
-  routeToParam,
-  withTrailingSlash,
-} from "../../../../utils/paths";
+import { HOME_ID_SEGMENT } from "../../../../utils/constants";
+import { getCumulativePaths, withTrailingSlash } from "../../../../utils/paths";
 import {
   isAvailableLocale,
   isDefaultLocale,
@@ -107,7 +104,7 @@ const getSlugFromEntry = (
   if (slug === undefined) {
     throw new Error(`Cannot determine slug for entry: ${entry.id}`);
   }
-  return slug === "home" ? "" : slug;
+  return slug === HOME_ID_SEGMENT ? "" : slug;
 };
 
 type SlugInfoByIdMap = Map<
@@ -241,7 +238,6 @@ const buildRoutableIndexedEntry = <C extends RoutableCollectionKey>(
   return {
     raw: prepareEntry(entry, locale),
     route,
-    routeParam: routeToParam(route),
     slug,
   };
 };

@@ -65,7 +65,6 @@ describe("isRoutableIndexedEntry", () => {
     const entry: IndexedEntry<"projects"> = {
       raw: collectionEntry,
       route: "/projects/my-project",
-      routeParam: "projects/my-project",
       slug: "my-project",
     };
 

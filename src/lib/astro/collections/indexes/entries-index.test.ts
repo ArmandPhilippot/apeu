@@ -122,13 +122,11 @@ describe("getEntriesIndex", () => {
     expect(indexedEntryById).toStrictEqual({
       raw: { ...mockEntry, id: normalizedId },
       route: `${expectedRoute}/`,
-      routeParam: expectedRoute.slice(1),
       slug: expectedSlug,
     });
     expect(indexedEntryByRoute).toStrictEqual({
       raw: { ...mockEntry, id: normalizedId },
       route: `${expectedRoute}/`,
-      routeParam: expectedRoute.slice(1),
       slug: expectedSlug,
     });
   });

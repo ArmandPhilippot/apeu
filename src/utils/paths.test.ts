@@ -6,8 +6,8 @@ import {
   getParentDirPath,
   joinPaths,
   removeExtFromPath,
-  routeToParam,
   routeToStaticPathParam,
+  withoutOuterSlashes,
   withoutTrailingSlash,
   withTrailingSlash,
 } from "./paths";
@@ -183,17 +183,29 @@ describe("withTrailingSlash", () => {
   });
 });
 
-describe("routeToParam", () => {
+describe("withoutOuterSlashes", () => {
   it("removes the leading and trailing slashes from a route", () => {
-    expect(routeToParam("/blog/posts/")).toBe("blog/posts");
+    expect(withoutOuterSlashes("/blog/posts/")).toBe("blog/posts");
   });
 
   it("removes the leading slash from a route without a trailing slash", () => {
-    expect(routeToParam("/blog/posts")).toBe("blog/posts");
+    expect(withoutOuterSlashes("/blog/posts")).toBe("blog/posts");
   });
 
   it("returns an empty string for the root route", () => {
-    expect(routeToParam("/")).toBe("");
+    expect(withoutOuterSlashes("/")).toBe("");
+  });
+
+  it("throws instead of silently corrupting a route without a leading slash", () => {
+    expect(() => withoutOuterSlashes("blog/posts/")).toThrow(
+      'Expected a route starting with "/", received: "blog/posts/"'
+    );
+  });
+
+  it("throws for an empty string", () => {
+    expect(() => withoutOuterSlashes("")).toThrow(
+      'Expected a route starting with "/", received: ""'
+    );
   });
 });
 

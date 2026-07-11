@@ -71,7 +71,6 @@ describe("get-taxonomy-link", () => {
     const indexedEntry: IndexedEntry<"blog.categories"> = {
       raw: blogCategoryFixture,
       route: "/blog/category/micro-blog",
-      routeParam: "blog/category/micro-blog",
       slug: "micro-blog",
     };
     const result = getTaxonomyRoute(indexedEntry);
@@ -86,7 +85,6 @@ describe("get-taxonomy-link", () => {
     const indexedEntry: IndexedEntry<"tags"> = {
       raw: tagFixture,
       route: "/tags/catchall-tag",
-      routeParam: "tags/catchall-tag",
       slug: "catchall-tag",
     };
     const result = getTaxonomyRoute(indexedEntry);
@@ -169,7 +167,7 @@ const mockEntries = createMockEntries([
 const mockEntriesIndex = new Map(
   mockEntries.map((entry) => [
     entry.id,
-    { raw: entry, route: entry.id, routeParam: entry.id, slug: entry.id },
+    { raw: entry, route: entry.id, slug: entry.id },
   ])
 );
 

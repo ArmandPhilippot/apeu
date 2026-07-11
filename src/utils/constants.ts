@@ -11,6 +11,13 @@ export const CALLOUT_TYPES = [
   "warning",
 ] as const;
 
+/**
+ * The content id segment marking an entry as a locale's home page, such as
+ * the `home` in `en/home`. This isn't a route slug: the home page's route
+ * never carries this segment (see `services/routing/home.ts`).
+ */
+export const HOME_ID_SEGMENT = "home";
+
 export const CONFIG = {
   BRAND: "Armand Philippot",
   CREATION_YEAR: 2024,

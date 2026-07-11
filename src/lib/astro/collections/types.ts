@@ -18,12 +18,6 @@ export type RoutableCollectionKey = Exclude<
 export type RoutableIndexedEntry<C extends RoutableCollectionKey> = {
   raw: CollectionEntry<C>;
   route: string;
-  /**
-   * The route as an Astro rest-param value (no leading/trailing slash).
-   *
-   * @see routeToParam in `utils/paths.ts`
-   */
-  routeParam: string;
   slug: string;
 };
 

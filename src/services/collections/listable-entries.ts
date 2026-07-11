@@ -2,6 +2,7 @@ import type { CollectionKey } from "astro:content";
 import type { QueryMode } from "../../types/data";
 import type { AvailableLocale } from "../../types/tokens";
 import { CONFIG } from "../../utils/constants";
+import { isHomeEntryId } from "../routing";
 import {
   queryCollection,
   type QueriedCollectionEntry,
@@ -118,16 +119,16 @@ export const getPageRelatedCollectionKeys = ({
   locale,
 }: Pick<PageWithRelatedEntries<"index.pages" | "pages">, "id" | "locale">):
   ListableCollectionKey | ListableCollectionKey[] => {
+  if (isHomeEntryId(id, locale)) {
+    return ["blog.posts", "blogroll", "bookmarks", "guides", "projects"];
+  }
+
   const collection = getListableCollectionKey(id, locale);
 
   if (collection === "authors") {
     throw new Error(
       `Invalid collection, ${collection} does not support listing entries.`
     );
-  }
-
-  if (collection === "home") {
-    return ["blog.posts", "blogroll", "bookmarks", "guides", "projects"];
   }
 
   if (!isValidRelatedCollectionKey(collection)) {

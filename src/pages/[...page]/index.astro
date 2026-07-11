@@ -5,6 +5,7 @@ import type { CollectionKey } from "astro:content";
 import { ROUTABLE_COLLECTIONS } from "../../lib/astro/collections/constants";
 import {
   addRelatedItemsToPages,
+  COLLECTIONS_SUPPORTING_RELATED_ENTRIES,
   isListingRelatedEntries,
   queryCollection,
   shouldPaginateListing,
@@ -124,11 +125,13 @@ const getListingPagesView = (path: string): PageComponent => {
 const getPageConfig = (currentPage: typeof page): PageComponent => {
   const { collection, id, locale } = currentPage;
   const path = id.replace(`${locale}/`, "");
-  const listingPages = new Set<CollectionKey>([
-    "blog.categories",
-    "index.pages",
-    "tags",
-  ]);
+  /* "pages" also supports related entries, but it's handled by the branch
+   * above instead, since its listing pages need an id-based view lookup. */
+  const listingPages = new Set<CollectionKey>(
+    COLLECTIONS_SUPPORTING_RELATED_ENTRIES.filter(
+      (supportedCollection) => supportedCollection !== "pages"
+    )
+  );
 
   if (collection === "pages") return getPagesView(currentPage);
   if (listingPages.has(collection)) return getListingPagesView(path);

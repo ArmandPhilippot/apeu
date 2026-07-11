@@ -25,8 +25,30 @@ const LISTABLE_COLLECTION_KEYS = [
 
 export type ListableCollectionKey = (typeof LISTABLE_COLLECTION_KEYS)[number];
 
+/**
+ * Collections whose entries are only listing pages when their id matches a
+ * known listing page pattern (see `isListingPageId`).
+ */
+const ID_BASED_LISTING_COLLECTIONS = [
+  "index.pages",
+  "pages",
+] as const satisfies CollectionKey[];
+
+/**
+ * Collections whose entries are always listing pages.
+ */
+const ALWAYS_LISTING_COLLECTIONS = [
+  "blog.categories",
+  "tags",
+] as const satisfies CollectionKey[];
+
+export const COLLECTIONS_SUPPORTING_RELATED_ENTRIES = [
+  ...ID_BASED_LISTING_COLLECTIONS,
+  ...ALWAYS_LISTING_COLLECTIONS,
+] as const satisfies CollectionKey[];
+
 export type CollectionSupportingRelatedEntries =
-  "blog.categories" | "index.pages" | "pages" | "tags";
+  (typeof COLLECTIONS_SUPPORTING_RELATED_ENTRIES)[number];
 
 type PageWithRelatedEntries<
   T extends CollectionSupportingRelatedEntries =
@@ -78,15 +100,15 @@ const isListingPageId = (pageId: string): boolean =>
 export const isListingRelatedEntries = (
   entry: QueriedCollectionEntry<CollectionKey, "full">
 ): entry is PageWithRelatedEntries => {
-  const idBasedListingPage = new Set<CollectionKey>(["index.pages", "pages"]);
-
-  if (idBasedListingPage.has(entry.collection)) {
+  if (
+    (ID_BASED_LISTING_COLLECTIONS as CollectionKey[]).includes(entry.collection)
+  ) {
     return isListingPageId(entry.id);
   }
 
-  const alwaysListingPage = new Set<CollectionKey>(["blog.categories", "tags"]);
-
-  return alwaysListingPage.has(entry.collection);
+  return (ALWAYS_LISTING_COLLECTIONS as CollectionKey[]).includes(
+    entry.collection
+  );
 };
 
 /**

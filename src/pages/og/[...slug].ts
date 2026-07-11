@@ -6,22 +6,14 @@ import { satoriAstroOG } from "satori-astro";
 import { html } from "satori-html";
 import logo from "../../assets/logo-unpressed.svg?url";
 import bg from "../../assets/paper-light.svg?inline";
+import { ROUTABLE_COLLECTIONS } from "../../lib/astro/collections/constants";
 import { queryCollection } from "../../services/collections";
 import { getOgHomeSlug } from "../../services/routing";
 import { CONFIG } from "../../utils/constants";
 import { withoutOuterSlashes } from "../../utils/paths";
 import { isAvailableLocale } from "../../utils/type-guards";
 
-const collections = await queryCollection([
-  "blog.categories",
-  "blog.posts",
-  "guides",
-  "index.pages",
-  "notes",
-  "pages",
-  "projects",
-  "tags",
-]);
+const collections = await queryCollection(ROUTABLE_COLLECTIONS);
 const addPngExtension = (path: string) => `${path}.png`;
 const getPageIdFromRoute = (route: string) => {
   const routeId = withoutOuterSlashes(route);

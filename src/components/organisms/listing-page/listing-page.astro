@@ -5,6 +5,7 @@ import { Icon } from "astro-icon/components";
 import { useI18n } from "../../../services/i18n";
 import { renderPaginationLink } from "../../../services/pagination";
 import type { EntryPreview, Img as ImgType } from "../../../types/data";
+import { joinPaths } from "../../../utils/paths";
 import Button from "../../atoms/button/button.astro";
 import Img from "../../atoms/img/img.astro";
 import CardsList from "../../molecules/cards-list/cards-list.astro";
@@ -50,7 +51,7 @@ const { translate } = useI18n(Astro.currentLocale);
         aria-label={translate("cta.subscribe.a11y", { title })}
         as="a"
         class="listing-page-feed"
-        href={`${route}/feed.xml`}
+        href={joinPaths(route, "feed.xml")}
       >
         <Icon aria-hidden="true" name="feed" />
         {translate("cta.subscribe")}

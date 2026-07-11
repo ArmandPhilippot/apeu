@@ -137,4 +137,16 @@ describe("BlogIndexView", () => {
     expect(result).toContain("See all posts");
     expect(result).toContain("Subscribe a11y");
   });
+
+  it<LocalTestContext>("links to the blog posts feed without doubling the route's trailing slash", async ({
+    container,
+  }) => {
+    expect.assertions(1);
+
+    const result = await container.renderToString(BlogIndexView, {
+      props: defaultProps,
+    });
+
+    expect(result).toContain('href="/blog/posts/feed.xml"');
+  });
 });

@@ -6,35 +6,20 @@ import { satoriAstroOG } from "satori-astro";
 import { html } from "satori-html";
 import logo from "../../assets/logo-unpressed.svg?url";
 import bg from "../../assets/paper-light.svg?inline";
+import { ROUTABLE_COLLECTIONS } from "../../lib/astro/collections/constants";
 import { queryCollection } from "../../services/collections";
+import { getOgHomeSlug } from "../../services/routing";
 import { CONFIG } from "../../utils/constants";
-import { removeTrailingSlashes } from "../../utils/strings";
+import { withoutOuterSlashes } from "../../utils/paths";
+import { isAvailableLocale } from "../../utils/type-guards";
 
-const collections = await queryCollection([
-  "blog.categories",
-  "blog.posts",
-  "guides",
-  "index.pages",
-  "notes",
-  "pages",
-  "projects",
-  "tags",
-]);
+const collections = await queryCollection(ROUTABLE_COLLECTIONS);
 const addPngExtension = (path: string) => `${path}.png`;
 const getPageIdFromRoute = (route: string) => {
-  /* `route` always ends with a trailing slash (except the literal "/"), so
-   * both slashes are stripped here to get a bare id like "" or "en" or
-   * "en/blog" — this also makes the locale-home check below reliable, since
-   * `CONFIG.LANGUAGES.AVAILABLE` entries never have a trailing slash. */
-  const routeId = removeTrailingSlashes(route).slice(1);
-  const isDefaultHomePage = !routeId;
-  const isLocalizedHomePage = (
-    CONFIG.LANGUAGES.AVAILABLE as readonly string[]
-  ).includes(routeId);
-  const homeId = "home";
+  const routeId = withoutOuterSlashes(route);
 
-  if (isDefaultHomePage) return homeId;
-  if (isLocalizedHomePage) return `${routeId}/${homeId}`;
+  if (routeId === "") return getOgHomeSlug(CONFIG.LANGUAGES.DEFAULT);
+  if (isAvailableLocale(routeId)) return getOgHomeSlug(routeId);
 
   return routeId;
 };
@@ -42,10 +27,7 @@ const individualPages = collections.entries.map(
   ({ description, id, route, seo, title }) => {
     const pageId = getPageIdFromRoute(route);
 
-    return [
-      addPngExtension(pageId || "home"),
-      { description, id, seo, title },
-    ] as const;
+    return [addPngExtension(pageId), { description, id, seo, title }] as const;
   }
 );
 

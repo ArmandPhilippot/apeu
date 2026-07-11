@@ -23,6 +23,7 @@ import {
 } from "../../services/collections";
 import { useI18n } from "../../services/i18n";
 import { useRouting } from "../../services/routing";
+import { joinPaths } from "../../utils/paths";
 
 type Props = Partial<ComponentProps<typeof Layout>> & {
   entry: QueriedEntry<"pages">;
@@ -123,7 +124,7 @@ const { entries: collections } = await queryCollection(
         <Button
           aria-label={translate("cta.subscribe.to.website")}
           as="a"
-          href={`${page.route}feed.xml`}
+          href={joinPaths(page.route, "feed.xml")}
           slot="cta"
         >
           <Icon aria-hidden="true" name="feed" />

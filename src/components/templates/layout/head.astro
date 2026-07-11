@@ -7,10 +7,10 @@ import faviconSvg from "../../../assets/logo-unpressed.svg";
 import { getJsonLdSchema } from "../../../lib/schema-dts/schema";
 import { getCollectionsFeeds } from "../../../services/feeds";
 import { getLanguageTerritory, useI18n } from "../../../services/i18n";
+import { getOgHomeSlug } from "../../../services/routing";
 import type { SEO } from "../../../types/data";
 import { WEBSITE_URL } from "../../../utils/constants";
-import { removeTrailingSlashes } from "../../../utils/strings";
-import { isDefaultLocale } from "../../../utils/type-guards";
+import { withoutOuterSlashes } from "../../../utils/paths";
 
 type ColorScheme =
   "normal" | "light" | "dark" | "only light" | "light dark" | "dark light";
@@ -58,12 +58,12 @@ const localeTerritory = locale.includes("_")
 const altLocales = seo.languages?.map((altLocale) =>
   getLanguageTerritory(altLocale.locale)
 );
-const ogHomeImgPath = isDefaultLocale(locale) ? "home" : `${locale}/home`;
-const ogImgPath = isHome ? ogHomeImgPath : Astro.url.pathname.slice(1);
+const ogHomeSlug = getOgHomeSlug(locale);
+const ogSlug = isHome ? ogHomeSlug : withoutOuterSlashes(Astro.url.pathname);
 const socialImg = {
   height: 630,
   type: "image/png",
-  url: new URL(`/og/${removeTrailingSlashes(ogImgPath)}.png`, WEBSITE_URL).href,
+  url: new URL(`/og/${ogSlug}.png`, WEBSITE_URL).href,
   width: 1200,
 } as const;
 

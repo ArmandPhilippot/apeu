@@ -3,8 +3,11 @@ import {
   type EntryByRouteIndex,
 } from "../../lib/astro/collections/indexes";
 import type { Route } from "../../types/data";
-import { getCumulativePaths } from "../../utils/paths";
-import { removeTrailingSlashes } from "../../utils/strings";
+import {
+  getCumulativePaths,
+  withoutTrailingSlash,
+  withTrailingSlash,
+} from "../../utils/paths";
 import { isLocalizedRoute } from "../i18n";
 
 /**
@@ -28,21 +31,12 @@ const getRouteCrumbs = (
   const segments = getRouteHierarchy(route);
 
   return segments
-    .map((segment) => routeIndex.get(segment))
+    .map((segment) => routeIndex.get(withTrailingSlash(segment)))
     .filter((entry) => entry !== undefined)
     .map((entry) => {
       return { label: entry.raw.data.title, path: entry.route };
     });
 };
-
-/**
- * Normalizes a route by removing the trailing slash.
- *
- * @param {string} route - The route to format.
- * @returns {string} The normalized route.
- */
-const normalizeRoute = (route: string): string =>
-  removeTrailingSlashes(route) || "/";
 
 type BreadcrumbConfig = {
   paginationLabel?: string | undefined;
@@ -60,7 +54,7 @@ export const getBreadcrumb = async ({
   route,
 }: BreadcrumbConfig): Promise<Route[]> => {
   const { byRoute } = await getEntriesIndex();
-  const normalizedRoute = normalizeRoute(route);
+  const normalizedRoute = withoutTrailingSlash(route);
   const crumbs = getRouteCrumbs(normalizedRoute, byRoute);
 
   if (paginationLabel !== undefined) {

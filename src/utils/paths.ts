@@ -2,6 +2,7 @@ import { join, normalize, parse, sep } from "node:path";
 import slash from "slash";
 import type { AvailableLocale } from "../types/tokens";
 import { CONFIG } from "./constants";
+import { removeTrailingSlashes } from "./strings";
 import { isAvailableLocale } from "./type-guards";
 
 /**
@@ -87,3 +88,53 @@ export const getCumulativePaths = (path: string): string[] => {
 
   return steps;
 };
+
+/**
+ * Remove the trailing slash from a route while collapsing an empty result back
+ * to the root route.
+ *
+ * @example "/blog/" -> "/blog", "/" -> "/"
+ * @param {string} route - A route to normalize.
+ * @returns {string} The route without a trailing slash.
+ */
+export const withoutTrailingSlash = (route: string): string =>
+  removeTrailingSlashes(route) || "/";
+
+/**
+ * Add a trailing slash to a route, unless it already has one.
+ *
+ * @example "/blog" -> "/blog/", "/blog/" -> "/blog/"
+ * @param {string} route - A route to normalize.
+ * @returns {string} The route with a trailing slash.
+ */
+export const withTrailingSlash = (route: string): string =>
+  route.endsWith("/") ? route : `${route}/`;
+
+/**
+ * Strip a route's outer slashes: the leading slash and, except for the root
+ * route, the trailing one. Slashes between segments are left untouched.
+ *
+ * @example "/blog/posts/" -> "blog/posts", "/" -> ""
+ * @param {string} route - A route to convert. Must start with "/".
+ * @returns {string} The route without its outer slashes.
+ * @throws {Error} If the route doesn't start with a slash.
+ */
+export const withoutOuterSlashes = (route: string): string => {
+  if (!route.startsWith("/")) {
+    throw new Error(`Expected a route starting with "/", received: "${route}"`);
+  }
+
+  return withoutTrailingSlash(route).slice(1);
+};
+
+/**
+ * Convert a route into the value expected by an Astro rest param, such as the
+ * `page` param of `[...page]`. Unlike `withoutOuterSlashes`, the root route
+ * becomes `undefined` rather than an empty string.
+ *
+ * @example "/blog/posts/" -> "blog/posts", "/" -> undefined
+ * @param {string} route - A route to convert.
+ * @returns {string | undefined} The route as a rest-param value.
+ */
+export const routeToStaticPathParam = (route: string): string | undefined =>
+  withoutOuterSlashes(route) || undefined;

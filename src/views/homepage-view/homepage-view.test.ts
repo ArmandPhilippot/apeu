@@ -147,6 +147,6 @@ describe("HomepageView", () => {
 
     expect(result).toContain("Collections");
     expect(result).toContain("Subscribe");
-    expect(result).toContain("feed.xml");
+    expect(result).toContain('href="/feed.xml"');
   });
 });

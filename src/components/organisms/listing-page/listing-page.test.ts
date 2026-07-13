@@ -81,7 +81,7 @@ describe("ListingPage", () => {
 
     expect(result).toContain(props.route);
     expect(result).toContain("listing-page-pagination");
-    expect(result).toContain('href="/page-route/page/2"');
+    expect(result).toContain('href="/page-route/page/2/"');
   });
 
   it<LocalTestContext>("uses the default minimum card size when none is provided", async ({

@@ -63,7 +63,7 @@ describe("render-pagination-link", () => {
   it("should return the given route suffixed with the page number of other pages", () => {
     const route = "/base-path/";
 
-    expect(renderPaginationLink(route)(10)).toBe("/base-path/page/10");
+    expect(renderPaginationLink(route)(10)).toBe("/base-path/page/10/");
   });
 });
 /* eslint-enable @typescript-eslint/no-magic-numbers */

@@ -81,5 +81,5 @@ export const renderPaginationLink =
   (route: string): ((pageNumber: number) => string) =>
   (pageNumber: number): string => {
     if (pageNumber === 1) return route;
-    return joinPaths(route, "page", `${pageNumber}`);
+    return joinPaths(route, "page", `${pageNumber}/`);
   };

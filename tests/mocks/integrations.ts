@@ -23,7 +23,7 @@ export const createAstroBuildDoneMockContext = (
 ): HookParameters<"astro:build:done"> => {
   return {
     assets: new Map(),
-    dir: new URL("file:///mock/out"),
+    dir: new URL("file:///mock/out/"),
     logger,
     pages: [],
     ...overrides,

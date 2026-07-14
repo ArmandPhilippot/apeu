@@ -6,7 +6,7 @@ import sitemap from "@astrojs/sitemap";
 import { defineConfig, envField, fontProviders } from "astro/config";
 import icon from "astro-icon";
 import { astroStories } from "./src/lib/astro/integrations/astro-stories";
-import { pagefind } from "./src/lib/astro/integrations/pagefind";
+import { pagefindSearch } from "./src/lib/astro/integrations/pagefind";
 import { hastInferRemoteImagesSize } from "./src/lib/satteri/hast/hast-infer-remote-images-size";
 import { hastLinkedImages } from "./src/lib/satteri/hast/hast-linked-images";
 import { hastMdxHtmlSyntax } from "./src/lib/satteri/hast/hast-mdx-html-syntax";
@@ -124,7 +124,7 @@ export default defineConfig({
       iconDir: "src/assets/icons",
     }),
     mdx({ syntaxHighlight: false }),
-    pagefind(),
+    pagefindSearch(),
     sitemap({
       i18n: {
         defaultLocale: CONFIG.LANGUAGES.DEFAULT,

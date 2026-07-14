@@ -1,3 +1,4 @@
+import { type ChildProcess, spawn } from "node:child_process";
 import type { PagefindIndex } from "pagefind";
 import { describe, expect, it, vi } from "vitest";
 import {
@@ -6,6 +7,12 @@ import {
   createAstroServerSetupMockContext,
 } from "../../../../../tests/mocks/integrations";
 import { pagefindSearch } from "./pagefind";
+
+vi.mock("node:child_process", () => {
+  return {
+    spawn: vi.fn(),
+  };
+});
 
 vi.mock("node:fs/promises", () => {
   return {
@@ -19,6 +26,17 @@ vi.mock("pagefind", () => {
     close: vi.fn(),
   };
 });
+
+function mockSpawnClose(exitCode: number | null) {
+  return vi.mocked(spawn).mockReturnValue({
+    on: vi.fn().mockImplementation((event: string, callback: never) => {
+      if (event === "close") {
+        (callback as (code: number | null) => void)(exitCode);
+      }
+      return { on: vi.fn() };
+    }),
+  } as unknown as ChildProcess);
+}
 
 describe("pagefind", () => {
   it("should return an Astro integration", () => {
@@ -60,11 +78,12 @@ describe("pagefind", () => {
       );
     });
 
-    it("should log warning when pagefind directory is not accessible", async () => {
+    it("should warn when pagefind directory is not accessible", async () => {
       expect.assertions(1);
 
       const { access } = await import("node:fs/promises");
       vi.mocked(access).mockRejectedValue(new Error("Not found"));
+      mockSpawnClose(0);
 
       const integration = pagefindSearch();
       const mockContext = createAstroConfigSetupMockContext();
@@ -72,23 +91,95 @@ describe("pagefind", () => {
       await integration.hooks["astro:config:setup"](mockContext);
 
       expect(mockContext.logger.warn).toHaveBeenCalledWith(
-        expect.stringContaining("You need to run `pnpm build`")
+        expect.stringContaining("No search index found")
+      );
+    });
+
+    it("should log info once the automatic build completes", async () => {
+      expect.assertions(1);
+
+      const { access } = await import("node:fs/promises");
+      vi.mocked(access).mockRejectedValue(new Error("Not found"));
+      mockSpawnClose(0);
+
+      const integration = pagefindSearch();
+      const mockContext = createAstroConfigSetupMockContext();
+
+      await integration.hooks["astro:config:setup"](mockContext);
+
+      expect(mockContext.logger.info).toHaveBeenCalledWith(
+        "Search index built!"
+      );
+    });
+
+    it("should spawn an isolated Node process to build the site", async () => {
+      expect.assertions(1);
+
+      const { access } = await import("node:fs/promises");
+      vi.mocked(access).mockRejectedValue(new Error("Not found"));
+      mockSpawnClose(0);
+
+      const integration = pagefindSearch();
+      const mockContext = createAstroConfigSetupMockContext();
+
+      await integration.hooks["astro:config:setup"](mockContext);
+
+      expect(spawn).toHaveBeenCalledWith(
+        process.execPath,
+        expect.arrayContaining(["--input-type=module", "/mock/build"]),
+        expect.objectContaining({ cwd: "/mock/build" })
+      );
+    });
+
+    it("should warn when the automatic build fails", async () => {
+      expect.assertions(1);
+
+      const { access } = await import("node:fs/promises");
+      vi.mocked(access).mockRejectedValue(new Error("Not found"));
+      mockSpawnClose(1);
+
+      const integration = pagefindSearch();
+      const mockContext = createAstroConfigSetupMockContext();
+
+      await integration.hooks["astro:config:setup"](mockContext);
+
+      expect(mockContext.logger.warn).toHaveBeenCalledWith(
+        expect.stringContaining(
+          "Failed to build the search index automatically"
+        )
       );
     });
   });
 
   describe("astro:server:setup hook", () => {
-    it("should warn if outDir is not set", () => {
-      expect.assertions(1);
+    it("should do nothing outside of dev mode", () => {
+      expect.assertions(0);
 
       const integration = pagefindSearch();
       const mockContext = createAstroServerSetupMockContext();
 
       integration.hooks["astro:server:setup"](mockContext);
+    });
 
-      expect(mockContext.logger.warn).toHaveBeenCalledWith(
-        expect.stringContaining("Couldn't determine Pagefind output directory")
+    it("should register the Pagefind middleware once the index is available", async () => {
+      expect.assertions(1);
+
+      const { access } = await import("node:fs/promises");
+      vi.mocked(access).mockResolvedValueOnce();
+
+      const integration = pagefindSearch();
+      const use = vi.fn();
+
+      await integration.hooks["astro:config:setup"](
+        createAstroConfigSetupMockContext()
       );
+      integration.hooks["astro:server:setup"](
+        createAstroServerSetupMockContext({
+          server: { middlewares: { use } },
+        })
+      );
+
+      expect(use).toHaveBeenCalledWith(expect.any(Function));
     });
   });
 
@@ -179,7 +270,9 @@ describe("pagefind", () => {
       const integration = pagefindSearch();
       const mockContext = createAstroBuildDoneMockContext();
 
-      await integration.hooks["astro:build:done"](mockContext).catch(() => undefined);
+      await integration.hooks["astro:build:done"](mockContext).catch(
+        () => undefined
+      );
 
       expect(pagefind.close).toHaveBeenCalledWith();
     });

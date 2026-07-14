@@ -12,7 +12,6 @@
     "@typescript-eslint/parser",
     "baseline-browser-mapping",
     "modern-normalize",
-    "pagefind",
     "typescript-eslint"
   ],
   "postcss": true,

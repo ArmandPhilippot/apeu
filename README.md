@@ -114,12 +114,10 @@ The search is powered by [Pagefind](https://pagefind.app/), a fully static searc
 
 Therefore, there are some caveats in dev mode:
 
-- You need to run `pnpm build` once before executing `pnpm dev` to build the search index and to be able to use the search form.
+- If no search index is found, `pnpm dev` automatically builds the project once to generate it before starting the dev server. This only slows down the first run: once the index exists, subsequent `pnpm dev` runs use it as is.
+- If you want to run dev mode with a fresh index, you'll need to trigger a new build with `pnpm build` before running `pnpm dev`.
 - If you change the Pagefind config (like adding data attributes to filter the contents), the index will not be automatically rebuilt. You need to perform another build and to execute `pnpm dev` again.
 - The indexed images use the built URLs (the ones processed by Astro) so they can't be displayed in dev environment (so at the moment, they are fully deactivated).
-
-> [!NOTE]
-> This integration is no longer used, but is kept in the project in case we need it again later.
 
 ### Stories
 

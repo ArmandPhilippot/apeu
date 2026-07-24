@@ -93,7 +93,7 @@
     "@arphi/stylelint-config": "2.0.0",
     "@changesets/changelog-git": "^0.2.1",
     "@changesets/cli": "^2.31.1",
-    "@commitlint/cli": "^21.2.0",
+    "@commitlint/cli": "^21.2.1",
     "@cspell/dict-fr-fr": "^2.3.2",
     "@csstools/postcss-global-data": "^4.0.0",
     "@e18e/eslint-plugin": "^0.5.1",

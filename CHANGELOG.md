@@ -1,5 +1,31 @@
 # apeu
 
+## 2.3.0
+
+### Minor Changes
+
+- 3d49083: Enforces trailing slash on routes.
+
+  Previously, trailing slashes were not enforced. This meant that routes could be accessed with or without a trailing slash. This change enforces trailing slashes on all routes (except file endpoints such as `feed.xml`), which can help with SEO and consistency.
+
+  However, due to a bug in Astro, `trailingSlash` cannot be set to `always`. This means that while the intention is to have trailing slashes for all routes, it may not be fully enforced until the bug is resolved.
+
+  If you have links pointing to routes without trailing slashes, you may need to update them to include the trailing slash or set up redirects at the hosting level to ensure they resolve correctly.
+
+- 0288c89: Migrates the Pagefind integration to the Node.js API and builds the search index automatically in dev mode.
+
+  The search index is now built using [Pagefind's Node.js API](https://pagefind.app/docs/node-api/) instead of spawning the `pagefind` CLI through `npx`. Build output is quieter as a result: a single summary line replaces the previous verbose CLI logs.
+
+  In dev mode, if no search index is found, the project is now built once automatically before the dev server starts, instead of only warning that you need to run `pnpm build` manually. This means the first `pnpm dev` run after cloning (or after deleting `dist/`) takes longer, but search works out of the box afterwards.
+
+  To use a fresh index in dev mode after making changes, you still need to run `pnpm build` before `pnpm dev`.
+
+### Patch Changes
+
+- 0288c89: Fixes an incorrect note in the docs regarding the Search integration.
+
+  The Search integration is still in use. The note belonged to the dev-only pages integration, which was removed in a previous release.
+
 ## 2.2.1
 
 ### Patch Changes

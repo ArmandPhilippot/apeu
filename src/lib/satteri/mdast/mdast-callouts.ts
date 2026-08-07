@@ -14,7 +14,7 @@ type MdastTextContent = (
 const getCalloutLabel = (
   node: BlockContent | DefinitionContent | undefined,
   getTextContent: MdastTextContent
-): string | null => {
+): string | undefined => {
   const hasLabel =
     node?.data !== undefined &&
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- It seems Sätteri sometimes sets data to null, even if the type doesn't allow it.
@@ -22,7 +22,7 @@ const getCalloutLabel = (
     "directiveLabel" in node.data &&
     node.data.directiveLabel === true;
 
-  return hasLabel ? getTextContent(node) : null;
+  return hasLabel ? getTextContent(node) : undefined;
 };
 
 /**
@@ -40,7 +40,7 @@ export const mdastCallouts = defineMdastPlugin({
 
     ctx.replaceNode(node, {
       ...node,
-      children: label === null ? node.children : children,
+      children: label === undefined ? node.children : children,
       data: {
         hName: "callout",
         hProperties: {

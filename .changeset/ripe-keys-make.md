@@ -2,4 +2,4 @@
 "apeu": patch
 ---
 
-Add spacing between the elements inside the callouts.
+Improves readability by adding spacing between elements inside the callouts.

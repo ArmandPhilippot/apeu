@@ -129,7 +129,7 @@
     "prettier": "^3.9.4",
     "prettier-plugin-astro": "^0.14.1",
     "schema-dts": "^2.0.0",
-    "smtp-server": "^3.19.1",
+    "smtp-server": "^3.19.3",
     "stylelint": "^17.14.0",
     "stylelint-config-html": "^1.1.0",
     "typescript": "~5.9.3",

@@ -57,7 +57,7 @@ function extractTextFromNode(node: HastElement): string {
  * @returns {string[]} A list of classnames.
  */
 function getNodeClasses(node: HastElement): string[] {
-  return (node.properties.className ?? []) as string[];
+  return node.properties.className ?? [];
 }
 
 /**

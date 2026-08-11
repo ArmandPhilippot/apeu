@@ -151,9 +151,7 @@ export default defineConfig({
   },
   output: "static",
   site: `https://${CONFIG.HOST}`,
-  /* A bug in Astro prevents us to use this, but the aim is to have trailing
-   * slashes for all routes. */
-  //trailingSlash: "always",
+  trailingSlash: "always",
   vite: {
     server: {
       watch: {

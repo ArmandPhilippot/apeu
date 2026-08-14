@@ -8,7 +8,7 @@ type LocalTestContext = {
 };
 
 const getAstroImagePrefix = (src: string) =>
-  `/_image?href=${encodeURIComponent(src)}`;
+  `/_image/?href=${encodeURIComponent(src)}`;
 
 describe("ContentPage", () => {
   beforeEach<LocalTestContext>(async (context) => {

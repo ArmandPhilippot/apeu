@@ -25,7 +25,7 @@ export default defineConfig({
     mode: "standalone",
   }),
   build: {
-    format: "preserve",
+    format: "directory",
   },
   env: {
     schema: {

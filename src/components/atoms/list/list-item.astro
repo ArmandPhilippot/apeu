@@ -11,7 +11,7 @@ const { class: className, hideMarker = false, slot, ...attrs } = Astro.props;
 <li
   {...attrs}
   class:list={[className, "list-item"]}
-  {...hideMarker && { "data-marker": false }}
+  {...(hideMarker && { "data-marker": false })}
 >
   <slot />
 </li>

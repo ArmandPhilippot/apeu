@@ -24,33 +24,27 @@ if (!Astro.slots.has("field")) throw new MissingSlotError("field");
   class:list={[className, "labelled-field"]}
   data-variant={variant}
 >
-  {
-    variant === "inline-reversed" ? (
-      <Fragment>
-        <slot name="field" />
-        <slot name="label" />
-      </Fragment>
-    ) : (
-      <Fragment>
-        <slot name="label" />
-        <slot name="field" />
-      </Fragment>
-    )
-  }
-  {
-    Astro.slots.has("hint") ? (
-      <div class="labelled-field-hint">
-        <slot name="hint" />
-      </div>
-    ) : null
-  }
-  {
-    Astro.slots.has("errors") ? (
-      <div class="labelled-field-errors">
-        <slot name="errors" />
-      </div>
-    ) : null
-  }
+  {variant === "inline-reversed" ? (
+    <Fragment>
+      <slot name="field" />
+      <slot name="label" />
+    </Fragment>
+  ) : (
+    <Fragment>
+      <slot name="label" />
+      <slot name="field" />
+    </Fragment>
+  )}
+  {Astro.slots.has("hint") ? (
+    <div class="labelled-field-hint">
+      <slot name="hint" />
+    </div>
+  ) : null}
+  {Astro.slots.has("errors") ? (
+    <div class="labelled-field-errors">
+      <slot name="errors" />
+    </div>
+  ) : null}
 </div>
 
 <style>

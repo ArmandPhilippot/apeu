@@ -36,15 +36,13 @@ const tag = isOrdered ? "ol" : "ul";
   class:list={[className, "cards-list"]}
   justifyContent="center"
 >
-  {
-    items.map((item, index, list) => (
-      <ListItem
-        class="cards-list-item"
-        {...(isContainer && { "data-container": true })}
-        set:html={Astro.slots.render("default", [item, index, list])}
-      />
-    ))
-  }
+  {items.map((item, index, list) => (
+    <ListItem
+      class="cards-list-item"
+      {...(isContainer && { "data-container": true })}
+      set:html={Astro.slots.render("default", [item, index, list])}
+    />
+  ))}
 </Grid>
 
 <style>

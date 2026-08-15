@@ -7,4 +7,6 @@ type Props = ComponentProps<typeof FigureComponent>;
 const { isCentered = true, ...attrs } = Astro.props;
 ---
 
-<FigureComponent {...attrs} isCentered={isCentered}><slot /></FigureComponent>
+<FigureComponent {...attrs} isCentered={isCentered}>
+  <slot />
+</FigureComponent>

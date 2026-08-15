@@ -9,13 +9,11 @@ const { class: className, slot, ...attrs } = Astro.props;
 <section {...attrs} class:list={[className, "section"]}>
   <header class="section-header">
     <slot name="heading" />
-    {
-      Astro.slots.has("cta") ? (
-        <div class="section-cta">
-          <slot name="cta" />
-        </div>
-      ) : null
-    }
+    {Astro.slots.has("cta") ? (
+      <div class="section-cta">
+        <slot name="cta" />
+      </div>
+    ) : null}
   </header>
   <slot />
 </section>

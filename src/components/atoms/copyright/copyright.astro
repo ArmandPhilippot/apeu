@@ -13,4 +13,6 @@ const shouldAddCurrentYear = currentYear !== creationYear;
 const years = `${creationYear}${shouldAddCurrentYear ? ` - ${currentYear}` : ""}`;
 ---
 
-<span {...attrs}>&copy; {years} {owner}.</span>
+<span {...attrs}>
+  &copy; {years} {owner}.
+</span>

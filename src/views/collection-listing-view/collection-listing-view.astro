@@ -72,16 +72,14 @@ const entries = await Promise.all(
     entries={entries}
     pagination={pagination}
     route={page.route}
-    sizeMinCols={page.collection === "index.pages"
-      ? page.minCardSize
-      : undefined}
+    sizeMinCols={
+      page.collection === "index.pages" ? page.minCardSize : undefined
+    }
     title={page.title}
     totalEntries={collectionMetaTotal}
   >
-    {
-      hasContent && (
-        <Content components={components} slot={hasContent ? "intro" : ""} />
-      )
-    }
+    {hasContent && (
+      <Content components={components} slot={hasContent ? "intro" : ""} />
+    )}
   </ListingPage>
 </Layout>

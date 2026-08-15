@@ -13,16 +13,14 @@ const { class: className, headings, slot, ...attrs } = Astro.props;
 ---
 
 <List {...attrs} as="ol" class:list={[className, "toc"]} spacing="3xs">
-  {
-    headings.map((heading) => (
-      <ListItem class="toc-item">
-        <Link href={heading.slug}>{heading.label}</Link>
-        {heading.children?.length ? (
-          <Astro.self headings={heading.children} />
-        ) : null}
-      </ListItem>
-    ))
-  }
+  {headings.map((heading) => (
+    <ListItem class="toc-item">
+      <Link href={heading.slug}>{heading.label}</Link>
+      {heading.children?.length ? (
+        <Astro.self headings={heading.children} />
+      ) : null}
+    </ListItem>
+  ))}
 </List>
 
 <style>

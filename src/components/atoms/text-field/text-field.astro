@@ -9,13 +9,11 @@ type Props = Omit<HTMLAttributes<"input" | "textarea">, "type"> & {
 const { class: className, slot, type, ...attrs } = Astro.props;
 ---
 
-{
-  type === "textarea" ? (
-    <textarea {...attrs} class:list={[className, "text-field"]} />
-  ) : (
-    <input {...attrs} class:list={[className, "text-field"]} type={type} />
-  )
-}
+{type === "textarea" ? (
+  <textarea {...attrs} class:list={[className, "text-field"]}></textarea>
+) : (
+  <input {...attrs} class:list={[className, "text-field"]} type={type} />
+)}
 
 <style>
   @layer atoms {

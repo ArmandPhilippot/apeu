@@ -7,14 +7,12 @@ type Props = HTMLAttributes<"div">;
 const { class: className, ...attrs } = Astro.props;
 ---
 
-{
-  className === "gallery" ? (
-    <Gallery {...attrs}>
-      <slot />
-    </Gallery>
-  ) : (
-    <div {...attrs} class={className}>
-      <slot />
-    </div>
-  )
-}
+{className === "gallery" ? (
+  <Gallery {...attrs}>
+    <slot />
+  </Gallery>
+) : (
+  <div {...attrs} class={className}>
+    <slot />
+  </div>
+)}

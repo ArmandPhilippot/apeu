@@ -25,10 +25,18 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  lint:
-    name: Tests
+  tests:
+    name: ${{ matrix.name }}
     timeout-minutes: 15
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Unit
+            script: test:unit
+          - name: E2E
+            script: test:e2e
     steps:
       - name: Checkout Repo
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
@@ -46,16 +54,14 @@ jobs:
         run: pnpm i
 
       - name: "Install Playwright browser"
+        if: matrix.name == 'E2E'
         run: "pnpm exec playwright install --with-deps chromium"
 
-      - name: Unit Tests
-        run: pnpm test:unit
-
-      - name: "E2E tests"
-        run: "pnpm test:e2e"
+      - name: Run tests
+        run: pnpm run ${{ matrix.script }}
 
       - name: "Upload Playwright artifacts"
-        if: ${{ failure() && !cancelled() }}
+        if: ${{ matrix.name == 'E2E' && failure() && !cancelled() }}
         uses: "actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f" # v6.0.0
         with:
           name: "playwright-artifacts"

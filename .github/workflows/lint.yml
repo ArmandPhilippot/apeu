@@ -26,9 +26,23 @@ concurrency:
 
 jobs:
   lint:
-    name: Lint
+    name: ${{ matrix.name }}
     timeout-minutes: 15
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Types
+            script: lint:types
+          - name: Scripts
+            script: lint:scripts
+          - name: Styles
+            script: lint:styles
+          - name: Spelling
+            script: lint:spelling
+          - name: Formatting
+            script: lint:formatting
     steps:
       - name: Checkout Repo
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
@@ -45,17 +59,9 @@ jobs:
       - name: Install dependencies
         run: pnpm i
 
-      - name: Lint - Types
-        run: pnpm lint:types
+      - name: Generate Astro types
+        if: matrix.name == 'Scripts'
+        run: pnpm astro sync
 
-      - name: Lint - Scripts
-        run: pnpm run lint:scripts
-
-      - name: Lint - Styles
-        run: pnpm run lint:styles
-
-      - name: Lint - Spelling
-        run: pnpm run lint:spelling
-
-      - name: Lint - Formatting
-        run: pnpm run lint:formatting
+      - name: Lint
+        run: pnpm run ${{ matrix.script }}

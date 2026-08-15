@@ -59,5 +59,9 @@ jobs:
       - name: Install dependencies
         run: pnpm i
 
+      - name: Generate Astro types
+        if: matrix.name == 'Scripts'
+        run: pnpm astro sync
+
       - name: Lint
         run: pnpm run ${{ matrix.script }}

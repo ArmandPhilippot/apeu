@@ -67,22 +67,20 @@ const fields = [
 
 <apeu-contact-form {...attrs} id={id}>
   <form class="contact-form" method="post">
-    {
-      fields.map((field) => (
-        <LabelledField>
-          <Label for={field.id} isRequired={field.isRequired} slot="label">
-            {field.label}
-          </Label>
-          <TextField
-            {...field}
-            {...field.validation}
-            required={field.isRequired}
-            slot="field"
-          />
-          <List hidden="true" id={`${id}-${field.name}-errors`} slot="errors" />
-        </LabelledField>
-      ))
-    }
+    {fields.map((field) => (
+      <LabelledField>
+        <Label for={field.id} isRequired={field.isRequired} slot="label">
+          {field.label}
+        </Label>
+        <TextField
+          {...field}
+          {...field.validation}
+          required={field.isRequired}
+          slot="field"
+        />
+        <List hidden="true" id={`${id}-${field.name}-errors`} slot="errors" />
+      </LabelledField>
+    ))}
     <Button class="contact-form-btn" kind="primary" type="submit">
       {translate("form.contact.btn")}
     </Button>

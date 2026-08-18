@@ -29,45 +29,39 @@ const { translate } = useI18n(Astro.currentLocale);
 <article {...attrs} class:list={[className, "content-page"]}>
   <header class="content-page-header">
     <h1 class="content-page-title">{title}</h1>
-    {
-      Astro.slots.has("meta") ? (
-        <div class="content-page-meta">
-          <slot name="meta" />
-        </div>
-      ) : null
-    }
-    {
-      cover ? (
-        <Img
-          {...cover}
-          alt=""
-          loading="eager"
-          pictureAttributes={{ class: "content-page-cover" }}
-        />
-      ) : null
-    }
-  </header>
-  {
-    headings?.length ? (
-      <div class="content-page-sidebar">
-        <Collapsible class="content-page-toc" open>
-          <h2 slot="label">{translate("collapsible.toc.title")}</h2>
-          <TableOfContents
-            class="content-page-toc-body"
-            headings={buildToc(headings)}
-          />
-        </Collapsible>
+    {Astro.slots.has("meta") ? (
+      <div class="content-page-meta">
+        <slot name="meta" />
       </div>
-    ) : null
-  }
-  <div class="content-page-body prose"><slot /></div>
-  {
-    Astro.slots.has("footer") ? (
-      <footer class="content-page-footer prose">
-        <slot name="footer" />
-      </footer>
-    ) : null
-  }
+    ) : null}
+    {cover ? (
+      <Img
+        {...cover}
+        alt=""
+        loading="eager"
+        pictureAttributes={{ class: "content-page-cover" }}
+      />
+    ) : null}
+  </header>
+  {headings?.length ? (
+    <div class="content-page-sidebar">
+      <Collapsible class="content-page-toc" open>
+        <h2 slot="label">{translate("collapsible.toc.title")}</h2>
+        <TableOfContents
+          class="content-page-toc-body"
+          headings={buildToc(headings)}
+        />
+      </Collapsible>
+    </div>
+  ) : null}
+  <div class="content-page-body prose">
+    <slot />
+  </div>
+  {Astro.slots.has("footer") ? (
+    <footer class="content-page-footer prose">
+      <slot name="footer" />
+    </footer>
+  ) : null}
 </article>
 
 <style>

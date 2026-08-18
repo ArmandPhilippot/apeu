@@ -29,28 +29,26 @@ const isCurrentRouteOrNested = (url: string) => {
 ---
 
 <List {...attrs} class:list={[className, "main-nav", "paper"]} hideMarker>
-  {
-    items.map(({ icon, label, path }) => {
-      const isSelected = isCurrentRouteOrNested(path);
-      const iconWithSize = icon
-        ? { name: icon.name, size: icon.size ?? defaultIconSize }
-        : null;
+  {items.map(({ icon, label, path }) => {
+    const isSelected = isCurrentRouteOrNested(path);
+    const iconWithSize = icon
+      ? { name: icon.name, size: icon.size ?? defaultIconSize }
+      : null;
 
-      return (
-        <ListItem class="main-nav-item">
-          <Link
-            aria-current={path === Astro.url.pathname ? "page" : undefined}
-            class:list={["main-nav-link", { paper: isSelected }]}
-            {...(isSelected && { "data-selected": true })}
-            href={path}
-            icon={iconWithSize}
-          >
-            {label}
-          </Link>
-        </ListItem>
-      );
-    })
-  }
+    return (
+      <ListItem class="main-nav-item">
+        <Link
+          aria-current={path === Astro.url.pathname ? "page" : undefined}
+          class:list={["main-nav-link", { paper: isSelected }]}
+          {...(isSelected && { "data-selected": true })}
+          href={path}
+          icon={iconWithSize}
+        >
+          {label}
+        </Link>
+      </ListItem>
+    );
+  })}
 </List>
 
 <style>

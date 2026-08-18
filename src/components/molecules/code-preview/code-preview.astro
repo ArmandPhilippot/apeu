@@ -25,35 +25,26 @@ const hasUseAndPreview = code && Astro.slots.has("default");
 
 <figure {...attrs} class:list={[className, "code-preview"]}>
   {label ? <figcaption>{label}</figcaption> : null}
-  {
-    code ? (
-      <div class="use">
-        {hasUseAndPreview && (
-          <div class="use-label">{translate("code.preview.use.label")}</div>
-        )}
-        <CodeBlock
-          class="use-content"
-          code={code}
-          lang={lang}
-          showLineNumbers
-        />
-      </div>
-    ) : null
-  }
-  {
-    Astro.slots.has("default") ? (
-      <div class="preview">
-        {hasUseAndPreview && (
-          <div class="preview-label">
-            {translate("code.preview.preview.label")}
-          </div>
-        )}
-        <div class="preview-content">
-          <slot />
+  {code ? (
+    <div class="use">
+      {hasUseAndPreview && (
+        <div class="use-label">{translate("code.preview.use.label")}</div>
+      )}
+      <CodeBlock class="use-content" code={code} lang={lang} showLineNumbers />
+    </div>
+  ) : null}
+  {Astro.slots.has("default") ? (
+    <div class="preview">
+      {hasUseAndPreview && (
+        <div class="preview-label">
+          {translate("code.preview.preview.label")}
         </div>
+      )}
+      <div class="preview-content">
+        <slot />
       </div>
-    ) : null
-  }
+    </div>
+  ) : null}
 </figure>
 
 <style>

@@ -7,4 +7,6 @@ type Props = ComponentProps<typeof List<"ol">>;
 const { as = "ol", ...props } = Astro.props;
 ---
 
-<List {...props} as={as}><slot /></List>
+<List {...props} as={as}>
+  <slot />
+</List>

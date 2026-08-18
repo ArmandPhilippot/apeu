@@ -112,20 +112,22 @@ const cssVars = getCSSVars({
 <Figure
   {...attrs}
   class:list={[className, "code-block"]}
-  {...isCommandLine ? { "data-cli": true } : {}}
+  {...(isCommandLine ? { "data-cli": true } : {})}
   data-diff={isDiff}
   data-line-numbers={showLineNumbers}
   data-path={!!filePath}
   data-prompt={showPrompt}
   data-root={isCommandLine && promptUser === "root" ? "" : null}
-  {...showPrompt && isSQL ? { "data-sql-server": true } : {}}
+  {...(showPrompt && isSQL ? { "data-sql-server": true } : {})}
   isFullWidth
   style={`${cssVars}${style}`}
 >
   <figcaption
-    aria-label={filePath
-      ? translate("code.block.caption.path.a11y").replace("{path}", filePath)
-      : translate("code.block.caption.lang.a11y").replace("{lang}", lang)}
+    aria-label={
+      filePath
+        ? translate("code.block.caption.path.a11y").replace("{path}", filePath)
+        : translate("code.block.caption.lang.a11y").replace("{lang}", lang)
+    }
     class="code-block-caption"
   >
     {filePath ?? lang}

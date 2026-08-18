@@ -37,29 +37,27 @@ if (currentOption === undefined) {
 ---
 
 <div {...attrs} class:list={[className, "select-field"]}>
-  {
-    icon ? (
-      <Icon aria-hidden class="select-field-icon" name={icon} size={iconSize} />
-    ) : null
-  }
+  {icon ? (
+    <Icon aria-hidden class="select-field-icon" name={icon} size={iconSize} />
+  ) : null}
   <select autocomplete="off" required={isRequired}>
-    {
-      options.map((option) => (
-        <option selected={option.value === value} value={option.value}>
-          {option.label}
-        </option>
-      ))
-    }
+    {options.map((option) => (
+      <option selected={option.value === value} value={option.value}>
+        {option.label}
+      </option>
+    ))}
   </select>
   <Icon aria-hidden="true" class="select-field-caret" name="caret-down" />
 </div>
 
 <style
-  define:vars={icon
-    ? {
-        "icon-size": `calc(${iconSize} * var(--one-px-in-rem))`,
-      }
-    : {}}
+  define:vars={
+    icon
+      ? {
+          "icon-size": `calc(${iconSize} * var(--one-px-in-rem))`,
+        }
+      : {}
+  }
 >
   @layer atoms {
     .select-field {

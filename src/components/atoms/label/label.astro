@@ -10,13 +10,11 @@ const { class: className, isRequired = false, slot, ...attrs } = Astro.props;
 
 <label {...attrs} class:list={[className, "label"]}>
   <slot />
-  {
-    isRequired ? (
-      <span aria-hidden="true" class="label-required">
-        *
-      </span>
-    ) : null
-  }
+  {isRequired ? (
+    <span aria-hidden="true" class="label-required">
+      *
+    </span>
+  ) : null}
 </label>
 
 <style>

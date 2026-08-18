@@ -57,23 +57,19 @@ const { translate } = useI18n(Astro.currentLocale);
         {translate("cta.subscribe")}
       </Button>
     </div>
-    {
-      cover ? (
-        <Img
-          {...cover}
-          alt=""
-          loading="eager"
-          pictureAttributes={{ class: "listing-page-cover" }}
-        />
-      ) : null
-    }
-    {
-      Astro.slots.has("intro") ? (
-        <div class="listing-page-intro">
-          <slot name="intro" />
-        </div>
-      ) : null
-    }
+    {cover ? (
+      <Img
+        {...cover}
+        alt=""
+        loading="eager"
+        pictureAttributes={{ class: "listing-page-cover" }}
+      />
+    ) : null}
+    {Astro.slots.has("intro") ? (
+      <div class="listing-page-intro">
+        <slot name="intro" />
+      </div>
+    ) : null}
   </header>
   <CardsList
     cols="auto-fill"
@@ -81,26 +77,22 @@ const { translate } = useI18n(Astro.currentLocale);
     items={entries}
     sizeMinCols={sizeMinCols}
   >
-    {
-      (entry: (typeof entries)[number]) => (
-        <PreviewCard adaptTo="viewport" elevation="raised" entry={entry} />
-      )
-    }
+    {(entry: (typeof entries)[number]) => (
+      <PreviewCard adaptTo="viewport" elevation="raised" entry={entry} />
+    )}
   </CardsList>
-  {
-    pagination !== undefined &&
-    pagination !== null &&
-    pagination.lastPage > 1 ? (
-      <Pagination
-        aria-label={translate("pagination.a11y")}
-        class="listing-page-pagination"
-        current={pagination.currentPage}
-        isCentered
-        last={pagination.lastPage}
-        renderLink={renderPaginationLink(route)}
-      />
-    ) : null
-  }
+  {pagination !== undefined &&
+  pagination !== null &&
+  pagination.lastPage > 1 ? (
+    <Pagination
+      aria-label={translate("pagination.a11y")}
+      class="listing-page-pagination"
+      current={pagination.currentPage}
+      isCentered
+      last={pagination.lastPage}
+      renderLink={renderPaginationLink(route)}
+    />
+  ) : null}
 </article>
 
 <style>

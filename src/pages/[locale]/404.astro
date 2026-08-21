@@ -20,6 +20,7 @@ export const getStaticPaths = (async () => {
   );
   return localizedErrorPages.map((errorPage) => {
     return {
+      cacheKey: errorPage.digest,
       params: { locale: errorPage.locale },
       props: errorPage,
     };

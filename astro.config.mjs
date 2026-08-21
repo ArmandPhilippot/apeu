@@ -3,7 +3,12 @@ import { satteri } from "@astrojs/markdown-satteri";
 import mdx from "@astrojs/mdx";
 import node from "@astrojs/node";
 import sitemap from "@astrojs/sitemap";
-import { defineConfig, envField, fontProviders } from "astro/config";
+import {
+  defineConfig,
+  envField,
+  fontProviders,
+  svgoOptimizer,
+} from "astro/config";
 import icon from "astro-icon";
 import { astroStories } from "./src/lib/astro/integrations/astro-stories";
 import { pagefindSearch } from "./src/lib/astro/integrations/pagefind";
@@ -43,6 +48,8 @@ export default defineConfig({
   },
   experimental: {
     contentIntellisense: true,
+    incrementalBuild: true,
+    svgOptimizer: svgoOptimizer(),
   },
   fonts: [
     {

@@ -115,8 +115,8 @@ importers:
         specifier: ^2.5.1
         version: 2.5.1(@typescript-eslint/eslint-plugin@8.66.0(@typescript-eslint/parser@8.66.0(eslint@9.39.5(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)(typescript@5.9.3))(eslint@9.39.5(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)(typescript@5.9.3))(astro-eslint-parser@1.4.0(supports-color@10.2.2))(eslint-config-prettier@10.1.8(eslint@9.39.5(jiti@2.7.0)(supports-color@10.2.2)))(eslint-plugin-astro@1.7.0(eslint@9.39.5(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2))(eslint-plugin-jsdoc@62.9.0(eslint@9.39.5(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2))(eslint-plugin-jsx-a11y@6.10.2(eslint@9.39.5(jiti@2.7.0)(supports-color@10.2.2)))(eslint-plugin-no-only-tests@3.4.0)(eslint@9.39.5(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)(typescript@5.9.3)(vitest@4.1.10)
       '@arphi/prettier-config':
-        specifier: ^1.0.4
-        version: 1.0.4(prettier@3.9.6)
+        specifier: ^1.0.5
+        version: 1.0.5(prettier@3.9.6)
       '@arphi/stylelint-config':
         specifier: 2.0.0
         version: 2.0.0(stylelint@17.14.1(supports-color@10.2.2)(typescript@5.9.3))
@@ -294,10 +294,10 @@ packages:
       eslint-plugin-react-hooks:
         optional: true
 
-  '@arphi/prettier-config@1.0.4':
-    resolution: {integrity: sha512-wBS1WXoVsglLkxkqAy5EW6rJEFFRPkCzcqRz/1lS5IG6kRgq9pgIocEvcKHERGxZeP9DVFrBL9IDhiLGNHgrkw==}
+  '@arphi/prettier-config@1.0.5':
+    resolution: {integrity: sha512-fZimW/OmzSDR32Awqvb533TiJAwNbieNTEQWIaGQisrmS70q6B7LXDVPRNxushf0GBIObcEAOB5GKoDRcXb9Tg==}
     peerDependencies:
-      prettier: '>=3.8.1'
+      prettier: ^3.8.1
 
   '@arphi/stylelint-config@2.0.0':
     resolution: {integrity: sha512-i0qTjzhXiLMTUi2NE0npdSllIZplEmSGyMOXC0sgr8V9V2W98OpndDpCmZMONl/dgvIbqHkF7Wocu9BvmUOoyg==}
@@ -3525,6 +3525,7 @@ packages:
   eslint@9.39.5:
     resolution: {integrity: sha512-DgZS62aPLXKlnxILS/AYCoRvHaZeXceIzlXPkkGGzJWSow1aEk0lbTlxUSlyjC8jcaKxAdOnTDz+o1JFSBsyjw==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+    deprecated: This version is no longer supported. Please see https://eslint.org/version-support for other options.
     hasBin: true
     peerDependencies:
       jiti: '*'
@@ -6319,7 +6320,7 @@ snapshots:
       - typescript
       - vitest
 
-  '@arphi/prettier-config@1.0.4(prettier@3.9.6)':
+  '@arphi/prettier-config@1.0.5(prettier@3.9.6)':
     dependencies:
       prettier: 3.9.6
 

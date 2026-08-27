@@ -5,7 +5,7 @@ import {
 } from "../../../../tests/helpers/astro-content";
 import { CONFIG } from "../../../utils/constants";
 import { clearEntriesIndexCache } from "../../astro/collections/indexes";
-import { getWebSiteGraph } from "./website-graph";
+import { getWebsiteGraph } from "./website-graph";
 
 vi.mock("astro:content", async (importOriginal) => {
   const mod = await importOriginal<typeof import("astro:content")>();
@@ -47,7 +47,7 @@ describe("get-website-graph", () => {
   it("returns an object describing the website", async () => {
     expect.assertions(1);
 
-    const graph = await getWebSiteGraph({
+    const graph = await getWebsiteGraph({
       description: "minus perspiciatis voluptatem",
       locale: CONFIG.LANGUAGES.DEFAULT,
       logo: "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/899.jpg",

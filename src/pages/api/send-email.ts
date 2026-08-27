@@ -22,8 +22,8 @@ export const POST: APIRoute = async ({
   const result = mailData.safeParse(await request.formData());
 
   if (!result.success) {
-    return new Response(
-      JSON.stringify({ error: z.treeifyError(result.error) }),
+    return Response.json(
+      { error: z.treeifyError(result.error) },
       {
         status: HTTP_STATUS.BAD_REQUEST.CODE,
         statusText: HTTP_STATUS.BAD_REQUEST.TEXT,
@@ -34,10 +34,10 @@ export const POST: APIRoute = async ({
   try {
     await sendMail(result.data);
 
-    return new Response(
-      JSON.stringify({
+    return Response.json(
+      {
         message: translate("api.send.email.response.sent"),
-      } satisfies MailSuccess),
+      } satisfies MailSuccess,
       {
         status: HTTP_STATUS.OK.CODE,
         statusText: HTTP_STATUS.OK.TEXT,
@@ -46,10 +46,10 @@ export const POST: APIRoute = async ({
   } catch (error) {
     console.error(error);
 
-    return new Response(
-      JSON.stringify({
+    return Response.json(
+      {
         error: { formErrors: [translate("api.send.email.response.fail")] },
-      } satisfies MailError),
+      } satisfies MailError,
       {
         status: HTTP_STATUS.INTERNAL_SERVER_ERROR.CODE,
         statusText: HTTP_STATUS.INTERNAL_SERVER_ERROR.TEXT,

@@ -52,7 +52,7 @@ type EntryTransformConfig<
  * @param {QueriedEntry} entry - The collection entry to convert.
  * @param {EntryTransformConfig<T>} config - The transformation config.
  * @returns {EntryPreview} The converted entry preview.
- * @throws When a collection is unsupported.
+ * @throws {Error} When a collection is unsupported.
  */
 const convertEntryToPreview = <
   T extends PreviewableCollectionKey = PreviewableCollectionKey,

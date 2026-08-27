@@ -4,6 +4,8 @@ import { getCumulativePaths, splitPath } from "../../../../utils/paths";
 import { capitalizeFirstLetter } from "../../../../utils/strings";
 import type { Stories, StoriesIndex, Story } from "./types/internal";
 
+const STORIES_SUFFIX_REGEX = /\.stories$/;
+
 /**
  * Remove the `.stories` suffix from the given string.
  *
@@ -18,7 +20,7 @@ import type { Stories, StoriesIndex, Story } from "./types/internal";
  * ```
  */
 const stripStoriesSuffix = (str: string): string =>
-  str.replace(/\.stories$/, "");
+  str.replace(STORIES_SUFFIX_REGEX, "");
 
 /**
  * Capitalize each part of a story filename.
@@ -264,7 +266,7 @@ export const getStories = ({ base, paths, src }: GetStoriesConfig): Stories => {
     ...stories.flatMap((story) => story.ancestors),
     base,
   ]);
-  const indexes = Array.from(uniqueIndexes.values(), (route) =>
+  const indexes = Array.from(uniqueIndexes, (route) =>
     parseIndexRoute(route, base)
   );
 

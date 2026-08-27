@@ -53,7 +53,9 @@ export const getSpacingVarFromGap = (
     const colGap = gap.col ? getSpacingVarValue(gap.col) : 0;
     const rowGap = gap.row ? getSpacingVarValue(gap.row) : 0;
     return `${rowGap} ${colGap}`;
-  } else if (typeof gap === "string") {
+  }
+
+  if (typeof gap === "string") {
     return getSpacingVarValue(gap);
   }
 

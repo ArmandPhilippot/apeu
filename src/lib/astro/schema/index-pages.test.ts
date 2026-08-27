@@ -16,6 +16,10 @@ const mockImage = createImageMock();
 
 describe("index-pages", () => {
   it("should include the meta in the transformed output", () => {
+    if (typeof indexPages.schema !== "function") {
+      throw new TypeError("The schema is not callable");
+    }
+
     const page = {
       title: "The title of the page",
       description: "A description of the page.",
@@ -27,11 +31,6 @@ describe("index-pages", () => {
       },
       updatedOn: new Date("2023-01-02"),
     };
-
-    if (typeof indexPages.schema !== "function") {
-      throw new TypeError("The schema is not callable");
-    }
-
     const parsedSchema = indexPages.schema({ image: mockImage });
     const result = parsedSchema.safeParse(page);
 
@@ -46,6 +45,10 @@ describe("index-pages", () => {
   });
 
   it("should apply default values as expected", () => {
+    if (typeof indexPages.schema !== "function") {
+      throw new TypeError("The schema is not callable");
+    }
+
     const page = {
       title: "The title of the page",
       description: "A description of the page.",
@@ -55,11 +58,6 @@ describe("index-pages", () => {
         description: "Vel voluptatem laboriosam.",
       },
     };
-
-    if (typeof indexPages.schema !== "function") {
-      throw new TypeError("The schema is not callable");
-    }
-
     const parsedSchema = indexPages.schema({ image: mockImage });
     const result = parsedSchema.safeParse(page);
 
@@ -76,6 +74,10 @@ describe("index-pages", () => {
   });
 
   it("should preserve minCardSize when provided", () => {
+    if (typeof indexPages.schema !== "function") {
+      throw new TypeError("The schema is not callable");
+    }
+
     const page = {
       title: "The title of the page",
       description: "A description of the page.",
@@ -86,11 +88,6 @@ describe("index-pages", () => {
         description: "Vel voluptatem laboriosam.",
       },
     };
-
-    if (typeof indexPages.schema !== "function") {
-      throw new TypeError("The schema is not callable");
-    }
-
     const parsedSchema = indexPages.schema({ image: mockImage });
     const result = parsedSchema.safeParse(page);
 

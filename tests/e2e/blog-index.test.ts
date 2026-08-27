@@ -5,6 +5,8 @@ import fr from "../../src/translations/fr.json" with { type: "json" };
 /* The "Recent posts" section always shows the 2 latest posts (see
  * `blog-index-view.astro`). */
 const RECENT_POSTS_COUNT = 2;
+const FR_BLOG_ARTICLE_URL_REGEX = /\/blog\/articles\/.+$/;
+const EN_BLOG_POST_URL_REGEX = /\/en\/blog\/posts\/.+$/;
 
 // cSpell:ignore Catégorie Catégories récents
 test.describe("Blog index", () => {
@@ -71,7 +73,7 @@ test.describe("Blog index", () => {
       .filter({ hasText: fr["cta.read.more"] })
       .click();
 
-    await expect(page).toHaveURL(/\/blog\/articles\/.+$/);
+    await expect(page).toHaveURL(FR_BLOG_ARTICLE_URL_REGEX);
   });
 
   test("renders the English blog index with recent posts and categories", async ({
@@ -132,6 +134,6 @@ test.describe("Blog index", () => {
       .filter({ hasText: en["cta.read.more"] })
       .click();
 
-    await expect(page).toHaveURL(/\/en\/blog\/posts\/.+$/);
+    await expect(page).toHaveURL(EN_BLOG_POST_URL_REGEX);
   });
 });

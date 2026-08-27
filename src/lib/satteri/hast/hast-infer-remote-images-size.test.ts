@@ -6,44 +6,59 @@ const OPTIONS: MdxCompileOptions = {
   hastPlugins: [hastInferRemoteImagesSize],
 };
 
-const compileMdx = (source: string) => mdxToJs(source, OPTIONS);
+const compileMdx = async (source: string) => mdxToJs(source, OPTIONS);
 
 describe("hast-infer-remote-images-size", () => {
-  it("should add inferSize property to remote images written with Markdown syntax", () => {
+  it("should add inferSize property to remote images written with Markdown syntax", async () => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(2);
+
     const src = "https://example.test/my-image.jpg";
-    const result = compileMdx(`![Example](${src})`);
+    const result = await compileMdx(`![Example](${src})`);
 
     expect(result.code).toContain(`src: "${src}"`);
     expect(result.code).toContain("inferSize: true");
   });
 
-  it("should not add inferSize property to local images written with Markdown syntax", () => {
+  it("should not add inferSize property to local images written with Markdown syntax", async () => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(2);
+
     const src = "./my-image.jpg";
-    const result = compileMdx(`![Example](${src})`);
+    const result = await compileMdx(`![Example](${src})`);
 
     expect(result.code).toContain(`src: "${src}"`);
     expect(result.code).not.toContain("inferSize: true");
   });
 
-  it("should not add inferSize property to remote images written with HTML syntax", () => {
+  it("should not add inferSize property to remote images written with HTML syntax", async () => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(2);
+
     const src = "https://example.test/my-image.jpg";
-    const result = compileMdx(`<img alt="Example" src="${src}" />`);
+    const result = await compileMdx(`<img alt="Example" src="${src}" />`);
 
     expect(result.code).toContain(`src: "${src}"`);
     expect(result.code).not.toContain("inferSize: true");
   });
 
-  it("should not add inferSize property to local images written with HTML syntax", () => {
+  it("should not add inferSize property to local images written with HTML syntax", async () => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(2);
+
     const src = "./my-image.jpg";
-    const result = compileMdx(`<img alt="Example" src="${src}" />`);
+    const result = await compileMdx(`<img alt="Example" src="${src}" />`);
 
     expect(result.code).toContain(`src: "${src}"`);
     expect(result.code).not.toContain("inferSize: true");
   });
 
-  it("should not add inferSize property to non-image elements", () => {
+  it("should not add inferSize property to non-image elements", async () => {
+    /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
+    expect.assertions(3);
+
     const href = "https://example.test";
-    const result = compileMdx(`<a href="${href}">Read more</a>`);
+    const result = await compileMdx(`<a href="${href}">Read more</a>`);
 
     expect(result.code).toContain(`href: "${href}"`);
     expect(result.code).toContain('"Read more"');

@@ -53,9 +53,7 @@ const getReadingTimeInMinutes = (
   wordsCount: number,
   wordsPerMinute: number
 ): number =>
-  Math.round(
-    Number.parseFloat((wordsCount / wordsPerMinute).toFixed(twoDecimals))
-  );
+  Math.round(Number((wordsCount / wordsPerMinute).toFixed(twoDecimals)));
 
 /**
  * Retrieve the reading time depending on a words count.

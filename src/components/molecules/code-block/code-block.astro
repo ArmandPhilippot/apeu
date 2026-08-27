@@ -124,8 +124,11 @@ const cssVars = getCSSVars({
 >
   <figcaption
     aria-label={filePath
-      ? translate("code.block.caption.path.a11y").replace("{path}", filePath)
-      : translate("code.block.caption.lang.a11y").replace("{lang}", lang)}
+      ? translate("code.block.caption.path.a11y").replace(
+          "{path}",
+          () => filePath
+        )
+      : translate("code.block.caption.lang.a11y").replace("{lang}", () => lang)}
     class="code-block-caption"
   >
     {filePath ?? lang}

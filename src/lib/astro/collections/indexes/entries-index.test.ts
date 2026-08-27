@@ -9,6 +9,8 @@ import { collections } from "../../../../content.config";
 import { clearEntriesIndexCache, getEntriesIndex } from "./entries-index";
 import { normalizePagesId } from "./utils";
 
+const EN_PREFIX_REGEX = /^en\//;
+
 vi.mock("astro:content", async (importOriginal) => {
   const mod = await importOriginal<typeof import("astro:content")>();
   return {
@@ -114,7 +116,7 @@ describe("getEntriesIndex", () => {
 
     const result = await getEntriesIndex();
     const normalizedId = normalizePagesId(mockEntry.id);
-    const expectedRoute = `/${normalizedId.replace(/^en\//, "")}`;
+    const expectedRoute = `/${normalizedId.replace(EN_PREFIX_REGEX, "")}`;
     const expectedSlug = normalizedId.split("/").pop();
     const indexedEntryById = result.byId.get(normalizedId);
     const indexedEntryByRoute = result.byRoute.get(`${expectedRoute}/`);
@@ -230,7 +232,7 @@ describe("getEntriesIndex", () => {
     const indexedEntryById = result.byId.get(normalizedId);
 
     expect(indexedEntryById).toMatchObject({
-      route: `${normalizedId.replace(/^en\//, "/")}/`,
+      route: `${normalizedId.replace(EN_PREFIX_REGEX, "/")}/`,
       slug: normalizedId.split("/").at(-1),
     });
   });

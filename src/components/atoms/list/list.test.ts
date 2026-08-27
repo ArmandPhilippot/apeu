@@ -3,6 +3,8 @@ import type { ComponentProps } from "astro/types";
 import { beforeEach, describe, expect, it } from "vitest";
 import List from "./list.astro";
 
+const SPACING_MD_GAP_REGEX = /--gap: var\(--spacing-md\)/;
+
 type LocalTestContext = {
   container: AstroContainer;
 };
@@ -103,6 +105,6 @@ describe("List", () => {
       slots: { default: body },
     });
 
-    expect(result).toMatch(/--gap: var\(--spacing-md\)/);
+    expect(result).toMatch(SPACING_MD_GAP_REGEX);
   });
 });

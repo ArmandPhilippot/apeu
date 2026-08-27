@@ -24,7 +24,7 @@ type QueryEntryOptions<
  * @template F - The entry format.
  * @param {QueryEntryOptions<C, F>} options - The options to query the entry.
  * @returns {Promise<QueriedEntry<C, F>>} The formatted entry.
- * @throws When the entry is not found.
+ * @throws {Error} When the entry is not found.
  */
 export const queryEntry = async <
   C extends CollectionKey,

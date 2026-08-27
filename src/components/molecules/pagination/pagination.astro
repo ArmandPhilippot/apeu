@@ -62,95 +62,89 @@ const ellipsis = "\u{2026}" as const;
   data-centered={isCentered}
 >
   <List as="ol" hideMarker isInline spacing={{ col: "xs", row: "sm" }}>
-    {
-      hasPreviousPage ? (
-        <ListItem>
-          <Button
-            aria-label={translate("pagination.previous.page.a11y", {
-              number: String(current - 1),
-            })}
-            as="a"
-            class="pagination-link"
-            href={renderLink(current - 1)}
-          >
-            <Icon
-              aria-hidden
-              class="pagination-icon-previous"
-              name="arrow-right"
-              size={24}
-            />
-          </Button>
-        </ListItem>
-      ) : null
-    }
-    {
-      pages.map((page, index, list) => {
-        const isCurrentPage = page === current;
+    {hasPreviousPage ? (
+      <ListItem>
+        <Button
+          aria-label={translate("pagination.previous.page.a11y", {
+            number: String(current - 1),
+          })}
+          as="a"
+          class="pagination-link"
+          href={renderLink(current - 1)}
+        >
+          <Icon
+            aria-hidden
+            class="pagination-icon-previous"
+            name="arrow-right"
+            size={24}
+          />
+        </Button>
+      </ListItem>
+    ) : null}
+    {pages.map((page, index, list) => {
+      const isCurrentPage = page === current;
 
-        if (isCurrentPage) {
-          return (
+      if (isCurrentPage) {
+        return (
+          <ListItem>
+            <span
+              aria-label={translate("pagination.item.current.a11y", {
+                number: String(page),
+              })}
+              class:list={["pagination-link", "disabled"]}
+            >
+              {page}
+            </span>
+          </ListItem>
+        );
+      }
+
+      const nextPage = list[index + 1];
+
+      return (
+        <Fragment>
+          <ListItem>
+            <Button
+              aria-label={translate("pagination.item.a11y", {
+                number: String(page),
+              })}
+              as="a"
+              class="pagination-link"
+              href={renderLink(page)}
+            >
+              {page}
+            </Button>
+          </ListItem>
+          {nextPage && page + 1 !== nextPage ? (
             <ListItem>
               <span
-                aria-label={translate("pagination.item.current.a11y", {
-                  number: String(page),
+                aria-label={translate("pagination.ellipsis.a11y", {
+                  from: String(page + 1),
+                  to: String(nextPage - 1),
                 })}
-                class:list={["pagination-link", "disabled"]}
+                class="pagination-link"
               >
-                {page}
+                {ellipsis}
               </span>
             </ListItem>
-          );
-        }
-
-        const nextPage = list[index + 1];
-
-        return (
-          <Fragment>
-            <ListItem>
-              <Button
-                aria-label={translate("pagination.item.a11y", {
-                  number: String(page),
-                })}
-                as="a"
-                class="pagination-link"
-                href={renderLink(page)}
-              >
-                {page}
-              </Button>
-            </ListItem>
-            {nextPage && page + 1 !== nextPage ? (
-              <ListItem>
-                <span
-                  aria-label={translate("pagination.ellipsis.a11y", {
-                    from: String(page + 1),
-                    to: String(nextPage - 1),
-                  })}
-                  class="pagination-link"
-                >
-                  {ellipsis}
-                </span>
-              </ListItem>
-            ) : null}
-          </Fragment>
-        );
-      })
-    }
-    {
-      hasNextPage ? (
-        <ListItem>
-          <Button
-            aria-label={translate("pagination.next.page.a11y", {
-              number: String(current + 1),
-            })}
-            as="a"
-            class="pagination-link"
-            href={renderLink(current + 1)}
-          >
-            <Icon aria-hidden name="arrow-right" size={24} />
-          </Button>
-        </ListItem>
-      ) : null
-    }
+          ) : null}
+        </Fragment>
+      );
+    })}
+    {hasNextPage ? (
+      <ListItem>
+        <Button
+          aria-label={translate("pagination.next.page.a11y", {
+            number: String(current + 1),
+          })}
+          as="a"
+          class="pagination-link"
+          href={renderLink(current + 1)}
+        >
+          <Icon aria-hidden name="arrow-right" size={24} />
+        </Button>
+      </ListItem>
+    ) : null}
   </List>
 </nav>
 

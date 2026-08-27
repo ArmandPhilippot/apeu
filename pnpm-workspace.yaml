@@ -1,8 +1,12 @@
-# Wait until three days after release to install new versions of packages
-minimumReleaseAge: 4320
-minimumReleaseAgeExclude:
-  - "@arphi/*"
 # We don’t need to run these build scripts, so explicitly disallow them as a minor security measure.
 allowBuilds:
   esbuild: false
   unrs-resolver: false
+# Wait until three days after release to install new versions of packages
+minimumReleaseAge: 4320
+minimumReleaseAgeExclude:
+  - "@arphi/*"
+# Workaround: `eslint-plugin-jsx-a11y` is not yet compatible with ESLint 10
+peerDependencyRules:
+  allowedVersions:
+    "eslint-plugin-jsx-a11y>eslint": "10"

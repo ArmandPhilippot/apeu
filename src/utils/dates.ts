@@ -3,6 +3,8 @@ type GMTOffsetOptions = {
   timezone: string;
 };
 
+const GMT_OFFSET_REGEX = /(?:GMT|UTC|Etc\/GMT)(?<offset>[+-]\d+)/;
+
 /**
  * Retrieve the GMT offset for a date based on the timezone and the lang.
  *
@@ -27,13 +29,13 @@ export const getGMTOffset = (
   }
 
   // Match offsets like "GMT+2", "UTC+2", or "Etc/GMT+2"
-  const match = /(?:GMT|UTC|Etc\/GMT)(?<offset>[+-]\d+)/.exec(offsetPart.value);
+  const match = GMT_OFFSET_REGEX.exec(offsetPart.value);
 
   if (match?.groups?.offset === undefined) {
     throw new Error(`Unexpected offset format: ${offsetPart.value}`);
   }
 
-  const offsetInHours = Number.parseInt(match.groups.offset, 10);
+  const offsetInHours = Math.trunc(Number(match.groups.offset));
 
   return offsetInHours;
 };

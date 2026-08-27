@@ -1,3 +1,7 @@
+type InvalidAnchorFormatErrorOptions = ErrorOptions & {
+  currentValue: unknown;
+};
+
 /**
  * Represents an invalid anchor format error.
  *
@@ -9,11 +13,11 @@ export class InvalidAnchorFormatError extends Error {
    * Create a new InvalidAnchorFormatError error.
    *
    * @param {string} propName - The name of the invalid property.
-   * @param {string} currentValue - The value received.
+   * @param {InvalidAnchorFormatErrorOptions} options - Additional error options.
    */
-  constructor(propName: string, currentValue: unknown) {
-    const err = `The "${propName}" property should be a valid anchor starting with "#". Received: ${String(currentValue)}`;
-    super(err);
+  constructor(propName: string, options: InvalidAnchorFormatErrorOptions) {
+    const err = `The "${propName}" property should be a valid anchor starting with "#". Received: ${String(options.currentValue)}`;
+    super(err, options);
     this.name = "InvalidAnchorFormatError";
   }
 }
@@ -29,9 +33,10 @@ export class InvalidPropsError extends Error {
    * Create a new InvalidPropsError error.
    *
    * @param {string} err - A message indicating the invalid properties.
+   * @param {ErrorOptions} [options] - Additional error options.
    */
-  constructor(err: string) {
-    super(err);
+  constructor(err: string, options?: ErrorOptions) {
+    super(err, options);
     this.name = "InvalidPropsError";
   }
 }
@@ -65,9 +70,10 @@ export class MissingSlotError extends Error {
    * Create a new MissingSlotError error.
    *
    * @param {string} slot - The slot name.
+   * @param {ErrorOptions} [options] - Additional error options.
    */
-  constructor(slot: string) {
-    super(`A ${slot} slot is required.`);
+  constructor(slot: string, options?: ErrorOptions) {
+    super(`A ${slot} slot is required.`, options);
     this.name = "MissingSlotError";
   }
 }
@@ -83,9 +89,10 @@ export class UnsupportedLocaleError extends Error {
    * Create a new UnsupportedLocaleError error.
    *
    * @param {string} locale - The received locale.
+   * @param {ErrorOptions} [options] - Additional error options.
    */
-  constructor(locale: string) {
-    super(`Unsupported locale, received: ${locale}.`);
+  constructor(locale: string, options?: ErrorOptions) {
+    super(`Unsupported locale, received: ${locale}.`, options);
     this.name = "UnsupportedLocaleError";
   }
 }

@@ -53,9 +53,10 @@ export function shikiDiffNotation(
   return {
     name: "shiki-diff-notation",
     code(node: HastElement) {
-      for (const line of node.children.filter(
+      const childElements = node.children.filter(
         (child) => child.type === "element"
-      )) {
+      );
+      for (const line of childElements) {
         for (const child of line.children) {
           if (child.type !== "element") continue;
 

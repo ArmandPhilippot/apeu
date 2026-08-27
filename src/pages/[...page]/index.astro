@@ -121,6 +121,9 @@ const getListingPagesView = (path: string): PageComponent => {
 
 const getPageConfig = (currentPage: typeof page): PageComponent => {
   const { collection, id, locale } = currentPage;
+
+  if (collection === "pages") return getPagesView(currentPage);
+
   const path = id.replace(`${locale}/`, "");
   /* "pages" also supports related entries, but it's handled by the branch
    * above instead, since its listing pages need an id-based view lookup. */
@@ -130,7 +133,6 @@ const getPageConfig = (currentPage: typeof page): PageComponent => {
     )
   );
 
-  if (collection === "pages") return getPagesView(currentPage);
   if (listingPages.has(collection)) return getListingPagesView(path);
   return null;
 };

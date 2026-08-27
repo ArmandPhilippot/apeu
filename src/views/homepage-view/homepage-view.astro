@@ -14,7 +14,7 @@ import PreviewCard from "../../components/organisms/preview-card/preview-card.as
 import Layout from "../../components/templates/layout/layout.astro";
 import { getPersonGraph } from "../../lib/schema-dts/graphs/person-graph";
 import { getWebPageGraph } from "../../lib/schema-dts/graphs/webpage-graph";
-import { getWebSiteGraph } from "../../lib/schema-dts/graphs/website-graph";
+import { getWebsiteGraph } from "../../lib/schema-dts/graphs/website-graph";
 import {
   convertPageToPreview,
   queryCollection,
@@ -41,7 +41,7 @@ const author = await queryEntry({
 });
 const graphs: ComponentProps<typeof Layout>["graphs"] = [
   await getPersonGraph(author, page.locale),
-  await getWebSiteGraph({
+  await getWebsiteGraph({
     description: page.seo.description ?? page.description,
     locale: page.locale,
     logo: logo.src,

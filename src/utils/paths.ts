@@ -1,9 +1,11 @@
 import { join, normalize, parse, sep } from "node:path";
-import slash from "slash";
 import type { AvailableLocale } from "../types/tokens";
 import { CONFIG } from "./constants";
 import { removeTrailingSlashes } from "./strings";
 import { isAvailableLocale } from "./type-guards";
+
+const slash = (path: string): string =>
+  path.startsWith("\\\\?\\") ? path : path.replaceAll("\\", "/");
 
 /**
  * Retrieve a path with forward slashes from a list of paths to join.

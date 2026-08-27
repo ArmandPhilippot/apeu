@@ -59,7 +59,7 @@ export const getStaticPaths = (() => {
 }) satisfies GetStaticPaths;
 
 const replaceNonBreakingSpaces = (str: string) =>
-  str.replaceAll(" ", " ").replaceAll(" ", " ");
+  str.replaceAll(/[\u{A0}\u{202F}]/gu, " ");
 
 /**
  * Generates Open Graph images.
@@ -69,14 +69,12 @@ const replaceNonBreakingSpaces = (str: string) =>
  */
 export const GET = (async ({ props, url }) => {
   const inter400Url = experimental_getFontFileURL(props.inter400Path, url);
-  const inter400Data = await fetch(inter400Url).then(async (res) =>
-    res.arrayBuffer()
-  );
+  const inter400DataResponse = await fetch(inter400Url);
+  const inter400Data = await inter400DataResponse.arrayBuffer();
 
   const inter600Url = experimental_getFontFileURL(props.inter600Path, url);
-  const inter600Data = await fetch(inter600Url).then(async (res) =>
-    res.arrayBuffer()
-  );
+  const inter600DataResponse = await fetch(inter600Url);
+  const inter600Data = await inter600DataResponse.arrayBuffer();
 
   return satoriAstroOG({
     template: html`

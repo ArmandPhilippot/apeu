@@ -8,10 +8,12 @@ const OPTIONS: MdxCompileOptions = {
 };
 
 describe("mdast-words-count", () => {
-  it("should add the words count to the frontmatter", () => {
+  it("should add the words count to the frontmatter", async () => {
+    expect.assertions(1);
+
     const mdx = `Natus inventore eveniet est nulla veritatis aut.`;
     const wordsInMarkdown = 7;
-    const result = mdxToJs(mdx, {
+    const result = await mdxToJs(mdx, {
       ...OPTIONS,
       data: {
         astro: {
@@ -26,10 +28,12 @@ describe("mdast-words-count", () => {
     expect(result.data.astro?.frontmatter.wordsCount).toBe(wordsInMarkdown);
   });
 
-  it("should count words inside HTML tags", () => {
+  it("should count words inside HTML tags", async () => {
+    expect.assertions(1);
+
     const mdx = `Some words before.\n\n<div>some words inside div</div>\n\nMore words after.\n`;
     const wordsInMarkdown = 10;
-    const result = mdxToJs(mdx, {
+    const result = await mdxToJs(mdx, {
       ...OPTIONS,
       data: {
         astro: {
@@ -44,11 +48,13 @@ describe("mdast-words-count", () => {
     expect(result.data.astro?.frontmatter.wordsCount).toBe(wordsInMarkdown);
   });
 
-  it("should not add the words count when frontmatter does not exist", () => {
+  it("should not add the words count when frontmatter does not exist", async () => {
+    expect.assertions(1);
+
     const mdx = `
 Natus inventore eveniet est nulla veritatis aut.
 `;
-    const result = mdxToJs(mdx, OPTIONS);
+    const result = await mdxToJs(mdx, OPTIONS);
 
     expect(result.data.astro).not.toBeDefined();
   });

@@ -28,6 +28,10 @@ describe("guides", () => {
     /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
     expect.assertions(4);
 
+    if (typeof guides.schema !== "function") {
+      throw new TypeError("The schema is not callable");
+    }
+
     const guide = {
       title: "The title of the guide",
       description: "A description of the guide.",
@@ -40,11 +44,6 @@ describe("guides", () => {
       },
       updatedOn: new Date("2023-01-02"),
     };
-
-    if (typeof guides.schema !== "function") {
-      throw new TypeError("The schema is not callable");
-    }
-
     const parsedSchema = guides.schema({ image: mockImage });
     const result = await parsedSchema.safeParseAsync(guide);
 
@@ -62,6 +61,10 @@ describe("guides", () => {
     /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
     expect.assertions(4);
 
+    if (typeof guides.schema !== "function") {
+      throw new TypeError("The schema is not callable");
+    }
+
     const guide = {
       title: "The title of the guide",
       description: "A description of the guide.",
@@ -72,11 +75,6 @@ describe("guides", () => {
         description: "Vel voluptatem laboriosam.",
       },
     };
-
-    if (typeof guides.schema !== "function") {
-      throw new TypeError("The schema is not callable");
-    }
-
     const parsedSchema = guides.schema({ image: mockImage });
     const result = await parsedSchema.safeParseAsync(guide);
 

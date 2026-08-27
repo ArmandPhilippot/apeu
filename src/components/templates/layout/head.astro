@@ -117,8 +117,8 @@ const socialImg = {
   <meta content={ogType} property="og:type" />
   <meta content={socialImg.url} property="og:image" />
   <meta content={socialImg.type} property="og:image:type" />
-  <meta content={`${socialImg.width}`} property="og:image:width" />
-  <meta content={`${socialImg.height}`} property="og:image:height" />
+  <meta content={String(socialImg.width)} property="og:image:width" />
+  <meta content={String(socialImg.height)} property="og:image:height" />
   <meta content={Astro.url} property="og:url" />
   {seo.description ? (
     <meta content={seo.description} property="og:description" />

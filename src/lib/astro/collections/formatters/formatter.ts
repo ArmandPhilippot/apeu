@@ -40,7 +40,6 @@ export type FormatEntryReturnMap<F extends QueryMode | undefined> =
  * @param {CollectionKey} entry - The collection entry.
  * @param {QueryMode} [format] - The format of the returned entry.
  * @returns {Promise<ReturnType<FormatEntryReturnMap<F>[C]>>} The formatted entry.
- * @throws When the collection is invalid.
  */
 export async function formatEntry<
   C extends CollectionKey,

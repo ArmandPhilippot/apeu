@@ -17,7 +17,7 @@ import type { I18nContext } from "../../../i18n";
 import type { PreviewableCollectionKey, PreviewableEntry } from "../../types";
 import type { TransformEntryConfig } from "../types";
 
-type MetaData = Blend<
+type Metadata = Blend<
   | Blog["meta"]
   | BlogPost["meta"]
   | Bookmark["meta"]
@@ -27,11 +27,11 @@ type MetaData = Blend<
   | Project["meta"]
   | Taxonomy["meta"]
 >;
-type CollectionMetaIcon = Partial<Record<AllKeysOf<MetaData>, Icon>>;
+type CollectionMetaIcon = Partial<Record<AllKeysOf<Metadata>, Icon>>;
 
-const hasValue = <K extends keyof MetaData>(
-  value: MetaData[K]
-): value is NonNullable<MetaData[K]> => {
+const hasValue = <K extends keyof Metadata>(
+  value: Metadata[K]
+): value is NonNullable<Metadata[K]> => {
   if (isNullish(value)) return false;
   return Array.isArray(value) ? value.length > 0 : true;
 };
@@ -43,7 +43,7 @@ type MetaTransformConfig = {
 };
 
 const transformKind = (
-  data: MetaData,
+  data: Metadata,
   { icons, i18n: { translate } }: MetaTransformConfig
 ): MetaItem | null => {
   if (!hasValue(data.kind)) return null;
@@ -56,7 +56,7 @@ const transformKind = (
 };
 
 const transformPublishedOn = (
-  data: MetaData,
+  data: Metadata,
   { icons, i18n: { translate } }: MetaTransformConfig
 ): MetaItem | null => {
   if (!hasValue(data.publishedOn)) return null;
@@ -69,7 +69,7 @@ const transformPublishedOn = (
 };
 
 const transformUpdatedOn = (
-  data: MetaData,
+  data: Metadata,
   { icons, i18n: { translate } }: MetaTransformConfig
 ): MetaItem | null => {
   if (!hasValue(data.updatedOn) || data.publishedOn === undefined) return null;
@@ -85,7 +85,7 @@ const transformUpdatedOn = (
 };
 
 const transformAuthors = (
-  data: MetaData,
+  data: Metadata,
   {
     icons,
     i18n: { translatePlural },
@@ -110,7 +110,7 @@ const transformAuthors = (
 };
 
 const transformInLanguage = (
-  data: MetaData,
+  data: Metadata,
   { icons, i18n: { translate } }: MetaTransformConfig
 ): MetaItem | null => {
   if (!hasValue(data.inLanguage)) return null;
@@ -123,7 +123,7 @@ const transformInLanguage = (
 };
 
 const transformInLanguages = (
-  data: MetaData,
+  data: Metadata,
   { icons, i18n }: MetaTransformConfig
 ): MetaItem | null => {
   if (!hasValue(data.inLanguages)) return null;
@@ -142,7 +142,7 @@ const transformInLanguages = (
 };
 
 const transformReadingTime = (
-  data: MetaData,
+  data: Metadata,
   { icons, i18n: { translate, translatePlural } }: MetaTransformConfig
 ): MetaItem | null => {
   if (!hasValue(data.readingTime)) return null;
@@ -164,7 +164,7 @@ const transformReadingTime = (
 };
 
 const transformIsArchived = (
-  data: MetaData,
+  data: Metadata,
   { icons, i18n: { translate } }: MetaTransformConfig
 ): MetaItem | null => {
   if (!hasValue(data.isArchived)) return null;
@@ -178,7 +178,7 @@ const transformIsArchived = (
 };
 
 const transformRepository = (
-  data: MetaData,
+  data: Metadata,
   { icons, i18n: { translate } }: MetaTransformConfig
 ): MetaItem | null => {
   if (!hasValue(data.repository)) return null;
@@ -191,7 +191,7 @@ const transformRepository = (
 };
 
 const transformCategory = (
-  data: MetaData,
+  data: Metadata,
   { icons, i18n: { translate } }: MetaTransformConfig
 ): MetaItem | null => {
   if (!hasValue(data.category)) return null;
@@ -204,7 +204,7 @@ const transformCategory = (
 };
 
 const transformTags = (
-  data: MetaData,
+  data: Metadata,
   { icons, i18n: { translatePlural } }: MetaTransformConfig
 ): MetaItem | null => {
   if (!hasValue(data.tags)) return null;
@@ -219,12 +219,12 @@ const transformTags = (
 /**
  * Transforms the given collections entries meta to valid meta items.
  *
- * @param {MetaData} data - The data to transform.
+ * @param {Metadata} data - The data to transform.
  * @param {MetaTransformConfig} config - The i18n context & optional icons.
  * @returns {MetaItem[]} The transformed metadata.
  */
 export const convertCollectionMetaToMetaItem = (
-  data: MetaData,
+  data: Metadata,
   config: MetaTransformConfig
 ): MetaItem[] => {
   const transformers = [

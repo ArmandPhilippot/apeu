@@ -12,7 +12,9 @@ type Props = Omit<
 
 const { class: className, slot, to, ...attrs } = Astro.props;
 
-if (!to.startsWith("#")) throw new InvalidAnchorFormatError("to", to);
+if (!to.startsWith("#")) {
+  throw new InvalidAnchorFormatError("to", { currentValue: to });
+}
 ---
 
 <Button

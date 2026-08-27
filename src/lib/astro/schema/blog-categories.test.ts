@@ -19,6 +19,10 @@ describe("blogCategories", () => {
     /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
     expect.assertions(4);
 
+    if (typeof blogCategories.schema !== "function") {
+      throw new TypeError("The schema is not callable");
+    }
+
     const category = {
       title: "The title of the category",
       description: "A description of the category.",
@@ -30,11 +34,6 @@ describe("blogCategories", () => {
       },
       updatedOn: new Date("2023-01-02"),
     };
-
-    if (typeof blogCategories.schema !== "function") {
-      throw new TypeError("The schema is not callable");
-    }
-
     const parsedSchema = blogCategories.schema({ image: mockImage });
     const result = await parsedSchema.safeParseAsync(category);
 
@@ -52,6 +51,10 @@ describe("blogCategories", () => {
     /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
     expect.assertions(4);
 
+    if (typeof blogCategories.schema !== "function") {
+      throw new TypeError("The schema is not callable");
+    }
+
     const category = {
       title: "The title of the category",
       description: "A description of the category.",
@@ -61,11 +64,6 @@ describe("blogCategories", () => {
         description: "Vel voluptatem laboriosam.",
       },
     };
-
-    if (typeof blogCategories.schema !== "function") {
-      throw new TypeError("The schema is not callable");
-    }
-
     const parsedSchema = blogCategories.schema({ image: mockImage });
     const result = await parsedSchema.safeParseAsync(category);
 

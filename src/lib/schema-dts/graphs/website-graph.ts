@@ -10,7 +10,7 @@ type CustomSearchAction = SearchAction & {
   "query-input": string;
 };
 
-type WebSiteGraphData = {
+type WebsiteGraphData = {
   description: string;
   locale: AvailableLocale;
   logo: string;
@@ -19,14 +19,14 @@ type WebSiteGraphData = {
 /**
  * Retrieve a Website graph from the given data.
  *
- * @param {WebSiteGraphData} data - The website data.
- * @returns {Promise<WebSite>} The Website graph.
+ * @param {WebsiteGraphData} data - Localized metadata used to build the schema.org WebSite object.
+ * @returns {Promise<WebSite>} A schema.org WebSite graph with author, license, and search action details.
  */
-export const getWebSiteGraph = async ({
+export const getWebsiteGraph = async ({
   description,
   locale,
   logo,
-}: WebSiteGraphData): Promise<WebSite> => {
+}: WebsiteGraphData): Promise<WebSite> => {
   const { translate } = useI18n(locale);
   const { routeById } = await useRouting(locale);
   const websiteAuthor = `${WEBSITE_URL}#author` as const;

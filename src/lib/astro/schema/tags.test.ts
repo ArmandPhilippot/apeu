@@ -19,6 +19,10 @@ describe("tags", () => {
     /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
     expect.assertions(4);
 
+    if (typeof tags.schema !== "function") {
+      throw new TypeError("The schema is not callable");
+    }
+
     const tag = {
       title: "The title of the tag",
       description: "A description of the tag.",
@@ -30,11 +34,6 @@ describe("tags", () => {
       },
       updatedOn: new Date("2023-01-02"),
     };
-
-    if (typeof tags.schema !== "function") {
-      throw new TypeError("The schema is not callable");
-    }
-
     const parsedSchema = tags.schema({ image: mockImage });
     const result = await parsedSchema.safeParseAsync(tag);
 
@@ -52,6 +51,10 @@ describe("tags", () => {
     /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
     expect.assertions(4);
 
+    if (typeof tags.schema !== "function") {
+      throw new TypeError("The schema is not callable");
+    }
+
     const tag = {
       title: "The title of the tag",
       description: "A description of the tag.",
@@ -61,11 +64,6 @@ describe("tags", () => {
         description: "Vel voluptatem laboriosam.",
       },
     };
-
-    if (typeof tags.schema !== "function") {
-      throw new TypeError("The schema is not callable");
-    }
-
     const parsedSchema = tags.schema({ image: mockImage });
     const result = await parsedSchema.safeParseAsync(tag);
 

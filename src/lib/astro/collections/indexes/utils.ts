@@ -30,7 +30,9 @@ export const flattenAndSortByHierarchy = <T extends { id: string }>(
  * @param {string} id - The id to clean.
  * @returns {string} The cleaned id.
  */
-const normalizeAuthorsId = (id: string): string => id.replace(/^authors\//, "");
+const AUTHORS_ID_PREFIX_REGEX = /^authors\//;
+const normalizeAuthorsId = (id: string): string =>
+  id.replace(AUTHORS_ID_PREFIX_REGEX, "");
 
 /**
  * Normalize an id in the pages collection by removing the virtual `pages` directory from the id.

@@ -111,7 +111,7 @@ export function astroStories({
 }: AstroStoriesConfig): AstroIntegration {
   const integrationName = "astro-stories";
   const pluginResolveIdFilter = `virtual:${integrationName}`;
-  const pluginLoadIdFilter = `\u0000${pluginResolveIdFilter}`;
+  const pluginLoadIdFilter = `\u{0}${pluginResolveIdFilter}`;
 
   return {
     name: integrationName,

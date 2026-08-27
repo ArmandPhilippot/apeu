@@ -3,6 +3,8 @@ import { expect, test, type APIRequestContext } from "@playwright/test";
 import { SMTP_CATCHER_CONTROL_URL } from "./utils/smtp-catcher-config.ts";
 import type { CaughtMessage } from "./utils/smtp-catcher.ts";
 
+const NON_EMPTY_TEXT_REGEX = /./;
+
 /**
  * Poll the SMTP catcher until a message matching `predicate` shows up.
  *
@@ -56,7 +58,7 @@ test("submitting the contact form delivers the message through the real API and 
   await page.getByLabel("Message").fill(message);
   await page.getByRole("button", { name: "Send email" }).click();
 
-  await expect(page.getByRole("alert")).toContainText(/./);
+  await expect(page.getByRole("alert")).toContainText(NON_EMPTY_TEXT_REGEX);
 
   const caught = await findCaughtMessage(request, (caughtMessage) =>
     Boolean(caughtMessage.subject?.includes(nonce))

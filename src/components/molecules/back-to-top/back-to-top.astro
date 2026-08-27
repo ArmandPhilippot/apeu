@@ -29,7 +29,7 @@ const {
 } = Astro.props;
 
 if (!anchor.startsWith("#")) {
-  throw new InvalidAnchorFormatError("anchor", anchor);
+  throw new InvalidAnchorFormatError("anchor", { currentValue: anchor });
 }
 ---
 

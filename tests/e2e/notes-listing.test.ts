@@ -2,6 +2,10 @@ import { expect, test } from "@playwright/test";
 import en from "../../src/translations/en.json" with { type: "json" };
 import fr from "../../src/translations/fr.json" with { type: "json" };
 
+const NOTES_COUNT_REGEX = /^\d+ notes?$/;
+const FR_NOTE_URL_REGEX = /\/notes\/.+$/;
+const EN_NOTE_URL_REGEX = /\/en\/notes\/.+$/;
+
 /* Notes accumulate over time, so this checks structure only (title, total count
  * pattern, at least one card) */
 test.describe("Notes listing", () => {
@@ -12,7 +16,7 @@ test.describe("Notes listing", () => {
 
     await expect(page).toHaveTitle("Notes | Armand Philippot");
     await expect(main.getByRole("heading", { level: 1 })).toHaveText("Notes");
-    await expect(main.getByText(/^\d+ notes?$/)).toBeVisible();
+    await expect(main.getByText(NOTES_COUNT_REGEX)).toBeVisible();
     await expect(main.getByRole("heading", { level: 2 }).first()).toBeVisible();
   });
 
@@ -32,7 +36,7 @@ test.describe("Notes listing", () => {
       .filter({ hasText: fr["cta.read.more"] })
       .click();
 
-    await expect(page).toHaveURL(/\/notes\/.+$/);
+    await expect(page).toHaveURL(FR_NOTE_URL_REGEX);
   });
 
   test("renders the English notes listing", async ({ page }) => {
@@ -42,7 +46,7 @@ test.describe("Notes listing", () => {
 
     await expect(page).toHaveTitle("Notes | Armand Philippot");
     await expect(main.getByRole("heading", { level: 1 })).toHaveText("Notes");
-    await expect(main.getByText(/^\d+ notes?$/)).toBeVisible();
+    await expect(main.getByText(NOTES_COUNT_REGEX)).toBeVisible();
     await expect(main.getByRole("heading", { level: 2 }).first()).toBeVisible();
   });
 
@@ -60,6 +64,6 @@ test.describe("Notes listing", () => {
       .filter({ hasText: en["cta.read.more"] })
       .click();
 
-    await expect(page).toHaveURL(/\/en\/notes\/.+$/);
+    await expect(page).toHaveURL(EN_NOTE_URL_REGEX);
   });
 });

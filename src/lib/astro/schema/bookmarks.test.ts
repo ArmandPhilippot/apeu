@@ -18,6 +18,10 @@ describe("bookmarks", () => {
     /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
     expect.assertions(4);
 
+    if (typeof bookmarks.schema !== "function") {
+      throw new TypeError("The schema is not callable");
+    }
+
     const bookmark = {
       title: "The title of the bookmark",
       description: "A description of the bookmark.",
@@ -26,11 +30,6 @@ describe("bookmarks", () => {
       publishedOn: new Date("2023-01-01"),
       url: "https://example.test",
     };
-
-    if (typeof bookmarks.schema !== "function") {
-      throw new TypeError("The schema is not callable");
-    }
-
     const parsedSchema = bookmarks.schema({ image: mockImage });
     const result = await parsedSchema.safeParseAsync(bookmark);
 
@@ -48,6 +47,10 @@ describe("bookmarks", () => {
     /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
     expect.assertions(3);
 
+    if (typeof bookmarks.schema !== "function") {
+      throw new TypeError("The schema is not callable");
+    }
+
     const bookmark = {
       title: "The title of the bookmark",
       description: "A description of the bookmark.",
@@ -55,11 +58,6 @@ describe("bookmarks", () => {
       url: "https://example.test",
       inLanguage: "en",
     };
-
-    if (typeof bookmarks.schema !== "function") {
-      throw new TypeError("The schema is not callable");
-    }
-
     const parsedSchema = bookmarks.schema({ image: mockImage });
     const result = await parsedSchema.safeParseAsync(bookmark);
 

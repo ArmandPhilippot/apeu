@@ -134,7 +134,7 @@ const isValidRelatedCollectionKey = (
  *
  * @param {Pick<PageWithRelatedEntries<"index.pages" | "pages">, "id" | "locale">} page - The index page id and locale.
  * @returns {ListableCollectionKey | ListableCollectionKey[]} The collection names to display.
- * @throws If the page or the collection name is invalid.
+ * @throws {Error} If the page or the collection name is invalid.
  */
 export const getPageRelatedCollectionKeys = ({
   id,

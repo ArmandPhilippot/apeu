@@ -19,6 +19,10 @@ describe("projects", () => {
     /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
     expect.assertions(4);
 
+    if (typeof projects.schema !== "function") {
+      throw new TypeError("The schema is not callable");
+    }
+
     const project = {
       title: "The title of the project",
       description: "A description of the project.",
@@ -31,11 +35,6 @@ describe("projects", () => {
       },
       updatedOn: new Date("2023-01-02"),
     };
-
-    if (typeof projects.schema !== "function") {
-      throw new TypeError("The schema is not callable");
-    }
-
     const parsedSchema = projects.schema({ image: mockImage });
     const result = await parsedSchema.safeParseAsync(project);
 
@@ -53,6 +52,10 @@ describe("projects", () => {
     /* eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Self-explanatory. */
     expect.assertions(5);
 
+    if (typeof projects.schema !== "function") {
+      throw new TypeError("The schema is not callable");
+    }
+
     const project = {
       title: "The title of the project",
       description: "A description of the project.",
@@ -63,11 +66,6 @@ describe("projects", () => {
         description: "Vel voluptatem laboriosam.",
       },
     };
-
-    if (typeof projects.schema !== "function") {
-      throw new TypeError("The schema is not callable");
-    }
-
     const parsedSchema = projects.schema({ image: mockImage });
     const result = await parsedSchema.safeParseAsync(project);
 

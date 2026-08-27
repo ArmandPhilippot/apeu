@@ -15,7 +15,7 @@ const replaceInterpolationsInMsg = (
   let updatedMsg = message;
 
   for (const [placeholder, value] of Object.entries(interpolations)) {
-    updatedMsg = updatedMsg.replace(`{${placeholder}}`, `${value}`);
+    updatedMsg = updatedMsg.replace(`{${placeholder}}`, () => String(value));
   }
 
   return updatedMsg;
@@ -93,7 +93,7 @@ export const useI18n: UseI18n = (
 
     return replaceInterpolationsInMsg(message, {
       ...interpolations,
-      count: `${count}`,
+      count: String(count),
     });
   };
 

@@ -50,7 +50,7 @@ export const buildToc = (headings: MarkdownHeading[]): HeadingNode[] => {
     const { parentIndex, ...node } = heading;
     const parentHeading = headingsTree[parentIndex];
 
-    if (parentIndex >= 0 && parentHeading !== undefined) {
+    if (parentHeading !== undefined && parentIndex >= 0) {
       parentHeading.children?.push(node);
     } else {
       toc.push(node);

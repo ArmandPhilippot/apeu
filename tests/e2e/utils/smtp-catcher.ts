@@ -42,7 +42,7 @@ const smtpServer = new SMTPServer({
    * TLS certificate. */
   disabledCommands: ["AUTH", "STARTTLS"],
   onData(stream, _session: SMTPServerSession, callback) {
-    simpleParser(stream)
+    void simpleParser(stream)
       .then((parsed) => {
         messages.push({
           from: singleAddressText(parsed.from),

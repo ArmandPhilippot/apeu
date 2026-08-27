@@ -53,7 +53,7 @@ const pages = getPagination({
 });
 const hasPreviousPage = current > 1;
 const hasNextPage = current < last;
-const ellipsis = "\u2026" as const;
+const ellipsis = "\u{2026}" as const;
 ---
 
 <nav
@@ -67,7 +67,7 @@ const ellipsis = "\u2026" as const;
         <ListItem>
           <Button
             aria-label={translate("pagination.previous.page.a11y", {
-              number: `${current - 1}`,
+              number: String(current - 1),
             })}
             as="a"
             class="pagination-link"
@@ -86,14 +86,13 @@ const ellipsis = "\u2026" as const;
     {
       pages.map((page, index, list) => {
         const isCurrentPage = page === current;
-        const nextPage = list[index + 1];
 
         if (isCurrentPage) {
           return (
             <ListItem>
               <span
                 aria-label={translate("pagination.item.current.a11y", {
-                  number: `${page}`,
+                  number: String(page),
                 })}
                 class:list={["pagination-link", "disabled"]}
               >
@@ -103,12 +102,14 @@ const ellipsis = "\u2026" as const;
           );
         }
 
+        const nextPage = list[index + 1];
+
         return (
           <Fragment>
             <ListItem>
               <Button
                 aria-label={translate("pagination.item.a11y", {
-                  number: `${page}`,
+                  number: String(page),
                 })}
                 as="a"
                 class="pagination-link"
@@ -121,8 +122,8 @@ const ellipsis = "\u2026" as const;
               <ListItem>
                 <span
                   aria-label={translate("pagination.ellipsis.a11y", {
-                    from: `${page + 1}`,
-                    to: `${nextPage - 1}`,
+                    from: String(page + 1),
+                    to: String(nextPage - 1),
                   })}
                   class="pagination-link"
                 >
@@ -139,7 +140,7 @@ const ellipsis = "\u2026" as const;
         <ListItem>
           <Button
             aria-label={translate("pagination.next.page.a11y", {
-              number: `${current + 1}`,
+              number: String(current + 1),
             })}
             as="a"
             class="pagination-link"

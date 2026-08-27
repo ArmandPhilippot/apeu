@@ -3,6 +3,9 @@ import type { ComponentProps } from "astro/types";
 import { beforeEach, describe, expect, it } from "vitest";
 import ListingPage from "./listing-page.astro";
 
+const DEFAULT_SIZE_MIN_COLS_REGEX = /--size-min-cols: 30em/;
+const PROVIDED_SIZE_MIN_COLS_REGEX = /--size-min-cols: 22em/;
+
 type LocalTestContext = {
   container: AstroContainer;
 };
@@ -100,7 +103,7 @@ describe("ListingPage", () => {
       props,
     });
 
-    expect(result).toMatch(/--size-min-cols: 30em/);
+    expect(result).toMatch(DEFAULT_SIZE_MIN_COLS_REGEX);
   });
 
   it<LocalTestContext>("uses the provided minimum card size when set", async ({
@@ -120,6 +123,6 @@ describe("ListingPage", () => {
       props,
     });
 
-    expect(result).toMatch(/--size-min-cols: 22em/);
+    expect(result).toMatch(PROVIDED_SIZE_MIN_COLS_REGEX);
   });
 });

@@ -165,10 +165,12 @@ export function mergeEntriesByCollection(
   const result: EntriesByCollection = { ...base };
 
   for (const [collection, entries] of Object.entries(override)) {
-    if (Array.isArray(entries)) {
-      const key = collection as CollectionKey;
-      result[key] = [...(result[key] ?? []), ...entries];
+    if (!Array.isArray(entries)) {
+      continue;
     }
+
+    const key = collection as CollectionKey;
+    result[key] = [...(result[key] ?? []), ...entries];
   }
 
   return result;
@@ -266,7 +268,7 @@ export const setupCollectionMocks = (
       return mockedEntries.filter((entry) => {
         const matchesCollection = entry.collection === collection;
         const passesFilter =
-          typeof filterFn === "function" ? Boolean(filterFn(entry)) : true;
+          typeof filterFn === "function" ? filterFn(entry) : true;
         return matchesCollection && passesFilter;
       });
     }

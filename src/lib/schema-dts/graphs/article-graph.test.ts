@@ -5,6 +5,7 @@ import {
   setupCollectionMocks,
 } from "../../../../tests/helpers/astro-content";
 import { CONFIG } from "../../../utils/constants";
+import { compareNonAsciiStrings } from "../../../utils/sorting";
 import { clearEntriesIndexCache } from "../../astro/collections/indexes";
 import { getArticleGraph } from "./article-graph";
 
@@ -358,8 +359,8 @@ describe("getArticleGraph", () => {
         "wordCount",
       ];
 
-      expect(Object.keys(graph).toSorted()).toStrictEqual(
-        expectedKeys.toSorted()
+      expect(Object.keys(graph).toSorted(compareNonAsciiStrings)).toStrictEqual(
+        expectedKeys.toSorted(compareNonAsciiStrings)
       );
 
       // Use a small structural snapshot

@@ -1,5 +1,3 @@
-import type { CollectionEntry, CollectionKey } from "astro:content";
-
 /**
  * Flattens the entries and sorts them to ensure parent (index) pages
  * appear before their child pages — based on the `id` order.
@@ -23,36 +21,3 @@ export const flattenAndSortByHierarchy = <T extends { id: string }>(
     // Then sort alphabetically for consistent ordering
     return a.id.localeCompare(b.id);
   });
-
-/**
- * Normalize an id in the authors collection by removing the virtual `authors` directory from the id.
- *
- * @param {string} id - The id to clean.
- * @returns {string} The cleaned id.
- */
-const AUTHORS_ID_PREFIX_REGEX = /^authors\//;
-const normalizeAuthorsId = (id: string): string =>
-  id.replace(AUTHORS_ID_PREFIX_REGEX, "");
-
-/**
- * Normalize an id in the pages collection by removing the virtual `pages` directory from the id.
- *
- * @param {string} id - The id to clean.
- * @returns {string} The cleaned id.
- */
-export const normalizePagesId = (id: string): string =>
-  id.replace("/pages/", "/");
-
-/**
- * Normalize an id in the a collection by removing the virtual directory from the id.
- *
- * @param {string} entry - A collection entry.
- * @returns {string} The cleaned id.
- */
-export const normalizeEntryId = (
-  entry: CollectionEntry<CollectionKey>
-): string => {
-  if (entry.collection === "authors") return normalizeAuthorsId(entry.id);
-  if (entry.collection === "pages") return normalizePagesId(entry.id);
-  return entry.id;
-};

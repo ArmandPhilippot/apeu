@@ -19,40 +19,18 @@ import type {
   RoutableCollectionKey,
   RoutableIndexedEntry,
 } from "../types";
-import { flattenAndSortByHierarchy, normalizeEntryId } from "./utils";
+import { flattenAndSortByHierarchy } from "./utils";
 
 /**
- * Loads and normalizes all entries for a given collection.
- *
- * If the collection is `pages`, it will normalize entry IDs
- * to remove the language prefix from the root route.
- * Otherwise, it simply returns the collection's entries as-is.
- *
- * @param {CollectionKey} collection - The name of the content collection to load.
- * @returns {Promise<CollectionEntry<CollectionKey>>} A promise that resolves to the array of collection entries.
- */
-const fetchCollectionEntries = async (
-  collection: CollectionKey
-): Promise<CollectionEntry<CollectionKey>[]> => {
-  const entries = await getCollection(collection);
-  return entries.map((entry) => {
-    return {
-      ...entry,
-      id: normalizeEntryId(entry),
-    };
-  });
-};
-
-/**
- * Fetches and flattens all entries from all defined collections,
- * ensuring parent pages are ordered before child pages.
+ * Fetches and flattens all entries from all defined collections, ensuring
+ * parent pages are ordered before child pages.
  *
  * @returns {Promise<CollectionEntry<CollectionKey>[]>} A sorted flat array of all collection entries.
  */
 const getAllEntries = async (): Promise<CollectionEntry<CollectionKey>[]> => {
   const allCollections = Object.keys(collections) as CollectionKey[];
   const allEntries = await Promise.all(
-    allCollections.map(fetchCollectionEntries)
+    allCollections.map(async (collection) => getCollection(collection))
   );
 
   return flattenAndSortByHierarchy(allEntries);

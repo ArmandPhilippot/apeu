@@ -60,7 +60,7 @@ describe("getBreadcrumb", () => {
       pages: [
         {
           collection: "pages",
-          id: "en/pages/home",
+          id: "en/home",
           data: { title: "Home" },
         },
         {
@@ -70,7 +70,7 @@ describe("getBreadcrumb", () => {
         },
         {
           collection: "pages",
-          id: "fr/pages/home",
+          id: "fr/home",
           data: { title: "Accueil" },
         },
         {

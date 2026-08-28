@@ -3,7 +3,6 @@ import en from "../../src/translations/en.json" with { type: "json" };
 import fr from "../../src/translations/fr.json" with { type: "json" };
 
 // cSpell:ignore trouvé
-const HTTP_OK = 200;
 const HTTP_NOT_FOUND = 404;
 
 test.describe("Not found page", () => {
@@ -24,9 +23,6 @@ test.describe("Not found page", () => {
     ).toBeVisible();
   });
 
-  /* The Node adapter doesn't know about locale prefixes, so serving the
-   * localized 404 page for an unknown /en/* path relies on a host-level
-   * rewrite. Only the 404 status itself is guaranteed here. */
   test("still returns a 404 status for an unknown path under /en/", async ({
     page,
   }) => {
@@ -40,7 +36,7 @@ test.describe("Not found page", () => {
   }) => {
     const response = await page.goto("/en/404");
 
-    expect(response?.status()).toBe(HTTP_OK);
+    expect(response?.status()).toBe(HTTP_NOT_FOUND);
     await expect(page).toHaveTitle("404 - Not found | Armand Philippot");
     await expect(page.getByRole("heading", { level: 1 })).toHaveText(
       "Not found"

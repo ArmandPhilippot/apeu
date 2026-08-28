@@ -12,6 +12,7 @@ describe("getStories", () => {
       base: "/base",
       paths: [],
       src: import.meta.dirname,
+      trailingSlash: "ignore",
     });
 
     expect(result).toStrictEqual({
@@ -33,6 +34,7 @@ describe("getStories", () => {
       base: "/somewhere",
       paths: ["button.stories.mdx"],
       src: import.meta.dirname,
+      trailingSlash: "ignore",
     });
 
     expect(result.button).toStrictEqual({
@@ -55,6 +57,7 @@ describe("getStories", () => {
       base: "/somewhere",
       paths: ["stories/example.mdx"],
       src: import.meta.dirname,
+      trailingSlash: "ignore",
     });
 
     expect(result.example).toStrictEqual({
@@ -77,6 +80,7 @@ describe("getStories", () => {
       base: "/somewhere",
       paths: ["components/button.mdx", "components/input.mdx"],
       src: import.meta.dirname,
+      trailingSlash: "ignore",
     });
 
     expect(result.components).toStrictEqual({
@@ -100,6 +104,7 @@ describe("getStories", () => {
       base: "/design-system",
       paths: ["components/atoms/blockquote.mdx", "tokens/colors.mdx"],
       src: import.meta.dirname,
+      trailingSlash: "ignore",
     });
 
     expect(result.components).toMatchObject({
@@ -120,6 +125,7 @@ describe("getStories", () => {
         base: "/somewhere",
         paths: ["button.stories.mdx"],
         src: import.meta.dirname,
+        trailingSlash: "ignore",
       });
 
       expect(result.button).toBeDefined();
@@ -131,6 +137,7 @@ describe("getStories", () => {
         base: "/somewhere",
         paths: ["stories/button.mdx"],
         src: import.meta.dirname,
+        trailingSlash: "ignore",
       });
 
       expect(result.button?.route).toBe("/somewhere/button");
@@ -141,6 +148,7 @@ describe("getStories", () => {
         base: "/somewhere",
         paths: ["component/stories/story/stories/first-story.mdx"],
         src: import.meta.dirname,
+        trailingSlash: "ignore",
       });
 
       expect(result["component/stories/story/first-story"]?.route).toBe(
@@ -153,11 +161,84 @@ describe("getStories", () => {
         base: "/somewhere",
         paths: ["component/button/button.stories.mdx"],
         src: import.meta.dirname,
+        trailingSlash: "ignore",
       });
 
       expect(result["component/button"]?.route).toBe(
         "/somewhere/component/button"
       );
+    });
+  });
+
+  describe("trailingSlash behavior", () => {
+    it("appends a trailing slash to every route when set to always", () => {
+      const result = getStories({
+        base: "/design-system",
+        paths: ["components/button.mdx"],
+        src: import.meta.dirname,
+        trailingSlash: "always",
+      });
+
+      expect(result.components).toStrictEqual({
+        breadcrumb: [
+          { label: "Home", path: "/" },
+          { label: "Design System", path: "/design-system/" },
+          { label: "Components", path: "/design-system/components/" },
+        ],
+        children: [
+          { label: "Button", path: "/design-system/components/button/" },
+        ],
+        label: "Components",
+        route: "/design-system/components/",
+        type: "index",
+      });
+      expect(result["components/button"]?.route).toBe(
+        "/design-system/components/button/"
+      );
+      expect(result["components/button"]?.breadcrumb.at(-1)).toStrictEqual({
+        label: "Button",
+        path: "/design-system/components/button/",
+      });
+    });
+
+    it("keeps routes without a trailing slash when set to never", () => {
+      const result = getStories({
+        base: "/design-system",
+        paths: ["components/button.mdx"],
+        src: import.meta.dirname,
+        trailingSlash: "never",
+      });
+
+      expect(result.components).toStrictEqual({
+        breadcrumb: [
+          { label: "Home", path: "/" },
+          { label: "Design System", path: "/design-system" },
+          { label: "Components", path: "/design-system/components" },
+        ],
+        children: [
+          { label: "Button", path: "/design-system/components/button" },
+        ],
+        label: "Components",
+        route: "/design-system/components",
+        type: "index",
+      });
+      expect(result["components/button"]?.route).toBe(
+        "/design-system/components/button"
+      );
+    });
+
+    it("keeps the home breadcrumb pointing at the root route", () => {
+      const result = getStories({
+        base: "/design-system",
+        paths: ["components/button.mdx"],
+        src: import.meta.dirname,
+        trailingSlash: "always",
+      });
+
+      expect(result["components/button"]?.breadcrumb[0]).toStrictEqual({
+        label: "Home",
+        path: "/",
+      });
     });
   });
 });

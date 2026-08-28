@@ -137,6 +137,7 @@ export function astroStories({
           base: sanitizedBase,
           paths: mdxPaths,
           src,
+          trailingSlash: config.trailingSlash,
         });
         const { storyModules, storyRegistryModule } =
           createRegistryModules(stories);

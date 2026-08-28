@@ -1,5 +1,37 @@
 # apeu
 
+## 2.3.0
+
+### Minor Changes
+
+- 3d49083: Enforces trailing slash on routes.
+  
+  Previously, routes could be accessed with or without a trailing slash. This change enforces trailing slashes on all routes except file endpoints. This can help with SEO and consistency.
+  
+  If you have links pointing to routes without trailing slashes, you may need to update them to include the trailing slash or set up redirects at the hosting level to ensure they resolve correctly.
+- 0288c89: Migrates the Pagefind integration to the Node.js API and builds the search index automatically in dev mode.
+  
+  The search index is now built using [Pagefind's Node.js API](https://pagefind.app/docs/node-api/) instead of spawning the `pagefind` CLI through `npx`. Build output is quieter as a result: a single summary line replaces the previous verbose CLI logs.
+  
+  In dev mode, if no search index is found, the project is now built once automatically before the dev server starts, instead of only warning that you need to run `pnpm build` manually. This means the first `pnpm dev` run after cloning (or after deleting `dist/`) takes longer, but search works out of the box afterwards.
+  
+  To use a fresh index in dev mode after making changes, you still need to run `pnpm build` before `pnpm dev`.
+
+### Patch Changes
+
+- 0288c89: Fixes an incorrect note in the docs regarding the Search integration.
+  
+  The Search integration is still in use. The note belonged to the dev-only pages integration, which was removed in a previous release.
+- e0aff40: Fixes broken navigation under the `astro-stories` base route when the project sets `trailingSlash: "always"`.
+  
+  The integration now reads the `trailingSlash` option from the Astro config and normalizes every computed route accordingly, so it works with `"always"`, `"never"` and `"ignore"` without enforcing a single convention.
+- 7c90a8c: Improves readability by adding spacing between elements inside the callouts.
+- 1258510: Fixes the `Invalid content reference` warnings logged during builds for the `authors` and `pages` collections.
+  
+  If you use the recommended `queryCollection()`, you don't have to change anything in your code.
+  
+  If you use `getCollection()` and your references start with `authors/` or `pages/`, you need to drop the prefix to match the entry ids.
+
 ## 2.2.1
 
 ### Patch Changes

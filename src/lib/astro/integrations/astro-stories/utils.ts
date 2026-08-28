@@ -1,10 +1,43 @@
 import { basename, join, parse } from "node:path";
+import type { AstroConfig } from "astro";
 import type { Route } from "../../../../types/data";
-import { getCumulativePaths, splitPath } from "../../../../utils/paths";
+import {
+  getCumulativePaths,
+  splitPath,
+  withoutTrailingSlash,
+  withTrailingSlash,
+} from "../../../../utils/paths";
 import { capitalizeFirstLetter } from "../../../../utils/strings";
 import type { Stories, StoriesIndex, Story } from "./types/internal";
 
 const STORIES_SUFFIX_REGEX = /\.stories$/;
+
+/**
+ * The `trailingSlash` option from the resolved Astro config.
+ *
+ * @see https://docs.astro.build/en/reference/configuration-reference/#trailingslash
+ */
+export type TrailingSlash = AstroConfig["trailingSlash"];
+
+/**
+ * Normalize a route so its trailing slash matches the project's routing rules.
+ *
+ * Routes are always computed internally without a trailing slash (it makes the
+ * ancestor/breadcrumb bookkeeping simpler). This applies the `trailingSlash`
+ * Astro option to the routes that are actually rendered as links, so the
+ * integration behaves in any project regardless of that option.
+ *
+ * @param {string} route - The route to normalize.
+ * @param {TrailingSlash} trailingSlash - The `trailingSlash` Astro option.
+ * @returns {string} The normalized route.
+ */
+const applyTrailingSlash = (
+  route: string,
+  trailingSlash: TrailingSlash
+): string =>
+  trailingSlash === "always"
+    ? withTrailingSlash(route)
+    : withoutTrailingSlash(route);
 
 /**
  * Remove the `.stories` suffix from the given string.
@@ -163,6 +196,8 @@ type GenerateBreadcrumbConfig = {
   route: string;
   /** Map of routes to their labels. */
   routeMap: Map<string, Route>;
+  /** The `trailingSlash` option from the Astro config. */
+  trailingSlash: TrailingSlash;
 };
 
 /**
@@ -174,6 +209,7 @@ type GenerateBreadcrumbConfig = {
 const generateBreadcrumb = ({
   route,
   routeMap,
+  trailingSlash,
 }: GenerateBreadcrumbConfig): Route[] => {
   const breadcrumb: Route[] = [{ label: "Home", path: "/" }];
   const pathParts = route.split("/").filter(Boolean);
@@ -183,7 +219,10 @@ const generateBreadcrumb = ({
     const routeInfo = routeMap.get(currentPath);
 
     if (routeInfo !== undefined) {
-      breadcrumb.push(routeInfo);
+      breadcrumb.push({
+        ...routeInfo,
+        path: applyTrailingSlash(routeInfo.path, trailingSlash),
+      });
     }
   }
 
@@ -193,41 +232,56 @@ const generateBreadcrumb = ({
 type FormatStoryConfig = {
   routeMap: Map<string, Route>;
   story: StoryPathInfo;
+  /** The `trailingSlash` option from the Astro config. */
+  trailingSlash: TrailingSlash;
 };
 
-const formatStory = ({ routeMap, story }: FormatStoryConfig): Story => {
+const formatStory = ({
+  routeMap,
+  story,
+  trailingSlash,
+}: FormatStoryConfig): Story => {
   const { ancestors, route, ...remainingData } = story;
   return {
     ...remainingData,
-    breadcrumb: generateBreadcrumb({ route, routeMap }),
-    route,
+    breadcrumb: generateBreadcrumb({ route, routeMap, trailingSlash }),
+    route: applyTrailingSlash(route, trailingSlash),
     type: "story",
   };
 };
 
 const formatIndex = (
   currentIndex: IndexPathInfo,
-  routeMap: Map<string, Route>
+  routeMap: Map<string, Route>,
+  trailingSlash: TrailingSlash
 ): StoriesIndex => {
   const { label, route } = currentIndex;
-  const children = [...routeMap.values()].filter(({ path: childRoute }) => {
-    if (childRoute === route) return false;
-    const parentRoute = childRoute.slice(0, childRoute.lastIndexOf("/"));
-    return parentRoute === route;
-  });
+  const children = [...routeMap.values()]
+    .filter(({ path: childRoute }) => {
+      if (childRoute === route) return false;
+      const parentRoute = childRoute.slice(0, childRoute.lastIndexOf("/"));
+      return parentRoute === route;
+    })
+    .map((child) => {
+      return {
+        ...child,
+        path: applyTrailingSlash(child.path, trailingSlash),
+      };
+    });
 
   return {
     type: "index",
-    breadcrumb: generateBreadcrumb({ route, routeMap }),
+    breadcrumb: generateBreadcrumb({ route, routeMap, trailingSlash }),
     children,
     label,
-    route,
+    route: applyTrailingSlash(route, trailingSlash),
   };
 };
 
 const formatStories = (
   stories: StoryPathInfo[],
-  indexes: IndexPathInfo[]
+  indexes: IndexPathInfo[],
+  trailingSlash: TrailingSlash
 ): Stories => {
   const routeMap = new Map<string, Route>(
     [...indexes, ...stories].map(({ label, route }) => [
@@ -236,10 +290,12 @@ const formatStories = (
     ])
   );
   const formattedStories = stories.map(
-    (story) => [story.slug, formatStory({ routeMap, story })] as const
+    (story) =>
+      [story.slug, formatStory({ routeMap, story, trailingSlash })] as const
   );
   const formattedIndexes = indexes.map(
-    (index) => [index.slug, formatIndex(index, routeMap)] as const
+    (index) =>
+      [index.slug, formatIndex(index, routeMap, trailingSlash)] as const
   );
 
   return Object.fromEntries([...formattedIndexes, ...formattedStories]);
@@ -252,6 +308,11 @@ type GetStoriesConfig = {
   paths: string[];
   /** An absolute path to the source directory. */
   src: string;
+  /**
+   * The `trailingSlash` option from the Astro config. The computed routes honor
+   * it so the integration works no matter how the host project is configured.
+   */
+  trailingSlash: TrailingSlash;
 };
 
 /**
@@ -260,7 +321,12 @@ type GetStoriesConfig = {
  * @param {GetStoriesConfig} config - A configuration object.
  * @returns {Stories} An object mapping a slug to either a story or an index.
  */
-export const getStories = ({ base, paths, src }: GetStoriesConfig): Stories => {
+export const getStories = ({
+  base,
+  paths,
+  src,
+  trailingSlash,
+}: GetStoriesConfig): Stories => {
   const stories = paths.map((path) => parseStoryPath({ base, path, src }));
   const uniqueIndexes = new Set([
     ...stories.flatMap((story) => story.ancestors),
@@ -270,5 +336,5 @@ export const getStories = ({ base, paths, src }: GetStoriesConfig): Stories => {
     parseIndexRoute(route, base)
   );
 
-  return formatStories(stories, indexes);
+  return formatStories(stories, indexes, trailingSlash);
 };

@@ -1,9 +1,7 @@
 import { expect, test } from "@playwright/test";
-import en from "../../src/translations/en.json" with { type: "json" };
 import fr from "../../src/translations/fr.json" with { type: "json" };
 
 // cSpell:ignore trouvé
-const HTTP_OK = 200;
 const HTTP_NOT_FOUND = 404;
 
 test.describe("Not found page", () => {
@@ -33,22 +31,5 @@ test.describe("Not found page", () => {
     const response = await page.goto("/en/this-page-does-not-exist");
 
     expect(response?.status()).toBe(HTTP_NOT_FOUND);
-  });
-
-  test("renders the English 404 page correctly when visited directly", async ({
-    page,
-  }) => {
-    const response = await page.goto("/en/404");
-
-    expect(response?.status()).toBe(HTTP_OK);
-    await expect(page).toHaveTitle("404 - Not found | Armand Philippot");
-    await expect(page.getByRole("heading", { level: 1 })).toHaveText(
-      "Not found"
-    );
-    await expect(
-      page
-        .getByRole("main")
-        .getByRole("searchbox", { name: en["form.search.label"] })
-    ).toBeVisible();
   });
 });

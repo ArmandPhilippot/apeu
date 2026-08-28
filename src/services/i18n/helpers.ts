@@ -28,6 +28,7 @@ export const getCurrentLocale = (
  * @returns {boolean} True if the route starts with a supported locale.
  */
 export const isLocalizedRoute = (route: string): boolean => {
-  const [_, firstSegment] = route.split("/");
+  // eslint-disable-next-line @typescript-eslint/no-magic-numbers -- We only care about the first two segments.
+  const [_, firstSegment] = route.split("/", 2);
   return isAvailableLocale(firstSegment ?? "");
 };

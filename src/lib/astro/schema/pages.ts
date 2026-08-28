@@ -1,9 +1,10 @@
 import { defineCollection } from "astro:content";
 import { globLoader } from "../loaders";
+import { generatePageId } from "./generate-id";
 import { contentsBaseSchema, i18nSchema } from "./partials";
 
 export const pages = defineCollection({
-  loader: globLoader("pages"),
+  loader: globLoader("pages", { generateId: generatePageId }),
   schema: ({ image }) =>
     contentsBaseSchema(image)
       .extend({

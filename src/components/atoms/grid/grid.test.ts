@@ -3,6 +3,19 @@ import type { ComponentProps } from "astro/types";
 import { beforeEach, describe, expect, it } from "vitest";
 import Grid from "./grid.astro";
 
+const DIV_TAG_REGEX = /<div/;
+const SECTION_TAG_REGEX = /<section/;
+const GAP_MD_REGEX = /--gap: var\(--spacing-md\)/;
+const GAP_ROW_COL_REGEX = /--gap: var\(--spacing-sm\) var\(--spacing-lg\)/;
+const ALIGN_CONTENT_CENTER_REGEX = /--align-content: center/;
+const ALIGN_ITEMS_START_REGEX = /--align-items: start/;
+const JUSTIFY_CONTENT_SPACE_BETWEEN_REGEX = /--justify-content: space-between/;
+const JUSTIFY_ITEMS_END_REGEX = /--justify-items: end/;
+const SIZE_MIN_COLS_200PX_REGEX = /--size-min-cols: 200px/;
+const SIZE_MAX_COLS_1FR_REGEX = /--size-max-cols: 1fr/;
+const DATA_TESTID_GRID_TEST_REGEX = /data-testid="grid-test"/;
+const ID_MY_GRID_REGEX = /id="my-grid"/;
+
 type LocalTestContext = {
   container: AstroContainer;
 };
@@ -35,7 +48,7 @@ describe("Grid Component", () => {
         slots: { default: "test" },
       });
 
-      expect(result).toMatch(/<div/);
+      expect(result).toMatch(DIV_TAG_REGEX);
     });
 
     it<LocalTestContext>("should support polymorphic rendering with different tags", async ({
@@ -49,7 +62,7 @@ describe("Grid Component", () => {
         slots: { default: "test" },
       });
 
-      expect(result).toMatch(/<section/);
+      expect(result).toMatch(SECTION_TAG_REGEX);
     });
   });
 
@@ -65,7 +78,7 @@ describe("Grid Component", () => {
         slots: { default: "test" },
       });
 
-      expect(result).toMatch(/--gap: var\(--spacing-md\)/);
+      expect(result).toMatch(GAP_MD_REGEX);
     });
 
     it<LocalTestContext>("should generate correct CSS variables for row and column gaps", async ({
@@ -81,7 +94,7 @@ describe("Grid Component", () => {
         slots: { default: "test" },
       });
 
-      expect(result).toMatch(/--gap: var\(--spacing-sm\) var\(--spacing-lg\)/);
+      expect(result).toMatch(GAP_ROW_COL_REGEX);
     });
 
     it<LocalTestContext>("should apply alignment and justify props as CSS variables", async ({
@@ -101,10 +114,10 @@ describe("Grid Component", () => {
         slots: { default: "test" },
       });
 
-      expect(result).toMatch(/--align-content: center/);
-      expect(result).toMatch(/--align-items: start/);
-      expect(result).toMatch(/--justify-content: space-between/);
-      expect(result).toMatch(/--justify-items: end/);
+      expect(result).toMatch(ALIGN_CONTENT_CENTER_REGEX);
+      expect(result).toMatch(ALIGN_ITEMS_START_REGEX);
+      expect(result).toMatch(JUSTIFY_CONTENT_SPACE_BETWEEN_REGEX);
+      expect(result).toMatch(JUSTIFY_ITEMS_END_REGEX);
     });
   });
 
@@ -238,8 +251,8 @@ describe("Grid Component", () => {
         slots: { default: "test" },
       });
 
-      expect(result).toMatch(/--size-min-cols: 200px/);
-      expect(result).toMatch(/--size-max-cols: 1fr/);
+      expect(result).toMatch(SIZE_MIN_COLS_200PX_REGEX);
+      expect(result).toMatch(SIZE_MAX_COLS_1FR_REGEX);
     });
   });
 
@@ -259,8 +272,8 @@ describe("Grid Component", () => {
         slots: { default: "test" },
       });
 
-      expect(result).toMatch(/data-testid="grid-test"/);
-      expect(result).toMatch(/id="my-grid"/);
+      expect(result).toMatch(DATA_TESTID_GRID_TEST_REGEX);
+      expect(result).toMatch(ID_MY_GRID_REGEX);
     });
   });
 });

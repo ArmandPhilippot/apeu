@@ -51,5 +51,5 @@ export const GET: APIRoute = async (): Promise<Response> => {
   };
   /* eslint-enable camelcase */
 
-  return new Response(JSON.stringify(manifest));
+  return Response.json(manifest);
 };

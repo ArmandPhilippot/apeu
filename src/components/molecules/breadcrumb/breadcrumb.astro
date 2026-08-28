@@ -43,44 +43,42 @@ const scaleToRightTransition = {
   isInline
   spacing="2xs"
 >
-  {
-    items.map(({ label, path }, index, crumbs) => {
-      const isFirstItem = index === 0;
-      const isLastItem = index + 1 === crumbs.length;
+  {items.map(({ label, path }, index, crumbs) => {
+    const isFirstItem = index === 0;
+    const isLastItem = index + 1 === crumbs.length;
 
-      return (
-        <ListItem class="breadcrumb-item">
-          {isLastItem ? (
-            <span
-              aria-current="page"
-              class="breadcrumb-link"
-              transition:animate={scaleToRightTransition}
-              transition:name="breadcrumb-current"
-            >
+    return (
+      <ListItem class="breadcrumb-item">
+        {isLastItem ? (
+          <span
+            aria-current="page"
+            class="breadcrumb-link"
+            transition:animate={scaleToRightTransition}
+            transition:name="breadcrumb-current"
+          >
+            {label}
+          </span>
+        ) : (
+          <Fragment>
+            <Link class="breadcrumb-link" href={path}>
               {label}
-            </span>
-          ) : (
-            <Fragment>
-              <Link class="breadcrumb-link" href={path}>
-                {label}
-              </Link>
-              <Icon
-                aria-hidden="true"
-                class="breadcrumb-sep"
-                name="caret-right"
-                size="10"
-                {...(isFirstItem
-                  ? {}
-                  : {
-                      "transition:animate": scaleToRightTransition,
-                    })}
-              />
-            </Fragment>
-          )}
-        </ListItem>
-      );
-    })
-  }
+            </Link>
+            <Icon
+              aria-hidden="true"
+              class="breadcrumb-sep"
+              name="caret-right"
+              size="10"
+              {...(isFirstItem
+                ? {}
+                : {
+                    "transition:animate": scaleToRightTransition,
+                  })}
+            />
+          </Fragment>
+        )}
+      </ListItem>
+    );
+  })}
 </List>
 
 <style>

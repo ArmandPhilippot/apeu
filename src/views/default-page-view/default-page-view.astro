@@ -44,16 +44,14 @@ const graphs: ComponentProps<typeof Layout>["graphs"] = [
       content={page.meta.updatedOn.toISOString()}
       property="article:modified_time"
     />
-    {
-      "tags" in page.meta
-        ? page.meta.tags?.map((tag) => (
-            <meta content={tag.label} property="article:tag" />
-          ))
-        : null
-    }
+    {"tags" in page.meta
+      ? page.meta.tags?.map((tag) => (
+          <meta content={tag.label} property="article:tag" />
+        ))
+      : null}
   </Fragment>
   <ContentPage
-    {..."cover" in page ? { cover: page.cover } : {}}
+    {...("cover" in page ? { cover: page.cover } : {})}
     headings={page.headings}
     title={page.title}
   >

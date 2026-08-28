@@ -36,6 +36,7 @@ const isWordNodeType = (node: RootContent) => node.type === "WordNode";
 
 export const mdastWordsCount = defineMdastPlugin({
   name: "mdast-words-count",
+  options: { position: true },
   text: (node, ctx) => {
     if (ctx.data.wordsCountProcessed === true) return;
     // eslint-disable-next-line no-param-reassign -- We need to mark the words count as processed to avoid processing it multiple times.

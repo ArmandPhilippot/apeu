@@ -7,7 +7,8 @@ import {
 } from "../../../../../tests/helpers/astro-content";
 import { collections } from "../../../../content.config";
 import { clearEntriesIndexCache, getEntriesIndex } from "./entries-index";
-import { normalizePagesId } from "./utils";
+
+const EN_PREFIX_REGEX = /^en\//;
 
 vi.mock("astro:content", async (importOriginal) => {
   const mod = await importOriginal<typeof import("astro:content")>();
@@ -72,8 +73,8 @@ describe("getEntriesIndex", () => {
     expect.assertions(2);
 
     const mockEntries = createMockEntries([
-      { collection: "pages", id: "en/pages/about" },
-      { collection: "pages", id: "en/pages/contact" },
+      { collection: "pages", id: "en/about" },
+      { collection: "pages", id: "en/contact" },
     ]);
 
     setupCollectionMocks(mockEntries);
@@ -107,25 +108,24 @@ describe("getEntriesIndex", () => {
 
     const mockEntry = createMockEntry({
       collection: "pages",
-      id: "en/pages/about",
+      id: "en/about",
     });
 
     setupCollectionMocks([mockEntry]);
 
     const result = await getEntriesIndex();
-    const normalizedId = normalizePagesId(mockEntry.id);
-    const expectedRoute = `/${normalizedId.replace(/^en\//, "")}`;
-    const expectedSlug = normalizedId.split("/").pop();
-    const indexedEntryById = result.byId.get(normalizedId);
+    const expectedRoute = `/${mockEntry.id.replace(EN_PREFIX_REGEX, "")}`;
+    const expectedSlug = mockEntry.id.split("/").pop();
+    const indexedEntryById = result.byId.get(mockEntry.id);
     const indexedEntryByRoute = result.byRoute.get(`${expectedRoute}/`);
 
     expect(indexedEntryById).toStrictEqual({
-      raw: { ...mockEntry, id: normalizedId },
+      raw: mockEntry,
       route: `${expectedRoute}/`,
       slug: expectedSlug,
     });
     expect(indexedEntryByRoute).toStrictEqual({
-      raw: { ...mockEntry, id: normalizedId },
+      raw: mockEntry,
       route: `${expectedRoute}/`,
       slug: expectedSlug,
     });
@@ -220,18 +220,17 @@ describe("getEntriesIndex", () => {
 
     const mockEntry = createMockEntry({
       collection: "pages",
-      id: "en/pages/about",
+      id: "en/about",
     });
 
     setupCollectionMocks([mockEntry]);
 
     const result = await getEntriesIndex();
-    const normalizedId = normalizePagesId(mockEntry.id);
-    const indexedEntryById = result.byId.get(normalizedId);
+    const indexedEntryById = result.byId.get(mockEntry.id);
 
     expect(indexedEntryById).toMatchObject({
-      route: `${normalizedId.replace(/^en\//, "/")}/`,
-      slug: normalizedId.split("/").at(-1),
+      route: `${mockEntry.id.replace(EN_PREFIX_REGEX, "/")}/`,
+      slug: mockEntry.id.split("/").at(-1),
     });
   });
 
@@ -259,9 +258,9 @@ describe("getEntriesIndex", () => {
     expect.assertions(2);
 
     const mockEntries = createMockEntries([
-      { collection: "pages", id: "en/pages/about" },
-      { collection: "pages", id: "es/pages/about" },
-      { collection: "pages", id: "fr/pages/about" },
+      { collection: "pages", id: "en/about" },
+      { collection: "pages", id: "es/about" },
+      { collection: "pages", id: "fr/about" },
     ]);
 
     setupCollectionMocks(mockEntries);
@@ -282,7 +281,7 @@ describe("getEntriesIndex", () => {
       /* Empty */
     });
     const mockEntries = createMockEntries([
-      { collection: "pages", id: "en/pages/projects" },
+      { collection: "pages", id: "en/projects" },
       { collection: "index.pages", id: "en/projects" },
     ]);
 

@@ -51,13 +51,11 @@ const graphs: ComponentProps<typeof Layout>["graphs"] = [
     </p>
     <p>{translate("page.feeds.individual.feeds.introduction")}</p>
     <List>
-      {
-        feeds?.map((feed) => (
-          <ListItem>
-            <Link href={feed.path}>{feed.label}</Link>
-          </ListItem>
-        ))
-      }
+      {feeds?.map((feed) => (
+        <ListItem>
+          <Link href={feed.path}>{feed.label}</Link>
+        </ListItem>
+      ))}
     </List>
   </ContentPage>
 </Layout>

@@ -36,7 +36,7 @@ const defaultIconSize = hideLabel ? 32 : 22;
   {...attrs}
   as="a"
   class:list={[className, "social-link"]}
-  {...hideLabel && { "data-label": false }}
+  {...(hideLabel && { "data-label": false })}
   data-medium={medium}
   href={url}
   kind="discreet"

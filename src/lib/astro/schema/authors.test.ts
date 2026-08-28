@@ -22,16 +22,15 @@ const mockImage = vi.fn().mockReturnValue(
 
 describe("authors", () => {
   it("should include the full name in the transformed output", () => {
+    if (typeof authors.schema !== "function") {
+      throw new TypeError("The schema is not callable");
+    }
+
     const author = {
       firstName: "John",
       lastName: "Doe",
       isWebsiteOwner: true,
     };
-
-    if (typeof authors.schema !== "function") {
-      throw new TypeError("The schema is not callable");
-    }
-
     const parsedSchema = authors.schema({ image: mockImage });
     const result = parsedSchema.safeParse(author);
 
@@ -48,15 +47,14 @@ describe("authors", () => {
   });
 
   it("should apply default values as expected", () => {
-    const author = {
-      firstName: "John",
-      lastName: "Doe",
-    };
-
     if (typeof authors.schema !== "function") {
       throw new TypeError("The schema is not callable");
     }
 
+    const author = {
+      firstName: "John",
+      lastName: "Doe",
+    };
     const parsedSchema = authors.schema({ image: mockImage });
     const result = parsedSchema.safeParse(author);
 
@@ -69,6 +67,10 @@ describe("authors", () => {
   });
 
   it("can combine both IPA transcriptions in the transformed output", () => {
+    if (typeof authors.schema !== "function") {
+      throw new TypeError("The schema is not callable");
+    }
+
     const author = {
       firstName: "John",
       // cSpell:ignore ˈdʒɑn
@@ -77,11 +79,6 @@ describe("authors", () => {
       // cSpell:ignore ˈdoʊ
       lastNameIPA: "/ˈdoʊ/",
     };
-
-    if (typeof authors.schema !== "function") {
-      throw new TypeError("The schema is not callable");
-    }
-
     const parsedSchema = authors.schema({ image: mockImage });
     const result = parsedSchema.safeParse(author);
 

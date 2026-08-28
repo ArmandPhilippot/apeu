@@ -58,13 +58,11 @@ const graphs: ComponentProps<typeof Layout>["graphs"] = [
 >
   <header class="blog-index-header">
     <h1 class="blog-index-title">{page.title}</h1>
-    {
-      hasContent ? (
-        <div class="blog-index-intro">
-          <Content components={components} />
-        </div>
-      ) : null
-    }
+    {hasContent ? (
+      <div class="blog-index-intro">
+        <Content components={components} />
+      </div>
+    ) : null}
   </header>
   <Section class="blog-index-section">
     <h2 slot="heading">
@@ -86,42 +84,36 @@ const graphs: ComponentProps<typeof Layout>["graphs"] = [
       </Button>
     </Fragment>
     <CardsList isContainer items={recentPosts} sizeMinCols="29em">
-      {
-        (post: (typeof recentPosts)[number]) => (
-          <PreviewCard
-            adaptTo="viewport"
-            elevation="raised"
-            entry={convertBlogPostToPreview(post, {
-              featuredMetaItem: { icon: "blog", key: "publishedOn" },
-              i18n: { translate, translatePlural },
-              showAuthorsIfAvailable: false,
-              showCover: true,
-              showCta: true,
-              showMeta: true,
-            })}
-            headingLvl="h3"
-          />
-        )
-      }
+      {(post: (typeof recentPosts)[number]) => (
+        <PreviewCard
+          adaptTo="viewport"
+          elevation="raised"
+          entry={convertBlogPostToPreview(post, {
+            featuredMetaItem: { icon: "blog", key: "publishedOn" },
+            i18n: { translate, translatePlural },
+            showAuthorsIfAvailable: false,
+            showCover: true,
+            showCta: true,
+            showMeta: true,
+          })}
+          headingLvl="h3"
+        />
+      )}
     </CardsList>
   </Section>
   <Section class="blog-index-section">
-    <h2 slot="heading">
-      {translate("page.blog.section.categories.heading")}
-    </h2>
+    <h2 slot="heading">{translate("page.blog.section.categories.heading")}</h2>
     <CardsList isContainer items={categories} sizeMinCols="22em">
-      {
-        (cat: (typeof categories)[number]) => (
-          <PreviewCard
-            adaptTo="viewport"
-            elevation="raised"
-            entry={convertTaxonomyToPreview(cat, {
-              i18n: { translate, translatePlural },
-            })}
-            headingLvl="h3"
-          />
-        )
-      }
+      {(cat: (typeof categories)[number]) => (
+        <PreviewCard
+          adaptTo="viewport"
+          elevation="raised"
+          entry={convertTaxonomyToPreview(cat, {
+            i18n: { translate, translatePlural },
+          })}
+          headingLvl="h3"
+        />
+      )}
     </CardsList>
   </Section>
 </Layout>

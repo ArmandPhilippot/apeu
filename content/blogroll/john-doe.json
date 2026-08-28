@@ -4,7 +4,7 @@
   "feed": "https://astro.build/rss.xml",
   "inLanguages": ["en"],
   "publishedOn": "2024-11-10T17:25",
-  "tags": ["en/tag1"],
+  "tags": ["en/tags/tag1"],
   "description": {
     "en": "A description in English of this blog."
   }

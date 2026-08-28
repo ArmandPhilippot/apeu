@@ -270,9 +270,11 @@ describe("pagefind", () => {
       const integration = pagefindSearch();
       const mockContext = createAstroBuildDoneMockContext();
 
-      await integration.hooks["astro:build:done"](mockContext).catch(
-        () => undefined
-      );
+      try {
+        await integration.hooks["astro:build:done"](mockContext);
+      } catch {
+        // Ignore error to assert close() is always called
+      }
 
       expect(pagefind.close).toHaveBeenCalledWith();
     });

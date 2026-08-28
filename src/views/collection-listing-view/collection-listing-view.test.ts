@@ -17,6 +17,8 @@ import {
 import type { AvailableLocale } from "../../types/tokens";
 import CollectionListingView from "./collection-listing-view.astro";
 
+const MIN_COLS_SIZE_REGEX = /--size-min-cols: 22em/;
+
 vi.mock("astro:content", async (importOriginal) => {
   const mod = await importOriginal<typeof import("astro:content")>();
   return {
@@ -649,7 +651,7 @@ describe("CollectionListingView", () => {
         } satisfies ComponentProps<typeof CollectionListingView>,
       });
 
-      expect(result).toMatch(/--size-min-cols: 22em/);
+      expect(result).toMatch(MIN_COLS_SIZE_REGEX);
     });
   });
 });

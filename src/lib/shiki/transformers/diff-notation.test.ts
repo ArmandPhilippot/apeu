@@ -4,12 +4,14 @@ import { describe, expect, it } from "vitest";
 import { ensureArray } from "../../../utils/arrays";
 import { shikiDiffNotation } from "./diff-notation";
 
+const DIFF_SYMBOL_REGEX = /^[+-]\s*/;
+
 /**
  * Retrieves the first line in a node.
  *
  * @param {HastElement} node - A Hast node.
  * @returns {HastElement} The first line in the node.
- * @throws When the first line is not an element.
+ * @throws {Error} When the first line is not an element.
  */
 function getFirstLine(node: HastElement): HastElement {
   const [firstLine] = node.children;
@@ -27,7 +29,7 @@ function getFirstLine(node: HastElement): HastElement {
  *
  * @param {HastElement} node - A Hast node.
  * @returns {string} The text extracted from the node.
- * @throws When the text can't be extracted.
+ * @throws {Error} When the text can't be extracted.
  */
 function extractTextFromNode(node: HastElement): string {
   const [firstChild] = node.children;
@@ -47,7 +49,7 @@ function extractTextFromNode(node: HastElement): string {
     throw new Error("Unable to extract text from node");
   }
 
-  return tokenNode.value.replace(/^[+-]\s*/, "").trim();
+  return tokenNode.value.replace(DIFF_SYMBOL_REGEX, "").trim();
 }
 
 /**

@@ -90,7 +90,7 @@ const mainNavRoutes = getLinks(
   "header"
 );
 const devOnlyRoutes: WithIcon<Route>[] = [
-  { label: "Design system", path: "/design-system" },
+  { label: "Design system", path: "/design-system/" },
 ];
 const footerRoutes = [
   ...getLinks(["legalNotice", "feeds"], "footer"),
@@ -139,15 +139,13 @@ const topId = translate("anchor.site.top");
         @layer reset, themes, tokens, base, atoms, molecules, organisms, layout, views, utils;
       </style>
     </Fragment>
-    {
-      graphs ? (
-        <script
-          is:inline
-          set:html={JSON.stringify(getJsonLdSchema(graphs))}
-          type="application/ld+json"
-        />
-      ) : null
-    }
+    {graphs ? (
+      <script
+        is:inline
+        set:html={JSON.stringify(getJsonLdSchema(graphs))}
+        type="application/ld+json"
+      ></script>
+    ) : null}
     <noscript>
       <style>
         .js-only {
@@ -177,13 +175,11 @@ const topId = translate("anchor.site.top");
           />
         </header>
         <div class="site-body">
-          {
-            breadcrumb ? (
-              <nav class="site-breadcrumb">
-                <Breadcrumb items={breadcrumb} />
-              </nav>
-            ) : null
-          }
+          {breadcrumb ? (
+            <nav class="site-breadcrumb">
+              <Breadcrumb items={breadcrumb} />
+            </nav>
+          ) : null}
           <main
             {...attrs}
             class:list={[className, "site-main", "paper-dark"]}
@@ -205,15 +201,13 @@ const topId = translate("anchor.site.top");
             title={translate("license.title")}
           />
           <List class="site-footer-nav" isInline spacing="xs">
-            {
-              footerRoutes.map(({ icon, label, path }) => (
-                <ListItem>
-                  <Link href={path} icon={icon}>
-                    {label}
-                  </Link>
-                </ListItem>
-              ))
-            }
+            {footerRoutes.map(({ icon, label, path }) => (
+              <ListItem>
+                <Link href={path} icon={icon}>
+                  {label}
+                </Link>
+              </ListItem>
+            ))}
           </List>
           <BackToTop
             anchor={`#${topId}`}

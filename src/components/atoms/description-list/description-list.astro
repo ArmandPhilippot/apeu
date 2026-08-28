@@ -35,7 +35,7 @@ const trimmedContent = content
 <dl
   {...attrs}
   class:list={[className, "description-list"]}
-  {...isInline ? { "data-inline": true } : {}}
+  {...(isInline ? { "data-inline": true } : {})}
   set:html={trimmedContent}
   style={`${cssVars}${style}`}
 />

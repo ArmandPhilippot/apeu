@@ -16,6 +16,10 @@ const mockImage = createImageMock();
 
 describe("pages", () => {
   it("should include the meta in the transformed output", () => {
+    if (typeof pages.schema !== "function") {
+      throw new TypeError("The schema is not callable");
+    }
+
     const page = {
       title: "The title of the page",
       description: "A description of the page.",
@@ -27,11 +31,6 @@ describe("pages", () => {
       },
       updatedOn: new Date("2023-01-02"),
     };
-
-    if (typeof pages.schema !== "function") {
-      throw new TypeError("The schema is not callable");
-    }
-
     const parsedSchema = pages.schema({ image: mockImage });
     const result = parsedSchema.safeParse(page);
 
@@ -46,6 +45,10 @@ describe("pages", () => {
   });
 
   it("should apply default values as expected", () => {
+    if (typeof pages.schema !== "function") {
+      throw new TypeError("The schema is not callable");
+    }
+
     const page = {
       title: "The title of the page",
       description: "A description of the page.",
@@ -55,11 +58,6 @@ describe("pages", () => {
         description: "Vel voluptatem laboriosam.",
       },
     };
-
-    if (typeof pages.schema !== "function") {
-      throw new TypeError("The schema is not callable");
-    }
-
     const parsedSchema = pages.schema({ image: mockImage });
     const result = parsedSchema.safeParse(page);
 

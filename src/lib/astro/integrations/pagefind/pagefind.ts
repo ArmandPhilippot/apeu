@@ -90,7 +90,7 @@ const ensureSearchIndex = async (
     await runAstroBuild(fileURLToPath(config.root));
     logger.info("Search index built!");
   } catch (error) {
-    const reason = error instanceof Error ? error.message : String(error);
+    const reason = Error.isError(error) ? error.message : String(error);
     logger.warn(
       `Failed to build the search index automatically: ${reason}. Run \`pnpm build\` manually to enable search in dev mode.`
     );

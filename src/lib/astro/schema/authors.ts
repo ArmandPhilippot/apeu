@@ -5,9 +5,10 @@ import {
   isValidLanguageCode,
 } from "../../../utils/type-guards";
 import { globLoader } from "../loaders";
+import { generateAuthorId } from "./generate-id";
 
 export const authors = defineCollection({
-  loader: globLoader("authors"),
+  loader: globLoader("authors", { generateId: generateAuthorId }),
   schema: ({ image }) =>
     z
       .object({

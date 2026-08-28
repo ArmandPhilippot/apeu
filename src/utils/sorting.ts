@@ -16,7 +16,7 @@ const compareDates = (a: Date, b: Date): number => a.getTime() - b.getTime();
  * @param {string} b - Another string.
  * @returns {number} The sort result.
  */
-const compareNonAsciiStrings = (a: string, b: string): number =>
+export const compareNonAsciiStrings = (a: string, b: string): number =>
   a.localeCompare(b);
 
 /**

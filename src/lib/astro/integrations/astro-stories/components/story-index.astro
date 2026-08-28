@@ -8,17 +8,15 @@ const { ...index } = Astro.props;
 ---
 
 <Layout story={index}>
-  {
-    index.children.length > 0 ? (
-      <ul>
-        {index.children.map(({ label, path }) => (
-          <li>
-            <a href={path}>{label}</a>
-          </li>
-        ))}
-      </ul>
-    ) : (
-      "No stories found."
-    )
-  }
+  {index.children.length > 0 ? (
+    <ul>
+      {index.children.map(({ label, path }) => (
+        <li>
+          <a href={path}>{label}</a>
+        </li>
+      ))}
+    </ul>
+  ) : (
+    "No stories found."
+  )}
 </Layout>

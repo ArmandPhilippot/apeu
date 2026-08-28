@@ -36,12 +36,10 @@ const { translate } = useI18n(Astro.currentLocale);
     <Icon aria-hidden="true" name="contact" size={24} />
     {translate("cta.contact.me")}
   </Button>
-  {
-    socialMedia ? (
-      <Fragment>
-        <p>{translate("card.contact.social.links.intro")}</p>
-        <SocialLinks addRelMe={addRelMe} hideLabels links={socialMedia} />
-      </Fragment>
-    ) : null
-  }
+  {socialMedia ? (
+    <Fragment>
+      <p>{translate("card.contact.social.links.intro")}</p>
+      <SocialLinks addRelMe={addRelMe} hideLabels links={socialMedia} />
+    </Fragment>
+  ) : null}
 </Card>

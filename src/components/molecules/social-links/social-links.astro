@@ -26,20 +26,18 @@ const {
 ---
 
 <List {...attrs} class:list={[className, "social-links"]} hideMarker isInline>
-  {
-    Object.entries(links).map(([medium, url]) =>
-      url && isValidSocialMedium(medium) ? (
-        <ListItem>
-          <SocialLink
-            hideLabel={hideLabels}
-            medium={medium}
-            rel={addRelMe ? "me" : null}
-            url={url}
-          />
-        </ListItem>
-      ) : null
-    )
-  }
+  {Object.entries(links).map(([medium, url]) =>
+    url && isValidSocialMedium(medium) ? (
+      <ListItem>
+        <SocialLink
+          hideLabel={hideLabels}
+          medium={medium}
+          rel={addRelMe ? "me" : null}
+          url={url}
+        />
+      </ListItem>
+    ) : null
+  )}
 </List>
 
 <style>

@@ -103,48 +103,44 @@ const { entries: collections } = await queryCollection(
     heading={translate("page.home.section.contact.heading")}
     socialMedia={author.socialMedia}
   />
-  {
-    hasContent ? (
-      <Card
-        adaptTo="viewport"
-        as="section"
-        class="homepage-content"
-        elevation="raised"
+  {hasContent ? (
+    <Card
+      adaptTo="viewport"
+      as="section"
+      class="homepage-content"
+      elevation="raised"
+    >
+      <Content components={components} />
+    </Card>
+  ) : null}
+  {collections?.length ? (
+    <Section class="homepage-collections">
+      <h2 slot="heading">
+        {translate("page.home.section.collections.heading")}
+      </h2>
+      <Button
+        aria-label={translate("cta.subscribe.to.website")}
+        as="a"
+        href={joinPaths(page.route, "feed.xml")}
+        slot="cta"
       >
-        <Content components={components} />
-      </Card>
-    ) : null
-  }
-  {
-    collections?.length ? (
-      <Section class="homepage-collections">
-        <h2 slot="heading">
-          {translate("page.home.section.collections.heading")}
-        </h2>
-        <Button
-          aria-label={translate("cta.subscribe.to.website")}
-          as="a"
-          href={joinPaths(page.route, "feed.xml")}
-          slot="cta"
-        >
-          <Icon aria-hidden="true" name="feed" />
-          {translate("cta.subscribe")}
-        </Button>
-        <CardsList isContainer items={collections} sizeMinCols="19em">
-          {(entry: (typeof collections)[number]) => (
-            <PreviewCard
-              adaptTo="viewport"
-              elevation="raised"
-              entry={convertPageToPreview(entry, {
-                i18n: { translate, translatePlural },
-              })}
-              headingLvl="h3"
-            />
-          )}
-        </CardsList>
-      </Section>
-    ) : null
-  }
+        <Icon aria-hidden="true" name="feed" />
+        {translate("cta.subscribe")}
+      </Button>
+      <CardsList isContainer items={collections} sizeMinCols="19em">
+        {(entry: (typeof collections)[number]) => (
+          <PreviewCard
+            adaptTo="viewport"
+            elevation="raised"
+            entry={convertPageToPreview(entry, {
+              i18n: { translate, translatePlural },
+            })}
+            headingLvl="h3"
+          />
+        )}
+      </CardsList>
+    </Section>
+  ) : null}
 </Layout>
 
 <style>

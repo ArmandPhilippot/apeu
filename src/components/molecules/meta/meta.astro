@@ -25,35 +25,33 @@ const defaultIconSize = 22;
 ---
 
 <DescriptionList {...attrs} class:list={[className, "meta"]} gap={gap}>
-  {
-    items.map((item) => (
-      <div class="meta-item">
-        <dt>
-          {item.icon?.name ? (
-            <Icon
-              aria-hidden="true"
-              class="meta-icon"
-              name={item.icon.name}
-              size={item.icon.size ?? defaultIconSize}
-            />
-          ) : null}
-          <span class:list={{ "sr-only": hideLabel }}>{item.label}</span>
-        </dt>
-        {item.values.map((value) => (
-          <dd title={item.description}>
-            {value instanceof Date ? (
-              <Time date={value} />
-            ) : /* eslint-disable-next-line unicorn/no-nested-ternary -- formatter conflict */
-            typeof value === "object" ? (
-              <Link href={value.path}>{value.label}</Link>
-            ) : (
-              value
-            )}
-          </dd>
-        ))}
-      </div>
-    ))
-  }
+  {items.map((item) => (
+    <div class="meta-item">
+      <dt>
+        {item.icon?.name ? (
+          <Icon
+            aria-hidden="true"
+            class="meta-icon"
+            name={item.icon.name}
+            size={item.icon.size ?? defaultIconSize}
+          />
+        ) : null}
+        <span class:list={{ "sr-only": hideLabel }}>{item.label}</span>
+      </dt>
+      {item.values.map((value) => (
+        <dd title={item.description}>
+          {value instanceof Date ? (
+            <Time date={value} />
+          ) : /* eslint-disable-next-line unicorn/no-nested-ternary -- formatter conflict */
+          typeof value === "object" ? (
+            <Link href={value.path}>{value.label}</Link>
+          ) : (
+            value
+          )}
+        </dd>
+      ))}
+    </div>
+  ))}
 </DescriptionList>
 
 <style>

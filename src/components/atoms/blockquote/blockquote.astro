@@ -7,14 +7,14 @@ const { class: className, slot, ...attrs } = Astro.props;
 ---
 
 <figure {...attrs} class:list={[className, "blockquote"]}>
-  <blockquote class="blockquote-quote"><slot /></blockquote>
-  {
-    Astro.slots.has("caption") ? (
-      <figcaption class="blockquote-caption">
-        <slot name="caption" />
-      </figcaption>
-    ) : null
-  }
+  <blockquote class="blockquote-quote">
+    <slot />
+  </blockquote>
+  {Astro.slots.has("caption") ? (
+    <figcaption class="blockquote-caption">
+      <slot name="caption" />
+    </figcaption>
+  ) : null}
 </figure>
 
 <style>

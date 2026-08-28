@@ -32,8 +32,8 @@ const cssVars = getCSSVars({
 <Tag
   {...attrs}
   class:list={[className, "list"]}
-  {...isInline && { "data-inline": true }}
-  {...hideMarker && { "data-marker": false }}
+  {...(isInline && { "data-inline": true })}
+  {...(hideMarker && { "data-marker": false })}
   style={`${cssVars}${style}`}
 >
   <slot />

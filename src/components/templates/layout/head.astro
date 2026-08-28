@@ -91,30 +91,26 @@ const socialImg = {
     ].join(", ")}
   />
   <link rel="canonical" href={seo.canonical ?? Astro.url.href} />
-  {
-    Astro.site && seo.languages
-      ? seo.languages.map((language) => (
-          <link
-            rel="alternate"
-            href={new URL(language.route, Astro.site)}
-            hreflang={language.locale}
-          />
-        ))
-      : null
-  }
-  {
-    seo.author ? (
-      <>
-        <meta name="author" content={seo.author.name} />
-        <link rel="author" href={seo.author.website} />
-      </>
-    ) : (
-      <>
-        <meta name="author" content={brand} />
-        {Astro.site ? <link rel="author" href={Astro.site.href} /> : null}
-      </>
-    )
-  }
+  {Astro.site && seo.languages
+    ? seo.languages.map((language) => (
+        <link
+          rel="alternate"
+          href={new URL(language.route, Astro.site)}
+          hreflang={language.locale}
+        />
+      ))
+    : null}
+  {seo.author ? (
+    <>
+      <meta name="author" content={seo.author.name} />
+      <link rel="author" href={seo.author.website} />
+    </>
+  ) : (
+    <>
+      <meta name="author" content={brand} />
+      {Astro.site ? <link rel="author" href={Astro.site.href} /> : null}
+    </>
+  )}
   {colorScheme ? <meta name="color-scheme" content={colorScheme} /> : null}
   {themeColor ? <meta name="theme-color" content={themeColor} /> : null}
   <meta content={title} property="og:title" />
@@ -124,60 +120,50 @@ const socialImg = {
   <meta content={String(socialImg.width)} property="og:image:width" />
   <meta content={String(socialImg.height)} property="og:image:height" />
   <meta content={Astro.url} property="og:url" />
-  {
-    seo.description ? (
-      <meta content={seo.description} property="og:description" />
-    ) : null
-  }
+  {seo.description ? (
+    <meta content={seo.description} property="og:description" />
+  ) : null}
   <meta content={localeTerritory} property="og:locale" />
-  {
-    altLocales?.map((lang) => (
-      <meta content={lang} property="og:locale:alternate" />
-    ))
-  }
+  {altLocales?.map((lang) => (
+    <meta content={lang} property="og:locale:alternate" />
+  ))}
   <meta content={brand} property="og:site_name" />
   <slot name="open-graph" />
   <meta content="summary_large_image" name="twitter:card" />
   <meta content={socialImg.url} name="twitter:image" />
   <meta content={title} name="twitter:title" />
-  {
-    seo.description ? (
-      <meta content={seo.description} name="twitter:description" />
-    ) : null
-  }
+  {seo.description ? (
+    <meta content={seo.description} name="twitter:description" />
+  ) : null}
   <link rel="icon" href="/favicon.ico" sizes="32x32" />
   <link rel="icon" href={icon.src} type="image/svg+xml" />
   <link rel="apple-touch-icon" href={appleTouchIcon.src} />
   <link rel="manifest" href="/manifest.json" />
   <link rel="sitemap" href="/sitemap-index.xml" />
-  {
-    Astro.site ? (
-      <Fragment>
+  {Astro.site ? (
+    <Fragment>
+      <link
+        rel="alternate"
+        href={new URL("./feed.xml", Astro.site)}
+        title={translate("feed.website.link.title")}
+        type="application/rss+xml"
+      />
+      {feeds.map((feed) => (
         <link
           rel="alternate"
-          href={new URL("./feed.xml", Astro.site)}
-          title={translate("feed.website.link.title")}
+          href={new URL(feed.path, Astro.site)}
+          title={feed.label}
           type="application/rss+xml"
         />
-        {feeds.map((feed) => (
-          <link
-            rel="alternate"
-            href={new URL(feed.path, Astro.site)}
-            title={feed.label}
-            type="application/rss+xml"
-          />
-        ))}
-      </Fragment>
-    ) : null
-  }
-  {
-    graphs ? (
-      <script
-        type="application/ld+json"
-        is:inline
-        set:html={JSON.stringify(getJsonLdSchema(graphs))}
-      />
-    ) : null
-  }
+      ))}
+    </Fragment>
+  ) : null}
+  {graphs ? (
+    <script
+      type="application/ld+json"
+      is:inline
+      set:html={JSON.stringify(getJsonLdSchema(graphs))}
+    ></script>
+  ) : null}
   <slot />
 </head>

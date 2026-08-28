@@ -140,10 +140,8 @@ const getPageConfig = (currentPage: typeof page): PageComponent => {
 const SpecialPageView = getPageConfig(page);
 ---
 
-{
-  SpecialPageView ? (
-    <SpecialPageView entry={page} pagination={pagination} />
-  ) : (
-    <DefaultPageView entry={page} />
-  )
-}
+{SpecialPageView ? (
+  <SpecialPageView entry={page} pagination={pagination} />
+) : (
+  <DefaultPageView entry={page} />
+)}

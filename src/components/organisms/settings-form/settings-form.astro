@@ -39,18 +39,16 @@ const languages = Object.fromEntries(
 <form {...attrs} class:list={[className, "settings-form"]} id={id}>
   <fieldset>
     <legend>{translate("form.settings.label")}</legend>
-    {
-      Object.keys(languages).length > 1 ? (
-        <LanguageSelect
-          class="settings-form-language"
-          current={locale}
-          hideLabel
-          label={translate("form.settings.label.language")}
-          languages={languages}
-          showIcon
-        />
-      ) : null
-    }
+    {Object.keys(languages).length > 1 ? (
+      <LanguageSelect
+        class="settings-form-language"
+        current={locale}
+        hideLabel
+        label={translate("form.settings.label.language")}
+        languages={languages}
+        showIcon
+      />
+    ) : null}
     <ThemeSelect
       class="settings-form-theme"
       current="auto"

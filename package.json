@@ -111,7 +111,7 @@
     "astro-eslint-parser": "^3.1.0",
     "autoprefixer": "^10.5.4",
     "baseline-browser-mapping": "^2.11.18",
-    "cspell": "^10.1.0",
+    "cspell": "^10.1.1",
     "eslint": "^10.9.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-import-resolver-typescript": "^4.4.5",

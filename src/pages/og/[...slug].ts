@@ -24,10 +24,13 @@ const getPageIdFromRoute = (route: string) => {
   return routeId;
 };
 const individualPages = collections.entries.map(
-  ({ description, id, route, seo, title }) => {
+  ({ description, digest, id, route, seo, title }) => {
     const pageId = getPageIdFromRoute(route);
 
-    return [addPngExtension(pageId), { description, id, seo, title }] as const;
+    return [
+      addPngExtension(pageId),
+      { description, digest, id, seo, title },
+    ] as const;
   }
 );
 
@@ -46,6 +49,7 @@ export const getStaticPaths = (() => {
 
   return individualPages.map(([slug, page]) => {
     return {
+      cacheKey: page.digest,
       params: {
         slug,
       },

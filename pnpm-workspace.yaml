@@ -7,6 +7,8 @@ minimumReleaseAge: 4320
 minimumReleaseAgeExclude:
   - "@arphi/*"
   - prettier-plugin-astro@1.0.0-beta.1
+  # Renovate security update: sharp@0.35.4
+  - sharp@0.35.4
 # Workaround: `eslint-plugin-jsx-a11y` is not yet compatible with ESLint 10
 peerDependencyRules:
   allowedVersions:

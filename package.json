@@ -68,7 +68,7 @@
     "mdast-util-to-nlcst": "^7.0.1",
     "modern-normalize": "^3.0.1",
     "nanostores": "^1.5.2",
-    "nodemailer": "^9.0.5",
+    "nodemailer": "^10.0.0",
     "pagefind": "^1.5.2",
     "parse-english": "^7.0.0",
     "parse-latin": "^7.0.0",

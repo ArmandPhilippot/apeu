@@ -57,8 +57,8 @@ importers:
         specifier: ^1.5.2
         version: 1.5.2
       nodemailer:
-        specifier: ^9.0.5
-        version: 9.1.1
+        specifier: ^10.0.0
+        version: 10.1.0
       pagefind:
         specifier: ^1.5.2
         version: 1.5.2
@@ -4610,6 +4610,10 @@ packages:
   node-releases@2.0.55:
     resolution: {integrity: sha512-mIrE/Cw9y+9Au6dS5vDKDhQza9YvG6w+ZrS6X+ZzA7yFW/soAeaups4Qzn1bL6g5FVy8WtP79+0j82oPIbqRjQ==}
     engines: {node: '>=18'}
+
+  nodemailer@10.1.0:
+    resolution: {integrity: sha512-fXW8AulB25aOTuwfRYV6lqHyfz2VM4rr4SGXH03mE7x5znEUpzL5mu6anARUpZN7744Ziwkmr4AxSLPJsBQspg==}
+    engines: {node: '>=20.0.0'}
 
   nodemailer@9.0.5:
     resolution: {integrity: sha512-wvjiKvjczmsN7U/8006JOdXubgBk2XFAbioDMbT+sM7cPs0QrhJTa6KBRX7P5REGGkDcLUz/EarWidb8G8C1jQ==}
@@ -10946,6 +10950,8 @@ snapshots:
   node-mock-http@1.0.5: {}
 
   node-releases@2.0.55: {}
+
+  nodemailer@10.1.0: {}
 
   nodemailer@9.0.5: {}
 

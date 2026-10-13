@@ -113,6 +113,7 @@ export async function getRoutableEntryPreview<T extends RoutableCollectionKey>(
   return {
     ...processedData,
     collection: entry.raw.collection,
+    digest: entry.raw.digest,
     id: entry.raw.id,
     locale,
     meta: transformedMeta,

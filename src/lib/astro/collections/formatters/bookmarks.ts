@@ -14,7 +14,7 @@ export const getBookmark = (
   bookmark: IndexedEntry<"bookmarks">,
   indexById: EntryByIdIndex
 ): Bookmark => {
-  const { collection, data, id } = bookmark.raw;
+  const { collection, data, digest, id } = bookmark.raw;
   const { meta, ...remainingData } = data;
   const { isDraft, tags, ...remainingMeta } = meta;
   const resolvedTags = getTagsRoutes(tags, indexById);
@@ -22,6 +22,7 @@ export const getBookmark = (
   return {
     ...remainingData,
     collection,
+    digest,
     id,
     meta: {
       ...remainingMeta,

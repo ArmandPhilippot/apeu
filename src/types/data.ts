@@ -289,7 +289,7 @@ export type FormattedEntry<
     ? "preview"
     : never,
 > = AddCollectionFeatures<
-  Pick<CollectionEntry<T>, "collection" | "id"> &
+  Pick<CollectionEntry<T>, "collection" | "id" | "digest"> &
     TransformRootDataConditional<CollectionEntry<T>["data"], T, Mode> &
     TransformMeta<CollectionEntry<T>["data"]>,
   T,

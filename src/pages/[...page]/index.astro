@@ -55,6 +55,7 @@ export const getStaticPaths = (async ({ paginate }) => {
       }).map((paginatedItem) => {
         const { data, url, ...paginationData } = paginatedItem.props.page;
         return {
+          cacheKey: enrichedPaginatedPage.digest,
           params: {
             page: paginatedItem.params.page
               ? `${route}/page/${paginatedItem.params.page}`
@@ -75,6 +76,7 @@ export const getStaticPaths = (async ({ paginate }) => {
   const nonPaginatedListingPaths = enrichedNonPaginatedListings.map(
     (listingPage) => {
       return {
+        cacheKey: listingPage.digest,
         params: {
           page: withoutOuterSlashes(listingPage.route),
         },
@@ -84,6 +86,7 @@ export const getStaticPaths = (async ({ paginate }) => {
   );
   const regularPaths = regularPages.map((regularPage) => {
     return {
+      cacheKey: regularPage.digest,
       params: {
         page: routeToStaticPathParam(regularPage.route),
       },

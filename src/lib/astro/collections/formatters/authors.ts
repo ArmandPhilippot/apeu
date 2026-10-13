@@ -41,6 +41,7 @@ export const getAuthorPreview = ({
   return {
     ...remainingData,
     collection: raw.collection,
+    digest: raw.digest,
     id: raw.id,
   };
 };
@@ -55,6 +56,7 @@ export const getAuthor = (author: IndexedEntry<"authors">): Author => {
   return {
     ...author.raw.data,
     collection: author.raw.collection,
+    digest: author.raw.digest,
     id: author.raw.id,
   };
 };

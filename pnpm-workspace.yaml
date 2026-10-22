@@ -6,6 +6,8 @@ allowBuilds:
 minimumReleaseAge: 4320
 minimumReleaseAgeExclude:
   - "@arphi/*"
+  # Renovate security update: nodemailer@10.0.6
+  - nodemailer@10.0.6
 # Workaround: `eslint-plugin-jsx-a11y` is not yet compatible with ESLint 10
 peerDependencyRules:
   allowedVersions:

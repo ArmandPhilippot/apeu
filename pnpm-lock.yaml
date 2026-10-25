@@ -390,8 +390,8 @@ importers:
         specifier: ^2.0.0
         version: 2.0.0(typescript@6.0.3)
       smtp-server:
-        specifier: ^3.19.3
-        version: 3.19.3
+        specifier: ^3.21.1
+        version: 3.21.1
       stylelint:
         specifier: ^17.14.1
         version: 17.14.1(supports-color@10.2.2)(typescript@6.0.3)
@@ -4769,9 +4769,9 @@ packages:
     resolution: {integrity: sha512-mIrE/Cw9y+9Au6dS5vDKDhQza9YvG6w+ZrS6X+ZzA7yFW/soAeaups4Qzn1bL6g5FVy8WtP79+0j82oPIbqRjQ==}
     engines: {node: '>=18'}
 
-  nodemailer@9.0.5:
-    resolution: {integrity: sha512-wvjiKvjczmsN7U/8006JOdXubgBk2XFAbioDMbT+sM7cPs0QrhJTa6KBRX7P5REGGkDcLUz/EarWidb8G8C1jQ==}
-    engines: {node: '>=6.0.0'}
+  nodemailer@10.2.1:
+    resolution: {integrity: sha512-ZrDNsPFoDMwefNs7sJwrYiEJ/CG4ClJWDZv05iNJsEBWa8GRDry1QJHTJxsuTAY9eDDKjX4k+q3SxslXJOao7w==}
+    engines: {node: '>=20.0.0'}
 
   nodemailer@9.1.1:
     resolution: {integrity: sha512-izw9mVKFix6YSnC9eLgV6g1opl9DUlRio9ZNcq+Wu9Ujn2UwF+8Nl0B8nz22kEC+CTZCvinkxwJ0DeFbb6NwcQ==}
@@ -5469,9 +5469,9 @@ packages:
     resolution: {integrity: sha512-kCZr2V3ch9i00x8zXRhjUNVcjG9ijES5dDudkXvUVCT5QlJNQWElSJdZqyPemffHoLNUYwOcou0Fy+ojN0uHSQ==}
     engines: {node: '>= 18'}
 
-  smtp-server@3.19.3:
-    resolution: {integrity: sha512-1WkMlusxxy0Pdx3Bj4+nxzXLakON3EvV8+e0ZD/u6weNkHiX/ih2KGRV2A6Hg54Z30CQjE1OvNs79EZ0r0fBkw==}
-    engines: {node: '>=18.18.0'}
+  smtp-server@3.21.1:
+    resolution: {integrity: sha512-gj95f6YhcL0uu3m3FvRnQ6LSotursugAuVjK5V4f0f2C/4OSVpn/+h28F4pPJFob/myli9V+F7/Hxx9DJVdwvg==}
+    engines: {node: '>=20.0.0'}
 
   source-map-js@1.2.1:
     resolution: {integrity: sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==}
@@ -11105,7 +11105,7 @@ snapshots:
 
   node-releases@2.0.55: {}
 
-  nodemailer@9.0.5: {}
+  nodemailer@10.2.1: {}
 
   nodemailer@9.1.1: {}
 
@@ -12086,10 +12086,10 @@ snapshots:
 
   smol-toml@1.8.0: {}
 
-  smtp-server@3.19.3:
+  smtp-server@3.21.1:
     dependencies:
       ipv6-normalize: 1.0.1
-      nodemailer: 9.0.5
+      nodemailer: 10.2.1
       punycode.js: 2.3.1
 
   source-map-js@1.2.1: {}

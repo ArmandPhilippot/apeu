@@ -94,7 +94,7 @@
   },
   "devDependencies": {
     "@arphi/commitlint-config": "^1.0.10",
-    "@arphi/eslint-config": "^3.1.0",
+    "@arphi/eslint-config": "^3.1.1",
     "@arphi/prettier-config": "^1.0.5",
     "@arphi/stylelint-config": "2.0.1",
     "@changesets/changelog-git": "^1.0.0",

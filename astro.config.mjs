@@ -59,7 +59,7 @@ export default defineConfig({
       formats: ["woff"],
       name: "Inter",
       provider: fontProviders.bunny(),
-      styles: ["italic", "normal", "oblique"],
+      styles: ["italic", "normal"],
       subsets: ["latin"],
       unicodeRange: [
         "U+0000-00FF",
@@ -82,7 +82,7 @@ export default defineConfig({
         "U+FEFF",
         "U+FFFD",
       ],
-      weights: ["100 900"],
+      weights: ["400", "600"],
     },
     {
       cssVariable: "--font-cousine",
@@ -97,7 +97,7 @@ export default defineConfig({
       ],
       name: "Cousine",
       provider: fontProviders.fontsource(),
-      styles: ["italic", "normal", "oblique"],
+      styles: ["italic", "normal"],
       subsets: ["latin"],
       weights: ["400", "700"],
     },

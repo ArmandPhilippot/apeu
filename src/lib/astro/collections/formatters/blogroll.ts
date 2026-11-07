@@ -14,7 +14,7 @@ export const getBlog = (
   blog: IndexedEntry<"blogroll">,
   indexById: EntryByIdIndex
 ): Blog => {
-  const { collection, data, id } = blog.raw;
+  const { collection, data, digest, id } = blog.raw;
   const { meta, ...remainingData } = data;
   const { isDraft, tags, ...remainingMeta } = meta;
   const resolvedTags = getTagsRoutes(tags, indexById);
@@ -22,6 +22,7 @@ export const getBlog = (
   return {
     ...remainingData,
     collection,
+    digest,
     id,
     meta: {
       ...remainingMeta,

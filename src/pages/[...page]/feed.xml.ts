@@ -33,6 +33,7 @@ export const getStaticPaths = (async () => {
   const enrichedEntries = await addRelatedItemsToPages(filteredEntries);
   return enrichedEntries.map((entry) => {
     return {
+      cacheKey: entry.digest,
       params: {
         page: routeToStaticPathParam(entry.route),
       },

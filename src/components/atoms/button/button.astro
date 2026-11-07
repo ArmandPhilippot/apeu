@@ -3,21 +3,35 @@ import type { HTMLTag, Polymorphic } from "astro/types";
 
 type ButtonKind = "discreet" | "neutral" | "primary" | "secondary";
 
-type Props<T extends Extract<HTMLTag, "a" | "button"> = "button"> =
-  Polymorphic<{ as: T }> & {
-    /**
-     * Is the button targeting an external resource?
-     *
-     * @default false
-     */
-    isExternal?: boolean | null | undefined;
-    /**
-     * The button kind.
-     *
-     * @default "secondary"
-     */
-    kind?: ButtonKind | null | undefined;
-  };
+type ButtonType = "button" | "reset" | "submit";
+
+/*
+ * `type` is narrowed by hand: `Astro.props` is typed with the constraint of
+ * `T` (`"a" | "button"`), where `type` is `string` (anchor MIME type) and
+ * cannot be spread on a `Tag` that may be a `button`.
+ *
+ * TODO: Remove this workaround once https://github.com/withastro/compiler-rs/issues/210 is released.
+ */
+type Props<T extends Extract<HTMLTag, "a" | "button"> = "button"> = Omit<
+  Polymorphic<{ as: T }>,
+  "type"
+> & {
+  type?: [T] extends ["a"]
+    ? string | null | undefined
+    : ButtonType | null | undefined;
+  /**
+   * Is the button targeting an external resource?
+   *
+   * @default false
+   */
+  isExternal?: boolean | null | undefined;
+  /**
+   * The button kind.
+   *
+   * @default "secondary"
+   */
+  kind?: ButtonKind | null | undefined;
+};
 
 const {
   as: Tag = "button",

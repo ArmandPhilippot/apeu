@@ -116,7 +116,7 @@
     "@vitest/coverage-v8": "^5.1.0",
     "astro-eslint-parser": "^3.2.0",
     "autoprefixer": "^10.6.2",
-    "baseline-browser-mapping": "^2.11.37",
+    "baseline-browser-mapping": "^2.11.39",
     "cspell": "^10.5.2",
     "eslint": "^10.14.0",
     "eslint-config-prettier": "^10.1.8",

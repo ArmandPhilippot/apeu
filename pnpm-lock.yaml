@@ -336,8 +336,8 @@ importers:
         specifier: ^10.6.2
         version: 10.6.2(postcss@8.5.32)
       baseline-browser-mapping:
-        specifier: ^2.11.37
-        version: 2.11.37
+        specifier: ^2.11.39
+        version: 2.11.39
       cspell:
         specifier: ^10.5.2
         version: 10.5.2
@@ -2900,8 +2900,8 @@ packages:
     resolution: {integrity: sha512-3XSA2cR/h/73EzlXXdU6YNycmYI7+kicTxks4eJg2g39biHR84slg2+des+p7iHYhbRg/udIS4TD53WabcOUkw==}
     engines: {node: '>= 0.4'}
 
-  baseline-browser-mapping@2.11.37:
-    resolution: {integrity: sha512-QYph+vfurmaxhNwi9FprfmtkT5cx2Keg8FzZ0vnjO8ukscIybVyZGMFwdllKGlTI6qyU8ck43OM9UXh+IFJihQ==}
+  baseline-browser-mapping@2.11.39:
+    resolution: {integrity: sha512-Q9buOYhr2ggrEZpImICecZTJHCCd8yXkRUokFlUEQ8uiD6oP82F4W4jWnhOHZYV+wlvrC51V7Wy0ULyWjil5Wg==}
     engines: {node: '>=6.0.0'}
     hasBin: true
 
@@ -8280,7 +8280,7 @@ snapshots:
 
   base64-js@0.0.8: {}
 
-  baseline-browser-mapping@2.11.37: {}
+  baseline-browser-mapping@2.11.39: {}
 
   boolbase@1.0.0: {}
 
@@ -8299,7 +8299,7 @@ snapshots:
 
   browserslist@4.29.5:
     dependencies:
-      baseline-browser-mapping: 2.11.37
+      baseline-browser-mapping: 2.11.39
       caniuse-lite: 1.0.30001820
       electron-to-chromium: 1.5.476
       node-releases: 2.0.63
